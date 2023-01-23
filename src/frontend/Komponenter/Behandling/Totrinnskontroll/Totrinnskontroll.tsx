@@ -150,7 +150,7 @@ const TotrinnskontrollUnderkjent: React.FC<{
                     <Detail>Manglende eller feil opplysninger om:</Detail>
                     <ÅrsakerUnderkjentWrapper>
                         {totrinnskontroll.årsakerUnderkjent.map((årsakUnderkjent) => (
-                            <ÅrsakUnderkjentRad>
+                            <ÅrsakUnderkjentRad key={årsakUnderkjent}>
                                 <SukksessIkonMedHøyreMargin />
                                 {årsakUnderkjentTilTekst[årsakUnderkjent]}
                             </ÅrsakUnderkjentRad>

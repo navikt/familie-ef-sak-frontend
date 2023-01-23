@@ -2,8 +2,6 @@ import { useEffect, useState } from 'react';
 import { formaterIsoDato } from '../utils/formatter';
 import { Ressurs, RessursStatus } from '../typer/ressurs';
 import { IBeløpsperiode, IBeregningsperiodeBarnetilsyn } from '../typer/vedtak';
-import { useToggles } from '../context/TogglesContext';
-import { ToggleName } from '../context/toggles';
 
 enum EBehandlingFlettefelt {
     fomdatoInnvilgelseForstegangsbehandling = 'fomdatoInnvilgelseForstegangsbehandling',
@@ -46,7 +44,6 @@ export const useVerdierForBrev = (
     const [flettefeltStore, settFlettefeltStore] = useState<FlettefeltStore>({});
     const [valgfeltStore, settValgfeltStore] = useState<ValgfeltStore>({});
     const [delmalStore, settDelmalStore] = useState<DelmalStore>([]);
-    const { toggles } = useToggles();
 
     useEffect(() => {
         if (
@@ -69,28 +66,20 @@ export const useVerdierForBrev = (
                 settDelmalStore((prevState) => [...prevState, EDelmaler.avslutningHjemler]);
             }
 
-            const toggledeVedtaksdatoFlettefelter: { [flettefeltNavn: string]: string } = toggles[
-                ToggleName.automatiskeVedtaksdatoerBrev
-            ]
-                ? {
-                      [EBehandlingFlettefelt.tomdatoInnvilgelse]: tilDato,
-                      [EBehandlingFlettefelt.fomdatoInnvilgelse]: fraDato,
-                      [EBehandlingFlettefelt.fomdatoInnvilgelseBarnetilsyn]: fraDato,
-                      [EBehandlingFlettefelt.tomdatoInnvilgelseBarnetilsyn]: tilDato,
-                      [EBehandlingFlettefelt.fomdatoRevurderingBT]: fraDato,
-                      [EBehandlingFlettefelt.tomdatoRevurderingBT]: tilDato,
-                  }
-                : {};
-
             settFlettefeltStore((prevState) => ({
                 ...prevState,
                 [EBehandlingFlettefelt.tomdatoInnvilgelseForstegangsbehandling]: tilDato,
                 [EBehandlingFlettefelt.fomdatoInnvilgelseForstegangsbehandling]: fraDato,
-                ...toggledeVedtaksdatoFlettefelter,
+                [EBehandlingFlettefelt.tomdatoInnvilgelse]: tilDato,
+                [EBehandlingFlettefelt.fomdatoInnvilgelse]: fraDato,
+                [EBehandlingFlettefelt.fomdatoInnvilgelseBarnetilsyn]: fraDato,
+                [EBehandlingFlettefelt.tomdatoInnvilgelseBarnetilsyn]: tilDato,
+                [EBehandlingFlettefelt.fomdatoRevurderingBT]: fraDato,
+                [EBehandlingFlettefelt.tomdatoRevurderingBT]: tilDato,
             }));
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [beløpsperioder, toggles]);
+    }, [beløpsperioder]);
 
     return { flettefeltStore, valgfeltStore, delmalStore };
 };

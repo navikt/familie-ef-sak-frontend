@@ -156,7 +156,6 @@ const VedtaksperiodeValg: React.FC<Props> = ({
                 const { periodeType, aktivitet, årMånedFra, årMånedTil } = vedtaksperiode;
                 const antallMåneder = kalkulerAntallMåneder(årMånedFra, årMånedTil);
                 const skalViseFjernKnapp = behandlingErRedigerbar && index !== 0;
-
                 return (
                     <VedtakPeriodeContainer
                         key={vedtaksperiode.endretKey}

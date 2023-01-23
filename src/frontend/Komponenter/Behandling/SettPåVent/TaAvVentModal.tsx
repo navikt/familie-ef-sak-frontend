@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
 import { useApp } from '../../../App/context/AppContext';
@@ -11,27 +11,21 @@ const AlertStripe = styled(Alert)`
     margin-top: 1rem;
 `;
 
-export const TaAvVentModal: FC<{ behandlingId: string }> = ({ behandlingId }) => {
-    const { taAvVentStatus, hentBehandling } = useBehandling();
-    const [visTaAvVentModal, settVisTaAvVentModal] = useState(false);
+export const TaAvVentModal: FC<{
+    behandlingId: string;
+    taAvVentStatus: ETaAvVentStatus | undefined;
+    nullstillTaAvVentStatus: () => void;
+}> = ({ behandlingId, taAvVentStatus, nullstillTaAvVentStatus }) => {
+    const { hentBehandling } = useBehandling();
 
     const { axiosRequest } = useApp();
 
     const [låsKnapp, settLåsKnapp] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>();
 
-    useEffect(() => {
-        if (
-            taAvVentStatus === ETaAvVentStatus.ANNEN_BEHANDLING_MÅ_FERDIGSTILLES ||
-            taAvVentStatus === ETaAvVentStatus.MÅ_NULSTILLE_VEDTAK
-        ) {
-            settVisTaAvVentModal(true);
-        }
-    }, [taAvVentStatus]);
-
     const lukkModal = () => {
         settFeilmelding('');
-        settVisTaAvVentModal(false);
+        nullstillTaAvVentStatus();
     };
 
     const taAvVent = () => {
@@ -46,7 +40,7 @@ export const TaAvVentModal: FC<{ behandlingId: string }> = ({ behandlingId }) =>
             url: `/familie-ef-sak/api/behandling/${behandlingId}/aktiver`,
         })
             .then((respons: RessursFeilet | RessursSuksess<string>) => {
-                if (respons.status == RessursStatus.SUKSESS) {
+                if (respons.status === RessursStatus.SUKSESS) {
                     hentBehandling.rerun();
                     lukkModal();
                 } else {
@@ -61,11 +55,15 @@ export const TaAvVentModal: FC<{ behandlingId: string }> = ({ behandlingId }) =>
             ? 'Behandlingen kan miste data!'
             : 'Kan ikke ta behandling av vent';
 
+    const visTaAvVentModal =
+        taAvVentStatus === ETaAvVentStatus.ANNEN_BEHANDLING_MÅ_FERDIGSTILLES ||
+        taAvVentStatus === ETaAvVentStatus.MÅ_NULSTILLE_VEDTAK;
+
     return (
         <ModalWrapper
             tittel={tittel}
             visModal={visTaAvVentModal}
-            onClose={() => settVisTaAvVentModal(false)}
+            onClose={() => lukkModal()}
             aksjonsknapper={{
                 hovedKnapp: {
                     onClick: () => taAvVent(),
@@ -75,7 +73,7 @@ export const TaAvVentModal: FC<{ behandlingId: string }> = ({ behandlingId }) =>
                         taAvVentStatus === ETaAvVentStatus.ANNEN_BEHANDLING_MÅ_FERDIGSTILLES,
                 },
                 lukkKnapp: {
-                    onClick: () => settVisTaAvVentModal(false),
+                    onClick: () => lukkModal(),
                     tekst: 'Avbryt',
                 },
             }}

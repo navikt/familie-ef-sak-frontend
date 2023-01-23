@@ -4,7 +4,7 @@ import { ClientRequest, IncomingMessage } from 'http';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import { v4 as uuidv4 } from 'uuid';
 import { oboConfig } from './config';
-import { logError, logInfo } from '@navikt/familie-logging';
+import { logError, logInfo, stdoutLogger } from '@navikt/familie-logging';
 
 const restream = (proxyReq: ClientRequest, req: IncomingMessage) => {
     const requestBody = (req as Request).body;
@@ -24,6 +24,9 @@ export const doProxy = (
     return createProxyMiddleware(context, {
         changeOrigin: true,
         logLevel: 'info',
+        logProvider: () => {
+            return stdoutLogger;
+        },
         onProxyReq: restream,
         pathRewrite: (path: string) => {
             const newPath = path.replace(context, '');

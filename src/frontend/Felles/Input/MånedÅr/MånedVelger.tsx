@@ -1,12 +1,15 @@
 import React from 'react';
 import { FamilieSelect } from '@navikt/familie-form-elements';
 
+export type FamilieSelectSize = 'small' | 'medium';
+
 interface MånedProps {
     måned: string | undefined;
     settMåned: (måned: string) => void;
     lesevisning?: boolean;
     disabled?: boolean;
     className?: string;
+    size?: FamilieSelectSize;
 }
 
 const månedValg = [
@@ -30,6 +33,7 @@ const MånedVelger: React.FC<MånedProps> = ({
     lesevisning = false,
     disabled = false,
     className,
+    size,
 }) => {
     return (
         <FamilieSelect
@@ -44,6 +48,7 @@ const MånedVelger: React.FC<MånedProps> = ({
             disabled={disabled}
             label={'Måned'}
             hideLabel
+            size={size}
         >
             <option value="">Måned</option>
             {månedValg.map((mnd) => (
