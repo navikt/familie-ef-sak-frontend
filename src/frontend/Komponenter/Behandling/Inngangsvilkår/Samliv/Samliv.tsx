@@ -1,10 +1,9 @@
 import React from 'react';
 import { InngangsvilkårType } from '../vilkår';
-import ToKolonnerLayout from '../../../../Felles/Visningskomponenter/ToKolonnerLayout';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import { VilkårPropsMedBehandlingsstatus } from '../vilkårprops';
 import SamlivInfo from './SamlivInfo';
-import { Vilkårstittel } from '../Vilkårstittel';
+import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';
 
 export const Samliv: React.FC<VilkårPropsMedBehandlingsstatus> = ({
     vurderinger,
@@ -22,22 +21,15 @@ export const Samliv: React.FC<VilkårPropsMedBehandlingsstatus> = ({
         return <div>Mangler vurdering for samliv</div>;
     }
     return (
-        <ToKolonnerLayout>
+        <Vilkårpanel paragrafTittel="§15-4" tittel="Samliv" vilkårsresultat={vurdering.resultat}>
             {{
                 venstre: (
-                    <>
-                        <Vilkårstittel
-                            paragrafTittel="§15-4"
-                            tittel="Samliv"
-                            vilkårsresultat={vurdering.resultat}
-                        />
-                        <SamlivInfo
-                            behandlingId={behandlingId}
-                            grunnlag={grunnlag}
-                            skalViseSøknadsdata={skalViseSøknadsdata}
-                            behandlingsstatus={behandlingsstatus}
-                        />
-                    </>
+                    <SamlivInfo
+                        behandlingId={behandlingId}
+                        grunnlag={grunnlag}
+                        skalViseSøknadsdata={skalViseSøknadsdata}
+                        behandlingsstatus={behandlingsstatus}
+                    />
                 ),
                 høyre: (
                     <VisEllerEndreVurdering
@@ -49,6 +41,6 @@ export const Samliv: React.FC<VilkårPropsMedBehandlingsstatus> = ({
                     />
                 ),
             }}
-        </ToKolonnerLayout>
+        </Vilkårpanel>
     );
 };
