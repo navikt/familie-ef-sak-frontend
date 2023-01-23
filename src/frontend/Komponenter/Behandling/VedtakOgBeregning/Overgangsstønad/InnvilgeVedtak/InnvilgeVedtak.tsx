@@ -10,7 +10,6 @@ import {
     IInntektsperiode,
     IInnvilgeVedtakForOvergangsstønad,
     IVedtakForOvergangsstønad,
-    IVedtakshistorikk,
     IVedtaksperiode,
     IVedtakType,
 } from '../../../../../App/typer/vedtak';
@@ -48,6 +47,7 @@ import { IVilkår } from '../../../Inngangsvilkår/vilkår';
 import { useToggles } from '../../../../../App/context/TogglesContext';
 import { ToggleName } from '../../../../../App/context/toggles';
 import { utledYngsteBarnFødselsdato } from './fødselsdatoUtils';
+import { oppdaterVedtakMedEndretKey } from './utils';
 
 export type InnvilgeVedtakForm = Omit<
     Omit<IInnvilgeVedtakForOvergangsstønad, 'resultatType'>,
@@ -69,7 +69,7 @@ export const InnvilgeVedtak: React.FC<{
 }> = ({ behandling, lagretVedtak, vilkår }) => {
     const lagretInnvilgetVedtak =
         lagretVedtak?._type === IVedtakType.InnvilgelseOvergangsstønad
-            ? (lagretVedtak as IInnvilgeVedtakForOvergangsstønad)
+            ? oppdaterVedtakMedEndretKey(lagretVedtak as IInnvilgeVedtakForOvergangsstønad)
             : undefined;
 
     const { toggles } = useToggles();
@@ -82,7 +82,7 @@ export const InnvilgeVedtak: React.FC<{
     const [beregnetStønad, settBeregnetStønad] = useState<Ressurs<IBeløpsperiode[]>>(
         byggTomRessurs()
     );
-    const [vedtakshistorikk, settVedtakshistorikk] = useState<IVedtakshistorikk>();
+    const [vedtakshistorikk, settVedtakshistorikk] = useState<IInnvilgeVedtakForOvergangsstønad>();
     const [revurderesFra, settRevurderesFra] = useState(
         behandling.forrigeBehandlingId && lagretInnvilgetVedtak?.perioder.length
             ? lagretInnvilgetVedtak.perioder[0].årMånedFra
@@ -130,24 +130,14 @@ export const InnvilgeVedtak: React.FC<{
             return;
         }
 
-        const perioderMedEndretKey = vedtakshistorikk.perioder
-            .map((periode) => {
-                return { ...periode, endretKey: uuidv4() };
-            })
-            .reduce(fyllHullMedOpphør, [] as IVedtaksperiode[]);
-
         vedtaksperiodeState.setValue([
             ...revurderFraInitPeriode(vedtakshistorikk, revurderesFra, tomVedtaksperiodeRad),
-            ...perioderMedEndretKey,
+            ...vedtakshistorikk.perioder.reduce(fyllHullMedOpphør, [] as IVedtaksperiode[]),
         ]);
-
-        const inntekterMedEndretKey = vedtakshistorikk.inntekter.map((inntekt) => {
-            return { ...inntekt, endretKey: uuidv4() };
-        });
 
         inntektsperiodeState.setValue([
             ...revurderFraInitPeriode(vedtakshistorikk, revurderesFra, tomInntektsperiodeRad),
-            ...inntekterMedEndretKey,
+            ...vedtakshistorikk.inntekter,
         ]);
 
         formState.setErrors((prevState) => ({ ...prevState, perioder: [], inntekter: [] }));
@@ -217,13 +207,13 @@ export const InnvilgeVedtak: React.FC<{
 
     const hentVedtakshistorikk = useCallback(
         (revurderesFra: string) => {
-            axiosRequest<IVedtakshistorikk, void>({
+            axiosRequest<IInnvilgeVedtakForOvergangsstønad, void>({
                 method: 'GET',
                 url: `/familie-ef-sak/api/vedtak/fagsak/${behandling.fagsakId}/historikk/${revurderesFra}`,
-            }).then((res: RessursSuksess<IVedtakshistorikk> | RessursFeilet) => {
+            }).then((res: RessursSuksess<IInnvilgeVedtakForOvergangsstønad> | RessursFeilet) => {
                 if (res.status === RessursStatus.SUKSESS) {
                     settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
-                    settVedtakshistorikk(res.data);
+                    settVedtakshistorikk(oppdaterVedtakMedEndretKey(res.data));
                 } else {
                     settRevurderesFraOgMedFeilmelding(res.frontendFeilmelding);
                 }
