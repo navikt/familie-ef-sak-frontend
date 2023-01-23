@@ -9,7 +9,7 @@ import {
 } from './BrevTyper';
 import { v4 as uuidv4 } from 'uuid';
 import { Dispatch, SetStateAction } from 'react';
-import { IValgfeltStore } from '../../../App/hooks/useVerdierForBrev';
+import { FlettefeltStore, ValgfeltStore } from '../../../App/hooks/useVerdierForBrev';
 
 const lagTomtAvsnitt = (): AvsnittMedId => ({
     deloverskrift: '',
@@ -66,7 +66,7 @@ const hentVerdiFraMellomlagerEllerNull = (
 export const initFlettefelterMedVerdi = (
     brevStruktur: BrevStruktur,
     flettefeltFraMellomlager: FlettefeltMedVerdi[] | undefined,
-    flettefeltStore: { [flettefeltNavn: string]: string }
+    flettefeltStore: FlettefeltStore
 ): FlettefeltMedVerdi[] =>
     brevStruktur.flettefelter.flettefeltReferanse.map((flettefeltReferanse) => ({
         _ref: flettefeltReferanse._id,
@@ -78,7 +78,7 @@ export const initFlettefelterMedVerdi = (
 export const initValgteFelt = (
     valgteFeltFraMellomlager: ValgtFelt | undefined,
     brevStruktur: BrevStruktur,
-    valgfeltStore: IValgfeltStore
+    valgfeltStore: ValgfeltStore
 ): ValgtFelt => {
     const valgfeltMellomlager = Object.entries(valgteFeltFraMellomlager || {}).reduce(
         (acc, [valgfeltApiNavn, mulighet]) => {

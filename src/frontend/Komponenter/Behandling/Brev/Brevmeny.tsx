@@ -52,7 +52,7 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
         byggTomRessurs()
     );
     const { mellomlagretBrev } = useMellomlagringBrev(behandlingId);
-    const { flettefeltStore, valgfeltStore } = useVerdierForBrev(beløpsperioder);
+    const { flettefeltStore, valgfeltStore, delmalStore } = useVerdierForBrev(beløpsperioder);
     const { toggles } = useToggles();
 
     useEffect(() => {
@@ -165,6 +165,7 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
                                 }
                                 flettefeltStore={flettefeltStore}
                                 valgfeltStore={valgfeltStore}
+                                delmalStore={delmalStore}
                                 stønadstype={behandling.stønadstype}
                             />
                         ) : null

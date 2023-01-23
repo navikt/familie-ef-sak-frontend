@@ -25,20 +25,27 @@ enum EValg {
     hjemlerUtenSamordning = 'hjemmelInnvilgetTilbakeITidM1513',
 }
 
-type IFlettefeltStore = { [navn: string]: string };
+enum EDelmaler {
+    avslutningHjemler = 'avslutning',
+}
 
-export type IValgfeltStore = {
+export type FlettefeltStore = { [navn: string]: string };
+export type DelmalStore = string[];
+
+export type ValgfeltStore = {
     [valgfelt: string]: string;
 };
 
 export const useVerdierForBrev = (
     beløpsperioder: Ressurs<IBeløpsperiode[] | IBeregningsperiodeBarnetilsyn[] | undefined>
 ): {
-    flettefeltStore: IFlettefeltStore;
-    valgfeltStore: IValgfeltStore;
+    flettefeltStore: FlettefeltStore;
+    valgfeltStore: ValgfeltStore;
+    delmalStore: DelmalStore;
 } => {
-    const [flettefeltStore, settFlettefeltStore] = useState<IFlettefeltStore>({});
-    const [valgfeltStore, settValgfeltStore] = useState<IValgfeltStore>({});
+    const [flettefeltStore, settFlettefeltStore] = useState<FlettefeltStore>({});
+    const [valgfeltStore, settValgfeltStore] = useState<ValgfeltStore>({});
+    const [delmalStore, settDelmalStore] = useState<DelmalStore>([]);
     const { toggles } = useToggles();
 
     useEffect(() => {
@@ -51,13 +58,16 @@ export const useVerdierForBrev = (
             const tilDato = formaterIsoDato(perioder[perioder.length - 1].periode.tildato);
             const fraDato = formaterIsoDato(perioder[0].periode.fradato);
 
-            erOvergangstønad(perioder) &&
-                settValgfeltStore({
-                    ...valgfeltStore,
+            if (erOvergangstønad(perioder)) {
+                settValgfeltStore((prevState) => ({
+                    ...prevState,
                     [EBehandlingValgfelt.avslutningHjemmel]: harSamordningsfradrag(perioder)
                         ? EValg.hjemlerMedSamordning
                         : EValg.hjemlerUtenSamordning,
-                });
+                }));
+
+                settDelmalStore((prevState) => [...prevState, EDelmaler.avslutningHjemler]);
+            }
 
             const toggledeVedtaksdatoFlettefelter: { [flettefeltNavn: string]: string } = toggles[
                 ToggleName.automatiskeVedtaksdatoerBrev
@@ -82,7 +92,7 @@ export const useVerdierForBrev = (
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [beløpsperioder, toggles]);
 
-    return { flettefeltStore, valgfeltStore };
+    return { flettefeltStore, valgfeltStore, delmalStore };
 };
 
 const harSamordningsfradrag = (beløpsperioder: IBeløpsperiode[]): boolean => {

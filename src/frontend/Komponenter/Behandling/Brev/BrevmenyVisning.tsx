@@ -29,7 +29,7 @@ import { Alert, Heading, Panel } from '@navikt/ds-react';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { delmalTilUtregningstabellOS } from './UtregningstabellOvergangsstønad';
 import { delmalTilUtregningstabellBT } from './UtregningstabellBarnetilsyn';
-import { IValgfeltStore } from '../../../App/hooks/useVerdierForBrev';
+import { DelmalStore, FlettefeltStore, ValgfeltStore } from '../../../App/hooks/useVerdierForBrev';
 
 const BrevFelter = styled.div`
     display: flex;
@@ -52,9 +52,10 @@ export interface BrevmenyVisningProps extends BrevmenyProps {
     beløpsperioder?: IBeløpsperiode[] | IBeregningsperiodeBarnetilsyn[];
     mellomlagretBrevVerdier?: string;
     brevMal: string;
-    flettefeltStore: { [navn: string]: string };
-    valgfeltStore: IValgfeltStore;
+    flettefeltStore: FlettefeltStore;
+    valgfeltStore: ValgfeltStore;
     stønadstype: Stønadstype;
+    delmalStore: DelmalStore;
 }
 
 const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
@@ -69,6 +70,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     flettefeltStore,
     stønadstype,
     valgfeltStore,
+    delmalStore,
 }) => {
     const { axiosRequest } = useApp();
     const { mellomlagreSanitybrev } = useMellomlagringBrev(behandlingId);
@@ -87,6 +89,13 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
         settValgteFelt(initValgteFelt(valgteFeltFraMellomlager, brevStruktur, valgfeltStore));
         if (valgteDelmalerFraMellomlager) {
             settValgteDelmaler(valgteDelmalerFraMellomlager);
+        }
+
+        if (delmalStore.length > 0) {
+            settValgteDelmaler((prevState) => ({
+                ...prevState,
+                ...delmalStore.reduce((acc, delmal) => ({ ...acc, [delmal]: true }), {}),
+            }));
         }
         // eslint-disable-next-line
     }, [brevStruktur, flettefeltStore, mellomlagretBrevVerdier]);
