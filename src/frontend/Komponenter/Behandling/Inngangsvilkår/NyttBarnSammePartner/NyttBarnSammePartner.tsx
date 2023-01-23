@@ -1,10 +1,9 @@
 import React from 'react';
 import { InngangsvilkårType } from '../vilkår';
-import ToKolonnerLayout from '../../../../Felles/Visningskomponenter/ToKolonnerLayout';
 import NyttBarnSammePartnerInfo from './NyttBarnSammePartnerInfo';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import { VilkårProps } from '../vilkårprops';
-import { Vilkårstittel } from '../Vilkårstittel';
+import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';
 
 export const NyttBarnSammePartner: React.FC<VilkårProps> = ({
     vurderinger,
@@ -22,20 +21,17 @@ export const NyttBarnSammePartner: React.FC<VilkårProps> = ({
         return <div>Mangler vurdering for NyttBarnSammePartner</div>;
     }
     return (
-        <ToKolonnerLayout>
+        <Vilkårpanel
+            paragrafTittel="§15-4"
+            tittel="Nytt barn med samme partner"
+            vilkårsresultat={vurdering.resultat}
+        >
             {{
                 venstre: (
-                    <>
-                        <Vilkårstittel
-                            paragrafTittel="§15-4"
-                            tittel="Nytt barn med samme partner"
-                            vilkårsresultat={vurdering.resultat}
-                        />
-                        <NyttBarnSammePartnerInfo
-                            barnMedSamvær={barnMedSamvær}
-                            tidligereVedtaksperioder={grunnlag.tidligereVedtaksperioder}
-                        />
-                    </>
+                    <NyttBarnSammePartnerInfo
+                        barnMedSamvær={barnMedSamvær}
+                        tidligereVedtaksperioder={grunnlag.tidligereVedtaksperioder}
+                    />
                 ),
                 høyre: (
                     <VisEllerEndreVurdering
@@ -47,6 +43,6 @@ export const NyttBarnSammePartner: React.FC<VilkårProps> = ({
                     />
                 ),
             }}
-        </ToKolonnerLayout>
+        </Vilkårpanel>
     );
 };
