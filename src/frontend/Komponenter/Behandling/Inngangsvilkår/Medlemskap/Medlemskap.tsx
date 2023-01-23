@@ -1,10 +1,9 @@
 import React from 'react';
 import { InngangsvilkårType } from '../vilkår';
-import ToKolonnerLayout from '../../../../Felles/Visningskomponenter/ToKolonnerLayout';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import { VilkårProps } from '../vilkårprops';
 import MedlemskapInfo from './MedlemskapInfo';
-import { Vilkårstittel } from '../Vilkårstittel';
+import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';
 
 export const Medlemskap: React.FC<VilkårProps> = ({
     vurderinger,
@@ -22,15 +21,14 @@ export const Medlemskap: React.FC<VilkårProps> = ({
         return <div>Mangler vurdering for forutgående medlemskap</div>;
     }
     return (
-        <ToKolonnerLayout>
+        <Vilkårpanel
+            paragrafTittel="§15-2"
+            tittel="Forutgående medlemskap"
+            vilkårsresultat={vurdering.resultat}
+        >
             {{
                 venstre: (
                     <>
-                        <Vilkårstittel
-                            paragrafTittel="§15-2"
-                            tittel="Forutgående medlemskap"
-                            vilkårsresultat={vurdering.resultat}
-                        />
                         <MedlemskapInfo
                             medlemskap={grunnlag.medlemskap}
                             skalViseSøknadsdata={skalViseSøknadsdata}
@@ -47,6 +45,6 @@ export const Medlemskap: React.FC<VilkårProps> = ({
                     />
                 ),
             }}
-        </ToKolonnerLayout>
+        </Vilkårpanel>
     );
 };
