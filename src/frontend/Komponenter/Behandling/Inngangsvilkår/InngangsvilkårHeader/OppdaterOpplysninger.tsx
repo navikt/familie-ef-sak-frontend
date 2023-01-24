@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Refresh } from '@navikt/ds-icons';
 import { Button, HelpText } from '@navikt/ds-react';
-import { DetailSmall, SmallTextLabel } from '../../../../Felles/Visningskomponenter/Tekster';
+import { DetailSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 import { ATextSubtle } from '@navikt/ds-tokens/dist/tokens';
 
 const FlexWrapper = styled.div`
@@ -21,10 +21,6 @@ const Container = styled.div`
 const Oppdateringstekst = styled(DetailSmall)`
     color: ${ATextSubtle};
     padding-right: 0.25rem;
-`;
-
-const KnappTekst = styled(SmallTextLabel)`
-    padding-left: 0rem;
 `;
 
 type Props = {
@@ -63,8 +59,9 @@ export const OppdaterOpplysninger: React.FC<Props> = ({
                     loading={nyGrunnlagsdataHentes}
                     variant={'tertiary'}
                     size={'small'}
+                    icon={<Refresh role="img" focusable="false" />}
                 >
-                    <Refresh role="img" focusable="false" /> <KnappTekst>Oppdater</KnappTekst>
+                    Oppdater
                 </Button>
                 <HelpText>
                     Dersom søker har fått et nytt barn etter å ha sendt inn denne søknaden vil ikke
