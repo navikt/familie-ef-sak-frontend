@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { formaterIsoDato } from '../utils/formatter';
-import { Ressurs, RessursStatus } from '../typer/ressurs';
 import { IBeløpsperiode, IBeregningsperiodeBarnetilsyn } from '../typer/vedtak';
 import { useToggles } from '../context/TogglesContext';
 import { ToggleName } from '../context/toggles';
@@ -37,7 +36,7 @@ export type ValgfeltStore = {
 };
 
 export const useVerdierForBrev = (
-    beløpsperioder: Ressurs<IBeløpsperiode[] | IBeregningsperiodeBarnetilsyn[] | undefined>
+    beløpsperioder: IBeløpsperiode[] | IBeregningsperiodeBarnetilsyn[] | undefined
 ): {
     flettefeltStore: FlettefeltStore;
     valgfeltStore: ValgfeltStore;
@@ -49,22 +48,19 @@ export const useVerdierForBrev = (
     const { toggles } = useToggles();
 
     useEffect(() => {
-        if (
-            beløpsperioder.status === RessursStatus.SUKSESS &&
-            beløpsperioder.data &&
-            beløpsperioder.data.length > 0
-        ) {
-            const perioder = beløpsperioder.data;
-            const tilDato = formaterIsoDato(perioder[perioder.length - 1].periode.tildato);
-            const fraDato = formaterIsoDato(perioder[0].periode.fradato);
+        if (beløpsperioder && beløpsperioder.length > 0) {
+            const tilDato = formaterIsoDato(
+                beløpsperioder[beløpsperioder.length - 1].periode.tildato
+            );
+            const fraDato = formaterIsoDato(beløpsperioder[0].periode.fradato);
 
             if (
-                innholderBeløpsperioderForOvergangsstønad(perioder) &&
+                innholderBeløpsperioderForOvergangsstønad(beløpsperioder) &&
                 toggles[ToggleName.automatiskeHjemlerBrev]
             ) {
                 settValgfeltStore((prevState) => ({
                     ...prevState,
-                    [EBehandlingValgfelt.avslutningHjemmel]: harSamordningsfradrag(perioder)
+                    [EBehandlingValgfelt.avslutningHjemmel]: harSamordningsfradrag(beløpsperioder)
                         ? EValg.hjemlerMedSamordning
                         : EValg.hjemlerUtenSamordning,
                 }));
