@@ -10,7 +10,6 @@ import {
     IMellomlagretBrevResponse,
     useMellomlagringBrev,
 } from '../../../App/hooks/useMellomlagringBrev';
-import { useVerdierForBrev } from '../../../App/hooks/useVerdierForBrev';
 import FritekstBrev from './FritekstBrev';
 import { useToggles } from '../../../App/context/TogglesContext';
 import { ToggleName } from '../../../App/context/toggles';
@@ -52,7 +51,6 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
         byggTomRessurs()
     );
     const { mellomlagretBrev } = useMellomlagringBrev(behandlingId);
-    const { flettefeltStore, valgfeltStore, delmalStore } = useVerdierForBrev(beløpsperioder);
     const { toggles } = useToggles();
 
     useEffect(() => {
@@ -163,9 +161,6 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
                                 mellomlagretBrevVerdier={
                                     (mellomlagretBrev as IMellomlagretBrevResponse)?.brevverdier
                                 }
-                                flettefeltStore={flettefeltStore}
-                                valgfeltStore={valgfeltStore}
-                                delmalStore={delmalStore}
                                 stønadstype={behandling.stønadstype}
                             />
                         ) : null

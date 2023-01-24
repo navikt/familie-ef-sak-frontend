@@ -29,7 +29,7 @@ import { Alert, Heading, Panel } from '@navikt/ds-react';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { delmalTilUtregningstabellOS } from './UtregningstabellOvergangsstønad';
 import { delmalTilUtregningstabellBT } from './UtregningstabellBarnetilsyn';
-import { DelmalStore, FlettefeltStore, ValgfeltStore } from '../../../App/hooks/useVerdierForBrev';
+import { useVerdierForBrev } from '../../../App/hooks/useVerdierForBrev';
 
 const BrevFelter = styled.div`
     display: flex;
@@ -52,10 +52,7 @@ export interface BrevmenyVisningProps extends BrevmenyProps {
     beløpsperioder?: IBeløpsperiode[] | IBeregningsperiodeBarnetilsyn[];
     mellomlagretBrevVerdier?: string;
     brevMal: string;
-    flettefeltStore: FlettefeltStore;
-    valgfeltStore: ValgfeltStore;
     stønadstype: Stønadstype;
-    delmalStore: DelmalStore;
 }
 
 const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
@@ -67,15 +64,13 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     beløpsperioder,
     mellomlagretBrevVerdier,
     brevMal,
-    flettefeltStore,
     stønadstype,
-    valgfeltStore,
-    delmalStore,
 }) => {
     const { axiosRequest } = useApp();
     const { mellomlagreSanitybrev } = useMellomlagringBrev(behandlingId);
     const [alleFlettefelter, settAlleFlettefelter] = useState<FlettefeltMedVerdi[]>([]);
     const [brevmalFeil, settBrevmalFeil] = useState('');
+    const { flettefeltStore, valgfeltStore, delmalStore } = useVerdierForBrev(beløpsperioder);
 
     useEffect(() => {
         const parsetMellomlagretBrev =
