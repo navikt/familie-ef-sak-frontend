@@ -5,6 +5,7 @@ import { VilkårProps } from '../vilkårprops';
 import MedlemskapInfo from './MedlemskapInfo';
 import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';
 import { VilkårpanelInnhold } from '../../Vilkårpanel/VilkårpanelInnhold';
+import { EInngangsvilkår } from '../../../../App/context/EkspanderbareVilkårpanelContext';
 
 export const Medlemskap: React.FC<VilkårProps> = ({
     vurderinger,
@@ -26,6 +27,7 @@ export const Medlemskap: React.FC<VilkårProps> = ({
             paragrafTittel="§15-2"
             tittel="Forutgående medlemskap"
             vilkårsresultat={vurdering.resultat}
+            vilkår={EInngangsvilkår.MEDLEMSKAP}
             innhold={
                 <VilkårpanelInnhold>
                     {{

@@ -15,6 +15,7 @@ import { formaterIsoDatoTidMedSekunder } from '../../../App/utils/formatter';
 import { InngangsvilkårHeader } from './InngangsvilkårHeader/InngangsvilkårHeader';
 import { useApp } from '../../../App/context/AppContext';
 import { FyllUtVilkårKnapp } from './FyllUtVilkårKnapp';
+import { EkspanderbareVilkårpanelContext } from '../../../App/context/EkspanderbareVilkårpanelContext';
 
 interface Props {
     behandlingId: string;
@@ -60,83 +61,85 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                             hentVilkår={hentVilkår}
                             behandlingErRedigerbar={behandlingErRedigerbar}
                         />
-                        {erSaksbehandler && (
-                            <InngangsvilkårHeader
-                                oppdatertDato={grunnlagsdataInnhentetDato}
-                                behandlingErRedigerbar={behandlingErRedigerbar}
-                                oppdaterGrunnlagsdata={oppdaterGrunnlagsdataOgHentVilkår}
-                                behandlingId={behandlingId}
-                                behandling={behandling}
-                                gjenbrukInngangsvilkår={gjenbrukInngangsvilkår}
+                        <EkspanderbareVilkårpanelContext>
+                            {erSaksbehandler && (
+                                <InngangsvilkårHeader
+                                    oppdatertDato={grunnlagsdataInnhentetDato}
+                                    behandlingErRedigerbar={behandlingErRedigerbar}
+                                    oppdaterGrunnlagsdata={oppdaterGrunnlagsdataOgHentVilkår}
+                                    behandlingId={behandlingId}
+                                    behandling={behandling}
+                                    gjenbrukInngangsvilkår={gjenbrukInngangsvilkår}
+                                />
+                            )}
+                            <Medlemskap
+                                nullstillVurdering={nullstillVurdering}
+                                feilmeldinger={feilmeldinger}
+                                grunnlag={vilkår.grunnlag}
+                                lagreVurdering={lagreVurdering}
+                                vurderinger={vilkår.vurderinger}
+                                ikkeVurderVilkår={ikkeVurderVilkår}
+                                skalViseSøknadsdata={skalViseSøknadsdata}
                             />
-                        )}
-                        <Medlemskap
-                            nullstillVurdering={nullstillVurdering}
-                            feilmeldinger={feilmeldinger}
-                            grunnlag={vilkår.grunnlag}
-                            lagreVurdering={lagreVurdering}
-                            vurderinger={vilkår.vurderinger}
-                            ikkeVurderVilkår={ikkeVurderVilkår}
-                            skalViseSøknadsdata={skalViseSøknadsdata}
-                        />
-                        <Opphold
-                            nullstillVurdering={nullstillVurdering}
-                            feilmeldinger={feilmeldinger}
-                            grunnlag={vilkår.grunnlag}
-                            lagreVurdering={lagreVurdering}
-                            vurderinger={vilkår.vurderinger}
-                            ikkeVurderVilkår={ikkeVurderVilkår}
-                            skalViseSøknadsdata={skalViseSøknadsdata}
-                        />
-                        <MorEllerFar
-                            nullstillVurdering={nullstillVurdering}
-                            feilmeldinger={feilmeldinger}
-                            grunnlag={vilkår.grunnlag}
-                            lagreVurdering={lagreVurdering}
-                            vurderinger={vilkår.vurderinger}
-                            ikkeVurderVilkår={ikkeVurderVilkår}
-                            skalViseSøknadsdata={skalViseSøknadsdata}
-                        />
-                        <NyttBarnSammePartner
-                            nullstillVurdering={nullstillVurdering}
-                            feilmeldinger={feilmeldinger}
-                            grunnlag={vilkår.grunnlag}
-                            lagreVurdering={lagreVurdering}
-                            vurderinger={vilkår.vurderinger}
-                            ikkeVurderVilkår={ikkeVurderVilkår}
-                            skalViseSøknadsdata={skalViseSøknadsdata}
-                        />
-                        <Sivilstand
-                            nullstillVurdering={nullstillVurdering}
-                            feilmeldinger={feilmeldinger}
-                            grunnlag={vilkår.grunnlag}
-                            lagreVurdering={lagreVurdering}
-                            vurderinger={vilkår.vurderinger}
-                            ikkeVurderVilkår={ikkeVurderVilkår}
-                            skalViseSøknadsdata={skalViseSøknadsdata}
-                        />
-                        <Samliv
-                            nullstillVurdering={nullstillVurdering}
-                            feilmeldinger={feilmeldinger}
-                            grunnlag={vilkår.grunnlag}
-                            lagreVurdering={lagreVurdering}
-                            vurderinger={vilkår.vurderinger}
-                            ikkeVurderVilkår={ikkeVurderVilkår}
-                            skalViseSøknadsdata={skalViseSøknadsdata}
-                            behandlingId={behandlingId}
-                            behandlingsstatus={behandling.status}
-                        />
-                        <Aleneomsorg
-                            nullstillVurdering={nullstillVurdering}
-                            feilmeldinger={feilmeldinger}
-                            grunnlag={vilkår.grunnlag}
-                            lagreVurdering={lagreVurdering}
-                            vurderinger={vilkår.vurderinger}
-                            ikkeVurderVilkår={ikkeVurderVilkår}
-                            skalViseSøknadsdata={skalViseSøknadsdata}
-                            stønadstype={behandling.stønadstype}
-                            behandlingId={behandlingId}
-                        />
+                            <Opphold
+                                nullstillVurdering={nullstillVurdering}
+                                feilmeldinger={feilmeldinger}
+                                grunnlag={vilkår.grunnlag}
+                                lagreVurdering={lagreVurdering}
+                                vurderinger={vilkår.vurderinger}
+                                ikkeVurderVilkår={ikkeVurderVilkår}
+                                skalViseSøknadsdata={skalViseSøknadsdata}
+                            />
+                            <MorEllerFar
+                                nullstillVurdering={nullstillVurdering}
+                                feilmeldinger={feilmeldinger}
+                                grunnlag={vilkår.grunnlag}
+                                lagreVurdering={lagreVurdering}
+                                vurderinger={vilkår.vurderinger}
+                                ikkeVurderVilkår={ikkeVurderVilkår}
+                                skalViseSøknadsdata={skalViseSøknadsdata}
+                            />
+                            <NyttBarnSammePartner
+                                nullstillVurdering={nullstillVurdering}
+                                feilmeldinger={feilmeldinger}
+                                grunnlag={vilkår.grunnlag}
+                                lagreVurdering={lagreVurdering}
+                                vurderinger={vilkår.vurderinger}
+                                ikkeVurderVilkår={ikkeVurderVilkår}
+                                skalViseSøknadsdata={skalViseSøknadsdata}
+                            />
+                            <Sivilstand
+                                nullstillVurdering={nullstillVurdering}
+                                feilmeldinger={feilmeldinger}
+                                grunnlag={vilkår.grunnlag}
+                                lagreVurdering={lagreVurdering}
+                                vurderinger={vilkår.vurderinger}
+                                ikkeVurderVilkår={ikkeVurderVilkår}
+                                skalViseSøknadsdata={skalViseSøknadsdata}
+                            />
+                            <Samliv
+                                nullstillVurdering={nullstillVurdering}
+                                feilmeldinger={feilmeldinger}
+                                grunnlag={vilkår.grunnlag}
+                                lagreVurdering={lagreVurdering}
+                                vurderinger={vilkår.vurderinger}
+                                ikkeVurderVilkår={ikkeVurderVilkår}
+                                skalViseSøknadsdata={skalViseSøknadsdata}
+                                behandlingId={behandlingId}
+                                behandlingsstatus={behandling.status}
+                            />
+                            <Aleneomsorg
+                                nullstillVurdering={nullstillVurdering}
+                                feilmeldinger={feilmeldinger}
+                                grunnlag={vilkår.grunnlag}
+                                lagreVurdering={lagreVurdering}
+                                vurderinger={vilkår.vurderinger}
+                                ikkeVurderVilkår={ikkeVurderVilkår}
+                                skalViseSøknadsdata={skalViseSøknadsdata}
+                                stønadstype={behandling.stønadstype}
+                                behandlingId={behandlingId}
+                            />
+                        </EkspanderbareVilkårpanelContext>
                     </>
                 );
             }}

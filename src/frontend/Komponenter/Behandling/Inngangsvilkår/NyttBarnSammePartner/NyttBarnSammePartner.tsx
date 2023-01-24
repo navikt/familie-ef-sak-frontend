@@ -5,6 +5,7 @@ import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import { VilkårProps } from '../vilkårprops';
 import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';
 import { VilkårpanelInnhold } from '../../Vilkårpanel/VilkårpanelInnhold';
+import { EInngangsvilkår } from '../../../../App/context/EkspanderbareVilkårpanelContext';
 
 export const NyttBarnSammePartner: React.FC<VilkårProps> = ({
     vurderinger,
@@ -26,6 +27,7 @@ export const NyttBarnSammePartner: React.FC<VilkårProps> = ({
             paragrafTittel="§15-4"
             tittel="Nytt barn med samme partner"
             vilkårsresultat={vurdering.resultat}
+            vilkår={EInngangsvilkår.NYTT_BARN_SAMME_PARTNER}
             innhold={
                 <VilkårpanelInnhold>
                     {{

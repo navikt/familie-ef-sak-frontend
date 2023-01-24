@@ -11,6 +11,7 @@ import { IBarnMedLøpendeStønad } from './typer';
 import DokumentasjonSendtInn from '../DokumentasjonSendtInn';
 import { VilkårpanelInnhold } from '../../Vilkårpanel/VilkårpanelInnhold';
 import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';
+import { EInngangsvilkår } from '../../../../App/context/EkspanderbareVilkårpanelContext';
 
 export const Aleneomsorg: React.FC<VilkårPropsMedStønadstype> = ({
     vurderinger,
@@ -49,6 +50,7 @@ export const Aleneomsorg: React.FC<VilkårPropsMedStønadstype> = ({
             paragrafTittel="§15-4"
             tittel="Aleneomsorg"
             vilkårsresultat={utleddResultat}
+            vilkår={EInngangsvilkår.ALENEOMSORG}
             innhold={
                 <>
                     {grunnlag.barnMedSamvær.map((barn, indeks) => {

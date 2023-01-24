@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components';
 import { Vilkårsresultat } from '../Inngangsvilkår/vilkår';
 import { Button, Heading } from '@navikt/ds-react';
@@ -6,6 +6,11 @@ import { Collapse, Expand } from '@navikt/ds-icons';
 import { VilkårsresultatIkon } from '../../../Felles/Ikoner/VilkårsresultatIkon';
 import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 import { ATextSubtle } from '@navikt/ds-tokens/dist/tokens';
+import {
+    EInngangsvilkår,
+    EkspandertTilstand,
+    useEkspanderbareVilkårpanelContext,
+} from '../../../App/context/EkspanderbareVilkårpanelContext';
 
 const VilkårpanelBase = styled.div`
     margin: 2rem;
@@ -36,10 +41,17 @@ interface Props {
     paragrafTittel?: string;
     vilkårsresultat: Vilkårsresultat;
     innhold: JSX.Element;
+    vilkår: EInngangsvilkår;
 }
 
-export const Vilkårpanel: FC<Props> = ({ tittel, paragrafTittel, vilkårsresultat, innhold }) => {
-    const [ekspandert, settEkspandert] = useState(true);
+export const Vilkårpanel: FC<Props> = ({
+    tittel,
+    paragrafTittel,
+    vilkårsresultat,
+    innhold,
+    vilkår,
+}) => {
+    const { ekspanderteVilkår, toggleEkspandertTilstand } = useEkspanderbareVilkårpanelContext();
 
     return (
         <VilkårpanelBase>
@@ -59,11 +71,17 @@ export const Vilkårpanel: FC<Props> = ({ tittel, paragrafTittel, vilkårsresult
                     <Button
                         size="medium"
                         variant="tertiary"
-                        icon={ekspandert ? <Collapse /> : <Expand />}
-                        onClick={() => settEkspandert(!ekspandert)}
+                        icon={
+                            ekspanderteVilkår[vilkår] === EkspandertTilstand.EKSPANDERT ? (
+                                <Expand />
+                            ) : (
+                                <Collapse />
+                            )
+                        }
+                        onClick={() => toggleEkspandertTilstand(vilkår)}
                     />
                 </VilkårpanelTittel>
-                {ekspandert && innhold}
+                {ekspanderteVilkår[vilkår] === EkspandertTilstand.EKSPANDERT && innhold}
             </>
         </VilkårpanelBase>
     );
