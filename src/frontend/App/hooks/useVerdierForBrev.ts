@@ -89,7 +89,9 @@ export const useVerdierForBrev = (
 
 const harSamordningsfradrag = (beløpsperioder: IBeløpsperiode[]): boolean => {
     return beløpsperioder.some(
-        (beløpsperiode) => beløpsperiode.beregningsgrunnlag.samordningsfradrag
+        (beløpsperiode) =>
+            beløpsperiode.beregningsgrunnlag.samordningsfradrag &&
+            beløpsperiode.beregningsgrunnlag.samordningsfradrag > 0
     );
 };
 
