@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { formaterIsoDato } from '../utils/formatter';
 import { Ressurs, RessursStatus } from '../typer/ressurs';
 import { IBeløpsperiode, IBeregningsperiodeBarnetilsyn } from '../typer/vedtak';
+import { useToggles } from '../context/TogglesContext';
+import { ToggleName } from '../context/toggles';
 
 enum EBehandlingFlettefelt {
     fomdatoInnvilgelseForstegangsbehandling = 'fomdatoInnvilgelseForstegangsbehandling',
@@ -14,10 +16,37 @@ enum EBehandlingFlettefelt {
     tomdatoRevurderingBT = 'tomdatoRevurderingBT',
 }
 
+enum EBehandlingValgfelt {
+    avslutningHjemmel = 'avslutningHjemmel',
+}
+
+enum EValg {
+    hjemlerMedSamordning = 'hjemmelM1513',
+    hjemlerUtenSamordning = 'hjemmelInnvilgetTilbakeITidM1513',
+}
+
+enum EDelmaler {
+    avslutningHjemler = 'avslutning',
+}
+
+export type FlettefeltStore = { [navn: string]: string };
+export type DelmalStore = string[];
+
+export type ValgfeltStore = {
+    [valgfelt: string]: string;
+};
+
 export const useVerdierForBrev = (
     beløpsperioder: Ressurs<IBeløpsperiode[] | IBeregningsperiodeBarnetilsyn[] | undefined>
-): { flettefeltStore: { [navn: string]: string } } => {
-    const [flettefeltStore, settFlettefeltStore] = useState<{ [navn: string]: string }>({});
+): {
+    flettefeltStore: FlettefeltStore;
+    valgfeltStore: ValgfeltStore;
+    delmalStore: DelmalStore;
+} => {
+    const [flettefeltStore, settFlettefeltStore] = useState<FlettefeltStore>({});
+    const [valgfeltStore, settValgfeltStore] = useState<ValgfeltStore>({});
+    const [delmalStore, settDelmalStore] = useState<DelmalStore>([]);
+    const { toggles } = useToggles();
 
     useEffect(() => {
         if (
@@ -28,6 +57,20 @@ export const useVerdierForBrev = (
             const perioder = beløpsperioder.data;
             const tilDato = formaterIsoDato(perioder[perioder.length - 1].periode.tildato);
             const fraDato = formaterIsoDato(perioder[0].periode.fradato);
+
+            if (
+                innholderBeløpsperioderForOvergangsstønad(perioder) &&
+                toggles[ToggleName.automatiskeHjemlerBrev]
+            ) {
+                settValgfeltStore((prevState) => ({
+                    ...prevState,
+                    [EBehandlingValgfelt.avslutningHjemmel]: harSamordningsfradrag(perioder)
+                        ? EValg.hjemlerMedSamordning
+                        : EValg.hjemlerUtenSamordning,
+                }));
+
+                settDelmalStore((prevState) => [...prevState, EDelmaler.avslutningHjemler]);
+            }
 
             settFlettefeltStore((prevState) => ({
                 ...prevState,
@@ -41,7 +84,24 @@ export const useVerdierForBrev = (
                 [EBehandlingFlettefelt.tomdatoRevurderingBT]: tilDato,
             }));
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [beløpsperioder]);
 
-    return { flettefeltStore };
+    return { flettefeltStore, valgfeltStore, delmalStore };
+};
+
+const harSamordningsfradrag = (beløpsperioder: IBeløpsperiode[]): boolean => {
+    return beløpsperioder.some(
+        (beløpsperiode) =>
+            beløpsperiode.beregningsgrunnlag.samordningsfradrag &&
+            beløpsperiode.beregningsgrunnlag.samordningsfradrag > 0
+    );
+};
+
+const innholderBeløpsperioderForOvergangsstønad = (
+    beløpsperioder: IBeløpsperiode[] | IBeregningsperiodeBarnetilsyn[]
+): beløpsperioder is IBeløpsperiode[] => {
+    return beløpsperioder.some(
+        (beløpsperiode) => (beløpsperiode as IBeløpsperiode).beløpFørSamordning !== undefined
+    );
 };
