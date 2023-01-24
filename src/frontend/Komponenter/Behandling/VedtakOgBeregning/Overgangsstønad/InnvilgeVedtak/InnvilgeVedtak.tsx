@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import VedtaksperiodeValg, { tomVedtaksperiodeRad } from './VedtaksperiodeValg';
 import InntektsperiodeValg, { tomInntektsperiodeRad } from './InntektsperiodeValg';
 import { Behandlingstype } from '../../../../../App/typer/behandlingstype';
@@ -67,10 +67,13 @@ export const InnvilgeVedtak: React.FC<{
     lagretVedtak?: IVedtakForOvergangsstønad;
     vilkår: IVilkår;
 }> = ({ behandling, lagretVedtak, vilkår }) => {
-    const lagretInnvilgetVedtak =
-        lagretVedtak?._type === IVedtakType.InnvilgelseOvergangsstønad
-            ? oppdaterVedtakMedEndretKey(lagretVedtak as IInnvilgeVedtakForOvergangsstønad)
-            : undefined;
+    const lagretInnvilgetVedtak = useMemo(
+        () =>
+            lagretVedtak?._type === IVedtakType.InnvilgelseOvergangsstønad
+                ? oppdaterVedtakMedEndretKey(lagretVedtak as IInnvilgeVedtakForOvergangsstønad)
+                : undefined,
+        [lagretVedtak]
+    );
 
     const { toggles } = useToggles();
 
