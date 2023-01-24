@@ -11,7 +11,6 @@ const FlexWrapper = styled.div`
 `;
 const Container = styled.div`
     display: flex;
-    margin: 2rem;
     align-items: center;
     .knapp__spinner {
         margin: 0 !important;

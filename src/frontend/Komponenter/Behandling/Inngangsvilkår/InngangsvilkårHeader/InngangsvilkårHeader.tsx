@@ -7,12 +7,23 @@ import { Behandling } from '../../../../App/typer/fagsak';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 import { useApp } from '../../../../App/context/AppContext';
 import { utledVilkårsgjenbruk } from '../utils';
+import { Button } from '@navikt/ds-react';
+import { Collapse, Expand } from '@navikt/ds-icons';
 
 const Container = styled.div`
+    margin: 1rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+`;
+
+const FlexRow = styled.div`
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
 `;
+
+const KnappeContainer = styled.div``;
 
 interface Props {
     oppdatertDato: string;
@@ -56,12 +67,22 @@ export const InngangsvilkårHeader: React.FC<Props> = ({
 
     return (
         <Container>
-            <OppdaterOpplysninger
-                oppdatertDato={oppdatertDato}
-                behandlingErRedigerbar={behandlingErRedigerbar}
-                oppdaterGrunnlagsdata={oppdaterGrunnlagsdata}
-                behandlingId={behandlingId}
-            />
+            <FlexRow>
+                <OppdaterOpplysninger
+                    oppdatertDato={oppdatertDato}
+                    behandlingErRedigerbar={behandlingErRedigerbar}
+                    oppdaterGrunnlagsdata={oppdaterGrunnlagsdata}
+                    behandlingId={behandlingId}
+                />
+                <KnappeContainer>
+                    <Button variant="tertiary" icon={<Collapse />} size="small">
+                        Lukk alle
+                    </Button>
+                    <Button variant="tertiary" icon={<Expand />} size="small">
+                        Åpne alle
+                    </Button>
+                </KnappeContainer>
+            </FlexRow>
             {skalViseGjenbrukVilkår && (
                 <DataViewer response={{ behandlingerForVilkårsgjenbruk }}>
                     {({ behandlingerForVilkårsgjenbruk }) =>
