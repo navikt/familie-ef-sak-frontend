@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 const app = require('./mock-routes');
 const express = require('express');
 const path = require('path');
@@ -16,8 +15,10 @@ app.get('*', (req, res) => {
 
 const server = app.listen(port, '0.0.0.0', function onStart(err) {
     if (err) {
+        // eslint-disable-next-line no-console
         console.log(err);
     }
+    // eslint-disable-next-line no-console
     console.info('=== ci-server startet på http://localhost:%s/', port);
 });
 

@@ -2,7 +2,6 @@ import { captureException, configureScope, withScope } from '@sentry/core';
 import axios, { AxiosError, AxiosRequestHeaders, AxiosResponse } from 'axios';
 import { Ressurs, RessursFeilet, RessursStatus, RessursSuksess } from '../typer/ressurs';
 import { ISaksbehandler } from '../typer/saksbehandler';
-import { slackKanaler } from '../typer/slack';
 
 axios.defaults.baseURL = window.location.origin;
 export const preferredAxios = axios;
@@ -141,24 +140,7 @@ export const loggFeil = (
             headers,
             isWarning
         );
-
-        slackNotify(
-            `En feil har oppstått i alene med barn vedtaksløsning!${
-                error ? `\n*Error*: ${error}` : ''
-            }${feilmelding ? `\n*Feilmelding:* ${feilmelding}` : ''}`,
-            slackKanaler.alert
-        );
     }
-};
-
-// eslint-disable-next-line
-export const slackNotify = (melding: string, kanal: string): void => {
-    // eslint-disable-next-line no-console
-    console.log(`Logg til slack ${kanal} er skrudd av`, melding);
-    // eslint-disable-next-line
-    // preferredAxios.post(`/slack/notify/${kanal}`, {
-    //     melding,
-    // });
 };
 
 export const apiLoggFeil = (melding: string, headers?: Headers, isWarning = false): void => {

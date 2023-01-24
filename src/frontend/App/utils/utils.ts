@@ -89,6 +89,20 @@ export const tilHeltall = (event: KeyboardEvent<HTMLDivElement>) => {
 export const range = (start: number, end: number): number[] =>
     Array.from({ length: end - start }, (_, k) => k + start);
 
+const winHtml = (feilmelding: string) => `<!DOCTYPE html>
+    <html>
+        <head>
+            <title>Noe gikk galt</title>
+        </head>
+        <body>
+            <h1>Noe gikk galt</h1>
+            <p>${feilmelding}</p>
+        </body>
+    </html>`;
+
+export const winUrl = (feilmelding: string) =>
+    URL.createObjectURL(new Blob([winHtml(feilmelding)], { type: 'text/html' }));
+
 export const åpnePdfIEgenTab = (blob: Blob, filnavn: string): void => {
     const blobUrl = URL.createObjectURL(blob);
     const newWindow = window.open(blobUrl, '_blank');
