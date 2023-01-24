@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 const app = require('./mock-routes');
 const webpack = require('webpack');
 const webpackDevMiddleware = require('webpack-dev-middleware');
@@ -8,7 +7,7 @@ const path = require('path');
 
 const port = 8000;
 
-// @ts-ignore
+// @ts-ignore-next-line
 const compiler = webpack(config);
 const middleware = webpackDevMiddleware(compiler, {
     publicPath: config.output.publicPath,
@@ -29,8 +28,10 @@ app.get('/*', (req, res) => {
 
 const server = app.listen(port, 'localhost', function onStart(err) {
     if (err) {
+        // eslint-disable-next-line no-console
         console.log(err);
     }
+    // eslint-disable-next-line no-console
     console.info('=== mock-server startet på http://localhost:%s/', port);
 });
 

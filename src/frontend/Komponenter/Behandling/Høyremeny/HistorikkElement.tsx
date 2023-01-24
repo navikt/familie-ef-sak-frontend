@@ -5,7 +5,7 @@ import { Hendelse, HendelseIkon, hendelseTilHistorikkTekst } from './Historikk';
 import { HistorikkElementProps, LinjeProps, StyledHistorikkElementProps } from './typer';
 import { useApp } from '../../../App/context/AppContext';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
-import { base64toBlob, åpnePdfIEgenTab } from '../../../App/utils/utils';
+import { base64toBlob, winUrl, åpnePdfIEgenTab } from '../../../App/utils/utils';
 import { ExternalLink } from '@navikt/ds-icons';
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
 import { BehandlingResultat } from '../../../App/typer/fagsak';
@@ -63,8 +63,7 @@ const HistorikkElement: React.FC<HistorikkElementProps> = ({
             if (respons.status === RessursStatus.SUKSESS) {
                 åpnePdfIEgenTab(base64toBlob(respons.data, 'application/pdf'), 'Vedtaksbrev');
             } else {
-                // eslint-disable-next-line no-console
-                console.error(respons.frontendFeilmelding);
+                window.open(winUrl(respons.frontendFeilmelding), '_blank');
             }
         });
     };
