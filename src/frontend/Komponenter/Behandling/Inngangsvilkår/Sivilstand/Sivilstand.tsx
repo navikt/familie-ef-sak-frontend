@@ -4,6 +4,7 @@ import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import { VilkårProps } from '../vilkårprops';
 import SivilstandInfo from './SivilstandInfo';
 import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';
+import { VilkårpanelInnhold } from '../../Vilkårpanel/VilkårpanelInnhold';
 
 export const Sivilstand: React.FC<VilkårProps> = ({
     vurderinger,
@@ -23,25 +24,28 @@ export const Sivilstand: React.FC<VilkårProps> = ({
             paragrafTittel="§15-4"
             tittel="Sivilstand"
             vilkårsresultat={vurdering.resultat}
-        >
-            {{
-                venstre: (
-                    <SivilstandInfo
-                        sivilstand={grunnlag.sivilstand}
-                        skalViseSøknadsdata={skalViseSøknadsdata}
-                        dokumentasjon={grunnlag.dokumentasjon}
-                    />
-                ),
-                høyre: (
-                    <VisEllerEndreVurdering
-                        vurdering={vurdering}
-                        ikkeVurderVilkår={ikkeVurderVilkår}
-                        feilmelding={feilmeldinger[vurdering.id]}
-                        lagreVurdering={lagreVurdering}
-                        nullstillVurdering={nullstillVurdering}
-                    />
-                ),
-            }}
-        </Vilkårpanel>
+            innhold={
+                <VilkårpanelInnhold>
+                    {{
+                        venstre: (
+                            <SivilstandInfo
+                                sivilstand={grunnlag.sivilstand}
+                                skalViseSøknadsdata={skalViseSøknadsdata}
+                                dokumentasjon={grunnlag.dokumentasjon}
+                            />
+                        ),
+                        høyre: (
+                            <VisEllerEndreVurdering
+                                vurdering={vurdering}
+                                ikkeVurderVilkår={ikkeVurderVilkår}
+                                feilmelding={feilmeldinger[vurdering.id]}
+                                lagreVurdering={lagreVurdering}
+                                nullstillVurdering={nullstillVurdering}
+                            />
+                        ),
+                    }}
+                </VilkårpanelInnhold>
+            }
+        />
     );
 };

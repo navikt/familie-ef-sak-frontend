@@ -31,77 +31,40 @@ const VilkårsresultatContainer = styled.span`
     }
 `;
 
-const VilkårpanelInnhold = styled.div`
-    display: flex;
-    padding: 1rem;
-
-    @media (max-width: 1600px) {
-        flex-direction: column;
-    }
-
-    .venstreKolonne {
-        padding: 1.5rem 0;
-        width: 50%;
-
-        @media (max-width: 1600px) {
-            width: 100%;
-        }
-    }
-    .høyreKolonne {
-        padding: 1.5rem 0;
-        width: 50%;
-        max-width: 50rem;
-        @media (max-width: 1600px) {
-            width: 100%;
-        }
-    }
-`;
-
 interface Props {
     tittel: string;
     paragrafTittel?: string;
     vilkårsresultat: Vilkårsresultat;
-    children: {
-        venstre: JSX.Element;
-        høyre: JSX.Element;
-    };
+    innhold: JSX.Element;
 }
 
-export const Vilkårpanel: FC<Props> = ({
-    tittel,
-    paragrafTittel,
-    vilkårsresultat,
-    children: { venstre, høyre },
-}) => {
+export const Vilkårpanel: FC<Props> = ({ tittel, paragrafTittel, vilkårsresultat, innhold }) => {
     const [ekspandert, settEkspandert] = useState(true);
 
     return (
         <VilkårpanelBase>
-            <VilkårpanelTittel>
-                <VilkårsresultatContainer>
-                    <VilkårsresultatIkon vilkårsresultat={vilkårsresultat} />
-                    <Heading className={'tittel'} size="small" level="5">
-                        {tittel}
-                    </Heading>
-                    {paragrafTittel && (
-                        <BodyShortSmall className={'paragrafTittel'}>
-                            {paragrafTittel}
-                        </BodyShortSmall>
-                    )}
-                </VilkårsresultatContainer>
-                <Button
-                    size="medium"
-                    variant="tertiary"
-                    icon={ekspandert ? <Collapse /> : <Expand />}
-                    onClick={() => settEkspandert(!ekspandert)}
-                />
-            </VilkårpanelTittel>
-            {ekspandert && (
-                <VilkårpanelInnhold>
-                    <div className="venstreKolonne">{venstre}</div>
-                    <div className="høyreKolonne">{høyre}</div>
-                </VilkårpanelInnhold>
-            )}
+            <>
+                <VilkårpanelTittel>
+                    <VilkårsresultatContainer>
+                        <VilkårsresultatIkon vilkårsresultat={vilkårsresultat} />
+                        <Heading className={'tittel'} size="small" level="5">
+                            {tittel}
+                        </Heading>
+                        {paragrafTittel && (
+                            <BodyShortSmall className={'paragrafTittel'}>
+                                {paragrafTittel}
+                            </BodyShortSmall>
+                        )}
+                    </VilkårsresultatContainer>
+                    <Button
+                        size="medium"
+                        variant="tertiary"
+                        icon={ekspandert ? <Collapse /> : <Expand />}
+                        onClick={() => settEkspandert(!ekspandert)}
+                    />
+                </VilkårpanelTittel>
+                {ekspandert && innhold}
+            </>
         </VilkårpanelBase>
     );
 };

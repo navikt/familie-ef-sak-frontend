@@ -4,6 +4,7 @@ import NyttBarnSammePartnerInfo from './NyttBarnSammePartnerInfo';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import { VilkårProps } from '../vilkårprops';
 import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';
+import { VilkårpanelInnhold } from '../../Vilkårpanel/VilkårpanelInnhold';
 
 export const NyttBarnSammePartner: React.FC<VilkårProps> = ({
     vurderinger,
@@ -25,24 +26,27 @@ export const NyttBarnSammePartner: React.FC<VilkårProps> = ({
             paragrafTittel="§15-4"
             tittel="Nytt barn med samme partner"
             vilkårsresultat={vurdering.resultat}
-        >
-            {{
-                venstre: (
-                    <NyttBarnSammePartnerInfo
-                        barnMedSamvær={barnMedSamvær}
-                        tidligereVedtaksperioder={grunnlag.tidligereVedtaksperioder}
-                    />
-                ),
-                høyre: (
-                    <VisEllerEndreVurdering
-                        ikkeVurderVilkår={ikkeVurderVilkår}
-                        vurdering={vurdering}
-                        feilmelding={feilmeldinger[vurdering.id]}
-                        lagreVurdering={lagreVurdering}
-                        nullstillVurdering={nullstillVurdering}
-                    />
-                ),
-            }}
-        </Vilkårpanel>
+            innhold={
+                <VilkårpanelInnhold>
+                    {{
+                        venstre: (
+                            <NyttBarnSammePartnerInfo
+                                barnMedSamvær={barnMedSamvær}
+                                tidligereVedtaksperioder={grunnlag.tidligereVedtaksperioder}
+                            />
+                        ),
+                        høyre: (
+                            <VisEllerEndreVurdering
+                                ikkeVurderVilkår={ikkeVurderVilkår}
+                                vurdering={vurdering}
+                                feilmelding={feilmeldinger[vurdering.id]}
+                                lagreVurdering={lagreVurdering}
+                                nullstillVurdering={nullstillVurdering}
+                            />
+                        ),
+                    }}
+                </VilkårpanelInnhold>
+            }
+        />
     );
 };
