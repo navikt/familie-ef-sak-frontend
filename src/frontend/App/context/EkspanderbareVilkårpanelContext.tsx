@@ -62,7 +62,4 @@ const [EkspanderbareVilkårpanelProvider, useEkspanderbareVilkårpanelContext] =
     };
 });
 
-export {
-    EkspanderbareVilkårpanelProvider as EkspanderbareVilkårpanelContext,
-    useEkspanderbareVilkårpanelContext,
-};
+export { EkspanderbareVilkårpanelProvider, useEkspanderbareVilkårpanelContext };
