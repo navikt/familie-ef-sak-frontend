@@ -58,7 +58,10 @@ export const useVerdierForBrev = (
             const tilDato = formaterIsoDato(perioder[perioder.length - 1].periode.tildato);
             const fraDato = formaterIsoDato(perioder[0].periode.fradato);
 
-            if (erOvergangstønad(perioder) && toggles[ToggleName.automatiskeHjemlerBrev]) {
+            if (
+                innholderBeløpsperioderForOvergangsstønad(perioder) &&
+                toggles[ToggleName.automatiskeHjemlerBrev]
+            ) {
                 settValgfeltStore((prevState) => ({
                     ...prevState,
                     [EBehandlingValgfelt.avslutningHjemmel]: harSamordningsfradrag(perioder)
@@ -95,7 +98,7 @@ const harSamordningsfradrag = (beløpsperioder: IBeløpsperiode[]): boolean => {
     );
 };
 
-const erOvergangstønad = (
+const innholderBeløpsperioderForOvergangsstønad = (
     beløpsperioder: IBeløpsperiode[] | IBeregningsperiodeBarnetilsyn[]
 ): beløpsperioder is IBeløpsperiode[] => {
     return beløpsperioder.some(
