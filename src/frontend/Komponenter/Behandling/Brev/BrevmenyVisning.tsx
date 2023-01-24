@@ -89,7 +89,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
         if (delmalStore.length > 0) {
             settValgteDelmaler((prevState) => ({
                 ...prevState,
-                ...delmalStore.reduce((acc, delmal) => ({ ...acc, [delmal]: true }), {}),
+                ...delmalStore.reduce((acc, delmal) => ({ ...acc, [delmal.delmal]: true }), {}),
             }));
         }
         // eslint-disable-next-line
@@ -214,6 +214,15 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
         <BrevFelter>
             {brevmalFeil && <Alert variant={'warning'}>{brevmalFeil}</Alert>}
             {Object.entries(delmalerGruppert).map(([key, delmaler]: [string, Delmal[]]) => {
+                const alleDelmalerSkjules = delmaler.every((delmal) => {
+                    const automatiskFeltSomSkalSkjules = delmalStore.find(
+                        (mal) => mal.delmal === delmal.delmalApiNavn
+                    )?.skjulIBrevmeny;
+                    return automatiskFeltSomSkalSkjules || false;
+                });
+                if (alleDelmalerSkjules) {
+                    return null;
+                }
                 return (
                     <Panel key={key}>
                         {key !== 'undefined' && (
@@ -224,6 +233,10 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                             </BrevMenyTittel>
                         )}
                         {delmaler.map((delmal: Delmal, index: number) => {
+                            const automatiskFeltsomSkalSkjules = delmalStore.find(
+                                (mal) => mal.delmal === delmal.delmalApiNavn
+                            )?.skjulIBrevmeny;
+                            const skjulDelmal = automatiskFeltsomSkalSkjules || false;
                             return (
                                 <BrevMenyDelmalWrapper
                                     førsteElement={index === 0}
@@ -240,6 +253,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                                         settValgteDelmaler={settValgteDelmaler}
                                         key={delmal.delmalApiNavn}
                                         settKanSendeTilBeslutter={settKanSendesTilBeslutter}
+                                        skjul={skjulDelmal}
                                     />
                                 </BrevMenyDelmalWrapper>
                             );
