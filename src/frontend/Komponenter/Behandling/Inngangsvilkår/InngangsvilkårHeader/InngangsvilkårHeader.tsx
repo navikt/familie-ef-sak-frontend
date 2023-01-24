@@ -7,8 +7,7 @@ import { Behandling } from '../../../../App/typer/fagsak';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 import { useApp } from '../../../../App/context/AppContext';
 import { utledVilkårsgjenbruk } from '../utils';
-import { Button } from '@navikt/ds-react';
-import { Collapse, Expand } from '@navikt/ds-icons';
+import { ÅpneOgLukkePanelKnapper } from './ÅpneOgLukkePanelKnapper';
 
 const Container = styled.div`
     margin: 1rem 2rem;
@@ -22,9 +21,6 @@ const FlexRow = styled.div`
     flex-wrap: wrap;
     justify-content: space-between;
 `;
-
-const KnappeContainer = styled.div``;
-
 interface Props {
     oppdatertDato: string;
     behandlingErRedigerbar: boolean;
@@ -74,14 +70,7 @@ export const InngangsvilkårHeader: React.FC<Props> = ({
                     oppdaterGrunnlagsdata={oppdaterGrunnlagsdata}
                     behandlingId={behandlingId}
                 />
-                <KnappeContainer>
-                    <Button variant="tertiary" icon={<Collapse />} size="small">
-                        Lukk alle
-                    </Button>
-                    <Button variant="tertiary" icon={<Expand />} size="small">
-                        Åpne alle
-                    </Button>
-                </KnappeContainer>
+                <ÅpneOgLukkePanelKnapper />
             </FlexRow>
             {skalViseGjenbrukVilkår && (
                 <DataViewer response={{ behandlingerForVilkårsgjenbruk }}>
