@@ -1,9 +1,10 @@
 import React, { FC } from 'react';
 import styled from 'styled-components';
 
-const Container = styled.div`
+const Container = styled.div<{ borderBottom: boolean }>`
     display: flex;
-    padding: 1rem;
+    margin: 0 1rem;
+    border-bottom: ${(props) => (props.borderBottom ? '1px solid #d1d1d1' : 'none')};
 
     @media (max-width: 1600px) {
         flex-direction: column;
@@ -28,15 +29,19 @@ const Container = styled.div`
 `;
 
 interface Props {
+    borderBottom?: boolean;
     children: {
         venstre: JSX.Element;
         høyre: JSX.Element;
     };
 }
 
-export const VilkårpanelInnhold: FC<Props> = ({ children: { venstre, høyre } }) => {
+export const VilkårpanelInnhold: FC<Props> = ({
+    borderBottom = false,
+    children: { venstre, høyre },
+}) => {
     return (
-        <Container>
+        <Container borderBottom={borderBottom}>
             <div className="venstreKolonne">{venstre}</div>
             <div className="høyreKolonne">{høyre}</div>
         </Container>

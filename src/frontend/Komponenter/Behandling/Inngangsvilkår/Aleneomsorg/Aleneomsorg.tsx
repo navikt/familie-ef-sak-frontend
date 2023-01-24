@@ -60,7 +60,13 @@ export const Aleneomsorg: React.FC<VilkårPropsMedStønadstype> = ({
                         if (!vurdering) return <></>;
 
                         return (
-                            <VilkårpanelInnhold key={barn.barnId}>
+                            <VilkårpanelInnhold
+                                key={barn.barnId}
+                                borderBottom={
+                                    indeks !== grunnlag.barnMedSamvær.length - 1 &&
+                                    grunnlag.barnMedSamvær.length > 1
+                                }
+                            >
                                 {{
                                     venstre: (
                                         <>
