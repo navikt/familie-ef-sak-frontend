@@ -29,6 +29,7 @@ interface Props {
     settValgteDelmaler: Dispatch<SetStateAction<Record<string, boolean>>>;
     settKanSendeTilBeslutter: (kanSendeTilBeslutter: boolean) => void;
     valgt: boolean;
+    skjul: boolean;
 }
 
 export const BrevMenyDelmal: React.FC<Props> = ({
@@ -41,6 +42,7 @@ export const BrevMenyDelmal: React.FC<Props> = ({
     settValgteDelmaler,
     settKanSendeTilBeslutter,
     valgt,
+    skjul,
 }) => {
     const { delmalValgfelt, delmalFlettefelter } = delmal;
     const [ekspanderbartPanelÅpen, settEkspanderbartPanelÅpen] = useState(false);
@@ -64,6 +66,10 @@ export const BrevMenyDelmal: React.FC<Props> = ({
 
         settKanSendeTilBeslutter(false);
     };
+
+    if (skjul) {
+        return null;
+    }
 
     return (
         <DelmalValg>

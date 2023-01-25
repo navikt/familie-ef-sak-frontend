@@ -1,9 +1,14 @@
-import { utgiftsperiodeAktivitetTilTekst } from '../../../../App/typer/vedtak';
+import {
+    EUtgiftsperiodeAktivitet,
+    EUtgiftsperiodeProperty,
+    EUtgiftsperiodetype,
+    utgiftsperiodeAktivitetTilTekst,
+} from '../../../../App/typer/vedtak';
 import React from 'react';
 import styled from 'styled-components';
 import { OrNothing } from '../../../../App/hooks/felles/useSorteringState';
 import { EnsligFamilieSelect } from '../../../../Felles/Input/EnsligFamilieSelect';
-import { EUtgiftsperiodeAktivitet, EUtgiftsperiodeProperty } from '../../../../App/typer/vedtak';
+import { erOpphørEllerSanksjon } from './utils';
 
 const StyledSelect = styled(EnsligFamilieSelect)`
     align-items: start;
@@ -12,13 +17,13 @@ const StyledSelect = styled(EnsligFamilieSelect)`
 `;
 
 interface Props {
+    periodetype: EUtgiftsperiodetype | undefined;
     aktivitet: EUtgiftsperiodeAktivitet | '' | undefined;
     oppdaterUtgiftsperiodeElement: (
         property: EUtgiftsperiodeProperty,
         value: string | undefined
     ) => void;
     erLesevisning: boolean;
-    erMidlertidigOpphør: boolean;
     feil: OrNothing<string>;
 }
 
@@ -28,15 +33,17 @@ const valgbareAktivitetstyper = [
 ];
 
 const AktivitetSelect: React.FC<Props> = ({
+    periodetype,
     aktivitet,
     oppdaterUtgiftsperiodeElement,
     erLesevisning,
-    erMidlertidigOpphør,
     feil,
 }) => {
+    const skalIkkeVelgeAktivitet: boolean = !periodetype || erOpphørEllerSanksjon(periodetype);
+
     const utledLesevisningVerdi = () => {
         if (aktivitet) return utgiftsperiodeAktivitetTilTekst[aktivitet];
-        if (erLesevisning && erMidlertidigOpphør) return '';
+        if (erLesevisning || skalIkkeVelgeAktivitet) return '';
         return 'Ukjent';
     };
 
@@ -44,7 +51,7 @@ const AktivitetSelect: React.FC<Props> = ({
         <StyledSelect
             label={'Aktivitet'}
             hideLabel
-            value={erMidlertidigOpphør ? '' : aktivitet}
+            value={aktivitet}
             error={feil}
             onChange={(e) => {
                 oppdaterUtgiftsperiodeElement(
@@ -52,9 +59,8 @@ const AktivitetSelect: React.FC<Props> = ({
                     e.target.value
                 );
             }}
-            erLesevisning={erLesevisning}
+            erLesevisning={erLesevisning || skalIkkeVelgeAktivitet}
             lesevisningVerdi={utledLesevisningVerdi()}
-            disabled={erMidlertidigOpphør}
             size={'small'}
         >
             <option value="">Velg</option>

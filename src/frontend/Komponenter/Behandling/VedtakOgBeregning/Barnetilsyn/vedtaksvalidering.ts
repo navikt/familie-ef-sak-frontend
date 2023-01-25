@@ -1,12 +1,8 @@
 import { FormErrors } from '../../../../App/hooks/felles/useFormState';
 import { InnvilgeVedtakForm } from './Vedtaksform';
-import {
-    ERadioValg,
-    EUtgiftsperiodetype,
-    IPeriodeMedBeløp,
-    IUtgiftsperiode,
-} from '../../../../App/typer/vedtak';
+import { ERadioValg, IPeriodeMedBeløp, IUtgiftsperiode } from '../../../../App/typer/vedtak';
 import { erMånedÅrEtter, erMånedÅrEtterEllerLik } from '../../../../App/utils/dato';
+import { erOpphørEllerSanksjon } from './utils';
 
 export const validerInnvilgetVedtakForm = ({
     utgiftsperioder,
@@ -91,23 +87,22 @@ export const validerUtgiftsperioder = ({
             årMånedTil: undefined,
             barn: [],
             utgifter: undefined,
-            erMidlertidigOpphør: undefined,
         };
 
         if (!periodetype) {
             return { ...utgiftsperiodeFeil, periodetype: 'Mangler valg for periodetype' };
         }
 
-        const opphør = periodetype === EUtgiftsperiodetype.OPPHØR;
+        const opphørEllerSanksjon = erOpphørEllerSanksjon(periodetype);
 
-        if (opphør && aktivitetstype) {
+        if (opphørEllerSanksjon && aktivitetstype) {
             return {
                 ...utgiftsperiodeFeil,
-                aktivitetstype: 'Skal ikke kunne velge aktivitetstype ved opphør',
+                aktivitetstype: 'Skal ikke kunne velge aktivitetstype ved opphør eller sanksjon',
             };
         }
 
-        if (!aktivitetstype && !opphør) {
+        if (!aktivitetstype && !opphørEllerSanksjon) {
             return { ...utgiftsperiodeFeil, aktivitetstype: 'Mangler valg for aktivitetstype' };
         }
 
@@ -133,17 +128,17 @@ export const validerUtgiftsperioder = ({
             }
         }
 
-        if (barn.length < 1 && !opphør) {
+        if (barn.length < 1 && !opphørEllerSanksjon) {
             return {
                 ...utgiftsperiodeFeil,
                 barn: ['Mangelfull utfylling - minst et barn må velges'],
             };
         }
 
-        if (barn.length > 0 && opphør) {
+        if (barn.length > 0 && opphørEllerSanksjon) {
             return {
                 ...utgiftsperiodeFeil,
-                barn: ['Skal ikke kunne velge barn ved opphør'],
+                barn: ['Skal ikke kunne velge barn ved opphør eller sanksjon'],
             };
         }
 

@@ -17,4 +17,5 @@ export enum ToggleName {
     automatiskeVedtaksdatoerBrev = 'familie.ef.sak.frontend.automatiskeVedtaksdatoer',
     visSettPåVentKnapp = 'familie.ef.sak.frontend.vis-sett-pa-vent-knapp',
     visEndringerPersonopplysninger = 'familie.ef.sak.frontend.personopplysninger-endringer',
+    automatiskeHjemlerBrev = 'familie.ef.sak.frontend.automatiske-hjemler-brev',
 }

@@ -1,7 +1,5 @@
 import * as React from 'react';
 import { captureException, configureScope, withScope } from '@sentry/core';
-import { slackNotify } from '../../App/api/axios';
-import { slackKanaler } from '../../App/typer/slack';
 import { showReportDialog } from '@sentry/browser';
 import { ISaksbehandler } from '../../App/typer/saksbehandler';
 
@@ -32,11 +30,6 @@ class ErrorBoundary extends React.Component<IProps> {
                     captureException(error);
                 });
             });
-
-            slackNotify(
-                `En feil har oppstått i vedtaksløsningen: \n*Error*: ${error}`,
-                slackKanaler.alert
-            );
             showReportDialog();
         }
     }
