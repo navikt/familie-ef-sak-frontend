@@ -47,6 +47,10 @@ const BrevMenyDelmalWrapper = styled.div<{ førsteElement?: boolean }>`
     margin-top: ${(props) => (props.førsteElement ? '0' : '1rem')};
 `;
 
+const AlertMedMargin = styled(Alert)`
+    margin: 1rem;
+`;
+
 export interface BrevmenyVisningProps extends BrevmenyProps {
     brevStruktur: BrevStruktur;
     beløpsperioder?: IBeløpsperiode[] | IBeregningsperiodeBarnetilsyn[];
@@ -220,6 +224,13 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                     )?.skjulIBrevmeny;
                     return automatiskFeltSomSkalSkjules || false;
                 });
+                if (key === 'Lovhjemmel') {
+                    return (
+                        <AlertMedMargin variant={'info'} inline>
+                            Valget om lovhjemmel utføres nå automatisk av systemet
+                        </AlertMedMargin>
+                    );
+                }
                 if (alleDelmalerSkjules) {
                     return null;
                 }
