@@ -16,19 +16,27 @@ export enum EInngangsvilkår {
     ALENEOMSORG = 'ALENEOMSORG',
 }
 
+export enum EAktivitetsvilkår {
+    AKTIVITET_OVERGANGSTØNAD = 'AKTIVITET_OVERGANGSTØNAD',
+}
+
+export type IVilkårstype = EInngangsvilkår | EAktivitetsvilkår;
+
 const [EkspanderbareVilkårpanelProvider, useEkspanderbareVilkårpanelContext] = constate(() => {
-    const allePanelEkspandert = Object.keys(EInngangsvilkår).reduce(
+    const vilkårsTyper = { ...EInngangsvilkår, ...EAktivitetsvilkår };
+
+    const allePanelEkspandert = Object.keys(vilkårsTyper).reduce(
         (acc, key) => ({
             ...acc,
             [key]: EkspandertTilstand.EKSPANDERT,
         }),
-        {} as Record<EInngangsvilkår, EkspandertTilstand>
+        {} as Record<IVilkårstype, EkspandertTilstand>
     );
 
     const [ekspanderteVilkår, settEkspanderteVilkår] =
-        useState<Record<EInngangsvilkår, EkspandertTilstand>>(allePanelEkspandert);
+        useState<Record<IVilkårstype, EkspandertTilstand>>(allePanelEkspandert);
 
-    const toggleEkspandertTilstand = (key: EInngangsvilkår) => {
+    const toggleEkspandertTilstand = (key: IVilkårstype) => {
         settEkspanderteVilkår({
             ...ekspanderteVilkår,
             [key]:
@@ -40,12 +48,12 @@ const [EkspanderbareVilkårpanelProvider, useEkspanderbareVilkårpanelContext] =
 
     const lukkAlle = () => {
         settEkspanderteVilkår(
-            Object.keys(EInngangsvilkår).reduce(
+            Object.keys(vilkårsTyper).reduce(
                 (acc, key) => ({
                     ...acc,
                     [key]: EkspandertTilstand.KOLLAPSET,
                 }),
-                {} as Record<EInngangsvilkår, EkspandertTilstand>
+                {} as Record<IVilkårstype, EkspandertTilstand>
             )
         );
     };

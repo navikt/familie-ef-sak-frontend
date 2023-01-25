@@ -7,8 +7,8 @@ import { VilkårsresultatIkon } from '../../../Felles/Ikoner/VilkårsresultatIko
 import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 import { ATextSubtle } from '@navikt/ds-tokens/dist/tokens';
 import {
-    EInngangsvilkår,
     EkspandertTilstand,
+    IVilkårstype,
     useEkspanderbareVilkårpanelContext,
 } from '../../../App/context/EkspanderbareVilkårpanelContext';
 
@@ -41,7 +41,7 @@ interface Props {
     paragrafTittel?: string;
     vilkårsresultat: Vilkårsresultat;
     innhold: JSX.Element;
-    vilkår: EInngangsvilkår;
+    vilkår: IVilkårstype;
 }
 
 export const Vilkårpanel: FC<Props> = ({
