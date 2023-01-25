@@ -54,7 +54,7 @@ export const endringerKeyTilTekst: Record<keyof IEndringer, string> = {
     sivilstand: 'Sivilstand',
     adresse: 'Adresse',
     fullmakt: 'Fullmakt',
-    barn: 'Barn', // TODO: Spesifirer endringer i dette objektet
+    barn: 'Barn', // TODO: Spesifiser endringer i dette objektet
     innflyttingTilNorge: 'Innflytting til Norge',
     utflyttingFraNorge: 'Utflytting fra Norge',
     oppholdstillatelse: 'Oppholdstillatelse',

@@ -44,8 +44,8 @@ const EndringPersonopplsyninger: React.FC<{
                             Endring i folkeregisteropplysninger
                         </Heading>
                         <div>
-                            Det har vært endringer i brukers opplysnginger fra folkeregisteret siden
-                            denne behandlingen ble påbegynt:
+                            Det har vært endringer i bruker sine opplysninger fra folkeregisteret
+                            siden denne behandlingen ble påbegynt. Endringene gjelder:
                         </div>
                         <ul>
                             {endringer.map((personopplysning) => (

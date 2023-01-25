@@ -13,7 +13,6 @@ const StyledInput = styled(({ fetLabel, ...props }) => <TextField {...props} />)
 `;
 
 interface Props {
-    j;
     fetLabel: boolean;
     flettefelt: Flettefeltreferanse;
     dokument: BrevStruktur;
