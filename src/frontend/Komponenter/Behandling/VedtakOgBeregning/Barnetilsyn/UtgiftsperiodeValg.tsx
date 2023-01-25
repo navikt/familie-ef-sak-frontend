@@ -21,7 +21,7 @@ import { datoTilAlder } from '../../../../App/utils/dato';
 import { Label, Tooltip } from '@navikt/ds-react';
 import FjernKnapp from '../../../../Felles/Knapper/FjernKnapp';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
-import { tomUtgiftsperiodeRad } from './utils';
+import { erOpphørEllerSanksjon, tomUtgiftsperiodeRad } from './utils';
 import PeriodetypeSelect from './PeriodetypeSelect';
 import AktivitetSelect from './AktivitetSelect';
 
@@ -80,18 +80,6 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
             (value === EUtgiftsperiodetype.OPPHØR || value === EUtgiftsperiodetype.SANKSJON_1_MND)
         ) {
             oppdaterUtgiftsperiodeDersomMidlertidigOpphør(index);
-        } else if (
-            property === EUtgiftsperiodeProperty.periodetype &&
-            value === EUtgiftsperiodetype.ORDINÆR
-        ) {
-            utgiftsperioder.update(
-                {
-                    ...utgiftsperioder.value[index],
-                    [EUtgiftsperiodeProperty.erMidlertidigOpphør]: false, // TODO: Skal fjernes når feltet er fjernet
-                    [property]: value,
-                },
-                index
-            );
         } else {
             utgiftsperioder.update(
                 {
@@ -120,7 +108,6 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                 [EUtgiftsperiodeProperty.aktivitetstype]: undefined,
                 [EUtgiftsperiodeProperty.barn]: [],
                 [EUtgiftsperiodeProperty.utgifter]: 0,
-                [EUtgiftsperiodeProperty.erMidlertidigOpphør]: true,
             },
             index
         );
@@ -156,7 +143,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                 const ikkeValgteBarn = barnForPeriode.filter((barn) =>
                     utgiftsperiode.barn.includes(barn.value)
                 );
-                const midlertidigOpphør = periodetype === EUtgiftsperiodetype.OPPHØR;
+                const opphørEllerSanksjon = erOpphørEllerSanksjon(periodetype);
 
                 return (
                     <UtgiftsperiodeRad
@@ -172,12 +159,12 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                             feil={valideringsfeil && valideringsfeil[index]?.periodetype}
                         />
                         <AktivitetSelect
+                            periodetype={periodetype}
                             aktivitet={aktivitetstype}
                             oppdaterUtgiftsperiodeElement={(property, value) =>
                                 oppdaterUtgiftsperiode(index, property, value)
                             }
                             erLesevisning={!behandlingErRedigerbar}
-                            erMidlertidigOpphør={midlertidigOpphør}
                             feil={valideringsfeil && valideringsfeil[index]?.aktivitetstype}
                         />
                         <MånedÅrPeriode
@@ -192,20 +179,23 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                 );
                             }}
                             feilmelding={valideringsfeil && valideringsfeil[index]?.årMånedFra}
-                            erLesevisning={!behandlingErRedigerbar}
+                            erLesevisning={
+                                !behandlingErRedigerbar ||
+                                periodetype === EUtgiftsperiodetype.SANKSJON_1_MND
+                            }
                             disabledFra={index === 0 && låsFraDatoFørsteRad}
                             size={'small'}
                         />
-                        {behandlingErRedigerbar ? (
+                        {behandlingErRedigerbar && !opphørEllerSanksjon ? (
                             <FamilieReactSelect
                                 placeholder={'Velg barn'}
                                 label={''}
                                 options={barnForPeriode}
                                 creatable={false}
                                 isMulti={true}
-                                isDisabled={midlertidigOpphør}
+                                isDisabled={opphørEllerSanksjon}
                                 defaultValue={ikkeValgteBarn}
-                                value={midlertidigOpphør ? [] : ikkeValgteBarn}
+                                value={opphørEllerSanksjon ? [] : ikkeValgteBarn}
                                 feil={valideringsfeil && valideringsfeil[index]?.barn[0]}
                                 onChange={(valgtBarn) => {
                                     oppdaterUtgiftsperiode(
@@ -228,7 +218,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                     ))}
                             </ContainerMedLuftUnder>
                         )}
-                        {midlertidigOpphør ? (
+                        {opphørEllerSanksjon ? (
                             <div />
                         ) : (
                             <AntallBarn lesevisning={behandlingErRedigerbar}>{`${
@@ -237,7 +227,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                     : 0
                             }`}</AntallBarn>
                         )}
-                        {midlertidigOpphør && !behandlingErRedigerbar ? (
+                        {!behandlingErRedigerbar || opphørEllerSanksjon ? (
                             <div />
                         ) : (
                             <StyledInput
@@ -245,7 +235,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                 type="number"
                                 size={'small'}
                                 value={harTallverdi(utgifter) ? utgifter : ''}
-                                disabled={midlertidigOpphør}
+                                disabled={opphørEllerSanksjon}
                                 onChange={(e) => {
                                     oppdaterUtgiftsperiode(
                                         index,

@@ -12,7 +12,6 @@ const lagMidlertidigOpphør = (fra: string, til: string): IUtgiftsperiode => ({
     årMånedTil: til,
     barn: [],
     utgifter: undefined,
-    erMidlertidigOpphør: true,
     periodetype: EUtgiftsperiodetype.OPPHØR,
     aktivitetstype: undefined,
     endretKey: uuidv4(),
