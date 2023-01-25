@@ -18,6 +18,7 @@ export enum EInngangsvilkår {
 
 export enum EAktivitetsvilkår {
     AKTIVITET_OVERGANGSTØNAD = 'AKTIVITET_OVERGANGSTØNAD',
+    SAGT_OPP_ELLER_REDUSERT = 'SAGT_OPP_ELLER_REDUSERT',
 }
 
 export type IVilkårstype = EInngangsvilkår | EAktivitetsvilkår;

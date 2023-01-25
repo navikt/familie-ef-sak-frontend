@@ -1,11 +1,12 @@
 import React from 'react';
 import { VilkårProps } from '../../Inngangsvilkår/vilkårprops';
 import { AktivitetsvilkårType } from '../../Inngangsvilkår/vilkår';
-import ToKolonnerLayout from '../../../../Felles/Visningskomponenter/ToKolonnerLayout';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import SagtOppEllerRedusertInfo from './SagtOppEllerRedusertInfo';
-import { Vilkårstittel } from '../../Inngangsvilkår/Vilkårstittel';
 import { AlertError } from '../../../../Felles/Visningskomponenter/Alerts';
+import { VilkårpanelInnhold } from '../../Vilkårpanel/VilkårpanelInnhold';
+import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';
+import { EAktivitetsvilkår } from '../../../../App/context/EkspanderbareVilkårpanelContext';
 
 export const SagtOppEllerRedusert: React.FC<VilkårProps> = ({
     vurderinger,
@@ -28,33 +29,36 @@ export const SagtOppEllerRedusert: React.FC<VilkårProps> = ({
         );
     }
     return (
-        <ToKolonnerLayout>
-            {{
-                venstre: (
-                    <>
-                        <Vilkårstittel
-                            tittel="Sagt opp arbeidsforhold"
-                            vilkårsresultat={vurdering.resultat}
-                        />
-                        {grunnlag.sagtOppEllerRedusertStilling && (
-                            <SagtOppEllerRedusertInfo
-                                sagtOppEllerRedusert={grunnlag.sagtOppEllerRedusertStilling}
-                                skalViseSøknadsdata={skalViseSøknadsdata}
-                                dokumentasjon={grunnlag.dokumentasjon}
+        <Vilkårpanel
+            tittel="Sagt opp arbeidsforhold"
+            vilkårsresultat={vurdering.resultat}
+            vilkår={EAktivitetsvilkår.SAGT_OPP_ELLER_REDUSERT}
+            innhold={
+                <VilkårpanelInnhold>
+                    {{
+                        venstre: (
+                            <>
+                                {grunnlag.sagtOppEllerRedusertStilling && (
+                                    <SagtOppEllerRedusertInfo
+                                        sagtOppEllerRedusert={grunnlag.sagtOppEllerRedusertStilling}
+                                        skalViseSøknadsdata={skalViseSøknadsdata}
+                                        dokumentasjon={grunnlag.dokumentasjon}
+                                    />
+                                )}
+                            </>
+                        ),
+                        høyre: (
+                            <VisEllerEndreVurdering
+                                ikkeVurderVilkår={ikkeVurderVilkår}
+                                vurdering={vurdering}
+                                feilmelding={feilmeldinger[vurdering.id]}
+                                lagreVurdering={lagreVurdering}
+                                nullstillVurdering={nullstillVurdering}
                             />
-                        )}
-                    </>
-                ),
-                høyre: (
-                    <VisEllerEndreVurdering
-                        ikkeVurderVilkår={ikkeVurderVilkår}
-                        vurdering={vurdering}
-                        feilmelding={feilmeldinger[vurdering.id]}
-                        lagreVurdering={lagreVurdering}
-                        nullstillVurdering={nullstillVurdering}
-                    />
-                ),
-            }}
-        </ToKolonnerLayout>
+                        ),
+                    }}
+                </VilkårpanelInnhold>
+            }
+        />
     );
 };
