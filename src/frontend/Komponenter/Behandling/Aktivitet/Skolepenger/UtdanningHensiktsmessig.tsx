@@ -1,11 +1,12 @@
 import React from 'react';
 import { VilkårProps } from '../../Inngangsvilkår/vilkårprops';
 import { AktivitetsvilkårType } from '../../Inngangsvilkår/vilkår';
-import ToKolonnerLayout from '../../../../Felles/Visningskomponenter/ToKolonnerLayout';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
-import { Vilkårstittel } from '../../Inngangsvilkår/Vilkårstittel';
 import UtdanningHensiktsmessigInfo from './UtdanningHensiktsmessigInfo';
 import { AlertError } from '../../../../Felles/Visningskomponenter/Alerts';
+import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';
+import { EAktivitetsvilkår } from '../../../../App/context/EkspanderbareVilkårpanelContext';
+import { VilkårpanelInnhold } from '../../Vilkårpanel/VilkårpanelInnhold';
 
 export const UtdanningHensiktsmessig: React.FC<VilkårProps> = ({
     vurderinger,
@@ -29,32 +30,35 @@ export const UtdanningHensiktsmessig: React.FC<VilkårProps> = ({
     }
 
     return (
-        <ToKolonnerLayout>
-            {{
-                venstre: (
-                    <>
-                        <Vilkårstittel
-                            tittel="Utdanningens nødvendighet og hensiktsmessighet"
-                            vilkårsresultat={vurdering.resultat}
-                        />
-                        {grunnlag.aktivitet && (
-                            <UtdanningHensiktsmessigInfo
-                                aktivitet={grunnlag.aktivitet}
-                                skalViseSøknadsdata={skalViseSøknadsdata}
+        <Vilkårpanel
+            tittel="Utdanningens nødvendighet og hensiktsmessighet"
+            vilkårsresultat={vurdering.resultat}
+            vilkår={EAktivitetsvilkår.UTDANNING_HENSIKTSMESSIG}
+            innhold={
+                <VilkårpanelInnhold>
+                    {{
+                        venstre: (
+                            <>
+                                {grunnlag.aktivitet && (
+                                    <UtdanningHensiktsmessigInfo
+                                        aktivitet={grunnlag.aktivitet}
+                                        skalViseSøknadsdata={skalViseSøknadsdata}
+                                    />
+                                )}
+                            </>
+                        ),
+                        høyre: (
+                            <VisEllerEndreVurdering
+                                ikkeVurderVilkår={ikkeVurderVilkår}
+                                vurdering={vurdering}
+                                feilmelding={feilmeldinger[vurdering.id]}
+                                lagreVurdering={lagreVurdering}
+                                nullstillVurdering={nullstillVurdering}
                             />
-                        )}
-                    </>
-                ),
-                høyre: (
-                    <VisEllerEndreVurdering
-                        ikkeVurderVilkår={ikkeVurderVilkår}
-                        vurdering={vurdering}
-                        feilmelding={feilmeldinger[vurdering.id]}
-                        lagreVurdering={lagreVurdering}
-                        nullstillVurdering={nullstillVurdering}
-                    />
-                ),
-            }}
-        </ToKolonnerLayout>
+                        ),
+                    }}
+                </VilkårpanelInnhold>
+            }
+        />
     );
 };

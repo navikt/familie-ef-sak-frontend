@@ -1,10 +1,11 @@
 import React from 'react';
 import { VilkårProps } from '../../Inngangsvilkår/vilkårprops';
 import { AktivitetsvilkårType } from '../../Inngangsvilkår/vilkår';
-import ToKolonnerLayout from '../../../../Felles/Visningskomponenter/ToKolonnerLayout';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
-import { Vilkårstittel } from '../../Inngangsvilkår/Vilkårstittel';
 import { AlertError } from '../../../../Felles/Visningskomponenter/Alerts';
+import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';
+import { VilkårpanelInnhold } from '../../Vilkårpanel/VilkårpanelInnhold';
+import { EAktivitetsvilkår } from '../../../../App/context/EkspanderbareVilkårpanelContext';
 
 export const RettTilOvergangsstønad: React.FC<VilkårProps> = ({
     vurderinger,
@@ -26,26 +27,26 @@ export const RettTilOvergangsstønad: React.FC<VilkårProps> = ({
     }
 
     return (
-        <ToKolonnerLayout>
-            {{
-                venstre: (
-                    <>
-                        <Vilkårstittel
-                            tittel="Rett til overgangsstønad"
-                            vilkårsresultat={vurdering.resultat}
-                        />
-                    </>
-                ),
-                høyre: (
-                    <VisEllerEndreVurdering
-                        ikkeVurderVilkår={ikkeVurderVilkår}
-                        vurdering={vurdering}
-                        feilmelding={feilmeldinger[vurdering.id]}
-                        lagreVurdering={lagreVurdering}
-                        nullstillVurdering={nullstillVurdering}
-                    />
-                ),
-            }}
-        </ToKolonnerLayout>
+        <Vilkårpanel
+            tittel="Rett til overgangsstønad"
+            vilkårsresultat={vurdering.resultat}
+            vilkår={EAktivitetsvilkår.RETT_TIL_OVERGANGSSTØNAD}
+            innhold={
+                <VilkårpanelInnhold>
+                    {{
+                        venstre: <></>,
+                        høyre: (
+                            <VisEllerEndreVurdering
+                                ikkeVurderVilkår={ikkeVurderVilkår}
+                                vurdering={vurdering}
+                                feilmelding={feilmeldinger[vurdering.id]}
+                                lagreVurdering={lagreVurdering}
+                                nullstillVurdering={nullstillVurdering}
+                            />
+                        ),
+                    }}
+                </VilkårpanelInnhold>
+            }
+        />
     );
 };

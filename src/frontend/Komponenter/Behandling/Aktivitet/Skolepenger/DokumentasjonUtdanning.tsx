@@ -1,11 +1,12 @@
 import React from 'react';
 import { VilkårProps } from '../../Inngangsvilkår/vilkårprops';
 import { AktivitetsvilkårType } from '../../Inngangsvilkår/vilkår';
-import ToKolonnerLayout from '../../../../Felles/Visningskomponenter/ToKolonnerLayout';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
-import { Vilkårstittel } from '../../Inngangsvilkår/Vilkårstittel';
 import DokumentasjonUtdanningInfo from './DokumentasjonUtdanningInfo';
 import { AlertError } from '../../../../Felles/Visningskomponenter/Alerts';
+import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';
+import { EAktivitetsvilkår } from '../../../../App/context/EkspanderbareVilkårpanelContext';
+import { VilkårpanelInnhold } from '../../Vilkårpanel/VilkårpanelInnhold';
 
 export const DokumentasjonUtdanning: React.FC<VilkårProps> = ({
     vurderinger,
@@ -29,33 +30,36 @@ export const DokumentasjonUtdanning: React.FC<VilkårProps> = ({
     }
 
     return (
-        <ToKolonnerLayout>
-            {{
-                venstre: (
-                    <>
-                        <Vilkårstittel
-                            tittel="Dokumentasjon av utdanning og utgifter"
-                            vilkårsresultat={vurdering.resultat}
-                        />
-                        {grunnlag.aktivitet && (
-                            <DokumentasjonUtdanningInfo
-                                aktivitet={grunnlag.aktivitet}
-                                skalViseSøknadsdata={skalViseSøknadsdata}
-                                dokumentasjon={grunnlag.dokumentasjon}
+        <Vilkårpanel
+            tittel="Dokumentasjon av utdanning og utgifter"
+            vilkårsresultat={vurdering.resultat}
+            vilkår={EAktivitetsvilkår.DOKUMENTASJON_UTDANNING}
+            innhold={
+                <VilkårpanelInnhold>
+                    {{
+                        venstre: (
+                            <>
+                                {grunnlag.aktivitet && (
+                                    <DokumentasjonUtdanningInfo
+                                        aktivitet={grunnlag.aktivitet}
+                                        skalViseSøknadsdata={skalViseSøknadsdata}
+                                        dokumentasjon={grunnlag.dokumentasjon}
+                                    />
+                                )}
+                            </>
+                        ),
+                        høyre: (
+                            <VisEllerEndreVurdering
+                                ikkeVurderVilkår={ikkeVurderVilkår}
+                                vurdering={vurdering}
+                                feilmelding={feilmeldinger[vurdering.id]}
+                                lagreVurdering={lagreVurdering}
+                                nullstillVurdering={nullstillVurdering}
                             />
-                        )}
-                    </>
-                ),
-                høyre: (
-                    <VisEllerEndreVurdering
-                        ikkeVurderVilkår={ikkeVurderVilkår}
-                        vurdering={vurdering}
-                        feilmelding={feilmeldinger[vurdering.id]}
-                        lagreVurdering={lagreVurdering}
-                        nullstillVurdering={nullstillVurdering}
-                    />
-                ),
-            }}
-        </ToKolonnerLayout>
+                        ),
+                    }}
+                </VilkårpanelInnhold>
+            }
+        />
     );
 };
