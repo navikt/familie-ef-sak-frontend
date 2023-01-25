@@ -33,32 +33,31 @@ export const SagtOppEllerRedusert: React.FC<VilkårProps> = ({
             tittel="Sagt opp arbeidsforhold"
             vilkårsresultat={vurdering.resultat}
             vilkår={EAktivitetsvilkår.SAGT_OPP_ELLER_REDUSERT}
-            innhold={
-                <VilkårpanelInnhold>
-                    {{
-                        venstre: (
-                            <>
-                                {grunnlag.sagtOppEllerRedusertStilling && (
-                                    <SagtOppEllerRedusertInfo
-                                        sagtOppEllerRedusert={grunnlag.sagtOppEllerRedusertStilling}
-                                        skalViseSøknadsdata={skalViseSøknadsdata}
-                                        dokumentasjon={grunnlag.dokumentasjon}
-                                    />
-                                )}
-                            </>
-                        ),
-                        høyre: (
-                            <VisEllerEndreVurdering
-                                ikkeVurderVilkår={ikkeVurderVilkår}
-                                vurdering={vurdering}
-                                feilmelding={feilmeldinger[vurdering.id]}
-                                lagreVurdering={lagreVurdering}
-                                nullstillVurdering={nullstillVurdering}
-                            />
-                        ),
-                    }}
-                </VilkårpanelInnhold>
-            }
-        />
+        >
+            <VilkårpanelInnhold>
+                {{
+                    venstre: (
+                        <>
+                            {grunnlag.sagtOppEllerRedusertStilling && (
+                                <SagtOppEllerRedusertInfo
+                                    sagtOppEllerRedusert={grunnlag.sagtOppEllerRedusertStilling}
+                                    skalViseSøknadsdata={skalViseSøknadsdata}
+                                    dokumentasjon={grunnlag.dokumentasjon}
+                                />
+                            )}
+                        </>
+                    ),
+                    høyre: (
+                        <VisEllerEndreVurdering
+                            ikkeVurderVilkår={ikkeVurderVilkår}
+                            vurdering={vurdering}
+                            feilmelding={feilmeldinger[vurdering.id]}
+                            lagreVurdering={lagreVurdering}
+                            nullstillVurdering={nullstillVurdering}
+                        />
+                    ),
+                }}
+            </VilkårpanelInnhold>
+        </Vilkårpanel>
     );
 };

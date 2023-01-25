@@ -34,32 +34,31 @@ export const DokumentasjonUtdanning: React.FC<VilkårProps> = ({
             tittel="Dokumentasjon av utdanning og utgifter"
             vilkårsresultat={vurdering.resultat}
             vilkår={EAktivitetsvilkår.DOKUMENTASJON_UTDANNING}
-            innhold={
-                <VilkårpanelInnhold>
-                    {{
-                        venstre: (
-                            <>
-                                {grunnlag.aktivitet && (
-                                    <DokumentasjonUtdanningInfo
-                                        aktivitet={grunnlag.aktivitet}
-                                        skalViseSøknadsdata={skalViseSøknadsdata}
-                                        dokumentasjon={grunnlag.dokumentasjon}
-                                    />
-                                )}
-                            </>
-                        ),
-                        høyre: (
-                            <VisEllerEndreVurdering
-                                ikkeVurderVilkår={ikkeVurderVilkår}
-                                vurdering={vurdering}
-                                feilmelding={feilmeldinger[vurdering.id]}
-                                lagreVurdering={lagreVurdering}
-                                nullstillVurdering={nullstillVurdering}
-                            />
-                        ),
-                    }}
-                </VilkårpanelInnhold>
-            }
-        />
+        >
+            <VilkårpanelInnhold>
+                {{
+                    venstre: (
+                        <>
+                            {grunnlag.aktivitet && (
+                                <DokumentasjonUtdanningInfo
+                                    aktivitet={grunnlag.aktivitet}
+                                    skalViseSøknadsdata={skalViseSøknadsdata}
+                                    dokumentasjon={grunnlag.dokumentasjon}
+                                />
+                            )}
+                        </>
+                    ),
+                    høyre: (
+                        <VisEllerEndreVurdering
+                            ikkeVurderVilkår={ikkeVurderVilkår}
+                            vurdering={vurdering}
+                            feilmelding={feilmeldinger[vurdering.id]}
+                            lagreVurdering={lagreVurdering}
+                            nullstillVurdering={nullstillVurdering}
+                        />
+                    ),
+                }}
+            </VilkårpanelInnhold>
+        </Vilkårpanel>
     );
 };

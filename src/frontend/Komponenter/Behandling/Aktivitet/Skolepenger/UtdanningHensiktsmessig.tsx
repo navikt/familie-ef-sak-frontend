@@ -34,31 +34,30 @@ export const UtdanningHensiktsmessig: React.FC<VilkårProps> = ({
             tittel="Utdanningens nødvendighet og hensiktsmessighet"
             vilkårsresultat={vurdering.resultat}
             vilkår={EAktivitetsvilkår.UTDANNING_HENSIKTSMESSIG}
-            innhold={
-                <VilkårpanelInnhold>
-                    {{
-                        venstre: (
-                            <>
-                                {grunnlag.aktivitet && (
-                                    <UtdanningHensiktsmessigInfo
-                                        aktivitet={grunnlag.aktivitet}
-                                        skalViseSøknadsdata={skalViseSøknadsdata}
-                                    />
-                                )}
-                            </>
-                        ),
-                        høyre: (
-                            <VisEllerEndreVurdering
-                                ikkeVurderVilkår={ikkeVurderVilkår}
-                                vurdering={vurdering}
-                                feilmelding={feilmeldinger[vurdering.id]}
-                                lagreVurdering={lagreVurdering}
-                                nullstillVurdering={nullstillVurdering}
-                            />
-                        ),
-                    }}
-                </VilkårpanelInnhold>
-            }
-        />
+        >
+            <VilkårpanelInnhold>
+                {{
+                    venstre: (
+                        <>
+                            {grunnlag.aktivitet && (
+                                <UtdanningHensiktsmessigInfo
+                                    aktivitet={grunnlag.aktivitet}
+                                    skalViseSøknadsdata={skalViseSøknadsdata}
+                                />
+                            )}
+                        </>
+                    ),
+                    høyre: (
+                        <VisEllerEndreVurdering
+                            ikkeVurderVilkår={ikkeVurderVilkår}
+                            vurdering={vurdering}
+                            feilmelding={feilmeldinger[vurdering.id]}
+                            lagreVurdering={lagreVurdering}
+                            nullstillVurdering={nullstillVurdering}
+                        />
+                    ),
+                }}
+            </VilkårpanelInnhold>
+        </Vilkårpanel>
     );
 };

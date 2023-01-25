@@ -43,34 +43,33 @@ export const AktivitetArbeid: React.FC<VilkårProps> = ({
                         vilkårsresultat={vurdering.resultat}
                         paragrafTittel={'§15-10'}
                         vilkår={EAktivitetsvilkår.AKTIVITET_BARNETILSYN}
-                        innhold={
-                            <VilkårpanelInnhold>
-                                {{
-                                    venstre: (
-                                        <>
-                                            {grunnlag.aktivitet && (
-                                                <AktivitetArbeidInfo
-                                                    aktivitet={grunnlag.aktivitet}
-                                                    skalViseSøknadsdata={skalViseSøknadsdata}
-                                                    stønadstype={behandling.stønadstype}
-                                                    dokumentasjon={grunnlag.dokumentasjon}
-                                                />
-                                            )}
-                                        </>
-                                    ),
-                                    høyre: (
-                                        <VisEllerEndreVurdering
-                                            ikkeVurderVilkår={ikkeVurderVilkår}
-                                            vurdering={vurdering}
-                                            feilmelding={feilmeldinger[vurdering.id]}
-                                            lagreVurdering={lagreVurdering}
-                                            nullstillVurdering={nullstillVurdering}
-                                        />
-                                    ),
-                                }}
-                            </VilkårpanelInnhold>
-                        }
-                    />
+                    >
+                        <VilkårpanelInnhold>
+                            {{
+                                venstre: (
+                                    <>
+                                        {grunnlag.aktivitet && (
+                                            <AktivitetArbeidInfo
+                                                aktivitet={grunnlag.aktivitet}
+                                                skalViseSøknadsdata={skalViseSøknadsdata}
+                                                stønadstype={behandling.stønadstype}
+                                                dokumentasjon={grunnlag.dokumentasjon}
+                                            />
+                                        )}
+                                    </>
+                                ),
+                                høyre: (
+                                    <VisEllerEndreVurdering
+                                        ikkeVurderVilkår={ikkeVurderVilkår}
+                                        vurdering={vurdering}
+                                        feilmelding={feilmeldinger[vurdering.id]}
+                                        lagreVurdering={lagreVurdering}
+                                        nullstillVurdering={nullstillVurdering}
+                                    />
+                                ),
+                            }}
+                        </VilkårpanelInnhold>
+                    </Vilkårpanel>
                 );
             }}
         </DataViewer>

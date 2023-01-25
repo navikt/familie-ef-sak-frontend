@@ -30,21 +30,20 @@ export const Inntekt: React.FC<VilkårProps> = ({
             vilkårsresultat={vurdering.resultat}
             paragrafTittel={'§15-10'}
             vilkår={EAktivitetsvilkår.INNTEKT}
-            innhold={
-                <VilkårpanelInnhold>
-                    {{
-                        høyre: (
-                            <VisEllerEndreVurdering
-                                ikkeVurderVilkår={ikkeVurderVilkår}
-                                vurdering={vurdering}
-                                feilmelding={feilmeldinger[vurdering.id]}
-                                lagreVurdering={lagreVurdering}
-                                nullstillVurdering={nullstillVurdering}
-                            />
-                        ),
-                    }}
-                </VilkårpanelInnhold>
-            }
-        />
+        >
+            <VilkårpanelInnhold>
+                {{
+                    høyre: (
+                        <VisEllerEndreVurdering
+                            ikkeVurderVilkår={ikkeVurderVilkår}
+                            vurdering={vurdering}
+                            feilmelding={feilmeldinger[vurdering.id]}
+                            lagreVurdering={lagreVurdering}
+                            nullstillVurdering={nullstillVurdering}
+                        />
+                    ),
+                }}
+            </VilkårpanelInnhold>
+        </Vilkårpanel>
     );
 };

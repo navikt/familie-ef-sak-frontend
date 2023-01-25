@@ -31,21 +31,20 @@ export const RettTilOvergangsstønad: React.FC<VilkårProps> = ({
             tittel="Rett til overgangsstønad"
             vilkårsresultat={vurdering.resultat}
             vilkår={EAktivitetsvilkår.RETT_TIL_OVERGANGSSTØNAD}
-            innhold={
-                <VilkårpanelInnhold>
-                    {{
-                        høyre: (
-                            <VisEllerEndreVurdering
-                                ikkeVurderVilkår={ikkeVurderVilkår}
-                                vurdering={vurdering}
-                                feilmelding={feilmeldinger[vurdering.id]}
-                                lagreVurdering={lagreVurdering}
-                                nullstillVurdering={nullstillVurdering}
-                            />
-                        ),
-                    }}
-                </VilkårpanelInnhold>
-            }
-        />
+        >
+            <VilkårpanelInnhold>
+                {{
+                    høyre: (
+                        <VisEllerEndreVurdering
+                            ikkeVurderVilkår={ikkeVurderVilkår}
+                            vurdering={vurdering}
+                            feilmelding={feilmeldinger[vurdering.id]}
+                            lagreVurdering={lagreVurdering}
+                            nullstillVurdering={nullstillVurdering}
+                        />
+                    ),
+                }}
+            </VilkårpanelInnhold>
+        </Vilkårpanel>
     );
 };
