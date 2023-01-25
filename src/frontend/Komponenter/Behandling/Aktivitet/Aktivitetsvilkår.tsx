@@ -5,23 +5,27 @@ import { Stønadstype } from '../../../App/typer/behandlingstema';
 import AktivitetsVilkårOvergangsstønad from './AktivitetsvilkårOvergangsstønad';
 import AktivitetsVilkårBarnetilsyn from './AktivitetsvilkårBarnetilsyn';
 import AktivitetsVilkårSkolepenger from './AktivitetsvilkårSkolepenger';
+import { AktivitetsvilkårHeader } from './AktivitetsvilkårHeader';
 
 const AktivitetsVilkår: FC = () => {
     const { behandling } = useBehandling();
 
     return (
-        <DataViewer response={{ behandling }}>
-            {({ behandling }) => {
-                switch (behandling.stønadstype) {
-                    case Stønadstype.OVERGANGSSTØNAD:
-                        return <AktivitetsVilkårOvergangsstønad behandling={behandling} />;
-                    case Stønadstype.BARNETILSYN:
-                        return <AktivitetsVilkårBarnetilsyn behandling={behandling} />;
-                    case Stønadstype.SKOLEPENGER:
-                        return <AktivitetsVilkårSkolepenger behandling={behandling} />;
-                }
-            }}
-        </DataViewer>
+        <>
+            <AktivitetsvilkårHeader />
+            <DataViewer response={{ behandling }}>
+                {({ behandling }) => {
+                    switch (behandling.stønadstype) {
+                        case Stønadstype.OVERGANGSSTØNAD:
+                            return <AktivitetsVilkårOvergangsstønad behandling={behandling} />;
+                        case Stønadstype.BARNETILSYN:
+                            return <AktivitetsVilkårBarnetilsyn behandling={behandling} />;
+                        case Stønadstype.SKOLEPENGER:
+                            return <AktivitetsVilkårSkolepenger behandling={behandling} />;
+                    }
+                }}
+            </DataViewer>
+        </>
     );
 };
 
