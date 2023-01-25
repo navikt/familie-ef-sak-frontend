@@ -42,17 +42,13 @@ export const Aktivitet: React.FC<VilkårProps> = ({
                     >
                         <VilkårpanelInnhold>
                             {{
-                                venstre: (
-                                    <>
-                                        {grunnlag.aktivitet && (
-                                            <AktivitetInfo
-                                                aktivitet={grunnlag.aktivitet}
-                                                skalViseSøknadsdata={skalViseSøknadsdata}
-                                                stønadstype={behandling.stønadstype}
-                                                dokumentasjon={grunnlag.dokumentasjon}
-                                            />
-                                        )}
-                                    </>
+                                venstre: grunnlag.aktivitet && (
+                                    <AktivitetInfo
+                                        aktivitet={grunnlag.aktivitet}
+                                        skalViseSøknadsdata={skalViseSøknadsdata}
+                                        stønadstype={behandling.stønadstype}
+                                        dokumentasjon={grunnlag.dokumentasjon}
+                                    />
                                 ),
                                 høyre: (
                                     <VisEllerEndreVurdering

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, ReactNode } from 'react';
 import styled from 'styled-components';
 import { Vilkårsresultat } from '../Inngangsvilkår/vilkår';
 import { Button, Heading } from '@navikt/ds-react';
@@ -40,7 +40,7 @@ interface Props {
     tittel: string;
     paragrafTittel?: string;
     vilkårsresultat: Vilkårsresultat;
-    children: JSX.Element;
+    children: ReactNode;
     vilkår: IVilkårstype;
 }
 

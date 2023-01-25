@@ -36,16 +36,12 @@ export const SagtOppEllerRedusert: React.FC<VilkårProps> = ({
         >
             <VilkårpanelInnhold>
                 {{
-                    venstre: (
-                        <>
-                            {grunnlag.sagtOppEllerRedusertStilling && (
-                                <SagtOppEllerRedusertInfo
-                                    sagtOppEllerRedusert={grunnlag.sagtOppEllerRedusertStilling}
-                                    skalViseSøknadsdata={skalViseSøknadsdata}
-                                    dokumentasjon={grunnlag.dokumentasjon}
-                                />
-                            )}
-                        </>
+                    venstre: grunnlag.sagtOppEllerRedusertStilling && (
+                        <SagtOppEllerRedusertInfo
+                            sagtOppEllerRedusert={grunnlag.sagtOppEllerRedusertStilling}
+                            skalViseSøknadsdata={skalViseSøknadsdata}
+                            dokumentasjon={grunnlag.dokumentasjon}
+                        />
                     ),
                     høyre: (
                         <VisEllerEndreVurdering

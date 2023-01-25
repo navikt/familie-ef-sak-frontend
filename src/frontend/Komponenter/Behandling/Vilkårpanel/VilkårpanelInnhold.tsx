@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, ReactNode } from 'react';
 import styled from 'styled-components';
 
 const Container = styled.div<{ borderBottom: boolean }>`
@@ -33,8 +33,8 @@ const Container = styled.div<{ borderBottom: boolean }>`
 interface Props {
     borderBottom?: boolean;
     children: {
-        venstre?: JSX.Element;
-        høyre: JSX.Element;
+        venstre?: ReactNode;
+        høyre: ReactNode;
     };
 }
 

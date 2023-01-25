@@ -37,15 +37,11 @@ export const UtdanningHensiktsmessig: React.FC<VilkårProps> = ({
         >
             <VilkårpanelInnhold>
                 {{
-                    venstre: (
-                        <>
-                            {grunnlag.aktivitet && (
-                                <UtdanningHensiktsmessigInfo
-                                    aktivitet={grunnlag.aktivitet}
-                                    skalViseSøknadsdata={skalViseSøknadsdata}
-                                />
-                            )}
-                        </>
+                    venstre: grunnlag.aktivitet && (
+                        <UtdanningHensiktsmessigInfo
+                            aktivitet={grunnlag.aktivitet}
+                            skalViseSøknadsdata={skalViseSøknadsdata}
+                        />
                     ),
                     høyre: (
                         <VisEllerEndreVurdering

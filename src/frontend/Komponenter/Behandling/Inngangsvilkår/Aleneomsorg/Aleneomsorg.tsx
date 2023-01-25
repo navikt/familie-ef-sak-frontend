@@ -52,80 +52,72 @@ export const Aleneomsorg: React.FC<VilkårPropsMedStønadstype> = ({
             vilkårsresultat={utleddResultat}
             vilkår={EInngangsvilkår.ALENEOMSORG}
         >
-            <>
-                {grunnlag.barnMedSamvær.map((barn, indeks) => {
-                    const vurdering = vurderinger.find(
-                        (v) =>
-                            v.barnId === barn.barnId &&
-                            v.vilkårType === InngangsvilkårType.ALENEOMSORG
-                    );
-                    if (!vurdering) return null;
+            {grunnlag.barnMedSamvær.map((barn, indeks) => {
+                const vurdering = vurderinger.find(
+                    (v) =>
+                        v.barnId === barn.barnId && v.vilkårType === InngangsvilkårType.ALENEOMSORG
+                );
+                if (!vurdering) return null;
 
-                    return (
-                        <VilkårpanelInnhold
-                            key={barn.barnId}
-                            borderBottom={
-                                indeks !== grunnlag.barnMedSamvær.length - 1 &&
-                                grunnlag.barnMedSamvær.length > 1
-                            }
-                        >
-                            {{
-                                venstre: (
-                                    <>
-                                        <AleneomsorgInfo
-                                            gjeldendeBarn={barn}
-                                            skalViseSøknadsdata={skalViseSøknadsdata}
-                                            barnMedLøpendeStønad={barnMedLøpendeStønad}
-                                            stønadstype={stønadstype}
-                                        />
-                                        {indeks === grunnlag.barnMedSamvær.length - 1 && (
-                                            <>
-                                                {skalViseSøknadsdata && (
-                                                    <>
-                                                        <DokumentasjonSendtInn
-                                                            dokumentasjon={
-                                                                grunnlag.dokumentasjon
-                                                                    ?.avtaleOmDeltBosted
-                                                            }
-                                                            tittel={'Avtale om delt fast bosted'}
-                                                        />
-                                                        <DokumentasjonSendtInn
-                                                            dokumentasjon={
-                                                                grunnlag.dokumentasjon
-                                                                    ?.skalBarnetBoHosSøkerMenAnnenForelderSamarbeiderIkke
-                                                            }
-                                                            tittel={
-                                                                'Dokumentasjon som viser at barnet bor hos deg'
-                                                            }
-                                                        />
-                                                        <DokumentasjonSendtInn
-                                                            dokumentasjon={
-                                                                grunnlag.dokumentasjon
-                                                                    ?.samværsavtale
-                                                            }
-                                                            tittel={'Samværsavtale'}
-                                                        />
-                                                    </>
-                                                )}
-                                            </>
-                                        )}
-                                    </>
-                                ),
-                                høyre: (
-                                    <VisEllerEndreVurdering
-                                        key={vurdering.id}
-                                        ikkeVurderVilkår={ikkeVurderVilkår}
-                                        vurdering={vurdering}
-                                        feilmelding={feilmeldinger[vurdering.id]}
-                                        lagreVurdering={lagreVurdering}
-                                        nullstillVurdering={nullstillVurdering}
+                const erSisteBarn = indeks === grunnlag.barnMedSamvær.length - 1;
+                return (
+                    <VilkårpanelInnhold
+                        key={barn.barnId}
+                        borderBottom={
+                            indeks !== grunnlag.barnMedSamvær.length - 1 &&
+                            grunnlag.barnMedSamvær.length > 1
+                        }
+                    >
+                        {{
+                            venstre: (
+                                <>
+                                    <AleneomsorgInfo
+                                        gjeldendeBarn={barn}
+                                        skalViseSøknadsdata={skalViseSøknadsdata}
+                                        barnMedLøpendeStønad={barnMedLøpendeStønad}
+                                        stønadstype={stønadstype}
                                     />
-                                ),
-                            }}
-                        </VilkårpanelInnhold>
-                    );
-                })}
-            </>
+                                    {erSisteBarn && skalViseSøknadsdata && (
+                                        <>
+                                            <DokumentasjonSendtInn
+                                                dokumentasjon={
+                                                    grunnlag.dokumentasjon?.avtaleOmDeltBosted
+                                                }
+                                                tittel={'Avtale om delt fast bosted'}
+                                            />
+                                            <DokumentasjonSendtInn
+                                                dokumentasjon={
+                                                    grunnlag.dokumentasjon
+                                                        ?.skalBarnetBoHosSøkerMenAnnenForelderSamarbeiderIkke
+                                                }
+                                                tittel={
+                                                    'Dokumentasjon som viser at barnet bor hos deg'
+                                                }
+                                            />
+                                            <DokumentasjonSendtInn
+                                                dokumentasjon={
+                                                    grunnlag.dokumentasjon?.samværsavtale
+                                                }
+                                                tittel={'Samværsavtale'}
+                                            />
+                                        </>
+                                    )}
+                                </>
+                            ),
+                            høyre: (
+                                <VisEllerEndreVurdering
+                                    key={vurdering.id}
+                                    ikkeVurderVilkår={ikkeVurderVilkår}
+                                    vurdering={vurdering}
+                                    feilmelding={feilmeldinger[vurdering.id]}
+                                    lagreVurdering={lagreVurdering}
+                                    nullstillVurdering={nullstillVurdering}
+                                />
+                            ),
+                        }}
+                    </VilkårpanelInnhold>
+                );
+            })}
         </Vilkårpanel>
     );
 };

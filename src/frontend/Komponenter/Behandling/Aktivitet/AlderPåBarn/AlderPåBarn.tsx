@@ -47,6 +47,7 @@ export const AlderPåBarn: React.FC<VilkårProps> = ({
                         );
                     } else if (!vurdering) return null;
 
+                    const erSisteBarn = idx === grunnlag.barnMedSamvær.length - 1;
                     return (
                         <VilkårpanelInnhold
                             key={barn.barnId}
@@ -62,38 +63,32 @@ export const AlderPåBarn: React.FC<VilkårProps> = ({
                                             gjeldendeBarn={barn}
                                             skalViseSøknadsdata={skalViseSøknadsdata}
                                         />
-                                        {idx === grunnlag.barnMedSamvær.length - 1 && (
+                                        {erSisteBarn && skalViseSøknadsdata && (
                                             <>
-                                                {skalViseSøknadsdata && (
-                                                    <>
-                                                        <DokumentasjonSendtInn
-                                                            dokumentasjon={
-                                                                grunnlag.dokumentasjon
-                                                                    ?.spesielleBehov
-                                                            }
-                                                            tittel={
-                                                                'Dokumentasjon som viser at barnet ditt har behov for vesentlig mer pass enn det som er vanlig for jevnaldrende'
-                                                            }
-                                                        />
-                                                        <DokumentasjonSendtInn
-                                                            dokumentasjon={
-                                                                grunnlag.dokumentasjon
-                                                                    ?.roterendeArbeidstid
-                                                            }
-                                                            tittel={
-                                                                'Dokumentasjon som viser at du jobber turnus eller skift, og jobber på tider utenom vanlig arbeidstid'
-                                                            }
-                                                        />
-                                                        <DokumentasjonSendtInn
-                                                            dokumentasjon={
-                                                                grunnlag.dokumentasjon?.arbeidstid
-                                                            }
-                                                            tittel={
-                                                                'Dokumentasjon som viser at du må være borte fra hjemmet i lengre perioder på grunn av jobb'
-                                                            }
-                                                        />
-                                                    </>
-                                                )}
+                                                <DokumentasjonSendtInn
+                                                    dokumentasjon={
+                                                        grunnlag.dokumentasjon?.spesielleBehov
+                                                    }
+                                                    tittel={
+                                                        'Dokumentasjon som viser at barnet ditt har behov for vesentlig mer pass enn det som er vanlig for jevnaldrende'
+                                                    }
+                                                />
+                                                <DokumentasjonSendtInn
+                                                    dokumentasjon={
+                                                        grunnlag.dokumentasjon?.roterendeArbeidstid
+                                                    }
+                                                    tittel={
+                                                        'Dokumentasjon som viser at du jobber turnus eller skift, og jobber på tider utenom vanlig arbeidstid'
+                                                    }
+                                                />
+                                                <DokumentasjonSendtInn
+                                                    dokumentasjon={
+                                                        grunnlag.dokumentasjon?.arbeidstid
+                                                    }
+                                                    tittel={
+                                                        'Dokumentasjon som viser at du må være borte fra hjemmet i lengre perioder på grunn av jobb'
+                                                    }
+                                                />
                                             </>
                                         )}
                                     </>
