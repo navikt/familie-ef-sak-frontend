@@ -16,7 +16,7 @@ const EndringPersonopplsyninger: React.FC<{
     const skalViseKomponent = toggles[ToggleName.visEndringerPersonopplysninger];
 
     React.useEffect(() => {
-        if (behandlingId !== undefined && skalViseKomponent) {
+        if (behandlingId !== undefined) {
             if (endringerPersonopplysninger.status !== RessursStatus.SUKSESS) {
                 hentEndringerForPersonopplysninger(behandlingId);
             }
