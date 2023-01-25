@@ -59,7 +59,7 @@ export const Aleneomsorg: React.FC<VilkårPropsMedStønadstype> = ({
                                 v.barnId === barn.barnId &&
                                 v.vilkårType === InngangsvilkårType.ALENEOMSORG
                         );
-                        if (!vurdering) return <></>;
+                        if (!vurdering) return null;
 
                         return (
                             <VilkårpanelInnhold
