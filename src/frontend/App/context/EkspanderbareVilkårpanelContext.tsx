@@ -29,13 +29,13 @@ const [EkspanderbareVilkårpanelProvider, useEkspanderbareVilkårpanelContext] =
         useState<Record<EInngangsvilkår, EkspandertTilstand>>(allePanelEkspandert);
 
     const toggleEkspandertTilstand = (key: EInngangsvilkår) => {
-        settEkspanderteVilkår({
+        settEkspanderteVilkår((ekspanderteVilkår) => ({
             ...ekspanderteVilkår,
             [key]:
                 ekspanderteVilkår[key] === EkspandertTilstand.EKSPANDERT
                     ? EkspandertTilstand.KOLLAPSET
                     : EkspandertTilstand.EKSPANDERT,
-        });
+        }));
     };
 
     const lukkAlle = () => {
