@@ -3,9 +3,10 @@ import { RessursStatus } from '../../../App/typer/ressurs';
 import { useHentVilkår } from '../../../App/hooks/useHentVilkår';
 import { Alert, Heading } from '@navikt/ds-react';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
-import { erEndringPåPersonopplysninger } from './utils';
+import { utledEndringerPåPersonopplysninger } from './utils';
 import { useToggles } from '../../../App/context/TogglesContext';
 import { ToggleName } from '../../../App/context/toggles';
+import { endringerKeyTilTekst } from '../Inngangsvilkår/vilkår';
 
 const EndringPersonopplsyninger: React.FC<{
     behandlingId: string;
@@ -30,7 +31,8 @@ const EndringPersonopplsyninger: React.FC<{
     return (
         <DataViewer response={{ endringerPersonopplysninger }}>
             {({ endringerPersonopplysninger }) => {
-                const erEndring = erEndringPåPersonopplysninger(endringerPersonopplysninger);
+                const endringer = utledEndringerPåPersonopplysninger(endringerPersonopplysninger);
+                const erEndring = endringer.length > 0;
 
                 if (!erEndring) {
                     return <></>;
@@ -41,8 +43,17 @@ const EndringPersonopplsyninger: React.FC<{
                         <Heading spacing size="small" level="2">
                             Endring i folkeregisteropplysninger
                         </Heading>
-                        Det har vært endringer i brukers opplysnginger fra folkeregisteret siden
-                        denne behandlingen ble påbegynt.
+                        <div>
+                            Det har vært endringer i brukers opplysnginger fra folkeregisteret siden
+                            denne behandlingen ble påbegynt:
+                        </div>
+                        <ul>
+                            {endringer.map((personopplysning) => (
+                                <li key={personopplysning}>
+                                    {endringerKeyTilTekst[personopplysning]}
+                                </li>
+                            ))}
+                        </ul>
                     </Alert>
                 );
             }}

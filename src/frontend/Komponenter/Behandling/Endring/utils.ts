@@ -1,7 +1,10 @@
-import { IEndring, IEndringerPersonopplysninger } from '../Inngangsvilkår/vilkår';
+import { IEndring, IEndringer, IEndringerPersonopplysninger } from '../Inngangsvilkår/vilkår';
 
-export const erEndringPåPersonopplysninger = (
+export const utledEndringerPåPersonopplysninger = (
     personopplysninger: IEndringerPersonopplysninger
-): boolean =>
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    Object.entries(personopplysninger.endringer).some(([_, v]) => (v as IEndring).harEndringer);
+): (keyof IEndringer)[] =>
+    Object.entries(personopplysninger.endringer)
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        .filter(([_, value]) => (value as IEndring).harEndringer)
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        .map(([key, _]) => key as keyof IEndringer);

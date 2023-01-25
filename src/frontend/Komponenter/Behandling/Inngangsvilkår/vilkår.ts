@@ -46,6 +46,21 @@ export interface IEndringer {
     vergemål: IEndring;
 }
 
+export const endringerKeyTilTekst: Record<keyof IEndringer, string> = {
+    folkeregisterpersonstatus: 'Personstatus', //TODO: Hør med funksjonelle om visningsnavn
+    fødselsdato: 'Fødselsdato',
+    dødsdato: 'Dato for dødsfall',
+    statsborgerskap: 'Statsborgerskap',
+    sivilstand: 'Sivilstand',
+    adresse: 'Adresse',
+    fullmakt: 'Fullmakt',
+    barn: 'Barn', // TODO: Spesifirer endringer i dette objektet
+    innflyttingTilNorge: 'Innflytting til Norge',
+    utflyttingFraNorge: 'Utflytting fra Norge',
+    oppholdstillatelse: 'Oppholdstillatelse',
+    vergemål: 'Vergemål',
+};
+
 export interface IEndring {
     harEndringer: boolean;
 }
