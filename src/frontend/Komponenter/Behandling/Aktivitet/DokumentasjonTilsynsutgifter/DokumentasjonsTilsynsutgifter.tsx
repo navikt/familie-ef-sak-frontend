@@ -1,12 +1,13 @@
 import React from 'react';
-import ToKolonnerLayout from '../../../../Felles/Visningskomponenter/ToKolonnerLayout';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import { VilkårProps } from '../../Inngangsvilkår/vilkårprops';
-import { Vilkårstittel } from '../../Inngangsvilkår/Vilkårstittel';
 import TilsynsutgifterBarnInfo from './TilsynsutgifterBarnInfo';
 import { AktivitetsvilkårType } from '../../Inngangsvilkår/vilkår';
 import DokumentasjonSendtInn from '../../Inngangsvilkår/DokumentasjonSendtInn';
 import { AlertError } from '../../../../Felles/Visningskomponenter/Alerts';
+import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';
+import { EAktivitetsvilkår } from '../../../../App/context/EkspanderbareVilkårpanelContext';
+import { VilkårpanelInnhold } from '../../Vilkårpanel/VilkårpanelInnhold';
 
 export const DokumentasjonsTilsynsutgifter: React.FC<VilkårProps> = ({
     vurderinger,
@@ -30,61 +31,66 @@ export const DokumentasjonsTilsynsutgifter: React.FC<VilkårProps> = ({
     }
 
     return (
-        <ToKolonnerLayout>
-            {{
-                venstre: (
-                    <>
-                        <Vilkårstittel
-                            tittel="Dokumentasjon av tilsynsutgifter"
-                            vilkårsresultat={vurdering.resultat}
-                        />
-                        {grunnlag.barnMedSamvær.map((barn, index) => {
-                            return (
-                                <React.Fragment key={index}>
-                                    <TilsynsutgifterBarnInfo
-                                        gjeldendeBarn={barn}
-                                        skalViseSøknadsdata={skalViseSøknadsdata}
-                                    />
-                                    {index === grunnlag.barnMedSamvær.length - 1 && (
-                                        <>
-                                            {skalViseSøknadsdata && (
+        <Vilkårpanel
+            tittel="Dokumentasjon av tilsynsutgifter"
+            vilkårsresultat={vurdering.resultat}
+            vilkår={EAktivitetsvilkår.DOKUMENTASJON_AV_TILSYNSUTGIFTER}
+            innhold={
+                <VilkårpanelInnhold>
+                    {{
+                        venstre: (
+                            <>
+                                {grunnlag.barnMedSamvær.map((barn, index) => {
+                                    return (
+                                        <React.Fragment key={index}>
+                                            <TilsynsutgifterBarnInfo
+                                                gjeldendeBarn={barn}
+                                                skalViseSøknadsdata={skalViseSøknadsdata}
+                                            />
+                                            {index === grunnlag.barnMedSamvær.length - 1 && (
                                                 <>
-                                                    <DokumentasjonSendtInn
-                                                        dokumentasjon={
-                                                            grunnlag.dokumentasjon
-                                                                ?.avtaleBarnepasser
-                                                        }
-                                                        tittel={'Avtalen du har med barnepasseren'}
-                                                    />
-                                                    <DokumentasjonSendtInn
-                                                        dokumentasjon={
-                                                            grunnlag.dokumentasjon
-                                                                ?.barnepassordningFaktura
-                                                        }
-                                                        tittel={
-                                                            'Faktura fra barnepassordningen for perioden du søker om nå'
-                                                        }
-                                                    />
+                                                    {skalViseSøknadsdata && (
+                                                        <>
+                                                            <DokumentasjonSendtInn
+                                                                dokumentasjon={
+                                                                    grunnlag.dokumentasjon
+                                                                        ?.avtaleBarnepasser
+                                                                }
+                                                                tittel={
+                                                                    'Avtalen du har med barnepasseren'
+                                                                }
+                                                            />
+                                                            <DokumentasjonSendtInn
+                                                                dokumentasjon={
+                                                                    grunnlag.dokumentasjon
+                                                                        ?.barnepassordningFaktura
+                                                                }
+                                                                tittel={
+                                                                    'Faktura fra barnepassordningen for perioden du søker om nå'
+                                                                }
+                                                            />
+                                                        </>
+                                                    )}
                                                 </>
                                             )}
-                                        </>
-                                    )}
-                                </React.Fragment>
-                            );
-                        })}
-                    </>
-                ),
-                høyre: (
-                    <VisEllerEndreVurdering
-                        key={vurdering.id}
-                        ikkeVurderVilkår={ikkeVurderVilkår}
-                        vurdering={vurdering}
-                        feilmelding={feilmeldinger[vurdering.id]}
-                        lagreVurdering={lagreVurdering}
-                        nullstillVurdering={nullstillVurdering}
-                    />
-                ),
-            }}
-        </ToKolonnerLayout>
+                                        </React.Fragment>
+                                    );
+                                })}
+                            </>
+                        ),
+                        høyre: (
+                            <VisEllerEndreVurdering
+                                key={vurdering.id}
+                                ikkeVurderVilkår={ikkeVurderVilkår}
+                                vurdering={vurdering}
+                                feilmelding={feilmeldinger[vurdering.id]}
+                                lagreVurdering={lagreVurdering}
+                                nullstillVurdering={nullstillVurdering}
+                            />
+                        ),
+                    }}
+                </VilkårpanelInnhold>
+            }
+        />
     );
 };
