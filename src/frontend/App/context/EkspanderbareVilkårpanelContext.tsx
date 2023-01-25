@@ -17,16 +17,26 @@ export enum EInngangsvilkår {
 }
 
 const [EkspanderbareVilkårpanelProvider, useEkspanderbareVilkårpanelContext] = constate(() => {
-    const allePanelEkspandert = Object.keys(EInngangsvilkår).reduce(
-        (acc, key) => ({
-            ...acc,
-            [key]: EkspandertTilstand.EKSPANDERT,
-        }),
-        {} as Record<EInngangsvilkår, EkspandertTilstand>
-    );
+    const settAlleTil = (tilstand: EkspandertTilstand) =>
+        Object.keys(EInngangsvilkår).reduce(
+            (acc, key) => ({
+                ...acc,
+                [key]: tilstand,
+            }),
+            {} as Record<EInngangsvilkår, EkspandertTilstand>
+        );
 
-    const [ekspanderteVilkår, settEkspanderteVilkår] =
-        useState<Record<EInngangsvilkår, EkspandertTilstand>>(allePanelEkspandert);
+    const [ekspanderteVilkår, settEkspanderteVilkår] = useState<
+        Record<EInngangsvilkår, EkspandertTilstand>
+    >(settAlleTil(EkspandertTilstand.EKSPANDERT));
+
+    const lukkAlle = () => {
+        settEkspanderteVilkår(settAlleTil(EkspandertTilstand.KOLLAPSET));
+    };
+
+    const åpneAlle = () => {
+        settEkspanderteVilkår(settAlleTil(EkspandertTilstand.EKSPANDERT));
+    };
 
     const toggleEkspandertTilstand = (key: EInngangsvilkår) => {
         settEkspanderteVilkår((ekspanderteVilkår) => ({
@@ -36,22 +46,6 @@ const [EkspanderbareVilkårpanelProvider, useEkspanderbareVilkårpanelContext] =
                     ? EkspandertTilstand.KOLLAPSET
                     : EkspandertTilstand.EKSPANDERT,
         }));
-    };
-
-    const lukkAlle = () => {
-        settEkspanderteVilkår(
-            Object.keys(EInngangsvilkår).reduce(
-                (acc, key) => ({
-                    ...acc,
-                    [key]: EkspandertTilstand.KOLLAPSET,
-                }),
-                {} as Record<EInngangsvilkår, EkspandertTilstand>
-            )
-        );
-    };
-
-    const åpneAlle = () => {
-        settEkspanderteVilkår(allePanelEkspandert);
     };
 
     return {
