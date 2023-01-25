@@ -28,27 +28,26 @@ export const NyttBarnSammePartner: React.FC<VilkårProps> = ({
             tittel="Nytt barn med samme partner"
             vilkårsresultat={vurdering.resultat}
             vilkår={EInngangsvilkår.NYTT_BARN_SAMME_PARTNER}
-            innhold={
-                <VilkårpanelInnhold>
-                    {{
-                        venstre: (
-                            <NyttBarnSammePartnerInfo
-                                barnMedSamvær={barnMedSamvær}
-                                tidligereVedtaksperioder={grunnlag.tidligereVedtaksperioder}
-                            />
-                        ),
-                        høyre: (
-                            <VisEllerEndreVurdering
-                                ikkeVurderVilkår={ikkeVurderVilkår}
-                                vurdering={vurdering}
-                                feilmelding={feilmeldinger[vurdering.id]}
-                                lagreVurdering={lagreVurdering}
-                                nullstillVurdering={nullstillVurdering}
-                            />
-                        ),
-                    }}
-                </VilkårpanelInnhold>
-            }
-        />
+        >
+            <VilkårpanelInnhold>
+                {{
+                    venstre: (
+                        <NyttBarnSammePartnerInfo
+                            barnMedSamvær={barnMedSamvær}
+                            tidligereVedtaksperioder={grunnlag.tidligereVedtaksperioder}
+                        />
+                    ),
+                    høyre: (
+                        <VisEllerEndreVurdering
+                            ikkeVurderVilkår={ikkeVurderVilkår}
+                            vurdering={vurdering}
+                            feilmelding={feilmeldinger[vurdering.id]}
+                            lagreVurdering={lagreVurdering}
+                            nullstillVurdering={nullstillVurdering}
+                        />
+                    ),
+                }}
+            </VilkårpanelInnhold>
+        </Vilkårpanel>
     );
 };

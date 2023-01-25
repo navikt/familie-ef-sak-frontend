@@ -40,7 +40,7 @@ interface Props {
     tittel: string;
     paragrafTittel?: string;
     vilkårsresultat: Vilkårsresultat;
-    innhold: JSX.Element;
+    children: JSX.Element;
     vilkår: EInngangsvilkår;
 }
 
@@ -48,7 +48,7 @@ export const Vilkårpanel: FC<Props> = ({
     tittel,
     paragrafTittel,
     vilkårsresultat,
-    innhold,
+    children,
     vilkår,
 }) => {
     const { ekspanderteVilkår, toggleEkspandertTilstand } = useEkspanderbareVilkårpanelContext();
@@ -81,7 +81,7 @@ export const Vilkårpanel: FC<Props> = ({
                         onClick={() => toggleEkspandertTilstand(vilkår)}
                     />
                 </VilkårpanelTittel>
-                {ekspanderteVilkår[vilkår] === EkspandertTilstand.EKSPANDERT && innhold}
+                {ekspanderteVilkår[vilkår] === EkspandertTilstand.EKSPANDERT && children}
             </>
         </VilkårpanelBase>
     );

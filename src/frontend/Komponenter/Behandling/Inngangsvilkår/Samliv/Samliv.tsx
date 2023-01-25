@@ -28,29 +28,28 @@ export const Samliv: React.FC<VilkårPropsMedBehandlingsstatus> = ({
             tittel="Samliv"
             vilkårsresultat={vurdering.resultat}
             vilkår={EInngangsvilkår.SAMLIV}
-            innhold={
-                <VilkårpanelInnhold>
-                    {{
-                        venstre: (
-                            <SamlivInfo
-                                behandlingId={behandlingId}
-                                grunnlag={grunnlag}
-                                skalViseSøknadsdata={skalViseSøknadsdata}
-                                behandlingsstatus={behandlingsstatus}
-                            />
-                        ),
-                        høyre: (
-                            <VisEllerEndreVurdering
-                                vurdering={vurdering}
-                                ikkeVurderVilkår={ikkeVurderVilkår}
-                                feilmelding={feilmeldinger[vurdering.id]}
-                                lagreVurdering={lagreVurdering}
-                                nullstillVurdering={nullstillVurdering}
-                            />
-                        ),
-                    }}
-                </VilkårpanelInnhold>
-            }
-        />
+        >
+            <VilkårpanelInnhold>
+                {{
+                    venstre: (
+                        <SamlivInfo
+                            behandlingId={behandlingId}
+                            grunnlag={grunnlag}
+                            skalViseSøknadsdata={skalViseSøknadsdata}
+                            behandlingsstatus={behandlingsstatus}
+                        />
+                    ),
+                    høyre: (
+                        <VisEllerEndreVurdering
+                            vurdering={vurdering}
+                            ikkeVurderVilkår={ikkeVurderVilkår}
+                            feilmelding={feilmeldinger[vurdering.id]}
+                            lagreVurdering={lagreVurdering}
+                            nullstillVurdering={nullstillVurdering}
+                        />
+                    ),
+                }}
+            </VilkårpanelInnhold>
+        </Vilkårpanel>
     );
 };
