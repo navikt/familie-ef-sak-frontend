@@ -33,7 +33,6 @@ export const Inntekt: React.FC<VilkårProps> = ({
             innhold={
                 <VilkårpanelInnhold>
                     {{
-                        venstre: <></>,
                         høyre: (
                             <VisEllerEndreVurdering
                                 ikkeVurderVilkår={ikkeVurderVilkår}

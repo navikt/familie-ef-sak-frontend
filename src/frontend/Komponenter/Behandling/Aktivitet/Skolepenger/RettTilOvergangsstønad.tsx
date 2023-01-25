@@ -34,7 +34,6 @@ export const RettTilOvergangsstønad: React.FC<VilkårProps> = ({
             innhold={
                 <VilkårpanelInnhold>
                     {{
-                        venstre: <></>,
                         høyre: (
                             <VisEllerEndreVurdering
                                 ikkeVurderVilkår={ikkeVurderVilkår}

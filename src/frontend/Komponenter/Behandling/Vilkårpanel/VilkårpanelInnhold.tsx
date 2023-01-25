@@ -22,8 +22,10 @@ const Container = styled.div<{ borderBottom: boolean }>`
         padding: 1.5rem 0;
         width: 50%;
         max-width: 50rem;
+        margin-left: auto;
         @media (max-width: 1600px) {
             width: 100%;
+            margin-left: 0;
         }
     }
 `;
@@ -31,7 +33,7 @@ const Container = styled.div<{ borderBottom: boolean }>`
 interface Props {
     borderBottom?: boolean;
     children: {
-        venstre: JSX.Element;
+        venstre?: JSX.Element;
         høyre: JSX.Element;
     };
 }
@@ -42,7 +44,7 @@ export const VilkårpanelInnhold: FC<Props> = ({
 }) => {
     return (
         <Container borderBottom={borderBottom}>
-            <div className="venstreKolonne">{venstre}</div>
+            {venstre && <div className="venstreKolonne">{venstre}</div>}
             <div className="høyreKolonne">{høyre}</div>
         </Container>
     );
