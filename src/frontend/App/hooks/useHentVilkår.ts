@@ -10,6 +10,7 @@ import { useApp } from '../context/AppContext';
 import { useCallback, useState } from 'react';
 import {
     IVilkår,
+    IEndringerPersonopplysninger,
     IVurdering,
     OppdaterVilkårsvurdering,
     SvarPåVilkårsvurdering,
@@ -45,12 +46,18 @@ export const useHentVilkår = (): {
         nullstillVilkårsvurdering: OppdaterVilkårsvurdering
     ) => Promise<RessursSuksess<IVurdering> | RessursFeilet>;
     gjenbrukInngangsvilkår: (behandlingId: string, kopierBehandlingId: string) => void;
+    hentEndringerForPersonopplysninger: (behandlingId: string) => void;
+    endringerPersonopplysninger: Ressurs<IEndringerPersonopplysninger>;
 } => {
     const { axiosRequest, settToast } = useApp();
 
     const [feilmeldinger, settFeilmeldinger] = useState<Vurderingsfeilmelding>({});
 
     const [vilkår, settVilkår] = useState<Ressurs<IVilkår>>(byggTomRessurs());
+
+    const [endringerPersonopplysninger, settGrunnlagsendringer] = useState<
+        Ressurs<IEndringerPersonopplysninger>
+    >(byggTomRessurs());
 
     function fjernFeilmelding(id: string) {
         settFeilmeldinger((prevFeilmeldinger) => {
@@ -152,6 +159,23 @@ export const useHentVilkår = (): {
         },
         [axiosRequest]
     );
+    const hentEndringerForPersonopplysninger = useCallback(
+        (behandlingId: string) => {
+            axiosRequest<IEndringerPersonopplysninger, void>({
+                method: 'GET',
+                url: `/familie-ef-sak/api/personopplysninger/behandling/${behandlingId}/endringer`,
+            }).then(
+                (
+                    endringerPersonopplysninger:
+                        | RessursSuksess<IEndringerPersonopplysninger>
+                        | RessursFeilet
+                ) => {
+                    settGrunnlagsendringer(endringerPersonopplysninger);
+                }
+            );
+        },
+        [axiosRequest]
+    );
     const gjenbrukInngangsvilkår = useCallback(
         (behandlingId: string, kopierBehandlingId: string) => {
             settVilkår(byggHenterRessurs());
@@ -178,5 +202,7 @@ export const useHentVilkår = (): {
         ikkeVurderVilkår,
         oppdaterGrunnlagsdataOgHentVilkår,
         gjenbrukInngangsvilkår,
+        endringerPersonopplysninger,
+        hentEndringerForPersonopplysninger,
     };
 };

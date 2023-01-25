@@ -26,6 +26,30 @@ export interface IVilkårGrunnlag {
     dokumentasjon?: IDokumentasjonGrunnlag;
 }
 
+export interface IEndringerPersonopplysninger {
+    sjekketTidspunkt: string;
+    endringer: IEndringer;
+}
+
+export interface IEndringer {
+    folkeregisterpersonstatus: IEndring;
+    fødselsdato: IEndring;
+    dødsdato: IEndring;
+    statsborgerskap: IEndring;
+    sivilstand: IEndring;
+    adresse: IEndring;
+    fullmakt: IEndring;
+    barn: IEndring;
+    innflyttingTilNorge: IEndring;
+    utflyttingFraNorge: IEndring;
+    oppholdstillatelse: IEndring;
+    vergemål: IEndring;
+}
+
+export interface IEndring {
+    harEndringer: boolean;
+}
+
 export interface IAdresseopplysninger {
     adresse?: string;
     søkerBorPåRegistrertAdresse: boolean;
