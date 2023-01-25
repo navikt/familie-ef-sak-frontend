@@ -15,7 +15,7 @@ import {
     grupperDelmaler,
     harValgfeltFeil,
     initFlettefelterMedVerdi,
-    initValgteFeltMedMellomlager,
+    initValgteFelt,
 } from './BrevUtils';
 import { Ressurs } from '../../../App/typer/ressurs';
 import { useApp } from '../../../App/context/AppContext';
@@ -29,6 +29,7 @@ import { Alert, Heading, Panel } from '@navikt/ds-react';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { delmalTilUtregningstabellOS } from './UtregningstabellOvergangsstønad';
 import { delmalTilUtregningstabellBT } from './UtregningstabellBarnetilsyn';
+import { useVerdierForBrev } from '../../../App/hooks/useVerdierForBrev';
 
 const BrevFelter = styled.div`
     display: flex;
@@ -51,7 +52,6 @@ export interface BrevmenyVisningProps extends BrevmenyProps {
     beløpsperioder?: IBeløpsperiode[] | IBeregningsperiodeBarnetilsyn[];
     mellomlagretBrevVerdier?: string;
     brevMal: string;
-    flettefeltStore: { [navn: string]: string };
     stønadstype: Stønadstype;
 }
 
@@ -64,13 +64,13 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     beløpsperioder,
     mellomlagretBrevVerdier,
     brevMal,
-    flettefeltStore,
     stønadstype,
 }) => {
     const { axiosRequest } = useApp();
     const { mellomlagreSanitybrev } = useMellomlagringBrev(behandlingId);
     const [alleFlettefelter, settAlleFlettefelter] = useState<FlettefeltMedVerdi[]>([]);
     const [brevmalFeil, settBrevmalFeil] = useState('');
+    const { flettefeltStore, valgfeltStore, delmalStore } = useVerdierForBrev(beløpsperioder);
 
     useEffect(() => {
         const parsetMellomlagretBrev =
@@ -81,9 +81,16 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
         settAlleFlettefelter(
             initFlettefelterMedVerdi(brevStruktur, flettefeltFraMellomlager, flettefeltStore)
         );
-        settValgteFelt(initValgteFeltMedMellomlager(valgteFeltFraMellomlager, brevStruktur));
+        settValgteFelt(initValgteFelt(valgteFeltFraMellomlager, brevStruktur, valgfeltStore));
         if (valgteDelmalerFraMellomlager) {
             settValgteDelmaler(valgteDelmalerFraMellomlager);
+        }
+
+        if (delmalStore.length > 0) {
+            settValgteDelmaler((prevState) => ({
+                ...prevState,
+                ...delmalStore.reduce((acc, delmal) => ({ ...acc, [delmal]: true }), {}),
+            }));
         }
         // eslint-disable-next-line
     }, [brevStruktur, flettefeltStore, mellomlagretBrevVerdier]);

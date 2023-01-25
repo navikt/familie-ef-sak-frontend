@@ -9,7 +9,7 @@ import { useHentBehandlingHistorikk } from '../hooks/useHentBehandlingHistorikk'
 import { useHentTotrinnskontroll } from '../hooks/useHentTotrinnStatus';
 import { useHentRegler } from '../hooks/useHentRegler';
 import { RessursStatus } from '../typer/ressurs';
-import { erBehandlingRedigerbar, ETaAvVentStatus } from '../typer/behandlingstatus';
+import { erBehandlingRedigerbar } from '../typer/behandlingstatus';
 import { useApp } from './AppContext';
 import { useHentUtestengelser } from '../hooks/useHentUtestengelser';
 
@@ -63,7 +63,6 @@ const [BehandlingProvider, useBehandling] = constate(() => {
 
     const [visHenleggModal, settVisHenleggModal] = useState(false);
     const [visSettPåVentModal, settVisSettPåVentModal] = useState(false);
-    const [taAvVentStatus, settTaAvVentStatus] = useState<ETaAvVentStatus>();
     const [åpenHøyremeny, settÅpenHøyremeny] = useState(true);
 
     return {
@@ -83,8 +82,6 @@ const [BehandlingProvider, useBehandling] = constate(() => {
         åpenHøyremeny,
         settÅpenHøyremeny,
         utestengelser,
-        taAvVentStatus,
-        settTaAvVentStatus,
     };
 });
 

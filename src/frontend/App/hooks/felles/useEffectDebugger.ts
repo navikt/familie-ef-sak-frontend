@@ -37,7 +37,7 @@ export const useEffectDebugger = (
         return accum;
     }, {});
 
-    // @ts-ignore
+    // @ts-ignore-next-line
     if (Object.keys(changedDeps).length) {
         // eslint-disable-next-line no-console
         console.log('[use-effect-debugger] ', changedDeps);

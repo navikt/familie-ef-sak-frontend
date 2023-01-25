@@ -134,7 +134,7 @@ export const validerVedtaksperioder = ({
         }
         const forrige = index > 0 && perioder[index - 1];
         if (forrige && forrige.årMånedTil) {
-            if (!erMånedÅrEtter(forrige.årMånedTil, årMånedFra)) {
+            if (!erMånedÅrLik(tilÅrMåned(plusMåneder(forrige.årMånedTil, 1)), årMånedFra)) {
                 return {
                     ...vedtaksperiodeFeil,
                     årMånedFra: `Ugyldig etterfølgende periode - fra (${årMånedFra}) må være etter til (${forrige.årMånedTil})`,

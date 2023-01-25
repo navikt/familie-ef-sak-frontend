@@ -16,7 +16,6 @@ import { InfostripeUtestengelse } from './InfostripeUtestengelse';
 import { ABorderDefault } from '@navikt/ds-tokens/dist/tokens';
 import { SettPåVentModal } from './SettPåVent/SettPåVentModal';
 import { InfostripeSattPåVent } from './SettPåVent/InfostripeSattPåVent';
-import { TaAvVentModal } from './SettPåVent/TaAvVentModal';
 import { EkspanderbareVilkårpanelProvider } from '../../App/context/EkspanderbareVilkårpanelContext';
 
 const Container = styled.div`
@@ -85,7 +84,6 @@ const BehandlingContent: FC<{
                     </EkspanderbareVilkårpanelProvider>
                     <HenleggModal behandling={behandling} />
                     <SettPåVentModal behandlingId={behandling.id} />
-                    <TaAvVentModal behandlingId={behandling.id} />
                 </InnholdWrapper>
                 <HøyreMenyWrapper åpenHøyremeny={åpenHøyremeny}>
                     <Høyremeny åpenHøyremeny={åpenHøyremeny} behandlingId={behandling.id} />

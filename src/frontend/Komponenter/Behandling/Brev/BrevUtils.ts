@@ -9,6 +9,7 @@ import {
 } from './BrevTyper';
 import { v4 as uuidv4 } from 'uuid';
 import { Dispatch, SetStateAction } from 'react';
+import { FlettefeltStore, ValgfeltStore } from '../../../App/hooks/useVerdierForBrev';
 
 const lagTomtAvsnitt = (): AvsnittMedId => ({
     deloverskrift: '',
@@ -65,7 +66,7 @@ const hentVerdiFraMellomlagerEllerNull = (
 export const initFlettefelterMedVerdi = (
     brevStruktur: BrevStruktur,
     flettefeltFraMellomlager: FlettefeltMedVerdi[] | undefined,
-    flettefeltStore: { [flettefeltNavn: string]: string }
+    flettefeltStore: FlettefeltStore
 ): FlettefeltMedVerdi[] =>
     brevStruktur.flettefelter.flettefeltReferanse.map((flettefeltReferanse) => ({
         _ref: flettefeltReferanse._id,
@@ -74,34 +75,52 @@ export const initFlettefelterMedVerdi = (
             hentVerdiFraMellomlagerEllerNull(flettefeltFraMellomlager, flettefeltReferanse._id),
     }));
 
-export const initValgteFeltMedMellomlager = (
+export const initValgteFelt = (
     valgteFeltFraMellomlager: ValgtFelt | undefined,
-    brevStruktur: BrevStruktur
-): ValgtFelt =>
-    Object.entries(valgteFeltFraMellomlager || {}).reduce((acc, [valgfeltApiNavn, mulighet]) => {
-        const utledOppdaterteFlettefeltFraSanity = () =>
-            brevStruktur.dokument.delmalerSortert.flatMap((delmal) => {
-                const valgfelt = delmal.delmalValgfelt.find(
-                    (valgFelt) => valgFelt.valgFeltApiNavn === valgfeltApiNavn
-                );
+    brevStruktur: BrevStruktur,
+    valgfeltStore: ValgfeltStore
+): ValgtFelt => {
+    const valgfeltMellomlager = Object.entries(valgteFeltFraMellomlager || {}).reduce(
+        (acc, [valgfeltApiNavn, mulighet]) => {
+            const utledOppdaterteFlettefeltFraSanity = () =>
+                brevStruktur.dokument.delmalerSortert.flatMap((delmal) => {
+                    const valgfelt = delmal.delmalValgfelt.find(
+                        (valgFelt) => valgFelt.valgFeltApiNavn === valgfeltApiNavn
+                    );
 
-                const valgtValgmulighet = valgfelt?.valgMuligheter.find(
-                    (valgmulighet) => valgmulighet.valgmulighet === mulighet.valgmulighet
-                );
+                    const valgtValgmulighet = valgfelt?.valgMuligheter.find(
+                        (valgmulighet) => valgmulighet.valgmulighet === mulighet.valgmulighet
+                    );
 
-                const flettefeltFraSanity = valgtValgmulighet?.flettefelter || [];
+                    const flettefeltFraSanity = valgtValgmulighet?.flettefelter || [];
 
-                return flettefeltFraSanity;
-            });
+                    return flettefeltFraSanity;
+                });
 
-        return {
-            ...acc,
-            [valgfeltApiNavn]: {
-                ...mulighet,
-                flettefelter: utledOppdaterteFlettefeltFraSanity(),
-            },
-        };
+            return {
+                ...acc,
+                [valgfeltApiNavn]: {
+                    ...mulighet,
+                    flettefelter: utledOppdaterteFlettefeltFraSanity(),
+                },
+            };
+        },
+        {}
+    );
+
+    const automatiskeValgfelt = Object.entries(valgfeltStore).reduce((acc, [valgfelt, valg]) => {
+        const delmal = brevStruktur.dokument.delmalerSortert.find((delmal) =>
+            delmal.delmalValgfelt.some((v) => v.valgFeltApiNavn === valgfelt)
+        );
+
+        const valgmulighet = delmal?.delmalValgfelt
+            .find((v) => v.valgFeltApiNavn === valgfelt)
+            ?.valgMuligheter.find((valgmulighet) => valgmulighet.valgmulighet === valg);
+        return { ...acc, [valgfelt]: valgmulighet };
     }, {});
+
+    return { ...valgfeltMellomlager, ...automatiskeValgfelt };
+};
 
 export const harValgfeltFeil = (
     valgteFelt: ValgtFelt,

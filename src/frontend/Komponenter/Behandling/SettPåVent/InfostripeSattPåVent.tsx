@@ -11,6 +11,7 @@ import { useBehandling } from '../../../App/context/BehandlingContext';
 import { useApp } from '../../../App/context/AppContext';
 import { RessursStatus } from '@navikt/familie-typer';
 import { RessursFeilet, RessursSuksess } from '../../../App/typer/ressurs';
+import { TaAvVentModal } from './TaAvVentModal';
 
 const InformasjonVisning = styled(Alert)`
     margin: 0.5rem 0.5rem 0 0.5rem;
@@ -21,8 +22,9 @@ const StyledButton = styled(Button)`
 `;
 
 export const InfostripeSattPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
-    const { settTaAvVentStatus, hentBehandling } = useBehandling();
+    const { hentBehandling } = useBehandling();
     const { axiosRequest } = useApp();
+    const [taAvVentStatus, settTaAvVentStatus] = useState<ETaAvVentStatus>();
 
     const [feilmelding, settFeilmelding] = useState('');
 
@@ -31,7 +33,7 @@ export const InfostripeSattPåVent: FC<{ behandling: Behandling }> = ({ behandli
             method: 'POST',
             url: `/familie-ef-sak/api/behandling/${behandling.id}/aktiver`,
         }).then((respons: RessursFeilet | RessursSuksess<string>) => {
-            if (respons.status == RessursStatus.SUKSESS) {
+            if (respons.status === RessursStatus.SUKSESS) {
                 hentBehandling.rerun();
             } else {
                 settFeilmelding(respons.frontendFeilmelding);
@@ -44,7 +46,7 @@ export const InfostripeSattPåVent: FC<{ behandling: Behandling }> = ({ behandli
             method: 'GET',
             url: `/familie-ef-sak/api/behandling/${behandling.id}/kan-ta-av-vent`,
         }).then((respons: RessursFeilet | RessursSuksess<TaAvVentStatus>) => {
-            if (respons.status == RessursStatus.SUKSESS) {
+            if (respons.status === RessursStatus.SUKSESS) {
                 respons.data.status === ETaAvVentStatus.OK
                     ? taAvVent()
                     : settTaAvVentStatus(respons.data.status);
@@ -67,6 +69,11 @@ export const InfostripeSattPåVent: FC<{ behandling: Behandling }> = ({ behandli
             {feilmelding && (
                 <Alert variant="error">Kunne ikke ta behandling av vent: {feilmelding} </Alert>
             )}
+            <TaAvVentModal
+                behandlingId={behandling.id}
+                taAvVentStatus={taAvVentStatus}
+                nullstillTaAvVentStatus={() => settTaAvVentStatus(undefined)}
+            />
         </>
     );
 };

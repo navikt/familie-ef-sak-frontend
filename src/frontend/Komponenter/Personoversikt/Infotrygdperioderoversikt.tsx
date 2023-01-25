@@ -14,13 +14,16 @@ import InfotrygdPerioder from '../Migrering/InfotrygdPerioder';
 import MigrerBarnetilsyn from '../Migrering/MigrerBarnetilsyn';
 import { AlertInfo } from '../../Felles/Visningskomponenter/Alerts';
 import { Checkbox } from '@navikt/ds-react';
+import Historiskpensjon from './Historiskpensjon/Historiskpensjon';
 
+const FlexBox = styled.div`
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+`;
 const StyledAlertStripe = styled(AlertInfo)`
-    margin: 1rem 0;
-    max-width: 51rem;
-    .navds-alert__wrapper {
-        max-width: 51rem;
-    }
+    width: 40rem;
 `;
 
 const InfotrygdperioderoversiktContainer = styled.div`
@@ -33,9 +36,10 @@ const CheckboxContainer = styled.div`
     gap: 1rem;
 `;
 
-const InfotrygdEllerSummertePerioder: React.FC<{ perioder: InfotrygdPerioderResponse }> = ({
-    perioder,
-}) => {
+const InfotrygdEllerSummertePerioder: React.FC<{
+    perioder: InfotrygdPerioderResponse;
+    fagsakPersonId: string;
+}> = ({ perioder, fagsakPersonId }) => {
     const [visSummert, settVisSummert] = useState<boolean>(false);
 
     const visPerioder = (stønadstype: Stønadstype, visSummert: boolean, perioder: Perioder) => {
@@ -53,10 +57,13 @@ const InfotrygdEllerSummertePerioder: React.FC<{ perioder: InfotrygdPerioderResp
 
     return (
         <>
-            <StyledAlertStripe>
-                Denne siden viser vedtakshistorikk fra EV VP. (Saker før desember 2008 - PE PP må
-                sjekkes manuelt i Infotrygd)
-            </StyledAlertStripe>
+            <FlexBox>
+                <StyledAlertStripe>
+                    Denne siden viser vedtakshistorikk fra EV VP. (Saker før desember 2008 - PE PP
+                    må sjekkes manuelt i Infotrygd)
+                </StyledAlertStripe>
+                <Historiskpensjon fagsakPersonId={fagsakPersonId} />
+            </FlexBox>
             <CheckboxContainer>
                 {skalViseCheckbox && (
                     <Checkbox
@@ -98,11 +105,15 @@ export const Infotrygdperioderoversikt: React.FC<{
     const infotrygdPerioder = useDataHenter<InfotrygdPerioderResponse, null>(
         infotrygdPerioderConfig
     );
+
     return (
         <DataViewer response={{ infotrygdPerioder }}>
             {({ infotrygdPerioder }) => (
                 <InfotrygdperioderoversiktContainer>
-                    <InfotrygdEllerSummertePerioder perioder={infotrygdPerioder} />
+                    <InfotrygdEllerSummertePerioder
+                        perioder={infotrygdPerioder}
+                        fagsakPersonId={fagsakPerson.id}
+                    />
                     <InfotrygdSaker personIdent={personIdent} />
                     <MigrerFagsak fagsakPerson={fagsakPerson} />
                     <MigrerBarnetilsyn fagsakPerson={fagsakPerson} />
