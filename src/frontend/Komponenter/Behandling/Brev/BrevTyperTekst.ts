@@ -30,13 +30,13 @@ export const initielleAvsnittVedtakInvilgelse: AvsnittMedId[] = [
     },
     {
         deloverskrift: 'Du har rett til innsyn',
-        innhold: 'På nav.no/dittnav kan du se dokumentene i saken din.',
+        innhold: 'På nav.no/minside kan du se dokumentene i saken din.',
         id: uuidv4(),
     },
     {
         deloverskrift: 'Har du spørsmål?',
         innhold:
-            'Du finner informasjon som kan være nyttig for deg på nav.no/familie. Du kan også kontakte oss på nav.no/kontakt.',
+            'Du finner informasjon som kan være nyttig for deg på nav.no/alene-med-barn. Du kan også kontakte oss på nav.no/kontakt.',
         id: uuidv4(),
     },
 ];
@@ -50,7 +50,7 @@ export const initielleAvsnittVedtakAvslagOvergangsstønad: AvsnittMedId[] = [
     },
     {
         deloverskrift: 'Du har rett til innsyn',
-        innhold: 'På nav.no/dittnav kan du se dokumentene i saken din.',
+        innhold: 'På nav.no/minside kan du se dokumentene i saken din.',
         id: uuidv4(),
     },
     {
@@ -70,7 +70,7 @@ export const initielleAvsnittVedtakOpphørBarnetilsyn: AvsnittMedId[] = [
     },
     {
         deloverskrift: 'Du har rett til innsyn',
-        innhold: 'På nav.no/dittnav kan du se dokumentene i saken din.',
+        innhold: 'På nav.no/minside kan du se dokumentene i saken din.',
         id: uuidv4(),
     },
     {
@@ -90,7 +90,7 @@ export const initielleAvsnittVedtakOpphørSkolepenger: AvsnittMedId[] = [
     },
     {
         deloverskrift: 'Du har rett til innsyn',
-        innhold: 'På nav.no/dittnav kan du se dokumentene i saken din.',
+        innhold: 'På nav.no/minside kan du se dokumentene i saken din.',
         id: uuidv4(),
     },
     {
@@ -116,13 +116,13 @@ export const initielleAvsnittVedtakInvilgelseBarnetilsyn: AvsnittMedId[] = [
     },
     {
         deloverskrift: 'Du har rett til innsyn',
-        innhold: 'På nav.no/dittnav kan du se dokumentene i saken din.',
+        innhold: 'På nav.no/minside kan du se dokumentene i saken din.',
         id: uuidv4(),
     },
     {
         deloverskrift: 'Har du spørsmål?',
         innhold:
-            'Du finner informasjon som kan være nyttig for deg på nav.no/familie/alene-med-barn. Du kan også kontakte oss på nav.no/kontakt.',
+            'Du finner informasjon som kan være nyttig for deg på nav.no/alene-med-barn. Du kan også kontakte oss på nav.no/kontakt.',
         id: uuidv4(),
     },
 ];
@@ -136,13 +136,13 @@ export const initielleAvsnittVedtakAvslagBarnetilsyn: AvsnittMedId[] = [
     },
     {
         deloverskrift: 'Du har rett til innsyn',
-        innhold: 'På nav.no/dittnav kan du se dokumentene i saken din.',
+        innhold: 'På nav.no/minside kan du se dokumentene i saken din.',
         id: uuidv4(),
     },
     {
         deloverskrift: 'Har du spørsmål?',
         innhold:
-            'Du finner informasjon som kan være nyttig for deg på nav.no/familie/alene-med-barn. Du kan også kontakte oss på nav.no/kontakt.',
+            'Du finner informasjon som kan være nyttig for deg på nav.no/alene-med-barn. Du kan også kontakte oss på nav.no/kontakt.',
         id: uuidv4(),
     },
 ];
@@ -235,7 +235,7 @@ export const initielleAvsnittInnhentingAvKarakterutskriftHovedperiode: AvsnittMe
     {
         deloverskrift: 'Har du spørsmål?',
         innhold:
-            'Du finner informasjon som kan være nyttig for deg på nav.no/familie/alene-med-barn. Du kan også kontakte oss på nav.no/kontakt.',
+            'Du finner informasjon som kan være nyttig for deg på nav.no/alene-med-barn. Du kan også kontakte oss på nav.no/kontakt.',
         id: uuidv4(),
     },
 ];
@@ -269,7 +269,7 @@ export const initielleAvsnittInnhentingAvKarakterutskriftUtvidetPeriode: Avsnitt
     {
         deloverskrift: 'Har du spørsmål?',
         innhold:
-            'Du finner informasjon som kan være nyttig for deg på nav.no/familie/alene-med-barn. Du kan også kontakte oss på nav.no/kontakt.',
+            'Du finner informasjon som kan være nyttig for deg på nav.no/alene-med-barn. Du kan også kontakte oss på nav.no/kontakt.',
         id: uuidv4(),
     },
 ];
@@ -289,13 +289,13 @@ export const initielleAvsnittVedtakInvilgelseSkolepenger: AvsnittMedId[] = [
     },
     {
         deloverskrift: 'Du har rett til innsyn',
-        innhold: 'På nav.no/dittnav kan du se dokumentene i saken din.',
+        innhold: 'På nav.no/minside kan du se dokumentene i saken din.',
         id: uuidv4(),
     },
     {
         deloverskrift: 'Har du spørsmål?',
         innhold:
-            'Du finner informasjon som kan være nyttig for deg på nav.no/familie/alene-med-barn. Du kan også kontakte oss på nav.no/kontakt.',
+            'Du finner informasjon som kan være nyttig for deg på nav.no/alene-med-barn. Du kan også kontakte oss på nav.no/kontakt.',
         id: uuidv4(),
     },
 ];
@@ -309,13 +309,13 @@ export const initielleAvsnittVedtakAvslagSkolepenger: AvsnittMedId[] = [
     },
     {
         deloverskrift: 'Du har rett til innsyn',
-        innhold: 'På nav.no/dittnav kan du se dokumentene i saken din.',
+        innhold: 'På nav.no/minside kan du se dokumentene i saken din.',
         id: uuidv4(),
     },
     {
         deloverskrift: 'Har du spørsmål?',
         innhold:
-            'Du finner informasjon som kan være nyttig for deg på nav.no/familie/alene-med-barn. Du kan også kontakte oss på nav.no/kontakt.',
+            'Du finner informasjon som kan være nyttig for deg på nav.no/alene-med-barn. Du kan også kontakte oss på nav.no/kontakt.',
         id: uuidv4(),
     },
 ];
@@ -335,7 +335,7 @@ export const initielleAvsnittInnhentingAvOpplysninger: AvsnittMedId[] = [
     {
         deloverskrift: 'Har du spørsmål?',
         innhold:
-            'Du finner nyttig informasjon på nav.no/familie/alene-med-barn. Du kan også kontakte oss på nav.no/kontakt.',
+            'Du finner nyttig informasjon på nav.no/alene-med-barn. Du kan også kontakte oss på nav.no/kontakt.',
         id: uuidv4(),
     },
 ];
@@ -351,7 +351,7 @@ export const initielleAvsnittSvartidKlage: AvsnittMedId[] = [
     {
         deloverskrift: 'Har du spørsmål?',
         innhold:
-            'Du finner nyttig informasjon på nav.no/familie/alene-med-barn. Du kan også kontakte oss på nav.no/kontakt.',
+            'Du finner nyttig informasjon på nav.no/alene-med-barn. Du kan også kontakte oss på nav.no/kontakt.',
         id: uuidv4(),
     },
 ];
@@ -368,7 +368,7 @@ export const initielleAvsnittForlengetSvartidKlage: AvsnittMedId[] = [
     {
         deloverskrift: 'Har du spørsmål?',
         innhold:
-            'Du finner nyttig informasjon på nav.no/familie/alene-med-barn. Du kan også kontakte oss på nav.no/kontakt.',
+            'Du finner nyttig informasjon på nav.no/alene-med-barn. Du kan også kontakte oss på nav.no/kontakt.',
         id: uuidv4(),
     },
 ];
@@ -385,7 +385,7 @@ export const initielleAvsnittForlengetSvartid: AvsnittMedId[] = [
     {
         deloverskrift: 'Har du spørsmål?',
         innhold:
-            'Du finner nyttig informasjon på nav.no/familie/alene-med-barn. Du kan også kontakte oss på nav.no/kontakt.',
+            'Du finner nyttig informasjon på nav.no/alene-med-barn. Du kan også kontakte oss på nav.no/kontakt.',
         id: uuidv4(),
     },
 ];
