@@ -7,6 +7,7 @@ import styled from 'styled-components';
 const KnappeWrapper = styled.div`
     display: flex;
     gap: 1rem;
+    margin-left: auto;
 `;
 export const ÅpneOgLukkePanelKnapper: React.FC = () => {
     const { åpneAlle, lukkAlle } = useEkspanderbareVilkårpanelContext();
