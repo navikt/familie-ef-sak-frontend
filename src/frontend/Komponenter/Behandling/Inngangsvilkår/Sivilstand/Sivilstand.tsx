@@ -26,28 +26,27 @@ export const Sivilstand: React.FC<VilkårProps> = ({
             tittel="Sivilstand"
             vilkårsresultat={vurdering.resultat}
             vilkår={EInngangsvilkår.SIVILSTAND}
-            innhold={
-                <VilkårpanelInnhold>
-                    {{
-                        venstre: (
-                            <SivilstandInfo
-                                sivilstand={grunnlag.sivilstand}
-                                skalViseSøknadsdata={skalViseSøknadsdata}
-                                dokumentasjon={grunnlag.dokumentasjon}
-                            />
-                        ),
-                        høyre: (
-                            <VisEllerEndreVurdering
-                                vurdering={vurdering}
-                                ikkeVurderVilkår={ikkeVurderVilkår}
-                                feilmelding={feilmeldinger[vurdering.id]}
-                                lagreVurdering={lagreVurdering}
-                                nullstillVurdering={nullstillVurdering}
-                            />
-                        ),
-                    }}
-                </VilkårpanelInnhold>
-            }
-        />
+        >
+            <VilkårpanelInnhold>
+                {{
+                    venstre: (
+                        <SivilstandInfo
+                            sivilstand={grunnlag.sivilstand}
+                            skalViseSøknadsdata={skalViseSøknadsdata}
+                            dokumentasjon={grunnlag.dokumentasjon}
+                        />
+                    ),
+                    høyre: (
+                        <VisEllerEndreVurdering
+                            vurdering={vurdering}
+                            ikkeVurderVilkår={ikkeVurderVilkår}
+                            feilmelding={feilmeldinger[vurdering.id]}
+                            lagreVurdering={lagreVurdering}
+                            nullstillVurdering={nullstillVurdering}
+                        />
+                    ),
+                }}
+            </VilkårpanelInnhold>
+        </Vilkårpanel>
     );
 };

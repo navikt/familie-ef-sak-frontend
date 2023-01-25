@@ -33,41 +33,35 @@ export type IVilkårstype = EInngangsvilkår | EAktivitetsvilkår;
 const [EkspanderbareVilkårpanelProvider, useEkspanderbareVilkårpanelContext] = constate(() => {
     const vilkårsTyper = { ...EInngangsvilkår, ...EAktivitetsvilkår };
 
-    const allePanelEkspandert = Object.keys(vilkårsTyper).reduce(
-        (acc, key) => ({
-            ...acc,
-            [key]: EkspandertTilstand.EKSPANDERT,
-        }),
-        {} as Record<IVilkårstype, EkspandertTilstand>
-    );
+    const settAlleTil = (tilstand: EkspandertTilstand) =>
+        Object.keys(vilkårsTyper).reduce(
+            (acc, key) => ({
+                ...acc,
+                [key]: tilstand,
+            }),
+            {} as Record<IVilkårstype, EkspandertTilstand>
+        );
 
-    const [ekspanderteVilkår, settEkspanderteVilkår] =
-        useState<Record<IVilkårstype, EkspandertTilstand>>(allePanelEkspandert);
+    const [ekspanderteVilkår, settEkspanderteVilkår] = useState<
+        Record<IVilkårstype, EkspandertTilstand>
+    >(settAlleTil(EkspandertTilstand.EKSPANDERT));
+
+    const lukkAlle = () => {
+        settEkspanderteVilkår(settAlleTil(EkspandertTilstand.KOLLAPSET));
+    };
+
+    const åpneAlle = () => {
+        settEkspanderteVilkår(settAlleTil(EkspandertTilstand.EKSPANDERT));
+    };
 
     const toggleEkspandertTilstand = (key: IVilkårstype) => {
-        settEkspanderteVilkår({
+        settEkspanderteVilkår((ekspanderteVilkår) => ({
             ...ekspanderteVilkår,
             [key]:
                 ekspanderteVilkår[key] === EkspandertTilstand.EKSPANDERT
                     ? EkspandertTilstand.KOLLAPSET
                     : EkspandertTilstand.EKSPANDERT,
-        });
-    };
-
-    const lukkAlle = () => {
-        settEkspanderteVilkår(
-            Object.keys(vilkårsTyper).reduce(
-                (acc, key) => ({
-                    ...acc,
-                    [key]: EkspandertTilstand.KOLLAPSET,
-                }),
-                {} as Record<IVilkårstype, EkspandertTilstand>
-            )
-        );
-    };
-
-    const åpneAlle = () => {
-        settEkspanderteVilkår(allePanelEkspandert);
+        }));
     };
 
     return {

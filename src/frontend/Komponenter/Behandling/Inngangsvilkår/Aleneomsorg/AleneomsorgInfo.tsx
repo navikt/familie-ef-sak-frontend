@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
 import { Registergrunnlag, Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { IBarnMedLøpendeStønad, IBarnMedSamvær, skalBarnetBoHosSøkerTilTekst } from './typer';
@@ -12,7 +12,6 @@ import EtikettDød from '../../../../Felles/Etiketter/EtikettDød';
 import { Ressurs } from '../../../../App/typer/ressurs';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
-import UtvidPanel from '../../../../Felles/UtvidPanel/UtvidPanel';
 import { Tag } from '@navikt/ds-react';
 import { BodyShortSmall, SmallTextLabel } from '../../../../Felles/Visningskomponenter/Tekster';
 import { utledNavnOgAlder } from '../utils';
@@ -23,7 +22,6 @@ const AleneomsorgInfo: FC<{
     barnMedLøpendeStønad: Ressurs<IBarnMedLøpendeStønad>;
     stønadstype: Stønadstype;
 }> = ({ gjeldendeBarn, skalViseSøknadsdata, barnMedLøpendeStønad, stønadstype }) => {
-    const [åpentPanel, settÅpentPanel] = useState(false);
     const { barnId, registergrunnlag, søknadsgrunnlag, barnepass } = gjeldendeBarn;
     const ikkeOppgittAnnenForelderBegrunnelse = søknadsgrunnlag.ikkeOppgittAnnenForelderBegrunnelse;
 
@@ -151,28 +149,20 @@ const AleneomsorgInfo: FC<{
                 }
             </GridTabell>
 
-            {!harVerdi(ikkeOppgittAnnenForelderBegrunnelse) && (
-                <UtvidPanel
-                    åpen={åpentPanel}
-                    knappTekst={åpentPanel ? 'Lukk info om barnet' : 'Vis info om barnet'}
-                    onClick={() => settÅpentPanel(!åpentPanel)}
-                    position={'left'}
-                >
-                    {(registergrunnlag.forelder || søknadsgrunnlag.forelder) && (
-                        <>
-                            {skalViseSøknadsdata && (
-                                <AnnenForelderOpplysninger
-                                    søknadsgrunnlag={søknadsgrunnlag}
-                                    forelderRegister={registergrunnlag.forelder}
-                                />
-                            )}
-                            {!registergrunnlag.forelder?.dødsfall && (
-                                <Samvær søknadsgrunnlag={søknadsgrunnlag} />
-                            )}
-                        </>
-                    )}
-                </UtvidPanel>
-            )}
+            {!harVerdi(ikkeOppgittAnnenForelderBegrunnelse) &&
+                (registergrunnlag.forelder || søknadsgrunnlag.forelder) && (
+                    <>
+                        {skalViseSøknadsdata && (
+                            <AnnenForelderOpplysninger
+                                søknadsgrunnlag={søknadsgrunnlag}
+                                forelderRegister={registergrunnlag.forelder}
+                            />
+                        )}
+                        {!registergrunnlag.forelder?.dødsfall && (
+                            <Samvær søknadsgrunnlag={søknadsgrunnlag} />
+                        )}
+                    </>
+                )}
         </>
     );
 };

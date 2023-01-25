@@ -28,27 +28,26 @@ export const Medlemskap: React.FC<VilkårProps> = ({
             tittel="Forutgående medlemskap"
             vilkårsresultat={vurdering.resultat}
             vilkår={EInngangsvilkår.MEDLEMSKAP}
-            innhold={
-                <VilkårpanelInnhold>
-                    {{
-                        venstre: (
-                            <MedlemskapInfo
-                                medlemskap={grunnlag.medlemskap}
-                                skalViseSøknadsdata={skalViseSøknadsdata}
-                            />
-                        ),
-                        høyre: (
-                            <VisEllerEndreVurdering
-                                ikkeVurderVilkår={ikkeVurderVilkår}
-                                vurdering={vurdering}
-                                feilmelding={feilmeldinger[vurdering.id]}
-                                lagreVurdering={lagreVurdering}
-                                nullstillVurdering={nullstillVurdering}
-                            />
-                        ),
-                    }}
-                </VilkårpanelInnhold>
-            }
-        />
+        >
+            <VilkårpanelInnhold>
+                {{
+                    venstre: (
+                        <MedlemskapInfo
+                            medlemskap={grunnlag.medlemskap}
+                            skalViseSøknadsdata={skalViseSøknadsdata}
+                        />
+                    ),
+                    høyre: (
+                        <VisEllerEndreVurdering
+                            ikkeVurderVilkår={ikkeVurderVilkår}
+                            vurdering={vurdering}
+                            feilmelding={feilmeldinger[vurdering.id]}
+                            lagreVurdering={lagreVurdering}
+                            nullstillVurdering={nullstillVurdering}
+                        />
+                    ),
+                }}
+            </VilkårpanelInnhold>
+        </Vilkårpanel>
     );
 };
