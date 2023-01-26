@@ -122,7 +122,7 @@ const SendtTilBeslutter: React.FC<{
     const angreSendTilBeslutter = () => {
         axiosRequest<string, null>({
             method: 'POST',
-            url: `/api/vedtak/:${behandlingId}/angre-send-til-beslutter`,
+            url: `/api/vedtak/${behandlingId}/angre-send-til-beslutter`,
         });
     };
 
