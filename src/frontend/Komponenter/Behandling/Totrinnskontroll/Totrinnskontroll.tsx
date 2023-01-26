@@ -19,6 +19,8 @@ import { useApp } from '../../../App/context/AppContext';
 import { BodyShort, Button, Detail, Heading, Label } from '@navikt/ds-react';
 import { BodyShortSmall, SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
 import { SuccessStroke } from '@navikt/ds-icons';
+import { useToggles } from '../../../App/context/TogglesContext';
+import { ToggleName } from '../../../App/context/toggles';
 
 export const BorderBox = styled.div`
     border: 1px solid #c6c2bf;
@@ -118,6 +120,7 @@ const SendtTilBeslutter: React.FC<{
     behandlingId: string;
 }> = ({ totrinnskontroll, behandlingId }) => {
     const { axiosRequest } = useApp();
+    const { toggles } = useToggles();
 
     const angreSendTilBeslutter = () => {
         axiosRequest<string, null>({
@@ -139,9 +142,11 @@ const SendtTilBeslutter: React.FC<{
                 <BodyShortSmall>{totrinnskontroll.opprettetAv}</BodyShortSmall>
                 <BodyShortSmall>{formaterIsoDatoTid(totrinnskontroll.opprettetTid)}</BodyShortSmall>
             </div>
-            <Button size="small" onClick={angreSendTilBeslutter}>
-                Angre sendt til beslutter
-            </Button>
+            {toggles[ToggleName.angreSendTilBeslutter] && (
+                <Button size="small" onClick={angreSendTilBeslutter}>
+                    Angre sendt til beslutter
+                </Button>
+            )}
         </BorderBox>
     );
 };
