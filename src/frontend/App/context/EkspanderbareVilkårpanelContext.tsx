@@ -36,14 +36,14 @@ export enum EVilkårstyper {
 export type IVilkårstype = EInngangsvilkår | EAktivitetsvilkår;
 
 const [EkspanderbareVilkårpanelProvider, useEkspanderbareVilkårpanelContext] = constate(() => {
-    const vilkårsTyper = { ...EInngangsvilkår, ...EAktivitetsvilkår };
+    const vilkårtyper = { ...EInngangsvilkår, ...EAktivitetsvilkår };
 
     const settAlleTil = (tilstand: EkspandertTilstand, vilkårstype?: EVilkårstyper) => {
         const vilkårSomSkalEndres = vilkårstype
             ? vilkårstype === EVilkårstyper.INNGANGSVILKÅR
                 ? EInngangsvilkår
                 : EAktivitetsvilkår
-            : vilkårsTyper;
+            : vilkårtyper;
 
         return Object.keys(vilkårSomSkalEndres).reduce(
             (acc, key) => ({
