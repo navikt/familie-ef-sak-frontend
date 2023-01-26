@@ -30,12 +30,10 @@ export const Opphold: React.FC<VilkårProps> = ({
             <VilkårpanelInnhold>
                 {{
                     venstre: (
-                        <>
-                            <OppholdInfo
-                                medlemskap={grunnlag.medlemskap}
-                                skalViseSøknadsdata={skalViseSøknadsdata}
-                            />
-                        </>
+                        <OppholdInfo
+                            medlemskap={grunnlag.medlemskap}
+                            skalViseSøknadsdata={skalViseSøknadsdata}
+                        />
                     ),
                     høyre: (
                         <VisEllerEndreVurdering

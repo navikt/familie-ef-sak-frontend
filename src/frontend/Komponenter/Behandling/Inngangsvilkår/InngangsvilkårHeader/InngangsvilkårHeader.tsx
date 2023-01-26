@@ -8,6 +8,10 @@ import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 import { useApp } from '../../../../App/context/AppContext';
 import { utledVilkårsgjenbruk } from '../utils';
 import { ÅpneOgLukkePanelKnapper } from './ÅpneOgLukkePanelKnapper';
+import {
+    EVilkårstyper,
+    useEkspanderbareVilkårpanelContext,
+} from '../../../../App/context/EkspanderbareVilkårpanelContext';
 
 const Container = styled.div`
     margin: 1rem 2rem;
@@ -43,6 +47,8 @@ export const InngangsvilkårHeader: React.FC<Props> = ({
     >(byggTomRessurs());
     const { axiosRequest } = useApp();
 
+    const { lukkAlle, åpneAlle } = useEkspanderbareVilkårpanelContext();
+
     const finnBehandlingForGjenbrukAvVilkår = useCallback(
         (behandlingId: string) => {
             axiosRequest<Behandling[], null>({
@@ -70,7 +76,10 @@ export const InngangsvilkårHeader: React.FC<Props> = ({
                     oppdaterGrunnlagsdata={oppdaterGrunnlagsdata}
                     behandlingId={behandlingId}
                 />
-                <ÅpneOgLukkePanelKnapper />
+                <ÅpneOgLukkePanelKnapper
+                    lukkAlle={() => lukkAlle(EVilkårstyper.INNGANGSVILKÅR)}
+                    åpneAlle={() => åpneAlle(EVilkårstyper.INNGANGSVILKÅR)}
+                />
             </FlexRow>
             {skalViseGjenbrukVilkår && (
                 <DataViewer response={{ behandlingerForVilkårsgjenbruk }}>

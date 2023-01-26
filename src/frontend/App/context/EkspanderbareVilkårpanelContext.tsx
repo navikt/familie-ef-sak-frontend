@@ -16,29 +16,65 @@ export enum EInngangsvilkår {
     ALENEOMSORG = 'ALENEOMSORG',
 }
 
+export enum EAktivitetsvilkår {
+    AKTIVITET_OVERGANGSTØNAD = 'AKTIVITET_OVERGANGSTØNAD',
+    SAGT_OPP_ELLER_REDUSERT = 'SAGT_OPP_ELLER_REDUSERT',
+    AKTIVITET_BARNETILSYN = 'AKTIVITET_BARNETILSYN',
+    INNTEKT = 'INNTEKT',
+    ALDER_PÅ_BARN = 'ALDER_PÅ_BARN',
+    DOKUMENTASJON_AV_TILSYNSUTGIFTER = 'DOKUMENTASJON_AV_TILSYNSUTGIFTER',
+    RETT_TIL_OVERGANGSSTØNAD = 'RETT_TIL_OVERGANGSSTØNAD',
+    DOKUMENTASJON_UTDANNING = 'DOKUMENTASJON_UTDANNING',
+    UTDANNING_HENSIKTSMESSIG = 'UTDANNING_HENSIKTSMESSIG',
+}
+
+export enum EVilkårstyper {
+    INNGANGSVILKÅR = 'INNGANGSVILKÅR',
+    AKTIVITETSVILKÅR = 'AKTIVITETSVILKÅR',
+}
+
+export type IVilkårstype = EInngangsvilkår | EAktivitetsvilkår;
+
 const [EkspanderbareVilkårpanelProvider, useEkspanderbareVilkårpanelContext] = constate(() => {
-    const settAlleTil = (tilstand: EkspandertTilstand) =>
-        Object.keys(EInngangsvilkår).reduce(
+    const vilkårtyper = { ...EInngangsvilkår, ...EAktivitetsvilkår };
+
+    const settAlleTil = (tilstand: EkspandertTilstand, vilkårstype?: EVilkårstyper) => {
+        const vilkårSomSkalEndres = vilkårstype
+            ? vilkårstype === EVilkårstyper.INNGANGSVILKÅR
+                ? EInngangsvilkår
+                : EAktivitetsvilkår
+            : vilkårtyper;
+
+        return Object.keys(vilkårSomSkalEndres).reduce(
             (acc, key) => ({
                 ...acc,
                 [key]: tilstand,
             }),
-            {} as Record<EInngangsvilkår, EkspandertTilstand>
+            {} as Record<IVilkårstype, EkspandertTilstand>
         );
+    };
 
     const [ekspanderteVilkår, settEkspanderteVilkår] = useState<
-        Record<EInngangsvilkår, EkspandertTilstand>
+        Record<IVilkårstype, EkspandertTilstand>
     >(settAlleTil(EkspandertTilstand.EKSPANDERT));
 
-    const lukkAlle = () => {
-        settEkspanderteVilkår(settAlleTil(EkspandertTilstand.KOLLAPSET));
+    const lukkAlle = (vilkårstype: EVilkårstyper) => {
+        const oppdaterteVilkår = settAlleTil(EkspandertTilstand.KOLLAPSET, vilkårstype);
+        settEkspanderteVilkår((ekspanderteVilkår) => ({
+            ...ekspanderteVilkår,
+            ...oppdaterteVilkår,
+        }));
     };
 
-    const åpneAlle = () => {
-        settEkspanderteVilkår(settAlleTil(EkspandertTilstand.EKSPANDERT));
+    const åpneAlle = (vilkårstype: EVilkårstyper) => {
+        const oppdaterteVilkår = settAlleTil(EkspandertTilstand.EKSPANDERT, vilkårstype);
+        settEkspanderteVilkår((ekspanderteVilkår) => ({
+            ...ekspanderteVilkår,
+            ...oppdaterteVilkår,
+        }));
     };
 
-    const toggleEkspandertTilstand = (key: EInngangsvilkår) => {
+    const toggleEkspandertTilstand = (key: IVilkårstype) => {
         settEkspanderteVilkår((ekspanderteVilkår) => ({
             ...ekspanderteVilkår,
             [key]:

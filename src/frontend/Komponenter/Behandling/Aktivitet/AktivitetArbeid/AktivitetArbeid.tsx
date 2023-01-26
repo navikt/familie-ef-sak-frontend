@@ -2,14 +2,14 @@ import React from 'react';
 import { VilkårProps } from '../../Inngangsvilkår/vilkårprops';
 import { AktivitetsvilkårType } from '../../Inngangsvilkår/vilkår';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
-import ToKolonnerLayout from '../../../../Felles/Visningskomponenter/ToKolonnerLayout';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
-import { Vilkårstittel } from '../../Inngangsvilkår/Vilkårstittel';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
-
 import { Behandlingsårsak } from '../../../../App/typer/Behandlingsårsak';
 import AktivitetArbeidInfo from './AktivitetArbeidInfo';
 import { AlertError } from '../../../../Felles/Visningskomponenter/Alerts';
+import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';
+import { EAktivitetsvilkår } from '../../../../App/context/EkspanderbareVilkårpanelContext';
+import { VilkårpanelInnhold } from '../../Vilkårpanel/VilkårpanelInnhold';
 
 export const AktivitetArbeid: React.FC<VilkårProps> = ({
     vurderinger,
@@ -38,36 +38,34 @@ export const AktivitetArbeid: React.FC<VilkårProps> = ({
                 const skalViseSøknadsdata = behandling.behandlingsårsak === Behandlingsårsak.SØKNAD;
 
                 return (
-                    <ToKolonnerLayout>
-                        {{
-                            venstre: (
-                                <>
-                                    <Vilkårstittel
-                                        tittel="Aktivitet"
-                                        vilkårsresultat={vurdering.resultat}
-                                        paragrafTittel={'§15-10'}
+                    <Vilkårpanel
+                        tittel="Aktivitet"
+                        vilkårsresultat={vurdering.resultat}
+                        paragrafTittel={'§15-10'}
+                        vilkår={EAktivitetsvilkår.AKTIVITET_BARNETILSYN}
+                    >
+                        <VilkårpanelInnhold>
+                            {{
+                                venstre: grunnlag.aktivitet && (
+                                    <AktivitetArbeidInfo
+                                        aktivitet={grunnlag.aktivitet}
+                                        skalViseSøknadsdata={skalViseSøknadsdata}
+                                        stønadstype={behandling.stønadstype}
+                                        dokumentasjon={grunnlag.dokumentasjon}
                                     />
-                                    {grunnlag.aktivitet && (
-                                        <AktivitetArbeidInfo
-                                            aktivitet={grunnlag.aktivitet}
-                                            skalViseSøknadsdata={skalViseSøknadsdata}
-                                            stønadstype={behandling.stønadstype}
-                                            dokumentasjon={grunnlag.dokumentasjon}
-                                        />
-                                    )}
-                                </>
-                            ),
-                            høyre: (
-                                <VisEllerEndreVurdering
-                                    ikkeVurderVilkår={ikkeVurderVilkår}
-                                    vurdering={vurdering}
-                                    feilmelding={feilmeldinger[vurdering.id]}
-                                    lagreVurdering={lagreVurdering}
-                                    nullstillVurdering={nullstillVurdering}
-                                />
-                            ),
-                        }}
-                    </ToKolonnerLayout>
+                                ),
+                                høyre: (
+                                    <VisEllerEndreVurdering
+                                        ikkeVurderVilkår={ikkeVurderVilkår}
+                                        vurdering={vurdering}
+                                        feilmelding={feilmeldinger[vurdering.id]}
+                                        lagreVurdering={lagreVurdering}
+                                        nullstillVurdering={nullstillVurdering}
+                                    />
+                                ),
+                            }}
+                        </VilkårpanelInnhold>
+                    </Vilkårpanel>
                 );
             }}
         </DataViewer>
