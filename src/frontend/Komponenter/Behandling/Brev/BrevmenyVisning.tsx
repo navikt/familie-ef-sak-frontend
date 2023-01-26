@@ -30,6 +30,8 @@ import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { delmalTilUtregningstabellOS } from './UtregningstabellOvergangsstønad';
 import { delmalTilUtregningstabellBT } from './UtregningstabellBarnetilsyn';
 import { useVerdierForBrev } from '../../../App/hooks/useVerdierForBrev';
+import { useToggles } from '../../../App/context/TogglesContext';
+import { ToggleName } from '../../../App/context/toggles';
 
 const BrevFelter = styled.div`
     display: flex;
@@ -45,6 +47,10 @@ const BrevMenyTittel = styled.div`
 
 const BrevMenyDelmalWrapper = styled.div<{ førsteElement?: boolean }>`
     margin-top: ${(props) => (props.førsteElement ? '0' : '1rem')};
+`;
+
+const AlertMedMargin = styled(Alert)`
+    margin: 1rem;
 `;
 
 export interface BrevmenyVisningProps extends BrevmenyProps {
@@ -71,6 +77,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     const [alleFlettefelter, settAlleFlettefelter] = useState<FlettefeltMedVerdi[]>([]);
     const [brevmalFeil, settBrevmalFeil] = useState('');
     const { flettefeltStore, valgfeltStore, delmalStore } = useVerdierForBrev(beløpsperioder);
+    const { toggles } = useToggles();
 
     useEffect(() => {
         const parsetMellomlagretBrev =
@@ -89,7 +96,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
         if (delmalStore.length > 0) {
             settValgteDelmaler((prevState) => ({
                 ...prevState,
-                ...delmalStore.reduce((acc, delmal) => ({ ...acc, [delmal]: true }), {}),
+                ...delmalStore.reduce((acc, delmal) => ({ ...acc, [delmal.delmal]: true }), {}),
             }));
         }
         // eslint-disable-next-line
@@ -214,6 +221,22 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
         <BrevFelter>
             {brevmalFeil && <Alert variant={'warning'}>{brevmalFeil}</Alert>}
             {Object.entries(delmalerGruppert).map(([key, delmaler]: [string, Delmal[]]) => {
+                const alleDelmalerSkjules = delmaler.every((delmal) => {
+                    const automatiskFeltSomSkalSkjules = delmalStore.find(
+                        (mal) => mal.delmal === delmal.delmalApiNavn
+                    )?.skjulIBrevmeny;
+                    return automatiskFeltSomSkalSkjules || false;
+                });
+                if (key === 'Lovhjemmel' && toggles[ToggleName.automatiskeHjemlerBrev]) {
+                    return (
+                        <AlertMedMargin variant={'info'} inline>
+                            Valget om lovhjemmel utføres nå automatisk av systemet
+                        </AlertMedMargin>
+                    );
+                }
+                if (alleDelmalerSkjules) {
+                    return null;
+                }
                 return (
                     <Panel key={key}>
                         {key !== 'undefined' && (
@@ -224,6 +247,10 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                             </BrevMenyTittel>
                         )}
                         {delmaler.map((delmal: Delmal, index: number) => {
+                            const automatiskFeltsomSkalSkjules = delmalStore.find(
+                                (mal) => mal.delmal === delmal.delmalApiNavn
+                            )?.skjulIBrevmeny;
+                            const skjulDelmal = automatiskFeltsomSkalSkjules || false;
                             return (
                                 <BrevMenyDelmalWrapper
                                     førsteElement={index === 0}
@@ -240,6 +267,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                                         settValgteDelmaler={settValgteDelmaler}
                                         key={delmal.delmalApiNavn}
                                         settKanSendeTilBeslutter={settKanSendesTilBeslutter}
+                                        skjul={skjulDelmal}
                                     />
                                 </BrevMenyDelmalWrapper>
                             );

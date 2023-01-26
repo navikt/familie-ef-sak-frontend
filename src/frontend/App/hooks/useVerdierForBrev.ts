@@ -29,7 +29,7 @@ enum EDelmaler {
 }
 
 export type FlettefeltStore = { [navn: string]: string };
-export type DelmalStore = string[];
+export type DelmalStore = { delmal: string; skjulIBrevmeny: boolean }[];
 
 export type ValgfeltStore = {
     [valgfelt: string]: string;
@@ -65,7 +65,10 @@ export const useVerdierForBrev = (
                         : EValg.hjemlerUtenSamordning,
                 }));
 
-                settDelmalStore((prevState) => [...prevState, EDelmaler.avslutningHjemler]);
+                settDelmalStore((prevState) => [
+                    ...prevState,
+                    { delmal: EDelmaler.avslutningHjemler, skjulIBrevmeny: true },
+                ]);
             }
 
             settFlettefeltStore((prevState) => ({

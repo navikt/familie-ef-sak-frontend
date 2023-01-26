@@ -16,9 +16,11 @@ import Info from '../../../Felles/Ikoner/Info';
 import { BreakWordNormaltekst } from '../../../Felles/Visningskomponenter/BreakWordNormaltekst';
 import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
 import { useApp } from '../../../App/context/AppContext';
-import { BodyShort, Detail, Heading, Label } from '@navikt/ds-react';
+import { BodyShort, Button, Detail, Heading, Label } from '@navikt/ds-react';
 import { BodyShortSmall, SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
 import { SuccessStroke } from '@navikt/ds-icons';
+import { useToggles } from '../../../App/context/TogglesContext';
+import { ToggleName } from '../../../App/context/toggles';
 
 export const BorderBox = styled.div`
     border: 1px solid #c6c2bf;
@@ -96,7 +98,12 @@ const TotrinnskontrollSwitch: FC<{ settVisGodkjentModal: (vis: boolean) => void 
                 />
             );
         case TotrinnskontrollStatus.IKKE_AUTORISERT:
-            return <SendtTilBeslutter totrinnskontroll={totrinnskontroll.data.totrinnskontroll} />;
+            return (
+                <SendtTilBeslutter
+                    totrinnskontroll={totrinnskontroll.data.totrinnskontroll}
+                    behandlingId={behandling.data.id}
+                />
+            );
         case TotrinnskontrollStatus.TOTRINNSKONTROLL_UNDERKJENT:
             return (
                 <TotrinnskontrollUnderkjent
@@ -108,9 +115,20 @@ const TotrinnskontrollSwitch: FC<{ settVisGodkjentModal: (vis: boolean) => void 
     }
 };
 
-const SendtTilBeslutter: React.FC<{ totrinnskontroll: TotrinnskontrollOpprettet }> = ({
-    totrinnskontroll,
-}) => {
+const SendtTilBeslutter: React.FC<{
+    totrinnskontroll: TotrinnskontrollOpprettet;
+    behandlingId: string;
+}> = ({ totrinnskontroll, behandlingId }) => {
+    const { axiosRequest } = useApp();
+    const { toggles } = useToggles();
+
+    const angreSendTilBeslutter = () => {
+        axiosRequest<string, null>({
+            method: 'POST',
+            url: `/api/vedtak/${behandlingId}/angre-send-til-beslutter`,
+        });
+    };
+
     return (
         <BorderBox>
             <Heading size={'small'} level={'3'}>
@@ -124,6 +142,11 @@ const SendtTilBeslutter: React.FC<{ totrinnskontroll: TotrinnskontrollOpprettet 
                 <BodyShortSmall>{totrinnskontroll.opprettetAv}</BodyShortSmall>
                 <BodyShortSmall>{formaterIsoDatoTid(totrinnskontroll.opprettetTid)}</BodyShortSmall>
             </div>
+            {toggles[ToggleName.angreSendTilBeslutter] && (
+                <Button size="small" onClick={angreSendTilBeslutter}>
+                    Angre sendt til beslutter
+                </Button>
+            )}
         </BorderBox>
     );
 };

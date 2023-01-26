@@ -23,15 +23,14 @@ interface Props {
     feil?: string;
 }
 
+const valgbarePeriodetyper = [EUtgiftsperiodetype.ORDINÆR, EUtgiftsperiodetype.OPPHØR];
+
 const PeriodetypeSelect: FC<Props> = ({
     periodetype,
     oppdaterUtgiftsperiodeElement,
     lesevisning,
     feil,
 }) => {
-    //TODO: Legg til sanksjon når vi støttet sanksjon for revurderinger
-    const valgbarePeriodetyper = [EUtgiftsperiodetype.ORDINÆR, EUtgiftsperiodetype.OPPHØR];
-
     return (
         <StyledSelect
             label="Periodetype"
@@ -41,7 +40,7 @@ const PeriodetypeSelect: FC<Props> = ({
             onChange={(e) => {
                 oppdaterUtgiftsperiodeElement(EUtgiftsperiodeProperty.periodetype, e.target.value);
             }}
-            erLesevisning={lesevisning}
+            erLesevisning={lesevisning || periodetype === EUtgiftsperiodetype.SANKSJON_1_MND}
             lesevisningVerdi={periodetype && utgiftsperiodetypeTilTekst[periodetype]}
             size={'small'}
         >
