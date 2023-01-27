@@ -28,7 +28,7 @@ const EndringPersonopplsyninger: React.FC = () => {
                 }
 
                 return (
-                    <Alert variant="warning" title="Endring i folkeregisteropplysninger">
+                    <Alert variant="warning">
                         <Heading spacing size="small" level="2">
                             Endring i folkeregisteropplysninger
                         </Heading>
