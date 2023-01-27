@@ -164,15 +164,9 @@ export const useHentVilkår = (): {
             axiosRequest<IEndringerPersonopplysninger, void>({
                 method: 'GET',
                 url: `/familie-ef-sak/api/personopplysninger/behandling/${behandlingId}/endringer`,
-            }).then(
-                (
-                    endringerPersonopplysninger:
-                        | RessursSuksess<IEndringerPersonopplysninger>
-                        | RessursFeilet
-                ) => {
-                    settGrunnlagsendringer(endringerPersonopplysninger);
-                }
-            );
+            }).then((respons: RessursSuksess<IEndringerPersonopplysninger> | RessursFeilet) => {
+                settGrunnlagsendringer(respons);
+            });
         },
         [axiosRequest]
     );

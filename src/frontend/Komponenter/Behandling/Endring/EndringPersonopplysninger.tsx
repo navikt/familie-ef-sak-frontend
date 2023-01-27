@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { RessursStatus } from '../../../App/typer/ressurs';
 import { useHentVilkår } from '../../../App/hooks/useHentVilkår';
 import { Alert, Heading } from '@navikt/ds-react';
@@ -7,22 +7,26 @@ import { utledEndringerPåPersonopplysninger } from './utils';
 import { useToggles } from '../../../App/context/TogglesContext';
 import { ToggleName } from '../../../App/context/toggles';
 import { endringerKeyTilTekst } from '../Inngangsvilkår/vilkår';
+import { Behandling } from '../../../App/typer/fagsak';
+import { utredesEllerFatterVedtak } from '../../../App/typer/behandlingstatus';
 
 const EndringPersonopplsyninger: React.FC<{
-    behandlingId: string;
-}> = ({ behandlingId }) => {
+    behandling: Behandling;
+}> = ({ behandling }) => {
     const { endringerPersonopplysninger, hentEndringerForPersonopplysninger } = useHentVilkår();
     const { toggles } = useToggles();
     const skalViseKomponent = toggles[ToggleName.visEndringerPersonopplysninger];
+    const behandlingId = behandling.id;
 
-    React.useEffect(() => {
-        if (behandlingId !== undefined) {
-            if (endringerPersonopplysninger.status !== RessursStatus.SUKSESS) {
-                hentEndringerForPersonopplysninger(behandlingId);
-            }
+    useEffect(() => {
+        if (
+            utredesEllerFatterVedtak(behandling) &&
+            endringerPersonopplysninger.status === RessursStatus.IKKE_HENTET
+        ) {
+            hentEndringerForPersonopplysninger(behandlingId);
         }
         // eslint-disable-next-line
-    }, [behandlingId]);
+    }, [behandling]);
 
     if (!skalViseKomponent) {
         return <></>;

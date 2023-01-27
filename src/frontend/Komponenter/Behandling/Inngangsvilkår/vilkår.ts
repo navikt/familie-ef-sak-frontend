@@ -39,7 +39,7 @@ export interface IEndringer {
     sivilstand: IEndring;
     adresse: IEndring;
     fullmakt: IEndring;
-    barn: IEndring;
+    barn: IEndringMedDetaljer<BarnEndringer[]>;
     innflyttingTilNorge: IEndring;
     utflyttingFraNorge: IEndring;
     oppholdstillatelse: IEndring;
@@ -63,6 +63,19 @@ export const endringerKeyTilTekst: Record<keyof IEndringer, string> = {
 
 export interface IEndring {
     harEndringer: boolean;
+}
+
+export type IEndringMedDetaljer<T> = IEndring & {
+    detaljer: T;
+};
+
+export interface BarnEndringer {
+    ident: string;
+    endringer: {
+        felt: string;
+        tidligere: string; // String??
+        ny: string;
+    }[];
 }
 
 export interface IAdresseopplysninger {
