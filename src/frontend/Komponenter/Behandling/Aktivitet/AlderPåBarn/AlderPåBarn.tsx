@@ -7,7 +7,6 @@ import AlderPåBarnInfo from './AlderPåBarnInfo';
 import DokumentasjonSendtInn from '../../Inngangsvilkår/DokumentasjonSendtInn';
 import { AlertError } from '../../../../Felles/Visningskomponenter/Alerts';
 import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';
-import { EAktivitetsvilkår } from '../../../../App/context/EkspanderbareVilkårpanelContext';
 import { VilkårpanelInnhold } from '../../Vilkårpanel/VilkårpanelInnhold';
 
 export const AlderPåBarn: React.FC<VilkårProps> = ({
@@ -29,7 +28,7 @@ export const AlderPåBarn: React.FC<VilkårProps> = ({
             paragrafTittel="§15-10"
             tittel="Alder på barn"
             vilkårsresultat={utleddResultat}
-            vilkår={EAktivitetsvilkår.ALDER_PÅ_BARN}
+            vilkår={AktivitetsvilkårType.ALDER_PÅ_BARN}
         >
             <>
                 {grunnlag.barnMedSamvær.map((barn, idx) => {

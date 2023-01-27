@@ -6,7 +6,6 @@ import SagtOppEllerRedusertInfo from './SagtOppEllerRedusertInfo';
 import { AlertError } from '../../../../Felles/Visningskomponenter/Alerts';
 import { VilkårpanelInnhold } from '../../Vilkårpanel/VilkårpanelInnhold';
 import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';
-import { EAktivitetsvilkår } from '../../../../App/context/EkspanderbareVilkårpanelContext';
 
 export const SagtOppEllerRedusert: React.FC<VilkårProps> = ({
     vurderinger,
@@ -32,7 +31,7 @@ export const SagtOppEllerRedusert: React.FC<VilkårProps> = ({
         <Vilkårpanel
             tittel="Sagt opp arbeidsforhold"
             vilkårsresultat={vurdering.resultat}
-            vilkår={EAktivitetsvilkår.SAGT_OPP_ELLER_REDUSERT}
+            vilkår={vurdering.vilkårType}
         >
             <VilkårpanelInnhold>
                 {{

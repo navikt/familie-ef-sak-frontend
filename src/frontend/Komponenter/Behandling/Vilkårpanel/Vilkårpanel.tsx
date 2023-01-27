@@ -1,6 +1,6 @@
 import React, { FC, ReactNode } from 'react';
 import styled from 'styled-components';
-import { Vilkårsresultat } from '../Inngangsvilkår/vilkår';
+import { Vilkårsresultat, VilkårType } from '../Inngangsvilkår/vilkår';
 import { Button, Heading } from '@navikt/ds-react';
 import { Collapse, Expand } from '@navikt/ds-icons';
 import { VilkårsresultatIkon } from '../../../Felles/Ikoner/VilkårsresultatIkon';
@@ -8,7 +8,6 @@ import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 import { ATextSubtle } from '@navikt/ds-tokens/dist/tokens';
 import {
     EkspandertTilstand,
-    IVilkårstype,
     useEkspanderbareVilkårpanelContext,
 } from '../../../App/context/EkspanderbareVilkårpanelContext';
 
@@ -41,7 +40,7 @@ interface Props {
     paragrafTittel?: string;
     vilkårsresultat: Vilkårsresultat;
     children: ReactNode;
-    vilkår: IVilkårstype;
+    vilkår: VilkårType;
 }
 
 export const Vilkårpanel: FC<Props> = ({

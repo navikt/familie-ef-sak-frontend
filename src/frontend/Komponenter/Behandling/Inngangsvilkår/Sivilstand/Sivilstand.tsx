@@ -5,7 +5,6 @@ import { VilkårProps } from '../vilkårprops';
 import SivilstandInfo from './SivilstandInfo';
 import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';
 import { VilkårpanelInnhold } from '../../Vilkårpanel/VilkårpanelInnhold';
-import { EInngangsvilkår } from '../../../../App/context/EkspanderbareVilkårpanelContext';
 
 export const Sivilstand: React.FC<VilkårProps> = ({
     vurderinger,
@@ -25,7 +24,7 @@ export const Sivilstand: React.FC<VilkårProps> = ({
             paragrafTittel="§15-4"
             tittel="Sivilstand"
             vilkårsresultat={vurdering.resultat}
-            vilkår={EInngangsvilkår.SIVILSTAND}
+            vilkår={vurdering.vilkårType}
         >
             <VilkårpanelInnhold>
                 {{

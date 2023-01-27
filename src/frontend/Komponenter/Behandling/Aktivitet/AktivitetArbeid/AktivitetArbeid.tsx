@@ -8,7 +8,6 @@ import { Behandlingsårsak } from '../../../../App/typer/Behandlingsårsak';
 import AktivitetArbeidInfo from './AktivitetArbeidInfo';
 import { AlertError } from '../../../../Felles/Visningskomponenter/Alerts';
 import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';
-import { EAktivitetsvilkår } from '../../../../App/context/EkspanderbareVilkårpanelContext';
 import { VilkårpanelInnhold } from '../../Vilkårpanel/VilkårpanelInnhold';
 
 export const AktivitetArbeid: React.FC<VilkårProps> = ({
@@ -42,7 +41,7 @@ export const AktivitetArbeid: React.FC<VilkårProps> = ({
                         tittel="Aktivitet"
                         vilkårsresultat={vurdering.resultat}
                         paragrafTittel={'§15-10'}
-                        vilkår={EAktivitetsvilkår.AKTIVITET_BARNETILSYN}
+                        vilkår={vurdering.vilkårType}
                     >
                         <VilkårpanelInnhold>
                             {{

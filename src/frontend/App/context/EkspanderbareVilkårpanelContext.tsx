@@ -1,31 +1,14 @@
 import constate from 'constate';
 import { useState } from 'react';
+import {
+    AktivitetsvilkårType,
+    InngangsvilkårType,
+    VilkårType,
+} from '../../Komponenter/Behandling/Inngangsvilkår/vilkår';
 
 export enum EkspandertTilstand {
     EKSPANDERT = 'EKSPANDERT',
     KOLLAPSET = 'KOLLAPSET',
-}
-
-export enum EInngangsvilkår {
-    MEDLEMSKAP = 'MEDLEMSKAP',
-    OPPHOLD = 'OPPHOLD',
-    MOR_ELLER_FAR = 'MOR_ELLER_FAR',
-    NYTT_BARN_SAMME_PARTNER = 'NYTT_BARN_SAMME_PARTNER',
-    SIVILSTAND = 'SIVILSTAND',
-    SAMLIV = 'SAMLIV',
-    ALENEOMSORG = 'ALENEOMSORG',
-}
-
-export enum EAktivitetsvilkår {
-    AKTIVITET_OVERGANGSTØNAD = 'AKTIVITET_OVERGANGSTØNAD',
-    SAGT_OPP_ELLER_REDUSERT = 'SAGT_OPP_ELLER_REDUSERT',
-    AKTIVITET_BARNETILSYN = 'AKTIVITET_BARNETILSYN',
-    INNTEKT = 'INNTEKT',
-    ALDER_PÅ_BARN = 'ALDER_PÅ_BARN',
-    DOKUMENTASJON_AV_TILSYNSUTGIFTER = 'DOKUMENTASJON_AV_TILSYNSUTGIFTER',
-    RETT_TIL_OVERGANGSSTØNAD = 'RETT_TIL_OVERGANGSSTØNAD',
-    DOKUMENTASJON_UTDANNING = 'DOKUMENTASJON_UTDANNING',
-    UTDANNING_HENSIKTSMESSIG = 'UTDANNING_HENSIKTSMESSIG',
 }
 
 export enum EVilkårstyper {
@@ -33,16 +16,14 @@ export enum EVilkårstyper {
     AKTIVITETSVILKÅR = 'AKTIVITETSVILKÅR',
 }
 
-export type IVilkårstype = EInngangsvilkår | EAktivitetsvilkår;
-
 const [EkspanderbareVilkårpanelProvider, useEkspanderbareVilkårpanelContext] = constate(() => {
-    const vilkårtyper = { ...EInngangsvilkår, ...EAktivitetsvilkår };
+    const vilkårtyper = { ...InngangsvilkårType, ...AktivitetsvilkårType };
 
     const settAlleTil = (tilstand: EkspandertTilstand, vilkårstype?: EVilkårstyper) => {
         const vilkårSomSkalEndres = vilkårstype
             ? vilkårstype === EVilkårstyper.INNGANGSVILKÅR
-                ? EInngangsvilkår
-                : EAktivitetsvilkår
+                ? InngangsvilkårType
+                : AktivitetsvilkårType
             : vilkårtyper;
 
         return Object.keys(vilkårSomSkalEndres).reduce(
@@ -50,12 +31,12 @@ const [EkspanderbareVilkårpanelProvider, useEkspanderbareVilkårpanelContext] =
                 ...acc,
                 [key]: tilstand,
             }),
-            {} as Record<IVilkårstype, EkspandertTilstand>
+            {} as Record<VilkårType, EkspandertTilstand>
         );
     };
 
     const [ekspanderteVilkår, settEkspanderteVilkår] = useState<
-        Record<IVilkårstype, EkspandertTilstand>
+        Record<VilkårType, EkspandertTilstand>
     >(settAlleTil(EkspandertTilstand.EKSPANDERT));
 
     const lukkAlle = (vilkårstype: EVilkårstyper) => {
@@ -74,7 +55,7 @@ const [EkspanderbareVilkårpanelProvider, useEkspanderbareVilkårpanelContext] =
         }));
     };
 
-    const toggleEkspandertTilstand = (key: IVilkårstype) => {
+    const toggleEkspandertTilstand = (key: VilkårType) => {
         settEkspanderteVilkår((ekspanderteVilkår) => ({
             ...ekspanderteVilkår,
             [key]:
