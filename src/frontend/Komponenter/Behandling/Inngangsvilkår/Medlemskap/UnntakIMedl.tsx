@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { FC, useMemo } from 'react';
 import TabellVisning, { TabellIkon } from '../../Tabell/TabellVisning';
-import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
+import { formaterNullableIsoDato, mapTrueFalse } from '../../../../App/utils/formatter';
 import { IGyldigVedtakPeriode } from './typer';
-import { BooleanTekst } from '../../../../Felles/Visningskomponenter/BooleanTilTekst';
 import { differenceInDays } from 'date-fns';
 
 interface Props {
@@ -27,7 +26,7 @@ const UnntakIMedl: FC<Props> = ({ gyldigeVedtaksPerioder }) => {
             kolonner={[
                 {
                     overskrift: 'Medlem i folketrygden',
-                    tekstVerdi: (d) => <BooleanTekst value={d.erMedlemIFolketrygden} />,
+                    tekstVerdi: (d) => mapTrueFalse(d.erMedlemIFolketrygden),
                 },
                 {
                     overskrift: 'Fra',
