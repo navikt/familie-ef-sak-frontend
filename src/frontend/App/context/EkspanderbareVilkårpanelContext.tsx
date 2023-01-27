@@ -9,6 +9,7 @@ import {
 export enum EkspandertTilstand {
     EKSPANDERT = 'EKSPANDERT',
     KOLLAPSET = 'KOLLAPSET',
+    KAN_IKKE_LUKKES = 'KAN_IKKE_LUKKES',
 }
 
 export enum EVilkårstyper {
@@ -29,10 +30,19 @@ const [EkspanderbareVilkårpanelProvider, useEkspanderbareVilkårpanelContext] =
         return Object.keys(vilkårSomSkalEndres).reduce(
             (acc, key) => ({
                 ...acc,
-                [key]: tilstand,
+                [key]: finnGyldigEkspanderbarTilstand(key as VilkårType, tilstand),
             }),
             {} as Record<VilkårType, EkspandertTilstand>
         );
+    };
+
+    const finnGyldigEkspanderbarTilstand = (
+        key: VilkårType,
+        tilstand: EkspandertTilstand
+    ): EkspandertTilstand => {
+        if (ekspanderteVilkår && ekspanderteVilkår[key] === EkspandertTilstand.KAN_IKKE_LUKKES)
+            return EkspandertTilstand.KAN_IKKE_LUKKES;
+        else return tilstand;
     };
 
     const [ekspanderteVilkår, settEkspanderteVilkår] = useState<
@@ -56,6 +66,8 @@ const [EkspanderbareVilkårpanelProvider, useEkspanderbareVilkårpanelContext] =
     };
 
     const toggleEkspandertTilstand = (key: VilkårType) => {
+        if (ekspanderteVilkår[key] === EkspandertTilstand.KAN_IKKE_LUKKES) return;
+
         settEkspanderteVilkår((ekspanderteVilkår) => ({
             ...ekspanderteVilkår,
             [key]:
@@ -65,10 +77,18 @@ const [EkspanderbareVilkårpanelProvider, useEkspanderbareVilkårpanelContext] =
         }));
     };
 
+    const settEttPanelITilstand = (key: VilkårType, tilstand: EkspandertTilstand) => {
+        settEkspanderteVilkår((ekspanderteVilkår) => ({
+            ...ekspanderteVilkår,
+            [key]: tilstand,
+        }));
+    };
+
     return {
         åpneAlle,
         lukkAlle,
         toggleEkspandertTilstand,
+        settEttPanelITilstand,
         ekspanderteVilkår,
     };
 });
