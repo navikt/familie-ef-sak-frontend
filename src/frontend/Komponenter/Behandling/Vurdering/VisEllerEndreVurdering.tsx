@@ -13,6 +13,10 @@ import { useBehandling } from '../../../App/context/BehandlingContext';
 import { useApp } from '../../../App/context/AppContext';
 import { Button } from '@navikt/ds-react';
 import styled from 'styled-components';
+import {
+    EkspandertTilstand,
+    useEkspanderbareVilkårpanelContext,
+} from '../../../App/context/EkspanderbareVilkårpanelContext';
 
 const KnappWrapper = styled.div`
     display: flex;
@@ -72,6 +76,7 @@ const VisEllerEndreVurdering: FC<Props> = ({
     tittelTekstVisVurdering,
 }) => {
     const { behandlingErRedigerbar, hentBehandling } = useBehandling();
+    const { settEttPanelITilstand } = useEkspanderbareVilkårpanelContext();
     const [redigeringsmodus, settRedigeringsmodus] = useState<Redigeringsmodus>(
         utledRedigeringsmodus(feilmelding, vurdering, behandlingErRedigerbar)
     );
@@ -114,13 +119,18 @@ const VisEllerEndreVurdering: FC<Props> = ({
             }
         });
 
+    const startRedigering = () => {
+        settRedigeringsmodus(Redigeringsmodus.REDIGERING);
+        settEttPanelITilstand(vurdering.vilkårType, EkspandertTilstand.KAN_IKKE_LUKKES);
+    };
+
     switch (redigeringsmodus) {
         case Redigeringsmodus.IKKE_PÅSTARTET:
             return (
                 <KnappWrapper>
                     <Knapp
                         onClick={() => {
-                            settRedigeringsmodus(Redigeringsmodus.REDIGERING);
+                            startRedigering();
                         }}
                         variant={'secondary'}
                         type={'button'}
@@ -146,7 +156,7 @@ const VisEllerEndreVurdering: FC<Props> = ({
             return (
                 <VisVurdering
                     vurdering={vurdering}
-                    settRedigeringsmodus={settRedigeringsmodus}
+                    settRedigeringsmodus={startRedigering}
                     resetVurdering={resetVurdering}
                     feilmelding={feilmelding || resetFeilmelding}
                     behandlingErRedigerbar={behandlingErRedigerbar && erSaksbehandler}

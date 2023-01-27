@@ -20,6 +20,10 @@ import Delvilkår from './Delvilkår';
 import { useApp } from '../../../App/context/AppContext';
 import { Button } from '@navikt/ds-react';
 import styled from 'styled-components';
+import {
+    EkspandertTilstand,
+    useEkspanderbareVilkårpanelContext,
+} from '../../../App/context/EkspanderbareVilkårpanelContext';
 
 /**
  * Skal resette undervilkår, men ikke rootnivå hvis en tidligere endrer seg
@@ -36,6 +40,7 @@ const EndreVurderingComponent: FC<{
     vurdering: IVurdering;
 }> = ({ regler, oppdaterVurdering, vurdering }) => {
     const { nullstillIkkePersistertKomponent, settIkkePersistertKomponent } = useApp();
+    const { settEttPanelITilstand } = useEkspanderbareVilkårpanelContext();
     const [delvilkårsvurderinger, settDelvilkårsvurderinger] = useState<IDelvilkår[]>(
         vurdering.delvilkårsvurderinger
     );
@@ -99,6 +104,11 @@ const EndreVurderingComponent: FC<{
 
     const skalViseLagreKnapp = erAlleDelvilkårBesvarte(delvilkårsvurderinger, regler);
 
+    const håndterTrykkPåLagre = () => {
+        nullstillIkkePersistertKomponent(vurdering.id);
+        settEttPanelITilstand(vurdering.vilkårType, EkspandertTilstand.EKSPANDERT);
+    };
+
     return (
         <form
             onSubmit={(event) => {
@@ -138,12 +148,7 @@ const EndreVurderingComponent: FC<{
                 });
             })}
             {skalViseLagreKnapp && (
-                <LagreKnapp
-                    onClick={() => {
-                        nullstillIkkePersistertKomponent(vurdering.id);
-                    }}
-                    type={'submit'}
-                >
+                <LagreKnapp onClick={håndterTrykkPåLagre} type={'submit'}>
                     Lagre
                 </LagreKnapp>
             )}
