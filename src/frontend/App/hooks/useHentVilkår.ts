@@ -10,7 +10,6 @@ import { useApp } from '../context/AppContext';
 import { useCallback, useState } from 'react';
 import {
     IVilkår,
-    IEndringerPersonopplysninger,
     IVurdering,
     OppdaterVilkårsvurdering,
     SvarPåVilkårsvurdering,
@@ -31,10 +30,10 @@ const oppdaterInngangsvilkårMedVurdering = (
     },
 });
 
-export const useHentVilkår = (): {
+export interface UseHentVilkår {
     vilkår: Ressurs<IVilkår>;
     hentVilkår: (behandlingId: string) => void;
-    oppdaterGrunnlagsdataOgHentVilkår: (behandlingId: string) => void;
+    oppdaterGrunnlagsdataOgHentVilkår: (behandlingId: string) => Promise<void>;
     lagreVurdering: (
         vurdering: SvarPåVilkårsvurdering
     ) => Promise<RessursSuksess<IVurdering> | RessursFeilet>;
@@ -46,18 +45,14 @@ export const useHentVilkår = (): {
         nullstillVilkårsvurdering: OppdaterVilkårsvurdering
     ) => Promise<RessursSuksess<IVurdering> | RessursFeilet>;
     gjenbrukInngangsvilkår: (behandlingId: string, kopierBehandlingId: string) => void;
-    hentEndringerForPersonopplysninger: (behandlingId: string) => void;
-    endringerPersonopplysninger: Ressurs<IEndringerPersonopplysninger>;
-} => {
+}
+
+export const useHentVilkår = (): UseHentVilkår => {
     const { axiosRequest, settToast } = useApp();
 
     const [feilmeldinger, settFeilmeldinger] = useState<Vurderingsfeilmelding>({});
 
     const [vilkår, settVilkår] = useState<Ressurs<IVilkår>>(byggTomRessurs());
-
-    const [endringerPersonopplysninger, settGrunnlagsendringer] = useState<
-        Ressurs<IEndringerPersonopplysninger>
-    >(byggTomRessurs());
 
     function fjernFeilmelding(id: string) {
         settFeilmeldinger((prevFeilmeldinger) => {
@@ -149,25 +144,13 @@ export const useHentVilkår = (): {
         [axiosRequest]
     );
     const oppdaterGrunnlagsdataOgHentVilkår = useCallback(
-        (behandlingId: string) => {
+        (behandlingId: string) =>
             axiosRequest<IVilkår, void>({
                 method: 'GET',
                 url: `/familie-ef-sak/api/vurdering/${behandlingId}/oppdater`,
             }).then((hentetInngangsvilkår: RessursSuksess<IVilkår> | RessursFeilet) => {
                 settVilkår(hentetInngangsvilkår);
-            });
-        },
-        [axiosRequest]
-    );
-    const hentEndringerForPersonopplysninger = useCallback(
-        (behandlingId: string) => {
-            axiosRequest<IEndringerPersonopplysninger, void>({
-                method: 'GET',
-                url: `/familie-ef-sak/api/personopplysninger/behandling/${behandlingId}/endringer`,
-            }).then((respons: RessursSuksess<IEndringerPersonopplysninger> | RessursFeilet) => {
-                settGrunnlagsendringer(respons);
-            });
-        },
+            }),
         [axiosRequest]
     );
     const gjenbrukInngangsvilkår = useCallback(
@@ -196,7 +179,5 @@ export const useHentVilkår = (): {
         ikkeVurderVilkår,
         oppdaterGrunnlagsdataOgHentVilkår,
         gjenbrukInngangsvilkår,
-        endringerPersonopplysninger,
-        hentEndringerForPersonopplysninger,
     };
 };

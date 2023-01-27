@@ -1,32 +1,16 @@
-import React, { useEffect } from 'react';
-import { RessursStatus } from '../../../App/typer/ressurs';
-import { useHentVilkår } from '../../../App/hooks/useHentVilkår';
+import React from 'react';
 import { Alert, Heading } from '@navikt/ds-react';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { utledEndringerPåPersonopplysninger } from './utils';
 import { useToggles } from '../../../App/context/TogglesContext';
 import { ToggleName } from '../../../App/context/toggles';
 import { endringerKeyTilTekst } from '../Inngangsvilkår/vilkår';
-import { Behandling } from '../../../App/typer/fagsak';
-import { utredesEllerFatterVedtak } from '../../../App/typer/behandlingstatus';
+import { useBehandling } from '../../../App/context/BehandlingContext';
 
-const EndringPersonopplsyninger: React.FC<{
-    behandling: Behandling;
-}> = ({ behandling }) => {
-    const { endringerPersonopplysninger, hentEndringerForPersonopplysninger } = useHentVilkår();
+const EndringPersonopplsyninger: React.FC = () => {
     const { toggles } = useToggles();
     const skalViseKomponent = toggles[ToggleName.visEndringerPersonopplysninger];
-    const behandlingId = behandling.id;
-
-    useEffect(() => {
-        if (
-            utredesEllerFatterVedtak(behandling) &&
-            endringerPersonopplysninger.status === RessursStatus.IKKE_HENTET
-        ) {
-            hentEndringerForPersonopplysninger(behandlingId);
-        }
-        // eslint-disable-next-line
-    }, [behandling]);
+    const { endringerPersonopplysninger } = useBehandling();
 
     if (!skalViseKomponent) {
         return <></>;
@@ -35,6 +19,7 @@ const EndringPersonopplsyninger: React.FC<{
     return (
         <DataViewer response={{ endringerPersonopplysninger }}>
             {({ endringerPersonopplysninger }) => {
+                if (!endringerPersonopplysninger) return null;
                 const endringer = utledEndringerPåPersonopplysninger(endringerPersonopplysninger);
                 const erEndring = endringer.length > 0;
 

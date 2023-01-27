@@ -28,7 +28,7 @@ export interface IVilkårGrunnlag {
 
 export interface IEndringerPersonopplysninger {
     sjekketTidspunkt: string;
-    endringer: IEndringer;
+    endringer?: IEndringer;
 }
 
 export interface IEndringer {
