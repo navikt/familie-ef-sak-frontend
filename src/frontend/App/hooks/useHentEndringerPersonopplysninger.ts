@@ -7,7 +7,7 @@ import {
     RessursFeilet,
     RessursSuksess,
 } from '../typer/ressurs';
-import { IEndringerPersonopplysninger } from '../../Komponenter/Behandling/Inngangsvilkår/vilkår';
+import { IEndringerPersonopplysninger } from '../../Komponenter/Behandling/Endring/personopplysningerEndringer';
 
 interface Props {
     endringerPersonopplysninger: Ressurs<IEndringerPersonopplysninger | undefined>;

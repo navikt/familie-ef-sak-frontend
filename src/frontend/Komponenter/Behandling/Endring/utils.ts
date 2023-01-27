@@ -1,4 +1,4 @@
-import { IEndring, IEndringer, IEndringerPersonopplysninger } from '../Inngangsvilkår/vilkår';
+import { IEndring, IEndringer, IEndringerPersonopplysninger } from './personopplysningerEndringer';
 
 export const utledEndringerPåPersonopplysninger = (
     personopplysninger: IEndringerPersonopplysninger

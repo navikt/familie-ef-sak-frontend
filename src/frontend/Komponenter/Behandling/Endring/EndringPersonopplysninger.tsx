@@ -4,8 +4,8 @@ import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { utledEndringerPåPersonopplysninger } from './utils';
 import { useToggles } from '../../../App/context/TogglesContext';
 import { ToggleName } from '../../../App/context/toggles';
-import { endringerKeyTilTekst } from '../Inngangsvilkår/vilkår';
 import { useBehandling } from '../../../App/context/BehandlingContext';
+import { endringerKeyTilTekst } from './personopplysningerEndringer';
 
 const EndringPersonopplsyninger: React.FC = () => {
     const { toggles } = useToggles();
