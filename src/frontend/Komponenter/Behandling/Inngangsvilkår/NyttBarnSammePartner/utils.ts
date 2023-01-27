@@ -13,6 +13,7 @@ export const mapTilSøknadsgrunnlagNyttBarn = (
     return barnMedSamvær
         .filter((barn) => !barn.registergrunnlag.fødselsnummer)
         .map((barn) => ({
+            barnId: barn.barnId,
             navn: barn.søknadsgrunnlag.navn,
             fødselTermindato: barn.søknadsgrunnlag.fødselTermindato,
             annenForelderSoknad: barn.søknadsgrunnlag.forelder,
@@ -27,6 +28,7 @@ export const mapTilRegistergrunnlagNyttBarn = (
 ): RegistergrunnlagNyttBarn[] => {
     return barnMedSamvær
         .map((barn) => ({
+            barnId: barn.barnId,
             navn: barn.registergrunnlag.navn,
             fødselsnummer: barn.registergrunnlag.fødselsnummer,
             fødselsdato: barn.registergrunnlag.fødselsdato,
