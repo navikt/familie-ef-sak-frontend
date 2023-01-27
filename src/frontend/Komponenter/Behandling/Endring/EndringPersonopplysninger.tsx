@@ -5,7 +5,43 @@ import { utledEndringerPåPersonopplysninger } from './utils';
 import { useToggles } from '../../../App/context/TogglesContext';
 import { ToggleName } from '../../../App/context/toggles';
 import { useBehandling } from '../../../App/context/BehandlingContext';
-import { endringerKeyTilTekst } from './personopplysningerEndringer';
+import { endringerKeyTilTekst, IEndringer, Personendring } from './personopplysningerEndringer';
+
+const DetaljerPersonendring: React.FC<{ personendringer: Personendring[] }> = ({
+    personendringer,
+}) => {
+    return (
+        <>
+            {personendringer.map((person) => (
+                <ul key={person.ident}>
+                    <li>Ident: {person.ident}</li>
+                    <ul>
+                        {person.endringer.map((endring, index) => (
+                            <li key={endring.felt + index}>
+                                {endring.felt} - Tidligere:
+                                {endring.tidligere} Ny:
+                                {endring.ny}
+                            </li>
+                        ))}
+                    </ul>
+                </ul>
+            ))}
+        </>
+    );
+};
+
+const Detaljer: React.FC<{ endringer: IEndringer; personopplysning: keyof IEndringer }> = ({
+    endringer,
+    personopplysning,
+}) => {
+    switch (personopplysning) {
+        case 'barn':
+        case 'annenForelder':
+            return <DetaljerPersonendring personendringer={endringer[personopplysning].detaljer} />;
+        default:
+            return null;
+    }
+};
 
 const EndringPersonopplsyninger: React.FC = () => {
     const { toggles } = useToggles();
@@ -40,6 +76,10 @@ const EndringPersonopplsyninger: React.FC = () => {
                             {endringer.map((personopplysning) => (
                                 <li key={personopplysning}>
                                     {endringerKeyTilTekst[personopplysning]}
+                                    <Detaljer
+                                        endringer={endringerPersonopplysninger.endringer}
+                                        personopplysning={personopplysning}
+                                    />
                                 </li>
                             ))}
                         </ul>
