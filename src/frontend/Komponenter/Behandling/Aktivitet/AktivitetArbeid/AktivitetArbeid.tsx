@@ -45,7 +45,7 @@ export const AktivitetArbeid: React.FC<VilkårProps> = ({
                     >
                         <VilkårpanelInnhold>
                             {{
-                                venstre: grunnlag.aktivitet && (
+                                venstre: grunnlag.aktivitet && skalViseSøknadsdata && (
                                     <AktivitetArbeidInfo
                                         aktivitet={grunnlag.aktivitet}
                                         skalViseSøknadsdata={skalViseSøknadsdata}

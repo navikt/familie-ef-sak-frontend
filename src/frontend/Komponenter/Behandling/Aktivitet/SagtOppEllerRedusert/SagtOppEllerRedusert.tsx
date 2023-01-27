@@ -35,7 +35,7 @@ export const SagtOppEllerRedusert: React.FC<VilkårProps> = ({
         >
             <VilkårpanelInnhold>
                 {{
-                    venstre: grunnlag.sagtOppEllerRedusertStilling && (
+                    venstre: grunnlag.sagtOppEllerRedusertStilling && skalViseSøknadsdata && (
                         <SagtOppEllerRedusertInfo
                             sagtOppEllerRedusert={grunnlag.sagtOppEllerRedusertStilling}
                             skalViseSøknadsdata={skalViseSøknadsdata}
