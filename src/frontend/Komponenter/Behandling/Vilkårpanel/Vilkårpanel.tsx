@@ -71,16 +71,16 @@ export const Vilkårpanel: FC<Props> = ({
                         size="medium"
                         variant="tertiary"
                         icon={
-                            ekspanderteVilkår[vilkår] === EkspandertTilstand.EKSPANDERT ? (
-                                <Expand />
-                            ) : (
+                            ekspanderteVilkår[vilkår] === EkspandertTilstand.KOLLAPSET ? (
                                 <Collapse />
+                            ) : (
+                                <Expand />
                             )
                         }
                         onClick={() => toggleEkspandertTilstand(vilkår)}
                     />
                 </VilkårpanelTittel>
-                {ekspanderteVilkår[vilkår] === EkspandertTilstand.EKSPANDERT && children}
+                {ekspanderteVilkår[vilkår] !== EkspandertTilstand.KOLLAPSET && children}
             </>
         </VilkårpanelBase>
     );
