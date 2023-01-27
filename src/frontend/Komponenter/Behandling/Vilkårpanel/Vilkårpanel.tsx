@@ -78,6 +78,7 @@ export const Vilkårpanel: FC<Props> = ({
                             )
                         }
                         onClick={() => toggleEkspandertTilstand(vilkår)}
+                        disabled={ekspanderteVilkår[vilkår] === EkspandertTilstand.KAN_IKKE_LUKKES}
                     />
                 </VilkårpanelTittel>
                 {ekspanderteVilkår[vilkår] !== EkspandertTilstand.KOLLAPSET && children}
