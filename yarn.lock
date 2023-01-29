@@ -9,12 +9,12 @@
   dependencies:
     "@jridgewell/trace-mapping" "^0.3.0"
 
-"@axe-core/react@^4.5.0":
-  version "4.5.0"
-  resolved "https://registry.yarnpkg.com/@axe-core/react/-/react-4.5.0.tgz#f45932110132faa221097cba95ea52ab381767aa"
-  integrity sha512-dH810c1PDuq2ZPK9ESPr5mJtxTU9CL/gpVl1oMgQiMKY2430nCDbaacmJVSbXQW0oWUEErE32eQ9vLfr2YP5eQ==
+"@axe-core/react@^4.6.0":
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/@axe-core/react/-/react-4.6.0.tgz#c65b9736121f484b2bd373247cc68c95e056646f"
+  integrity sha512-ywWaIQ3cUXywTtZXtRb3YI2wTxg2DEa2cA6GW/HJreVf2qjyKq2Kt92F+vJ17IrDBcSym/vMQ0C4ixEyNysIDw==
   dependencies:
-    axe-core "^4.5.0"
+    axe-core "^4.6.1"
     requestidlecallback "^0.3.0"
 
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.12.13", "@babel/code-frame@^7.16.7":
@@ -4333,20 +4333,10 @@ aws4@^1.8.0:
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.11.0.tgz#d61f46d83b2519250e2784daf5b09479a8b41c59"
   integrity sha512-xh1Rl34h6Fi1DC2WWKfxUTVqRsNnr6LsKz2+hfwDxQJWmrx8+c7ylaqBMcHfl1U1r2dsifOvKX3LQuLNZ+XSvA==
 
-axe-core@*:
-  version "4.3.5"
-  resolved "https://registry.yarnpkg.com/axe-core/-/axe-core-4.3.5.tgz#78d6911ba317a8262bfee292aeafcc1e04b49cc5"
-  integrity sha512-WKTW1+xAzhMS5dJsxWkliixlO/PqC4VhmO9T4juNYcaTg9jzWiJsou6m5pxWYGfigWbwzJWeFY6z47a+4neRXA==
-
-axe-core@^4.5.0:
-  version "4.5.0"
-  resolved "https://registry.yarnpkg.com/axe-core/-/axe-core-4.5.0.tgz#6efe2ecdba205fcc9d7ddb3d48c2cf630f70eb5e"
-  integrity sha512-4+rr8eQ7+XXS5nZrKcMO/AikHL0hVqy+lHWAnE3xdHl+aguag8SOQ6eEqLexwLNWgXIMfunGuD3ON1/6Kyet0A==
-
-axe-core@^4.6.2:
-  version "4.6.2"
-  resolved "https://registry.yarnpkg.com/axe-core/-/axe-core-4.6.2.tgz#6e566ab2a3d29e415f5115bc0fd2597a5eb3e5e3"
-  integrity sha512-b1WlTV8+XKLj9gZy2DZXgQiyDp9xkkoe2a6U6UbYccScq2wgH/YwCeI2/Jq2mgo0HzQxqJOjWZBLeA/mqsk5Mg==
+axe-core@*, axe-core@^4.6.1, axe-core@^4.6.2:
+  version "4.6.3"
+  resolved "https://registry.yarnpkg.com/axe-core/-/axe-core-4.6.3.tgz#fc0db6fdb65cc7a80ccf85286d91d64ababa3ece"
+  integrity sha512-/BQzOX780JhsxDnPpH4ZiyrJAzcd8AfzFPkv+89veFSr1rcMjuq2JDCwypKaPeB6ljHp9KjXhPpjgCvQlWYuqg==
 
 axios@^1.2.0:
   version "1.2.0"

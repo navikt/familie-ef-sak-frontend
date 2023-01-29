@@ -110,7 +110,7 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
-    "@axe-core/react": "^4.5.0",
+    "@axe-core/react": "^4.6.0",
     "@babel/core": "^7.20.2",
     "@babel/preset-env": "^7.20.2",
     "@babel/preset-react": "^7.18.6",
