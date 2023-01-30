@@ -3,7 +3,7 @@ import { useDataHenter } from '../../App/hooks/felles/useDataHenter';
 import { AxiosRequestConfig } from 'axios';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import styled from 'styled-components';
-import { TabellWrapper, Td } from '../../Felles/Personopplysninger/TabellWrapper';
+import { TabellWrapper, Td, Th } from '../../Felles/Personopplysninger/TabellWrapper';
 import Mappe from '../../Felles/Ikoner/Mappe';
 import TabellOverskrift from '../../Felles/Personopplysninger/TabellOverskrift';
 import { Dokumentinfo, ILogiskVedlegg } from '../../App/typer/dokumentliste';
@@ -107,9 +107,9 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
     };
 
     const Kolonnetittel: React.FC<{ text: string; width: number }> = ({ text, width }) => (
-        <Td width={`${width}%`}>
+        <Th width={`${width}%`}>
             <SmallTextLabel>{text}</SmallTextLabel>
-        </Td>
+        </Th>
     );
 
     const LogiskeVedlegg: React.FC<{ logiskeVedlegg: ILogiskVedlegg[] }> = ({ logiskeVedlegg }) => (
@@ -184,11 +184,13 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
                                 <TabellOverskrift Ikon={Mappe} tittel={'Dokumenter'} />
                                 <table className="tabell">
                                     <thead>
-                                        <Kolonnetittel text={'Dato'} width={12} />
-                                        <Kolonnetittel text={'Inn/ut'} width={5} />
-                                        <Kolonnetittel text={'Tittel'} width={43} />
-                                        <Kolonnetittel text={'Avsender/mottaker'} width={20} />
-                                        <Kolonnetittel text={'Status'} width={10} />
+                                        <tr>
+                                            <Kolonnetittel text={'Dato'} width={12} />
+                                            <Kolonnetittel text={'Inn/ut'} width={5} />
+                                            <Kolonnetittel text={'Tittel'} width={43} />
+                                            <Kolonnetittel text={'Avsender/mottaker'} width={20} />
+                                            <Kolonnetittel text={'Status'} width={10} />
+                                        </tr>
                                     </thead>
                                     <tbody>
                                         {Object.keys(grupperteDokumenter)

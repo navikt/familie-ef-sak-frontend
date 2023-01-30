@@ -7,6 +7,10 @@ export const BredTd = styled.td`
     padding-left: 0;
 `;
 
+export const Th = styled.td`
+    padding-left: 0;
+`;
+
 export const Td = styled.td`
     padding-left: 0;
 `;
