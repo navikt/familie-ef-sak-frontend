@@ -4,6 +4,7 @@ import { Refresh } from '@navikt/ds-icons';
 import { Button, HelpText } from '@navikt/ds-react';
 import { DetailSmall, SmallTextLabel } from '../../../../Felles/Visningskomponenter/Tekster';
 import { ATextSubtle } from '@navikt/ds-tokens/dist/tokens';
+import { useBehandling } from '../../../../App/context/BehandlingContext';
 
 const FlexWrapper = styled.div`
     display: flex;
@@ -30,7 +31,7 @@ const KnappTekst = styled(SmallTextLabel)`
 type Props = {
     oppdatertDato: string;
     behandlingErRedigerbar: boolean;
-    oppdaterGrunnlagsdata: (behandlingId: string) => void;
+    oppdaterGrunnlagsdata: (behandlingId: string) => Promise<void>;
     behandlingId: string;
 };
 
@@ -40,6 +41,7 @@ export const OppdaterOpplysninger: React.FC<Props> = ({
     oppdaterGrunnlagsdata,
     behandlingId,
 }) => {
+    const { nullstillGrunnlagsendringer } = useBehandling();
     const [nyGrunnlagsdataHentes, settNyGrunnlagsdataHentes] = useState(false);
     const grunnlagsdataSistOppdatert = 'Opplysninger hentet fra Folkeregisteret ' + oppdatertDato;
 
@@ -57,7 +59,9 @@ export const OppdaterOpplysninger: React.FC<Props> = ({
                     onClick={() => {
                         if (!nyGrunnlagsdataHentes) {
                             settNyGrunnlagsdataHentes(true);
-                            oppdaterGrunnlagsdata(behandlingId);
+                            oppdaterGrunnlagsdata(behandlingId).then(() =>
+                                nullstillGrunnlagsendringer()
+                            );
                         }
                     }}
                     loading={nyGrunnlagsdataHentes}

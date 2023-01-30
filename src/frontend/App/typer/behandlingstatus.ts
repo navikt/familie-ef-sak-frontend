@@ -26,6 +26,9 @@ export const erBehandlingUnderArbeid = (behandling: Behandling): boolean =>
         behandling.status
     );
 
+export const utredesEllerFatterVedtak = (behandling: Behandling): boolean =>
+    [BehandlingStatus.UTREDES, BehandlingStatus.FATTER_VEDTAK].includes(behandling.status);
+
 export enum ETaAvVentStatus {
     OK = 'OK',
     ANNEN_BEHANDLING_MÅ_FERDIGSTILLES = 'ANNEN_BEHANDLING_MÅ_FERDIGSTILLES',

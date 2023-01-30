@@ -6,7 +6,6 @@ import { VedtaksoppsummeringOvergangsstønad } from './Overgangsstønad/Vedtakso
 import VedtakOgBeregningOvergangsstønad from './Overgangsstønad/VedtakOgBeregningOvergangsstønad';
 import VedtakOgBeregningBarnetilsyn from './Barnetilsyn/VedtakOgBeregningBarnetilsyn';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
-import { useHentVilkår } from '../../../App/hooks/useHentVilkår';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { IVilkår } from '../Inngangsvilkår/vilkår';
 import { Behandling } from '../../../App/typer/fagsak';
@@ -18,6 +17,7 @@ import { NullstillVedtakModalContext } from './NullstillVedtakModalContext';
 import { SaksinformasjonSkolepenger } from './Skolepenger/SaksinformasjonSkolepenger';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 import { SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
+import { useHentVilkår } from '../../../App/hooks/useHentVilkår';
 
 const AlertErrorLeft = styled(AlertError)`
     margin-left: 2rem;
