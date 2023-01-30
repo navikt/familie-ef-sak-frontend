@@ -100,8 +100,7 @@ const UtgiftsperiodeSkolepenger: React.FC<
                                     antallÅrTilbake={0}
                                     antallÅrFrem={0}
                                     lesevisning={true}
-                                    /* eslint-disable-next-line @typescript-eslint/no-empty-function */
-                                    onEndret={() => {}}
+                                    onEndret={() => null}
                                 />
                                 <StyledInputMedTusenSkille
                                     label={'Utgifter'}
