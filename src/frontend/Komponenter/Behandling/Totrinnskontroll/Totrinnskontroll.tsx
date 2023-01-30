@@ -127,7 +127,7 @@ const SendtTilBeslutter: React.FC<{
 }> = ({ totrinnskontroll, behandlingId }) => {
     const { axiosRequest } = useApp();
     const { toggles } = useToggles();
-    const { hentBehandling, hentTotrinnskontroll } = useBehandling();
+    const { hentBehandling, hentTotrinnskontroll, hentBehandlingshistorikk } = useBehandling();
     const [feilmelding, settFeilmelding] = useState<string>('');
     const [laster, settLaster] = useState(false);
 
@@ -145,6 +145,7 @@ const SendtTilBeslutter: React.FC<{
                 if (res.status === RessursStatus.SUKSESS) {
                     hentBehandling.rerun();
                     hentTotrinnskontroll.rerun();
+                    hentBehandlingshistorikk.rerun();
                 } else {
                     settFeilmelding(res.frontendFeilmelding);
                 }

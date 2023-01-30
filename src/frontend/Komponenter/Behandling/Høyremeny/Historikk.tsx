@@ -14,6 +14,7 @@ export enum Hendelse {
     VEDTAK_IVERKSATT = 'VEDTAK_IVERKSATT',
     VEDTAK_AVSLÅTT = 'VEDTAK_AVSLÅTT',
     HENLAGT = 'HENLAGT',
+    ANGRE_SEND_TIL_BESLUTTER = 'ANGRE_SEND_TIL_BESLUTTER',
 }
 
 export const hendelseTilHistorikkTekst: Record<Hendelse, string> = {
@@ -26,6 +27,7 @@ export const hendelseTilHistorikkTekst: Record<Hendelse, string> = {
     VEDTAK_IVERKSATT: 'Vedtak iverksatt',
     VEDTAK_AVSLÅTT: 'Vedtak avslått',
     HENLAGT: 'Behandling henlagt',
+    ANGRE_SEND_TIL_BESLUTTER: 'Angret send til beslutter',
 };
 
 export const HendelseIkon: React.FC<{ behandlingshistorikk: Behandlingshistorikk }> = ({
