@@ -3,10 +3,8 @@ import { revurdererFraPeriodeUtenStønad } from './revurderFraUtils';
 import React, { FC, useCallback, useMemo, useState } from 'react';
 import { Behandling } from '../../../../App/typer/fagsak';
 import { IBarnMedSamvær } from '../../Inngangsvilkår/Aleneomsorg/typer';
-import { useToggles } from '../../../../App/context/TogglesContext';
 import { useApp } from '../../../../App/context/AppContext';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
-import { ToggleName } from '../../../../App/context/toggles';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../../App/typer/ressurs';
 import { VEDTAK_OG_BEREGNING } from '../Felles/konstanter';
 import { useEffectNotInitialRender } from '../../../../App/hooks/felles/useEffectNotInitialRender';
@@ -21,11 +19,9 @@ export const InnvilgeBarnetilsyn: FC<{
     barn: IBarnMedSamvær[];
     settResultatType: (val: EBehandlingResultat | undefined) => void;
 }> = ({ behandling, lagretVedtak, barn, settResultatType }) => {
-    const { toggles } = useToggles();
     const { axiosRequest, settIkkePersistertKomponent } = useApp();
     const { behandlingErRedigerbar } = useBehandling();
 
-    const toggle = toggles[ToggleName.revurderFraBarnetilsyn];
     const [vedtakshistorikk, settVedtakshistorikk] = useState<IvedtakForBarnetilsyn>();
     const [revurderesFra, settRevurderesFra] = useState(
         behandling.forrigeBehandlingId && lagretVedtak?.perioder.length
@@ -73,7 +69,7 @@ export const InnvilgeBarnetilsyn: FC<{
 
     return (
         <>
-            {toggle && behandling.forrigeBehandlingId && behandlingErRedigerbar && (
+            {behandling.forrigeBehandlingId && behandlingErRedigerbar && (
                 <RevurderesFraOgMed
                     settRevurderesFra={settRevurderesFra}
                     revurderesFra={revurderesFra}
@@ -82,7 +78,7 @@ export const InnvilgeBarnetilsyn: FC<{
                     type={'BARNETILSYN'}
                 />
             )}
-            {(!toggle || !behandling.forrigeBehandlingId || vedtak) && (
+            {(!behandling.forrigeBehandlingId || vedtak) && (
                 <Vedtaksform
                     behandling={behandling}
                     lagretVedtak={vedtak}
