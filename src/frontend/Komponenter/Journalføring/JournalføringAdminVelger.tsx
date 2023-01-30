@@ -38,6 +38,7 @@ export const JournalføringAdminVelger: React.FC = () => {
             <Blokk>
                 <StyledInput
                     label={'Skriv inn journalpostID'}
+                    autoComplete="off"
                     value={journalpostId}
                     onChange={(e) => {
                         settJournalpostId(e.target.value);
