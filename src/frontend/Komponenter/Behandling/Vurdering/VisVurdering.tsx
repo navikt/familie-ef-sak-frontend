@@ -59,13 +59,13 @@ interface Props {
     vurdering: IVurdering;
     resetVurdering: () => void;
     feilmelding: string | undefined;
-    settRedigeringsmodus: () => void;
+    startRedigering: () => void;
     behandlingErRedigerbar: boolean;
     tittelTekst?: string;
 }
 
 const VisVurdering: FC<Props> = ({
-    settRedigeringsmodus,
+    startRedigering,
     vurdering,
     resetVurdering,
     feilmelding,
@@ -104,7 +104,7 @@ const VisVurdering: FC<Props> = ({
                                     type={'button'}
                                     variant={'tertiary'}
                                     icon={<Edit />}
-                                    onClick={settRedigeringsmodus}
+                                    onClick={startRedigering}
                                     size={'small'}
                                 >
                                     <span>Rediger</span>

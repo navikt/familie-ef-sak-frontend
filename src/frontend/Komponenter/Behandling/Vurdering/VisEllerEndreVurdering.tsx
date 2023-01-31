@@ -156,7 +156,7 @@ const VisEllerEndreVurdering: FC<Props> = ({
             return (
                 <VisVurdering
                     vurdering={vurdering}
-                    settRedigeringsmodus={startRedigering}
+                    startRedigering={startRedigering}
                     resetVurdering={resetVurdering}
                     feilmelding={feilmelding || resetFeilmelding}
                     behandlingErRedigerbar={behandlingErRedigerbar && erSaksbehandler}
