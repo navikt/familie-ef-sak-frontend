@@ -5,7 +5,7 @@ import { Button, Heading } from '@navikt/ds-react';
 import { Collapse, Expand } from '@navikt/ds-icons';
 import { VilkårsresultatIkon } from '../../../Felles/Ikoner/VilkårsresultatIkon';
 import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
-import { ATextSubtle } from '@navikt/ds-tokens/dist/tokens';
+import { AGray50, ATextSubtle } from '@navikt/ds-tokens/dist/tokens';
 import {
     EkspandertTilstand,
     useEkspanderbareVilkårpanelContext,
@@ -13,7 +13,7 @@ import {
 
 const VilkårpanelBase = styled.div`
     margin: 2rem;
-    background-color: #f7f7f7;
+    background-color: ${AGray50};
 `;
 
 const VilkårpanelTittel = styled.div`
