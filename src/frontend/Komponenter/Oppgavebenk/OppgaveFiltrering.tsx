@@ -273,6 +273,7 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({
                             sjekkFeilOgHentOppgaver();
                         }
                     }}
+                    autoComplete="off"
                 />
             </FlexDiv>
 

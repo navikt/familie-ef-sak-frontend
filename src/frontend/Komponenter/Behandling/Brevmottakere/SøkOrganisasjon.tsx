@@ -55,6 +55,7 @@ export const SøkOrganisasjon: React.FC<Props> = ({ settValgteMottakere }) => {
                 placeholder={'Søk'}
                 value={organisasjonsnummer}
                 onChange={(e) => settOrganisasjonsnummer(e.target.value)}
+                autoComplete="off"
             />
             <DataViewer response={{ organisasjonRessurs }}>
                 {({ organisasjonRessurs }) => {
@@ -78,6 +79,7 @@ export const SøkOrganisasjon: React.FC<Props> = ({ settValgteMottakere }) => {
                                     value={navnHosOrganisasjon}
                                     onChange={(e) => settNavnHosOrganisasjon(e.target.value)}
                                     error={feil}
+                                    autoComplete="off"
                                 />
                             </Søkeresultat>
                         </>

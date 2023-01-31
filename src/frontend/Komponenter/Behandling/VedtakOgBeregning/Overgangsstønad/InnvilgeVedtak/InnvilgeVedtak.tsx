@@ -44,8 +44,6 @@ import {
 } from './revurderFraUtils';
 import { RevurderesFraOgMed } from '../../Felles/RevurderesFraOgMed';
 import { IVilkår } from '../../../Inngangsvilkår/vilkår';
-import { useToggles } from '../../../../../App/context/TogglesContext';
-import { ToggleName } from '../../../../../App/context/toggles';
 import { utledYngsteBarnFødselsdato } from './fødselsdatoUtils';
 import { oppdaterVedtakMedEndretKey } from './utils';
 
@@ -75,8 +73,6 @@ export const InnvilgeVedtak: React.FC<{
         [lagretVedtak]
     );
 
-    const { toggles } = useToggles();
-
     const { hentBehandling, behandlingErRedigerbar } = useBehandling();
     const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
         useApp();
@@ -97,11 +93,6 @@ export const InnvilgeVedtak: React.FC<{
 
     const [feilmelding, settFeilmelding] = useState<string>();
 
-    const sjekkToggleUtledYngsteBarnetsFødselsdato = (vilkår: IVilkår): string | undefined =>
-        toggles[ToggleName.brukValidering8årHovedperiode]
-            ? utledYngsteBarnFødselsdato(vilkår)
-            : undefined;
-
     const formState = useFormState<InnvilgeVedtakForm>(
         {
             periodeBegrunnelse: lagretInnvilgetVedtak?.periodeBegrunnelse || '',
@@ -113,7 +104,7 @@ export const InnvilgeVedtak: React.FC<{
                 ? lagretInnvilgetVedtak?.inntekter
                 : [tomInntektsperiodeRad()],
             samordningsfradragType: lagretInnvilgetVedtak?.samordningsfradragType || '',
-            yngsteBarnFødselsdato: sjekkToggleUtledYngsteBarnetsFødselsdato(vilkår) || '',
+            yngsteBarnFødselsdato: utledYngsteBarnFødselsdato(vilkår) || '',
         },
         validerInnvilgetVedtakForm
     );

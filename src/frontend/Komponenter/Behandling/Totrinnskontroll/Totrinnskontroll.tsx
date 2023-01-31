@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { FC, useState } from 'react';
 import { useBehandling } from '../../../App/context/BehandlingContext';
-import { RessursStatus } from '../../../App/typer/ressurs';
+import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
 import {
-    TotrinnskontrollUnderkjentResponse,
     TotrinnskontrollOpprettet,
     TotrinnskontrollStatus,
+    TotrinnskontrollUnderkjentResponse,
     årsakUnderkjentTilTekst,
 } from '../../../App/typer/totrinnskontroll';
 import FatterVedtak from './FatterVedtak';
@@ -16,7 +16,7 @@ import Info from '../../../Felles/Ikoner/Info';
 import { BreakWordNormaltekst } from '../../../Felles/Visningskomponenter/BreakWordNormaltekst';
 import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
 import { useApp } from '../../../App/context/AppContext';
-import { BodyShort, Button, Detail, Heading, Label } from '@navikt/ds-react';
+import { Alert, BodyShort, Button, Detail, Heading, Label } from '@navikt/ds-react';
 import { BodyShortSmall, SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
 import { SuccessStroke } from '@navikt/ds-icons';
 import { useToggles } from '../../../App/context/TogglesContext';
@@ -51,6 +51,12 @@ const ÅrsakUnderkjentRad = styled(BodyShort)`
 
 const ÅrsakerUnderkjentWrapper = styled.div`
     margin-top: 0.5rem;
+`;
+const AngreSendTilBeslutterContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1rem;
 `;
 
 const Totrinnskontroll: FC = () => {
@@ -121,12 +127,32 @@ const SendtTilBeslutter: React.FC<{
 }> = ({ totrinnskontroll, behandlingId }) => {
     const { axiosRequest } = useApp();
     const { toggles } = useToggles();
+    const { hentBehandling, hentTotrinnskontroll, hentBehandlingshistorikk } = useBehandling();
+    const [feilmelding, settFeilmelding] = useState<string>('');
+    const [laster, settLaster] = useState(false);
 
     const angreSendTilBeslutter = () => {
+        if (laster) {
+            return;
+        }
+        settLaster(true);
+        settFeilmelding('');
         axiosRequest<string, null>({
             method: 'POST',
-            url: `/api/vedtak/${behandlingId}/angre-send-til-beslutter`,
-        });
+            url: `/familie-ef-sak/api/vedtak/${behandlingId}/angre-send-til-beslutter`,
+        })
+            .then((res: RessursSuksess<string> | RessursFeilet) => {
+                if (res.status === RessursStatus.SUKSESS) {
+                    hentBehandling.rerun();
+                    hentTotrinnskontroll.rerun();
+                    hentBehandlingshistorikk.rerun();
+                } else {
+                    settFeilmelding(res.frontendFeilmelding);
+                }
+            })
+            .finally(() => {
+                settLaster(false);
+            });
     };
 
     return (
@@ -143,9 +169,17 @@ const SendtTilBeslutter: React.FC<{
                 <BodyShortSmall>{formaterIsoDatoTid(totrinnskontroll.opprettetTid)}</BodyShortSmall>
             </div>
             {toggles[ToggleName.angreSendTilBeslutter] && (
-                <Button size="small" onClick={angreSendTilBeslutter}>
-                    Angre sendt til beslutter
-                </Button>
+                <AngreSendTilBeslutterContainer>
+                    <Button
+                        size="small"
+                        disabled={laster}
+                        variant={'secondary'}
+                        onClick={angreSendTilBeslutter}
+                    >
+                        Angre sendt til beslutter
+                    </Button>
+                    {feilmelding && <Alert variant={'error'}>{feilmelding}</Alert>}
+                </AngreSendTilBeslutterContainer>
             )}
         </BorderBox>
     );

@@ -89,6 +89,7 @@ const VelgPersonOgStønadstype = () => {
                 </FamilieSelect>
                 <FamilieInput
                     label={'Fødselsnummer'}
+                    autoComplete="off"
                     onChange={(e) => {
                         const verdi = e.target.value;
                         settPersonIdent(verdi);

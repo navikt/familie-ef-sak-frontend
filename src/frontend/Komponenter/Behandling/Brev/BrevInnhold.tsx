@@ -161,6 +161,7 @@ const BrevInnhold: React.FC<Props> = ({
                             onChange={(e) => {
                                 endreOverskrift(e.target.value);
                             }}
+                            autoComplete="off"
                         />
                     )}
                     {finnesSynligeAvsnitt && brevSkalKunneRedigeres && (
@@ -186,6 +187,7 @@ const BrevInnhold: React.FC<Props> = ({
                                         label="Deloverskrift (valgfri)"
                                         id={deloverskriftId}
                                         value={rad.deloverskrift}
+                                        autoComplete="off"
                                     />
                                     <Textarea
                                         onChange={endreInnholdAvsnitt(rad.id)}

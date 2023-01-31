@@ -34,7 +34,7 @@ const NyttBarnSammePartnerInfo: FC<Props> = ({ barnMedSamvær, tidligereVedtaksp
                     </Overskrift>
                 </FlexDiv>
                 {registergrunnlagNyttBarn.map((barn) => (
-                    <RegistergrunnlagNyttBarn barn={barn} />
+                    <RegistergrunnlagNyttBarn key={barn.barnId} barn={barn} />
                 )) || (
                     <BodyShortSmall>
                         <i>Bruker har ingen barn lagt til i folkeregister</i>
@@ -50,7 +50,9 @@ const NyttBarnSammePartnerInfo: FC<Props> = ({ barnMedSamvær, tidligereVedtaksp
                     </Overskrift>
                 </FlexDiv>
                 {søknadsgrunnlagNyttBarn.length ? (
-                    søknadsgrunnlagNyttBarn.map((barn) => <SøknadgrunnlagNyttBarn barn={barn} />)
+                    søknadsgrunnlagNyttBarn.map((barn) => (
+                        <SøknadgrunnlagNyttBarn key={barn.barnId} barn={barn} />
+                    ))
                 ) : (
                     <BodyShortSmall>
                         <i>Bruker har ingen barn lagt til i søknad</i>
