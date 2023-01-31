@@ -4,18 +4,46 @@ export interface IEndringerPersonopplysninger {
 }
 
 export interface IEndringer {
-    folkeregisterpersonstatus: IEndring;
-    fødselsdato: IEndring;
-    dødsdato: IEndring;
+    folkeregisterpersonstatus: IEndringMedDetaljer<Feltendring>;
+    fødselsdato: IEndringMedDetaljer<Feltendring>;
+    dødsdato: IEndringMedDetaljer<Feltendring>;
+
+    barn: IEndringMedDetaljer<Personendring[]>;
+    annenForelder: IEndringMedDetaljer<Personendring[]>;
+
+    adresse: IEndring;
+
     statsborgerskap: IEndring;
     sivilstand: IEndring;
-    adresse: IEndring;
     fullmakt: IEndring;
-    barn: IEndringMedDetaljer<BarnEndringer[]>;
     innflyttingTilNorge: IEndring;
     utflyttingFraNorge: IEndring;
     oppholdstillatelse: IEndring;
     vergemål: IEndring;
+}
+
+export interface IEndring {
+    harEndringer: boolean;
+}
+
+export type IEndringMedDetaljer<T> = IEndring & {
+    detaljer: T;
+};
+
+export interface Feltendring {
+    tidligere: string;
+    ny: string;
+}
+
+export interface Personendring {
+    ident: string;
+    fjernet: boolean;
+    ny: boolean;
+    endringer: {
+        felt: string;
+        tidligere: string;
+        ny: string;
+    }[];
 }
 
 export const endringerKeyTilTekst: Record<keyof IEndringer, string> = {
@@ -27,25 +55,9 @@ export const endringerKeyTilTekst: Record<keyof IEndringer, string> = {
     adresse: 'Adresse',
     fullmakt: 'Fullmakt',
     barn: 'Barn',
+    annenForelder: 'Annen forelder',
     innflyttingTilNorge: 'Innflytting til Norge',
     utflyttingFraNorge: 'Utflytting fra Norge',
     oppholdstillatelse: 'Oppholdstillatelse',
     vergemål: 'Vergemål',
 };
-
-export interface IEndring {
-    harEndringer: boolean;
-}
-
-export type IEndringMedDetaljer<T> = IEndring & {
-    detaljer: T;
-};
-
-export interface BarnEndringer {
-    ident: string;
-    endringer: {
-        felt: string;
-        tidligere: string;
-        ny: string;
-    }[];
-}

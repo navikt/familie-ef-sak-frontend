@@ -16,7 +16,7 @@ import { InfostripeUtestengelse } from './InfostripeUtestengelse';
 import { ABorderDefault } from '@navikt/ds-tokens/dist/tokens';
 import { SettPåVentModal } from './SettPåVent/SettPåVentModal';
 import { InfostripeSattPåVent } from './SettPåVent/InfostripeSattPåVent';
-import EndringPersonopplsyninger from './Endring/EndringPersonopplysninger';
+import Personopplysningsendringer from './Endring/EndringPersonopplysninger';
 
 const Container = styled.div`
     display: flex;
@@ -79,7 +79,7 @@ const BehandlingContent: FC<{
                     <Fanemeny behandlingId={behandling.id} />
                     <InfostripeUtestengelse utestengelser={utestengelser} />
                     <InfostripeSattPåVent behandling={behandling} />
-                    <EndringPersonopplsyninger />
+                    <Personopplysningsendringer />
                     <BehandlingRoutes />
                     <HenleggModal behandling={behandling} />
                     <SettPåVentModal behandlingId={behandling.id} />
