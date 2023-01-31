@@ -76,7 +76,7 @@ const VisEllerEndreVurdering: FC<Props> = ({
     tittelTekstVisVurdering,
 }) => {
     const { behandlingErRedigerbar, hentBehandling } = useBehandling();
-    const { settEttPanelITilstand } = useEkspanderbareVilkårpanelContext();
+    const { settPanelITilstand } = useEkspanderbareVilkårpanelContext();
     const [redigeringsmodus, settRedigeringsmodus] = useState<Redigeringsmodus>(
         utledRedigeringsmodus(feilmelding, vurdering, behandlingErRedigerbar)
     );
@@ -121,7 +121,7 @@ const VisEllerEndreVurdering: FC<Props> = ({
 
     const startRedigering = () => {
         settRedigeringsmodus(Redigeringsmodus.REDIGERING);
-        settEttPanelITilstand(vurdering.vilkårType, EkspandertTilstand.KAN_IKKE_LUKKES);
+        settPanelITilstand(vurdering.vilkårType, EkspandertTilstand.KAN_IKKE_LUKKES);
     };
 
     switch (redigeringsmodus) {

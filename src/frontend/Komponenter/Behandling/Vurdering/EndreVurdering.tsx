@@ -48,7 +48,7 @@ const EndreVurdering: FC<Props> = ({
     initiellRedigeringsmodus,
 }) => {
     const { regler, hentBehandling } = useBehandling();
-    const { settEttPanelITilstand } = useEkspanderbareVilkårpanelContext();
+    const { settPanelITilstand } = useEkspanderbareVilkårpanelContext();
     const vurdering = data;
     const [oppdatererVurdering, settOppdatererVurdering] = useState<boolean>(false);
 
@@ -71,7 +71,7 @@ const EndreVurdering: FC<Props> = ({
             ? settRedigeringsmodus(Redigeringsmodus.IKKE_PÅSTARTET)
             : settRedigeringsmodus(Redigeringsmodus.VISNING);
 
-        settEttPanelITilstand(vurdering.vilkårType, EkspandertTilstand.EKSPANDERT);
+        settPanelITilstand(vurdering.vilkårType, EkspandertTilstand.EKSPANDERT);
     };
 
     return (

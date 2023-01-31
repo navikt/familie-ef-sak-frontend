@@ -40,7 +40,7 @@ const EndreVurderingComponent: FC<{
     vurdering: IVurdering;
 }> = ({ regler, oppdaterVurdering, vurdering }) => {
     const { nullstillIkkePersistertKomponent, settIkkePersistertKomponent } = useApp();
-    const { settEttPanelITilstand } = useEkspanderbareVilkårpanelContext();
+    const { settPanelITilstand } = useEkspanderbareVilkårpanelContext();
     const [delvilkårsvurderinger, settDelvilkårsvurderinger] = useState<IDelvilkår[]>(
         vurdering.delvilkårsvurderinger
     );
@@ -106,7 +106,7 @@ const EndreVurderingComponent: FC<{
 
     const håndterTrykkPåLagre = () => {
         nullstillIkkePersistertKomponent(vurdering.id);
-        settEttPanelITilstand(vurdering.vilkårType, EkspandertTilstand.EKSPANDERT);
+        settPanelITilstand(vurdering.vilkårType, EkspandertTilstand.EKSPANDERT);
     };
 
     return (

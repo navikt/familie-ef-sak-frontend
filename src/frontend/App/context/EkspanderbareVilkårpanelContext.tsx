@@ -77,7 +77,7 @@ const [EkspanderbareVilkårpanelProvider, useEkspanderbareVilkårpanelContext] =
         }));
     };
 
-    const settEttPanelITilstand = (key: VilkårType, tilstand: EkspandertTilstand) => {
+    const settPanelITilstand = (key: VilkårType, tilstand: EkspandertTilstand) => {
         settEkspanderteVilkår((ekspanderteVilkår) => ({
             ...ekspanderteVilkår,
             [key]: tilstand,
@@ -88,7 +88,7 @@ const [EkspanderbareVilkårpanelProvider, useEkspanderbareVilkårpanelContext] =
         åpneAlle,
         lukkAlle,
         toggleEkspandertTilstand,
-        settEttPanelITilstand,
+        settPanelITilstand,
         ekspanderteVilkår,
     };
 });
