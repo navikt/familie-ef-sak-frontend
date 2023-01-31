@@ -12,9 +12,7 @@ import {
     Personendring,
 } from './personopplysningerEndringer';
 
-const DetaljerPersonendring: React.FC<{ personendringer: Personendring[] }> = ({
-    personendringer,
-}) => {
+const PersonEndring: React.FC<{ personendringer: Personendring[] }> = ({ personendringer }) => {
     return (
         <>
             {personendringer.map((person) => (
@@ -25,7 +23,8 @@ const DetaljerPersonendring: React.FC<{ personendringer: Personendring[] }> = ({
                         {person.ny && <li>Ny</li>}
                         {person.endringer.map((endring, index) => (
                             <li key={endring.felt + index}>
-                                {endring.felt} - Tidligere: {endring.tidligere} Ny:{endring.ny}
+                                {endring.felt} - <strong>Tidligere:</strong> {endring.tidligere}{' '}
+                                <strong>Ny:</strong> {endring.ny}
                             </li>
                         ))}
                     </ul>
@@ -35,32 +34,33 @@ const DetaljerPersonendring: React.FC<{ personendringer: Personendring[] }> = ({
     );
 };
 
-const DetaljerFelt: React.FC<{ feltendring: Feltendring }> = ({ feltendring }) => (
+const FeltEndring: React.FC<{ feltendring: Feltendring }> = ({ feltendring }) => (
     <ul>
         <li>
-            Tidligere: {feltendring.tidligere} Ny:{feltendring.ny}
+            <strong>Tidligere</strong>: {feltendring.tidligere} <strong>Ny:</strong>{' '}
+            {feltendring.ny}
         </li>
     </ul>
 );
 
-const Detaljer: React.FC<{ endringer: IEndringer; personopplysning: keyof IEndringer }> = ({
+const Endringsdetaljer: React.FC<{ endringer: IEndringer; personopplysning: keyof IEndringer }> = ({
     endringer,
     personopplysning,
 }) => {
     switch (personopplysning) {
         case 'barn':
         case 'annenForelder':
-            return <DetaljerPersonendring personendringer={endringer[personopplysning].detaljer} />;
+            return <PersonEndring personendringer={endringer[personopplysning].detaljer} />;
         case 'folkeregisterpersonstatus':
         case 'fødselsdato':
         case 'dødsdato':
-            return <DetaljerFelt feltendring={endringer[personopplysning].detaljer} />;
+            return <FeltEndring feltendring={endringer[personopplysning].detaljer} />;
         default:
             return null;
     }
 };
 
-const EndringPersonopplsyninger: React.FC = () => {
+const Personopplysningsendringer: React.FC = () => {
     const { toggles } = useToggles();
     const skalViseKomponent = toggles[ToggleName.visEndringerPersonopplysninger];
     const { endringerPersonopplysninger } = useBehandling();
@@ -93,7 +93,7 @@ const EndringPersonopplsyninger: React.FC = () => {
                             {endringer.map((personopplysning) => (
                                 <li key={personopplysning}>
                                     {endringerKeyTilTekst[personopplysning]}
-                                    <Detaljer
+                                    <Endringsdetaljer
                                         endringer={endringerPersonopplysninger.endringer}
                                         personopplysning={personopplysning}
                                     />
@@ -107,4 +107,4 @@ const EndringPersonopplsyninger: React.FC = () => {
     );
 };
 
-export default EndringPersonopplsyninger;
+export default Personopplysningsendringer;
