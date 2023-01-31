@@ -4,9 +4,9 @@ export interface IEndringerPersonopplysninger {
 }
 
 export interface IEndringer {
-    folkeregisterpersonstatus: IEndring;
-    fødselsdato: IEndring;
-    dødsdato: IEndring;
+    folkeregisterpersonstatus: IEndringMedDetaljer<Feltendring>;
+    fødselsdato: IEndringMedDetaljer<Feltendring>;
+    dødsdato: IEndringMedDetaljer<Feltendring>;
 
     barn: IEndringMedDetaljer<Personendring[]>;
     annenForelder: IEndringMedDetaljer<Personendring[]>;
@@ -29,6 +29,11 @@ export interface IEndring {
 export type IEndringMedDetaljer<T> = IEndring & {
     detaljer: T;
 };
+
+export interface Feltendring {
+    tidligere: string;
+    ny: string;
+}
 
 export interface Personendring {
     ident: string;

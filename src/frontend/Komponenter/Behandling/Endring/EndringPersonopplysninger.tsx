@@ -5,7 +5,12 @@ import { utledEndringerPåPersonopplysninger } from './utils';
 import { useToggles } from '../../../App/context/TogglesContext';
 import { ToggleName } from '../../../App/context/toggles';
 import { useBehandling } from '../../../App/context/BehandlingContext';
-import { endringerKeyTilTekst, IEndringer, Personendring } from './personopplysningerEndringer';
+import {
+    endringerKeyTilTekst,
+    Feltendring,
+    IEndringer,
+    Personendring,
+} from './personopplysningerEndringer';
 
 const DetaljerPersonendring: React.FC<{ personendringer: Personendring[] }> = ({
     personendringer,
@@ -18,9 +23,7 @@ const DetaljerPersonendring: React.FC<{ personendringer: Personendring[] }> = ({
                     <ul>
                         {person.endringer.map((endring, index) => (
                             <li key={endring.felt + index}>
-                                {endring.felt} - Tidligere:
-                                {endring.tidligere} Ny:
-                                {endring.ny}
+                                {endring.felt} - Tidligere: {endring.tidligere} Ny:{endring.ny}
                             </li>
                         ))}
                     </ul>
@@ -30,6 +33,14 @@ const DetaljerPersonendring: React.FC<{ personendringer: Personendring[] }> = ({
     );
 };
 
+const DetaljerFelt: React.FC<{ feltendring: Feltendring }> = ({ feltendring }) => (
+    <ul>
+        <li>
+            Tidligere: {feltendring.tidligere} Ny:{feltendring.ny}
+        </li>
+    </ul>
+);
+
 const Detaljer: React.FC<{ endringer: IEndringer; personopplysning: keyof IEndringer }> = ({
     endringer,
     personopplysning,
@@ -38,6 +49,10 @@ const Detaljer: React.FC<{ endringer: IEndringer; personopplysning: keyof IEndri
         case 'barn':
         case 'annenForelder':
             return <DetaljerPersonendring personendringer={endringer[personopplysning].detaljer} />;
+        case 'folkeregisterpersonstatus':
+        case 'fødselsdato':
+        case 'dødsdato':
+            return <DetaljerFelt feltendring={endringer[personopplysning].detaljer} />;
         default:
             return null;
     }
