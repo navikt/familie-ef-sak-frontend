@@ -66,6 +66,7 @@ export const OpprettDummyBehandling: React.FC = () => {
                         fnr(verdi).status === 'invalid' ? 'Ugyldig fødselsnummer' : undefined
                     );
                 }}
+                autoComplete="off"
             />
 
             <Select
