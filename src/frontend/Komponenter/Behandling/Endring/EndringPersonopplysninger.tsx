@@ -21,6 +21,8 @@ const DetaljerPersonendring: React.FC<{ personendringer: Personendring[] }> = ({
                 <ul key={person.ident}>
                     <li>Ident: {person.ident}</li>
                     <ul>
+                        {person.fjernet && <li>Fjernet</li>}
+                        {person.ny && <li>Ny</li>}
                         {person.endringer.map((endring, index) => (
                             <li key={endring.felt + index}>
                                 {endring.felt} - Tidligere: {endring.tidligere} Ny:{endring.ny}
@@ -79,12 +81,12 @@ const EndringPersonopplsyninger: React.FC = () => {
                 }
 
                 return (
-                    <Alert variant="warning" title="Endring i folkeregisteropplysninger">
+                    <Alert variant="warning">
                         <Heading spacing size="small" level="2">
-                            Endring i folkeregisteropplysninger
+                            Endring i Folkeregisteropplysninger
                         </Heading>
                         <div>
-                            Det har vært endringer i bruker sine opplysninger fra folkeregisteret
+                            Det har vært endringer i bruker sine opplysninger fra Folkeregisteret
                             siden denne behandlingen ble påbegynt. Endringene gjelder:
                         </div>
                         <ul>

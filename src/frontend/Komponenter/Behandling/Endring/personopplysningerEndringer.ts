@@ -37,6 +37,8 @@ export interface Feltendring {
 
 export interface Personendring {
     ident: string;
+    fjernet: boolean;
+    ny: boolean;
     endringer: {
         felt: string;
         tidligere: string;
