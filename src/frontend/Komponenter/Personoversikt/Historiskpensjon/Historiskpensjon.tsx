@@ -1,14 +1,26 @@
 import React, { useMemo } from 'react';
 import styled from 'styled-components';
-import { AlertWarning } from '../../../Felles/Visningskomponenter/Alerts';
+import { AlertInfo, AlertWarning } from '../../../Felles/Visningskomponenter/Alerts';
 import { AxiosRequestConfig } from 'axios';
 import { useDataHenter } from '../../../App/hooks/felles/useDataHenter';
 import { IHistoriskPensjon } from '../../../App/typer/historiskpensjon';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
+import { BodyShort, Button, Link } from '@navikt/ds-react';
+
+const FlexBox = styled.div`
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 2rem;
+    align-items: center;
+`;
 
 const StyledWarningStripe = styled(AlertWarning)`
     width: 40rem;
-    vertical-align: text-top;
+`;
+
+const StyledInfoStripe = styled(AlertInfo)`
+    width: 40rem;
 `;
 
 const Historiskpensjon: React.FC<{ fagsakPersonId: string }> = ({ fagsakPersonId }) => {
@@ -28,10 +40,18 @@ const Historiskpensjon: React.FC<{ fagsakPersonId: string }> = ({ fagsakPersonId
                 const harPensjondata = historiskPensjon.harPensjonsdata;
                 return harPensjondata ? (
                     <StyledWarningStripe>
-                        Bruker har saker før desember 2008 som kan sees i{' '}
-                        <a href={historiskPensjon.webAppUrl}>PE PP - Historisk pensjon</a>
+                        <FlexBox>
+                            <BodyShort>Bruker har fått stønad før desember 2008</BodyShort>
+                            <Link href={historiskPensjon.webAppUrl} target={'_blank'}>
+                                <Button type={'button'} as={'p'} size={'small'}>
+                                    Se vedtaksperioder
+                                </Button>
+                            </Link>
+                        </FlexBox>
                     </StyledWarningStripe>
-                ) : null;
+                ) : (
+                    <StyledInfoStripe>Bruker har ikke stønad før desember 2008</StyledInfoStripe>
+                );
             }}
         </DataViewer>
     );
