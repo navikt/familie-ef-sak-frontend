@@ -128,13 +128,7 @@ const VisEllerEndreVurdering: FC<Props> = ({
         case Redigeringsmodus.IKKE_PÅSTARTET:
             return (
                 <KnappWrapper>
-                    <Knapp
-                        onClick={() => {
-                            startRedigering();
-                        }}
-                        variant={'secondary'}
-                        type={'button'}
-                    >
+                    <Knapp onClick={startRedigering} variant={'secondary'} type={'button'}>
                         {venstreKnappetekst ? venstreKnappetekst : 'Vurder vilkår'}
                     </Knapp>
                     <Button onClick={ikkeVurder} variant={'tertiary'} type={'button'}>
