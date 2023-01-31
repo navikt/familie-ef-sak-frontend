@@ -6,7 +6,6 @@ import { AktivitetsvilkårType } from '../../Inngangsvilkår/vilkår';
 import DokumentasjonSendtInn from '../../Inngangsvilkår/DokumentasjonSendtInn';
 import { AlertError } from '../../../../Felles/Visningskomponenter/Alerts';
 import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';
-import { EAktivitetsvilkår } from '../../../../App/context/EkspanderbareVilkårpanelContext';
 import { VilkårpanelInnhold } from '../../Vilkårpanel/VilkårpanelInnhold';
 
 export const DokumentasjonsTilsynsutgifter: React.FC<VilkårProps> = ({
@@ -34,7 +33,7 @@ export const DokumentasjonsTilsynsutgifter: React.FC<VilkårProps> = ({
         <Vilkårpanel
             tittel="Dokumentasjon av tilsynsutgifter"
             vilkårsresultat={vurdering.resultat}
-            vilkår={EAktivitetsvilkår.DOKUMENTASJON_AV_TILSYNSUTGIFTER}
+            vilkår={vurdering.vilkårType}
         >
             <VilkårpanelInnhold>
                 {{

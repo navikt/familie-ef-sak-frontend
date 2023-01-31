@@ -30,10 +30,10 @@ const oppdaterInngangsvilkårMedVurdering = (
     },
 });
 
-export const useHentVilkår = (): {
+export interface UseHentVilkår {
     vilkår: Ressurs<IVilkår>;
     hentVilkår: (behandlingId: string) => void;
-    oppdaterGrunnlagsdataOgHentVilkår: (behandlingId: string) => void;
+    oppdaterGrunnlagsdataOgHentVilkår: (behandlingId: string) => Promise<void>;
     lagreVurdering: (
         vurdering: SvarPåVilkårsvurdering
     ) => Promise<RessursSuksess<IVurdering> | RessursFeilet>;
@@ -45,7 +45,9 @@ export const useHentVilkår = (): {
         nullstillVilkårsvurdering: OppdaterVilkårsvurdering
     ) => Promise<RessursSuksess<IVurdering> | RessursFeilet>;
     gjenbrukInngangsvilkår: (behandlingId: string, kopierBehandlingId: string) => void;
-} => {
+}
+
+export const useHentVilkår = (): UseHentVilkår => {
     const { axiosRequest, settToast } = useApp();
 
     const [feilmeldinger, settFeilmeldinger] = useState<Vurderingsfeilmelding>({});
@@ -142,14 +144,13 @@ export const useHentVilkår = (): {
         [axiosRequest]
     );
     const oppdaterGrunnlagsdataOgHentVilkår = useCallback(
-        (behandlingId: string) => {
+        (behandlingId: string) =>
             axiosRequest<IVilkår, void>({
                 method: 'GET',
                 url: `/familie-ef-sak/api/vurdering/${behandlingId}/oppdater`,
             }).then((hentetInngangsvilkår: RessursSuksess<IVilkår> | RessursFeilet) => {
                 settVilkår(hentetInngangsvilkår);
-            });
-        },
+            }),
         [axiosRequest]
     );
     const gjenbrukInngangsvilkår = useCallback(

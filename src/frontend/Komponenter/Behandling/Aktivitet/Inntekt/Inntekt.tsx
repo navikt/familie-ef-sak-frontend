@@ -4,7 +4,6 @@ import { AktivitetsvilkårType } from '../../Inngangsvilkår/vilkår';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import { AlertError } from '../../../../Felles/Visningskomponenter/Alerts';
 import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';
-import { EAktivitetsvilkår } from '../../../../App/context/EkspanderbareVilkårpanelContext';
 import { VilkårpanelInnhold } from '../../Vilkårpanel/VilkårpanelInnhold';
 
 export const Inntekt: React.FC<VilkårProps> = ({
@@ -29,7 +28,7 @@ export const Inntekt: React.FC<VilkårProps> = ({
             tittel="Inntekt"
             vilkårsresultat={vurdering.resultat}
             paragrafTittel={'§15-10'}
-            vilkår={EAktivitetsvilkår.INNTEKT}
+            vilkår={vurdering.vilkårType}
         >
             <VilkårpanelInnhold>
                 {{

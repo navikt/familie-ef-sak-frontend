@@ -5,7 +5,6 @@ import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import { AlertError } from '../../../../Felles/Visningskomponenter/Alerts';
 import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';
 import { VilkårpanelInnhold } from '../../Vilkårpanel/VilkårpanelInnhold';
-import { EAktivitetsvilkår } from '../../../../App/context/EkspanderbareVilkårpanelContext';
 
 export const RettTilOvergangsstønad: React.FC<VilkårProps> = ({
     vurderinger,
@@ -30,7 +29,7 @@ export const RettTilOvergangsstønad: React.FC<VilkårProps> = ({
         <Vilkårpanel
             tittel="Rett til overgangsstønad"
             vilkårsresultat={vurdering.resultat}
-            vilkår={EAktivitetsvilkår.RETT_TIL_OVERGANGSSTØNAD}
+            vilkår={vurdering.vilkårType}
         >
             <VilkårpanelInnhold>
                 {{

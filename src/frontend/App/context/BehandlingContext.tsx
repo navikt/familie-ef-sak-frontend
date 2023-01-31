@@ -9,9 +9,10 @@ import { useHentBehandlingHistorikk } from '../hooks/useHentBehandlingHistorikk'
 import { useHentTotrinnskontroll } from '../hooks/useHentTotrinnStatus';
 import { useHentRegler } from '../hooks/useHentRegler';
 import { RessursStatus } from '../typer/ressurs';
-import { erBehandlingRedigerbar } from '../typer/behandlingstatus';
+import { erBehandlingRedigerbar, utredesEllerFatterVedtak } from '../typer/behandlingstatus';
 import { useApp } from './AppContext';
 import { useHentUtestengelser } from '../hooks/useHentUtestengelser';
+import { useHentEndringerPersonopplysninger } from '../hooks/useHentEndringerPersonopplysninger';
 
 const [BehandlingProvider, useBehandling] = constate(() => {
     const { axiosRequest } = useApp();
@@ -65,6 +66,23 @@ const [BehandlingProvider, useBehandling] = constate(() => {
     const [visSettPåVentModal, settVisSettPåVentModal] = useState(false);
     const [åpenHøyremeny, settÅpenHøyremeny] = useState(true);
 
+    const {
+        endringerPersonopplysninger,
+        nullstillGrunnlagsendringer,
+        hentEndringerForPersonopplysninger,
+    } = useHentEndringerPersonopplysninger();
+
+    useEffect(() => {
+        if (
+            behandling.status === RessursStatus.SUKSESS &&
+            utredesEllerFatterVedtak(behandling.data) &&
+            endringerPersonopplysninger.status === RessursStatus.IKKE_HENTET
+        ) {
+            hentEndringerForPersonopplysninger(behandling.data.id);
+        }
+        // eslint-disable-next-line
+    }, [behandling]);
+
     return {
         behandling,
         behandlingErRedigerbar,
@@ -82,6 +100,8 @@ const [BehandlingProvider, useBehandling] = constate(() => {
         åpenHøyremeny,
         settÅpenHøyremeny,
         utestengelser,
+        endringerPersonopplysninger,
+        nullstillGrunnlagsendringer,
     };
 });
 

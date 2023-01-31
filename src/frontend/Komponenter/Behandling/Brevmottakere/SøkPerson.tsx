@@ -50,6 +50,7 @@ export const SøkPerson: React.FC<Props> = ({ settValgteMottakere }) => {
                 placeholder={'Personen som skal ha brevet'}
                 value={søkIdent}
                 onChange={(e) => settSøkIdent(e.target.value)}
+                autoComplete="off"
             />
             <DataViewer response={{ søkRessurs }}>
                 {({ søkRessurs }) => {

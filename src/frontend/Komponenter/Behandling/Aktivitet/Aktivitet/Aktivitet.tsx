@@ -9,7 +9,6 @@ import { Behandlingsårsak } from '../../../../App/typer/Behandlingsårsak';
 import { AlertError } from '../../../../Felles/Visningskomponenter/Alerts';
 import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';
 import { VilkårpanelInnhold } from '../../Vilkårpanel/VilkårpanelInnhold';
-import { EAktivitetsvilkår } from '../../../../App/context/EkspanderbareVilkårpanelContext';
 
 export const Aktivitet: React.FC<VilkårProps> = ({
     vurderinger,
@@ -38,7 +37,7 @@ export const Aktivitet: React.FC<VilkårProps> = ({
                     <Vilkårpanel
                         tittel="Aktivitet"
                         vilkårsresultat={vurdering.resultat}
-                        vilkår={EAktivitetsvilkår.AKTIVITET_OVERGANGSTØNAD}
+                        vilkår={vurdering.vilkårType}
                     >
                         <VilkårpanelInnhold>
                             {{

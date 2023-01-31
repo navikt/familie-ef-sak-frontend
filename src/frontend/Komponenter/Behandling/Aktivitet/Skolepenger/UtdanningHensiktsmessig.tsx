@@ -5,7 +5,6 @@ import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import UtdanningHensiktsmessigInfo from './UtdanningHensiktsmessigInfo';
 import { AlertError } from '../../../../Felles/Visningskomponenter/Alerts';
 import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';
-import { EAktivitetsvilkår } from '../../../../App/context/EkspanderbareVilkårpanelContext';
 import { VilkårpanelInnhold } from '../../Vilkårpanel/VilkårpanelInnhold';
 
 export const UtdanningHensiktsmessig: React.FC<VilkårProps> = ({
@@ -33,7 +32,7 @@ export const UtdanningHensiktsmessig: React.FC<VilkårProps> = ({
         <Vilkårpanel
             tittel="Utdanningens nødvendighet og hensiktsmessighet"
             vilkårsresultat={vurdering.resultat}
-            vilkår={EAktivitetsvilkår.UTDANNING_HENSIKTSMESSIG}
+            vilkår={vurdering.vilkårType}
         >
             <VilkårpanelInnhold>
                 {{

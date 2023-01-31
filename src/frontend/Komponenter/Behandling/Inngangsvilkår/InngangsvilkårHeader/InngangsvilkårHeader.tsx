@@ -28,7 +28,7 @@ const FlexRow = styled.div`
 interface Props {
     oppdatertDato: string;
     behandlingErRedigerbar: boolean;
-    oppdaterGrunnlagsdata: (behandlingId: string) => void;
+    oppdaterGrunnlagsdata: (behandlingId: string) => Promise<void>;
     behandlingId: string;
     behandling: Behandling;
     gjenbrukInngangsvilkår: (behandlingId: string, kopierBehandlingId: string) => void;

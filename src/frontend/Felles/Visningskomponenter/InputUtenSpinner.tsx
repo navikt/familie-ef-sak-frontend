@@ -38,6 +38,7 @@ const InputUtenSpinner: React.FC<PropsInputUtenSpinner> = ({ formatValue, ...pro
             <StyledInputUtenSpinner
                 {...props}
                 type="text"
+                autoComplete="off"
                 value={formatValue ? formatValue(props.value) : props.value}
                 onWheel={(event) => event.currentTarget.blur()}
                 label={''}
@@ -50,6 +51,7 @@ const InputUtenSpinner: React.FC<PropsInputUtenSpinner> = ({ formatValue, ...pro
             <StyledInputUtenSpinner
                 {...props}
                 type="text"
+                autoComplete="off"
                 value={props.value}
                 onWheel={(event) => event.currentTarget.blur()}
                 onBlur={() => settHarFokus(false)}

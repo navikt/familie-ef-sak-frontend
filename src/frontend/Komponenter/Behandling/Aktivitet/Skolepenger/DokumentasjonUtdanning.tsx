@@ -5,7 +5,6 @@ import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import DokumentasjonUtdanningInfo from './DokumentasjonUtdanningInfo';
 import { AlertError } from '../../../../Felles/Visningskomponenter/Alerts';
 import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';
-import { EAktivitetsvilkår } from '../../../../App/context/EkspanderbareVilkårpanelContext';
 import { VilkårpanelInnhold } from '../../Vilkårpanel/VilkårpanelInnhold';
 
 export const DokumentasjonUtdanning: React.FC<VilkårProps> = ({
@@ -33,7 +32,7 @@ export const DokumentasjonUtdanning: React.FC<VilkårProps> = ({
         <Vilkårpanel
             tittel="Dokumentasjon av utdanning og utgifter"
             vilkårsresultat={vurdering.resultat}
-            vilkår={EAktivitetsvilkår.DOKUMENTASJON_UTDANNING}
+            vilkår={vurdering.vilkårType}
         >
             <VilkårpanelInnhold>
                 {{
