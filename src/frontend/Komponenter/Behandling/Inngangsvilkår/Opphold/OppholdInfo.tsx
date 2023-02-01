@@ -1,15 +1,14 @@
 import * as React from 'react';
 import { FC } from 'react';
-import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
-import { Registergrunnlag, Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
-import { BooleanTekst } from '../../../../Felles/Visningskomponenter/BooleanTilTekst';
 import { IMedlemskap } from '../Medlemskap/typer';
 import Oppholdstillatelse from '../Medlemskap/Oppholdstillatelse';
 import Utenlandsopphold from '../Medlemskap/Utenlandsopphold';
 import InnflyttingUtflytting from '../Medlemskap/InnflyttingUtflytting';
 import FolkeregisterPersonstatus from '../Medlemskap/FolkeregisterPersonstatus';
-import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 import { InformasjonContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
+import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
+import { TabellIkon } from '../../Vilkårpanel/TabellVisning';
+import { mapTrueFalse } from '../../../../App/utils/formatter';
 
 interface Props {
     medlemskap: IMedlemskap;
@@ -26,21 +25,18 @@ const OppholdInfo: FC<Props> = ({ medlemskap, skalViseSøknadsdata }) => {
 
     return (
         <InformasjonContainer>
-            <GridTabell>
-                <Registergrunnlag />
-                <BodyShortSmall>Statsborgerskap</BodyShortSmall>
-                <BodyShortSmall>
-                    {registergrunnlag.nåværendeStatsborgerskap.join(', ')}
-                </BodyShortSmall>
-
-                {skalViseSøknadsdata && søknadsgrunnlag && (
-                    <>
-                        <Søknadsgrunnlag />
-                        <BodyShortSmall>Søker og barn oppholder seg i Norge</BodyShortSmall>
-                        <BooleanTekst value={søknadsgrunnlag.oppholderDuDegINorge} />
-                    </>
-                )}
-            </GridTabell>
+            <Informasjonsrad
+                label="Statsborgerskap"
+                verdi={registergrunnlag.nåværendeStatsborgerskap.join(', ')}
+                ikon={TabellIkon.REGISTER}
+            />
+            {skalViseSøknadsdata && søknadsgrunnlag && (
+                <Informasjonsrad
+                    label="Søker og barn oppholder seg i Norge"
+                    verdi={mapTrueFalse(søknadsgrunnlag.oppholderDuDegINorge)}
+                    ikon={TabellIkon.SØKNAD}
+                />
+            )}
 
             <FolkeregisterPersonstatus status={registergrunnlag.folkeregisterpersonstatus} />
             {finnesOppholdsstatus && (
