@@ -8,6 +8,10 @@ import { useBehandling } from '../../../App/context/BehandlingContext';
 import { Redigeringsmodus } from './VisEllerEndreVurdering';
 import { Cancel } from '@navikt/ds-icons';
 import { Button, ErrorMessage, Heading } from '@navikt/ds-react';
+import {
+    EkspandertTilstand,
+    useEkspanderbareVilkårpanelContext,
+} from '../../../App/context/EkspanderbareVilkårpanelContext';
 
 const Container = styled.div`
     > *:not(:first-child) {
@@ -44,6 +48,7 @@ const EndreVurdering: FC<Props> = ({
     initiellRedigeringsmodus,
 }) => {
     const { regler, hentBehandling } = useBehandling();
+    const { settPanelITilstand } = useEkspanderbareVilkårpanelContext();
     const vurdering = data;
     const [oppdatererVurdering, settOppdatererVurdering] = useState<boolean>(false);
 
@@ -65,6 +70,8 @@ const EndreVurdering: FC<Props> = ({
         initiellRedigeringsmodus === Redigeringsmodus.IKKE_PÅSTARTET
             ? settRedigeringsmodus(Redigeringsmodus.IKKE_PÅSTARTET)
             : settRedigeringsmodus(Redigeringsmodus.VISNING);
+
+        settPanelITilstand(vurdering.vilkårType, EkspandertTilstand.EKSPANDERT);
     };
 
     return (

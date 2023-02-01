@@ -2,7 +2,6 @@ import * as React from 'react';
 import { FC } from 'react';
 import { IVurdering, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
 import styled from 'styled-components';
-import { Redigeringsmodus } from './VisEllerEndreVurdering';
 import { delvilkårTypeTilTekst, svarTypeTilTekst } from './tekster';
 import { BrukerMedBlyantIkon } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { resultatTilTekst } from '../VedtakOgBeregning/Felles/ResultatVisning';
@@ -60,13 +59,13 @@ interface Props {
     vurdering: IVurdering;
     resetVurdering: () => void;
     feilmelding: string | undefined;
-    settRedigeringsmodus: (redigeringsmodus: Redigeringsmodus) => void;
+    startRedigering: () => void;
     behandlingErRedigerbar: boolean;
     tittelTekst?: string;
 }
 
 const VisVurdering: FC<Props> = ({
-    settRedigeringsmodus,
+    startRedigering,
     vurdering,
     resetVurdering,
     feilmelding,
@@ -105,9 +104,7 @@ const VisVurdering: FC<Props> = ({
                                     type={'button'}
                                     variant={'tertiary'}
                                     icon={<Edit />}
-                                    onClick={() =>
-                                        settRedigeringsmodus(Redigeringsmodus.REDIGERING)
-                                    }
+                                    onClick={startRedigering}
                                     size={'small'}
                                 >
                                     <span>Rediger</span>

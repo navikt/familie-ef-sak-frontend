@@ -1,10 +1,10 @@
 import React from 'react';
 import { VilkårProps } from '../../Inngangsvilkår/vilkårprops';
 import { AktivitetsvilkårType } from '../../Inngangsvilkår/vilkår';
-import ToKolonnerLayout from '../../../../Felles/Visningskomponenter/ToKolonnerLayout';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
-import { Vilkårstittel } from '../../Inngangsvilkår/Vilkårstittel';
 import { AlertError } from '../../../../Felles/Visningskomponenter/Alerts';
+import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';
+import { VilkårpanelInnhold } from '../../Vilkårpanel/VilkårpanelInnhold';
 
 export const Inntekt: React.FC<VilkårProps> = ({
     vurderinger,
@@ -24,27 +24,25 @@ export const Inntekt: React.FC<VilkårProps> = ({
     }
 
     return (
-        <ToKolonnerLayout>
-            {{
-                venstre: (
-                    <>
-                        <Vilkårstittel
-                            tittel="Inntekt"
-                            vilkårsresultat={vurdering.resultat}
-                            paragrafTittel={'§15-10'}
+        <Vilkårpanel
+            tittel="Inntekt"
+            vilkårsresultat={vurdering.resultat}
+            paragrafTittel={'§15-10'}
+            vilkår={vurdering.vilkårType}
+        >
+            <VilkårpanelInnhold>
+                {{
+                    høyre: (
+                        <VisEllerEndreVurdering
+                            ikkeVurderVilkår={ikkeVurderVilkår}
+                            vurdering={vurdering}
+                            feilmelding={feilmeldinger[vurdering.id]}
+                            lagreVurdering={lagreVurdering}
+                            nullstillVurdering={nullstillVurdering}
                         />
-                    </>
-                ),
-                høyre: (
-                    <VisEllerEndreVurdering
-                        ikkeVurderVilkår={ikkeVurderVilkår}
-                        vurdering={vurdering}
-                        feilmelding={feilmeldinger[vurdering.id]}
-                        lagreVurdering={lagreVurdering}
-                        nullstillVurdering={nullstillVurdering}
-                    />
-                ),
-            }}
-        </ToKolonnerLayout>
+                    ),
+                }}
+            </VilkårpanelInnhold>
+        </Vilkårpanel>
     );
 };

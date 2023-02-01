@@ -1,11 +1,11 @@
 import React from 'react';
 import { VilkårProps } from '../../Inngangsvilkår/vilkårprops';
 import { AktivitetsvilkårType } from '../../Inngangsvilkår/vilkår';
-import ToKolonnerLayout from '../../../../Felles/Visningskomponenter/ToKolonnerLayout';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
-import { Vilkårstittel } from '../../Inngangsvilkår/Vilkårstittel';
 import DokumentasjonUtdanningInfo from './DokumentasjonUtdanningInfo';
 import { AlertError } from '../../../../Felles/Visningskomponenter/Alerts';
+import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';
+import { VilkårpanelInnhold } from '../../Vilkårpanel/VilkårpanelInnhold';
 
 export const DokumentasjonUtdanning: React.FC<VilkårProps> = ({
     vurderinger,
@@ -29,33 +29,31 @@ export const DokumentasjonUtdanning: React.FC<VilkårProps> = ({
     }
 
     return (
-        <ToKolonnerLayout>
-            {{
-                venstre: (
-                    <>
-                        <Vilkårstittel
-                            tittel="Dokumentasjon av utdanning og utgifter"
-                            vilkårsresultat={vurdering.resultat}
+        <Vilkårpanel
+            tittel="Dokumentasjon av utdanning og utgifter"
+            vilkårsresultat={vurdering.resultat}
+            vilkår={vurdering.vilkårType}
+        >
+            <VilkårpanelInnhold>
+                {{
+                    venstre: grunnlag.aktivitet && (
+                        <DokumentasjonUtdanningInfo
+                            aktivitet={grunnlag.aktivitet}
+                            skalViseSøknadsdata={skalViseSøknadsdata}
+                            dokumentasjon={grunnlag.dokumentasjon}
                         />
-                        {grunnlag.aktivitet && (
-                            <DokumentasjonUtdanningInfo
-                                aktivitet={grunnlag.aktivitet}
-                                skalViseSøknadsdata={skalViseSøknadsdata}
-                                dokumentasjon={grunnlag.dokumentasjon}
-                            />
-                        )}
-                    </>
-                ),
-                høyre: (
-                    <VisEllerEndreVurdering
-                        ikkeVurderVilkår={ikkeVurderVilkår}
-                        vurdering={vurdering}
-                        feilmelding={feilmeldinger[vurdering.id]}
-                        lagreVurdering={lagreVurdering}
-                        nullstillVurdering={nullstillVurdering}
-                    />
-                ),
-            }}
-        </ToKolonnerLayout>
+                    ),
+                    høyre: (
+                        <VisEllerEndreVurdering
+                            ikkeVurderVilkår={ikkeVurderVilkår}
+                            vurdering={vurdering}
+                            feilmelding={feilmeldinger[vurdering.id]}
+                            lagreVurdering={lagreVurdering}
+                            nullstillVurdering={nullstillVurdering}
+                        />
+                    ),
+                }}
+            </VilkårpanelInnhold>
+        </Vilkårpanel>
     );
 };

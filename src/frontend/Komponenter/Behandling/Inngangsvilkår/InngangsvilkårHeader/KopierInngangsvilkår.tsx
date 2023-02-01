@@ -11,7 +11,7 @@ import { ModalWrapper } from '../../../../Felles/Modal/ModalWrapper';
 import { ABorderStrong } from '@navikt/ds-tokens/dist/tokens';
 
 const Alertstripe = styled(Alert)`
-    margin: 1rem 2rem 2rem 1rem;
+    width: fit-content;
 `;
 
 const ForrigeBehandlingTabell = styled.table`
@@ -55,7 +55,7 @@ export const KopierInngangsvilkår: React.FC<Props> = ({
     const forrigeBehandling = behandlinger.slice(0, 1); // Dersom vi ønsker at bruker skal kunne velge mellom flere tidligere behandlinger kan denne linjen fjernes
 
     return (
-        <Alertstripe variant={'info'} fullWidth={false}>
+        <Alertstripe variant={'info'} fullWidth={false} size="small">
             <Heading spacing size="small" level="3">
                 <ÅpneLukkeKnapp
                     type={'button'}
@@ -65,7 +65,7 @@ export const KopierInngangsvilkår: React.FC<Props> = ({
                     onClick={() => {
                         settVisForrigeBehandlinger((prevState) => !prevState);
                     }}
-                    size={'small'}
+                    size={'xsmall'}
                 >
                     Gjenbruk vurdering av inngangsvilkår fra forrige behandling?
                 </ÅpneLukkeKnapp>

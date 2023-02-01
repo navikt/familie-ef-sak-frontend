@@ -1,10 +1,10 @@
 import React from 'react';
 import { InngangsvilkårType } from '../vilkår';
-import ToKolonnerLayout from '../../../../Felles/Visningskomponenter/ToKolonnerLayout';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import { VilkårProps } from '../vilkårprops';
 import SivilstandInfo from './SivilstandInfo';
-import { Vilkårstittel } from '../Vilkårstittel';
+import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';
+import { VilkårpanelInnhold } from '../../Vilkårpanel/VilkårpanelInnhold';
 
 export const Sivilstand: React.FC<VilkårProps> = ({
     vurderinger,
@@ -20,32 +20,32 @@ export const Sivilstand: React.FC<VilkårProps> = ({
         return <div>Mangler vurdering for sivilstand</div>;
     }
     return (
-        <ToKolonnerLayout>
-            {{
-                venstre: (
-                    <>
-                        <Vilkårstittel
-                            paragrafTittel="§15-4"
-                            tittel="Sivilstand"
-                            vilkårsresultat={vurdering.resultat}
-                        />
+        <Vilkårpanel
+            paragrafTittel="§15-4"
+            tittel="Sivilstand"
+            vilkårsresultat={vurdering.resultat}
+            vilkår={vurdering.vilkårType}
+        >
+            <VilkårpanelInnhold>
+                {{
+                    venstre: (
                         <SivilstandInfo
                             sivilstand={grunnlag.sivilstand}
                             skalViseSøknadsdata={skalViseSøknadsdata}
                             dokumentasjon={grunnlag.dokumentasjon}
                         />
-                    </>
-                ),
-                høyre: (
-                    <VisEllerEndreVurdering
-                        vurdering={vurdering}
-                        ikkeVurderVilkår={ikkeVurderVilkår}
-                        feilmelding={feilmeldinger[vurdering.id]}
-                        lagreVurdering={lagreVurdering}
-                        nullstillVurdering={nullstillVurdering}
-                    />
-                ),
-            }}
-        </ToKolonnerLayout>
+                    ),
+                    høyre: (
+                        <VisEllerEndreVurdering
+                            vurdering={vurdering}
+                            ikkeVurderVilkår={ikkeVurderVilkår}
+                            feilmelding={feilmeldinger[vurdering.id]}
+                            lagreVurdering={lagreVurdering}
+                            nullstillVurdering={nullstillVurdering}
+                        />
+                    ),
+                }}
+            </VilkårpanelInnhold>
+        </Vilkårpanel>
     );
 };

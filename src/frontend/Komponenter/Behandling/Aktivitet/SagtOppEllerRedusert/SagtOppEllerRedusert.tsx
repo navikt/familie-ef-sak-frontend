@@ -1,11 +1,11 @@
 import React from 'react';
 import { VilkårProps } from '../../Inngangsvilkår/vilkårprops';
 import { AktivitetsvilkårType } from '../../Inngangsvilkår/vilkår';
-import ToKolonnerLayout from '../../../../Felles/Visningskomponenter/ToKolonnerLayout';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import SagtOppEllerRedusertInfo from './SagtOppEllerRedusertInfo';
-import { Vilkårstittel } from '../../Inngangsvilkår/Vilkårstittel';
 import { AlertError } from '../../../../Felles/Visningskomponenter/Alerts';
+import { VilkårpanelInnhold } from '../../Vilkårpanel/VilkårpanelInnhold';
+import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';
 
 export const SagtOppEllerRedusert: React.FC<VilkårProps> = ({
     vurderinger,
@@ -28,33 +28,31 @@ export const SagtOppEllerRedusert: React.FC<VilkårProps> = ({
         );
     }
     return (
-        <ToKolonnerLayout>
-            {{
-                venstre: (
-                    <>
-                        <Vilkårstittel
-                            tittel="Sagt opp arbeidsforhold"
-                            vilkårsresultat={vurdering.resultat}
+        <Vilkårpanel
+            tittel="Sagt opp arbeidsforhold"
+            vilkårsresultat={vurdering.resultat}
+            vilkår={vurdering.vilkårType}
+        >
+            <VilkårpanelInnhold>
+                {{
+                    venstre: grunnlag.sagtOppEllerRedusertStilling && skalViseSøknadsdata && (
+                        <SagtOppEllerRedusertInfo
+                            sagtOppEllerRedusert={grunnlag.sagtOppEllerRedusertStilling}
+                            skalViseSøknadsdata={skalViseSøknadsdata}
+                            dokumentasjon={grunnlag.dokumentasjon}
                         />
-                        {grunnlag.sagtOppEllerRedusertStilling && (
-                            <SagtOppEllerRedusertInfo
-                                sagtOppEllerRedusert={grunnlag.sagtOppEllerRedusertStilling}
-                                skalViseSøknadsdata={skalViseSøknadsdata}
-                                dokumentasjon={grunnlag.dokumentasjon}
-                            />
-                        )}
-                    </>
-                ),
-                høyre: (
-                    <VisEllerEndreVurdering
-                        ikkeVurderVilkår={ikkeVurderVilkår}
-                        vurdering={vurdering}
-                        feilmelding={feilmeldinger[vurdering.id]}
-                        lagreVurdering={lagreVurdering}
-                        nullstillVurdering={nullstillVurdering}
-                    />
-                ),
-            }}
-        </ToKolonnerLayout>
+                    ),
+                    høyre: (
+                        <VisEllerEndreVurdering
+                            ikkeVurderVilkår={ikkeVurderVilkår}
+                            vurdering={vurdering}
+                            feilmelding={feilmeldinger[vurdering.id]}
+                            lagreVurdering={lagreVurdering}
+                            nullstillVurdering={nullstillVurdering}
+                        />
+                    ),
+                }}
+            </VilkårpanelInnhold>
+        </Vilkårpanel>
     );
 };

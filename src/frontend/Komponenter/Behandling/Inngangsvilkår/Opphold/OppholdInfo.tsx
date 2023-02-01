@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
 import { Registergrunnlag, Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { BooleanTekst } from '../../../../Felles/Visningskomponenter/BooleanTilTekst';
@@ -8,7 +8,6 @@ import Oppholdstillatelse from '../Medlemskap/Oppholdstillatelse';
 import Utenlandsopphold from '../Medlemskap/Utenlandsopphold';
 import InnflyttingUtflytting from '../Medlemskap/InnflyttingUtflytting';
 import FolkeregisterPersonstatus from '../Medlemskap/FolkeregisterPersonstatus';
-import UtvidPanel from '../../../../Felles/UtvidPanel/UtvidPanel';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 
 interface Props {
@@ -23,7 +22,6 @@ const OppholdInfo: FC<Props> = ({ medlemskap, skalViseSøknadsdata }) => {
     const finnesUtenlandsperioder = søknadsgrunnlag && søknadsgrunnlag.utenlandsopphold.length > 0;
     const finnesInnflyttingUtflytting =
         registergrunnlag.innflytting.length > 0 || registergrunnlag.utflytting.length > 0;
-    const [åpentPanel, settÅpentPanel] = useState(false);
 
     return (
         <>
@@ -43,28 +41,21 @@ const OppholdInfo: FC<Props> = ({ medlemskap, skalViseSøknadsdata }) => {
                 )}
             </GridTabell>
 
-            <UtvidPanel
-                åpen={åpentPanel}
-                knappTekst={åpentPanel ? 'Lukk info om opphold' : 'Vis info om opphold'}
-                onClick={() => settÅpentPanel(!åpentPanel)}
-                position={'left'}
-            >
-                <FolkeregisterPersonstatus status={registergrunnlag.folkeregisterpersonstatus} />
-                {finnesOppholdsstatus && (
-                    <Oppholdstillatelse oppholdsstatus={registergrunnlag.oppholdstatus} />
-                )}
+            <FolkeregisterPersonstatus status={registergrunnlag.folkeregisterpersonstatus} />
+            {finnesOppholdsstatus && (
+                <Oppholdstillatelse oppholdsstatus={registergrunnlag.oppholdstatus} />
+            )}
 
-                {finnesInnflyttingUtflytting && (
-                    <InnflyttingUtflytting
-                        innflytting={registergrunnlag.innflytting}
-                        utflytting={registergrunnlag.utflytting}
-                    />
-                )}
+            {finnesInnflyttingUtflytting && (
+                <InnflyttingUtflytting
+                    innflytting={registergrunnlag.innflytting}
+                    utflytting={registergrunnlag.utflytting}
+                />
+            )}
 
-                {skalViseSøknadsdata && finnesUtenlandsperioder && (
-                    <Utenlandsopphold utenlandsopphold={søknadsgrunnlag.utenlandsopphold} />
-                )}
-            </UtvidPanel>
+            {skalViseSøknadsdata && finnesUtenlandsperioder && (
+                <Utenlandsopphold utenlandsopphold={søknadsgrunnlag.utenlandsopphold} />
+            )}
         </>
     );
 };

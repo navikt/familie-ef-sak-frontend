@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { vilkårStatusForBarn } from '../../Vurdering/VurderingUtil';
-import ToKolonnerLayout from '../../../../Felles/Visningskomponenter/ToKolonnerLayout';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import AleneomsorgInfo from './AleneomsorgInfo';
 import { VilkårPropsMedStønadstype } from '../vilkårprops';
-import { Vilkårstittel } from '../Vilkårstittel';
 import { InngangsvilkårType } from '../vilkår';
 import { byggTomRessurs, Ressurs } from '../../../../App/typer/ressurs';
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
 import { useApp } from '../../../../App/context/AppContext';
 import { IBarnMedLøpendeStønad } from './typer';
 import DokumentasjonSendtInn from '../DokumentasjonSendtInn';
+import { VilkårpanelInnhold } from '../../Vilkårpanel/VilkårpanelInnhold';
+import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';
 
 export const Aleneomsorg: React.FC<VilkårPropsMedStønadstype> = ({
     vurderinger,
@@ -43,60 +43,62 @@ export const Aleneomsorg: React.FC<VilkårPropsMedStønadstype> = ({
         .filter((vurdering) => vurdering.vilkårType === InngangsvilkårType.ALENEOMSORG)
         .map((v) => v.resultat);
     const utleddResultat = vilkårStatusForBarn(vilkårsresultatAleneomsorg);
+
     return (
-        <>
-            {grunnlag.barnMedSamvær.map((barn, idx) => {
+        <Vilkårpanel
+            paragrafTittel="§15-4"
+            tittel="Aleneomsorg"
+            vilkårsresultat={utleddResultat}
+            vilkår={InngangsvilkårType.ALENEOMSORG}
+        >
+            {grunnlag.barnMedSamvær.map((barn, indeks) => {
                 const vurdering = vurderinger.find(
                     (v) =>
                         v.barnId === barn.barnId && v.vilkårType === InngangsvilkårType.ALENEOMSORG
                 );
                 if (!vurdering) return null;
+
+                const erSisteBarn = indeks === grunnlag.barnMedSamvær.length - 1;
                 return (
-                    <ToKolonnerLayout key={barn.barnId}>
+                    <VilkårpanelInnhold
+                        key={barn.barnId}
+                        borderBottom={
+                            indeks !== grunnlag.barnMedSamvær.length - 1 &&
+                            grunnlag.barnMedSamvær.length > 1
+                        }
+                    >
                         {{
                             venstre: (
                                 <>
-                                    {idx === 0 && (
-                                        <Vilkårstittel
-                                            paragrafTittel="§15-4"
-                                            tittel="Aleneomsorg"
-                                            vilkårsresultat={utleddResultat}
-                                        />
-                                    )}
                                     <AleneomsorgInfo
                                         gjeldendeBarn={barn}
                                         skalViseSøknadsdata={skalViseSøknadsdata}
                                         barnMedLøpendeStønad={barnMedLøpendeStønad}
                                         stønadstype={stønadstype}
                                     />
-                                    {idx === grunnlag.barnMedSamvær.length - 1 && (
+                                    {erSisteBarn && skalViseSøknadsdata && (
                                         <>
-                                            {skalViseSøknadsdata && (
-                                                <>
-                                                    <DokumentasjonSendtInn
-                                                        dokumentasjon={
-                                                            grunnlag.dokumentasjon
-                                                                ?.avtaleOmDeltBosted
-                                                        }
-                                                        tittel={'Avtale om delt fast bosted'}
-                                                    />
-                                                    <DokumentasjonSendtInn
-                                                        dokumentasjon={
-                                                            grunnlag.dokumentasjon
-                                                                ?.skalBarnetBoHosSøkerMenAnnenForelderSamarbeiderIkke
-                                                        }
-                                                        tittel={
-                                                            'Dokumentasjon som viser at barnet bor hos deg'
-                                                        }
-                                                    />
-                                                    <DokumentasjonSendtInn
-                                                        dokumentasjon={
-                                                            grunnlag.dokumentasjon?.samværsavtale
-                                                        }
-                                                        tittel={'Samværsavtale'}
-                                                    />
-                                                </>
-                                            )}
+                                            <DokumentasjonSendtInn
+                                                dokumentasjon={
+                                                    grunnlag.dokumentasjon?.avtaleOmDeltBosted
+                                                }
+                                                tittel={'Avtale om delt fast bosted'}
+                                            />
+                                            <DokumentasjonSendtInn
+                                                dokumentasjon={
+                                                    grunnlag.dokumentasjon
+                                                        ?.skalBarnetBoHosSøkerMenAnnenForelderSamarbeiderIkke
+                                                }
+                                                tittel={
+                                                    'Dokumentasjon som viser at barnet bor hos deg'
+                                                }
+                                            />
+                                            <DokumentasjonSendtInn
+                                                dokumentasjon={
+                                                    grunnlag.dokumentasjon?.samværsavtale
+                                                }
+                                                tittel={'Samværsavtale'}
+                                            />
                                         </>
                                     )}
                                 </>
@@ -112,9 +114,9 @@ export const Aleneomsorg: React.FC<VilkårPropsMedStønadstype> = ({
                                 />
                             ),
                         }}
-                    </ToKolonnerLayout>
+                    </VilkårpanelInnhold>
                 );
             })}
-        </>
+        </Vilkårpanel>
     );
 };
