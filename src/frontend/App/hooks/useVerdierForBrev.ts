@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 import { formaterIsoDato } from '../utils/formatter';
 import { IBeløpsperiode, IBeregningsperiodeBarnetilsyn } from '../typer/vedtak';
-import { useToggles } from '../context/TogglesContext';
-import { ToggleName } from '../context/toggles';
 
 enum EBehandlingFlettefelt {
     fomdatoInnvilgelseForstegangsbehandling = 'fomdatoInnvilgelseForstegangsbehandling',
@@ -45,7 +43,6 @@ export const useVerdierForBrev = (
     const [flettefeltStore, settFlettefeltStore] = useState<FlettefeltStore>({});
     const [valgfeltStore, settValgfeltStore] = useState<ValgfeltStore>({});
     const [delmalStore, settDelmalStore] = useState<DelmalStore>([]);
-    const { toggles } = useToggles();
 
     useEffect(() => {
         if (beløpsperioder && beløpsperioder.length > 0) {
@@ -54,10 +51,7 @@ export const useVerdierForBrev = (
             );
             const fraDato = formaterIsoDato(beløpsperioder[0].periode.fradato);
 
-            if (
-                innholderBeløpsperioderForOvergangsstønad(beløpsperioder) &&
-                toggles[ToggleName.automatiskeHjemlerBrev]
-            ) {
+            if (innholderBeløpsperioderForOvergangsstønad(beløpsperioder)) {
                 settValgfeltStore((prevState) => ({
                     ...prevState,
                     [EBehandlingValgfelt.avslutningHjemmel]: harSamordningsfradrag(beløpsperioder)

@@ -30,8 +30,6 @@ import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { delmalTilUtregningstabellOS } from './UtregningstabellOvergangsstønad';
 import { delmalTilUtregningstabellBT } from './UtregningstabellBarnetilsyn';
 import { useVerdierForBrev } from '../../../App/hooks/useVerdierForBrev';
-import { useToggles } from '../../../App/context/TogglesContext';
-import { ToggleName } from '../../../App/context/toggles';
 
 const BrevFelter = styled.div`
     display: flex;
@@ -77,7 +75,6 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     const [alleFlettefelter, settAlleFlettefelter] = useState<FlettefeltMedVerdi[]>([]);
     const [brevmalFeil, settBrevmalFeil] = useState('');
     const { flettefeltStore, valgfeltStore, delmalStore } = useVerdierForBrev(beløpsperioder);
-    const { toggles } = useToggles();
 
     useEffect(() => {
         const parsetMellomlagretBrev =
@@ -227,7 +224,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                     )?.skjulIBrevmeny;
                     return automatiskFeltSomSkalSkjules || false;
                 });
-                if (key === 'Lovhjemmel' && toggles[ToggleName.automatiskeHjemlerBrev]) {
+                if (key === 'Lovhjemmel') {
                     return (
                         <AlertMedMargin variant={'info'} inline>
                             Valget om lovhjemmel utføres nå automatisk av systemet
