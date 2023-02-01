@@ -1,8 +1,5 @@
 import * as React from 'react';
 import { FC } from 'react';
-import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
-import { Registergrunnlag, Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
-import { BooleanTekst } from '../../../../Felles/Visningskomponenter/BooleanTilTekst';
 import Statsborgerskap from './Statsborgerskap';
 import Oppholdstillatelse from './Oppholdstillatelse';
 import Utenlandsopphold from './Utenlandsopphold';
@@ -10,8 +7,10 @@ import { IMedlemskap } from './typer';
 import FolkeregisterPersonstatus from './FolkeregisterPersonstatus';
 import InnflyttingUtflytting from './InnflyttingUtflytting';
 import UnntakIMedl from './UnntakIMedl';
-import { Tag } from '@navikt/ds-react';
-import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
+import { InformasjonContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
+import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
+import { TabellIkon } from '../../Tabell/TabellVisning';
+import { mapTrueFalse } from '../../../../App/utils/formatter';
 
 interface Props {
     medlemskap: IMedlemskap;
@@ -27,23 +26,22 @@ const MedlemskapInfo: FC<Props> = ({ medlemskap, skalViseSøknadsdata }) => {
     const finnesUnntakIMedl = medlUnntak.gyldigeVedtaksPerioder.length > 0;
 
     return (
-        <>
-            <GridTabell>
-                {skalViseSøknadsdata && søknadsgrunnlag && (
-                    <>
-                        <Søknadsgrunnlag />
-                        <BodyShortSmall>Har bodd i Norge siste 5 år</BodyShortSmall>
-                        <BooleanTekst value={søknadsgrunnlag.bosattNorgeSisteÅrene} />
-                    </>
-                )}
-                {finnesUnntakIMedl && (
-                    <>
-                        <Registergrunnlag />
-                        <BodyShortSmall>Medlemskapstatus i MEDL</BodyShortSmall>
-                        <Tag variant={'warning'}>Innslag funnet</Tag>
-                    </>
-                )}
-            </GridTabell>
+        <InformasjonContainer>
+            {skalViseSøknadsdata && søknadsgrunnlag && (
+                <Informasjonsrad
+                    ikon={TabellIkon.SØKNAD}
+                    label="Har bodd i Norge siste 5 år"
+                    verdi={mapTrueFalse(søknadsgrunnlag.bosattNorgeSisteÅrene)}
+                />
+            )}
+            {finnesUnntakIMedl && (
+                <Informasjonsrad
+                    ikon={TabellIkon.SØKNAD}
+                    label="Medlemskapstatus i MEDL"
+                    verdi="Innslag funnet"
+                    verdiSomTag={true}
+                />
+            )}
 
             {finnesUnntakIMedl && (
                 <UnntakIMedl gyldigeVedtaksPerioder={medlUnntak.gyldigeVedtaksPerioder} />
@@ -64,7 +62,7 @@ const MedlemskapInfo: FC<Props> = ({ medlemskap, skalViseSøknadsdata }) => {
             {skalViseSøknadsdata && finnesUtenlandsperioder && (
                 <Utenlandsopphold utenlandsopphold={søknadsgrunnlag.utenlandsopphold} />
             )}
-        </>
+        </InformasjonContainer>
     );
 };
 
