@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FC } from 'react';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
-import TabellVisning, { TabellIkon } from '../../Tabell/TabellVisning';
+import TabellVisning, { TabellIkon } from '../../Vilkårpanel/TabellVisning';
 import { IUtenlandsopphold } from './typer';
 
 interface Props {

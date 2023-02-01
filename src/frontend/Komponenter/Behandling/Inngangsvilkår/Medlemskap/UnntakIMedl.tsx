@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { FC, useMemo } from 'react';
-import TabellVisning, { TabellIkon } from '../../Tabell/TabellVisning';
 import { formaterNullableIsoDato, mapTrueFalse } from '../../../../App/utils/formatter';
 import { IGyldigVedtakPeriode } from './typer';
 import { differenceInDays } from 'date-fns';
+import TabellVisning, { TabellIkon } from '../../Vilkårpanel/TabellVisning';
 
 interface Props {
     gyldigeVedtaksPerioder: IGyldigVedtakPeriode[];

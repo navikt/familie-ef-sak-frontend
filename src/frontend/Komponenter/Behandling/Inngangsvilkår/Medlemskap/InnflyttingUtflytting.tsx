@@ -3,13 +3,10 @@ import {
     IInnflyttingTilNorge,
     IUtflyttingFraNorge,
 } from '../../../../App/typer/personopplysninger';
-import { Registergrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { formaterNullableIsoDato, formaterNullableIsoÅr } from '../../../../App/utils/formatter';
 import { slåSammenTekst } from '../../../../App/utils/utils';
-import { Tabell } from '../NyttBarnSammePartner/Tabell';
-import { FlexDiv } from '../../../Oppgavebenk/OppgaveFiltrering';
-import { headerForInnflyttingTabell } from '../../../../Felles/Personopplysninger/InnvandringUtvandring';
-import { Label } from '@navikt/ds-react';
+import { FlexColumnContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
+import TabellVisning, { TabellIkon } from '../../Vilkårpanel/TabellVisning';
 
 interface Props {
     innflytting: IInnflyttingTilNorge[];
@@ -18,14 +15,10 @@ interface Props {
 
 const InnflyttingUtflytting: React.FC<Props> = ({ innflytting, utflytting }) => {
     return (
-        <>
-            <FlexDiv>
-                <Registergrunnlag />
-                <Label as={'h3'} style={{ marginLeft: '0.5rem' }}>
-                    Innflytting og utflytting
-                </Label>
-            </FlexDiv>
-            <Tabell
+        <FlexColumnContainer>
+            <TabellVisning
+                tittel="Innflytting og utflytting"
+                ikon={TabellIkon.REGISTER}
                 kolonner={[
                     {
                         overskrift: 'Innflytting fra',
@@ -36,13 +29,16 @@ const InnflyttingUtflytting: React.FC<Props> = ({ innflytting, utflytting }) => 
                             ),
                     },
                     {
-                        overskrift: headerForInnflyttingTabell,
+                        overskrift: 'Innflyttet år',
                         tekstVerdi: (innflytting) => formaterNullableIsoÅr(innflytting.dato) || '',
+                        helperText:
+                            'Innflyttet år er basert på Folkeregisteret sitt gyldighetstidspunktet for innflytting. Denne har nødvendigvis ikke noen sammenheng med når innflyttingen skjedde i virkeligheten. Dersom man skal finne ut når en innflytting gjelder fra må man se på andre opplysninger, f.eks. den norske bostedsadressens fra-dato.',
                     },
                 ]}
-                data={innflytting}
+                verdier={innflytting}
             />
-            <Tabell
+
+            <TabellVisning
                 kolonner={[
                     {
                         overskrift: 'Utflytting til',
@@ -57,9 +53,9 @@ const InnflyttingUtflytting: React.FC<Props> = ({ innflytting, utflytting }) => 
                         tekstVerdi: (utflytting) => formaterNullableIsoDato(utflytting.dato) || '',
                     },
                 ]}
-                data={utflytting}
+                verdier={utflytting}
             />
-        </>
+        </FlexColumnContainer>
     );
 };
 
