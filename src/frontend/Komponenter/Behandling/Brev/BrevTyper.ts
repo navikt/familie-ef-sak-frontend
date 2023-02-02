@@ -15,6 +15,7 @@ import {
     initielleAvsnittSvartidKlage,
     initielleAvsnittForlengetSvartidKlage,
     initielleAvsnittForlengetSvartid,
+    initielleAvsnittTrukketSøknad,
 } from './BrevTyperTekst';
 import { IMellomlagretBrevResponse } from '../../../App/hooks/useMellomlagringBrev';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
@@ -113,6 +114,7 @@ export enum FrittståendeBrevtype {
     BREV_OM_SVARTID_KLAGE = 'BREV_OM_SVARTID_KLAGE',
     BREV_OM_FORLENGET_SVARTID = 'BREV_OM_FORLENGET_SVARTID',
     BREV_OM_FORLENGET_SVARTID_KLAGE = 'BREV_OM_FORLENGET_SVARTID_KLAGE',
+    INFORMASJONSBREV_TRUKKET_SØKNAD = 'INFORMASJONSBREV_TRUKKET_SØKNAD',
 }
 
 export enum FritekstBrevtype {
@@ -150,6 +152,7 @@ export const BrevtyperTilOverskrift: Record<FrittståendeBrevtype | FritekstBrev
     BREV_OM_SVARTID_KLAGE: 'Vi har fått klagen din',
     BREV_OM_FORLENGET_SVARTID: 'Saksbehandlingen vil ta lenger tid',
     BREV_OM_FORLENGET_SVARTID_KLAGE: 'Saksbehandlingen vil ta lenger tid',
+    INFORMASJONSBREV_TRUKKET_SØKNAD: 'Saken din om [stønad] er avsluttet',
 };
 
 export const BrevtyperTilSelectNavn: Record<
@@ -177,6 +180,7 @@ export const BrevtyperTilSelectNavn: Record<
     BREV_OM_SVARTID_KLAGE: 'Brev om svartid - klage',
     BREV_OM_FORLENGET_SVARTID: 'Brev om forlenget svartid',
     BREV_OM_FORLENGET_SVARTID_KLAGE: 'Brev om forlenget svartid - klage',
+    INFORMASJONSBREV_TRUKKET_SØKNAD: 'Informasjonsbrev - bruker har trukket søknad',
 };
 
 export const stønadstypeTilBrevtyper: Record<Stønadstype, FritekstBrevtype[]> = {
@@ -223,6 +227,7 @@ export const BrevtyperTilAvsnitt: Record<FrittståendeBrevtype | FritekstBrevtyp
         BREV_OM_SVARTID_KLAGE: initielleAvsnittSvartidKlage,
         BREV_OM_FORLENGET_SVARTID: initielleAvsnittForlengetSvartid,
         BREV_OM_FORLENGET_SVARTID_KLAGE: initielleAvsnittForlengetSvartidKlage,
+        INFORMASJONSBREV_TRUKKET_SØKNAD: initielleAvsnittTrukketSøknad,
     };
 
 export enum FritekstBrevContext {
