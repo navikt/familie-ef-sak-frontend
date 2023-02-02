@@ -1,18 +1,17 @@
 import React, { FC } from 'react';
 import { RegistergrunnlagNyttBarn } from './typer';
-import { FlexDiv } from '../../../Oppgavebenk/OppgaveFiltrering';
 import {
     ITidligereInnvilgetVedtak,
     ITidligereVedtaksperioder,
 } from '../../TidligereVedtaksperioder/typer';
 import { Tooltip } from '@navikt/ds-react';
 import { mapTrueFalse } from '../../../../App/utils/formatter';
-import TabellVisning, { TabellIkon } from '../../Tabell/TabellVisning';
 import { nonNull } from '../../../../App/utils/utils';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 import { IPersonopplysninger } from '../../../../App/typer/personopplysninger';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
+import TabellVisning from '../../Vilkårpanel/TabellVisning';
 
 interface TidligereVedtaksperioderPåPartISak {
     fødselsnummer: string;
@@ -100,31 +99,28 @@ const TidligereVedtaksperioderSøkerOgAndreForeldre: FC<{
                     return null;
                 }
                 return (
-                    <FlexDiv>
-                        <TabellVisning
-                            ikon={TabellIkon.REGISTER}
-                            tittel={
-                                'Har brukeren eller annen forelder mottatt stønader etter kap. 15 før?'
-                            }
-                            verdier={verdier}
-                            kolonner={[
-                                {
-                                    overskrift: 'Navn',
-                                    tekstVerdi: (d) => d.navn,
-                                },
-                                {
-                                    overskrift: 'EF Sak',
-                                    tekstVerdi: (d) =>
-                                        jaNeiMedToolTip(d.tidligereVedtaksperioder.sak),
-                                },
-                                {
-                                    overskrift: 'Infotrygd (kun EF VP)',
-                                    tekstVerdi: (d) =>
-                                        jaNeiMedToolTip(d.tidligereVedtaksperioder.infotrygd),
-                                },
-                            ]}
-                        />
-                    </FlexDiv>
+                    <TabellVisning
+                        tittel={
+                            'Har brukeren eller annen forelder mottatt stønader etter kap. 15 før?'
+                        }
+                        verdier={verdier}
+                        ikonVisning={false}
+                        kolonner={[
+                            {
+                                overskrift: 'Navn',
+                                tekstVerdi: (d) => d.navn,
+                            },
+                            {
+                                overskrift: 'EF Sak',
+                                tekstVerdi: (d) => jaNeiMedToolTip(d.tidligereVedtaksperioder.sak),
+                            },
+                            {
+                                overskrift: 'Infotrygd (kun EF VP)',
+                                tekstVerdi: (d) =>
+                                    jaNeiMedToolTip(d.tidligereVedtaksperioder.infotrygd),
+                            },
+                        ]}
+                    />
                 );
             }}
         </DataViewer>
