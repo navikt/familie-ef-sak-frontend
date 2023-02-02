@@ -95,3 +95,6 @@ export const utledUtgiftsbeløp = (utgift?: number) => {
 };
 
 export const mapTrueFalse = (bool: boolean): string => (bool ? 'Ja' : 'Nei');
+
+export const formatterBooleanEllerUkjent = (bool?: boolean) =>
+    bool === undefined ? 'Ukjent' : mapTrueFalse(bool);
