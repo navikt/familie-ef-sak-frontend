@@ -1,16 +1,13 @@
 import React, { FC } from 'react';
 import { RegistergrunnlagNyttBarn } from './typer';
-import LiteBarn from '../../../../Felles/Ikoner/LiteBarn';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
 import { AnnenForelderNavnOgFnr } from './AnnenForelderNavnOgFnr';
 import { harVerdi } from '../../../../App/utils/utils';
-import EtikettDød from '../../../../Felles/Etiketter/EtikettDød';
-import { Label } from '@navikt/ds-react';
 import { utledNavnOgAlder } from '../utils';
-import { FlexColumnContainer, UnderoverskriftWrapper } from '../../Vilkårpanel/StyledVilkårInnhold';
 import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
 import { KopierbartNullableFødselsnummer } from '../../../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
 import { TabellIkon } from '../../Vilkårpanel/TabellVisning';
+import { BarneInfoWrapper } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 
 interface Props {
     barn: RegistergrunnlagNyttBarn;
@@ -21,14 +18,10 @@ const RegistergrunnlagNyttBarnInnhold: FC<Props> = ({ barn }) => {
 
     const ikkeOppgittAnnenForelderBegrunnelse = barn.ikkeOppgittAnnenForelderBegrunnelse;
     return (
-        <FlexColumnContainer>
-            <UnderoverskriftWrapper>
-                <LiteBarn />
-                <Label size={'small'} as={'div'}>
-                    {utledNavnOgAlder(navn, fødselsdato, dødsdato)}
-                    {barn.dødsdato && <EtikettDød dødsdato={barn.dødsdato} />}
-                </Label>
-            </UnderoverskriftWrapper>
+        <BarneInfoWrapper
+            navnOgAlderPåBarn={utledNavnOgAlder(navn, fødselsdato, dødsdato)}
+            dødsdato={barn.dødsdato}
+        >
             <Informasjonsrad
                 ikon={TabellIkon.REGISTER}
                 label="Fødsels eller D-nummer"
@@ -65,7 +58,7 @@ const RegistergrunnlagNyttBarnInnhold: FC<Props> = ({ barn }) => {
                     verdi={formaterNullableIsoDato('2021-01-01')}
                 />
             )}
-        </FlexColumnContainer>
+        </BarneInfoWrapper>
     );
 };
 

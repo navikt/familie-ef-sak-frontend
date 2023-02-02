@@ -6,8 +6,8 @@ import SøknadgrunnlagNyttBarn from './SøknadsgrunnlagNyttBarn';
 import TidligereVedtaksperioderSøkerOgAndreForeldre from './TidligereVedtaksperioderSøkerOgAndreForeldre';
 import { ITidligereVedtaksperioder } from '../../TidligereVedtaksperioder/typer';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
-import { Label } from '@navikt/ds-react';
-import { FlexColumnContainer, InformasjonContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
+import { InformasjonContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
+import { UnderseksjonWrapper } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 
 interface Props {
     barnMedSamvær: IBarnMedSamvær[];
@@ -23,10 +23,7 @@ const NyttBarnSammePartnerInfo: FC<Props> = ({ barnMedSamvær, tidligereVedtaksp
                 tidligereVedtaksperioder={tidligereVedtaksperioder}
                 registergrunnlagNyttBarn={registergrunnlagNyttBarn}
             />
-            <FlexColumnContainer gap={1.5}>
-                <Label className="tittel" as="h3" size={'small'}>
-                    Brukers barn registrert i folkeregisteret
-                </Label>
+            <UnderseksjonWrapper underoverskrift="Brukers barn registrert i folkeregisteret">
                 {registergrunnlagNyttBarn.map((barn) => (
                     <RegistergrunnlagNyttBarn key={barn.barnId} barn={barn} />
                 )) || (
@@ -34,11 +31,8 @@ const NyttBarnSammePartnerInfo: FC<Props> = ({ barnMedSamvær, tidligereVedtaksp
                         <i>Bruker har ingen barn lagt til i folkeregister</i>
                     </BodyShortSmall>
                 )}
-            </FlexColumnContainer>
-            <FlexColumnContainer>
-                <Label className="tittel" as="h3" size={'small'}>
-                    Brukers fremtidige barn lagt til i søknad
-                </Label>
+            </UnderseksjonWrapper>
+            <UnderseksjonWrapper underoverskrift="Brukers fremtidige barn lagt til i søknad">
                 {søknadsgrunnlagNyttBarn.length ? (
                     søknadsgrunnlagNyttBarn.map((barn) => (
                         <SøknadgrunnlagNyttBarn key={barn.barnId} barn={barn} />
@@ -48,7 +42,7 @@ const NyttBarnSammePartnerInfo: FC<Props> = ({ barnMedSamvær, tidligereVedtaksp
                         <i>Bruker har ingen barn lagt til i søknad</i>
                     </BodyShortSmall>
                 )}
-            </FlexColumnContainer>
+            </UnderseksjonWrapper>
         </InformasjonContainer>
     );
 };
