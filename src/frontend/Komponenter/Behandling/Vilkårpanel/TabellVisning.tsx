@@ -20,6 +20,7 @@ export interface Kolonndata<T> {
     verdier: T[];
     kolonner: Kolonner<T>[];
     underTabellMargin?: number;
+    ikonVisning?: boolean;
 }
 
 export interface Kolonner<T> {
@@ -45,9 +46,9 @@ const FlexDiv = styled.div`
 `;
 
 function TabellVisning<T>(props: Kolonndata<T>): React.ReactElement<Kolonndata<T>> {
-    const { ikon, tittel, verdier, kolonner } = props;
+    const { ikon, tittel, verdier, kolonner, ikonVisning = true } = props;
     return (
-        <GridTabell kolonner={kolonner.length + 1}>
+        <GridTabell kolonner={kolonner.length + 1} ikonVisning={ikonVisning}>
             {ikon && mapIkon(ikon)}
             {tittel && (
                 <Label size="small" className="tittel" as="h3">
