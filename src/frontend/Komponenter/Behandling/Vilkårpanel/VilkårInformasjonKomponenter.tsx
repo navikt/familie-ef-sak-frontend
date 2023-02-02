@@ -30,7 +30,11 @@ interface BarneInfoWrapperProps {
     children: ReactNode;
 }
 
-export const BarneInfoWrapper: FC<BarneInfoWrapperProps> = ({ navnOgAlderPåBarn, dødsdato }) => {
+export const BarneInfoWrapper: FC<BarneInfoWrapperProps> = ({
+    navnOgAlderPåBarn,
+    dødsdato,
+    children,
+}) => {
     return (
         <FlexColumnContainer>
             <UnderoverskriftWrapper>
@@ -40,6 +44,7 @@ export const BarneInfoWrapper: FC<BarneInfoWrapperProps> = ({ navnOgAlderPåBarn
                     {dødsdato && <EtikettDød dødsdato={dødsdato} />}
                 </Label>
             </UnderoverskriftWrapper>
+            {children}
         </FlexColumnContainer>
     );
 };
