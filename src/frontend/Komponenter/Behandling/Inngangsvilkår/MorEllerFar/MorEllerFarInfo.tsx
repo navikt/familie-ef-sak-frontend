@@ -1,16 +1,17 @@
 import { IBarnMedSamvær } from '../Aleneomsorg/typer';
 import React, { FC } from 'react';
-import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
 import LiteBarn from '../../../../Felles/Ikoner/LiteBarn';
-import { Registergrunnlag, Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
 import { KopierbartNullableFødselsnummer } from '../../../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
 import EtikettDød from '../../../../Felles/Etiketter/EtikettDød';
 import { IDokumentasjonGrunnlag } from '../vilkår';
 import DokumentasjonSendtInn from '../DokumentasjonSendtInn';
-import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 import { Label } from '@navikt/ds-react';
 import { utledNavnOgAlderPåGrunnlag } from '../utils';
+import { FlexColumnContainer, InformasjonContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
+import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
+import { TabellIkon } from '../../Vilkårpanel/TabellVisning';
+import styled from 'styled-components';
 
 interface Props {
     barnMedSamvær: IBarnMedSamvær[];
@@ -18,43 +19,49 @@ interface Props {
     dokumentasjon?: IDokumentasjonGrunnlag;
 }
 
+const UnderoverskriftWrapper = styled.div`
+    display: flex;
+    gap: 1rem;
+`;
+
 const MorEllerFarInfo: FC<Props> = ({ barnMedSamvær, skalViseSøknadsdata, dokumentasjon }) => {
     return (
-        <>
+        <InformasjonContainer>
             {barnMedSamvær.map((barn: IBarnMedSamvær) => {
                 const { søknadsgrunnlag, registergrunnlag } = barn;
 
                 return (
-                    <React.Fragment key={barn.barnId}>
-                        <GridTabell>
-                            <>
-                                <LiteBarn />
-                                <Label size={'small'} as={'div'}>
-                                    {utledNavnOgAlderPåGrunnlag(registergrunnlag, søknadsgrunnlag)}
-                                    {registergrunnlag.dødsdato && (
-                                        <EtikettDød dødsdato={registergrunnlag.dødsdato} />
-                                    )}
-                                </Label>
-                            </>
-                            {registergrunnlag.fødselsnummer ? (
-                                <>
-                                    <Registergrunnlag />
-                                    <BodyShortSmall>Fødsels- eller D-nummer</BodyShortSmall>
+                    <FlexColumnContainer key={barn.barnId}>
+                        <UnderoverskriftWrapper>
+                            <LiteBarn />
+                            <Label size={'small'} as={'div'}>
+                                {utledNavnOgAlderPåGrunnlag(registergrunnlag, søknadsgrunnlag)}
+                                {registergrunnlag.dødsdato && (
+                                    <EtikettDød dødsdato={registergrunnlag.dødsdato} />
+                                )}
+                            </Label>
+                        </UnderoverskriftWrapper>
+                        {registergrunnlag.fødselsnummer ? (
+                            <Informasjonsrad
+                                label="Fødsels- eller D-nummer"
+                                verdi={
                                     <KopierbartNullableFødselsnummer
                                         fødselsnummer={registergrunnlag.fødselsnummer}
                                     />
-                                </>
-                            ) : (
-                                <>
-                                    <Søknadsgrunnlag />
-                                    <BodyShortSmall>Termindato</BodyShortSmall>
-                                    <BodyShortSmall>
-                                        {formaterNullableIsoDato(søknadsgrunnlag.fødselTermindato)}
-                                    </BodyShortSmall>
-                                </>
-                            )}
-                        </GridTabell>
-                    </React.Fragment>
+                                }
+                                verdiSomString={false}
+                                ikon={TabellIkon.REGISTER}
+                            />
+                        ) : (
+                            <Informasjonsrad
+                                label="Termindato"
+                                verdi={
+                                    formaterNullableIsoDato(søknadsgrunnlag.fødselTermindato) || ''
+                                }
+                                ikon={TabellIkon.SØKNAD}
+                            />
+                        )}
+                    </FlexColumnContainer>
                 );
             })}
             {skalViseSøknadsdata && (
@@ -63,7 +70,7 @@ const MorEllerFarInfo: FC<Props> = ({ barnMedSamvær, skalViseSøknadsdata, doku
                     tittel={'Terminbekreftelse'}
                 />
             )}
-        </>
+        </InformasjonContainer>
     );
 };
 
