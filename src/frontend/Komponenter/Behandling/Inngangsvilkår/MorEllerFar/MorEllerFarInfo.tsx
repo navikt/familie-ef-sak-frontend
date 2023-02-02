@@ -1,20 +1,14 @@
 import { IBarnMedSamvær } from '../Aleneomsorg/typer';
 import React, { FC } from 'react';
-import LiteBarn from '../../../../Felles/Ikoner/LiteBarn';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
 import { KopierbartNullableFødselsnummer } from '../../../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
-import EtikettDød from '../../../../Felles/Etiketter/EtikettDød';
 import { IDokumentasjonGrunnlag } from '../vilkår';
 import DokumentasjonSendtInn from '../DokumentasjonSendtInn';
-import { Label } from '@navikt/ds-react';
 import { utledNavnOgAlderPåGrunnlag } from '../utils';
-import {
-    FlexColumnContainer,
-    InformasjonContainer,
-    UnderoverskriftWrapper,
-} from '../../Vilkårpanel/StyledVilkårInnhold';
+import { InformasjonContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
 import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
 import { TabellIkon } from '../../Vilkårpanel/TabellVisning';
+import { BarneInfoWrapper } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 
 interface Props {
     barnMedSamvær: IBarnMedSamvær[];
@@ -29,16 +23,14 @@ const MorEllerFarInfo: FC<Props> = ({ barnMedSamvær, skalViseSøknadsdata, doku
                 const { søknadsgrunnlag, registergrunnlag } = barn;
 
                 return (
-                    <FlexColumnContainer key={barn.barnId}>
-                        <UnderoverskriftWrapper>
-                            <LiteBarn />
-                            <Label size={'small'} as={'div'}>
-                                {utledNavnOgAlderPåGrunnlag(registergrunnlag, søknadsgrunnlag)}
-                                {registergrunnlag.dødsdato && (
-                                    <EtikettDød dødsdato={registergrunnlag.dødsdato} />
-                                )}
-                            </Label>
-                        </UnderoverskriftWrapper>
+                    <BarneInfoWrapper
+                        key={barn.barnId}
+                        navnOgAlderPåBarn={utledNavnOgAlderPåGrunnlag(
+                            registergrunnlag,
+                            søknadsgrunnlag
+                        )}
+                        dødsdato={registergrunnlag.dødsdato}
+                    >
                         {registergrunnlag.fødselsnummer ? (
                             <Informasjonsrad
                                 label="Fødsels- eller D-nummer"
@@ -59,7 +51,7 @@ const MorEllerFarInfo: FC<Props> = ({ barnMedSamvær, skalViseSøknadsdata, doku
                                 ikon={TabellIkon.SØKNAD}
                             />
                         )}
-                    </FlexColumnContainer>
+                    </BarneInfoWrapper>
                 );
             })}
             {skalViseSøknadsdata && (
