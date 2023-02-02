@@ -13,7 +13,7 @@ import SummertePerioder from '../Migrering/SummertePerioder';
 import InfotrygdPerioder from '../Migrering/InfotrygdPerioder';
 import MigrerBarnetilsyn from '../Migrering/MigrerBarnetilsyn';
 import { AlertInfo } from '../../Felles/Visningskomponenter/Alerts';
-import { Checkbox } from '@navikt/ds-react';
+import { BodyShort, Checkbox } from '@navikt/ds-react';
 import Historiskpensjon from './Historiskpensjon/Historiskpensjon';
 
 const FlexBox = styled.div`
@@ -21,6 +21,7 @@ const FlexBox = styled.div`
     flex-direction: row;
     flex-wrap: wrap;
     gap: 1rem;
+    align-items: flex-start;
 `;
 const StyledAlertStripe = styled(AlertInfo)`
     width: 40rem;
@@ -59,8 +60,9 @@ const InfotrygdEllerSummertePerioder: React.FC<{
         <>
             <FlexBox>
                 <StyledAlertStripe>
-                    Denne siden viser vedtakshistorikk fra EV VP. (Saker før desember 2008 - PE PP
-                    må sjekkes manuelt i Infotrygd)
+                    <BodyShort>
+                        Denne siden viser vedtaksperioder fra og med desember 2008
+                    </BodyShort>
                 </StyledAlertStripe>
                 <Historiskpensjon fagsakPersonId={fagsakPersonId} />
             </FlexBox>

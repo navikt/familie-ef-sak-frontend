@@ -17,6 +17,7 @@ interface IEnvironment {
     aInntekt: string;
     gosys: string;
     modia: string;
+    historiskPensjon: string;
     redisUrl?: string;
     roller: Roller;
 }
@@ -49,6 +50,7 @@ const Environment = (): IEnvironment => {
             aInntekt: 'https://arbeid-og-inntekt.dev.adeo.no',
             gosys: 'https://gosys-q1.dev.intern.nav.no/gosys',
             modia: 'https://app-q1.adeo.no/modiapersonoversikt',
+            historiskPensjon: 'https://historisk-pensjon.dev.intern.nav.no',
             endringsloggProxyUrl: 'https://familie-endringslogg.dev.intern.nav.no',
             roller: rollerDev,
         };
@@ -61,6 +63,7 @@ const Environment = (): IEnvironment => {
             aInntekt: 'https://arbeid-og-inntekt.dev.adeo.no',
             gosys: 'https://gosys-q1.dev.intern.nav.no/gosys',
             modia: 'https://app-q1.adeo.no/modiapersonoversikt',
+            historiskPensjon: 'https://historisk-pensjon.dev.intern.nav.no',
             endringsloggProxyUrl: 'https://familie-endringslogg.dev.intern.nav.no',
             roller: rollerDev,
             //Har ikke satt opp redis
@@ -74,6 +77,7 @@ const Environment = (): IEnvironment => {
             aInntekt: 'https://arbeid-og-inntekt.dev.adeo.no',
             gosys: 'https://gosys-q1.dev.intern.nav.no/gosys',
             modia: 'https://app-q1.adeo.no/modiapersonoversikt',
+            historiskPensjon: 'https://historisk-pensjon.dev.intern.nav.no',
             redisUrl: 'familie-ef-sak-frontend-redis',
             endringsloggProxyUrl: 'https://familie-endringslogg.dev.intern.nav.no',
             roller: rollerDev,
@@ -88,6 +92,7 @@ const Environment = (): IEnvironment => {
         aInntekt: 'https://arbeid-og-inntekt.nais.adeo.no',
         gosys: 'https://gosys.intern.nav.no/gosys',
         modia: 'https://app.adeo.no/modiapersonoversikt',
+        historiskPensjon: 'https://historisk-pensjon.intern.nav.no',
         redisUrl: 'familie-ef-sak-frontend-redis',
         endringsloggProxyUrl: 'https://familie-endringslogg.intern.nav.no',
         roller: rollerProd,
@@ -121,4 +126,5 @@ export const namespace = env.namespace;
 export const urlAInntekt = env.aInntekt;
 export const urlGosys = env.gosys;
 export const urlModia = env.modia;
+export const urlHistoriskPensjon = env.historiskPensjon;
 export const roller = env.roller;
