@@ -7,7 +7,7 @@ import { IMedlemskap } from './typer';
 import FolkeregisterPersonstatus from './FolkeregisterPersonstatus';
 import InnflyttingUtflytting from './InnflyttingUtflytting';
 import UnntakIMedl from './UnntakIMedl';
-import { InformasjonContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
+import { InformasjonContainer, TagMedTilpassetBredde } from '../../Vilkårpanel/StyledVilkårInnhold';
 import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
 import { TabellIkon } from '../../Tabell/TabellVisning';
 import { mapTrueFalse } from '../../../../App/utils/formatter';
@@ -38,8 +38,12 @@ const MedlemskapInfo: FC<Props> = ({ medlemskap, skalViseSøknadsdata }) => {
                 <Informasjonsrad
                     ikon={TabellIkon.SØKNAD}
                     label="Medlemskapstatus i MEDL"
-                    verdi="Innslag funnet"
-                    verdiSomTag={true}
+                    verdi={
+                        <TagMedTilpassetBredde variant={'warning'} size="small">
+                            Innslag funnet
+                        </TagMedTilpassetBredde>
+                    }
+                    verdiSomString={false}
                 />
             )}
 
