@@ -1,8 +1,22 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { ITidligereVedtaksperioder } from './typer';
 import TabellVisning, { TabellIkon } from '../Tabell/TabellVisning';
 import { Stønadstype, stønadstypeTilTekst } from '../../../App/typer/behandlingstema';
 import { formatterBooleanEllerUkjent } from '../../../App/utils/formatter';
+import { Registergrunnlag } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
+import { BodyShortSmall, SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
+import styled from 'styled-components';
+import { Button, Link } from '@navikt/ds-react';
+import { ExternalLink } from '@navikt/ds-icons';
+import { useHentHistoriskPensjon } from '../../../App/hooks/useHentHistoriskPensjon';
+import { RessursStatus } from '../../../App/typer/ressurs';
+import { useBehandling } from '../../../App/context/BehandlingContext';
+
+const FlexDiv = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+`;
 
 const TabellTidligereVedtaksperioder: React.FC<ITidligereVedtaksperioder> = ({
     infotrygd,
@@ -18,7 +32,6 @@ const TabellTidligereVedtaksperioder: React.FC<ITidligereVedtaksperioder> = ({
         }>
             ikon={TabellIkon.REGISTER}
             tittel="Har bruker tidligere vedtaksperioder i EF Sak eller Infotrygd"
-            undertittel="(inkluderer kun EF VP, ikke PE PP)"
             verdier={[
                 {
                     stønad: Stønadstype.OVERGANGSSTØNAD,
@@ -49,25 +62,65 @@ const TabellTidligereVedtaksperioder: React.FC<ITidligereVedtaksperioder> = ({
                 },
                 {
                     overskrift: 'Historikk i Infotrygd',
-                    tekstVerdi: (d) => formatterBooleanEllerUkjent(d.verdi.infotrygd),
+                    tekstVerdi: (d) => formatterBooleanEllerUkjent(!!d.verdi.infotrygd),
                 },
                 {
                     overskrift: 'Historikk i EF Sak',
-                    tekstVerdi: (d) => formatterBooleanEllerUkjent(d.verdi.sak),
+                    tekstVerdi: (d) => formatterBooleanEllerUkjent(!!d.verdi.sak),
                 },
             ]}
         />
     );
 };
 
+const HistoriskpensjonLenke: React.FC = () => {
+    const { hentForFagsakId, historiskPensjon } = useHentHistoriskPensjon();
+
+    const { behandling } = useBehandling();
+
+    useEffect(() => {
+        if (behandling.status === RessursStatus.SUKSESS) {
+            hentForFagsakId(behandling.data.fagsakId);
+        }
+    }, [behandling, hentForFagsakId]);
+
+    return historiskPensjon.status === RessursStatus.SUKSESS ? (
+        <Link href={historiskPensjon.data.webAppUrl} target={'_blank'}>
+            <Button
+                type={'button'}
+                as={'p'}
+                size={'small'}
+                variant={'tertiary'}
+                icon={<ExternalLink />}
+                iconPosition={'right'}
+            >
+                Se vedtaksperioder
+            </Button>
+        </Link>
+    ) : null;
+};
+
 const TidligereVedtaksperioderInfo: FC<{ tidligereVedtaksperioder: ITidligereVedtaksperioder }> = ({
     tidligereVedtaksperioder,
 }) => {
     return (
-        <TabellTidligereVedtaksperioder
-            infotrygd={tidligereVedtaksperioder.infotrygd}
-            sak={tidligereVedtaksperioder.sak}
-        />
+        <>
+            <TabellTidligereVedtaksperioder
+                infotrygd={tidligereVedtaksperioder.infotrygd}
+                sak={tidligereVedtaksperioder.sak}
+            />
+
+            <FlexDiv>
+                <Registergrunnlag />
+                <SmallTextLabel>
+                    Har bruker fått stønad før desember 2008 - <span>Infotrygd (PE PP)</span>
+                </SmallTextLabel>
+                <BodyShortSmall>
+                    {formatterBooleanEllerUkjent(tidligereVedtaksperioder.infotrygdPePp)}
+                </BodyShortSmall>
+                {tidligereVedtaksperioder.infotrygdPePp && <HistoriskpensjonLenke />}
+            </FlexDiv>
+        </>
     );
 };
 
