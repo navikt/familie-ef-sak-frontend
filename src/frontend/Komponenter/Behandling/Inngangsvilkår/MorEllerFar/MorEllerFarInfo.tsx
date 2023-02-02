@@ -8,21 +8,19 @@ import { IDokumentasjonGrunnlag } from '../vilkår';
 import DokumentasjonSendtInn from '../DokumentasjonSendtInn';
 import { Label } from '@navikt/ds-react';
 import { utledNavnOgAlderPåGrunnlag } from '../utils';
-import { FlexColumnContainer, InformasjonContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
+import {
+    FlexColumnContainer,
+    InformasjonContainer,
+    UnderoverskriftWrapper,
+} from '../../Vilkårpanel/StyledVilkårInnhold';
 import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
 import { TabellIkon } from '../../Vilkårpanel/TabellVisning';
-import styled from 'styled-components';
 
 interface Props {
     barnMedSamvær: IBarnMedSamvær[];
     skalViseSøknadsdata: boolean;
     dokumentasjon?: IDokumentasjonGrunnlag;
 }
-
-const UnderoverskriftWrapper = styled.div`
-    display: flex;
-    gap: 1rem;
-`;
 
 const MorEllerFarInfo: FC<Props> = ({ barnMedSamvær, skalViseSøknadsdata, dokumentasjon }) => {
     return (

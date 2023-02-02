@@ -18,3 +18,8 @@ export const FlexColumnContainer = styled.div<{
 export const TagMedTilpassetBredde = styled(Tag)`
     width: fit-content;
 `;
+
+export const UnderoverskriftWrapper = styled.div`
+    display: flex;
+    gap: 1rem;
+`;
