@@ -12,14 +12,11 @@ export enum TabellIkon {
     KALKULATOR = 'KALKULATOR',
 }
 
-export interface Kolonndata<T> {
+export interface Kolonnedata<T> {
     ikon?: TabellIkon;
     tittel?: string;
-    undertittel?: string;
-    tittelType?: 'element' | 'undertittel';
     verdier: T[];
     kolonner: Kolonner<T>[];
-    underTabellMargin?: number;
     ikonVisning?: boolean;
 }
 
@@ -45,7 +42,7 @@ const FlexDiv = styled.div`
     gap: 1rem;
 `;
 
-function TabellVisning<T>(props: Kolonndata<T>): React.ReactElement<Kolonndata<T>> {
+function TabellVisning<T>(props: Kolonnedata<T>): React.ReactElement<Kolonnedata<T>> {
     const { ikon, tittel, verdier, kolonner, ikonVisning = true } = props;
     return (
         <GridTabell kolonner={kolonner.length + 1} ikonVisning={ikonVisning}>
