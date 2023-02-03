@@ -17,7 +17,7 @@ const Delvilkår: FC<Props> = ({ regel, vurdering, settVurdering }) => {
     const hjelpetekst = hjelpeTekstConfig[regel.regelId];
     return (
         <DelvilkårContainer>
-            <RadioGroup legend={delvilkårTypeTilTekst[regel.regelId]} value={vurdering.svar}>
+            <RadioGroup legend={delvilkårTypeTilTekst[regel.regelId]} value={vurdering.svar || ''}>
                 {Object.keys(regel.svarMapping).map((svarId) => (
                     <Radio
                         key={`${regel.regelId}_${svarId}`}
