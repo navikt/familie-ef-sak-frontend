@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import { RegistergrunnlagNyttBarn } from './typer';
-import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
 import { AnnenForelderNavnOgFnr } from './AnnenForelderNavnOgFnr';
 import { harVerdi } from '../../../../App/utils/utils';
 import { utledNavnOgAlder } from '../utils';
@@ -48,14 +47,6 @@ const RegistergrunnlagNyttBarnInnhold: FC<Props> = ({ barn }) => {
                             ? ikkeOppgittAnnenForelderBegrunnelse
                             : `Ikke oppgitt: ${ikkeOppgittAnnenForelderBegrunnelse}`
                     }
-                />
-            )}
-
-            {barn.annenForelderRegister?.dødsfall && (
-                <Informasjonsrad
-                    ikon={TabellIkon.REGISTER}
-                    label="Annen forelder dødsdato"
-                    verdi={formaterNullableIsoDato('2021-01-01')}
                 />
             )}
         </BarneInfoWrapper>
