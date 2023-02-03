@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { Label } from '@navikt/ds-react';
+import { Heading, Label } from '@navikt/ds-react';
 import { FC, ReactNode } from 'react';
 import { FlexColumnContainer, UnderoverskriftWrapper } from './StyledVilkårInnhold';
 import EtikettDød from '../../../Felles/Etiketter/EtikettDød';
 import LiteBarn from '../../../Felles/Ikoner/LiteBarn';
+import styled from 'styled-components';
 
 interface UnderseksjonWrapperProps {
     underoverskrift: string;
@@ -30,19 +31,25 @@ interface BarneInfoWrapperProps {
     children: ReactNode;
 }
 
+const HeadingMedUnderlinje = styled(Heading)`
+    text-decoration: underline;
+`;
+
 export const BarneInfoWrapper: FC<BarneInfoWrapperProps> = ({
     navnOgAlderPåBarn,
     dødsdato,
     children,
 }) => {
     return (
-        <FlexColumnContainer>
+        <FlexColumnContainer gap={1.5}>
             <UnderoverskriftWrapper>
                 <LiteBarn />
-                <Label size={'small'} as={'div'}>
-                    {navnOgAlderPåBarn}
-                    {dødsdato && <EtikettDød dødsdato={dødsdato} />}
-                </Label>
+                <HeadingMedUnderlinje size={'small'}>
+                    <>
+                        {navnOgAlderPåBarn}
+                        {dødsdato && <EtikettDød dødsdato={dødsdato} />}
+                    </>
+                </HeadingMedUnderlinje>
             </UnderoverskriftWrapper>
             {children}
         </FlexColumnContainer>
