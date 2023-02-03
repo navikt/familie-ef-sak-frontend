@@ -6,7 +6,7 @@ import {
     ITidligereVedtaksperioder,
 } from '../../TidligereVedtaksperioder/typer';
 import { Tooltip } from '@navikt/ds-react';
-import { mapTrueFalse } from '../../../../App/utils/formatter';
+import { formatterBooleanEllerUkjent, mapTrueFalse } from '../../../../App/utils/formatter';
 import TabellVisning, { TabellIkon } from '../../Tabell/TabellVisning';
 import { nonNull } from '../../../../App/utils/utils';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
@@ -51,7 +51,7 @@ const mapAndreForeldrerMedTidligereVedaksperioder = (
 };
 
 const jaNeiMedToolTip = (tidligereVedtak: ITidligereInnvilgetVedtak | undefined) => {
-    if (!tidligereVedtak) return null;
+    if (!tidligereVedtak) return 'Ukjent';
     const { harTidligereOvergangsstønad, harTidligereBarnetilsyn, harTidligereSkolepenger } =
         tidligereVedtak;
     const harTidligereVedtak: boolean =
@@ -118,9 +118,16 @@ const TidligereVedtaksperioderSøkerOgAndreForeldre: FC<{
                                         jaNeiMedToolTip(d.tidligereVedtaksperioder.sak),
                                 },
                                 {
-                                    overskrift: 'Infotrygd (kun EF VP)',
+                                    overskrift: 'Infotrygd (EF VP)',
                                     tekstVerdi: (d) =>
                                         jaNeiMedToolTip(d.tidligereVedtaksperioder.infotrygd),
+                                },
+                                {
+                                    overskrift: 'Infotrygd (EF PP)',
+                                    tekstVerdi: (d) =>
+                                        formatterBooleanEllerUkjent(
+                                            d.tidligereVedtaksperioder.infotrygdPePp
+                                        ),
                                 },
                             ]}
                         />
