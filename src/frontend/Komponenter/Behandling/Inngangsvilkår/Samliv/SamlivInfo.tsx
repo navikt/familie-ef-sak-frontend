@@ -1,6 +1,4 @@
 import React, { FC } from 'react';
-import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
-import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { IVilkårGrunnlag } from '../vilkår';
 import { SivilstandType } from '../../../../App/typer/personopplysninger';
 import ÅrsakEnslig from './ÅrsakEnslig';
@@ -10,8 +8,10 @@ import { ÅrsakEnsligTilTekst } from '../Sivilstand/typer';
 import { Bostedsadresse } from './Bostedsadresse';
 import { BehandlingStatus } from '../../../../App/typer/behandlingstatus';
 import DokumentasjonSendtInn from '../DokumentasjonSendtInn';
-import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 import { Addresseopplysninger } from './Addresseopplysninger';
+import { InformasjonContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
+import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
+import { TabellIkon } from '../../Vilkårpanel/TabellVisning';
 
 interface Props {
     grunnlag: IVilkårGrunnlag;
@@ -30,48 +30,46 @@ const SamlivInfo: FC<Props> = ({
         grunnlag;
 
     return (
-        <>
-            <GridTabell>
-                {skalViseSøknadsdata &&
-                    sivilstand.søknadsgrunnlag &&
-                    bosituasjon &&
-                    sivilstandsplaner && (
-                        <>
-                            {sivilstand.registergrunnlag.type !== SivilstandType.GIFT && (
-                                <>
-                                    <Søknadsgrunnlag />
-                                    <BodyShortSmall>Alene med barn fordi</BodyShortSmall>
-                                    <BodyShortSmall>
-                                        {(sivilstand.søknadsgrunnlag.årsakEnslig &&
+        <InformasjonContainer>
+            {!skalViseSøknadsdata &&
+                sivilstand.søknadsgrunnlag &&
+                bosituasjon &&
+                sivilstandsplaner && (
+                    <>
+                        {sivilstand.registergrunnlag.type !== SivilstandType.GIFT && (
+                            <>
+                                <Informasjonsrad
+                                    ikon={TabellIkon.SØKNAD}
+                                    label="Alene med barn fordi"
+                                    verdi={
+                                        (sivilstand.søknadsgrunnlag.årsakEnslig &&
                                             ÅrsakEnsligTilTekst[
                                                 sivilstand.søknadsgrunnlag?.årsakEnslig
                                             ]) ||
-                                            ''}
-                                    </BodyShortSmall>
-                                    <ÅrsakEnslig søknadsgrunnlag={sivilstand.søknadsgrunnlag} />
-                                </>
-                            )}
+                                        ''
+                                    }
+                                />
+                                <ÅrsakEnslig søknadsgrunnlag={sivilstand.søknadsgrunnlag} />
+                            </>
+                        )}
 
-                            <Søknadsgrunnlag />
-                            {bosituasjon && (
-                                <>
-                                    <BodyShortSmall>Bosituasjon</BodyShortSmall>
-                                    <BodyShortSmall>
-                                        {SøkerDelerBoligTilTekst[bosituasjon.delerDuBolig] || ''}
-                                    </BodyShortSmall>
-                                </>
-                            )}
-                            <Bosituasjon
-                                bosituasjon={bosituasjon}
-                                sivilstandsplaner={sivilstandsplaner}
+                        {bosituasjon && (
+                            <Informasjonsrad
+                                ikon={TabellIkon.SØKNAD}
+                                label="Bosituasjon"
+                                verdi={SøkerDelerBoligTilTekst[bosituasjon.delerDuBolig] || ''}
                             />
-                        </>
-                    )}
-                {behandlingsstatus !== BehandlingStatus.FERDIGSTILT && (
-                    <Bostedsadresse behandlingId={behandlingId} />
+                        )}
+                        <Bosituasjon
+                            bosituasjon={bosituasjon}
+                            sivilstandsplaner={sivilstandsplaner}
+                        />
+                    </>
                 )}
-                {skalViseSøknadsdata && <Addresseopplysninger data={adresseopplysninger} />}
-            </GridTabell>
+            {behandlingsstatus !== BehandlingStatus.FERDIGSTILT && (
+                <Bostedsadresse behandlingId={behandlingId} />
+            )}
+            {skalViseSøknadsdata && <Addresseopplysninger data={adresseopplysninger} />}
             {skalViseSøknadsdata && (
                 <>
                     <DokumentasjonSendtInn
@@ -94,7 +92,7 @@ const SamlivInfo: FC<Props> = ({
                     />
                 </>
             )}
-        </>
+        </InformasjonContainer>
     );
 };
 
