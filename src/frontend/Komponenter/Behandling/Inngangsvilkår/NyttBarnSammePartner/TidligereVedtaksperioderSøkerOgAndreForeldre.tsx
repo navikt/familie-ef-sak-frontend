@@ -120,7 +120,7 @@ const TidligereVedtaksperioderSøkerOgAndreForeldre: FC<{
                                     jaNeiMedToolTip(d.tidligereVedtaksperioder.infotrygd),
                             },
                             {
-                                overskrift: 'Infotrygd (EF PP)',
+                                overskrift: 'Infotrygd (PE PP)',
                                 tekstVerdi: (d) =>
                                     formatterBooleanEllerUkjent(
                                         d.tidligereVedtaksperioder.infotrygdPePp
