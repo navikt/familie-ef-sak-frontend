@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import { RegistergrunnlagNyttBarn } from './typer';
-import { FlexDiv } from '../../../Oppgavebenk/OppgaveFiltrering';
 import {
     ITidligereInnvilgetVedtak,
     ITidligereVedtaksperioder,
@@ -100,38 +99,35 @@ const TidligereVedtaksperioderSøkerOgAndreForeldre: FC<{
                     return null;
                 }
                 return (
-                    <FlexDiv>
-                        <TabellVisning
-                            ikon={TabellIkon.REGISTER}
-                            tittel={
-                                'Har brukeren eller annen forelder mottatt stønader etter kap. 15 før?'
-                            }
-                            verdier={verdier}
-                            kolonner={[
-                                {
-                                    overskrift: 'Navn',
-                                    tekstVerdi: (d) => d.navn,
-                                },
-                                {
-                                    overskrift: 'EF Sak',
-                                    tekstVerdi: (d) =>
-                                        jaNeiMedToolTip(d.tidligereVedtaksperioder.sak),
-                                },
-                                {
-                                    overskrift: 'Infotrygd (EF VP)',
-                                    tekstVerdi: (d) =>
-                                        jaNeiMedToolTip(d.tidligereVedtaksperioder.infotrygd),
-                                },
-                                {
-                                    overskrift: 'Infotrygd (EF PP)',
-                                    tekstVerdi: (d) =>
-                                        formatterBooleanEllerUkjent(
-                                            d.tidligereVedtaksperioder.infotrygdPePp
-                                        ),
-                                },
-                            ]}
-                        />
-                    </FlexDiv>
+                    <TabellVisning
+                        ikon={TabellIkon.REGISTER}
+                        tittel={
+                            'Har brukeren eller annen forelder mottatt stønader etter kap. 15 før?'
+                        }
+                        verdier={verdier}
+                        kolonner={[
+                            {
+                                overskrift: 'Navn',
+                                tekstVerdi: (d) => d.navn,
+                            },
+                            {
+                                overskrift: 'EF Sak',
+                                tekstVerdi: (d) => jaNeiMedToolTip(d.tidligereVedtaksperioder.sak),
+                            },
+                            {
+                                overskrift: 'Infotrygd (EF VP)',
+                                tekstVerdi: (d) =>
+                                    jaNeiMedToolTip(d.tidligereVedtaksperioder.infotrygd),
+                            },
+                            {
+                                overskrift: 'Infotrygd (EF PP)',
+                                tekstVerdi: (d) =>
+                                    formatterBooleanEllerUkjent(
+                                        d.tidligereVedtaksperioder.infotrygdPePp
+                                    ),
+                            },
+                        ]}
+                    />
                 );
             }}
         </DataViewer>
