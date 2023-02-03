@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
-import { Registergrunnlag, Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
-import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
+import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
+import { TabellIkon } from '../../Vilkårpanel/TabellVisning';
 
 interface Props {
     harSammeAdresseSøknad?: boolean;
@@ -12,25 +12,23 @@ const Bosted: FC<Props> = ({ harSammeAdresseSøknad, harSammeAdresseRegister, er
     return (
         <>
             {harSammeAdresseRegister !== undefined && harSammeAdresseRegister !== null ? (
-                <>
-                    <Registergrunnlag />
-                    <BodyShortSmall>Bosted</BodyShortSmall>
-                    <BodyShortSmall>
-                        {harSammeAdresseRegister
+                <Informasjonsrad
+                    ikon={TabellIkon.REGISTER}
+                    label="Bosted"
+                    verdi={
+                        harSammeAdresseRegister
                             ? 'Registrert på søkers adresse'
-                            : 'Ikke registrert på søkers adresse'}
-                    </BodyShortSmall>
-                </>
+                            : 'Ikke registrert på søkers adresse'
+                    }
+                />
             ) : (
                 harSammeAdresseSøknad !== undefined &&
                 harSammeAdresseSøknad !== null && (
-                    <>
-                        <Søknadsgrunnlag />
-                        <BodyShortSmall>Bosted</BodyShortSmall>
-                        <BodyShortSmall>
-                            {utledVisningAvBostedVerdier(erBarnetFødt, harSammeAdresseSøknad)}
-                        </BodyShortSmall>
-                    </>
+                    <Informasjonsrad
+                        ikon={TabellIkon.SØKNAD}
+                        label="Bosted"
+                        verdi={utledVisningAvBostedVerdier(erBarnetFødt, harSammeAdresseSøknad)}
+                    />
                 )
             )}
         </>

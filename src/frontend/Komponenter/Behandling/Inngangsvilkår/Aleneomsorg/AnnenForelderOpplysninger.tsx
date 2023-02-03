@@ -1,6 +1,4 @@
 import React, { FC } from 'react';
-import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
-import { Registergrunnlag, Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import {
     avstandTilSøkerTekst,
     EAvstandTilSøker,
@@ -13,7 +11,9 @@ import { harVerdi } from '../../../../App/utils/utils';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
 import { HelpText } from '@navikt/ds-react';
 import styled from 'styled-components';
-import { BodyLongSmall, BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
+import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
+import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
+import { TabellIkon } from '../../Vilkårpanel/TabellVisning';
 
 const StyledHelpText = styled(HelpText)`
     & + .navds-popover {
@@ -48,80 +48,76 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
             harVerdi(søknadsgrunnlag.ikkeOppgittAnnenForelderBegrunnelse));
 
     return (
-        <GridTabell>
+        <>
             {visForelderSøknadInfo && (
-                <>
-                    <Søknadsgrunnlag />
-                    <BodyShortSmall>Annen forelder</BodyShortSmall>
-                    <BodyLongSmall>
-                        {forelderSøknad &&
+                <Informasjonsrad
+                    ikon={TabellIkon.SØKNAD}
+                    label="Annen forelder"
+                    verdiSomString={false}
+                    verdi={
+                        forelderSøknad &&
                         harNavnFødselsdatoEllerFnr(forelderSøknad) &&
                         !søknadsgrunnlag.ikkeOppgittAnnenForelderBegrunnelse ? (
-                            <>
-                                <AnnenForelderNavnOgFnr forelder={forelderSøknad} />
-                            </>
+                            <AnnenForelderNavnOgFnr forelder={forelderSøknad} />
                         ) : (
-                            <>
+                            <BodyShortSmall>
                                 {søknadsgrunnlag.ikkeOppgittAnnenForelderBegrunnelse
                                     ? `Ikke oppgitt: ${søknadsgrunnlag.ikkeOppgittAnnenForelderBegrunnelse}`
                                     : '-'}
-                            </>
-                        )}
-                    </BodyLongSmall>
-                </>
+                            </BodyShortSmall>
+                        )
+                    }
+                />
             )}
 
             {!visForelderSøknadInfo &&
                 forelderRegister &&
                 harNavnFødselsdatoEllerFnr(forelderRegister) && (
-                    <>
-                        <Registergrunnlag />
-                        <BodyShortSmall>Annen forelder</BodyShortSmall>
-                        <BodyLongSmall>
-                            {forelderRegister ? (
+                    <Informasjonsrad
+                        ikon={TabellIkon.REGISTER}
+                        label="Annen forelder"
+                        verdiSomString={false}
+                        verdi={
+                            forelderRegister ? (
                                 <AnnenForelderNavnOgFnr forelder={forelderRegister} />
                             ) : (
-                                '-'
-                            )}
-                        </BodyLongSmall>
-                    </>
+                                <BodyShortSmall>-</BodyShortSmall>
+                            )
+                        }
+                    />
                 )}
 
             {forelderRegister?.dødsfall && (
-                <>
-                    <Registergrunnlag />
-                    <BodyShortSmall>Annen forelder dødsdato</BodyShortSmall>
-                    <BodyShortSmall>
-                        {formaterNullableIsoDato(forelderRegister.dødsfall)}
-                    </BodyShortSmall>
-                </>
+                <Informasjonsrad
+                    ikon={TabellIkon.REGISTER}
+                    label="Annen forelder dødsdato"
+                    verdi={formaterNullableIsoDato(forelderRegister.dødsfall)}
+                />
             )}
             {!forelderRegister?.dødsfall && (
                 <>
                     {forelderSøknad && harNavnFødselsdatoEllerFnr(forelderSøknad) && (
-                        <>
-                            <Søknadsgrunnlag />
-                            <BodyShortSmall>Annen forelder bor i</BodyShortSmall>
-                            <BodyShortSmall>
-                                {forelderSøknad?.bosattINorge
-                                    ? 'Norge'
-                                    : forelderSøknad?.land || '-'}
-                            </BodyShortSmall>
-                        </>
+                        <Informasjonsrad
+                            ikon={TabellIkon.SØKNAD}
+                            label="Annen forelder bor i"
+                            verdi={
+                                forelderSøknad?.bosattINorge ? 'Norge' : forelderSøknad?.land || '-'
+                            }
+                        />
                     )}
 
                     {!visForelderSøknadInfo &&
                         forelderRegister &&
                         harNavnFødselsdatoEllerFnr(forelderRegister) && (
-                            <>
-                                <Registergrunnlag />
-                                <BodyShortSmall>Annen forelder bor i</BodyShortSmall>
-                                <BodyShortSmall>
-                                    {forelderRegister?.bosattINorge
+                            <Informasjonsrad
+                                ikon={TabellIkon.SØKNAD}
+                                label="Annen forelder bor i"
+                                verdi={
+                                    forelderRegister?.bosattINorge
                                         ? 'Norge'
-                                        : forelderRegister.land || '-'}
-                                </BodyShortSmall>
-                            </>
+                                        : forelderRegister.land || '-'
+                                }
+                            />
                         )}
                 </>
             )}
@@ -129,43 +125,49 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
             {forelderRegister &&
                 harNavnFødselsdatoEllerFnr(forelderRegister) &&
                 !forelderRegister?.dødsfall && (
-                    <>
-                        <Registergrunnlag />
-                        <BodyLongSmall>
-                            Annen forelders avstand til bruker (automatisk beregnet)
-                        </BodyLongSmall>
-                        <BodyShortSmall>
-                            {forelderRegister &&
-                                utledAvstandTilSøkerTekst(forelderRegister?.avstandTilSøker)}
-                        </BodyShortSmall>
-                        <StyledHelpText placement={'right'}>
-                            Automatisk beregning av avstand mellom bostedsadressene til bruker og
-                            annen forelder. Dette betyr de ulike resultatene:
-                            <ul>
-                                <li>
-                                    <b>xx km</b> - Det er automatisk beregnet nøyaktig avstand
-                                    mellom boligene i luftlinje.
-                                </li>
-                                <li>
-                                    <b>Kan ikke beregnes automatisk</b> - Vilkåret må vurderes
-                                    manuelt fordi avstanden mellom boligene er mindre enn 1 km i
-                                    luftlinje, eller en av forelder er registrert med bostedsadresse
-                                    utenfor Norge.
-                                </li>
-                                <li>
-                                    <b>Mer enn 1 km</b> - Det er automatisk beregnet at det er mer
-                                    enn 1 km mellom boligene i luftlinje. Det kan ikke vises helt
-                                    nøyaktig avstand da avstandsberegningen er upresis i retning øst
-                                    og vest i Nord-Norge, fordi Nord-Norge ligger i et annet
-                                    koordinatsystem. For å unngå feilmarginen det gir, vil det kun
-                                    avstandsberegnes i retning nord og sør for brukere som bor i
-                                    Nord-Norge, da dette ikke avhenger av koordinatsystem.
-                                </li>
-                            </ul>
-                        </StyledHelpText>
-                    </>
+                    <Informasjonsrad
+                        ikon={TabellIkon.REGISTER}
+                        label="Annen forelders avstand til bruker (automatisk beregnet)"
+                        verdiSomString={false}
+                        verdi={
+                            <>
+                                <BodyShortSmall>
+                                    {forelderRegister &&
+                                        utledAvstandTilSøkerTekst(
+                                            forelderRegister?.avstandTilSøker
+                                        )}
+                                </BodyShortSmall>
+                                <StyledHelpText placement={'right'}>
+                                    Automatisk beregning av avstand mellom bostedsadressene til
+                                    bruker og annen forelder. Dette betyr de ulike resultatene:
+                                    <ul>
+                                        <li>
+                                            <b>xx km</b> - Det er automatisk beregnet nøyaktig
+                                            avstand mellom boligene i luftlinje.
+                                        </li>
+                                        <li>
+                                            <b>Kan ikke beregnes automatisk</b> - Vilkåret må
+                                            vurderes manuelt fordi avstanden mellom boligene er
+                                            mindre enn 1 km i luftlinje, eller en av forelder er
+                                            registrert med bostedsadresse utenfor Norge.
+                                        </li>
+                                        <li>
+                                            <b>Mer enn 1 km</b> - Det er automatisk beregnet at det
+                                            er mer enn 1 km mellom boligene i luftlinje. Det kan
+                                            ikke vises helt nøyaktig avstand da avstandsberegningen
+                                            er upresis i retning øst og vest i Nord-Norge, fordi
+                                            Nord-Norge ligger i et annet koordinatsystem. For å
+                                            unngå feilmarginen det gir, vil det kun avstandsberegnes
+                                            i retning nord og sør for brukere som bor i Nord-Norge,
+                                            da dette ikke avhenger av koordinatsystem.
+                                        </li>
+                                    </ul>
+                                </StyledHelpText>
+                            </>
+                        }
+                    />
                 )}
-        </GridTabell>
+        </>
     );
 };
 

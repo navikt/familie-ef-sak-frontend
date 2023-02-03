@@ -1,6 +1,4 @@
 import React, { FC } from 'react';
-import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
-import { Registergrunnlag, Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { IBarnMedLøpendeStønad, IBarnMedSamvær, skalBarnetBoHosSøkerTilTekst } from './typer';
 import Bosted from './Bosted';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
@@ -8,13 +6,14 @@ import Samvær from './Samvær';
 import AnnenForelderOpplysninger from './AnnenForelderOpplysninger';
 import { KopierbartNullableFødselsnummer } from '../../../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
 import { harVerdi } from '../../../../App/utils/utils';
-import EtikettDød from '../../../../Felles/Etiketter/EtikettDød';
 import { Ressurs } from '../../../../App/typer/ressurs';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
 import { Tag } from '@navikt/ds-react';
-import { BodyShortSmall, SmallTextLabel } from '../../../../Felles/Visningskomponenter/Tekster';
 import { utledNavnOgAlder } from '../utils';
+import { BarneInfoWrapper } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
+import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
+import { TabellIkon } from '../../Vilkårpanel/TabellVisning';
 
 const AleneomsorgInfo: FC<{
     gjeldendeBarn: IBarnMedSamvær;
@@ -42,113 +41,86 @@ const AleneomsorgInfo: FC<{
     };
 
     return (
-        <>
-            <GridTabell kolonner={3}>
-                {registergrunnlag.navn ? (
-                    <>
-                        <Registergrunnlag />
-                        <SmallTextLabel>Barnets navn</SmallTextLabel>
-                        <SmallTextLabel>
-                            {utledNavnOgAlder(
-                                registergrunnlag.navn,
-                                registergrunnlag.fødselsdato,
-                                registergrunnlag.dødsdato
-                            )}
-                            {registergrunnlag.dødsdato && (
-                                <EtikettDød dødsdato={registergrunnlag.dødsdato} />
-                            )}
-                        </SmallTextLabel>
-                    </>
-                ) : (
-                    <>
-                        <Søknadsgrunnlag />
-                        <SmallTextLabel>Barnets navn</SmallTextLabel>
-                        <SmallTextLabel>
-                            {søknadsgrunnlag.navn && søknadsgrunnlag.navn !== ''
-                                ? 'Ikke utfylt'
-                                : 'Ikke født'}
-                        </SmallTextLabel>
-                    </>
-                )}
-                {registergrunnlag.fødselsnummer ? (
-                    <>
-                        <Registergrunnlag />
-                        <BodyShortSmall>Fødsels eller D-nummer</BodyShortSmall>
+        <BarneInfoWrapper
+            navnOgAlderPåBarn={
+                registergrunnlag.navn
+                    ? utledNavnOgAlder(
+                          registergrunnlag.navn,
+                          registergrunnlag.fødselsdato,
+                          registergrunnlag.dødsdato
+                      )
+                    : søknadsgrunnlag.navn && søknadsgrunnlag.navn !== ''
+                    ? 'Ikke utfylt'
+                    : 'Ikke født'
+            }
+            dødsdato={registergrunnlag.dødsdato}
+        >
+            {registergrunnlag.fødselsnummer ? (
+                <Informasjonsrad
+                    ikon={TabellIkon.SØKNAD}
+                    label="Fødsels eller D-nummer"
+                    verdiSomString={false}
+                    verdi={
                         <KopierbartNullableFødselsnummer
                             fødselsnummer={registergrunnlag.fødselsnummer}
                         />
-                    </>
-                ) : (
-                    <>
-                        <Søknadsgrunnlag />
-                        <BodyShortSmall>Termindato</BodyShortSmall>
-                        <BodyShortSmall>
-                            {formaterNullableIsoDato(søknadsgrunnlag.fødselTermindato)}
-                        </BodyShortSmall>
-                    </>
-                )}
-
-                <Bosted
-                    harSammeAdresseRegister={registergrunnlag.harSammeAdresse}
-                    harSammeAdresseSøknad={søknadsgrunnlag.harSammeAdresse}
-                    erBarnetFødt={!!registergrunnlag.fødselsnummer}
+                    }
                 />
+            ) : (
+                <Informasjonsrad
+                    ikon={TabellIkon.SØKNAD}
+                    label="Termindato"
+                    verdi={formaterNullableIsoDato(søknadsgrunnlag.fødselTermindato)}
+                />
+            )}
+            <Bosted
+                harSammeAdresseRegister={registergrunnlag.harSammeAdresse}
+                harSammeAdresseSøknad={søknadsgrunnlag.harSammeAdresse}
+                erBarnetFødt={!!registergrunnlag.fødselsnummer}
+            />
+            {skalViseSøknadsdata && søknadsgrunnlag.skalBoBorHosSøker && (
+                <Informasjonsrad
+                    ikon={TabellIkon.SØKNAD}
+                    label="Barnet skal ha adresse hos søker"
+                    verdi={skalBarnetBoHosSøkerTilTekst[søknadsgrunnlag.skalBoBorHosSøker]}
+                />
+            )}
 
-                {skalViseSøknadsdata && søknadsgrunnlag.skalBoBorHosSøker && (
-                    <>
-                        <Søknadsgrunnlag />
-                        <BodyShortSmall>Barnet skal ha adresse hos søker</BodyShortSmall>
-                        <BodyShortSmall>
-                            {skalBarnetBoHosSøkerTilTekst[søknadsgrunnlag.skalBoBorHosSøker]}
-                        </BodyShortSmall>
-                    </>
-                )}
-
-                {skalViseSøknadsdata && harVerdi(ikkeOppgittAnnenForelderBegrunnelse) && (
-                    <>
-                        <Søknadsgrunnlag />
-                        <BodyShortSmall>Annen forelder </BodyShortSmall>
-                        <BodyShortSmall>
-                            {ikkeOppgittAnnenForelderBegrunnelse === 'donorbarn'
-                                ? ikkeOppgittAnnenForelderBegrunnelse
-                                : `Ikke oppgitt: ${ikkeOppgittAnnenForelderBegrunnelse}`}
-                        </BodyShortSmall>
-                    </>
-                )}
-                {skalViseSøknadsdata && stønadstype === Stønadstype.BARNETILSYN && (
-                    <>
-                        <Søknadsgrunnlag />
-                        <BodyShortSmall>
-                            Søkes det om stønad til barnetilsyn for barnet
-                        </BodyShortSmall>
-                        <BodyShortSmall>
-                            {barnepass?.skalHaBarnepass ? (
-                                <Tag variant={'success'}>ja</Tag>
-                            ) : (
-                                <Tag variant={'error'}>nei</Tag>
-                            )}
-                        </BodyShortSmall>
-                    </>
-                )}
-                {
-                    <DataViewer response={{ barnMedLøpendeStønad }}>
-                        {({ barnMedLøpendeStønad }) => {
-                            return (
-                                <>
-                                    <Registergrunnlag />
-                                    <BodyShortSmall>
-                                        Har brukeren løpende stønad for barnet? (i EF Sak)
-                                    </BodyShortSmall>
-                                    <BodyShortSmall>
-                                        {utledEtikettForLøpendeStønad(barnMedLøpendeStønad, barnId)}
-                                    </BodyShortSmall>
-                                </>
-                            );
-                        }}
-                    </DataViewer>
-                }
-            </GridTabell>
-
+            {skalViseSøknadsdata && harVerdi(ikkeOppgittAnnenForelderBegrunnelse) && (
+                <Informasjonsrad
+                    ikon={TabellIkon.SØKNAD}
+                    label="Annen forelder"
+                    verdi={
+                        ikkeOppgittAnnenForelderBegrunnelse === 'donorbarn'
+                            ? ikkeOppgittAnnenForelderBegrunnelse
+                            : `Ikke oppgitt: ${ikkeOppgittAnnenForelderBegrunnelse}`
+                    }
+                />
+            )}
+            {skalViseSøknadsdata && stønadstype === Stønadstype.BARNETILSYN && (
+                <Informasjonsrad
+                    ikon={TabellIkon.SØKNAD}
+                    label="Søkes det om stønad til barnetilsyn for barnet"
+                    verdi={
+                        barnepass?.skalHaBarnepass ? (
+                            <Tag variant={'success'}>ja</Tag>
+                        ) : (
+                            <Tag variant={'error'}>nei</Tag>
+                        )
+                    }
+                />
+            )}
+            <DataViewer response={{ barnMedLøpendeStønad }}>
+                {({ barnMedLøpendeStønad }) => {
+                    return (
+                        <Informasjonsrad
+                            ikon={TabellIkon.REGISTER}
+                            label="Har brukeren løpende stønad for barnet? (i EF Sak)"
+                            verdi={utledEtikettForLøpendeStønad(barnMedLøpendeStønad, barnId)}
+                        />
+                    );
+                }}
+            </DataViewer>
             {!harVerdi(ikkeOppgittAnnenForelderBegrunnelse) &&
                 (registergrunnlag.forelder || søknadsgrunnlag.forelder) && (
                     <>
@@ -163,7 +135,7 @@ const AleneomsorgInfo: FC<{
                         )}
                     </>
                 )}
-        </>
+        </BarneInfoWrapper>
     );
 };
 
