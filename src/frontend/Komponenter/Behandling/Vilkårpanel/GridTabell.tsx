@@ -5,7 +5,7 @@ export const GridTabell = styled.div<{
     ikonVisning: boolean;
 }>`
     display: grid;
-    grid-template-columns: ${(props) => props.ikonVisning && '21px'} 250px repeat(
+    grid-template-columns: ${(props) => props.ikonVisning && '21px'} min(200px, 250px) repeat(
             ${(props) => (props.kolonner ? props.kolonner - 2 : 2)},
             ${(props) => (props.kolonner && props.kolonner > 3 ? '150px' : '325px')}
         );

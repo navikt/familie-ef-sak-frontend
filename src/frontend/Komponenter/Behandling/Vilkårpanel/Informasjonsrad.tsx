@@ -14,7 +14,7 @@ interface Props {
 
 const InformasjonsradContainer = styled.div`
     display: grid;
-    grid-template-columns: 21px 250px auto;
+    grid-template-columns: 21px min(200px, 250px) auto;
     grid-gap: 0.5rem;
 `;
 
