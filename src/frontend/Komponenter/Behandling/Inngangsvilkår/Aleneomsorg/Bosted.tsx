@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
-import { TabellIkon } from '../../Vilkårpanel/TabellVisning';
+import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 
 interface Props {
     harSammeAdresseSøknad?: boolean;
@@ -13,7 +13,7 @@ const Bosted: FC<Props> = ({ harSammeAdresseSøknad, harSammeAdresseRegister, er
         <>
             {harSammeAdresseRegister !== undefined && harSammeAdresseRegister !== null ? (
                 <Informasjonsrad
-                    ikon={TabellIkon.REGISTER}
+                    ikon={VilkårInfoIkon.REGISTER}
                     label="Bosted"
                     verdi={
                         harSammeAdresseRegister
@@ -25,7 +25,7 @@ const Bosted: FC<Props> = ({ harSammeAdresseSøknad, harSammeAdresseRegister, er
                 harSammeAdresseSøknad !== undefined &&
                 harSammeAdresseSøknad !== null && (
                     <Informasjonsrad
-                        ikon={TabellIkon.SØKNAD}
+                        ikon={VilkårInfoIkon.SØKNAD}
                         label="Bosted"
                         verdi={utledVisningAvBostedVerdier(erBarnetFødt, harSammeAdresseSøknad)}
                     />

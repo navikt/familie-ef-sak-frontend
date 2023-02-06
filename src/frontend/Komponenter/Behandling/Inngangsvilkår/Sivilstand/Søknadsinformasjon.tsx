@@ -4,7 +4,7 @@ import { EÅrsakEnslig, ISivilstandSøknadsgrunnlag, ÅrsakEnsligTilTekst } from
 import { hentBooleanTekst } from '../utils';
 import { formaterNullableIsoDato, mapTrueFalse } from '../../../../App/utils/formatter';
 import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
-import { TabellIkon } from '../../Vilkårpanel/TabellVisning';
+import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 
 interface Props {
     sivilstandtype: SivilstandType;
@@ -20,12 +20,12 @@ const Søknadsinformasjon: FC<Props> = ({ sivilstandtype, søknad }) => {
             return (
                 <>
                     <Informasjonsrad
-                        ikon={TabellIkon.SØKNAD}
+                        ikon={VilkårInfoIkon.SØKNAD}
                         label="Gift uten at det er registrert i folkeregisteret"
                         verdi={erUformeltGift !== undefined && mapTrueFalse(erUformeltGift)}
                     />
                     <Informasjonsrad
-                        ikon={TabellIkon.SØKNAD}
+                        ikon={VilkårInfoIkon.SØKNAD}
                         label="Separert eller skilt uten at det er registrert i folkeregisteret"
                         verdi={
                             erUformeltSeparertEllerSkilt !== undefined &&
@@ -39,7 +39,7 @@ const Søknadsinformasjon: FC<Props> = ({ sivilstandtype, søknad }) => {
             return (
                 <>
                     <Informasjonsrad
-                        ikon={TabellIkon.SØKNAD}
+                        ikon={VilkårInfoIkon.SØKNAD}
                         label="Søkt separasjon, skilsmisse eller reist sak"
                         verdi={
                             søknad.søktOmSkilsmisseSeparasjon !== undefined &&
@@ -51,7 +51,7 @@ const Søknadsinformasjon: FC<Props> = ({ sivilstandtype, søknad }) => {
                     />
                     {søknad.fraflytningsdato && (
                         <Informasjonsrad
-                            ikon={TabellIkon.SØKNAD}
+                            ikon={VilkårInfoIkon.SØKNAD}
                             label="Dato for fraflytting"
                             verdi={formaterNullableIsoDato(søknad.fraflytningsdato)}
                         />
@@ -63,7 +63,7 @@ const Søknadsinformasjon: FC<Props> = ({ sivilstandtype, søknad }) => {
             return (
                 <>
                     <Informasjonsrad
-                        ikon={TabellIkon.SØKNAD}
+                        ikon={VilkårInfoIkon.SØKNAD}
                         label="Alene med barn fordi"
                         verdi={søknad.årsakEnslig && ÅrsakEnsligTilTekst[søknad.årsakEnslig]}
                     />
@@ -71,7 +71,7 @@ const Søknadsinformasjon: FC<Props> = ({ sivilstandtype, søknad }) => {
                     {søknad.årsakEnslig === EÅrsakEnslig.samlivsbruddForeldre && (
                         <>
                             <Informasjonsrad
-                                ikon={TabellIkon.SØKNAD}
+                                ikon={VilkårInfoIkon.SØKNAD}
                                 label="Dato for samlivsbrudd"
                                 verdi={
                                     søknad.samlivsbruddsdato
@@ -85,7 +85,7 @@ const Søknadsinformasjon: FC<Props> = ({ sivilstandtype, søknad }) => {
                     {søknad.årsakEnslig === EÅrsakEnslig.samlivsbruddAndre && (
                         <>
                             <Informasjonsrad
-                                ikon={TabellIkon.SØKNAD}
+                                ikon={VilkårInfoIkon.SØKNAD}
                                 label="Tidligere samboer"
                                 verdi={`${tidligereSamboer?.navn} - ${
                                     tidligereSamboer?.personIdent
@@ -94,7 +94,7 @@ const Søknadsinformasjon: FC<Props> = ({ sivilstandtype, søknad }) => {
                                 }`}
                             />
                             <Informasjonsrad
-                                ikon={TabellIkon.SØKNAD}
+                                ikon={VilkårInfoIkon.SØKNAD}
                                 label="Dato for fraflytting"
                                 verdi={formaterNullableIsoDato(søknad.fraflytningsdato)}
                             />
@@ -103,7 +103,7 @@ const Søknadsinformasjon: FC<Props> = ({ sivilstandtype, søknad }) => {
 
                     {søknad.årsakEnslig === EÅrsakEnslig.endringISamværsordning && (
                         <Informasjonsrad
-                            ikon={TabellIkon.SØKNAD}
+                            ikon={VilkårInfoIkon.SØKNAD}
                             label="Endringen skjedde"
                             verdi={
                                 søknad.endringSamværsordningDato

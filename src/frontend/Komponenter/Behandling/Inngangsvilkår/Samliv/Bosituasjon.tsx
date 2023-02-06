@@ -3,8 +3,8 @@ import { formaterNullableIsoDato, mapTrueFalse } from '../../../../App/utils/for
 import { IPersonDetaljer } from '../Sivilstand/typer';
 import { ESøkerDelerBolig, IBosituasjon, ISivilstandsplaner } from './typer';
 import { hentPersonInfo } from '../utils';
-import { TabellIkon } from '../../Vilkårpanel/TabellVisning';
 import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
+import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 
 interface Props {
     bosituasjon: IBosituasjon;
@@ -25,12 +25,12 @@ export const Bosituasjon: FC<Props> = ({ bosituasjon, sivilstandsplaner }) => {
                 ESøkerDelerBolig.tidligereSamboerFortsattRegistrertPåAdresse && (
                 <>
                     <Informasjonsrad
-                        ikon={TabellIkon.SØKNAD}
+                        ikon={VilkårInfoIkon.SØKNAD}
                         label="Tidligere samboer"
                         verdi={hentPersonInfo(bosituasjon.samboer)}
                     />
                     <Informasjonsrad
-                        ikon={TabellIkon.SØKNAD}
+                        ikon={VilkårInfoIkon.SØKNAD}
                         label="Flyttet fra hverandre"
                         verdi={formaterNullableIsoDato(bosituasjon.datoFlyttetFraHverandre) || '-'}
                     />
@@ -52,9 +52,13 @@ const SamboerInfoOgDatoSammenflytting: FC<{
     sammenflyttingsdato?: string;
 }> = ({ samboer, sammenflyttingsdato }) => (
     <>
-        <Informasjonsrad ikon={TabellIkon.SØKNAD} label="Samboer" verdi={hentPersonInfo(samboer)} />
         <Informasjonsrad
-            ikon={TabellIkon.SØKNAD}
+            ikon={VilkårInfoIkon.SØKNAD}
+            label="Samboer"
+            verdi={hentPersonInfo(samboer)}
+        />
+        <Informasjonsrad
+            ikon={VilkårInfoIkon.SØKNAD}
             label="Flyttet sammen"
             verdi={formaterNullableIsoDato(sammenflyttingsdato)}
         />
@@ -66,7 +70,7 @@ const Sivilstandsplaner: FC<{ sivilstandsplaner: ISivilstandsplaner }> = ({
 }) => (
     <>
         <Informasjonsrad
-            ikon={TabellIkon.SØKNAD}
+            ikon={VilkårInfoIkon.SØKNAD}
             label="Skal gifte seg eller bli samboer"
             verdi={mapTrueFalse(!!sivilstandsplaner.harPlaner)}
         />
@@ -74,12 +78,12 @@ const Sivilstandsplaner: FC<{ sivilstandsplaner: ISivilstandsplaner }> = ({
         {sivilstandsplaner.harPlaner && (
             <>
                 <Informasjonsrad
-                    ikon={TabellIkon.SØKNAD}
+                    ikon={VilkårInfoIkon.SØKNAD}
                     label="Dato"
                     verdi={formaterNullableIsoDato(sivilstandsplaner.fraDato)}
                 />
                 <Informasjonsrad
-                    ikon={TabellIkon.SØKNAD}
+                    ikon={VilkårInfoIkon.SØKNAD}
                     label="Ektefelle eller samboer"
                     verdi={`${sivilstandsplaner.vordendeSamboerEktefelle?.navn} - ${
                         sivilstandsplaner.vordendeSamboerEktefelle?.personIdent ||

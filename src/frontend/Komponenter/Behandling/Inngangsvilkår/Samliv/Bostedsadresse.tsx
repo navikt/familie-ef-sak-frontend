@@ -17,7 +17,7 @@ import { gyldigTilOgMedErNullEllerFremITid } from '../../../../Felles/Personoppl
 import { Button } from '@navikt/ds-react';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
-import { TabellIkon } from '../../Vilkårpanel/TabellVisning';
+import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 
 interface BeboereTabellProps {
     vis: boolean;
@@ -83,7 +83,7 @@ export const Bostedsadresse = ({ behandlingId }: BostedsadresseProps) => {
                     return (
                         <>
                             <Informasjonsrad
-                                ikon={TabellIkon.REGISTER}
+                                ikon={VilkårInfoIkon.REGISTER}
                                 label="Brukers bostedsadresse"
                                 verdiSomString={false}
                                 verdi={

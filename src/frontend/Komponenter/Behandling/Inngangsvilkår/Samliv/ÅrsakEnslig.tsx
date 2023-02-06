@@ -3,7 +3,7 @@ import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
 import { EÅrsakEnslig, ISivilstandSøknadsgrunnlag } from '../Sivilstand/typer';
 import { hentPersonInfo } from '../utils';
 import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
-import { TabellIkon } from '../../Vilkårpanel/TabellVisning';
+import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 
 interface Props {
     søknadsgrunnlag: ISivilstandSøknadsgrunnlag;
@@ -17,7 +17,7 @@ const ÅrsakEnslig: FC<Props> = ({ søknadsgrunnlag }) => {
             {søknadsgrunnlag.årsakEnslig === EÅrsakEnslig.samlivsbruddForeldre &&
                 søknadsgrunnlag.samlivsbruddsdato && (
                     <Informasjonsrad
-                        ikon={TabellIkon.SØKNAD}
+                        ikon={VilkårInfoIkon.SØKNAD}
                         label="Dato for samlivsbrudd"
                         verdi={formaterNullableIsoDato(søknadsgrunnlag.samlivsbruddsdato)}
                     />
@@ -26,13 +26,13 @@ const ÅrsakEnslig: FC<Props> = ({ søknadsgrunnlag }) => {
             {søknadsgrunnlag.årsakEnslig === EÅrsakEnslig.samlivsbruddAndre && (
                 <>
                     <Informasjonsrad
-                        ikon={TabellIkon.SØKNAD}
+                        ikon={VilkårInfoIkon.SØKNAD}
                         label="Tidligere samboer"
                         verdi={hentPersonInfo(tidligereSamboer)}
                     />
                     {søknadsgrunnlag.fraflytningsdato && (
                         <Informasjonsrad
-                            ikon={TabellIkon.SØKNAD}
+                            ikon={VilkårInfoIkon.SØKNAD}
                             label="Flyttet fra hverandre"
                             verdi={formaterNullableIsoDato(søknadsgrunnlag.fraflytningsdato)}
                         />
@@ -43,7 +43,7 @@ const ÅrsakEnslig: FC<Props> = ({ søknadsgrunnlag }) => {
             {søknadsgrunnlag.årsakEnslig === EÅrsakEnslig.endringISamværsordning &&
                 søknadsgrunnlag.endringSamværsordningDato && (
                     <Informasjonsrad
-                        ikon={TabellIkon.SØKNAD}
+                        ikon={VilkårInfoIkon.SØKNAD}
                         label="Endringen skjer/skjedde"
                         verdi={formaterNullableIsoDato(søknadsgrunnlag.endringSamværsordningDato)}
                     />

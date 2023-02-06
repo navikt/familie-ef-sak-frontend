@@ -7,8 +7,7 @@ import DokumentasjonSendtInn from '../DokumentasjonSendtInn';
 import { utledNavnOgAlderPåGrunnlag } from '../utils';
 import { InformasjonContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
 import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
-import { TabellIkon } from '../../Vilkårpanel/TabellVisning';
-import { BarneInfoWrapper } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
+import { BarneInfoWrapper, VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 
 interface Props {
     barnMedSamvær: IBarnMedSamvær[];
@@ -40,7 +39,7 @@ const MorEllerFarInfo: FC<Props> = ({ barnMedSamvær, skalViseSøknadsdata, doku
                                     />
                                 }
                                 verdiSomString={false}
-                                ikon={TabellIkon.REGISTER}
+                                ikon={VilkårInfoIkon.REGISTER}
                             />
                         ) : (
                             <Informasjonsrad
@@ -48,7 +47,7 @@ const MorEllerFarInfo: FC<Props> = ({ barnMedSamvær, skalViseSøknadsdata, doku
                                 verdi={
                                     formaterNullableIsoDato(søknadsgrunnlag.fødselTermindato) || ''
                                 }
-                                ikon={TabellIkon.SØKNAD}
+                                ikon={VilkårInfoIkon.SØKNAD}
                             />
                         )}
                     </BarneInfoWrapper>

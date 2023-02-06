@@ -1,19 +1,12 @@
 import * as React from 'react';
-import { Registergrunnlag, Søknadsgrunnlag } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
-import { Calculator } from '@navikt/ds-icons';
 import { Detail, HelpText, Label } from '@navikt/ds-react';
 import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 import styled from 'styled-components';
 import { GridTabell } from './GridTabell';
-
-export enum TabellIkon {
-    REGISTER = 'REGISTER',
-    SØKNAD = 'SØKNAD',
-    KALKULATOR = 'KALKULATOR',
-}
+import { mapIkon, VilkårInfoIkon } from './VilkårInformasjonKomponenter';
 
 export interface Kolonnedata<T> {
-    ikon?: TabellIkon;
+    ikon?: VilkårInfoIkon;
     tittel?: string;
     verdier: T[];
     kolonner: Kolonner<T>[];
@@ -25,17 +18,6 @@ export interface Kolonner<T> {
     helperText?: string;
     tekstVerdi: (data: T) => React.ReactNode;
 }
-
-export const mapIkon = (ikon: TabellIkon) => {
-    switch (ikon) {
-        case TabellIkon.REGISTER:
-            return <Registergrunnlag />;
-        case TabellIkon.SØKNAD:
-            return <Søknadsgrunnlag />;
-        case TabellIkon.KALKULATOR:
-            return <Calculator />;
-    }
-};
 
 const FlexDiv = styled.div`
     display: flex;

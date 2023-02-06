@@ -7,7 +7,7 @@ import DokumentasjonSendtInn from '../DokumentasjonSendtInn';
 import { IDokumentasjonGrunnlag } from '../vilkår';
 import { InformasjonContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
 import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
-import { TabellIkon } from '../../Vilkårpanel/TabellVisning';
+import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 
 interface Props {
     sivilstand: ISivilstandInngangsvilkår;
@@ -20,7 +20,7 @@ const SivilstandInfo: FC<Props> = ({ sivilstand, skalViseSøknadsdata, dokumenta
     return (
         <InformasjonContainer>
             <Informasjonsrad
-                ikon={TabellIkon.REGISTER}
+                ikon={VilkårInfoIkon.REGISTER}
                 label="Sivilstatus"
                 verdi={`${sivilstandTilTekst[registergrunnlag.type]} ${
                     registergrunnlag.navn &&

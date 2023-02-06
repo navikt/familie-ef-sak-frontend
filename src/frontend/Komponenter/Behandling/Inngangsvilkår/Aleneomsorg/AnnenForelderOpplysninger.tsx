@@ -13,7 +13,7 @@ import { HelpText } from '@navikt/ds-react';
 import styled from 'styled-components';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
-import { TabellIkon } from '../../Vilkårpanel/TabellVisning';
+import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 
 const StyledHelpText = styled(HelpText)`
     & + .navds-popover {
@@ -51,7 +51,7 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
         <>
             {visForelderSøknadInfo && (
                 <Informasjonsrad
-                    ikon={TabellIkon.SØKNAD}
+                    ikon={VilkårInfoIkon.SØKNAD}
                     label="Annen forelder"
                     verdiSomString={false}
                     verdi={
@@ -74,7 +74,7 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
                 forelderRegister &&
                 harNavnFødselsdatoEllerFnr(forelderRegister) && (
                     <Informasjonsrad
-                        ikon={TabellIkon.REGISTER}
+                        ikon={VilkårInfoIkon.REGISTER}
                         label="Annen forelder"
                         verdiSomString={false}
                         verdi={
@@ -89,7 +89,7 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
 
             {forelderRegister?.dødsfall && (
                 <Informasjonsrad
-                    ikon={TabellIkon.REGISTER}
+                    ikon={VilkårInfoIkon.REGISTER}
                     label="Annen forelder dødsdato"
                     verdi={formaterNullableIsoDato(forelderRegister.dødsfall)}
                 />
@@ -98,7 +98,7 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
                 <>
                     {forelderSøknad && harNavnFødselsdatoEllerFnr(forelderSøknad) && (
                         <Informasjonsrad
-                            ikon={TabellIkon.SØKNAD}
+                            ikon={VilkårInfoIkon.SØKNAD}
                             label="Annen forelder bor i"
                             verdi={
                                 forelderSøknad?.bosattINorge ? 'Norge' : forelderSøknad?.land || '-'
@@ -110,7 +110,7 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
                         forelderRegister &&
                         harNavnFødselsdatoEllerFnr(forelderRegister) && (
                             <Informasjonsrad
-                                ikon={TabellIkon.SØKNAD}
+                                ikon={VilkårInfoIkon.SØKNAD}
                                 label="Annen forelder bor i"
                                 verdi={
                                     forelderRegister?.bosattINorge
@@ -126,7 +126,7 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
                 harNavnFødselsdatoEllerFnr(forelderRegister) &&
                 !forelderRegister?.dødsfall && (
                     <Informasjonsrad
-                        ikon={TabellIkon.REGISTER}
+                        ikon={VilkårInfoIkon.REGISTER}
                         label="Annen forelders avstand til bruker (automatisk beregnet)"
                         verdiSomString={false}
                         verdi={

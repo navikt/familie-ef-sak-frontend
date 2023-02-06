@@ -11,8 +11,7 @@ import DokumentasjonSendtInn from '../DokumentasjonSendtInn';
 import { Addresseopplysninger } from './Addresseopplysninger';
 import { InformasjonContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
 import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
-import { TabellIkon } from '../../Vilkårpanel/TabellVisning';
-
+import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 interface Props {
     grunnlag: IVilkårGrunnlag;
     skalViseSøknadsdata: boolean;
@@ -39,7 +38,7 @@ const SamlivInfo: FC<Props> = ({
                         {sivilstand.registergrunnlag.type !== SivilstandType.GIFT && (
                             <>
                                 <Informasjonsrad
-                                    ikon={TabellIkon.SØKNAD}
+                                    ikon={VilkårInfoIkon.SØKNAD}
                                     label="Alene med barn fordi"
                                     verdi={
                                         (sivilstand.søknadsgrunnlag.årsakEnslig &&
@@ -55,7 +54,7 @@ const SamlivInfo: FC<Props> = ({
 
                         {bosituasjon && (
                             <Informasjonsrad
-                                ikon={TabellIkon.SØKNAD}
+                                ikon={VilkårInfoIkon.SØKNAD}
                                 label="Bosituasjon"
                                 verdi={SøkerDelerBoligTilTekst[bosituasjon.delerDuBolig] || ''}
                             />

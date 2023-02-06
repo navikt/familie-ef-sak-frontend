@@ -5,6 +5,8 @@ import { FlexColumnContainer, UnderoverskriftWrapper } from './StyledVilkårInnh
 import EtikettDød from '../../../Felles/Etiketter/EtikettDød';
 import LiteBarn from '../../../Felles/Ikoner/LiteBarn';
 import styled from 'styled-components';
+import { Registergrunnlag, Søknadsgrunnlag } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
+import { Calculator } from '@navikt/ds-icons';
 
 interface UnderseksjonWrapperProps {
     underoverskrift: string;
@@ -54,4 +56,21 @@ export const BarneInfoWrapper: FC<BarneInfoWrapperProps> = ({
             {children}
         </FlexColumnContainer>
     );
+};
+
+export enum VilkårInfoIkon {
+    REGISTER = 'REGISTER',
+    SØKNAD = 'SØKNAD',
+    KALKULATOR = 'KALKULATOR',
+}
+
+export const mapIkon = (ikon: VilkårInfoIkon) => {
+    switch (ikon) {
+        case VilkårInfoIkon.REGISTER:
+            return <Registergrunnlag />;
+        case VilkårInfoIkon.SØKNAD:
+            return <Søknadsgrunnlag />;
+        case VilkårInfoIkon.KALKULATOR:
+            return <Calculator />;
+    }
 };

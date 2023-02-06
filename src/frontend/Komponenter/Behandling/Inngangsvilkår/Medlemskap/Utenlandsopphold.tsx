@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { FC } from 'react';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
-import TabellVisning, { TabellIkon } from '../../Vilkårpanel/TabellVisning';
+import TabellVisning from '../../Vilkårpanel/TabellVisning';
+import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 import { IUtenlandsopphold } from './typer';
 
 interface Props {
@@ -10,7 +11,7 @@ interface Props {
 
 const Utenlandsopphold: FC<Props> = ({ utenlandsopphold }) => (
     <TabellVisning
-        ikon={TabellIkon.SØKNAD}
+        ikon={VilkårInfoIkon.SØKNAD}
         tittel="Utenlandsperioder"
         verdier={utenlandsopphold}
         kolonner={[

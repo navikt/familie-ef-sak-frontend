@@ -7,8 +7,8 @@ import InnflyttingUtflytting from '../Medlemskap/InnflyttingUtflytting';
 import FolkeregisterPersonstatus from '../Medlemskap/FolkeregisterPersonstatus';
 import { InformasjonContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
 import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
-import { TabellIkon } from '../../Vilkårpanel/TabellVisning';
 import { mapTrueFalse } from '../../../../App/utils/formatter';
+import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 
 interface Props {
     medlemskap: IMedlemskap;
@@ -28,13 +28,13 @@ const OppholdInfo: FC<Props> = ({ medlemskap, skalViseSøknadsdata }) => {
             <Informasjonsrad
                 label="Statsborgerskap"
                 verdi={registergrunnlag.nåværendeStatsborgerskap.join(', ')}
-                ikon={TabellIkon.REGISTER}
+                ikon={VilkårInfoIkon.REGISTER}
             />
             {skalViseSøknadsdata && søknadsgrunnlag && (
                 <Informasjonsrad
                     label="Søker og barn oppholder seg i Norge"
                     verdi={mapTrueFalse(søknadsgrunnlag.oppholderDuDegINorge)}
-                    ikon={TabellIkon.SØKNAD}
+                    ikon={VilkårInfoIkon.SØKNAD}
                 />
             )}
 

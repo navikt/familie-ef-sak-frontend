@@ -11,9 +11,8 @@ import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
 import { Tag } from '@navikt/ds-react';
 import { utledNavnOgAlder } from '../utils';
-import { BarneInfoWrapper } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
+import { BarneInfoWrapper, VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
-import { TabellIkon } from '../../Vilkårpanel/TabellVisning';
 
 const AleneomsorgInfo: FC<{
     gjeldendeBarn: IBarnMedSamvær;
@@ -57,7 +56,7 @@ const AleneomsorgInfo: FC<{
         >
             {registergrunnlag.fødselsnummer ? (
                 <Informasjonsrad
-                    ikon={TabellIkon.SØKNAD}
+                    ikon={VilkårInfoIkon.SØKNAD}
                     label="Fødsels eller D-nummer"
                     verdiSomString={false}
                     verdi={
@@ -68,7 +67,7 @@ const AleneomsorgInfo: FC<{
                 />
             ) : (
                 <Informasjonsrad
-                    ikon={TabellIkon.SØKNAD}
+                    ikon={VilkårInfoIkon.SØKNAD}
                     label="Termindato"
                     verdi={formaterNullableIsoDato(søknadsgrunnlag.fødselTermindato)}
                 />
@@ -80,7 +79,7 @@ const AleneomsorgInfo: FC<{
             />
             {skalViseSøknadsdata && søknadsgrunnlag.skalBoBorHosSøker && (
                 <Informasjonsrad
-                    ikon={TabellIkon.SØKNAD}
+                    ikon={VilkårInfoIkon.SØKNAD}
                     label="Barnet skal ha adresse hos søker"
                     verdi={skalBarnetBoHosSøkerTilTekst[søknadsgrunnlag.skalBoBorHosSøker]}
                 />
@@ -88,7 +87,7 @@ const AleneomsorgInfo: FC<{
 
             {skalViseSøknadsdata && harVerdi(ikkeOppgittAnnenForelderBegrunnelse) && (
                 <Informasjonsrad
-                    ikon={TabellIkon.SØKNAD}
+                    ikon={VilkårInfoIkon.SØKNAD}
                     label="Annen forelder"
                     verdi={
                         ikkeOppgittAnnenForelderBegrunnelse === 'donorbarn'
@@ -99,7 +98,7 @@ const AleneomsorgInfo: FC<{
             )}
             {skalViseSøknadsdata && stønadstype === Stønadstype.BARNETILSYN && (
                 <Informasjonsrad
-                    ikon={TabellIkon.SØKNAD}
+                    ikon={VilkårInfoIkon.SØKNAD}
                     label="Søkes det om stønad til barnetilsyn for barnet"
                     verdi={
                         barnepass?.skalHaBarnepass ? (
@@ -114,7 +113,7 @@ const AleneomsorgInfo: FC<{
                 {({ barnMedLøpendeStønad }) => {
                     return (
                         <Informasjonsrad
-                            ikon={TabellIkon.REGISTER}
+                            ikon={VilkårInfoIkon.REGISTER}
                             label="Har brukeren løpende stønad for barnet? (i EF Sak)"
                             verdi={utledEtikettForLøpendeStønad(barnMedLøpendeStønad, barnId)}
                         />

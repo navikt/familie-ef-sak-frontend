@@ -5,8 +5,7 @@ import { harVerdi } from '../../../../App/utils/utils';
 import { utledNavnOgAlder } from '../utils';
 import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
 import { KopierbartNullableFødselsnummer } from '../../../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
-import { TabellIkon } from '../../Vilkårpanel/TabellVisning';
-import { BarneInfoWrapper } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
+import { BarneInfoWrapper, VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 
 interface Props {
     barn: RegistergrunnlagNyttBarn;
@@ -22,7 +21,7 @@ const RegistergrunnlagNyttBarnInnhold: FC<Props> = ({ barn }) => {
             dødsdato={barn.dødsdato}
         >
             <Informasjonsrad
-                ikon={TabellIkon.REGISTER}
+                ikon={VilkårInfoIkon.REGISTER}
                 label="Fødsels eller D-nummer"
                 verdi={
                     barn.fødselsnummer && (
@@ -32,7 +31,7 @@ const RegistergrunnlagNyttBarnInnhold: FC<Props> = ({ barn }) => {
             />
             {annenForelderRegister && (
                 <Informasjonsrad
-                    ikon={TabellIkon.REGISTER}
+                    ikon={VilkårInfoIkon.REGISTER}
                     label="Annen forelder fra folkeregister"
                     verdi={<AnnenForelderNavnOgFnr forelder={annenForelderRegister} />}
                 />
@@ -40,7 +39,7 @@ const RegistergrunnlagNyttBarnInnhold: FC<Props> = ({ barn }) => {
 
             {harVerdi(ikkeOppgittAnnenForelderBegrunnelse) && (
                 <Informasjonsrad
-                    ikon={TabellIkon.SØKNAD}
+                    ikon={VilkårInfoIkon.SØKNAD}
                     label="Annen forelder"
                     verdi={
                         ikkeOppgittAnnenForelderBegrunnelse === 'donorbarn'

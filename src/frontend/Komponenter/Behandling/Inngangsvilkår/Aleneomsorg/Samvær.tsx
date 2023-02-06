@@ -8,7 +8,7 @@ import {
 } from './typer';
 import { formaterNullableIsoDato, mapTrueFalse } from '../../../../App/utils/formatter';
 import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
-import { TabellIkon } from '../../Vilkårpanel/TabellVisning';
+import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 
 interface Props {
     søknadsgrunnlag: IBarnMedSamværSøknadsgrunnlag;
@@ -20,21 +20,21 @@ const Samvær: FC<Props> = ({ søknadsgrunnlag }) => {
             {søknadsgrunnlag.spørsmålAvtaleOmDeltBosted !== undefined &&
                 søknadsgrunnlag.spørsmålAvtaleOmDeltBosted != null && (
                     <Informasjonsrad
-                        ikon={TabellIkon.SØKNAD}
+                        ikon={VilkårInfoIkon.SØKNAD}
                         label="Skriftlig avtale om delt fast bosted"
                         verdi={mapTrueFalse(søknadsgrunnlag.spørsmålAvtaleOmDeltBosted)}
                     />
                 )}
             {søknadsgrunnlag.skalAnnenForelderHaSamvær && (
                 <Informasjonsrad
-                    ikon={TabellIkon.SØKNAD}
+                    ikon={VilkårInfoIkon.SØKNAD}
                     label="Annen forelders samvær"
                     verdi={harSamværMedBarnTilTekst[søknadsgrunnlag.skalAnnenForelderHaSamvær]}
                 />
             )}
             {søknadsgrunnlag.harDereSkriftligAvtaleOmSamvær && (
                 <Informasjonsrad
-                    ikon={TabellIkon.SØKNAD}
+                    ikon={VilkårInfoIkon.SØKNAD}
                     label="Skriftlig samværsavtale"
                     verdi={
                         harSkriftligSamværsavtaleTilTekst[
@@ -45,14 +45,14 @@ const Samvær: FC<Props> = ({ søknadsgrunnlag }) => {
             )}
             {søknadsgrunnlag.hvordanPraktiseresSamværet && (
                 <Informasjonsrad
-                    ikon={TabellIkon.SØKNAD}
+                    ikon={VilkårInfoIkon.SØKNAD}
                     label="Praktisering av samværet"
                     verdi={søknadsgrunnlag.hvordanPraktiseresSamværet}
                 />
             )}
             {søknadsgrunnlag.borAnnenForelderISammeHus && (
                 <Informasjonsrad
-                    ikon={TabellIkon.SØKNAD}
+                    ikon={VilkårInfoIkon.SØKNAD}
                     label="Foreldre har nære boforhold"
                     verdi={
                         borAnnenForelderISammeHusTilTekst[søknadsgrunnlag.borAnnenForelderISammeHus]
@@ -61,7 +61,7 @@ const Samvær: FC<Props> = ({ søknadsgrunnlag }) => {
             )}
             {søknadsgrunnlag.borAnnenForelderISammeHusBeskrivelse && (
                 <Informasjonsrad
-                    ikon={TabellIkon.SØKNAD}
+                    ikon={VilkårInfoIkon.SØKNAD}
                     label="Beskrivelse av boforhold"
                     verdi={søknadsgrunnlag.borAnnenForelderISammeHusBeskrivelse}
                 />
@@ -69,28 +69,28 @@ const Samvær: FC<Props> = ({ søknadsgrunnlag }) => {
             {søknadsgrunnlag.harDereTidligereBoddSammen !== null &&
                 søknadsgrunnlag.harDereTidligereBoddSammen !== undefined && (
                     <Informasjonsrad
-                        ikon={TabellIkon.SØKNAD}
+                        ikon={VilkårInfoIkon.SØKNAD}
                         label="Foreldrene har bodd sammen tidligere"
                         verdi={mapTrueFalse(søknadsgrunnlag.harDereTidligereBoddSammen)}
                     />
                 )}
             {søknadsgrunnlag.nårFlyttetDereFraHverandre && (
                 <Informasjonsrad
-                    ikon={TabellIkon.SØKNAD}
+                    ikon={VilkårInfoIkon.SØKNAD}
                     label="Fraflyttingsdato"
                     verdi={formaterNullableIsoDato(søknadsgrunnlag.nårFlyttetDereFraHverandre)}
                 />
             )}
             {søknadsgrunnlag.hvorMyeErDuSammenMedAnnenForelder && (
                 <Informasjonsrad
-                    ikon={TabellIkon.SØKNAD}
+                    ikon={VilkårInfoIkon.SØKNAD}
                     label="Kontakt mellom foreldrene"
                     verdi={hvorMyeSammenTilTekst[søknadsgrunnlag.hvorMyeErDuSammenMedAnnenForelder]}
                 />
             )}
             {søknadsgrunnlag.beskrivSamværUtenBarn && (
                 <Informasjonsrad
-                    ikon={TabellIkon.SØKNAD}
+                    ikon={VilkårInfoIkon.SØKNAD}
                     label="Beskrivelse av kontakt"
                     verdi={søknadsgrunnlag.beskrivSamværUtenBarn}
                 />

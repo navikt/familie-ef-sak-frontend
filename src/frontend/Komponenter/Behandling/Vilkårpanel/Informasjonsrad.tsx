@@ -2,11 +2,11 @@ import * as React from 'react';
 import { Label } from '@navikt/ds-react';
 import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 import styled from 'styled-components';
-import { mapIkon, TabellIkon } from './TabellVisning';
 import { FC, ReactNode } from 'react';
+import { mapIkon, VilkårInfoIkon } from './VilkårInformasjonKomponenter';
 
 interface Props {
-    ikon: TabellIkon;
+    ikon: VilkårInfoIkon;
     label: string;
     verdi: ReactNode;
     verdiSomString?: boolean;
