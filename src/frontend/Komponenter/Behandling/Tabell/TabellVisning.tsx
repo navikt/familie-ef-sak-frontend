@@ -1,12 +1,8 @@
 import * as React from 'react';
 import { Registergrunnlag, Søknadsgrunnlag } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { Calculator } from '@navikt/ds-icons';
-import { Heading, Label } from '@navikt/ds-react';
-import {
-    BodyShortSmall,
-    DetailSmall,
-    SmallTextLabel,
-} from '../../../Felles/Visningskomponenter/Tekster';
+import { Heading } from '@navikt/ds-react';
+import { BodyShortSmall, SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
 import styled from 'styled-components';
 
 const GridTabell = styled.div<{
@@ -40,7 +36,6 @@ export enum TabellIkon {
 export interface Kolonndata<T> {
     ikon?: TabellIkon;
     tittel: string;
-    undertittel?: string;
     tittelType?: 'element' | 'undertittel';
     verdier: T[];
     kolonner: Kolonner<T>[];
@@ -63,23 +58,14 @@ const mapIkon = (ikon: TabellIkon) => {
 };
 
 function TabellVisning<T>(props: Kolonndata<T>): React.ReactElement<Kolonndata<T>> {
-    const { ikon, tittel, undertittel, tittelType, verdier, kolonner } = props;
+    const { ikon, tittel, verdier, kolonner } = props;
     return (
         <GridTabell kolonner={kolonner.length + 1} utenIkon={!ikon}>
             {ikon && mapIkon(ikon)}
-            {tittelType === 'undertittel' ? (
-                <Heading size="small" className="tittel" level={'3'}>
-                    {tittel}
-                </Heading>
-            ) : (
-                <Label className="tittel" as="h3" size={'small'}>
-                    {' '}
-                    {tittel}
-                    {undertittel && (
-                        <DetailSmall style={{ marginLeft: '0.25rem' }}>{undertittel}</DetailSmall>
-                    )}
-                </Label>
-            )}
+
+            <Heading size="small" className="tittel" level={'3'}>
+                {tittel}
+            </Heading>
 
             <>
                 {kolonner.map((kolonne, index) => (
