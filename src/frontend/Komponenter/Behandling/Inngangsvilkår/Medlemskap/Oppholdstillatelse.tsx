@@ -1,8 +1,9 @@
 import * as React from 'react';
 import { FC } from 'react';
-import TabellVisning, { TabellIkon } from '../../Tabell/TabellVisning';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
 import { IOppholdstatus, oppholdsstatusTypeTilTekst } from './typer';
+import TabellVisning from '../../Vilkårpanel/TabellVisning';
+import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 
 interface Props {
     oppholdsstatus: IOppholdstatus[];
@@ -10,7 +11,7 @@ interface Props {
 
 const Oppholdstillatelse: FC<Props> = ({ oppholdsstatus }) => (
     <TabellVisning
-        ikon={TabellIkon.REGISTER}
+        ikon={VilkårInfoIkon.REGISTER}
         tittel="Oppholdstillatelse"
         verdier={oppholdsstatus}
         kolonner={[

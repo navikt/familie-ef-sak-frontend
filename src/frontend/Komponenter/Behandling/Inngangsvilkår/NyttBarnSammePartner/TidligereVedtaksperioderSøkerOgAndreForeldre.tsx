@@ -6,12 +6,12 @@ import {
 } from '../../TidligereVedtaksperioder/typer';
 import { Tooltip } from '@navikt/ds-react';
 import { formatterBooleanEllerUkjent, mapTrueFalse } from '../../../../App/utils/formatter';
-import TabellVisning, { TabellIkon } from '../../Tabell/TabellVisning';
 import { nonNull } from '../../../../App/utils/utils';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 import { IPersonopplysninger } from '../../../../App/typer/personopplysninger';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
+import TabellVisning from '../../Vilkårpanel/TabellVisning';
 
 interface TidligereVedtaksperioderPåPartISak {
     fødselsnummer: string;
@@ -100,10 +100,10 @@ const TidligereVedtaksperioderSøkerOgAndreForeldre: FC<{
                 }
                 return (
                     <TabellVisning
-                        ikon={TabellIkon.REGISTER}
                         tittel={
                             'Har brukeren eller annen forelder mottatt stønader etter kap. 15 før?'
                         }
+                        ikonVisning={false}
                         verdier={verdier}
                         kolonner={[
                             {

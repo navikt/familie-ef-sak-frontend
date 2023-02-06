@@ -2,7 +2,8 @@ import * as React from 'react';
 import { FC } from 'react';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
 import { IStatsborgerskap } from '../../../../App/typer/personopplysninger';
-import TabellVisning, { TabellIkon } from '../../Tabell/TabellVisning';
+import TabellVisning from '../../Vilkårpanel/TabellVisning';
+import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 
 interface Props {
     statsborgerskap: IStatsborgerskap[];
@@ -10,7 +11,7 @@ interface Props {
 
 const Statsborgerskap: FC<Props> = ({ statsborgerskap }) => (
     <TabellVisning
-        ikon={TabellIkon.REGISTER}
+        ikon={VilkårInfoIkon.REGISTER}
         tittel="Statsborgerskap"
         verdier={statsborgerskap}
         kolonner={[
