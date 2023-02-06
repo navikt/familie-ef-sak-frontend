@@ -9,8 +9,8 @@ import InnflyttingUtflytting from './InnflyttingUtflytting';
 import UnntakIMedl from './UnntakIMedl';
 import { InformasjonContainer, TagMedTilpassetBredde } from '../../Vilkårpanel/StyledVilkårInnhold';
 import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
-import { TabellIkon } from '../../Tabell/TabellVisning';
 import { mapTrueFalse } from '../../../../App/utils/formatter';
+import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 
 interface Props {
     medlemskap: IMedlemskap;
@@ -29,14 +29,14 @@ const MedlemskapInfo: FC<Props> = ({ medlemskap, skalViseSøknadsdata }) => {
         <InformasjonContainer>
             {skalViseSøknadsdata && søknadsgrunnlag && (
                 <Informasjonsrad
-                    ikon={TabellIkon.SØKNAD}
+                    ikon={VilkårInfoIkon.SØKNAD}
                     label="Har bodd i Norge siste 5 år"
                     verdi={mapTrueFalse(søknadsgrunnlag.bosattNorgeSisteÅrene)}
                 />
             )}
             {finnesUnntakIMedl && (
                 <Informasjonsrad
-                    ikon={TabellIkon.SØKNAD}
+                    ikon={VilkårInfoIkon.SØKNAD}
                     label="Medlemskapstatus i MEDL"
                     verdi={
                         <TagMedTilpassetBredde variant={'warning'} size="small">

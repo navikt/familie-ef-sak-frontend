@@ -6,7 +6,8 @@ import {
 import { formaterNullableIsoDato, formaterNullableIsoÅr } from '../../../../App/utils/formatter';
 import { slåSammenTekst } from '../../../../App/utils/utils';
 import { FlexColumnContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
-import TabellVisning, { TabellIkon } from '../../Vilkårpanel/TabellVisning';
+import TabellVisning from '../../Vilkårpanel/TabellVisning';
+import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 
 interface Props {
     innflytting: IInnflyttingTilNorge[];
@@ -18,7 +19,7 @@ const InnflyttingUtflytting: React.FC<Props> = ({ innflytting, utflytting }) => 
         <FlexColumnContainer>
             <TabellVisning
                 tittel="Innflytting og utflytting"
-                ikon={TabellIkon.REGISTER}
+                ikon={VilkårInfoIkon.REGISTER}
                 kolonner={[
                     {
                         overskrift: 'Innflytting fra',
