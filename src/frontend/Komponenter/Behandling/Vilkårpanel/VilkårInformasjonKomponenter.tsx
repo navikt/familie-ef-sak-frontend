@@ -47,10 +47,8 @@ export const BarneInfoWrapper: FC<BarneInfoWrapperProps> = ({
             <UnderoverskriftWrapper>
                 <LiteBarn />
                 <HeadingMedUnderlinje size={'small'}>
-                    <>
-                        {navnOgAlderPåBarn}
-                        {dødsdato && <EtikettDød dødsdato={dødsdato} />}
-                    </>
+                    {navnOgAlderPåBarn}
+                    {dødsdato && <EtikettDød dødsdato={dødsdato} />}
                 </HeadingMedUnderlinje>
             </UnderoverskriftWrapper>
             {children}
