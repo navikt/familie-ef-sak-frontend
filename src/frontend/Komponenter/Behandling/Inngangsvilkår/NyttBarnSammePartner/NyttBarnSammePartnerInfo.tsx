@@ -19,7 +19,7 @@ const NyttBarnSammePartnerInfo: FC<Props> = ({ barnMedSamvær, tidligereVedtaksp
     const søknadsgrunnlagNyttBarn = mapTilSøknadsgrunnlagNyttBarn(barnMedSamvær);
     return (
         <>
-            <div>
+            <div style={{ marginBottom: '1.5rem' }}>
                 <TidligereVedtaksperioderSøkerOgAndreForeldre
                     tidligereVedtaksperioder={tidligereVedtaksperioder}
                     registergrunnlagNyttBarn={registergrunnlagNyttBarn}
