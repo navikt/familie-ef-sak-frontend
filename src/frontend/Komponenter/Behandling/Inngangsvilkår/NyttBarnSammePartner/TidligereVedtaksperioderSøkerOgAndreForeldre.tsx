@@ -11,7 +11,7 @@ import { useBehandling } from '../../../../App/context/BehandlingContext';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 import { IPersonopplysninger } from '../../../../App/typer/personopplysninger';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
-import TabellVisning from '../../Vilkårpanel/TabellVisning';
+import TabellVisning from '../../Tabell/TabellVisning';
 
 interface TidligereVedtaksperioderPåPartISak {
     fødselsnummer: string;

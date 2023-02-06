@@ -2,8 +2,8 @@ import * as React from 'react';
 import { FC } from 'react';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
 import { IOppholdstatus, oppholdsstatusTypeTilTekst } from './typer';
-import TabellVisning from '../../Vilkårpanel/TabellVisning';
 import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
+import TabellVisning from '../../Tabell/TabellVisning';
 
 interface Props {
     oppholdsstatus: IOppholdstatus[];
