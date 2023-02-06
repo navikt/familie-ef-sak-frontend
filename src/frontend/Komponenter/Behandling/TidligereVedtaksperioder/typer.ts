@@ -1,7 +1,7 @@
 export interface ITidligereVedtaksperioder {
     infotrygd?: ITidligereInnvilgetVedtak;
     sak?: ITidligereInnvilgetVedtak;
-    infotrygdPePp?: boolean;
+    historiskPensjon?: boolean;
 }
 
 export interface ITidligereInnvilgetVedtak {

@@ -123,7 +123,7 @@ const TidligereVedtaksperioderSøkerOgAndreForeldre: FC<{
                                 overskrift: 'Infotrygd (PE PP)',
                                 tekstVerdi: (d) =>
                                     formatterBooleanEllerUkjent(
-                                        d.tidligereVedtaksperioder.infotrygdPePp
+                                        d.tidligereVedtaksperioder.historiskPensjon
                                     ),
                             },
                         ]}

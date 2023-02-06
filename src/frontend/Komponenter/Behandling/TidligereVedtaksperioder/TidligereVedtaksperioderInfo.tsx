@@ -116,9 +116,9 @@ const TidligereVedtaksperioderInfo: FC<{ tidligereVedtaksperioder: ITidligereVed
                     Har bruker fått stønad før desember 2008 - <span>Infotrygd (PE PP)</span>
                 </SmallTextLabel>
                 <BodyShortSmall>
-                    {formatterBooleanEllerUkjent(tidligereVedtaksperioder.infotrygdPePp)}
+                    {formatterBooleanEllerUkjent(tidligereVedtaksperioder.historiskPensjon)}
                 </BodyShortSmall>
-                {tidligereVedtaksperioder.infotrygdPePp && <HistoriskpensjonLenke />}
+                {tidligereVedtaksperioder.historiskPensjon && <HistoriskpensjonLenke />}
             </FlexDiv>
         </>
     );
