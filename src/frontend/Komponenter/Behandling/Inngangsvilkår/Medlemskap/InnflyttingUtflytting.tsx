@@ -3,12 +3,9 @@ import {
     IInnflyttingTilNorge,
     IUtflyttingFraNorge,
 } from '../../../../App/typer/personopplysninger';
-import { Registergrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { formaterNullableIsoDato, formaterNullableIsoÅr } from '../../../../App/utils/formatter';
 import { slåSammenTekst } from '../../../../App/utils/utils';
-import { FlexDiv } from '../../../Oppgavebenk/OppgaveFiltrering';
 import { innflyttingHjelpetekst } from '../../../../Felles/Personopplysninger/InnvandringUtvandring';
-import { Label } from '@navikt/ds-react';
 import TabellVisning, { TabellIkon } from '../../Tabell/TabellVisning';
 
 interface Props {
@@ -19,12 +16,6 @@ interface Props {
 const InnflyttingUtflytting: React.FC<Props> = ({ innflytting, utflytting }) => {
     return (
         <>
-            <FlexDiv>
-                <Registergrunnlag />
-                <Label as={'h3'} style={{ marginLeft: '0.5rem' }}>
-                    Innflytting og utflytting
-                </Label>
-            </FlexDiv>
             <TabellVisning
                 tittel="Innflytting og utflytting"
                 ikon={TabellIkon.REGISTER}
