@@ -5,6 +5,7 @@ import {
 } from '../../../../App/typer/personopplysninger';
 import { formaterNullableIsoDato, formaterNullableIsoÅr } from '../../../../App/utils/formatter';
 import { slåSammenTekst } from '../../../../App/utils/utils';
+import { innflyttingÅrHelpText } from '../../../../Felles/Personopplysninger/InnvandringUtvandring';
 import { FlexColumnContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
 import TabellVisning from '../../Vilkårpanel/TabellVisning';
 import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
@@ -32,8 +33,7 @@ const InnflyttingUtflytting: React.FC<Props> = ({ innflytting, utflytting }) => 
                     {
                         overskrift: 'Innflyttet år',
                         tekstVerdi: (innflytting) => formaterNullableIsoÅr(innflytting.dato) || '',
-                        helperText:
-                            'Innflyttet år er basert på Folkeregisteret sitt gyldighetstidspunktet for innflytting. Denne har nødvendigvis ikke noen sammenheng med når innflyttingen skjedde i virkeligheten. Dersom man skal finne ut når en innflytting gjelder fra må man se på andre opplysninger, f.eks. den norske bostedsadressens fra-dato.',
+                        helperText: innflyttingÅrHelpText,
                     },
                 ]}
                 verdier={innflytting}
