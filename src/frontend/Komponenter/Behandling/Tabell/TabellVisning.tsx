@@ -36,6 +36,7 @@ export interface Kolonnedata<T> {
     tittel?: string;
     verdier: T[];
     kolonner: Kolonner<T>[];
+    ikonVisning?: boolean;
 }
 
 export interface Kolonner<T> {
@@ -62,9 +63,9 @@ const mapIkon = (ikon: TabellIkon) => {
 };
 
 function TabellVisning<T>(props: Kolonnedata<T>): React.ReactElement<Kolonnedata<T>> {
-    const { ikon, tittel, verdier, kolonner } = props;
+    const { ikon, tittel, verdier, kolonner, ikonVisning = true } = props;
     return (
-        <GridTabell kolonner={kolonner.length + 1} ikonVisning={!!ikon}>
+        <GridTabell kolonner={kolonner.length + 1} ikonVisning={ikonVisning}>
             {ikon && mapIkon(ikon)}
             {tittel && (
                 <Label size="small" className="tittel" as="h3">
