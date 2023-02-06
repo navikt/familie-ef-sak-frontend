@@ -11,6 +11,7 @@ import DokumentasjonSendtInn from '../DokumentasjonSendtInn';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 import { Label } from '@navikt/ds-react';
 import { utledNavnOgAlderPåGrunnlag } from '../utils';
+import { InformasjonContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
 
 interface Props {
     barnMedSamvær: IBarnMedSamvær[];
@@ -20,7 +21,7 @@ interface Props {
 
 const MorEllerFarInfo: FC<Props> = ({ barnMedSamvær, skalViseSøknadsdata, dokumentasjon }) => {
     return (
-        <>
+        <InformasjonContainer>
             {barnMedSamvær.map((barn: IBarnMedSamvær) => {
                 const { søknadsgrunnlag, registergrunnlag } = barn;
 
@@ -63,7 +64,7 @@ const MorEllerFarInfo: FC<Props> = ({ barnMedSamvær, skalViseSøknadsdata, doku
                     tittel={'Terminbekreftelse'}
                 />
             )}
-        </>
+        </InformasjonContainer>
     );
 };
 

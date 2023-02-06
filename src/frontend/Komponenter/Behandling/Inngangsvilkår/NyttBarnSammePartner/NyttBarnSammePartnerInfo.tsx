@@ -8,6 +8,7 @@ import TidligereVedtaksperioderSøkerOgAndreForeldre from './TidligereVedtaksper
 import { ITidligereVedtaksperioder } from '../../TidligereVedtaksperioder/typer';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 import { Label } from '@navikt/ds-react';
+import { InformasjonContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
 
 interface Props {
     barnMedSamvær: IBarnMedSamvær[];
@@ -18,7 +19,7 @@ const NyttBarnSammePartnerInfo: FC<Props> = ({ barnMedSamvær, tidligereVedtaksp
     const registergrunnlagNyttBarn = mapTilRegistergrunnlagNyttBarn(barnMedSamvær);
     const søknadsgrunnlagNyttBarn = mapTilSøknadsgrunnlagNyttBarn(barnMedSamvær);
     return (
-        <>
+        <InformasjonContainer>
             <div>
                 <TidligereVedtaksperioderSøkerOgAndreForeldre
                     tidligereVedtaksperioder={tidligereVedtaksperioder}
@@ -59,7 +60,7 @@ const NyttBarnSammePartnerInfo: FC<Props> = ({ barnMedSamvær, tidligereVedtaksp
                     </BodyShortSmall>
                 )}
             </div>
-        </>
+        </InformasjonContainer>
     );
 };
 export default NyttBarnSammePartnerInfo;

@@ -12,6 +12,7 @@ import { BehandlingStatus } from '../../../../App/typer/behandlingstatus';
 import DokumentasjonSendtInn from '../DokumentasjonSendtInn';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 import { Addresseopplysninger } from './Addresseopplysninger';
+import { InformasjonContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
 
 interface Props {
     grunnlag: IVilkårGrunnlag;
@@ -30,7 +31,7 @@ const SamlivInfo: FC<Props> = ({
         grunnlag;
 
     return (
-        <>
+        <InformasjonContainer>
             <GridTabell>
                 {skalViseSøknadsdata &&
                     sivilstand.søknadsgrunnlag &&
@@ -94,7 +95,7 @@ const SamlivInfo: FC<Props> = ({
                     />
                 </>
             )}
-        </>
+        </InformasjonContainer>
     );
 };
 

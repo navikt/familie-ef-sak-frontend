@@ -8,6 +8,7 @@ import { formaterIsoDato } from '../../../../App/utils/formatter';
 import DokumentasjonSendtInn from '../DokumentasjonSendtInn';
 import { IDokumentasjonGrunnlag } from '../vilkår';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
+import { InformasjonContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
 
 interface Props {
     sivilstand: ISivilstandInngangsvilkår;
@@ -18,7 +19,7 @@ interface Props {
 const SivilstandInfo: FC<Props> = ({ sivilstand, skalViseSøknadsdata, dokumentasjon }) => {
     const { registergrunnlag, søknadsgrunnlag } = sivilstand;
     return (
-        <>
+        <InformasjonContainer>
             <GridTabell>
                 <Registergrunnlag />
                 <BodyShortSmall>Sivilstatus</BodyShortSmall>
@@ -48,7 +49,7 @@ const SivilstandInfo: FC<Props> = ({ sivilstand, skalViseSøknadsdata, dokumenta
                     />
                 </>
             )}
-        </>
+        </InformasjonContainer>
     );
 };
 
