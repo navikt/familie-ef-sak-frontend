@@ -3,8 +3,8 @@ import { FC, useMemo } from 'react';
 import { formaterNullableIsoDato, mapTrueFalse } from '../../../../App/utils/formatter';
 import { IGyldigVedtakPeriode } from './typer';
 import { differenceInDays } from 'date-fns';
-import TabellVisning from '../../Vilkårpanel/TabellVisning';
 import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
+import TabellVisning from '../../Tabell/TabellVisning';
 
 interface Props {
     gyldigeVedtaksPerioder: IGyldigVedtakPeriode[];

@@ -6,8 +6,8 @@ import {
 import { formaterNullableIsoDato, formaterNullableIsoÅr } from '../../../../App/utils/formatter';
 import { slåSammenTekst } from '../../../../App/utils/utils';
 import { innflyttingÅrHelpText } from '../../../../Felles/Personopplysninger/InnvandringUtvandring';
+import TabellVisning from '../../Tabell/TabellVisning';
 import { FlexColumnContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
-import TabellVisning from '../../Vilkårpanel/TabellVisning';
 import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 
 interface Props {
