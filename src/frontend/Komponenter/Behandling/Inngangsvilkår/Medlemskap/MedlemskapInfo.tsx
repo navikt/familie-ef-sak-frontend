@@ -12,6 +12,7 @@ import InnflyttingUtflytting from './InnflyttingUtflytting';
 import UnntakIMedl from './UnntakIMedl';
 import { Tag } from '@navikt/ds-react';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
+import { InformasjonContainer } from '../../Vilkårpanel/StyledVilkårInfo';
 
 interface Props {
     medlemskap: IMedlemskap;
@@ -27,8 +28,8 @@ const MedlemskapInfo: FC<Props> = ({ medlemskap, skalViseSøknadsdata }) => {
     const finnesUnntakIMedl = medlUnntak.gyldigeVedtaksPerioder.length > 0;
 
     return (
-        <>
-            <GridTabell>
+        <InformasjonContainer>
+            <GridTabell underTabellMargin={0}>
                 {skalViseSøknadsdata && søknadsgrunnlag && (
                     <>
                         <Søknadsgrunnlag />
@@ -64,7 +65,7 @@ const MedlemskapInfo: FC<Props> = ({ medlemskap, skalViseSøknadsdata }) => {
             {skalViseSøknadsdata && finnesUtenlandsperioder && (
                 <Utenlandsopphold utenlandsopphold={søknadsgrunnlag.utenlandsopphold} />
             )}
-        </>
+        </InformasjonContainer>
     );
 };
 

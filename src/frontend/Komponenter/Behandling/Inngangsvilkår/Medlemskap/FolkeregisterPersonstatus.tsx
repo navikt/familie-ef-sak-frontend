@@ -13,7 +13,6 @@ const StyledDiv = styled.div`
     grid-template-rows: min-content;
     grid-gap: 0.5rem;
     grid-template-areas: '. .' '. status';
-    margin-bottom: 3rem;
 `;
 
 const StatusTekst = styled(BodyShortSmall)`

@@ -9,6 +9,7 @@ import Utenlandsopphold from '../Medlemskap/Utenlandsopphold';
 import InnflyttingUtflytting from '../Medlemskap/InnflyttingUtflytting';
 import FolkeregisterPersonstatus from '../Medlemskap/FolkeregisterPersonstatus';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
+import { InformasjonContainer } from '../../Vilkårpanel/StyledVilkårInfo';
 
 interface Props {
     medlemskap: IMedlemskap;
@@ -24,8 +25,8 @@ const OppholdInfo: FC<Props> = ({ medlemskap, skalViseSøknadsdata }) => {
         registergrunnlag.innflytting.length > 0 || registergrunnlag.utflytting.length > 0;
 
     return (
-        <>
-            <GridTabell>
+        <InformasjonContainer>
+            <GridTabell underTabellMargin={0}>
                 <Registergrunnlag />
                 <BodyShortSmall>Statsborgerskap</BodyShortSmall>
                 <BodyShortSmall>
@@ -56,7 +57,7 @@ const OppholdInfo: FC<Props> = ({ medlemskap, skalViseSøknadsdata }) => {
             {skalViseSøknadsdata && finnesUtenlandsperioder && (
                 <Utenlandsopphold utenlandsopphold={søknadsgrunnlag.utenlandsopphold} />
             )}
-        </>
+        </InformasjonContainer>
     );
 };
 export default OppholdInfo;
