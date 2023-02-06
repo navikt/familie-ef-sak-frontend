@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Registergrunnlag, Søknadsgrunnlag } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
-import { GridTabell } from '../../../Felles/Visningskomponenter/GridTabell';
 import { Calculator } from '@navikt/ds-icons';
 import { Heading, Label } from '@navikt/ds-react';
 import {
@@ -8,6 +7,29 @@ import {
     DetailSmall,
     SmallTextLabel,
 } from '../../../Felles/Visningskomponenter/Tekster';
+import styled from 'styled-components';
+
+const GridTabell = styled.div<{
+    kolonner?: number;
+    utenIkon: boolean;
+}>`
+    display: grid;
+    grid-template-columns: ${(props) => props.utenIkon && '21px'} min(200px, 250px) repeat(
+            ${(props) => (props.kolonner ? props.kolonner - 2 : 2)},
+            ${(props) => (props.kolonner && props.kolonner > 3 ? '150px' : '325px')}
+        );
+    grid-gap: 0.5rem;
+    .tittel {
+        padding-bottom: 0.25rem;
+        grid-column: ${(props) => (props.utenIkon ? 2 : 1)} /
+            ${(props) => (props.kolonner || 3) + 1};
+        display: flex;
+        align-items: center;
+    }
+    .førsteDataKolonne {
+        grid-column: ${(props) => (props.utenIkon ? '2/3' : '1/2')};
+    }
+`;
 
 export enum TabellIkon {
     REGISTER = 'REGISTER',
