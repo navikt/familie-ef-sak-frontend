@@ -110,7 +110,7 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
                         forelderRegister &&
                         harNavnFødselsdatoEllerFnr(forelderRegister) && (
                             <Informasjonsrad
-                                ikon={VilkårInfoIkon.SØKNAD}
+                                ikon={VilkårInfoIkon.REGISTER}
                                 label="Annen forelder bor i"
                                 verdi={
                                     forelderRegister?.bosattINorge
