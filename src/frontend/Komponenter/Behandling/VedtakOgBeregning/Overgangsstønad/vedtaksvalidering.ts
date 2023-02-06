@@ -82,7 +82,7 @@ export const validerVedtaksperioder = ({
     inntekter: IInntektsperiode[];
 }> => {
     const syvMånederFremITiden = tilÅrMåned(plusMåneder(new Date(), 7));
-    const tolvMånederFremITiden = tilÅrMåned(plusMåneder(new Date(), 12));
+    const attenMånederFremITiden = tilÅrMåned(plusMåneder(new Date(), 18));
 
     let harPeriodeFør7mndFremITiden = false;
 
@@ -152,10 +152,10 @@ export const validerVedtaksperioder = ({
                 årMånedFra: `Startdato (${årMånedFra}) mer enn 7mnd frem i tid`,
             };
         }
-        if (erMånedÅrEtter(tolvMånederFremITiden, årMånedFra) && harPeriodeFør7mndFremITiden) {
+        if (erMånedÅrEtter(attenMånederFremITiden, årMånedFra) && harPeriodeFør7mndFremITiden) {
             return {
                 ...vedtaksperiodeFeil,
-                årMånedFra: `Startdato (${årMånedFra}) mer enn 12mnd frem i tid`,
+                årMånedFra: `Startdato (${årMånedFra}) mer enn 18mnd frem i tid`,
             };
         }
         return vedtaksperiodeFeil;
@@ -186,9 +186,9 @@ export const validerVedtaksperioder = ({
                 };
             }
         }
-        if (erMånedÅrEtter(tolvMånederFremITiden, årMånedFra)) {
+        if (erMånedÅrEtter(attenMånederFremITiden, årMånedFra)) {
             return {
-                årMånedFra: `Startdato (${årMånedFra}) mer enn 12mnd frem i tid`,
+                årMånedFra: `Startdato (${årMånedFra}) mer enn 18mnd frem i tid`,
             };
         }
         return { årMånedFra: undefined };

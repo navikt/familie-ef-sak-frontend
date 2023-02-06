@@ -30,7 +30,8 @@ export const håndterFeil = <T>(
             error,
             innloggetSaksbehandler,
             `Savner body/status i response - Url: ${window.location.href} - Prøvde å kalle ${error.config?.url} (${error.config?.method}) requestId=${requestId}`,
-            headers
+            headers,
+            true
         );
         return lagUkjentFeilRessurs(headers);
     }

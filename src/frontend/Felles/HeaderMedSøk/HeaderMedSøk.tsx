@@ -68,6 +68,14 @@ const lagModia = (appEnv: AppEnv, personIdent: string | undefined): PopoverItem 
     };
 };
 
+const lagHistoriskPensjon = (appEnv: AppEnv): PopoverItem => {
+    return {
+        name: 'Vedtak før des. 2008 (Historisk pensjon)',
+        href: appEnv.historiskPensjon,
+        isExternal: true,
+    };
+};
+
 const lagEksterneLenker = (
     axiosRequest: AxiosRequestCallback,
     appEnv: AppEnv,
@@ -81,6 +89,7 @@ const lagEksterneLenker = (
         lagAInntekt(axiosRequest, appEnv, fagsakId, fagsakPersonId),
         lagGosys(appEnv, personIdent),
         lagModia(appEnv, personIdent),
+        lagHistoriskPensjon(appEnv),
     ];
     if (harTilgangTilRolle(appEnv, innloggetSaksbehandler, 'saksbehandler')) {
         eksterneLenker.push({

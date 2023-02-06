@@ -12,8 +12,6 @@ export enum ToggleName {
     visAutomatiskUtfylleVilkår = 'familie.ef.sak.frontend-automatisk-utfylle-vilkar',
     visSatsendring = 'familie.ef.sak.frontend-vis-satsendring',
     førstegangsbehandling = 'familie.ef.sak.opprett-forstegangsbehandling',
-    visSettPåVentKnapp = 'familie.ef.sak.frontend.vis-sett-pa-vent-knapp',
     visEndringerPersonopplysninger = 'familie.ef.sak.frontend.personopplysninger-endringer',
-    automatiskeHjemlerBrev = 'familie.ef.sak.frontend.automatiske-hjemler-brev',
     angreSendTilBeslutter = 'familie.ef.sak.frontend-angre-send-til-beslutter',
 }

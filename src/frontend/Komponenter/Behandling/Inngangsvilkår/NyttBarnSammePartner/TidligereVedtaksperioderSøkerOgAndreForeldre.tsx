@@ -5,7 +5,7 @@ import {
     ITidligereVedtaksperioder,
 } from '../../TidligereVedtaksperioder/typer';
 import { Tooltip } from '@navikt/ds-react';
-import { mapTrueFalse } from '../../../../App/utils/formatter';
+import { formatterBooleanEllerUkjent, mapTrueFalse } from '../../../../App/utils/formatter';
 import { nonNull } from '../../../../App/utils/utils';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
@@ -50,7 +50,7 @@ const mapAndreForeldrerMedTidligereVedaksperioder = (
 };
 
 const jaNeiMedToolTip = (tidligereVedtak: ITidligereInnvilgetVedtak | undefined) => {
-    if (!tidligereVedtak) return null;
+    if (!tidligereVedtak) return 'Ukjent';
     const { harTidligereOvergangsstønad, harTidligereBarnetilsyn, harTidligereSkolepenger } =
         tidligereVedtak;
     const harTidligereVedtak: boolean =
@@ -103,8 +103,8 @@ const TidligereVedtaksperioderSøkerOgAndreForeldre: FC<{
                         tittel={
                             'Har brukeren eller annen forelder mottatt stønader etter kap. 15 før?'
                         }
-                        verdier={verdier}
                         ikonVisning={false}
+                        verdier={verdier}
                         kolonner={[
                             {
                                 overskrift: 'Navn',
@@ -115,9 +115,16 @@ const TidligereVedtaksperioderSøkerOgAndreForeldre: FC<{
                                 tekstVerdi: (d) => jaNeiMedToolTip(d.tidligereVedtaksperioder.sak),
                             },
                             {
-                                overskrift: 'Infotrygd (kun EF VP)',
+                                overskrift: 'Infotrygd (EF VP)',
                                 tekstVerdi: (d) =>
                                     jaNeiMedToolTip(d.tidligereVedtaksperioder.infotrygd),
+                            },
+                            {
+                                overskrift: 'Infotrygd (PE PP)',
+                                tekstVerdi: (d) =>
+                                    formatterBooleanEllerUkjent(
+                                        d.tidligereVedtaksperioder.infotrygdPePp
+                                    ),
                             },
                         ]}
                     />

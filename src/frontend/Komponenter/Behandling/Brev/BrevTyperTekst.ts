@@ -25,7 +25,7 @@ export const initielleAvsnittVedtakInvilgelse: AvsnittMedId[] = [
     {
         deloverskrift: 'Du har rett til å klage',
         innhold:
-            'Hvis du vil klage, må du gjøre dette innen 6 uker fra den datoen du fikk dette vedtaket. Du finner skjema og informasjon på nav.no/klage.',
+            'Hvis du vil klage, må du gjøre dette innen 6 uker fra den datoen du fikk dette vedtaket. Du finner skjema og informasjon på klage.nav.no/nb/familie/enslig-mor-eller-far.',
         id: uuidv4(),
     },
     {
@@ -45,7 +45,7 @@ export const initielleAvsnittVedtakAvslagOvergangsstønad: AvsnittMedId[] = [
     {
         deloverskrift: 'Du har rett til å klage',
         innhold:
-            'Hvis du vil klage, må du gjøre dette innen 6 uker fra den datoen du fikk dette vedtaket. Du finner skjema og informasjon på nav.no/klage.',
+            'Hvis du vil klage, må du gjøre dette innen 6 uker fra den datoen du fikk dette vedtaket. Du finner skjema og informasjon på klage.nav.no/nb/familie/enslig-mor-eller-far.',
         id: uuidv4(),
     },
     {
@@ -65,7 +65,7 @@ export const initielleAvsnittVedtakOpphørBarnetilsyn: AvsnittMedId[] = [
     {
         deloverskrift: 'Du har rett til å klage',
         innhold:
-            'Hvis du vil klage, må du gjøre dette innen 6 uker fra den datoen du fikk dette vedtaket. Du finner skjema og informasjon på nav.no/klage.',
+            'Hvis du vil klage, må du gjøre dette innen 6 uker fra den datoen du fikk dette vedtaket. Du finner skjema og informasjon på klage.nav.no/nb/familie/enslig-mor-eller-far.',
         id: uuidv4(),
     },
     {
@@ -85,7 +85,7 @@ export const initielleAvsnittVedtakOpphørSkolepenger: AvsnittMedId[] = [
     {
         deloverskrift: 'Du har rett til å klage',
         innhold:
-            'Hvis du vil klage, må du gjøre dette innen 6 uker fra den datoen du fikk dette vedtaket. Du finner skjema og informasjon på nav.no/klage.',
+            'Hvis du vil klage, må du gjøre dette innen 6 uker fra den datoen du fikk dette vedtaket. Du finner skjema og informasjon på klage.nav.no/nb/familie/enslig-mor-eller-far.',
         id: uuidv4(),
     },
     {
@@ -111,7 +111,7 @@ export const initielleAvsnittVedtakInvilgelseBarnetilsyn: AvsnittMedId[] = [
     {
         deloverskrift: 'Du har rett til å klage',
         innhold:
-            'Hvis du vil klage, må du gjøre dette innen 6 uker fra den datoen du fikk dette vedtaket. Du finner skjema og informasjon på nav.no/klage.',
+            'Hvis du vil klage, må du gjøre dette innen 6 uker fra den datoen du fikk dette vedtaket. Du finner skjema og informasjon på klage.nav.no/nb/familie/enslig-mor-eller-far.',
         id: uuidv4(),
     },
     {
@@ -131,7 +131,7 @@ export const initielleAvsnittVedtakAvslagBarnetilsyn: AvsnittMedId[] = [
     {
         deloverskrift: 'Du har rett til å klage',
         innhold:
-            'Hvis du vil klage, må du gjøre dette innen 6 uker fra den datoen du fikk dette vedtaket. Du finner skjema og informasjon på nav.no/klage.',
+            'Hvis du vil klage, må du gjøre dette innen 6 uker fra den datoen du fikk dette vedtaket. Du finner skjema og informasjon på klage.nav.no/nb/familie/enslig-mor-eller-far.',
         id: uuidv4(),
     },
     {
@@ -284,7 +284,7 @@ export const initielleAvsnittVedtakInvilgelseSkolepenger: AvsnittMedId[] = [
     {
         deloverskrift: 'Du har rett til å klage',
         innhold:
-            'Hvis du vil klage, må du gjøre dette innen 6 uker fra den datoen du fikk dette vedtaket. Du finner skjema og informasjon på nav.no/klage.',
+            'Hvis du vil klage, må du gjøre dette innen 6 uker fra den datoen du fikk dette vedtaket. Du finner skjema og informasjon på klage.nav.no/nb/familie/enslig-mor-eller-far.',
         id: uuidv4(),
     },
     {
@@ -304,7 +304,7 @@ export const initielleAvsnittVedtakAvslagSkolepenger: AvsnittMedId[] = [
     {
         deloverskrift: 'Du har rett til å klage',
         innhold:
-            'Hvis du vil klage, må du gjøre dette innen 6 uker fra den datoen du fikk dette vedtaket. Du finner skjema og informasjon på nav.no/klage.',
+            'Hvis du vil klage, må du gjøre dette innen 6 uker fra den datoen du fikk dette vedtaket. Du finner skjema og informasjon på klage.nav.no/nb/familie/enslig-mor-eller-far.',
         id: uuidv4(),
     },
     {
