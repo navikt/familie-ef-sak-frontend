@@ -16,15 +16,13 @@ const StyledInnflyttetÅrHeader = styled.div`
     padding-right: 1rem;
 `;
 
-export const headerForInnflyttingTabell: React.ReactNode = (
+export const innflyttingHjelpetekst =
+    'Innflyttet år er basert på Folkeregisteret sitt gyldighetstidspunktet for innflytting. Denne har nødvendigvis ikke noen sammenheng med når innflyttingen skjedde i virkeligheten. Dersom man skal finne ut når en innflytting gjelder fra må man se på andre opplysninger, f.eks. den norske bostedsadressens fra-dato.';
+
+const headerForInnflyttingTabell: React.ReactNode = (
     <div style={{ display: 'flex' }}>
         <StyledInnflyttetÅrHeader>Innflyttet år</StyledInnflyttetÅrHeader>
-        <HelpText>
-            Innflyttet år er basert på Folkeregisteret sitt gyldighetstidspunktet for innflytting.
-            Denne har nødvendigvis ikke noen sammenheng med når innflyttingen skjedde i
-            virkeligheten. Dersom man skal finne ut når en innflytting gjelder fra må man se på
-            andre opplysninger, f.eks. den norske bostedsadressens fra-dato.
-        </HelpText>
+        <HelpText>{innflyttingHjelpetekst}</HelpText>
     </div>
 );
 

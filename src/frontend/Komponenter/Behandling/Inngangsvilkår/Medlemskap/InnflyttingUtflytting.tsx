@@ -6,10 +6,10 @@ import {
 import { Registergrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { formaterNullableIsoDato, formaterNullableIsoÅr } from '../../../../App/utils/formatter';
 import { slåSammenTekst } from '../../../../App/utils/utils';
-import { Tabell } from '../NyttBarnSammePartner/Tabell';
 import { FlexDiv } from '../../../Oppgavebenk/OppgaveFiltrering';
-import { headerForInnflyttingTabell } from '../../../../Felles/Personopplysninger/InnvandringUtvandring';
+import { innflyttingHjelpetekst } from '../../../../Felles/Personopplysninger/InnvandringUtvandring';
 import { Label } from '@navikt/ds-react';
+import TabellVisning, { TabellIkon } from '../../Tabell/TabellVisning';
 
 interface Props {
     innflytting: IInnflyttingTilNorge[];
@@ -25,7 +25,9 @@ const InnflyttingUtflytting: React.FC<Props> = ({ innflytting, utflytting }) => 
                     Innflytting og utflytting
                 </Label>
             </FlexDiv>
-            <Tabell
+            <TabellVisning
+                tittel="Innflytting og utflytting"
+                ikon={TabellIkon.REGISTER}
                 kolonner={[
                     {
                         overskrift: 'Innflytting fra',
@@ -36,13 +38,14 @@ const InnflyttingUtflytting: React.FC<Props> = ({ innflytting, utflytting }) => 
                             ),
                     },
                     {
-                        overskrift: headerForInnflyttingTabell,
+                        overskrift: 'Innflyttet år',
+                        hjelpetekst: innflyttingHjelpetekst,
                         tekstVerdi: (innflytting) => formaterNullableIsoÅr(innflytting.dato) || '',
                     },
                 ]}
-                data={innflytting}
+                verdier={innflytting}
             />
-            <Tabell
+            <TabellVisning
                 kolonner={[
                     {
                         overskrift: 'Utflytting til',
@@ -57,7 +60,7 @@ const InnflyttingUtflytting: React.FC<Props> = ({ innflytting, utflytting }) => 
                         tekstVerdi: (utflytting) => formaterNullableIsoDato(utflytting.dato) || '',
                     },
                 ]}
-                data={utflytting}
+                verdier={utflytting}
             />
         </>
     );
