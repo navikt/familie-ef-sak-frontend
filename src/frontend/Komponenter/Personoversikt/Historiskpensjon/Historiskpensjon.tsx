@@ -1,12 +1,10 @@
-import React, { useMemo } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { AlertInfo, AlertWarning } from '../../../Felles/Visningskomponenter/Alerts';
-import { AxiosRequestConfig } from 'axios';
-import { useDataHenter } from '../../../App/hooks/felles/useDataHenter';
-import { IHistoriskPensjon } from '../../../App/typer/historiskpensjon';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { BodyShort, Button, Link } from '@navikt/ds-react';
 import { ExternalLink } from '@navikt/ds-icons';
+import { useHentHistoriskPensjon } from '../../../App/hooks/useHentHistoriskPensjon';
 
 const FlexBox = styled.div`
     display: flex;
@@ -25,15 +23,11 @@ const StyledInfoStripe = styled(AlertInfo)`
 `;
 
 const Historiskpensjon: React.FC<{ fagsakPersonId: string }> = ({ fagsakPersonId }) => {
-    const historiskPensjonConfig: AxiosRequestConfig = useMemo(
-        () => ({
-            method: 'GET',
-            url: `/familie-ef-sak/api/historiskpensjon/${fagsakPersonId}`,
-        }),
-        [fagsakPersonId]
-    );
+    const { hentForFagsakPersonId, historiskPensjon } = useHentHistoriskPensjon();
 
-    const historiskPensjon = useDataHenter<IHistoriskPensjon, null>(historiskPensjonConfig);
+    useEffect(() => {
+        hentForFagsakPersonId(fagsakPersonId);
+    }, [hentForFagsakPersonId, fagsakPersonId]);
 
     return (
         <DataViewer response={{ historiskPensjon }}>
