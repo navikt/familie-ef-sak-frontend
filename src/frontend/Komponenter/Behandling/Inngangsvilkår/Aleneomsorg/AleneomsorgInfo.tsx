@@ -39,19 +39,19 @@ const AleneomsorgInfo: FC<{
         );
     };
 
+    const navnOgAlderPåBarn = registergrunnlag.navn
+        ? utledNavnOgAlder(
+              registergrunnlag.navn,
+              registergrunnlag.fødselsdato,
+              registergrunnlag.dødsdato
+          )
+        : søknadsgrunnlag.navn && søknadsgrunnlag.navn !== ''
+        ? 'Ikke utfylt'
+        : 'Ikke født';
+
     return (
         <BarneInfoWrapper
-            navnOgAlderPåBarn={
-                registergrunnlag.navn
-                    ? utledNavnOgAlder(
-                          registergrunnlag.navn,
-                          registergrunnlag.fødselsdato,
-                          registergrunnlag.dødsdato
-                      )
-                    : søknadsgrunnlag.navn && søknadsgrunnlag.navn !== ''
-                    ? 'Ikke utfylt'
-                    : 'Ikke født'
-            }
+            navnOgAlderPåBarn={navnOgAlderPåBarn}
             dødsdato={registergrunnlag.dødsdato}
         >
             {registergrunnlag.fødselsnummer ? (
