@@ -15,7 +15,7 @@ export interface Kolonnedata<T> {
 
 export interface Kolonner<T> {
     overskrift: string;
-    helperText?: string;
+    hjelpetekst?: string;
     tekstVerdi: (data: T) => React.ReactNode;
 }
 
@@ -39,7 +39,7 @@ function TabellVisning<T>(props: Kolonnedata<T>): React.ReactElement<Kolonnedata
                     <Detail>
                         <strong>{kolonne.overskrift}</strong>
                     </Detail>
-                    {kolonne.helperText && <HelpText>{kolonne.helperText}</HelpText>}
+                    {kolonne.hjelpetekst && <HelpText>{kolonne.hjelpetekst}</HelpText>}
                 </FlexDiv>
             ))}
             {verdier.map((item) =>

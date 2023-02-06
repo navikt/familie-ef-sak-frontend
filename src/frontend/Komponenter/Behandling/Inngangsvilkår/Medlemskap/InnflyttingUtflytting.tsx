@@ -33,7 +33,7 @@ const InnflyttingUtflytting: React.FC<Props> = ({ innflytting, utflytting }) => 
                     {
                         overskrift: 'Innflyttet år',
                         tekstVerdi: (innflytting) => formaterNullableIsoÅr(innflytting.dato) || '',
-                        helperText: innflyttingÅrHelpText,
+                        hjelpetekst: innflyttingÅrHelpText,
                     },
                 ]}
                 verdier={innflytting}
