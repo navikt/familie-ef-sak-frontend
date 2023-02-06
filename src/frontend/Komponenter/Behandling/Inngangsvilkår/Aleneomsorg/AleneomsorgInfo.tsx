@@ -56,7 +56,7 @@ const AleneomsorgInfo: FC<{
         >
             {registergrunnlag.fødselsnummer ? (
                 <Informasjonsrad
-                    ikon={VilkårInfoIkon.SØKNAD}
+                    ikon={VilkårInfoIkon.REGISTER}
                     label="Fødsels eller D-nummer"
                     verdiSomString={false}
                     verdi={
