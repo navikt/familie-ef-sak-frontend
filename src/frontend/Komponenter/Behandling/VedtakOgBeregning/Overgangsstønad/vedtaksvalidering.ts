@@ -108,6 +108,12 @@ export const validerVedtaksperioder = ({
         if (periodeType === '' || periodeType === undefined) {
             vedtaksperiodeFeil = { ...vedtaksperiodeFeil, periodeType: 'Mangler periodetype' };
         }
+        if (periodeType === EPeriodetype.MIDLERTIDIG_OPPHØR && index === perioder.length - 1) {
+            vedtaksperiodeFeil = {
+                ...vedtaksperiodeFeil,
+                periodeType: 'Siste periode kan ikke være opphør/ingen stønad',
+            };
+        }
 
         if (aktivitet === undefined || aktivitet === '') {
             vedtaksperiodeFeil = { ...vedtaksperiodeFeil, aktivitet: 'Mangler aktivitetstype' };

@@ -1,6 +1,11 @@
 import { FormErrors } from '../../../../App/hooks/felles/useFormState';
 import { InnvilgeVedtakForm } from './Vedtaksform';
-import { ERadioValg, IPeriodeMedBeløp, IUtgiftsperiode } from '../../../../App/typer/vedtak';
+import {
+    ERadioValg,
+    EUtgiftsperiodetype,
+    IPeriodeMedBeløp,
+    IUtgiftsperiode,
+} from '../../../../App/typer/vedtak';
 import { erMånedÅrEtter, erMånedÅrEtterEllerLik } from '../../../../App/utils/dato';
 import { erOpphørEllerSanksjon } from './utils';
 
@@ -91,6 +96,12 @@ export const validerUtgiftsperioder = ({
 
         if (!periodetype) {
             return { ...utgiftsperiodeFeil, periodetype: 'Mangler valg for periodetype' };
+        }
+        if (periodetype === EUtgiftsperiodetype.OPPHØR && index === utgiftsperioder.length - 1) {
+            return {
+                ...utgiftsperiodeFeil,
+                periodetype: 'Siste periode kan ikke være opphør/ingen stønad',
+            };
         }
 
         const opphørEllerSanksjon = erOpphørEllerSanksjon(periodetype);
