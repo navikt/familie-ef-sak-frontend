@@ -93,11 +93,12 @@ export const validerUtgiftsperioder = ({
             barn: [],
             utgifter: undefined,
         };
+        const erSistePeriode = index === utgiftsperioder.length - 1;
 
         if (!periodetype) {
             return { ...utgiftsperiodeFeil, periodetype: 'Mangler valg for periodetype' };
         }
-        if (periodetype === EUtgiftsperiodetype.OPPHØR && index === utgiftsperioder.length - 1) {
+        if (periodetype === EUtgiftsperiodetype.OPPHØR && erSistePeriode) {
             return {
                 ...utgiftsperiodeFeil,
                 periodetype: 'Siste periode kan ikke være opphør/ingen stønad',

@@ -94,6 +94,7 @@ export const validerVedtaksperioder = ({
             årMånedFra: undefined,
             årMånedTil: undefined,
         };
+        const erSistePeriode = index === perioder.length - 1;
 
         if (
             skalValidereOver8(periodeType, aktivitet) &&
@@ -108,7 +109,7 @@ export const validerVedtaksperioder = ({
         if (periodeType === '' || periodeType === undefined) {
             vedtaksperiodeFeil = { ...vedtaksperiodeFeil, periodeType: 'Mangler periodetype' };
         }
-        if (periodeType === EPeriodetype.MIDLERTIDIG_OPPHØR && index === perioder.length - 1) {
+        if (periodeType === EPeriodetype.MIDLERTIDIG_OPPHØR && erSistePeriode) {
             vedtaksperiodeFeil = {
                 ...vedtaksperiodeFeil,
                 periodeType: 'Siste periode kan ikke være opphør/ingen stønad',
