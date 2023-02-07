@@ -69,17 +69,15 @@ const Søknadsinformasjon: FC<Props> = ({ sivilstandtype, søknad }) => {
                     />
 
                     {søknad.årsakEnslig === EÅrsakEnslig.samlivsbruddForeldre && (
-                        <>
-                            <Informasjonsrad
-                                ikon={VilkårInfoIkon.SØKNAD}
-                                label="Dato for samlivsbrudd"
-                                verdi={
-                                    søknad.samlivsbruddsdato
-                                        ? formaterNullableIsoDato(søknad.samlivsbruddsdato)
-                                        : '-'
-                                }
-                            />
-                        </>
+                        <Informasjonsrad
+                            ikon={VilkårInfoIkon.SØKNAD}
+                            label="Dato for samlivsbrudd"
+                            verdi={
+                                søknad.samlivsbruddsdato
+                                    ? formaterNullableIsoDato(søknad.samlivsbruddsdato)
+                                    : '-'
+                            }
+                        />
                     )}
 
                     {søknad.årsakEnslig === EÅrsakEnslig.samlivsbruddAndre && (
