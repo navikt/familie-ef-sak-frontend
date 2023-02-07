@@ -24,7 +24,7 @@ export const Addresseopplysninger: FC<Props> = ({ data }) => {
                 <Informasjonsrad
                     ikon={VilkårInfoIkon.SØKNAD}
                     label="Har meldt adresseendring til Folkeregisteret"
-                    verdi={data.harMeldtAdresseendring}
+                    verdi={mapTrueFalse(data.harMeldtAdresseendring)}
                 />
             )}
         </>
