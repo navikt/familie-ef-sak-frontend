@@ -31,7 +31,7 @@ const TabellTidligereVedtaksperioder: React.FC<ITidligereVedtaksperioder> = ({
             verdi: { sak?: boolean; infotrygd?: boolean };
         }>
             ikon={TabellIkon.REGISTER}
-            tittel="Har bruker tidligere vedtaksperioder i EF Sak eller Infotrygd"
+            tittel="Har bruker tidligere vedtaksperioder i EF Sak eller Infotrygd (kun EF VP)"
             verdier={[
                 {
                     stønad: Stønadstype.OVERGANGSSTØNAD,
