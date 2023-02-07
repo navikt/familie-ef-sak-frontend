@@ -23,6 +23,7 @@ const RegistergrunnlagNyttBarnInnhold: FC<Props> = ({ barn }) => {
             <Informasjonsrad
                 ikon={VilkårInfoIkon.REGISTER}
                 label="Fødsels eller D-nummer"
+                verdiSomString={false}
                 verdi={
                     barn.fødselsnummer && (
                         <KopierbartNullableFødselsnummer fødselsnummer={barn.fødselsnummer} />
@@ -33,6 +34,7 @@ const RegistergrunnlagNyttBarnInnhold: FC<Props> = ({ barn }) => {
                 <Informasjonsrad
                     ikon={VilkårInfoIkon.REGISTER}
                     label="Annen forelder fra folkeregister"
+                    verdiSomString={false}
                     verdi={<AnnenForelderNavnOgFnr forelder={annenForelderRegister} />}
                 />
             )}
