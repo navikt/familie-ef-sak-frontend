@@ -36,10 +36,9 @@ export const DokumentasjonUtdanning: React.FC<VilkårProps> = ({
         >
             <VilkårpanelInnhold>
                 {{
-                    venstre: grunnlag.aktivitet && (
+                    venstre: grunnlag.aktivitet && skalViseSøknadsdata && (
                         <DokumentasjonUtdanningInfo
                             aktivitet={grunnlag.aktivitet}
-                            skalViseSøknadsdata={skalViseSøknadsdata}
                             dokumentasjon={grunnlag.dokumentasjon}
                         />
                     ),

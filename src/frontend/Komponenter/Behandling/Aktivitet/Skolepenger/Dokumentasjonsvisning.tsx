@@ -8,7 +8,6 @@ import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponente
 
 interface Props {
     aktivitet: IAktivitet;
-    skalViseSøknadsdata: boolean;
 }
 
 const Dokumentasjonsvisning: FC<Props> = ({ aktivitet }) => {

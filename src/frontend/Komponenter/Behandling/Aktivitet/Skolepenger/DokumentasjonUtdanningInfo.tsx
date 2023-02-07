@@ -7,29 +7,18 @@ import { InformasjonContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
 
 interface Props {
     aktivitet: IAktivitet;
-    skalViseSøknadsdata: boolean;
     dokumentasjon?: IDokumentasjonGrunnlag;
 }
 
-const DokumentasjonUtdanningInfo: FC<Props> = ({
-    aktivitet,
-    skalViseSøknadsdata,
-    dokumentasjon,
-}) => {
+const DokumentasjonUtdanningInfo: FC<Props> = ({ aktivitet, dokumentasjon }) => {
     return (
         <InformasjonContainer>
-            {skalViseSøknadsdata && (
-                <Dokumentasjonsvisning
-                    aktivitet={aktivitet}
-                    skalViseSøknadsdata={skalViseSøknadsdata}
-                />
-            )}
-            {skalViseSøknadsdata && (
-                <DokumentasjonSendtInn
-                    dokumentasjon={dokumentasjon?.utdanningsutgifter}
-                    tittel={'Utgifter til skolepenger'}
-                />
-            )}
+            <Dokumentasjonsvisning aktivitet={aktivitet} />
+
+            <DokumentasjonSendtInn
+                dokumentasjon={dokumentasjon?.utdanningsutgifter}
+                tittel={'Utgifter til skolepenger'}
+            />
         </InformasjonContainer>
     );
 };

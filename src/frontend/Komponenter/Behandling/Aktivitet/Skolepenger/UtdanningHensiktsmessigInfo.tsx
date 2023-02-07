@@ -44,10 +44,7 @@ const UtdanningHensiktsmessigInfo: FC<Props> = ({ aktivitet, skalViseSøknadsdat
             {skalViseSøknadsdata ? (
                 <>
                     <HovedTabell>
-                        <Dokumentasjonsvisning
-                            aktivitet={aktivitet}
-                            skalViseSøknadsdata={skalViseSøknadsdata}
-                        />
+                        <Dokumentasjonsvisning aktivitet={aktivitet} />
                         <>
                             <Søknadsgrunnlag />
                             <BodyShortSmall>Målet med utdanningen</BodyShortSmall>
