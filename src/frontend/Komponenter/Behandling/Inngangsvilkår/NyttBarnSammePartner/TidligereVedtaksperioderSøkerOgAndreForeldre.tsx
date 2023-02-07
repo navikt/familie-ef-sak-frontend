@@ -57,7 +57,9 @@ const jaNeiMedToolTip = (tidligereVedtak: ITidligereInnvilgetVedtak | undefined)
         harTidligereOvergangsstønad || harTidligereBarnetilsyn || harTidligereSkolepenger;
     return (
         <Tooltip
-            content={`OS: ${harTidligereOvergangsstønad} BT: ${harTidligereBarnetilsyn} SP: ${harTidligereSkolepenger}`}
+            content={`OS: ${mapTrueFalse(harTidligereOvergangsstønad)} BT: ${mapTrueFalse(
+                harTidligereBarnetilsyn
+            )} SP: ${mapTrueFalse(harTidligereSkolepenger)}`}
         >
             <BodyShortSmall>{mapTrueFalse(harTidligereVedtak)}</BodyShortSmall>
         </Tooltip>
@@ -123,7 +125,7 @@ const TidligereVedtaksperioderSøkerOgAndreForeldre: FC<{
                                 overskrift: 'Infotrygd (PE PP)',
                                 tekstVerdi: (d) =>
                                     formatterBooleanEllerUkjent(
-                                        d.tidligereVedtaksperioder.infotrygdPePp
+                                        d.tidligereVedtaksperioder.historiskPensjon
                                     ),
                             },
                         ]}

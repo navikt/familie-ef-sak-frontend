@@ -389,3 +389,19 @@ export const initielleAvsnittForlengetSvartid: AvsnittMedId[] = [
         id: uuidv4(),
     },
 ];
+
+export const initielleAvsnittTrukketSøknad: AvsnittMedId[] = [
+    {
+        deloverskrift: '',
+        innhold:
+            'Du har gitt oss beskjed om at du trekker søknaden din om [stønad]. Vi har derfor avsluttet saken din.',
+        id: uuidv4(),
+        skalSkjulesIBrevbygger: false,
+    },
+    {
+        deloverskrift: 'Har du spørsmål?',
+        innhold:
+            'Du finner informasjon som kan være nyttig for deg på nav.no/alene-med-barn. Du kan også kontakte oss på nav.no/kontakt.',
+        id: uuidv4(),
+    },
+];
