@@ -36,7 +36,7 @@ const MedlemskapInfo: FC<Props> = ({ medlemskap, skalViseSøknadsdata }) => {
             )}
             {finnesUnntakIMedl && (
                 <Informasjonsrad
-                    ikon={VilkårInfoIkon.SØKNAD}
+                    ikon={VilkårInfoIkon.REGISTER}
                     label="Medlemskapstatus i MEDL"
                     verdi={
                         <TagMedTilpassetBredde variant={'warning'} size="small">
