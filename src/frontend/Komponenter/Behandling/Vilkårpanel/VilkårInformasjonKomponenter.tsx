@@ -46,7 +46,7 @@ export const BarneInfoWrapper: FC<BarneInfoWrapperProps> = ({
         <FlexColumnContainer gap={1.5}>
             <UnderoverskriftWrapper>
                 <LiteBarn />
-                <HeadingMedUnderlinje size={'small'}>
+                <HeadingMedUnderlinje size="xsmall">
                     {navnOgAlderPåBarn}
                     {dødsdato && <EtikettDød dødsdato={dødsdato} />}
                 </HeadingMedUnderlinje>
