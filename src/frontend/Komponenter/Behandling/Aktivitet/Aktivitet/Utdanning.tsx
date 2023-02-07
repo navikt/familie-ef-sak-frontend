@@ -64,10 +64,10 @@ export const UnderUtdanning: FC<{
     );
 };
 
-export const TidligereUtdanninger: FC<{ tidligereUtdanninger?: ITidligereUtdanning[] }> = ({
+export const TidligereUtdanninger: FC<{ tidligereUtdanninger: ITidligereUtdanning[] }> = ({
     tidligereUtdanninger,
 }) => {
-    return tidligereUtdanninger ? (
+    return (
         <TabellVisning
             ikonVisning={true}
             verdier={tidligereUtdanninger}
@@ -83,5 +83,5 @@ export const TidligereUtdanninger: FC<{ tidligereUtdanninger?: ITidligereUtdanni
                 },
             ]}
         />
-    ) : null;
+    );
 };
