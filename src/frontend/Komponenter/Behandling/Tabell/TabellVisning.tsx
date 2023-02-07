@@ -17,7 +17,7 @@ export interface Kolonner<T> {
     tekstVerdi: (data: T) => React.ReactNode;
 }
 
-const breddeKolonner = (antallKolonner?: number) => {
+const breddeKolonner = (antallKolonner: number) => {
     if (antallKolonner === 4) {
         return '150px';
     } else if (antallKolonner === 5) {
@@ -28,20 +28,19 @@ const breddeKolonner = (antallKolonner?: number) => {
 };
 
 const GridTabell = styled.div<{
-    kolonner?: number;
+    kolonner: number;
     ikonVisning: boolean;
 }>`
     display: grid;
     grid-template-columns: ${(props) => props.ikonVisning && '21px'} min(200px, 250px) repeat(
-            ${(props) => (props.kolonner ? props.kolonner - 2 : 2)},
+            ${(props) => props.kolonner - 2},
             ${(props) => breddeKolonner(props.kolonner)}
         );
     grid-gap: 0.5rem;
 
     .tittel {
         padding-bottom: 0.25rem;
-        grid-column: ${(props) => (props.ikonVisning ? 2 : 1)} /
-            ${(props) => (props.kolonner || 3) + 1};
+        grid-column: ${(props) => (props.ikonVisning ? 2 : 1)} / ${(props) => props.kolonner + 1};
 
         display: flex;
         align-items: center;
