@@ -17,19 +17,26 @@ interface Props {
 
 const SivilstandInfo: FC<Props> = ({ sivilstand, skalViseSøknadsdata, dokumentasjon }) => {
     const { registergrunnlag, søknadsgrunnlag } = sivilstand;
+
+    const fakedata = {
+        navn: 'Sara Hjelle',
+        gyldigFraOgMed: '2022-01-01',
+    };
+
+    const partnerNavnTekst = fakedata.navn && ` - ${fakedata.navn}`;
+    const gyldigFraOgMedTekst =
+        fakedata.gyldigFraOgMed && ` (${formaterIsoDato(fakedata.gyldigFraOgMed)})`;
+
     return (
         <InformasjonContainer>
             <Informasjonsrad
                 ikon={VilkårInfoIkon.REGISTER}
                 label="Sivilstatus"
-                verdi={`${sivilstandTilTekst[registergrunnlag.type]} ${
-                    registergrunnlag.navn &&
-                    `- ${registergrunnlag.navn} (${
-                        registergrunnlag.gyldigFraOgMed &&
-                        formaterIsoDato(registergrunnlag.gyldigFraOgMed)
-                    })`
-                }`}
-                verdiSomString={false}
+                verdi={
+                    sivilstandTilTekst[registergrunnlag.type] +
+                    partnerNavnTekst +
+                    gyldigFraOgMedTekst
+                }
             />
             {skalViseSøknadsdata && søknadsgrunnlag && (
                 <Søknadsinformasjon
