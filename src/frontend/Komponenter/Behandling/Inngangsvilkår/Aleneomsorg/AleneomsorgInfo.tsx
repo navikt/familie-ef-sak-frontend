@@ -29,11 +29,11 @@ const AleneomsorgInfo: FC<{
     ) => {
         const harLøpendeStønad = barnMedLøpendeStønad.barn.includes(personIdent);
         return harLøpendeStønad ? (
-            <Tag variant={'success'}>{`ja - per ${formaterNullableIsoDato(
+            <Tag variant={'success'} size={'small'}>{`ja - per ${formaterNullableIsoDato(
                 barnMedLøpendeStønad.dato
             )}`}</Tag>
         ) : (
-            <Tag variant={'error'}>{`nei - per ${formaterNullableIsoDato(
+            <Tag variant={'error'} size={'small'}>{`nei - per ${formaterNullableIsoDato(
                 barnMedLøpendeStønad.dato
             )}`}</Tag>
         );
@@ -102,9 +102,13 @@ const AleneomsorgInfo: FC<{
                     label="Søkes det om stønad til barnetilsyn for barnet"
                     verdi={
                         barnepass?.skalHaBarnepass ? (
-                            <Tag variant={'success'}>ja</Tag>
+                            <Tag variant={'success'} size={'small'}>
+                                ja
+                            </Tag>
                         ) : (
-                            <Tag variant={'error'}>nei</Tag>
+                            <Tag variant={'error'} size={'small'}>
+                                nei
+                            </Tag>
                         )
                     }
                 />
