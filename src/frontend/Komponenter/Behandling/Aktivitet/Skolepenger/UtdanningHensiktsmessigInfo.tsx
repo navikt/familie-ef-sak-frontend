@@ -1,12 +1,14 @@
 import React, { FC } from 'react';
 import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
-import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import styled from 'styled-components';
 import Dokumentasjonsvisning from './Dokumentasjonsvisning';
 import { TidligereUtdanninger } from '../Aktivitet/Utdanning';
 import { IAktivitet } from '../../../../App/typer/aktivitetstyper';
-import { BodyLongSmall, BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
+import { BodyLongSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 import { ABlue300 } from '@navikt/ds-tokens/dist/tokens';
+import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
+import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
+import { FlexColumnContainer, InformasjonContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
 
 const BlåStrek = styled.span`
     border-left: 2px solid ${ABlue300};
@@ -15,21 +17,11 @@ const BlåStrek = styled.span`
 
 const Flex = styled.div`
     display: flex;
-    margin-top: 0.25rem;
-    margin-bottom: 1rem;
 `;
 
 const BegrunnelseTekst = styled(BodyLongSmall)`
     margin-left: 1.32rem;
     max-width: 30rem;
-`;
-
-const HovedTabell = styled(GridTabell)`
-    margin-bottom: 0rem;
-`;
-
-const UtdanningTabell = styled(GridTabell)`
-    margin-bottom: 0.5rem;
 `;
 
 interface Props {
@@ -42,35 +34,34 @@ const UtdanningHensiktsmessigInfo: FC<Props> = ({ aktivitet, skalViseSøknadsdat
     return (
         <>
             {skalViseSøknadsdata ? (
-                <>
-                    <HovedTabell>
-                        <Dokumentasjonsvisning aktivitet={aktivitet} />
-                        <>
-                            <Søknadsgrunnlag />
-                            <BodyShortSmall>Målet med utdanningen</BodyShortSmall>
-                        </>
-                    </HovedTabell>
-                    <Flex>
-                        <BlåStrek />
-                        <BegrunnelseTekst>
-                            {underUtdanning?.hvaErMåletMedUtdanningen}
-                        </BegrunnelseTekst>
-                    </Flex>
-                    <UtdanningTabell>
-                        <>
-                            <Søknadsgrunnlag />
-                            <BodyShortSmall>Har tatt utdanning etter grunnskolen?</BodyShortSmall>
-                            <BodyShortSmall>
-                                {underUtdanning?.utdanningEtterGrunnskolen ? 'Ja' : 'Nei'}
-                            </BodyShortSmall>
-                        </>
-                    </UtdanningTabell>
-                    {underUtdanning?.utdanningEtterGrunnskolen && (
-                        <GridTabell kolonner={3}>
-                            <TidligereUtdanninger tidligereUtdanninger={tidligereUtdanninger} />
-                        </GridTabell>
-                    )}
-                </>
+                <InformasjonContainer>
+                    <Dokumentasjonsvisning aktivitet={aktivitet} />
+                    <FlexColumnContainer gap={0.75}>
+                        <Informasjonsrad
+                            ikon={VilkårInfoIkon.SØKNAD}
+                            label="Målet med utdanningen"
+                            verdi={undefined}
+                        />
+                        <Flex>
+                            <BlåStrek />
+                            <BegrunnelseTekst>
+                                {underUtdanning?.hvaErMåletMedUtdanningen}
+                            </BegrunnelseTekst>
+                        </Flex>
+                    </FlexColumnContainer>
+                    <FlexColumnContainer gap={1}>
+                        <Informasjonsrad
+                            ikon={VilkårInfoIkon.SØKNAD}
+                            label="Har tatt utdanning etter grunnskolen?"
+                            verdi={underUtdanning?.utdanningEtterGrunnskolen ? 'Ja' : 'Nei'}
+                        />
+                        {underUtdanning?.utdanningEtterGrunnskolen && (
+                            <GridTabell kolonner={3} underTabellMargin={0}>
+                                <TidligereUtdanninger tidligereUtdanninger={tidligereUtdanninger} />
+                            </GridTabell>
+                        )}
+                    </FlexColumnContainer>
+                </InformasjonContainer>
             ) : null}
         </>
     );
