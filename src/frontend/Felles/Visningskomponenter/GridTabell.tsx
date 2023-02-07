@@ -5,7 +5,7 @@ const breddeKolonner = (antallKolonner?: number) => {
     if (antallKolonner === 4) {
         return '150px';
     } else if (antallKolonner === 5) {
-        return '100ox';
+        return 'auto';
     } else {
         return '325px';
     }
