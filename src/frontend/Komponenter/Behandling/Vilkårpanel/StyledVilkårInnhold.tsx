@@ -12,7 +12,7 @@ export const FlexColumnContainer = styled.div<{
 }>`
     display: flex;
     flex-direction: column;
-    gap: ${(props) => (props.gap ? props.gap : 1)}rem;
+    gap: ${(props) => (props.gap ? props.gap : 1.5)}rem;
 `;
 
 export const TagMedTilpassetBredde = styled(Tag)`

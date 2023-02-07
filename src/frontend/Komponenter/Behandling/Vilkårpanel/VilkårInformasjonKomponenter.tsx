@@ -18,7 +18,7 @@ export const UnderseksjonWrapper: FC<UnderseksjonWrapperProps> = ({
     children,
 }) => {
     return (
-        <FlexColumnContainer gap={1.5}>
+        <FlexColumnContainer>
             <Label className="tittel" as="h3" size="small">
                 {underoverskrift}
             </Label>
@@ -43,7 +43,7 @@ export const BarneInfoWrapper: FC<BarneInfoWrapperProps> = ({
     children,
 }) => {
     return (
-        <FlexColumnContainer gap={1.5}>
+        <FlexColumnContainer>
             <UnderoverskriftWrapper>
                 <LiteBarn />
                 <HeadingMedUnderlinje size="xsmall">
