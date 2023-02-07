@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
-import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
 import Dokumentasjonsvisning from './Dokumentasjonsvisning';
 import { IAktivitet } from '../../../../App/typer/aktivitetstyper';
 import { IDokumentasjonGrunnlag } from '../../Inngangsvilkår/vilkår';
 import DokumentasjonSendtInn from '../../Inngangsvilkår/DokumentasjonSendtInn';
+import { InformasjonContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
 
 interface Props {
     aktivitet: IAktivitet;
@@ -17,22 +17,20 @@ const DokumentasjonUtdanningInfo: FC<Props> = ({
     dokumentasjon,
 }) => {
     return (
-        <>
-            <GridTabell>
-                {skalViseSøknadsdata ? (
-                    <Dokumentasjonsvisning
-                        aktivitet={aktivitet}
-                        skalViseSøknadsdata={skalViseSøknadsdata}
-                    />
-                ) : null}
-            </GridTabell>
+        <InformasjonContainer>
+            {skalViseSøknadsdata && (
+                <Dokumentasjonsvisning
+                    aktivitet={aktivitet}
+                    skalViseSøknadsdata={skalViseSøknadsdata}
+                />
+            )}
             {skalViseSøknadsdata && (
                 <DokumentasjonSendtInn
                     dokumentasjon={dokumentasjon?.utdanningsutgifter}
                     tittel={'Utgifter til skolepenger'}
                 />
             )}
-        </>
+        </InformasjonContainer>
     );
 };
 
