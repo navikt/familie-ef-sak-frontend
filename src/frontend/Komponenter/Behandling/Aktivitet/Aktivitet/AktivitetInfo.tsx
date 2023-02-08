@@ -19,17 +19,11 @@ import { InfoSeksjonWrapper, VilkårInfoIkon } from '../../Vilkårpanel/VilkårI
 
 interface Props {
     aktivitet: IAktivitet;
-    skalViseSøknadsdata: boolean;
     stønadstype: Stønadstype;
     dokumentasjon?: IDokumentasjonGrunnlag;
 }
 
-const AktivitetInfo: FC<Props> = ({
-    aktivitet,
-    skalViseSøknadsdata,
-    stønadstype,
-    dokumentasjon,
-}) => {
+const AktivitetInfo: FC<Props> = ({ aktivitet, stønadstype, dokumentasjon }) => {
     const {
         arbeidssituasjon,
         arbeidsforhold,
@@ -46,18 +40,14 @@ const AktivitetInfo: FC<Props> = ({
 
     return (
         <InformasjonContainer>
-            {skalViseSøknadsdata &&
-                arbeidssituasjon.includes(EArbeidssituasjon.erHjemmeMedBarnUnderEttÅr) && (
-                    <Informasjonsrad
-                        ikon={VilkårInfoIkon.SØKNAD}
-                        label={
-                            ArbeidssituasjonTilTekst[EArbeidssituasjon.erHjemmeMedBarnUnderEttÅr]
-                        }
-                    />
-                )}
+            {arbeidssituasjon.includes(EArbeidssituasjon.erHjemmeMedBarnUnderEttÅr) && (
+                <Informasjonsrad
+                    ikon={VilkårInfoIkon.SØKNAD}
+                    label={ArbeidssituasjonTilTekst[EArbeidssituasjon.erHjemmeMedBarnUnderEttÅr]}
+                />
+            )}
 
-            {skalViseSøknadsdata &&
-                arbeidsforhold &&
+            {arbeidsforhold &&
                 arbeidsforhold.map((arbeidsgiver, index) => (
                     <ArbeidstakerLønnsmottakerSomFrilanser
                         key={arbeidsgiver.arbeidsgivernavn + index}
@@ -66,8 +56,7 @@ const AktivitetInfo: FC<Props> = ({
                     />
                 ))}
 
-            {skalViseSøknadsdata &&
-                selvstendig &&
+            {selvstendig &&
                 selvstendig.map((firma, index) => (
                     <SelvstendigNæringsdrivendeEllerFrilanser
                         key={firma.organisasjonsnummer + index}
@@ -76,8 +65,7 @@ const AktivitetInfo: FC<Props> = ({
                     />
                 ))}
 
-            {skalViseSøknadsdata &&
-                aksjeselskap &&
+            {aksjeselskap &&
                 aksjeselskap.map((selskap, index) => (
                     <Aksjeselskap
                         key={selskap.navn + index}
@@ -86,7 +74,7 @@ const AktivitetInfo: FC<Props> = ({
                     />
                 ))}
 
-            {skalViseSøknadsdata && datoOppstartJobb && (
+            {datoOppstartJobb && (
                 <InfoSeksjonWrapper
                     undertittel={ArbeidssituasjonTilTekst[EArbeidssituasjon.harFåttJobbTilbud]}
                     ikon={<Søknadsgrunnlag />}
@@ -98,7 +86,7 @@ const AktivitetInfo: FC<Props> = ({
                 </InfoSeksjonWrapper>
             )}
 
-            {skalViseSøknadsdata && virksomhet && (
+            {virksomhet && (
                 <InfoSeksjonWrapper
                     undertittel={
                         ArbeidssituasjonTilTekst[EArbeidssituasjon.etablererEgenVirksomhet]
@@ -112,9 +100,9 @@ const AktivitetInfo: FC<Props> = ({
                 </InfoSeksjonWrapper>
             )}
 
-            {skalViseSøknadsdata && arbeidssøker && <Arbeidssøker arbeidssøker={arbeidssøker} />}
+            {arbeidssøker && <Arbeidssøker arbeidssøker={arbeidssøker} />}
 
-            {skalViseSøknadsdata && underUtdanning && (
+            {underUtdanning && (
                 <>
                     <UnderUtdanning underUtdanning={underUtdanning} />
                     {underUtdanning.utdanningEtterGrunnskolen && (
@@ -125,60 +113,54 @@ const AktivitetInfo: FC<Props> = ({
                 </>
             )}
 
-            {skalViseSøknadsdata &&
-                arbeidssituasjon.includes(
-                    EArbeidssituasjon.erHverkenIArbeidUtdanningEllerArbeidssøker
-                ) && (
-                    <Informasjonsrad
-                        ikon={VilkårInfoIkon.SØKNAD}
-                        label={
-                            ArbeidssituasjonTilTekst[
-                                EArbeidssituasjon.erHverkenIArbeidUtdanningEllerArbeidssøker
-                            ]
-                        }
-                    />
-                )}
-            {skalViseSøknadsdata && særligeTilsynsbehov && (
+            {arbeidssituasjon.includes(
+                EArbeidssituasjon.erHverkenIArbeidUtdanningEllerArbeidssøker
+            ) && (
+                <Informasjonsrad
+                    ikon={VilkårInfoIkon.SØKNAD}
+                    label={
+                        ArbeidssituasjonTilTekst[
+                            EArbeidssituasjon.erHverkenIArbeidUtdanningEllerArbeidssøker
+                        ]
+                    }
+                />
+            )}
+            {særligeTilsynsbehov && (
                 <Annet dinSituasjon={gjelderDeg} særligTilsynsbehov={særligeTilsynsbehov} />
             )}
-            {skalViseSøknadsdata && (
-                <>
-                    <DokumentasjonSendtInn
-                        dokumentasjon={dokumentasjon?.arbeidskontrakt}
-                        tittel={'Arbeidskontrakt som viser at du har fått tilbud om arbeid'}
-                    />
-                    <DokumentasjonSendtInn
-                        dokumentasjon={dokumentasjon?.barnsSykdom}
-                        tittel={'Dokumentasjon på barnets sykdom'}
-                    />
-                    <DokumentasjonSendtInn
-                        dokumentasjon={dokumentasjon?.barnMedSærligeBehov}
-                        tittel={'Dokumentasjon på barnets tilsynsbehov'}
-                    />
-                    <DokumentasjonSendtInn
-                        dokumentasjon={dokumentasjon?.ikkeVilligTilÅTaImotTilbudOmArbeid}
-                        tittel={
-                            'Dokumentasjon som beskriver grunnen til at du ikke kan ta ethvert arbeid'
-                        }
-                    />
-                    <DokumentasjonSendtInn
-                        dokumentasjon={dokumentasjon?.sykdom}
-                        tittel={'Dokumentasjon som viser at du er syk'}
-                    />
-                    <DokumentasjonSendtInn
-                        dokumentasjon={dokumentasjon?.manglendeBarnepass}
-                        tittel={'Dokumentasjon som viser at du mangler barnepass'}
-                    />
-                    <DokumentasjonSendtInn
-                        dokumentasjon={dokumentasjon?.lærlingkontrakt}
-                        tittel={'Lærlingkontrakt'}
-                    />
-                    <DokumentasjonSendtInn
-                        dokumentasjon={dokumentasjon?.virksomhet}
-                        tittel={'Næringsfaglig vurdering av virksomheten du etablerer'}
-                    />
-                </>
-            )}
+
+            <DokumentasjonSendtInn
+                dokumentasjon={dokumentasjon?.arbeidskontrakt}
+                tittel={'Arbeidskontrakt som viser at du har fått tilbud om arbeid'}
+            />
+            <DokumentasjonSendtInn
+                dokumentasjon={dokumentasjon?.barnsSykdom}
+                tittel={'Dokumentasjon på barnets sykdom'}
+            />
+            <DokumentasjonSendtInn
+                dokumentasjon={dokumentasjon?.barnMedSærligeBehov}
+                tittel={'Dokumentasjon på barnets tilsynsbehov'}
+            />
+            <DokumentasjonSendtInn
+                dokumentasjon={dokumentasjon?.ikkeVilligTilÅTaImotTilbudOmArbeid}
+                tittel={'Dokumentasjon som beskriver grunnen til at du ikke kan ta ethvert arbeid'}
+            />
+            <DokumentasjonSendtInn
+                dokumentasjon={dokumentasjon?.sykdom}
+                tittel={'Dokumentasjon som viser at du er syk'}
+            />
+            <DokumentasjonSendtInn
+                dokumentasjon={dokumentasjon?.manglendeBarnepass}
+                tittel={'Dokumentasjon som viser at du mangler barnepass'}
+            />
+            <DokumentasjonSendtInn
+                dokumentasjon={dokumentasjon?.lærlingkontrakt}
+                tittel={'Lærlingkontrakt'}
+            />
+            <DokumentasjonSendtInn
+                dokumentasjon={dokumentasjon?.virksomhet}
+                tittel={'Næringsfaglig vurdering av virksomheten du etablerer'}
+            />
         </InformasjonContainer>
     );
 };
