@@ -1,17 +1,17 @@
 import * as React from 'react';
 import { FC } from 'react';
-import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
 
 import { ISagtOppEllerRedusertStilling } from '../../../../App/typer/aktivitetstyper';
-import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import {
     ESagtOppEllerRedusert,
     SagtOppEllerRedusertTilTekst,
 } from '../../Inngangsvilkår/Samliv/typer';
-import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
 import DokumentasjonSendtInn from '../../Inngangsvilkår/DokumentasjonSendtInn';
 import { IDokumentasjonGrunnlag } from '../../Inngangsvilkår/vilkår';
-import { BodyLongSmall, BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
+import { BodyLongSmall } from '../../../../Felles/Visningskomponenter/Tekster';
+import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
+import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
+import { InformasjonContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
 
 interface Props {
     sagtOppEllerRedusert: ISagtOppEllerRedusertStilling;
@@ -21,24 +21,21 @@ interface Props {
 const SagtOppEllerRedusertInfo: FC<Props> = ({ sagtOppEllerRedusert, dokumentasjon }) => {
     const { sagtOppEllerRedusertStilling, årsak, dato } = sagtOppEllerRedusert;
     return (
-        <>
-            <GridTabell>
-                {sagtOppEllerRedusert.sagtOppEllerRedusertStilling ? (
-                    <>
-                        <HarSagtOppEllerRedusertStilling
-                            sagtOppEllerRedusertStilling={sagtOppEllerRedusertStilling}
-                            årsak={årsak}
-                            dato={dato}
-                        />
-                    </>
-                ) : (
-                    <BodyLongSmall className="tekstUtenIkon">
-                        Spørsmålet om søker har sagt opp jobben eller redusert arbeidstiden har ikke
-                        blitt stilt i søknadsdialogen da søker opplyser at hun/han jobber mer enn 50
-                        %.
-                    </BodyLongSmall>
-                )}
-            </GridTabell>
+        <InformasjonContainer>
+            {sagtOppEllerRedusert.sagtOppEllerRedusertStilling ? (
+                <>
+                    <HarSagtOppEllerRedusertStilling
+                        sagtOppEllerRedusertStilling={sagtOppEllerRedusertStilling}
+                        årsak={årsak}
+                        dato={dato}
+                    />
+                </>
+            ) : (
+                <BodyLongSmall className="tekstUtenIkon">
+                    Spørsmålet om søker har sagt opp jobben eller redusert arbeidstiden har ikke
+                    blitt stilt i søknadsdialogen da søker opplyser at hun/han jobber mer enn 50 %.
+                </BodyLongSmall>
+            )}
 
             <DokumentasjonSendtInn
                 dokumentasjon={dokumentasjon?.reduksjonAvArbeidsforhold}
@@ -51,7 +48,7 @@ const SagtOppEllerRedusertInfo: FC<Props> = ({ sagtOppEllerRedusert, dokumentasj
                 dokumentasjon={dokumentasjon?.oppsigelse}
                 tittel={'Dokumentasjon på arbeidsforholdet og årsaken til at du sluttet'}
             />
-        </>
+        </InformasjonContainer>
     );
 };
 
@@ -65,32 +62,40 @@ const HarSagtOppEllerRedusertStilling: React.FC<ISagtOppEllerRedusertStilling> =
         sagtOppEllerRedusertStilling === ESagtOppEllerRedusert.redusertStilling;
     return (
         <>
-            <Søknadsgrunnlag />
-            <BodyShortSmall>
-                Har sagt opp jobben eller redusert arbeidstiden de siste 6 måneder
-            </BodyShortSmall>
-            <BodyShortSmall>
-                {sagtOppEllerRedusertStilling &&
-                    SagtOppEllerRedusertTilTekst[sagtOppEllerRedusertStilling]}
-            </BodyShortSmall>
+            <Informasjonsrad
+                ikon={VilkårInfoIkon.SØKNAD}
+                label="Har sagt opp jobben eller redusert arbeidstiden de siste 6 måneder"
+                verdi={
+                    sagtOppEllerRedusertStilling &&
+                    SagtOppEllerRedusertTilTekst[sagtOppEllerRedusertStilling]
+                }
+            />
             {harSagtOpp && (
                 <>
-                    <Søknadsgrunnlag />
-                    <BodyShortSmall>Årsak til oppsigelse</BodyShortSmall>
-                    <BodyShortSmall>{årsak}</BodyShortSmall>
-                    <Søknadsgrunnlag />
-                    <BodyShortSmall>Dato for oppsigelse</BodyShortSmall>
-                    <BodyShortSmall>{formaterNullableIsoDato(dato)}</BodyShortSmall>
+                    <Informasjonsrad
+                        ikon={VilkårInfoIkon.SØKNAD}
+                        label="Årsak til oppsigelse"
+                        verdi={årsak}
+                    />
+                    <Informasjonsrad
+                        ikon={VilkårInfoIkon.SØKNAD}
+                        label="Dato for oppsigelse"
+                        verdi={dato}
+                    />
                 </>
             )}
             {harRedusertStilling && (
                 <>
-                    <Søknadsgrunnlag />
-                    <BodyShortSmall>Årsak redusert arbeidstid</BodyShortSmall>
-                    <BodyShortSmall>{årsak}</BodyShortSmall>
-                    <Søknadsgrunnlag />
-                    <BodyShortSmall>Dato for når arbeidstiden ble redusert</BodyShortSmall>
-                    <BodyShortSmall>{formaterNullableIsoDato(dato)}</BodyShortSmall>
+                    <Informasjonsrad
+                        ikon={VilkårInfoIkon.SØKNAD}
+                        label="Årsak redusert arbeidstid"
+                        verdi={årsak}
+                    />
+                    <Informasjonsrad
+                        ikon={VilkårInfoIkon.SØKNAD}
+                        label="Dato for når arbeidstiden ble redusert"
+                        verdi={dato}
+                    />
                 </>
             )}
         </>
