@@ -405,3 +405,43 @@ export const initielleAvsnittTrukketSøknad: AvsnittMedId[] = [
         id: uuidv4(),
     },
 ];
+
+export const initielleAvsnittVedtaklUtestengelse: AvsnittMedId[] = [
+    {
+        deloverskrift: 'Du har rett til å klage',
+        innhold:
+            'Hvis du vil klage, må du gjøre dette innen 6 uker fra den datoen du fikk dette vedtaket. Du finner skjema og informasjon på klage.nav.no/nb/familie/enslig-mor-eller-far.',
+        id: uuidv4(),
+    },
+    {
+        deloverskrift: 'Du har rett til innsyn',
+        innhold: 'På nav.no/minside kan du se dokumentene i saken din.',
+        id: uuidv4(),
+    },
+    {
+        deloverskrift: 'Har du spørsmål?',
+        innhold:
+            'Du finner informasjon som kan være nyttig for deg på nav.no/alene-med-barn. Du kan også kontakte oss på nav.no/kontakt.',
+        id: uuidv4(),
+    },
+];
+
+export const initielleAvsnittVarselUtestengelse: AvsnittMedId[] = [
+    {
+        deloverskrift: 'Slik uttaler du deg',
+        innhold:
+            'Du kan sende uttalelsen din ved å skrive en beskjed til oss på nav.no/skriv-til-oss.',
+        id: uuidv4(),
+    },
+    {
+        deloverskrift: 'Saksbehandlingstid',
+        innhold: 'Saksbehandlingstidene finner du på nav.no/saksbehandlingstider.',
+        id: uuidv4(),
+    },
+    {
+        deloverskrift: 'Har du spørsmål?',
+        innhold:
+            'Du finner informasjon som kan være nyttig for deg på nav.no/alene-med-barn. Du kan også kontakte oss på nav.no/kontakt.',
+        id: uuidv4(),
+    },
+];
