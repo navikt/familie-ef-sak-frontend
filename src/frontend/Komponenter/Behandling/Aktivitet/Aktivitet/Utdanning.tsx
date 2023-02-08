@@ -7,60 +7,61 @@ import {
     StudieandelTilTekst,
     UtdanningsformTilTekst,
 } from './typer';
-import { BooleanTekst } from '../../../../Felles/Visningskomponenter/BooleanTilTekst';
 import { GridTabellWrapper } from '../../../../Felles/Visningskomponenter/GridTabell';
-import { formaterIsoMånedÅr, formaterNullableIsoDato } from '../../../../App/utils/formatter';
+import {
+    formaterIsoMånedÅr,
+    formaterNullableIsoDato,
+    mapTrueFalse,
+} from '../../../../App/utils/formatter';
 import { BodyShortSmall, SmallTextLabel } from '../../../../Felles/Visningskomponenter/Tekster';
+import { InfoSeksjonWrapper } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
+import { FlexColumnContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
+import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
 
 export const UnderUtdanning: FC<{
     underUtdanning: IUnderUtdanning;
 }> = ({ underUtdanning }) => {
     return (
-        <>
-            <Søknadsgrunnlag />
-            <SmallTextLabel className={'undertittel'}>
-                {ArbeidssituasjonTilTekst[EArbeidssituasjon.tarUtdanning]}
-            </SmallTextLabel>
-
-            <BodyShortSmall className={'førsteDataKolonne'}>Skole/Utdanningssted</BodyShortSmall>
-            <BodyShortSmall> {underUtdanning.skoleUtdanningssted}</BodyShortSmall>
-
-            <BodyShortSmall className={'førsteDataKolonne'}>Linje/Kurs/Grad</BodyShortSmall>
-            <BodyShortSmall> {underUtdanning.linjeKursGrad}</BodyShortSmall>
-
-            <BodyShortSmall className={'førsteDataKolonne'}>Offentlig eller privat</BodyShortSmall>
-            <BodyShortSmall>
-                {UtdanningsformTilTekst[underUtdanning.offentligEllerPrivat]}
-            </BodyShortSmall>
-
-            <BodyShortSmall className={'førsteDataKolonne'}>Studiets tidsperiode</BodyShortSmall>
-            <BodyShortSmall>{`${formaterNullableIsoDato(
-                underUtdanning.fra
-            )} - ${formaterNullableIsoDato(underUtdanning.til)}`}</BodyShortSmall>
-
-            <BodyShortSmall className={'førsteDataKolonne'}>Heltid eller deltid</BodyShortSmall>
-            <BodyShortSmall>
-                {' '}
-                {StudieandelTilTekst[underUtdanning.heltidEllerDeltid]}
-            </BodyShortSmall>
-
-            {underUtdanning.hvorMyeSkalDuStudere && (
-                <>
-                    <BodyShortSmall className={'førsteDataKolonne'}>
-                        Hvor mye skal søker studere
-                    </BodyShortSmall>
-                    <BodyShortSmall> {underUtdanning.hvorMyeSkalDuStudere + ' %'}</BodyShortSmall>
-                </>
-            )}
-
-            <BodyShortSmall className={'førsteDataKolonne'}>Målet for utdanningen</BodyShortSmall>
-            <BodyShortSmall> {underUtdanning.hvaErMåletMedUtdanningen}</BodyShortSmall>
-
-            <BodyShortSmall className={'førsteDataKolonne  leggTilSpacing'}>
-                Har søker utdanning etter grunnskolen
-            </BodyShortSmall>
-            <BooleanTekst value={underUtdanning.utdanningEtterGrunnskolen} />
-        </>
+        <InfoSeksjonWrapper
+            undertittel={ArbeidssituasjonTilTekst[EArbeidssituasjon.tarUtdanning]}
+            ikon={<Søknadsgrunnlag />}
+        >
+            <FlexColumnContainer gap={0.75}>
+                <Informasjonsrad
+                    label="Skole/Utdanningssted"
+                    verdi={underUtdanning.skoleUtdanningssted}
+                />
+                <Informasjonsrad label="Linje/Kurs/Grad" verdi={underUtdanning.linjeKursGrad} />
+                <Informasjonsrad
+                    label="Offentlig eller privat"
+                    verdi={UtdanningsformTilTekst[underUtdanning.offentligEllerPrivat]}
+                />
+                <Informasjonsrad
+                    label="Studiets tidsperiode"
+                    verdi={`${formaterNullableIsoDato(
+                        underUtdanning.fra
+                    )} - ${formaterNullableIsoDato(underUtdanning.til)}`}
+                />
+                <Informasjonsrad
+                    label="Heltid eller deltid"
+                    verdi={StudieandelTilTekst[underUtdanning.heltidEllerDeltid]}
+                />
+                {underUtdanning.hvorMyeSkalDuStudere && (
+                    <Informasjonsrad
+                        label="Hvor mye skal søker studere"
+                        verdi={underUtdanning.hvorMyeSkalDuStudere + ' %'}
+                    />
+                )}
+                <Informasjonsrad
+                    label="Målet for utdanningen"
+                    verdi={underUtdanning.hvaErMåletMedUtdanningen}
+                />
+                <Informasjonsrad
+                    label="Har søker utdanning etter grunnskolen"
+                    verdi={mapTrueFalse(underUtdanning.utdanningEtterGrunnskolen)}
+                />
+            </FlexColumnContainer>
+        </InfoSeksjonWrapper>
     );
 };
 
