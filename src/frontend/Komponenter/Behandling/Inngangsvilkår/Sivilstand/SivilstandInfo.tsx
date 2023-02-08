@@ -1,13 +1,13 @@
 import React, { FC } from 'react';
-import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
-import { Registergrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { ISivilstandInngangsvilkår } from './typer';
 import { sivilstandTilTekst } from '../../../../App/typer/personopplysninger';
 import Søknadsinformasjon from './Søknadsinformasjon';
 import { formaterIsoDato } from '../../../../App/utils/formatter';
 import DokumentasjonSendtInn from '../DokumentasjonSendtInn';
 import { IDokumentasjonGrunnlag } from '../vilkår';
-import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
+import { InformasjonContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
+import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
+import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 
 interface Props {
     sivilstand: ISivilstandInngangsvilkår;
@@ -17,25 +17,28 @@ interface Props {
 
 const SivilstandInfo: FC<Props> = ({ sivilstand, skalViseSøknadsdata, dokumentasjon }) => {
     const { registergrunnlag, søknadsgrunnlag } = sivilstand;
-    return (
-        <>
-            <GridTabell>
-                <Registergrunnlag />
-                <BodyShortSmall>Sivilstatus</BodyShortSmall>
-                <BodyShortSmall>
-                    {sivilstandTilTekst[registergrunnlag.type]}
-                    {registergrunnlag.navn && ` - ${registergrunnlag.navn}`}
-                    {registergrunnlag.gyldigFraOgMed &&
-                        ` (${formaterIsoDato(registergrunnlag.gyldigFraOgMed)})`}
-                </BodyShortSmall>
 
-                {skalViseSøknadsdata && søknadsgrunnlag && (
-                    <Søknadsinformasjon
-                        sivilstandtype={registergrunnlag.type}
-                        søknad={søknadsgrunnlag}
-                    />
-                )}
-            </GridTabell>
+    const partnerNavnTekst = registergrunnlag.navn && ` - ${registergrunnlag.navn}`;
+    const gyldigFraOgMedTekst =
+        registergrunnlag.gyldigFraOgMed && ` (${formaterIsoDato(registergrunnlag.gyldigFraOgMed)})`;
+
+    return (
+        <InformasjonContainer>
+            <Informasjonsrad
+                ikon={VilkårInfoIkon.REGISTER}
+                label="Sivilstatus"
+                verdi={
+                    sivilstandTilTekst[registergrunnlag.type] +
+                    partnerNavnTekst +
+                    gyldigFraOgMedTekst
+                }
+            />
+            {skalViseSøknadsdata && søknadsgrunnlag && (
+                <Søknadsinformasjon
+                    sivilstandtype={registergrunnlag.type}
+                    søknad={søknadsgrunnlag}
+                />
+            )}
             {skalViseSøknadsdata && (
                 <>
                     <DokumentasjonSendtInn
@@ -48,7 +51,7 @@ const SivilstandInfo: FC<Props> = ({ sivilstand, skalViseSøknadsdata, dokumenta
                     />
                 </>
             )}
-        </>
+        </InformasjonContainer>
     );
 };
 

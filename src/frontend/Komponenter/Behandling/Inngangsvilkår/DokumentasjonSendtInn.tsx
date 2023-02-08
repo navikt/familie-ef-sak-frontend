@@ -15,7 +15,7 @@ const DokumentasjonSendtInnWrapper = styled.div`
 const DokumentasjonSendtInn: FC<Props> = ({ tittel, dokumentasjon }) => {
     return dokumentasjon && dokumentasjon.harSendtInn ? (
         <DokumentasjonSendtInnWrapper>
-            <Alert variant={'info'}>
+            <Alert variant={'info'} size={'small'}>
                 <Heading size={'xsmall'} level={'4'}>
                     {tittel}
                 </Heading>

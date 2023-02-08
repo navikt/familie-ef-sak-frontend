@@ -1,11 +1,10 @@
 import React, { FC } from 'react';
 import { SivilstandType } from '../../../../App/typer/personopplysninger';
-import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { EÅrsakEnslig, ISivilstandSøknadsgrunnlag, ÅrsakEnsligTilTekst } from './typer';
-import { BooleanTekst } from '../../../../Felles/Visningskomponenter/BooleanTilTekst';
 import { hentBooleanTekst } from '../utils';
-import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
-import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
+import { formaterNullableIsoDato, mapTrueFalse } from '../../../../App/utils/formatter';
+import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
+import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 
 interface Props {
     sivilstandtype: SivilstandType;
@@ -20,43 +19,42 @@ const Søknadsinformasjon: FC<Props> = ({ sivilstandtype, søknad }) => {
         case SivilstandType.UOPPGITT:
             return (
                 <>
-                    <Søknadsgrunnlag />
-                    <BodyShortSmall>
-                        Gift uten at det er registrert i folkeregisteret
-                    </BodyShortSmall>
-                    {erUformeltGift !== undefined && <BooleanTekst value={erUformeltGift} />}
-
-                    <Søknadsgrunnlag />
-                    <BodyShortSmall>
-                        Separert eller skilt uten at det er registrert i folkeregisteret
-                    </BodyShortSmall>
-                    {erUformeltSeparertEllerSkilt !== undefined && (
-                        <BooleanTekst value={erUformeltSeparertEllerSkilt} />
-                    )}
+                    <Informasjonsrad
+                        ikon={VilkårInfoIkon.SØKNAD}
+                        label="Gift uten at det er registrert i folkeregisteret"
+                        verdi={erUformeltGift !== undefined && mapTrueFalse(erUformeltGift)}
+                    />
+                    <Informasjonsrad
+                        ikon={VilkårInfoIkon.SØKNAD}
+                        label="Separert eller skilt uten at det er registrert i folkeregisteret"
+                        verdi={
+                            erUformeltSeparertEllerSkilt !== undefined &&
+                            mapTrueFalse(erUformeltSeparertEllerSkilt)
+                        }
+                    />
                 </>
             );
         case SivilstandType.GIFT:
         case SivilstandType.REGISTRERT_PARTNER:
             return (
                 <>
-                    <Søknadsgrunnlag />
-                    <BodyShortSmall>Søkt separasjon, skilsmisse eller reist sak</BodyShortSmall>
-                    {søknad.søktOmSkilsmisseSeparasjon !== undefined && (
-                        <BodyShortSmall>
-                            {søknad.søktOmSkilsmisseSeparasjon
+                    <Informasjonsrad
+                        ikon={VilkårInfoIkon.SØKNAD}
+                        label="Søkt separasjon, skilsmisse eller reist sak"
+                        verdi={
+                            søknad.søktOmSkilsmisseSeparasjon !== undefined &&
+                            (søknad.søktOmSkilsmisseSeparasjon
                                 ? `${hentBooleanTekst(søknad.søktOmSkilsmisseSeparasjon)}, 
                             ${formaterNullableIsoDato(søknad.datoSøktSeparasjon)}`
-                                : hentBooleanTekst(søknad.søktOmSkilsmisseSeparasjon)}
-                        </BodyShortSmall>
-                    )}
+                                : hentBooleanTekst(søknad.søktOmSkilsmisseSeparasjon))
+                        }
+                    />
                     {søknad.fraflytningsdato && (
-                        <>
-                            <Søknadsgrunnlag />
-                            <BodyShortSmall>Dato for fraflytting</BodyShortSmall>
-                            <BodyShortSmall>
-                                {formaterNullableIsoDato(søknad.fraflytningsdato)}
-                            </BodyShortSmall>
-                        </>
+                        <Informasjonsrad
+                            ikon={VilkårInfoIkon.SØKNAD}
+                            label="Dato for fraflytting"
+                            verdi={formaterNullableIsoDato(søknad.fraflytningsdato)}
+                        />
                     )}
                 </>
             );
@@ -64,53 +62,53 @@ const Søknadsinformasjon: FC<Props> = ({ sivilstandtype, søknad }) => {
         case SivilstandType.SEPARERT_PARTNER:
             return (
                 <>
-                    <Søknadsgrunnlag />
-                    <BodyShortSmall>Alene med barn fordi</BodyShortSmall>
-                    {søknad.årsakEnslig && (
-                        <BodyShortSmall>{ÅrsakEnsligTilTekst[søknad.årsakEnslig]}</BodyShortSmall>
-                    )}
+                    <Informasjonsrad
+                        ikon={VilkårInfoIkon.SØKNAD}
+                        label="Alene med barn fordi"
+                        verdi={søknad.årsakEnslig && ÅrsakEnsligTilTekst[søknad.årsakEnslig]}
+                    />
 
                     {søknad.årsakEnslig === EÅrsakEnslig.samlivsbruddForeldre && (
-                        <>
-                            <Søknadsgrunnlag />
-                            <BodyShortSmall>Dato for samlivsbrudd</BodyShortSmall>
-
-                            <BodyShortSmall>
-                                {søknad.samlivsbruddsdato
+                        <Informasjonsrad
+                            ikon={VilkårInfoIkon.SØKNAD}
+                            label="Dato for samlivsbrudd"
+                            verdi={
+                                søknad.samlivsbruddsdato
                                     ? formaterNullableIsoDato(søknad.samlivsbruddsdato)
-                                    : '-'}
-                            </BodyShortSmall>
-                        </>
+                                    : '-'
+                            }
+                        />
                     )}
 
                     {søknad.årsakEnslig === EÅrsakEnslig.samlivsbruddAndre && (
                         <>
-                            <Søknadsgrunnlag />
-                            <BodyShortSmall>Tidligere samboer</BodyShortSmall>
-                            <BodyShortSmall>{`${tidligereSamboer?.navn} - ${
-                                tidligereSamboer?.personIdent
-                                    ? tidligereSamboer?.personIdent
-                                    : formaterNullableIsoDato(tidligereSamboer?.fødselsdato)
-                            }`}</BodyShortSmall>
-
-                            <Søknadsgrunnlag />
-                            <BodyShortSmall>Dato for fraflytting</BodyShortSmall>
-                            <BodyShortSmall>
-                                {formaterNullableIsoDato(søknad.fraflytningsdato)}
-                            </BodyShortSmall>
+                            <Informasjonsrad
+                                ikon={VilkårInfoIkon.SØKNAD}
+                                label="Tidligere samboer"
+                                verdi={`${tidligereSamboer?.navn} - ${
+                                    tidligereSamboer?.personIdent
+                                        ? tidligereSamboer?.personIdent
+                                        : formaterNullableIsoDato(tidligereSamboer?.fødselsdato)
+                                }`}
+                            />
+                            <Informasjonsrad
+                                ikon={VilkårInfoIkon.SØKNAD}
+                                label="Dato for fraflytting"
+                                verdi={formaterNullableIsoDato(søknad.fraflytningsdato)}
+                            />
                         </>
                     )}
 
                     {søknad.årsakEnslig === EÅrsakEnslig.endringISamværsordning && (
-                        <>
-                            <Søknadsgrunnlag />
-                            <BodyShortSmall>Endringen skjedde</BodyShortSmall>
-                            <BodyShortSmall>
-                                {søknad.endringSamværsordningDato
+                        <Informasjonsrad
+                            ikon={VilkårInfoIkon.SØKNAD}
+                            label="Endringen skjedde"
+                            verdi={
+                                søknad.endringSamværsordningDato
                                     ? formaterNullableIsoDato(søknad.endringSamværsordningDato)
-                                    : '-'}
-                            </BodyShortSmall>
-                        </>
+                                    : '-'
+                            }
+                        />
                     )}
                 </>
             );

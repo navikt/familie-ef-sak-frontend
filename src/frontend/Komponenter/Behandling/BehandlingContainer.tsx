@@ -45,6 +45,8 @@ const HøyreMenyWrapper = styled.div<HøyreMenyWrapperProps>`
     min-width: ${(p) => (p.åpenHøyremeny ? '20rem' : '1.5rem')};
 
     transition: all 0.25s;
+
+    z-index: 10;
 `;
 
 const InnholdWrapper = styled.div<InnholdWrapperProps>`

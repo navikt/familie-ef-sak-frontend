@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
-import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
 import { EÅrsakEnslig, ISivilstandSøknadsgrunnlag } from '../Sivilstand/typer';
 import { hentPersonInfo } from '../utils';
-import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
+import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
+import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 
 interface Props {
     søknadsgrunnlag: ISivilstandSøknadsgrunnlag;
@@ -16,41 +16,37 @@ const ÅrsakEnslig: FC<Props> = ({ søknadsgrunnlag }) => {
         <>
             {søknadsgrunnlag.årsakEnslig === EÅrsakEnslig.samlivsbruddForeldre &&
                 søknadsgrunnlag.samlivsbruddsdato && (
-                    <>
-                        <Søknadsgrunnlag />
-                        <BodyShortSmall>Dato for samlivsbrudd</BodyShortSmall>
-                        <BodyShortSmall>
-                            {formaterNullableIsoDato(søknadsgrunnlag.samlivsbruddsdato)}
-                        </BodyShortSmall>
-                    </>
+                    <Informasjonsrad
+                        ikon={VilkårInfoIkon.SØKNAD}
+                        label="Dato for samlivsbrudd"
+                        verdi={formaterNullableIsoDato(søknadsgrunnlag.samlivsbruddsdato)}
+                    />
                 )}
 
             {søknadsgrunnlag.årsakEnslig === EÅrsakEnslig.samlivsbruddAndre && (
                 <>
-                    <Søknadsgrunnlag />
-                    <BodyShortSmall>Tidligere samboer</BodyShortSmall>
-                    <BodyShortSmall>{hentPersonInfo(tidligereSamboer)}</BodyShortSmall>
+                    <Informasjonsrad
+                        ikon={VilkårInfoIkon.SØKNAD}
+                        label="Tidligere samboer"
+                        verdi={hentPersonInfo(tidligereSamboer)}
+                    />
                     {søknadsgrunnlag.fraflytningsdato && (
-                        <>
-                            <Søknadsgrunnlag />
-                            <BodyShortSmall>Flyttet fra hverandre</BodyShortSmall>
-                            <BodyShortSmall>
-                                {formaterNullableIsoDato(søknadsgrunnlag.fraflytningsdato)}
-                            </BodyShortSmall>
-                        </>
+                        <Informasjonsrad
+                            ikon={VilkårInfoIkon.SØKNAD}
+                            label="Flyttet fra hverandre"
+                            verdi={formaterNullableIsoDato(søknadsgrunnlag.fraflytningsdato)}
+                        />
                     )}
                 </>
             )}
 
             {søknadsgrunnlag.årsakEnslig === EÅrsakEnslig.endringISamværsordning &&
                 søknadsgrunnlag.endringSamværsordningDato && (
-                    <>
-                        <Søknadsgrunnlag />
-                        <BodyShortSmall>Endringen skjer/skjedde</BodyShortSmall>
-                        <BodyShortSmall>
-                            {formaterNullableIsoDato(søknadsgrunnlag.endringSamværsordningDato)}
-                        </BodyShortSmall>
-                    </>
+                    <Informasjonsrad
+                        ikon={VilkårInfoIkon.SØKNAD}
+                        label="Endringen skjer/skjedde"
+                        verdi={formaterNullableIsoDato(søknadsgrunnlag.endringSamværsordningDato)}
+                    />
                 )}
         </>
     );
