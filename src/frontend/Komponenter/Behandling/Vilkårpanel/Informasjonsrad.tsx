@@ -8,23 +8,23 @@ import { mapIkon, VilkårInfoIkon } from './VilkårInformasjonKomponenter';
 interface Props {
     ikon?: VilkårInfoIkon;
     label: string;
-    verdi: ReactNode;
+    verdi?: ReactNode;
     verdiSomString?: boolean;
 }
 
-const InformasjonsradContainer = styled.div`
+const InformasjonsradContainer = styled.div<{ verdiFinnesIkke: boolean }>`
     display: grid;
     grid-template-columns: 21px min(200px, 250px) auto;
     grid-gap: 0.5rem;
 
     .label {
-        grid-column: 2;
+        grid-column: 2 ${(props) => props.verdiFinnesIkke && '/ 4'};
     }
 `;
 
 const Informasjonsrad: FC<Props> = ({ ikon, label, verdi, verdiSomString = true }) => {
     return (
-        <InformasjonsradContainer>
+        <InformasjonsradContainer verdiFinnesIkke={!verdi}>
             {ikon && mapIkon(ikon)}
             <Label size="small" as="h3" className="label">
                 {label}
