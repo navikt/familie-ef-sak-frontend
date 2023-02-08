@@ -20,8 +20,10 @@ import { kalkulerAntallMåneder } from '../../../../../App/utils/dato';
 import { Label, Tooltip } from '@navikt/ds-react';
 import { v4 as uuidv4 } from 'uuid';
 import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
-import { ModalWrapper } from '../../../../../Felles/Modal/ModalWrapper';
-import { formaterIsoMånedÅrFull } from '../../../../../App/utils/formatter';
+import {
+    Sanksjonsmodal,
+    SlettSanksjonsperiodeModal,
+} from '../../Felles/SlettSanksjonsperiodeModal';
 
 const VedtakPeriodeContainer = styled.div<{ lesevisning?: boolean }>`
     display: grid;
@@ -67,8 +69,6 @@ export const tomVedtaksperiodeRad = (årMånedFra?: string): IVedtaksperiode => 
     endretKey: uuidv4(),
 });
 
-type SanksjonsModal = { visModal: false } | { visModal: true; index: number };
-
 const VedtaksperiodeValg: React.FC<Props> = ({
     vedtaksperiodeListe,
     valideringsfeil,
@@ -78,7 +78,9 @@ const VedtaksperiodeValg: React.FC<Props> = ({
     const { behandlingErRedigerbar } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
 
-    const [sanksjonsmodal, settSanksjonsmodal] = useState<SanksjonsModal>({ visModal: false });
+    const [sanksjonsmodal, settSanksjonsmodal] = useState<Sanksjonsmodal>({
+        visModal: false,
+    });
 
     const oppdaterVedtakslisteElement = (
         index: number,
@@ -137,8 +139,13 @@ const VedtaksperiodeValg: React.FC<Props> = ({
     };
 
     const slettPeriodeModalHvisSanksjon = (index: number) => {
-        if (vedtaksperiodeListe.value[index].periodeType === EPeriodetype.SANKSJON) {
-            settSanksjonsmodal({ visModal: true, index: index });
+        const periode = vedtaksperiodeListe.value[index];
+        if (periode.periodeType === EPeriodetype.SANKSJON) {
+            settSanksjonsmodal({
+                visModal: true,
+                index: index,
+                årMånedFra: periode.årMånedFra || '',
+            });
         } else {
             slettPeriode(index);
         }
@@ -229,29 +236,11 @@ const VedtaksperiodeValg: React.FC<Props> = ({
                     knappetekst="Legg til vedtaksperiode"
                 />
             )}
-            {sanksjonsmodal.visModal && (
-                <ModalWrapper
-                    tittel={'Vil du oppheve sanksjon'}
-                    visModal={true}
-                    aksjonsknapper={{
-                        hovedKnapp: {
-                            onClick: () => slettPeriode(sanksjonsmodal.index),
-                            tekst: 'Fjern sanksjon',
-                        },
-                        lukkKnapp: {
-                            onClick: lukkSanksjonsmodal,
-                            tekst: 'Avbryt',
-                        },
-                    }}
-                    onClose={lukkSanksjonsmodal}
-                >
-                    Du er i ferd med å fjerne en periode bruker er ilagt sanksjon (
-                    {formaterIsoMånedÅrFull(
-                        vedtaksperiodeListe.value[sanksjonsmodal.index].årMånedFra || ''
-                    )}
-                    ). Er du sikker på at du vil gjøre dette?
-                </ModalWrapper>
-            )}
+            <SlettSanksjonsperiodeModal
+                sanksjonsmodal={sanksjonsmodal}
+                slettPeriode={slettPeriode}
+                lukkModal={lukkSanksjonsmodal}
+            />
         </>
     );
 };

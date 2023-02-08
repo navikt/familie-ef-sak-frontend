@@ -4,7 +4,7 @@ import {
     IUtgiftsperiode,
 } from '../../../../App/typer/vedtak';
 import MånedÅrPeriode, { PeriodeVariant } from '../../../../Felles/Input/MånedÅr/MånedÅrPeriode';
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import styled from 'styled-components';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
 import LeggTilKnapp from '../../../../Felles/Knapper/LeggTilKnapp';
@@ -24,6 +24,7 @@ import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 import { erOpphørEllerSanksjon, tomUtgiftsperiodeRad } from './utils';
 import PeriodetypeSelect from './PeriodetypeSelect';
 import AktivitetSelect from './AktivitetSelect';
+import { Sanksjonsmodal, SlettSanksjonsperiodeModal } from '../Felles/SlettSanksjonsperiodeModal';
 
 const UtgiftsperiodeRad = styled.div<{ lesevisning?: boolean; erHeader?: boolean }>`
     display: grid;
@@ -77,6 +78,9 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
 }) => {
     const { behandlingErRedigerbar, åpenHøyremeny } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
+    const [sanksjonsmodal, settSanksjonsmodal] = useState<Sanksjonsmodal>({
+        visModal: false,
+    });
 
     const oppdaterUtgiftsperiode = (
         index: number,
@@ -129,6 +133,34 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                 return EUtgiftsperiodeProperty.årMånedFra;
             case PeriodeVariant.ÅR_MÅNED_TIL:
                 return EUtgiftsperiodeProperty.årMånedTil;
+        }
+    };
+
+    const lukkSanksjonsmodal = () => {
+        settSanksjonsmodal({ visModal: false });
+    };
+
+    const slettPeriode = (index: number) => {
+        if (sanksjonsmodal.visModal) {
+            lukkSanksjonsmodal();
+        }
+        utgiftsperioder.remove(index);
+        settValideringsFeil((prevState: FormErrors<InnvilgeVedtakForm>) => {
+            const utgiftsperioder = (prevState.utgiftsperioder ?? []).filter((_, i) => i !== index);
+            return { ...prevState, utgiftsperioder };
+        });
+    };
+
+    const slettPeriodeModalHvisSanksjon = (index: number) => {
+        const periode = utgiftsperioder.value[index];
+        if (periode.periodetype === EUtgiftsperiodetype.SANKSJON_1_MND) {
+            settSanksjonsmodal({
+                visModal: true,
+                index: index,
+                årMånedFra: periode.årMånedFra,
+            });
+        } else {
+            slettPeriode(index);
         }
     };
 
@@ -269,17 +301,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                         {skalViseFjernKnapp ? (
                             <IkonKnappWrapper>
                                 <FjernKnapp
-                                    onClick={() => {
-                                        utgiftsperioder.remove(index);
-                                        settValideringsFeil(
-                                            (prevState: FormErrors<InnvilgeVedtakForm>) => {
-                                                const utgiftsperioder = (
-                                                    prevState.utgiftsperioder ?? []
-                                                ).filter((_, i) => i !== index);
-                                                return { ...prevState, utgiftsperioder };
-                                            }
-                                        );
-                                    }}
+                                    onClick={() => slettPeriodeModalHvisSanksjon(index)}
                                     ikontekst={'Fjern utgiftsperiode'}
                                 />
                             </IkonKnappWrapper>
@@ -297,6 +319,11 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                     />
                 )}
             </ContainerMedLuftUnder>
+            <SlettSanksjonsperiodeModal
+                sanksjonsmodal={sanksjonsmodal}
+                slettPeriode={slettPeriode}
+                lukkModal={lukkSanksjonsmodal}
+            />
         </HorizontalScroll>
     );
 };
