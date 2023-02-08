@@ -1,11 +1,10 @@
 import React, { FC } from 'react';
 import { IAktivitet } from '../../../../App/typer/aktivitetstyper';
-import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
 import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { ArbeidssituasjonTilTekst, EArbeidssituasjon } from './typer';
 import SelvstendigNæringsdrivendeEllerFrilanser from './SelvstendigNæringsdrivendeEllerFrilanser';
 import Arbeidssøker from './Arbeidssøker';
-import { TidligereUtdanninger, UnderUtdanning } from './Utdanning';
+import { UnderUtdanning } from './Utdanning';
 import Annet from './Annet';
 import Aksjeselskap from './Aksjeselskap';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
@@ -103,14 +102,10 @@ const AktivitetInfo: FC<Props> = ({ aktivitet, stønadstype, dokumentasjon }) =>
             {arbeidssøker && <Arbeidssøker arbeidssøker={arbeidssøker} />}
 
             {underUtdanning && (
-                <>
-                    <UnderUtdanning underUtdanning={underUtdanning} />
-                    {underUtdanning.utdanningEtterGrunnskolen && (
-                        <GridTabell kolonner={3}>
-                            <TidligereUtdanninger tidligereUtdanninger={tidligereUtdanninger} />
-                        </GridTabell>
-                    )}
-                </>
+                <UnderUtdanning
+                    underUtdanning={underUtdanning}
+                    tidligereUtdanninger={tidligereUtdanninger}
+                />
             )}
 
             {arbeidssituasjon.includes(

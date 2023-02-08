@@ -19,7 +19,8 @@ import TabellVisning from '../../Tabell/TabellVisning';
 
 export const UnderUtdanning: FC<{
     underUtdanning: IUnderUtdanning;
-}> = ({ underUtdanning }) => {
+    tidligereUtdanninger: ITidligereUtdanning[];
+}> = ({ underUtdanning, tidligereUtdanninger }) => {
     return (
         <InfoSeksjonWrapper
             undertittel={ArbeidssituasjonTilTekst[EArbeidssituasjon.tarUtdanning]}
@@ -59,6 +60,9 @@ export const UnderUtdanning: FC<{
                     label="Har søker utdanning etter grunnskolen"
                     verdi={mapTrueFalse(underUtdanning.utdanningEtterGrunnskolen)}
                 />
+                {underUtdanning.utdanningEtterGrunnskolen && (
+                    <TidligereUtdanninger tidligereUtdanninger={tidligereUtdanninger} />
+                )}
             </FlexColumnContainer>
         </InfoSeksjonWrapper>
     );
