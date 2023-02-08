@@ -1,11 +1,10 @@
 import React, { FC } from 'react';
-import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
-import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
+import { formaterNullableIsoDato, mapTrueFalse } from '../../../../App/utils/formatter';
 import { IPersonDetaljer } from '../Sivilstand/typer';
-import { BooleanTekst } from '../../../../Felles/Visningskomponenter/BooleanTilTekst';
 import { ESøkerDelerBolig, IBosituasjon, ISivilstandsplaner } from './typer';
 import { hentPersonInfo } from '../utils';
-import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
+import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
+import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 
 interface Props {
     bosituasjon: IBosituasjon;
@@ -25,15 +24,16 @@ export const Bosituasjon: FC<Props> = ({ bosituasjon, sivilstandsplaner }) => {
             {bosituasjon.delerDuBolig ===
                 ESøkerDelerBolig.tidligereSamboerFortsattRegistrertPåAdresse && (
                 <>
-                    <Søknadsgrunnlag />
-                    <BodyShortSmall>Tidligere samboer</BodyShortSmall>
-                    <BodyShortSmall>{hentPersonInfo(bosituasjon.samboer)}</BodyShortSmall>
-
-                    <Søknadsgrunnlag />
-                    <BodyShortSmall>Flyttet fra hverandre</BodyShortSmall>
-                    <BodyShortSmall>
-                        {formaterNullableIsoDato(bosituasjon.datoFlyttetFraHverandre) || '-'}
-                    </BodyShortSmall>
+                    <Informasjonsrad
+                        ikon={VilkårInfoIkon.SØKNAD}
+                        label="Tidligere samboer"
+                        verdi={hentPersonInfo(bosituasjon.samboer)}
+                    />
+                    <Informasjonsrad
+                        ikon={VilkårInfoIkon.SØKNAD}
+                        label="Flyttet fra hverandre"
+                        verdi={formaterNullableIsoDato(bosituasjon.datoFlyttetFraHverandre) || '-'}
+                    />
                 </>
             )}
 
@@ -52,13 +52,16 @@ const SamboerInfoOgDatoSammenflytting: FC<{
     sammenflyttingsdato?: string;
 }> = ({ samboer, sammenflyttingsdato }) => (
     <>
-        <Søknadsgrunnlag />
-        <BodyShortSmall>Samboer</BodyShortSmall>
-        <BodyShortSmall>{hentPersonInfo(samboer)}</BodyShortSmall>
-
-        <Søknadsgrunnlag />
-        <BodyShortSmall>Flyttet sammen</BodyShortSmall>
-        <BodyShortSmall>{formaterNullableIsoDato(sammenflyttingsdato)}</BodyShortSmall>
+        <Informasjonsrad
+            ikon={VilkårInfoIkon.SØKNAD}
+            label="Samboer"
+            verdi={hentPersonInfo(samboer)}
+        />
+        <Informasjonsrad
+            ikon={VilkårInfoIkon.SØKNAD}
+            label="Flyttet sammen"
+            verdi={formaterNullableIsoDato(sammenflyttingsdato)}
+        />
     </>
 );
 
@@ -66,24 +69,29 @@ const Sivilstandsplaner: FC<{ sivilstandsplaner: ISivilstandsplaner }> = ({
     sivilstandsplaner,
 }) => (
     <>
-        <Søknadsgrunnlag />
-        <BodyShortSmall>Skal gifte seg eller bli samboer</BodyShortSmall>
-        <BooleanTekst value={!!sivilstandsplaner.harPlaner} />
+        <Informasjonsrad
+            ikon={VilkårInfoIkon.SØKNAD}
+            label="Skal gifte seg eller bli samboer"
+            verdi={mapTrueFalse(!!sivilstandsplaner.harPlaner)}
+        />
 
         {sivilstandsplaner.harPlaner && (
             <>
-                <Søknadsgrunnlag />
-                <BodyShortSmall>Dato</BodyShortSmall>
-                <BodyShortSmall>
-                    {formaterNullableIsoDato(sivilstandsplaner.fraDato)}
-                </BodyShortSmall>
-
-                <Søknadsgrunnlag />
-                <BodyShortSmall>Ektefelle eller samboer</BodyShortSmall>
-                <BodyShortSmall>{`${sivilstandsplaner.vordendeSamboerEktefelle?.navn} - ${
-                    sivilstandsplaner.vordendeSamboerEktefelle?.personIdent ||
-                    formaterNullableIsoDato(sivilstandsplaner.vordendeSamboerEktefelle?.fødselsdato)
-                }`}</BodyShortSmall>
+                <Informasjonsrad
+                    ikon={VilkårInfoIkon.SØKNAD}
+                    label="Dato"
+                    verdi={formaterNullableIsoDato(sivilstandsplaner.fraDato)}
+                />
+                <Informasjonsrad
+                    ikon={VilkårInfoIkon.SØKNAD}
+                    label="Ektefelle eller samboer"
+                    verdi={`${sivilstandsplaner.vordendeSamboerEktefelle?.navn} - ${
+                        sivilstandsplaner.vordendeSamboerEktefelle?.personIdent ||
+                        formaterNullableIsoDato(
+                            sivilstandsplaner.vordendeSamboerEktefelle?.fødselsdato
+                        )
+                    }`}
+                />
             </>
         )}
     </>

@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { FC, useMemo } from 'react';
-import TabellVisning, { TabellIkon } from '../../Tabell/TabellVisning';
 import { formaterNullableIsoDato, mapTrueFalse } from '../../../../App/utils/formatter';
 import { IGyldigVedtakPeriode } from './typer';
 import { differenceInDays } from 'date-fns';
+import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
+import TabellVisning from '../../Tabell/TabellVisning';
 
 interface Props {
     gyldigeVedtaksPerioder: IGyldigVedtakPeriode[];
@@ -20,7 +21,7 @@ const UnntakIMedl: FC<Props> = ({ gyldigeVedtaksPerioder }) => {
 
     return (
         <TabellVisning
-            ikon={TabellIkon.REGISTER}
+            ikon={VilkårInfoIkon.REGISTER}
             tittel="Gyldige vedtaksperioder i MEDL"
             verdier={perioderSortert}
             kolonner={[

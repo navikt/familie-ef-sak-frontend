@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Registergrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { Td } from '../../../../Felles/Personopplysninger/TabellWrapper';
 import {
     AdresseType,
@@ -17,6 +16,8 @@ import { AlertStripeVariant } from '../../../../Felles/Visningskomponenter/Alert
 import { gyldigTilOgMedErNullEllerFremITid } from '../../../../Felles/Personopplysninger/adresseUtil';
 import { Button } from '@navikt/ds-react';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
+import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
+import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 
 interface BeboereTabellProps {
     vis: boolean;
@@ -32,6 +33,10 @@ const BeboereTabell = styled.table<BeboereTabellProps>`
     margin-top: 2rem;
 
     display: ${(props) => (props.vis ? 'block' : 'none')};
+`;
+
+const KnappMedMarginTop = styled(Button)`
+    margin-top: 0.5rem;
 `;
 
 const nåværendeBostedsadresse = (
@@ -77,27 +82,33 @@ export const Bostedsadresse = ({ behandlingId }: BostedsadresseProps) => {
 
                     return (
                         <>
-                            <Registergrunnlag />
-                            <BodyShortSmall>Brukers bostedsadresse</BodyShortSmall>
-                            <div>
-                                <BodyShortSmall>
-                                    {bostedsadresse?.visningsadresse || 'Mangler bostedsadresse'}
-                                </BodyShortSmall>
-                                {bostedsadresse && (
-                                    <Button
-                                        type={'button'}
-                                        variant={'tertiary'}
-                                        icon={visBeboere ? <Collapse /> : <Expand />}
-                                        iconPosition={'right'}
-                                        onClick={() => {
-                                            settVisBeboere(!visBeboere);
-                                        }}
-                                        size={'small'}
-                                    >
-                                        Se beboere
-                                    </Button>
-                                )}
-                            </div>
+                            <Informasjonsrad
+                                ikon={VilkårInfoIkon.REGISTER}
+                                label="Brukers bostedsadresse"
+                                verdiSomString={false}
+                                verdi={
+                                    <div>
+                                        <BodyShortSmall>
+                                            {bostedsadresse?.visningsadresse ||
+                                                'Mangler bostedsadresse'}
+                                        </BodyShortSmall>
+                                        {bostedsadresse && (
+                                            <KnappMedMarginTop
+                                                type={'button'}
+                                                variant={'tertiary'}
+                                                icon={visBeboere ? <Collapse /> : <Expand />}
+                                                iconPosition={'right'}
+                                                onClick={() => {
+                                                    settVisBeboere(!visBeboere);
+                                                }}
+                                                size={'small'}
+                                            >
+                                                Se beboere
+                                            </KnappMedMarginTop>
+                                        )}
+                                    </div>
+                                }
+                            />
                         </>
                     );
                 }}

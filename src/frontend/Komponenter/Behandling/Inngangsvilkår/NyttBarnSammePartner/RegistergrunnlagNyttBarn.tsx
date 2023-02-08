@@ -1,15 +1,11 @@
 import React, { FC } from 'react';
 import { RegistergrunnlagNyttBarn } from './typer';
-import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
-import LiteBarn from '../../../../Felles/Ikoner/LiteBarn';
-import { Registergrunnlag, Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
-import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
 import { AnnenForelderNavnOgFnr } from './AnnenForelderNavnOgFnr';
 import { harVerdi } from '../../../../App/utils/utils';
-import EtikettDød from '../../../../Felles/Etiketter/EtikettDød';
-import { Label } from '@navikt/ds-react';
-import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 import { utledNavnOgAlder } from '../utils';
+import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
+import { KopierbartNullableFødselsnummer } from '../../../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
+import { BarneInfoWrapper, VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 
 interface Props {
     barn: RegistergrunnlagNyttBarn;
@@ -20,50 +16,41 @@ const RegistergrunnlagNyttBarnInnhold: FC<Props> = ({ barn }) => {
 
     const ikkeOppgittAnnenForelderBegrunnelse = barn.ikkeOppgittAnnenForelderBegrunnelse;
     return (
-        <GridTabell>
-            <>
-                <LiteBarn />
-                <Label size={'small'} as={'div'}>
-                    {utledNavnOgAlder(navn, fødselsdato, dødsdato)}
-                    {barn.dødsdato && <EtikettDød dødsdato={barn.dødsdato} />}
-                </Label>
-            </>
-            <>
-                <Registergrunnlag />
-                <BodyShortSmall>Fødsels eller D-nummer</BodyShortSmall>
-                <BodyShortSmall>{barn.fødselsnummer}</BodyShortSmall>
-            </>
-
+        <BarneInfoWrapper
+            navnOgAlderPåBarn={utledNavnOgAlder(navn, fødselsdato, dødsdato)}
+            dødsdato={barn.dødsdato}
+        >
+            <Informasjonsrad
+                ikon={VilkårInfoIkon.REGISTER}
+                label="Fødsels eller D-nummer"
+                verdiSomString={false}
+                verdi={
+                    barn.fødselsnummer && (
+                        <KopierbartNullableFødselsnummer fødselsnummer={barn.fødselsnummer} />
+                    )
+                }
+            />
             {annenForelderRegister && (
-                <>
-                    <Registergrunnlag />
-                    <BodyShortSmall>Annen forelder fra folkeregister</BodyShortSmall>
-                    <AnnenForelderNavnOgFnr forelder={annenForelderRegister} />
-                </>
+                <Informasjonsrad
+                    ikon={VilkårInfoIkon.REGISTER}
+                    label="Annen forelder fra folkeregister"
+                    verdiSomString={false}
+                    verdi={<AnnenForelderNavnOgFnr forelder={annenForelderRegister} />}
+                />
             )}
 
             {harVerdi(ikkeOppgittAnnenForelderBegrunnelse) && (
-                <>
-                    <Søknadsgrunnlag />
-                    <BodyShortSmall>Annen forelder</BodyShortSmall>
-                    <BodyShortSmall>
-                        {ikkeOppgittAnnenForelderBegrunnelse === 'donorbarn'
+                <Informasjonsrad
+                    ikon={VilkårInfoIkon.SØKNAD}
+                    label="Annen forelder"
+                    verdi={
+                        ikkeOppgittAnnenForelderBegrunnelse === 'donorbarn'
                             ? ikkeOppgittAnnenForelderBegrunnelse
-                            : `Ikke oppgitt: ${ikkeOppgittAnnenForelderBegrunnelse}`}
-                    </BodyShortSmall>
-                </>
+                            : `Ikke oppgitt: ${ikkeOppgittAnnenForelderBegrunnelse}`
+                    }
+                />
             )}
-
-            {barn.annenForelderRegister?.dødsfall && (
-                <>
-                    <Registergrunnlag />
-                    <BodyShortSmall>Annen forelder dødsdato</BodyShortSmall>
-                    <BodyShortSmall>
-                        {formaterNullableIsoDato(barn.annenForelderRegister.dødsfall)}
-                    </BodyShortSmall>
-                </>
-            )}
-        </GridTabell>
+        </BarneInfoWrapper>
     );
 };
 

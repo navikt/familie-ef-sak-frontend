@@ -1,8 +1,8 @@
 import React, { FC } from 'react';
-import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
-import { BooleanTekst } from '../../../../Felles/Visningskomponenter/BooleanTilTekst';
 import { IAdresseopplysninger } from '../vilkår';
-import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
+import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
+import { mapTrueFalse } from '../../../../App/utils/formatter';
+import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 
 interface Props {
     data?: IAdresseopplysninger;
@@ -14,16 +14,18 @@ export const Addresseopplysninger: FC<Props> = ({ data }) => {
     }
     return (
         <>
-            <Søknadsgrunnlag />
-            <BodyShortSmall>Bor på denne adressen ({data.adresse})</BodyShortSmall>
-            <BooleanTekst value={data.søkerBorPåRegistrertAdresse} />
+            <Informasjonsrad
+                ikon={VilkårInfoIkon.SØKNAD}
+                label={`Bor på denne adressen (${data.adresse})`}
+                verdi={mapTrueFalse(data.søkerBorPåRegistrertAdresse)}
+            />
 
             {data.harMeldtAdresseendring && (
-                <>
-                    <Søknadsgrunnlag />
-                    <BodyShortSmall>Har meldt adresseendring til Folkeregisteret</BodyShortSmall>
-                    <BooleanTekst value={data.harMeldtAdresseendring} />
-                </>
+                <Informasjonsrad
+                    ikon={VilkårInfoIkon.SØKNAD}
+                    label="Har meldt adresseendring til Folkeregisteret"
+                    verdi={mapTrueFalse(data.harMeldtAdresseendring)}
+                />
             )}
         </>
     );

@@ -1,6 +1,6 @@
 import React, { FC, useEffect } from 'react';
 import { ITidligereVedtaksperioder } from './typer';
-import TabellVisning, { TabellIkon } from '../Tabell/TabellVisning';
+import TabellVisning from '../Tabell/TabellVisning';
 import { Stønadstype, stønadstypeTilTekst } from '../../../App/typer/behandlingstema';
 import { formatterBooleanEllerUkjent } from '../../../App/utils/formatter';
 import { Registergrunnlag } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
@@ -11,11 +11,16 @@ import { ExternalLink } from '@navikt/ds-icons';
 import { useHentHistoriskPensjon } from '../../../App/hooks/useHentHistoriskPensjon';
 import { RessursStatus } from '../../../App/typer/ressurs';
 import { useBehandling } from '../../../App/context/BehandlingContext';
+import { VilkårInfoIkon } from '../Vilkårpanel/VilkårInformasjonKomponenter';
 
 const FlexDiv = styled.div`
     display: flex;
     align-items: center;
     gap: 0.75rem;
+`;
+
+const DivMedBottomMargin = styled.div`
+    margin-bottom: 2rem;
 `;
 
 const TabellTidligereVedtaksperioder: React.FC<ITidligereVedtaksperioder> = ({
@@ -30,8 +35,8 @@ const TabellTidligereVedtaksperioder: React.FC<ITidligereVedtaksperioder> = ({
             stønad: Stønadstype;
             verdi: { sak?: boolean; infotrygd?: boolean };
         }>
-            ikon={TabellIkon.REGISTER}
-            tittel="Har bruker tidligere vedtaksperioder i EF Sak eller Infotrygd (kun EF VP)"
+            ikon={VilkårInfoIkon.REGISTER}
+            tittel="Har bruker tidligere vedtaksperioder i EF Sak eller Infotrygd"
             verdier={[
                 {
                     stønad: Stønadstype.OVERGANGSSTØNAD,
@@ -105,10 +110,12 @@ const TidligereVedtaksperioderInfo: FC<{ tidligereVedtaksperioder: ITidligereVed
 }) => {
     return (
         <>
-            <TabellTidligereVedtaksperioder
-                infotrygd={tidligereVedtaksperioder.infotrygd}
-                sak={tidligereVedtaksperioder.sak}
-            />
+            <DivMedBottomMargin>
+                <TabellTidligereVedtaksperioder
+                    infotrygd={tidligereVedtaksperioder.infotrygd}
+                    sak={tidligereVedtaksperioder.sak}
+                />
+            </DivMedBottomMargin>
 
             <FlexDiv>
                 <Registergrunnlag />

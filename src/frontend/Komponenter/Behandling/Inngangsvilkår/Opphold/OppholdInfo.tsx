@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { FC } from 'react';
-import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
-import { Registergrunnlag, Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
-import { BooleanTekst } from '../../../../Felles/Visningskomponenter/BooleanTilTekst';
 import { IMedlemskap } from '../Medlemskap/typer';
 import Oppholdstillatelse from '../Medlemskap/Oppholdstillatelse';
 import Utenlandsopphold from '../Medlemskap/Utenlandsopphold';
 import InnflyttingUtflytting from '../Medlemskap/InnflyttingUtflytting';
 import FolkeregisterPersonstatus from '../Medlemskap/FolkeregisterPersonstatus';
-import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
+import { InformasjonContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
+import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
+import { mapTrueFalse } from '../../../../App/utils/formatter';
+import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 
 interface Props {
     medlemskap: IMedlemskap;
@@ -24,22 +24,19 @@ const OppholdInfo: FC<Props> = ({ medlemskap, skalViseSøknadsdata }) => {
         registergrunnlag.innflytting.length > 0 || registergrunnlag.utflytting.length > 0;
 
     return (
-        <>
-            <GridTabell>
-                <Registergrunnlag />
-                <BodyShortSmall>Statsborgerskap</BodyShortSmall>
-                <BodyShortSmall>
-                    {registergrunnlag.nåværendeStatsborgerskap.join(', ')}
-                </BodyShortSmall>
-
-                {skalViseSøknadsdata && søknadsgrunnlag && (
-                    <>
-                        <Søknadsgrunnlag />
-                        <BodyShortSmall>Søker og barn oppholder seg i Norge</BodyShortSmall>
-                        <BooleanTekst value={søknadsgrunnlag.oppholderDuDegINorge} />
-                    </>
-                )}
-            </GridTabell>
+        <InformasjonContainer>
+            <Informasjonsrad
+                label="Statsborgerskap"
+                verdi={registergrunnlag.nåværendeStatsborgerskap.join(', ')}
+                ikon={VilkårInfoIkon.REGISTER}
+            />
+            {skalViseSøknadsdata && søknadsgrunnlag && (
+                <Informasjonsrad
+                    label="Søker og barn oppholder seg i Norge"
+                    verdi={mapTrueFalse(søknadsgrunnlag.oppholderDuDegINorge)}
+                    ikon={VilkårInfoIkon.SØKNAD}
+                />
+            )}
 
             <FolkeregisterPersonstatus status={registergrunnlag.folkeregisterpersonstatus} />
             {finnesOppholdsstatus && (
@@ -56,7 +53,7 @@ const OppholdInfo: FC<Props> = ({ medlemskap, skalViseSøknadsdata }) => {
             {skalViseSøknadsdata && finnesUtenlandsperioder && (
                 <Utenlandsopphold utenlandsopphold={søknadsgrunnlag.utenlandsopphold} />
             )}
-        </>
+        </InformasjonContainer>
     );
 };
 export default OppholdInfo;

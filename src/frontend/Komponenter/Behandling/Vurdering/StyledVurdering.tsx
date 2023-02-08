@@ -4,8 +4,9 @@ import { APurple400 } from '@navikt/ds-tokens/dist/tokens';
 export const VurderingLesemodusGrid = styled.div`
     display: grid;
     grid-template-columns: max-content auto;
-    grid-template-rows: repeat(2, max-content);
+    grid-template-rows: max-content auto;
     grid-gap: 0.25rem 1rem;
+    height: 100%;
 `;
 
 export const TittelOgKnappWrapper = styled.span`
