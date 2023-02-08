@@ -43,7 +43,7 @@ export const InfoSeksjonWrapper: FC<InfoSeksjonWrapperProps> = ({
     children,
 }) => {
     return (
-        <FlexColumnContainer>
+        <FlexColumnContainer gap={1}>
             <UnderoverskriftWrapper>
                 {ikon}
                 <HeadingMedUnderlinje size="xsmall">{undertittel}</HeadingMedUnderlinje>
