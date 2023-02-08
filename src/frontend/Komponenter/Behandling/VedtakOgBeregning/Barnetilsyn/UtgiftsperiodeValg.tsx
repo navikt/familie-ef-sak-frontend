@@ -31,7 +31,7 @@ const UtgiftsperiodeRad = styled.div<{ lesevisning?: boolean; erHeader?: boolean
     grid-template-columns: ${(props) =>
         props.lesevisning
             ? '8rem 8rem 10rem 10rem 12rem 4rem 4rem'
-            : '10rem 10rem 14rem 14rem 25rem 2rem 4rem 3rem 3rem'};
+            : '10rem 10rem 12.5rem 12.5rem 25rem 2rem 4rem 3rem 3rem'};
     grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
     padding-bottom: ${(props) => (props.erHeader ? '0.5rem' : 0)};
 `;
@@ -53,6 +53,14 @@ const IkonKnappWrapper = styled.div`
     display: block;
 `;
 
+const HorizontalScroll = styled.div<{ åpenHøyremeny: boolean }>`
+    @media screen and (max-width: ${(p) => (p.åpenHøyremeny ? '1770px' : '1470px')}) {
+        overflow-x: scroll;
+        overflow-y: hidden;
+        white-space: nowrap;
+    }
+`;
+
 interface Props {
     utgiftsperioder: ListState<IUtgiftsperiode>;
     valideringsfeil?: FormErrors<InnvilgeVedtakForm>['utgiftsperioder'];
@@ -68,7 +76,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
     barn,
     låsFraDatoFørsteRad,
 }) => {
-    const { behandlingErRedigerbar } = useBehandling();
+    const { behandlingErRedigerbar, åpenHøyremeny } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
     const [sanksjonsmodal, settSanksjonsmodal] = useState<Sanksjonsmodal>({
         visModal: false,
@@ -157,7 +165,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
     };
 
     return (
-        <>
+        <HorizontalScroll åpenHøyremeny={åpenHøyremeny}>
             <UtgiftsperiodeRad lesevisning={!behandlingErRedigerbar} erHeader>
                 <Label>Periodetype</Label>
                 <Label>Aktivitet</Label>
@@ -280,16 +288,6 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                 hideLabel
                             />
                         )}
-                        {skalViseFjernKnapp ? (
-                            <IkonKnappWrapper>
-                                <FjernKnapp
-                                    onClick={() => slettPeriodeModalHvisSanksjon(index)}
-                                    ikontekst={'Fjern utgiftsperiode'}
-                                />
-                            </IkonKnappWrapper>
-                        ) : (
-                            <div />
-                        )}
                         {behandlingErRedigerbar && (
                             <IkonKnappWrapper>
                                 <Tooltip content="Legg til rad under" placement="right">
@@ -299,6 +297,16 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                     />
                                 </Tooltip>
                             </IkonKnappWrapper>
+                        )}
+                        {skalViseFjernKnapp ? (
+                            <IkonKnappWrapper>
+                                <FjernKnapp
+                                    onClick={() => slettPeriodeModalHvisSanksjon(index)}
+                                    ikontekst={'Fjern utgiftsperiode'}
+                                />
+                            </IkonKnappWrapper>
+                        ) : (
+                            <div />
                         )}
                     </UtgiftsperiodeRad>
                 );
@@ -316,7 +324,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                 slettPeriode={slettPeriode}
                 lukkModal={lukkSanksjonsmodal}
             />
-        </>
+        </HorizontalScroll>
     );
 };
 
