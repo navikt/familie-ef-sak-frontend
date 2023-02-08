@@ -21,6 +21,11 @@ const StyledHelpText = styled(HelpText)`
     }
 `;
 
+const HelpTextContainer = styled.div`
+    display: flex;
+    gap: 0.5rem;
+`;
+
 interface Props {
     forelderRegister?: IAnnenForelder;
     søknadsgrunnlag: IBarnMedSamværSøknadsgrunnlag;
@@ -130,7 +135,7 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
                         label="Annen forelders avstand til bruker (automatisk beregnet)"
                         verdiSomString={false}
                         verdi={
-                            <>
+                            <HelpTextContainer>
                                 <BodyShortSmall>
                                     {forelderRegister &&
                                         utledAvstandTilSøkerTekst(
@@ -163,7 +168,7 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
                                         </li>
                                     </ul>
                                 </StyledHelpText>
-                            </>
+                            </HelpTextContainer>
                         }
                     />
                 )}
