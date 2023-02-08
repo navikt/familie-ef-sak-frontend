@@ -15,51 +15,42 @@ import { BodyLongSmall, BodyShortSmall } from '../../../../Felles/Visningskompon
 
 interface Props {
     sagtOppEllerRedusert: ISagtOppEllerRedusertStilling;
-    skalViseSøknadsdata: boolean;
     dokumentasjon?: IDokumentasjonGrunnlag;
 }
 
-const SagtOppEllerRedusertInfo: FC<Props> = ({
-    sagtOppEllerRedusert,
-    skalViseSøknadsdata,
-    dokumentasjon,
-}) => {
+const SagtOppEllerRedusertInfo: FC<Props> = ({ sagtOppEllerRedusert, dokumentasjon }) => {
     const { sagtOppEllerRedusertStilling, årsak, dato } = sagtOppEllerRedusert;
     return (
         <>
             <GridTabell>
-                {skalViseSøknadsdata &&
-                    (sagtOppEllerRedusert.sagtOppEllerRedusertStilling ? (
-                        <>
-                            <HarSagtOppEllerRedusertStilling
-                                sagtOppEllerRedusertStilling={sagtOppEllerRedusertStilling}
-                                årsak={årsak}
-                                dato={dato}
-                            />
-                        </>
-                    ) : (
-                        <BodyLongSmall className="tekstUtenIkon">
-                            Spørsmålet om søker har sagt opp jobben eller redusert arbeidstiden har
-                            ikke blitt stilt i søknadsdialogen da søker opplyser at hun/han jobber
-                            mer enn 50 %.
-                        </BodyLongSmall>
-                    ))}
+                {sagtOppEllerRedusert.sagtOppEllerRedusertStilling ? (
+                    <>
+                        <HarSagtOppEllerRedusertStilling
+                            sagtOppEllerRedusertStilling={sagtOppEllerRedusertStilling}
+                            årsak={årsak}
+                            dato={dato}
+                        />
+                    </>
+                ) : (
+                    <BodyLongSmall className="tekstUtenIkon">
+                        Spørsmålet om søker har sagt opp jobben eller redusert arbeidstiden har ikke
+                        blitt stilt i søknadsdialogen da søker opplyser at hun/han jobber mer enn 50
+                        %.
+                    </BodyLongSmall>
+                )}
             </GridTabell>
-            {skalViseSøknadsdata && (
-                <>
-                    <DokumentasjonSendtInn
-                        dokumentasjon={dokumentasjon?.reduksjonAvArbeidsforhold}
-                        tittel={
-                            'Dokumentasjon på arbeidsforholdet og årsaken til at du reduserte arbeidstiden'
-                        }
-                    />
 
-                    <DokumentasjonSendtInn
-                        dokumentasjon={dokumentasjon?.oppsigelse}
-                        tittel={'Dokumentasjon på arbeidsforholdet og årsaken til at du sluttet'}
-                    />
-                </>
-            )}
+            <DokumentasjonSendtInn
+                dokumentasjon={dokumentasjon?.reduksjonAvArbeidsforhold}
+                tittel={
+                    'Dokumentasjon på arbeidsforholdet og årsaken til at du reduserte arbeidstiden'
+                }
+            />
+
+            <DokumentasjonSendtInn
+                dokumentasjon={dokumentasjon?.oppsigelse}
+                tittel={'Dokumentasjon på arbeidsforholdet og årsaken til at du sluttet'}
+            />
         </>
     );
 };
