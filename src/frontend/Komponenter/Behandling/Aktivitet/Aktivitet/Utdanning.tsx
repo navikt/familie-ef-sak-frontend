@@ -7,16 +7,15 @@ import {
     StudieandelTilTekst,
     UtdanningsformTilTekst,
 } from './typer';
-import { GridTabellWrapper } from '../../../../Felles/Visningskomponenter/GridTabell';
 import {
     formaterIsoMånedÅr,
     formaterNullableIsoDato,
     mapTrueFalse,
 } from '../../../../App/utils/formatter';
-import { BodyShortSmall, SmallTextLabel } from '../../../../Felles/Visningskomponenter/Tekster';
 import { InfoSeksjonWrapper } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 import { FlexColumnContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
 import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
+import TabellVisning from '../../Tabell/TabellVisning';
 
 export const UnderUtdanning: FC<{
     underUtdanning: IUnderUtdanning;
@@ -65,26 +64,24 @@ export const UnderUtdanning: FC<{
     );
 };
 
-export const TidligereUtdanninger: FC<{ tidligereUtdanninger?: ITidligereUtdanning[] }> = ({
+export const TidligereUtdanninger: FC<{ tidligereUtdanninger: ITidligereUtdanning[] }> = ({
     tidligereUtdanninger,
 }) => {
     return (
-        <>
-            <SmallTextLabel className={'førsteDataKolonne'}>Linje/Kurs/grad</SmallTextLabel>
-            <SmallTextLabel>Tidsperiode</SmallTextLabel>
-
-            {tidligereUtdanninger?.map((utdanning, index) => (
-                <GridTabellWrapper key={utdanning.linjeKursGrad + index}>
-                    <BodyShortSmall className={'førsteDataKolonne'}>
-                        {utdanning.linjeKursGrad}
-                    </BodyShortSmall>
-                    <BodyShortSmall>
-                        {`${formaterIsoMånedÅr(utdanning.fra)} - ${formaterIsoMånedÅr(
-                            utdanning.til
-                        )}`}
-                    </BodyShortSmall>
-                </GridTabellWrapper>
-            ))}
-        </>
+        <TabellVisning
+            ikonVisning={true}
+            verdier={tidligereUtdanninger}
+            kolonner={[
+                {
+                    overskrift: 'Linje/kurs/grad',
+                    tekstVerdi: (d) => d.linjeKursGrad,
+                },
+                {
+                    overskrift: 'Tidsperiode',
+                    tekstVerdi: (d) =>
+                        `${formaterIsoMånedÅr(d.fra)} - ${formaterIsoMånedÅr(d.til)}`,
+                },
+            ]}
+        />
     );
 };

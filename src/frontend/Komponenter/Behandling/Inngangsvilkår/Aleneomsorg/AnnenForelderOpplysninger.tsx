@@ -21,6 +21,11 @@ const StyledHelpText = styled(HelpText)`
     }
 `;
 
+const HelpTextContainer = styled.div`
+    display: flex;
+    gap: 0.5rem;
+`;
+
 interface Props {
     forelderRegister?: IAnnenForelder;
     søknadsgrunnlag: IBarnMedSamværSøknadsgrunnlag;
@@ -70,22 +75,20 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
                 />
             )}
 
-            {!visForelderSøknadInfo &&
-                forelderRegister &&
-                harNavnFødselsdatoEllerFnr(forelderRegister) && (
-                    <Informasjonsrad
-                        ikon={VilkårInfoIkon.REGISTER}
-                        label="Annen forelder"
-                        verdiSomString={false}
-                        verdi={
-                            forelderRegister ? (
-                                <AnnenForelderNavnOgFnr forelder={forelderRegister} />
-                            ) : (
-                                <BodyShortSmall>-</BodyShortSmall>
-                            )
-                        }
-                    />
-                )}
+            {!visForelderSøknadInfo && forelderRegister && (
+                <Informasjonsrad
+                    ikon={VilkårInfoIkon.REGISTER}
+                    label="Annen forelder"
+                    verdiSomString={false}
+                    verdi={
+                        forelderRegister ? (
+                            <AnnenForelderNavnOgFnr forelder={forelderRegister} />
+                        ) : (
+                            <BodyShortSmall>-</BodyShortSmall>
+                        )
+                    }
+                />
+            )}
 
             {forelderRegister?.dødsfall && (
                 <Informasjonsrad
@@ -106,19 +109,27 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
                         />
                     )}
 
-                    {!visForelderSøknadInfo &&
-                        forelderRegister &&
-                        harNavnFødselsdatoEllerFnr(forelderRegister) && (
-                            <Informasjonsrad
-                                ikon={VilkårInfoIkon.REGISTER}
-                                label="Annen forelder bor i"
-                                verdi={
-                                    forelderRegister?.bosattINorge
-                                        ? 'Norge'
-                                        : forelderRegister.land || '-'
-                                }
-                            />
-                        )}
+                    {!visForelderSøknadInfo && forelderRegister && (
+                        <Informasjonsrad
+                            ikon={VilkårInfoIkon.REGISTER}
+                            label="Annen forelder bor i"
+                            verdi={
+                                forelderRegister?.bosattINorge
+                                    ? 'Norge'
+                                    : forelderRegister.land || '-'
+                            }
+                        />
+                    )}
+                    {forelderRegister && (
+                        <Informasjonsrad
+                            ikon={VilkårInfoIkon.REGISTER}
+                            label="Annen forelders adresse"
+                            verdi={
+                                forelderRegister?.visningsadresse ||
+                                'Mangler gjeldende bostedsadresse'
+                            }
+                        />
+                    )}
                 </>
             )}
 
@@ -130,7 +141,7 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
                         label="Annen forelders avstand til bruker (automatisk beregnet)"
                         verdiSomString={false}
                         verdi={
-                            <>
+                            <HelpTextContainer>
                                 <BodyShortSmall>
                                     {forelderRegister &&
                                         utledAvstandTilSøkerTekst(
@@ -163,7 +174,7 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
                                         </li>
                                     </ul>
                                 </StyledHelpText>
-                            </>
+                            </HelpTextContainer>
                         }
                     />
                 )}
