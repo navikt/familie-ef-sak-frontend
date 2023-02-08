@@ -18,9 +18,10 @@ interface Props {
 const SivilstandInfo: FC<Props> = ({ sivilstand, skalViseSøknadsdata, dokumentasjon }) => {
     const { registergrunnlag, søknadsgrunnlag } = sivilstand;
 
-    const partnerNavnTekst = registergrunnlag.navn && ` - ${registergrunnlag.navn}`;
-    const gyldigFraOgMedTekst =
-        registergrunnlag.gyldigFraOgMed && ` (${formaterIsoDato(registergrunnlag.gyldigFraOgMed)})`;
+    const partnerNavnTekst = registergrunnlag.navn ? ` - ${registergrunnlag.navn}` : '';
+    const gyldigFraOgMedTekst = registergrunnlag.gyldigFraOgMed
+        ? ` (${formaterIsoDato(registergrunnlag.gyldigFraOgMed)})`
+        : '';
 
     return (
         <InformasjonContainer>
