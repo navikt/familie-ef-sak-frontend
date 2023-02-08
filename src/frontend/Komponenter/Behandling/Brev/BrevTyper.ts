@@ -16,6 +16,8 @@ import {
     initielleAvsnittForlengetSvartidKlage,
     initielleAvsnittForlengetSvartid,
     initielleAvsnittTrukketSøknad,
+    initielleAvsnittVarselUtestengelse,
+    initielleAvsnittVedtaklUtestengelse,
 } from './BrevTyperTekst';
 import { IMellomlagretBrevResponse } from '../../../App/hooks/useMellomlagringBrev';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
@@ -115,6 +117,8 @@ export enum FrittståendeBrevtype {
     BREV_OM_FORLENGET_SVARTID = 'BREV_OM_FORLENGET_SVARTID',
     BREV_OM_FORLENGET_SVARTID_KLAGE = 'BREV_OM_FORLENGET_SVARTID_KLAGE',
     INFORMASJONSBREV_TRUKKET_SØKNAD = 'INFORMASJONSBREV_TRUKKET_SØKNAD',
+    VARSEL_UTESTENGELSE = 'VARSEL_UTESTENGELSE',
+    VEDTAK_UTESTENGELSE = 'VEDTAK_UTESTENGELSE',
 }
 
 export enum FritekstBrevtype {
@@ -129,6 +133,7 @@ export enum FritekstBrevtype {
     VEDTAK_AVSLAG_SKOLEPENGER = 'VEDTAK_AVSLAG_SKOLEPENGER',
     VEDTAK_OPPHØR_BARNETILSYN = 'VEDTAK_OPPHØR_BARNETILSYN',
     VEDTAK_OPPHØR_SKOLEPENGER = 'VEDTAK_OPPHØR_SKOLEPENGER',
+    VEDTAK_UTESTENGELSE = 'VEDTAK_UTESTENGELSE',
 }
 
 export const BrevtyperTilOverskrift: Record<FrittståendeBrevtype | FritekstBrevtype, string> = {
@@ -153,6 +158,10 @@ export const BrevtyperTilOverskrift: Record<FrittståendeBrevtype | FritekstBrev
     BREV_OM_FORLENGET_SVARTID: 'Saksbehandlingen vil ta lenger tid',
     BREV_OM_FORLENGET_SVARTID_KLAGE: 'Saksbehandlingen vil ta lenger tid',
     INFORMASJONSBREV_TRUKKET_SØKNAD: 'Saken din om [stønad] er avsluttet',
+    VARSEL_UTESTENGELSE:
+        'Vi vurderer å ta fra deg retten til stønad til enslig mor eller far i en periode',
+    VEDTAK_UTESTENGELSE:
+        'Vi har tatt fra deg retten til stønad til enslig mor eller far i en periode',
 };
 
 export const BrevtyperTilSelectNavn: Record<
@@ -181,6 +190,8 @@ export const BrevtyperTilSelectNavn: Record<
     BREV_OM_FORLENGET_SVARTID: 'Brev om forlenget svartid',
     BREV_OM_FORLENGET_SVARTID_KLAGE: 'Brev om forlenget svartid - klage',
     INFORMASJONSBREV_TRUKKET_SØKNAD: 'Informasjonsbrev - bruker har trukket søknad',
+    VARSEL_UTESTENGELSE: 'Varsel om utestengelse',
+    VEDTAK_UTESTENGELSE: 'Vedtak om utestengelse',
 };
 
 export const stønadstypeTilBrevtyper: Record<Stønadstype, FritekstBrevtype[]> = {
@@ -190,16 +201,19 @@ export const stønadstypeTilBrevtyper: Record<Stønadstype, FritekstBrevtype[]> 
         FritekstBrevtype.VEDTAK_AVSLAG,
         FritekstBrevtype.VEDTAK_OPPHØR,
         FritekstBrevtype.VEDTAK_REVURDERING,
+        FritekstBrevtype.VEDTAK_UTESTENGELSE,
     ],
     BARNETILSYN: [
         FritekstBrevtype.VEDTAK_INNVILGELSE_BARNETILSYN,
         FritekstBrevtype.VEDTAK_AVSLAG_BARNETILSYN,
         FritekstBrevtype.VEDTAK_OPPHØR_BARNETILSYN,
+        FritekstBrevtype.VEDTAK_UTESTENGELSE,
     ],
     SKOLEPENGER: [
         FritekstBrevtype.VEDTAK_INNVILGELSE_SKOLEPENGER,
         FritekstBrevtype.VEDTAK_AVSLAG_SKOLEPENGER,
         FritekstBrevtype.VEDTAK_OPPHØR_SKOLEPENGER,
+        FritekstBrevtype.VEDTAK_UTESTENGELSE,
     ],
 };
 
@@ -228,6 +242,8 @@ export const BrevtyperTilAvsnitt: Record<FrittståendeBrevtype | FritekstBrevtyp
         BREV_OM_FORLENGET_SVARTID: initielleAvsnittForlengetSvartid,
         BREV_OM_FORLENGET_SVARTID_KLAGE: initielleAvsnittForlengetSvartidKlage,
         INFORMASJONSBREV_TRUKKET_SØKNAD: initielleAvsnittTrukketSøknad,
+        VARSEL_UTESTENGELSE: initielleAvsnittVarselUtestengelse,
+        VEDTAK_UTESTENGELSE: initielleAvsnittVedtaklUtestengelse,
     };
 
 export enum FritekstBrevContext {
