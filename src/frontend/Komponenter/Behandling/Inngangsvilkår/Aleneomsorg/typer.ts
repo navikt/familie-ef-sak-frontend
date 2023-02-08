@@ -62,6 +62,7 @@ export interface IAnnenForelder {
     fødselsdato?: string;
     bosattINorge?: boolean;
     land?: string;
+    visningsadresse?: string;
     dødsfall?: string;
     tidligereVedtaksperioder?: ITidligereVedtaksperioder;
     avstandTilSøker: IAvstandTilSøker;
