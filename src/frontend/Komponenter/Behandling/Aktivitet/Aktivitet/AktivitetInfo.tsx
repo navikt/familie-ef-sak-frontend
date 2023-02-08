@@ -6,7 +6,6 @@ import { ArbeidssituasjonTilTekst, EArbeidssituasjon } from './typer';
 import SelvstendigNæringsdrivendeEllerFrilanser from './SelvstendigNæringsdrivendeEllerFrilanser';
 import Arbeidssøker from './Arbeidssøker';
 import { TidligereUtdanninger, UnderUtdanning } from './Utdanning';
-import { SeksjonWrapper } from '../../../../Felles/Visningskomponenter/SeksjonWrapper';
 import Annet from './Annet';
 import Aksjeselskap from './Aksjeselskap';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
@@ -14,7 +13,9 @@ import { ArbeidstakerLønnsmottakerSomFrilanser } from './ArbeidstakerLønnsmott
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
 import DokumentasjonSendtInn from '../../Inngangsvilkår/DokumentasjonSendtInn';
 import { IDokumentasjonGrunnlag } from '../../Inngangsvilkår/vilkår';
-import { BodyShortSmall, SmallTextLabel } from '../../../../Felles/Visningskomponenter/Tekster';
+import { InformasjonContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
+import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
+import { InfoSeksjonWrapper, VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 
 interface Props {
     aktivitet: IAktivitet;
@@ -44,162 +45,141 @@ const AktivitetInfo: FC<Props> = ({
     } = aktivitet;
 
     return (
-        <>
-            <SeksjonWrapper>
-                {skalViseSøknadsdata &&
-                    arbeidssituasjon.includes(EArbeidssituasjon.erHjemmeMedBarnUnderEttÅr) && (
+        <InformasjonContainer>
+            {skalViseSøknadsdata &&
+                arbeidssituasjon.includes(EArbeidssituasjon.erHjemmeMedBarnUnderEttÅr) && (
+                    <Informasjonsrad
+                        ikon={VilkårInfoIkon.SØKNAD}
+                        label={
+                            ArbeidssituasjonTilTekst[EArbeidssituasjon.erHjemmeMedBarnUnderEttÅr]
+                        }
+                    />
+                )}
+
+            {skalViseSøknadsdata &&
+                arbeidsforhold &&
+                arbeidsforhold.map((arbeidsgiver, index) => (
+                    <ArbeidstakerLønnsmottakerSomFrilanser
+                        key={arbeidsgiver.arbeidsgivernavn + index}
+                        arbeidsforhold={arbeidsgiver}
+                        stønadstype={stønadstype}
+                    />
+                ))}
+
+            {skalViseSøknadsdata &&
+                selvstendig &&
+                selvstendig.map((firma, index) => (
+                    <SelvstendigNæringsdrivendeEllerFrilanser
+                        key={firma.organisasjonsnummer + index}
+                        firma={firma}
+                        stønadstype={stønadstype}
+                    />
+                ))}
+
+            {skalViseSøknadsdata &&
+                aksjeselskap &&
+                aksjeselskap.map((selskap, index) => (
+                    <Aksjeselskap
+                        key={selskap.navn + index}
+                        aksjeselskap={selskap}
+                        stønadstype={stønadstype}
+                    />
+                ))}
+
+            {skalViseSøknadsdata && datoOppstartJobb && (
+                <InfoSeksjonWrapper
+                    undertittel={ArbeidssituasjonTilTekst[EArbeidssituasjon.harFåttJobbTilbud]}
+                    ikon={<Søknadsgrunnlag />}
+                >
+                    <Informasjonsrad
+                        label="Startdato ny jobb"
+                        verdi={formaterNullableIsoDato(datoOppstartJobb)}
+                    />
+                </InfoSeksjonWrapper>
+            )}
+
+            {skalViseSøknadsdata && virksomhet && (
+                <InfoSeksjonWrapper
+                    undertittel={
+                        ArbeidssituasjonTilTekst[EArbeidssituasjon.etablererEgenVirksomhet]
+                    }
+                    ikon={<Søknadsgrunnlag />}
+                >
+                    <Informasjonsrad
+                        label="Beskrivelse av virksomheten"
+                        verdi={virksomhet?.virksomhetsbeskrivelse}
+                    />
+                </InfoSeksjonWrapper>
+            )}
+
+            {skalViseSøknadsdata && arbeidssøker && <Arbeidssøker arbeidssøker={arbeidssøker} />}
+
+            {skalViseSøknadsdata && underUtdanning && (
+                <>
+                    <UnderUtdanning underUtdanning={underUtdanning} />
+                    {underUtdanning.utdanningEtterGrunnskolen && (
                         <GridTabell kolonner={3}>
-                            <Søknadsgrunnlag />
-                            <SmallTextLabel className={'undertittel'}>
-                                {
-                                    ArbeidssituasjonTilTekst[
-                                        EArbeidssituasjon.erHjemmeMedBarnUnderEttÅr
-                                    ]
-                                }
-                            </SmallTextLabel>
-                        </GridTabell>
-                    )}
-
-                {skalViseSøknadsdata &&
-                    arbeidsforhold &&
-                    arbeidsforhold.map((arbeidsgiver, index) => (
-                        <GridTabell kolonner={3} key={arbeidsgiver.arbeidsgivernavn + index}>
-                            <ArbeidstakerLønnsmottakerSomFrilanser
-                                key={arbeidsgiver.arbeidsgivernavn + index}
-                                arbeidsforhold={arbeidsgiver}
-                                stønadstype={stønadstype}
-                            />
-                        </GridTabell>
-                    ))}
-
-                {skalViseSøknadsdata &&
-                    selvstendig &&
-                    selvstendig.map((firma, index) => (
-                        <GridTabell kolonner={3} key={firma.organisasjonsnummer + index}>
-                            <SelvstendigNæringsdrivendeEllerFrilanser
-                                key={firma.organisasjonsnummer + index}
-                                firma={firma}
-                                stønadstype={stønadstype}
-                            />
-                        </GridTabell>
-                    ))}
-
-                {skalViseSøknadsdata &&
-                    aksjeselskap &&
-                    aksjeselskap.map((selskap, index) => (
-                        <GridTabell kolonner={3} key={selskap.navn + index}>
-                            <Aksjeselskap
-                                key={selskap.navn + index}
-                                aksjeselskap={selskap}
-                                stønadstype={stønadstype}
-                            />
-                        </GridTabell>
-                    ))}
-
-                {skalViseSøknadsdata && datoOppstartJobb && (
-                    <GridTabell kolonner={3}>
-                        <Søknadsgrunnlag />
-                        <SmallTextLabel className={'undertittel'}>
-                            {ArbeidssituasjonTilTekst[EArbeidssituasjon.harFåttJobbTilbud]}
-                        </SmallTextLabel>
-                        <BodyShortSmall className={'førsteDataKolonne'}>
-                            Startdato ny jobb
-                        </BodyShortSmall>
-                        <BodyShortSmall>
-                            {' '}
-                            {formaterNullableIsoDato(datoOppstartJobb)}
-                        </BodyShortSmall>
-                    </GridTabell>
-                )}
-
-                {skalViseSøknadsdata && virksomhet && (
-                    <GridTabell kolonner={3}>
-                        <Søknadsgrunnlag />
-                        <SmallTextLabel className={'undertittel'}>
-                            {ArbeidssituasjonTilTekst[EArbeidssituasjon.etablererEgenVirksomhet]}
-                        </SmallTextLabel>
-                        <BodyShortSmall className={'førsteDataKolonne'}>
-                            Beskrivelse av virksomheten
-                        </BodyShortSmall>
-                        <BodyShortSmall>{virksomhet?.virksomhetsbeskrivelse}</BodyShortSmall>
-                    </GridTabell>
-                )}
-
-                {skalViseSøknadsdata && arbeidssøker && (
-                    <GridTabell kolonner={3}>
-                        <Arbeidssøker arbeidssøker={arbeidssøker} />{' '}
-                    </GridTabell>
-                )}
-
-                {skalViseSøknadsdata && underUtdanning && (
-                    <GridTabell kolonner={3}>
-                        <UnderUtdanning underUtdanning={underUtdanning} />
-                        {underUtdanning.utdanningEtterGrunnskolen && (
                             <TidligereUtdanninger tidligereUtdanninger={tidligereUtdanninger} />
-                        )}
-                    </GridTabell>
-                )}
-
-                {skalViseSøknadsdata &&
-                    arbeidssituasjon.includes(
-                        EArbeidssituasjon.erHverkenIArbeidUtdanningEllerArbeidssøker
-                    ) && (
-                        <GridTabell kolonner={3}>
-                            <Søknadsgrunnlag />
-                            <SmallTextLabel className={'undertittel'}>
-                                {
-                                    ArbeidssituasjonTilTekst[
-                                        EArbeidssituasjon.erHverkenIArbeidUtdanningEllerArbeidssøker
-                                    ]
-                                }
-                            </SmallTextLabel>
                         </GridTabell>
                     )}
-                {skalViseSøknadsdata && særligeTilsynsbehov && (
-                    <SeksjonWrapper>
-                        <Annet dinSituasjon={gjelderDeg} særligTilsynsbehov={særligeTilsynsbehov} />
-                    </SeksjonWrapper>
+                </>
+            )}
+
+            {skalViseSøknadsdata &&
+                arbeidssituasjon.includes(
+                    EArbeidssituasjon.erHverkenIArbeidUtdanningEllerArbeidssøker
+                ) && (
+                    <Informasjonsrad
+                        ikon={VilkårInfoIkon.SØKNAD}
+                        label={
+                            ArbeidssituasjonTilTekst[
+                                EArbeidssituasjon.erHverkenIArbeidUtdanningEllerArbeidssøker
+                            ]
+                        }
+                    />
                 )}
-                {skalViseSøknadsdata && (
-                    <>
-                        <DokumentasjonSendtInn
-                            dokumentasjon={dokumentasjon?.arbeidskontrakt}
-                            tittel={'Arbeidskontrakt som viser at du har fått tilbud om arbeid'}
-                        />
-                        <DokumentasjonSendtInn
-                            dokumentasjon={dokumentasjon?.barnsSykdom}
-                            tittel={'Dokumentasjon på barnets sykdom'}
-                        />
-                        <DokumentasjonSendtInn
-                            dokumentasjon={dokumentasjon?.barnMedSærligeBehov}
-                            tittel={'Dokumentasjon på barnets tilsynsbehov'}
-                        />
-                        <DokumentasjonSendtInn
-                            dokumentasjon={dokumentasjon?.ikkeVilligTilÅTaImotTilbudOmArbeid}
-                            tittel={
-                                'Dokumentasjon som beskriver grunnen til at du ikke kan ta ethvert arbeid'
-                            }
-                        />
-                        <DokumentasjonSendtInn
-                            dokumentasjon={dokumentasjon?.sykdom}
-                            tittel={'Dokumentasjon som viser at du er syk'}
-                        />
-                        <DokumentasjonSendtInn
-                            dokumentasjon={dokumentasjon?.manglendeBarnepass}
-                            tittel={'Dokumentasjon som viser at du mangler barnepass'}
-                        />
-                        <DokumentasjonSendtInn
-                            dokumentasjon={dokumentasjon?.lærlingkontrakt}
-                            tittel={'Lærlingkontrakt'}
-                        />
-                        <DokumentasjonSendtInn
-                            dokumentasjon={dokumentasjon?.virksomhet}
-                            tittel={'Næringsfaglig vurdering av virksomheten du etablerer'}
-                        />
-                    </>
-                )}
-            </SeksjonWrapper>
-        </>
+            {skalViseSøknadsdata && særligeTilsynsbehov && (
+                <Annet dinSituasjon={gjelderDeg} særligTilsynsbehov={særligeTilsynsbehov} />
+            )}
+            {skalViseSøknadsdata && (
+                <>
+                    <DokumentasjonSendtInn
+                        dokumentasjon={dokumentasjon?.arbeidskontrakt}
+                        tittel={'Arbeidskontrakt som viser at du har fått tilbud om arbeid'}
+                    />
+                    <DokumentasjonSendtInn
+                        dokumentasjon={dokumentasjon?.barnsSykdom}
+                        tittel={'Dokumentasjon på barnets sykdom'}
+                    />
+                    <DokumentasjonSendtInn
+                        dokumentasjon={dokumentasjon?.barnMedSærligeBehov}
+                        tittel={'Dokumentasjon på barnets tilsynsbehov'}
+                    />
+                    <DokumentasjonSendtInn
+                        dokumentasjon={dokumentasjon?.ikkeVilligTilÅTaImotTilbudOmArbeid}
+                        tittel={
+                            'Dokumentasjon som beskriver grunnen til at du ikke kan ta ethvert arbeid'
+                        }
+                    />
+                    <DokumentasjonSendtInn
+                        dokumentasjon={dokumentasjon?.sykdom}
+                        tittel={'Dokumentasjon som viser at du er syk'}
+                    />
+                    <DokumentasjonSendtInn
+                        dokumentasjon={dokumentasjon?.manglendeBarnepass}
+                        tittel={'Dokumentasjon som viser at du mangler barnepass'}
+                    />
+                    <DokumentasjonSendtInn
+                        dokumentasjon={dokumentasjon?.lærlingkontrakt}
+                        tittel={'Lærlingkontrakt'}
+                    />
+                    <DokumentasjonSendtInn
+                        dokumentasjon={dokumentasjon?.virksomhet}
+                        tittel={'Næringsfaglig vurdering av virksomheten du etablerer'}
+                    />
+                </>
+            )}
+        </InformasjonContainer>
     );
 };
 
