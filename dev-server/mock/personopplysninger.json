@@ -11,10 +11,6 @@
     "adressebeskyttelse":"UGRADERT",
     "folkeregisterpersonstatus":"BOSATT",
     "dødsdato":null,
-    "telefonnummer":{
-      "landskode":"+47",
-      "nummer":"  22228888"
-    },
     "statsborgerskap":[
       {
         "land":"Danmark",

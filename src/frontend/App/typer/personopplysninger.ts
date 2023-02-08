@@ -11,7 +11,6 @@ export interface IPersonopplysninger {
     dødsdato?: string;
     fødselsdato?: string;
     egenAnsatt: boolean;
-    telefonnummer?: ITelefonnummer;
     statsborgerskap: IStatsborgerskap[];
     sivilstand: ISivilstand[];
     adresse: IAdresse[];
@@ -83,11 +82,6 @@ export interface INavn {
     mellomnavn: string;
     etternavn: string;
     visningsnavn: string;
-}
-
-export interface ITelefonnummer {
-    landskode: string;
-    nummer: string;
 }
 
 export interface IStatsborgerskap {
