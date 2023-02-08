@@ -19,8 +19,6 @@ import { useApp } from '../../../App/context/AppContext';
 import { Alert, BodyShort, Button, Detail, Heading, Label } from '@navikt/ds-react';
 import { BodyShortSmall, SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
 import { SuccessStroke } from '@navikt/ds-icons';
-import { useToggles } from '../../../App/context/TogglesContext';
-import { ToggleName } from '../../../App/context/toggles';
 
 export const BorderBox = styled.div`
     border: 1px solid #c6c2bf;
@@ -126,7 +124,6 @@ const SendtTilBeslutter: React.FC<{
     behandlingId: string;
 }> = ({ totrinnskontroll, behandlingId }) => {
     const { axiosRequest } = useApp();
-    const { toggles } = useToggles();
     const { hentBehandling, hentTotrinnskontroll, hentBehandlingshistorikk } = useBehandling();
     const [feilmelding, settFeilmelding] = useState<string>('');
     const [laster, settLaster] = useState(false);
@@ -168,19 +165,17 @@ const SendtTilBeslutter: React.FC<{
                 <BodyShortSmall>{totrinnskontroll.opprettetAv}</BodyShortSmall>
                 <BodyShortSmall>{formaterIsoDatoTid(totrinnskontroll.opprettetTid)}</BodyShortSmall>
             </div>
-            {toggles[ToggleName.angreSendTilBeslutter] && (
-                <AngreSendTilBeslutterContainer>
-                    <Button
-                        size="small"
-                        disabled={laster}
-                        variant={'secondary'}
-                        onClick={angreSendTilBeslutter}
-                    >
-                        Angre sendt til beslutter
-                    </Button>
-                    {feilmelding && <Alert variant={'error'}>{feilmelding}</Alert>}
-                </AngreSendTilBeslutterContainer>
-            )}
+            <AngreSendTilBeslutterContainer>
+                <Button
+                    size="small"
+                    disabled={laster}
+                    variant={'secondary'}
+                    onClick={angreSendTilBeslutter}
+                >
+                    Angre sendt til beslutter
+                </Button>
+                {feilmelding && <Alert variant={'error'}>{feilmelding}</Alert>}
+            </AngreSendTilBeslutterContainer>
         </BorderBox>
     );
 };
