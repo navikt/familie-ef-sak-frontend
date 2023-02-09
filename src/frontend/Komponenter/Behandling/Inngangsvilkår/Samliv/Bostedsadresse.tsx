@@ -1,23 +1,17 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Td } from '../../../../Felles/Personopplysninger/TabellWrapper';
-import {
-    AdresseType,
-    IAdresse,
-    IPersonopplysninger,
-    ISøkeresultatPerson,
-} from '../../../../App/typer/personopplysninger';
+import { ISøkeresultatPerson } from '../../../../App/typer/personopplysninger';
 import { useApp } from '../../../../App/context/AppContext';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../../App/typer/ressurs';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 import styled from 'styled-components';
 import { Collapse, Expand } from '@navikt/ds-icons';
-import { useBehandling } from '../../../../App/context/BehandlingContext';
 import { AlertStripeVariant } from '../../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
-import { gyldigTilOgMedErNullEllerFremITid } from '../../../../Felles/Personopplysninger/adresseUtil';
 import { Button } from '@navikt/ds-react';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
 import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
+import { IVilkårRegistergrunnlag } from '../vilkår';
 
 interface BeboereTabellProps {
     vis: boolean;
@@ -25,6 +19,7 @@ interface BeboereTabellProps {
 
 interface BostedsadresseProps {
     behandlingId: string;
+    registergrunnlag: IVilkårRegistergrunnlag;
 }
 
 const BeboereTabell = styled.table<BeboereTabellProps>`
@@ -39,19 +34,7 @@ const KnappMedMarginTop = styled(Button)`
     margin-top: 0.5rem;
 `;
 
-const nåværendeBostedsadresse = (
-    personopplysningerResponse: IPersonopplysninger
-): IAdresse | undefined => {
-    const bostedsadresse = personopplysningerResponse.adresse.find(
-        (adresse) => adresse.type === AdresseType.BOSTEDADRESSE
-    );
-    return bostedsadresse && gyldigTilOgMedErNullEllerFremITid(bostedsadresse)
-        ? bostedsadresse
-        : undefined;
-};
-
-export const Bostedsadresse = ({ behandlingId }: BostedsadresseProps) => {
-    const { personopplysningerResponse } = useBehandling();
+export const Bostedsadresse = ({ behandlingId, registergrunnlag }: BostedsadresseProps) => {
     const { axiosRequest } = useApp();
 
     const [beboere, settBeboere] = useState<Ressurs<ISøkeresultatPerson>>(byggTomRessurs());
@@ -74,45 +57,36 @@ export const Bostedsadresse = ({ behandlingId }: BostedsadresseProps) => {
         }
     }, [behandlingId, hentBeboerePåSammeAdresse, visBeboere, beboere.status]);
 
+    const { bostedsadresse } = registergrunnlag;
+
     return (
         <>
-            <DataViewer response={{ personopplysningerResponse }}>
-                {({ personopplysningerResponse }) => {
-                    const bostedsadresse = nåværendeBostedsadresse(personopplysningerResponse);
-
-                    return (
-                        <>
-                            <Informasjonsrad
-                                ikon={VilkårInfoIkon.REGISTER}
-                                label="Brukers bostedsadresse"
-                                verdiSomString={false}
-                                verdi={
-                                    <div>
-                                        <BodyShortSmall>
-                                            {bostedsadresse?.visningsadresse ||
-                                                'Mangler bostedsadresse'}
-                                        </BodyShortSmall>
-                                        {bostedsadresse && (
-                                            <KnappMedMarginTop
-                                                type={'button'}
-                                                variant={'tertiary'}
-                                                icon={visBeboere ? <Collapse /> : <Expand />}
-                                                iconPosition={'right'}
-                                                onClick={() => {
-                                                    settVisBeboere(!visBeboere);
-                                                }}
-                                                size={'small'}
-                                            >
-                                                Se beboere
-                                            </KnappMedMarginTop>
-                                        )}
-                                    </div>
-                                }
-                            />
-                        </>
-                    );
-                }}
-            </DataViewer>
+            <Informasjonsrad
+                ikon={VilkårInfoIkon.REGISTER}
+                label="Brukers bostedsadresse"
+                verdiSomString={false}
+                verdi={
+                    <div>
+                        <BodyShortSmall>
+                            {bostedsadresse?.visningsadresse || 'Mangler bostedsadresse'}
+                        </BodyShortSmall>
+                        {bostedsadresse && (
+                            <KnappMedMarginTop
+                                type={'button'}
+                                variant={'tertiary'}
+                                icon={visBeboere ? <Collapse /> : <Expand />}
+                                iconPosition={'right'}
+                                onClick={() => {
+                                    settVisBeboere(!visBeboere);
+                                }}
+                                size={'small'}
+                            >
+                                Se beboere
+                            </KnappMedMarginTop>
+                        )}
+                    </div>
+                }
+            />
             {visBeboere && (
                 <DataViewer
                     response={{ beboere }}
