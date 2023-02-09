@@ -32,6 +32,7 @@ export const NyttBarnSammePartner: React.FC<VilkårProps> = ({
                 {{
                     venstre: (
                         <NyttBarnSammePartnerInfo
+                            registergrunnlag={grunnlag.registergrunnlag}
                             barnMedSamvær={barnMedSamvær}
                             tidligereVedtaksperioder={grunnlag.tidligereVedtaksperioder}
                         />

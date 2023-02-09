@@ -8,18 +8,25 @@ import { ITidligereVedtaksperioder } from '../../TidligereVedtaksperioder/typer'
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 import { InformasjonContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
 import { UnderseksjonWrapper } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
+import { IVilkårRegistergrunnlag } from '../vilkår';
 
 interface Props {
+    registergrunnlag: IVilkårRegistergrunnlag;
     barnMedSamvær: IBarnMedSamvær[];
     tidligereVedtaksperioder: ITidligereVedtaksperioder;
 }
 
-const NyttBarnSammePartnerInfo: FC<Props> = ({ barnMedSamvær, tidligereVedtaksperioder }) => {
+const NyttBarnSammePartnerInfo: FC<Props> = ({
+    registergrunnlag,
+    barnMedSamvær,
+    tidligereVedtaksperioder,
+}) => {
     const registergrunnlagNyttBarn = mapTilRegistergrunnlagNyttBarn(barnMedSamvær);
     const søknadsgrunnlagNyttBarn = mapTilSøknadsgrunnlagNyttBarn(barnMedSamvær);
     return (
         <InformasjonContainer>
             <TidligereVedtaksperioderSøkerOgAndreForeldre
+                registergrunnlag={registergrunnlag}
                 tidligereVedtaksperioder={tidligereVedtaksperioder}
                 registergrunnlagNyttBarn={registergrunnlagNyttBarn}
             />
