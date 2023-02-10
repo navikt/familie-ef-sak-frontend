@@ -94,7 +94,8 @@ export const utledUtgiftsbeløp = (utgift?: number) => {
     return utgift ? `${formaterTallMedTusenSkilleEllerStrek(utgift)} ,-` : '-';
 };
 
-export const mapTrueFalse = (bool: boolean): string => (bool ? 'Ja' : 'Nei');
+export const mapTrueFalse = (bool?: boolean): string =>
+    bool === true ? 'Ja' : bool === false ? 'Nei' : '';
 
 export const formatterBooleanEllerUkjent = (bool?: boolean) =>
-    bool === undefined ? 'Ukjent' : mapTrueFalse(bool);
+    bool === undefined || bool === null ? 'Ukjent' : mapTrueFalse(bool);
