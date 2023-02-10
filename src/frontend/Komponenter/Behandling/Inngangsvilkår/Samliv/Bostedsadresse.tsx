@@ -11,7 +11,7 @@ import { Button } from '@navikt/ds-react';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
 import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
-import { IVilkårRegistergrunnlag } from '../vilkår';
+import { IPersonalia } from '../vilkår';
 
 interface BeboereTabellProps {
     vis: boolean;
@@ -19,7 +19,7 @@ interface BeboereTabellProps {
 
 interface BostedsadresseProps {
     behandlingId: string;
-    registergrunnlag: IVilkårRegistergrunnlag;
+    personalia: IPersonalia;
 }
 
 const BeboereTabell = styled.table<BeboereTabellProps>`
@@ -34,7 +34,7 @@ const KnappMedMarginTop = styled(Button)`
     margin-top: 0.5rem;
 `;
 
-export const Bostedsadresse = ({ behandlingId, registergrunnlag }: BostedsadresseProps) => {
+export const Bostedsadresse = ({ behandlingId, personalia }: BostedsadresseProps) => {
     const { axiosRequest } = useApp();
 
     const [beboere, settBeboere] = useState<Ressurs<ISøkeresultatPerson>>(byggTomRessurs());
@@ -57,7 +57,7 @@ export const Bostedsadresse = ({ behandlingId, registergrunnlag }: Bostedsadress
         }
     }, [behandlingId, hentBeboerePåSammeAdresse, visBeboere, beboere.status]);
 
-    const { bostedsadresse } = registergrunnlag;
+    const { bostedsadresse } = personalia;
 
     return (
         <>

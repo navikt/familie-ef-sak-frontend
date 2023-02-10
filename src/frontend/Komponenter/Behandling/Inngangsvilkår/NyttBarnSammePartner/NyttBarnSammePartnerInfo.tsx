@@ -8,16 +8,16 @@ import { ITidligereVedtaksperioder } from '../../TidligereVedtaksperioder/typer'
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 import { InformasjonContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
 import { UnderseksjonWrapper } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
-import { IVilkårRegistergrunnlag } from '../vilkår';
+import { IPersonalia } from '../vilkår';
 
 interface Props {
-    registergrunnlag: IVilkårRegistergrunnlag;
+    personalia: IPersonalia;
     barnMedSamvær: IBarnMedSamvær[];
     tidligereVedtaksperioder: ITidligereVedtaksperioder;
 }
 
 const NyttBarnSammePartnerInfo: FC<Props> = ({
-    registergrunnlag,
+    personalia,
     barnMedSamvær,
     tidligereVedtaksperioder,
 }) => {
@@ -26,7 +26,7 @@ const NyttBarnSammePartnerInfo: FC<Props> = ({
     return (
         <InformasjonContainer>
             <TidligereVedtaksperioderSøkerOgAndreForeldre
-                registergrunnlag={registergrunnlag}
+                personalia={personalia}
                 tidligereVedtaksperioder={tidligereVedtaksperioder}
                 registergrunnlagNyttBarn={registergrunnlagNyttBarn}
             />

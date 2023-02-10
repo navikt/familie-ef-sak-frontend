@@ -9,7 +9,7 @@ import { formatterBooleanEllerUkjent, mapTrueFalse } from '../../../../App/utils
 import { nonNull } from '../../../../App/utils/utils';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 import TabellVisning from '../../Tabell/TabellVisning';
-import { IVilkårRegistergrunnlag } from '../vilkår';
+import { IPersonalia } from '../vilkår';
 
 interface TidligereVedtaksperioderPåPartISak {
     fødselsnummer: string;
@@ -65,7 +65,7 @@ const jaNeiMedToolTip = (tidligereVedtak: ITidligereInnvilgetVedtak | undefined)
 };
 
 const mapSøker = (
-    registergrunnlag: IVilkårRegistergrunnlag,
+    personalia: IPersonalia,
     tidligereVedtaksperioder: ITidligereVedtaksperioder
 ): TidligereVedtaksperioderPåPartISak | undefined => {
     const tidligereVedtakFinnesIkke =
@@ -74,18 +74,18 @@ const mapSøker = (
         return undefined;
     }
     return {
-        navn: `${registergrunnlag.navn.visningsnavn} (bruker)`,
-        fødselsnummer: registergrunnlag.personIdent,
+        navn: `${personalia.navn.visningsnavn} (bruker)`,
+        fødselsnummer: personalia.personIdent,
         tidligereVedtaksperioder: tidligereVedtaksperioder,
     };
 };
 
 const TidligereVedtaksperioderSøkerOgAndreForeldre: FC<{
-    registergrunnlag: IVilkårRegistergrunnlag;
+    personalia: IPersonalia;
     tidligereVedtaksperioder: ITidligereVedtaksperioder;
     registergrunnlagNyttBarn: RegistergrunnlagNyttBarn[];
-}> = ({ registergrunnlag, tidligereVedtaksperioder, registergrunnlagNyttBarn }) => {
-    const søker = mapSøker(registergrunnlag, tidligereVedtaksperioder);
+}> = ({ personalia, tidligereVedtaksperioder, registergrunnlagNyttBarn }) => {
+    const søker = mapSøker(personalia, tidligereVedtaksperioder);
     const andreForeldrer = mapAndreForeldrerMedTidligereVedaksperioder(registergrunnlagNyttBarn);
     const verdier: TidligereVedtaksperioderPåPartISak[] = søker
         ? [søker, ...andreForeldrer]

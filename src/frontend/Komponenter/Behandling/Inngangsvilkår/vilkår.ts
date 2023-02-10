@@ -14,7 +14,7 @@ export interface IVilkår {
 }
 
 export interface IVilkårGrunnlag {
-    registergrunnlag: IVilkårRegistergrunnlag;
+    personalia: IPersonalia;
     tidligereVedtaksperioder: ITidligereVedtaksperioder;
     medlemskap: IMedlemskap;
     sivilstand: ISivilstandInngangsvilkår;
@@ -28,7 +28,7 @@ export interface IVilkårGrunnlag {
     dokumentasjon?: IDokumentasjonGrunnlag;
 }
 
-export interface IVilkårRegistergrunnlag {
+export interface IPersonalia {
     personIdent: string;
     navn: INavn;
     bostedsadresse?: IAdresse;

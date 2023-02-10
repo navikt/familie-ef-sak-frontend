@@ -26,7 +26,7 @@ const SamlivInfo: FC<Props> = ({
     behandlingsstatus,
 }) => {
     const {
-        registergrunnlag,
+        personalia,
         sivilstand,
         bosituasjon,
         sivilstandsplaner,
@@ -72,7 +72,7 @@ const SamlivInfo: FC<Props> = ({
                     </>
                 )}
             {behandlingsstatus !== BehandlingStatus.FERDIGSTILT && (
-                <Bostedsadresse behandlingId={behandlingId} registergrunnlag={registergrunnlag} />
+                <Bostedsadresse behandlingId={behandlingId} personalia={personalia} />
             )}
             {skalViseSøknadsdata && <Addresseopplysninger data={adresseopplysninger} />}
             {skalViseSøknadsdata && (
