@@ -58,9 +58,4 @@ export const OppgaveHeaderConfig: OppgaveHeaderConfig<IOppgave>[] = [
         feltNavn: 'tilordnetRessurs',
         erSorterbar: true,
     },
-    {
-        tekst: 'Handlinger',
-        feltNavn: null,
-        erSorterbar: false,
-    },
 ];

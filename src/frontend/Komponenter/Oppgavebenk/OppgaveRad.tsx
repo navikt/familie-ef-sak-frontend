@@ -9,16 +9,9 @@ import {
 } from '../../App/typer/behandlingstema';
 import { formaterIsoDato, formaterIsoDatoTid } from '../../App/utils/formatter';
 import { useOppgave } from '../../App/hooks/useOppgave';
-import { Handling } from './typer/handling';
-import { IdentGruppe } from '@navikt/familie-typer/dist/oppgave';
-import { Button, Popover } from '@navikt/ds-react';
-import styled from 'styled-components';
-import { BodyShortSmall } from '../../Felles/Visningskomponenter/Tekster';
-
-const TabellKnapp = styled(Button)`
-    width: fit-content;
-    white-space: nowrap;
-`;
+import { Popover } from '@navikt/ds-react';
+import { utledetFolkeregisterIdent } from './utils';
+import { OppgaveKnapp } from './OppgaveKnapp';
 
 interface Props {
     oppgave: IOppgave;
@@ -26,64 +19,8 @@ interface Props {
     settFeilmelding: (feilmelding: string) => void;
 }
 
-const kanJournalføres = (oppgave: IOppgave) => {
-    const { oppgavetype } = oppgave;
-
-    return oppgavetype === 'JFR';
-};
-
-const måBehandlesIEFSak = (oppgave: IOppgave) => {
-    const { behandlesAvApplikasjon, oppgavetype } = oppgave;
-    return (
-        behandlesAvApplikasjon === 'familie-ef-sak' &&
-        oppgavetype &&
-        ['BEH_SAK', 'GOD_VED', 'BEH_UND_VED'].includes(oppgavetype)
-    );
-};
-
-const oppgaveErTilbakekreving = (oppgave: IOppgave) => {
-    return (
-        // oppgave.behandlingstema === 'ab0071' && //TODO: Når vi får behandlingstema på tilbakekrevingsoppgaver må denne sjekken inkluderes
-        oppgave.behandlesAvApplikasjon === 'familie-tilbake' && oppgave.behandlingstype === 'ae0161'
-    );
-};
-
-const oppgaveErKlage = (oppgave: IOppgave) =>
-    oppgave.behandlesAvApplikasjon === 'familie-klage' && oppgave.behandlingstype === 'ae0058';
-
-const oppgaveErJournalførKlage = (oppgave: IOppgave) =>
-    oppgave.oppgavetype === 'JFR' && oppgave.behandlingstype === 'ae0058';
-
-const oppgaveErVurderKonsekvensForYtelse = (oppgave: IOppgave) => {
-    return oppgave.oppgavetype === 'VUR_KONS_YTE';
-};
-
-const utledHandling = (oppgave: IOppgave): Handling => {
-    if (måBehandlesIEFSak(oppgave)) {
-        return Handling.SAKSBEHANDLE;
-    } else if (oppgaveErJournalførKlage(oppgave)) {
-        return Handling.JOURNALFØR_KLAGE;
-    } else if (kanJournalføres(oppgave)) {
-        return Handling.JOURNALFØR;
-    } else if (oppgaveErTilbakekreving(oppgave)) {
-        return Handling.TILBAKE;
-    } else if (oppgaveErKlage(oppgave)) {
-        return Handling.KLAGE;
-    } else if (oppgaveErVurderKonsekvensForYtelse(oppgave)) {
-        return Handling.BEHANDLINGSOVERSIKT;
-    }
-    return Handling.INGEN;
-};
-
 const OppgaveRad: React.FC<Props> = ({ oppgave, mapper, settFeilmelding }) => {
-    const {
-        gåTilBehandleSakOppgave,
-        gåTilJournalføring,
-        laster,
-        plukkOppgaveOgGåTilBehandlingsoversikt,
-        feilmelding,
-    } = useOppgave(oppgave);
-
+    const { feilmelding } = useOppgave(oppgave);
     const [anker, settAnker] = useState<Element | null>(null);
 
     useEffect(() => {
@@ -116,73 +53,6 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, mapper, settFeilmelding }) => {
 
     const typeBehandling = behandlingstype ? behandlingstype : behandlingstema;
 
-    const utledetFolkeregisterIdent = oppgave.identer.filter(
-        (i) => i.gruppe === IdentGruppe.FOLKEREGISTERIDENT
-    )[0].ident;
-
-    const utledKnappPåHandling = () => {
-        switch (utledHandling(oppgave)) {
-            case Handling.JOURNALFØR:
-                return (
-                    <TabellKnapp
-                        type={'button'}
-                        variant={'tertiary'}
-                        size={'small'}
-                        onClick={() => gåTilJournalføring('stønad')}
-                        disabled={laster}
-                    >
-                        Gå til journalpost
-                    </TabellKnapp>
-                );
-            case Handling.JOURNALFØR_KLAGE:
-                return (
-                    <TabellKnapp
-                        type={'button'}
-                        variant={'tertiary'}
-                        size={'small'}
-                        onClick={() => gåTilJournalføring('klage')}
-                        disabled={laster}
-                    >
-                        Gå til journalpost (klage)
-                    </TabellKnapp>
-                );
-            case Handling.SAKSBEHANDLE:
-                return (
-                    <TabellKnapp
-                        type={'button'}
-                        variant={'tertiary'}
-                        size={'small'}
-                        onClick={gåTilBehandleSakOppgave}
-                        disabled={laster}
-                    >
-                        Start Behandling
-                    </TabellKnapp>
-                );
-            case Handling.TILBAKE:
-            case Handling.BEHANDLINGSOVERSIKT:
-            case Handling.KLAGE:
-                return (
-                    <TabellKnapp
-                        type={'button'}
-                        variant={'tertiary'}
-                        size={'small'}
-                        onClick={() => {
-                            plukkOppgaveOgGåTilBehandlingsoversikt(utledetFolkeregisterIdent);
-                        }}
-                        disabled={laster}
-                    >
-                        Gå til fagsak
-                    </TabellKnapp>
-                );
-            default:
-                return (
-                    <BodyShortSmall style={{ marginLeft: '0.75rem' }}>
-                        Må håndteres i Gosys
-                    </BodyShortSmall>
-                );
-        }
-    };
-
     return (
         <>
             <tr>
@@ -206,11 +76,12 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, mapper, settFeilmelding }) => {
                 <td>{fristFerdigstillelseDato}</td>
                 <td>{prioritet}</td>
                 <td>{oppgave.beskrivelse}</td>
-                <td>{utledetFolkeregisterIdent}</td>
+                <td>{utledetFolkeregisterIdent(oppgave)}</td>
                 <td>{oppgave.tildeltEnhetsnr}</td>
                 <td>{enhetsmappe}</td>
-                <td>{oppgave.tilordnetRessurs || 'Ikke tildelt'}</td>
-                <td>{utledKnappPåHandling()}</td>
+                <td>
+                    <OppgaveKnapp oppgave={oppgave} />
+                </td>
             </tr>
         </>
     );

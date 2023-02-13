@@ -103,6 +103,20 @@ export const useOppgave = (oppgave: IOppgave) => {
             .finally(() => settLaster(false));
     };
 
+    const tilbakestillFordeling = () => {
+        settLaster(true);
+        return axiosRequest<string, null>({
+            method: 'POST',
+            url: `/familie-ef-sak/api/oppgave/${oppgave.id}/tilbakestill`,
+        })
+            .then((res: RessursSuksess<string> | RessursFeilet) => {
+                if (res.status !== RessursStatus.SUKSESS) {
+                    settFeilmelding(res.frontendFeilmelding);
+                }
+            })
+            .finally(() => settLaster(false));
+    };
+
     return {
         feilmelding,
         settFeilmelding,
@@ -110,5 +124,7 @@ export const useOppgave = (oppgave: IOppgave) => {
         gåTilJournalføring,
         laster,
         plukkOppgaveOgGåTilBehandlingsoversikt,
+        tilbakestillFordeling,
+        settOppgaveTilSaksbehandler,
     };
 };
