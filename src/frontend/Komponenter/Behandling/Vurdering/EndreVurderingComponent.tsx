@@ -44,7 +44,6 @@ const EndreVurderingComponent: FC<{
     const [delvilkårsvurderinger, settDelvilkårsvurderinger] = useState<IDelvilkår[]>(
         vurdering.delvilkårsvurderinger
     );
-    // const [vilkårsvurderingerFørEndring, settVilkårsvurderingerFørEndring] =
 
     const oppdaterVilkårsvar = (index: number, nySvarArray: Vurdering[]) => {
         settDelvilkårsvurderinger((prevSvar) => {
@@ -62,37 +61,39 @@ const EndreVurderingComponent: FC<{
 
     const oppdaterBegrunnelse = (vurderinger: Vurdering[], index: number, nyttSvar: Vurdering) => {
         const { begrunnelse } = nyttSvar;
+        const svarsalternativ: Svarsalternativ | undefined = hentSvarsalternativ(regler, nyttSvar);
+        if (!svarsalternativ) {
+            return;
+        }
 
         const oppdaterteSvar = oppdaterSvarIListe(nyttSvar, vurderinger, true);
 
-        const svarsalternativ: Svarsalternativ | undefined = hentSvarsalternativ(regler, nyttSvar);
-        if (svarsalternativ) {
-            const maybeLeggTilNesteNodIVilkårsvar = leggTilNesteIdHvis(
-                svarsalternativ.regelId,
-                oppdaterteSvar,
-                () => begrunnelseErPåkrevdOgUtfyllt(svarsalternativ, begrunnelse)
-            );
-            oppdaterVilkårsvar(index, maybeLeggTilNesteNodIVilkårsvar);
-        }
+        const maybeLeggTilNesteNodIVilkårsvar = leggTilNesteIdHvis(
+            svarsalternativ.regelId,
+            oppdaterteSvar,
+            () => begrunnelseErPåkrevdOgUtfyllt(svarsalternativ, begrunnelse)
+        );
+        oppdaterVilkårsvar(index, maybeLeggTilNesteNodIVilkårsvar);
         settIkkePersistertKomponent(vurdering.id);
     };
 
     const oppdaterSvar = (vurderinger: Vurdering[], index: number, nyttSvar: Vurdering) => {
-        const oppdaterteSvar = oppdaterSvarIListe(nyttSvar, vurderinger);
         const svarsalternativer: Svarsalternativ | undefined = hentSvarsalternativ(
             regler,
             nyttSvar
         );
-
-        if (svarsalternativer) {
-            const maybeLeggTilNesteNodIVilkårsvar = leggTilNesteIdHvis(
-                svarsalternativer.regelId,
-                oppdaterteSvar,
-                () => svarsalternativer.begrunnelseType !== BegrunnelseRegel.PÅKREVD
-            );
-
-            oppdaterVilkårsvar(index, maybeLeggTilNesteNodIVilkårsvar);
+        if (!svarsalternativer) {
+            return;
         }
+        const beholdBeskrivelse = svarsalternativer.begrunnelseType !== BegrunnelseRegel.UTEN;
+        const oppdaterteSvar = oppdaterSvarIListe(nyttSvar, vurderinger, false, beholdBeskrivelse);
+
+        const maybeLeggTilNesteNodIVilkårsvar = leggTilNesteIdHvis(
+            svarsalternativer.regelId,
+            oppdaterteSvar,
+            () => svarsalternativer.begrunnelseType !== BegrunnelseRegel.PÅKREVD
+        );
+        oppdaterVilkårsvar(index, maybeLeggTilNesteNodIVilkårsvar);
         settIkkePersistertKomponent(vurdering.id);
     };
 
