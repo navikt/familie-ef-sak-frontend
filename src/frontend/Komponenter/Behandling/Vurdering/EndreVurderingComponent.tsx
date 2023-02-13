@@ -85,8 +85,7 @@ const EndreVurderingComponent: FC<{
         if (!svarsalternativer) {
             return;
         }
-        const beholdBeskrivelse = svarsalternativer.begrunnelseType !== BegrunnelseRegel.UTEN;
-        const oppdaterteSvar = oppdaterSvarIListe(nyttSvar, vurderinger, false, beholdBeskrivelse);
+        const oppdaterteSvar = oppdaterSvarIListe(nyttSvar, vurderinger);
 
         const maybeLeggTilNesteNodIVilkårsvar = leggTilNesteIdHvis(
             svarsalternativer.regelId,
