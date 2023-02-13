@@ -6,23 +6,27 @@ import { FC, ReactNode } from 'react';
 import { mapIkon, VilkårInfoIkon } from './VilkårInformasjonKomponenter';
 
 interface Props {
-    ikon: VilkårInfoIkon;
+    ikon?: VilkårInfoIkon;
     label: string;
-    verdi: ReactNode;
+    verdi?: ReactNode;
     verdiSomString?: boolean;
 }
 
-const InformasjonsradContainer = styled.div`
+const InformasjonsradContainer = styled.div<{ harVerdi: boolean }>`
     display: grid;
     grid-template-columns: 21px min(200px, 250px) auto;
     grid-gap: 0.5rem;
+
+    .label {
+        grid-column: 2 ${(props) => !props.harVerdi && '/ 4'};
+    }
 `;
 
 const Informasjonsrad: FC<Props> = ({ ikon, label, verdi, verdiSomString = true }) => {
     return (
-        <InformasjonsradContainer>
-            {mapIkon(ikon)}
-            <Label size="small" as="h3">
+        <InformasjonsradContainer harVerdi={!!verdi}>
+            {ikon && mapIkon(ikon)}
+            <Label size="small" as="h3" className="label">
                 {label}
             </Label>
             {verdiSomString ? <BodyShortSmall>{verdi}</BodyShortSmall> : verdi}

@@ -27,9 +27,9 @@ export const UnderseksjonWrapper: FC<UnderseksjonWrapperProps> = ({
     );
 };
 
-interface BarneInfoWrapperProps {
-    navnOgAlderPåBarn?: string;
-    dødsdato?: string;
+interface InfoSeksjonWrapperProps {
+    ikon: ReactNode;
+    undertittel?: ReactNode;
     children: ReactNode;
 }
 
@@ -37,22 +37,45 @@ const HeadingMedUnderlinje = styled(Heading)`
     text-decoration: underline;
 `;
 
+export const InfoSeksjonWrapper: FC<InfoSeksjonWrapperProps> = ({
+    ikon,
+    undertittel,
+    children,
+}) => {
+    return (
+        <FlexColumnContainer gap={1}>
+            <UnderoverskriftWrapper>
+                {ikon}
+                <HeadingMedUnderlinje size="xsmall">{undertittel}</HeadingMedUnderlinje>
+            </UnderoverskriftWrapper>
+            {children}
+        </FlexColumnContainer>
+    );
+};
+
+interface BarneInfoWrapperProps {
+    navnOgAlderPåBarn?: string;
+    dødsdato?: string;
+    children: ReactNode;
+}
+
 export const BarneInfoWrapper: FC<BarneInfoWrapperProps> = ({
     navnOgAlderPåBarn,
     dødsdato,
     children,
 }) => {
     return (
-        <FlexColumnContainer>
-            <UnderoverskriftWrapper>
-                <LiteBarn />
-                <HeadingMedUnderlinje size="xsmall">
+        <InfoSeksjonWrapper
+            ikon={<LiteBarn />}
+            undertittel={
+                <>
                     {navnOgAlderPåBarn}
-                    {dødsdato && <EtikettDød dødsdato={dødsdato} />}
-                </HeadingMedUnderlinje>
-            </UnderoverskriftWrapper>
+                    {dødsdato && <EtikettDød dødsdato={'01-01-2022'} />}
+                </>
+            }
+        >
             {children}
-        </FlexColumnContainer>
+        </InfoSeksjonWrapper>
     );
 };
 
