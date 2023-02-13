@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import { IOppgave } from './typer/oppgave';
 import { useOppgave } from '../../App/hooks/useOppgave';
 import { useApp } from '../../App/context/AppContext';
@@ -14,6 +14,7 @@ import {
     oppgaveErVurderKonsekvensForYtelse,
     utledetFolkeregisterIdent,
 } from './utils';
+import { Dropdown } from '@navikt/ds-react-internal';
 
 const TabellKnapp = styled(Button)`
     width: fit-content;
@@ -125,69 +126,23 @@ export const OppgaveKnapp: React.FC<{ oppgave: IOppgave }> = ({ oppgave }) => {
 type oppgaveValg = { label: string; onClick: () => void };
 
 const OppgaveValgMeny: React.FC<{ valg: oppgaveValg[] }> = ({ valg }) => {
-    const [visValg, settVisValg] = useState(false);
-
-    const ref = useRef(null);
-
-    useEffect(() => {
-        const håndterKlikkUtenforKomponent = (event: { target: never }) => {
-            // @ts-ignore
-            if (visValg && ref.current && !ref.current.contains(event.target)) {
-                settVisValg(false);
-            }
-        };
-
-        // @ts-ignore
-        document.addEventListener('click', håndterKlikkUtenforKomponent, true);
-
-        return () => {
-            // @ts-ignore
-            document.removeEventListener('click', håndterKlikkUtenforKomponent, true);
-        };
-    }, [visValg]);
-
     return (
-        <>
+        <Dropdown>
             <Button
                 variant={'tertiary'}
                 icon={<EllipsisCircleH />}
                 size={'small'}
-                onClick={() => {
-                    settVisValg(!visValg);
-                }}
+                as={Dropdown.Toggle}
             />
-            <Oppgavevalg åpen={visValg} ref={ref}>
-                {valg.map((valg) => (
-                    <Button variant={'tertiary'} size={'small'} onClick={valg.onClick}>
-                        {valg.label}
-                    </Button>
-                ))}
-            </Oppgavevalg>
-        </>
+            <Dropdown.Menu>
+                <Dropdown.Menu.List>
+                    {valg.map((valg) => (
+                        <Dropdown.Menu.List.Item onClick={valg.onClick}>
+                            {valg.label}
+                        </Dropdown.Menu.List.Item>
+                    ))}
+                </Dropdown.Menu.List>
+            </Dropdown.Menu>
+        </Dropdown>
     );
 };
-
-const Oppgavevalg = styled.div`
-    display: ${(props: { åpen: boolean }) => (props.åpen ? 'flex' : 'none')};
-
-    flex-direction: column;
-    position: absolute;
-
-    background-color: white;
-
-    right: 3rem;
-
-    border: 1px solid grey;
-    border-radius: 4px;
-
-    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
-    -webkit-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
-    -moz-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
-
-    white-space: nowrap;
-
-    .navds-button {
-        width: 100%;
-        height: 100%;
-    }
-`;
