@@ -85,7 +85,8 @@ export function leggTilNesteIdHvis(
 export const oppdaterSvarIListe = (
     nyttSvar: Vurdering,
     vurderinger: Vurdering[],
-    behållResterendeSvar = false
+    beholdResterendeSvar = false,
+    beholdBeskrivelse = false
 ): Vurdering[] => {
     const { svar, regelId } = nyttSvar;
 
@@ -96,7 +97,10 @@ export const oppdaterSvarIListe = (
         return vurderinger;
     }
 
-    return [...nySvarArray, nyttSvar].concat(
-        behållResterendeSvar ? [...vurderinger.slice(svarIndex + 1)] : []
+    const oppdatertNyttSvar = beholdBeskrivelse
+        ? { ...nyttSvar, begrunnelse: vurderinger[svarIndex].begrunnelse }
+        : nyttSvar;
+    return [...nySvarArray, oppdatertNyttSvar].concat(
+        beholdResterendeSvar ? [...vurderinger.slice(svarIndex + 1)] : []
     );
 };
