@@ -5,7 +5,7 @@ export const manglerBegrunnelse = (begrunnelse: string | undefined | null): bool
     return !begrunnelse || begrunnelse.trim().length === 0;
 };
 
-export function begrunnelseErPåkrevdOgSavnes(
+export function begrunnelseErPåkrevdOgMangler(
     svarsalternativ: Svarsalternativ,
     begrunnelse: Begrunnelse
 ): boolean {
@@ -62,7 +62,7 @@ export function erAlleDelvilkårBesvarte(
                 const svarsalternativ = hentSvarsalternativ(regler, vurdering);
                 return (
                     svarsalternativ &&
-                    !begrunnelseErPåkrevdOgSavnes(svarsalternativ, vurdering.begrunnelse)
+                    !begrunnelseErPåkrevdOgMangler(svarsalternativ, vurdering.begrunnelse)
                 );
             })
         );
