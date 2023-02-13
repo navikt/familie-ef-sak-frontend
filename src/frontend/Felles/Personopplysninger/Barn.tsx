@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { IBarn } from '../../App/typer/personopplysninger';
 import TabellOverskrift from './TabellOverskrift';
 import LiteBarn from '../Ikoner/LiteBarn';
@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import { KopierbartNullableFødselsnummer } from '../Fødselsnummer/KopierbartNullableFødselsnummer';
 import EtikettDød from '../Etiketter/EtikettDød';
 import { nullableDatoTilAlder } from '../../App/utils/dato';
-import { Tag } from '@navikt/ds-react';
+import { Button, Popover, Tag } from '@navikt/ds-react';
 
 const SpanMedVenstreMargin = styled.span`
     margin-left: 15%;
@@ -24,8 +24,19 @@ const sorterBarnPåAlderInc = (a: IBarn, b: IBarn) => {
     const alderBarnB = b.fødselsdato ? (nullableDatoTilAlder(b.fødselsdato) as number) : 1000;
     return alderBarnA - alderBarnB;
 };
+const bostedStatus = (barn: IBarn) => {
+    if (barn.harDeltBostedNå) {
+        return 'Delt bosted';
+    }
+    if (barn.borHosSøker) {
+        return 'Ja';
+    }
+    return '-'; // TODO : "Nei" vs "-" ?
+};
 
 const Barn: React.FC<{ barn: IBarn[] }> = ({ barn }) => {
+    const buttonRef = useRef<HTMLButtonElement>(null);
+    const [openState, setOpenState] = useState(false);
     return (
         <TabellWrapper>
             <TabellOverskrift Ikon={LiteBarn} tittel={'Barn'} />
@@ -59,7 +70,30 @@ const Barn: React.FC<{ barn: IBarn[] }> = ({ barn }) => {
                                         </>
                                     )}
                                 </BredTd>
-                                <BredTd>{barn.borHosSøker ? 'Ja' : '-'}</BredTd>
+                                <BredTd>
+                                    {bostedStatus(barn)}
+                                    {barn.deltBosted.length > 0 && (
+                                        <Button ref={buttonRef} onClick={() => setOpenState(true)}>
+                                            Åpne popover
+                                        </Button>
+                                    )}
+                                    <Popover
+                                        placement={'right'}
+                                        open={openState}
+                                        onClose={() => setOpenState(false)}
+                                        anchorEl={buttonRef.current}
+                                    >
+                                        <Popover.Content>
+                                            {barn.deltBosted.map((periode) => {
+                                                return (
+                                                    periode.startdatoForKontrakt +
+                                                    ' ' +
+                                                    periode.sluttdatoForKontrakt
+                                                );
+                                            })}
+                                        </Popover.Content>
+                                    </Popover>
+                                </BredTd>
                             </tr>
                         );
                     })}
@@ -68,7 +102,6 @@ const Barn: React.FC<{ barn: IBarn[] }> = ({ barn }) => {
         </TabellWrapper>
     );
 };
-
 const FødselsnummerBarn: React.FC<{
     fødselsnummer: string;
     fødselsdato?: string;
