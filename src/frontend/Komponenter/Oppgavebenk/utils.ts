@@ -11,7 +11,8 @@ export const måBehandlesIEFSak = (oppgave: IOppgave) => {
 };
 
 export const utledetFolkeregisterIdent = (oppgave: IOppgave) =>
-    oppgave.identer?.filter((i) => i.gruppe === IdentGruppe.FOLKEREGISTERIDENT)[0].ident;
+    oppgave.identer?.filter((i) => i.gruppe === IdentGruppe.FOLKEREGISTERIDENT)[0].ident ||
+    'Ukjent ident';
 
 export const oppgaveErTilbakekreving = (oppgave: IOppgave) => {
     return (
