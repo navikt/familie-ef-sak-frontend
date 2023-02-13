@@ -4,49 +4,51 @@ import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
 import { ArbeidssituasjonTilTekst, EArbeidssituasjon, EStilling, StillingTilTekst } from './typer';
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
-import { BodyShortSmall, SmallTextLabel } from '../../../../Felles/Visningskomponenter/Tekster';
+import { InfoSeksjonWrapper } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
+import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
+import { FlexColumnContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
 
 export const ArbeidstakerLønnsmottakerSomFrilanser: FC<{
     arbeidsforhold: IArbeidsforhold;
     stønadstype: Stønadstype;
 }> = ({ arbeidsforhold, stønadstype }) => {
     return (
-        <>
-            <Søknadsgrunnlag />
-            <SmallTextLabel className={'undertittel'}>
-                {
-                    ArbeidssituasjonTilTekst[
-                        EArbeidssituasjon.erArbeidstakerOgEllerLønnsmottakerFrilanser
-                    ]
-                }
-            </SmallTextLabel>
+        <InfoSeksjonWrapper
+            undertittel={
+                ArbeidssituasjonTilTekst[
+                    EArbeidssituasjon.erArbeidstakerOgEllerLønnsmottakerFrilanser
+                ]
+            }
+            ikon={<Søknadsgrunnlag />}
+        >
+            <FlexColumnContainer gap={0.75}>
+                <Informasjonsrad label="Arbeidssted" verdi={arbeidsforhold.arbeidsgivernavn} />
 
-            <BodyShortSmall className={'førsteDataKolonne'}> Arbeidssted</BodyShortSmall>
-            <BodyShortSmall> {arbeidsforhold.arbeidsgivernavn}</BodyShortSmall>
-            {stønadstype === Stønadstype.OVERGANGSSTØNAD && (
-                <>
-                    <BodyShortSmall className={'førsteDataKolonne'}>
-                        Stillingsprosent
-                    </BodyShortSmall>
-                    <BodyShortSmall>{arbeidsforhold.arbeidsmengde + ' %'}</BodyShortSmall>
-                </>
-            )}
-            <BodyShortSmall className={'førsteDataKolonne'}>Ansettelsesforhold</BodyShortSmall>
-            <BodyShortSmall>
-                {arbeidsforhold.fastEllerMidlertidig
-                    ? StillingTilTekst[arbeidsforhold.fastEllerMidlertidig]
-                    : '-'}
-            </BodyShortSmall>
-            {arbeidsforhold.fastEllerMidlertidig === EStilling.midlertidig && (
-                <>
-                    <BodyShortSmall className={'førsteDataKolonne'}>Sluttdato</BodyShortSmall>
-                    <BodyShortSmall>{`${
-                        arbeidsforhold.harSluttdato
-                            ? 'Ja, ' + formaterNullableIsoDato(arbeidsforhold.sluttdato)
-                            : 'Nei'
-                    }`}</BodyShortSmall>
-                </>
-            )}
-        </>
+                {stønadstype === Stønadstype.OVERGANGSSTØNAD && (
+                    <Informasjonsrad
+                        label="Stillingsprosent"
+                        verdi={arbeidsforhold.arbeidsmengde + ' %'}
+                    />
+                )}
+                <Informasjonsrad
+                    label="Ansettelsesforhold"
+                    verdi={
+                        arbeidsforhold.fastEllerMidlertidig
+                            ? StillingTilTekst[arbeidsforhold.fastEllerMidlertidig]
+                            : '-'
+                    }
+                />
+                {arbeidsforhold.fastEllerMidlertidig === EStilling.midlertidig && (
+                    <Informasjonsrad
+                        label="Sluttdato"
+                        verdi={`${
+                            arbeidsforhold.harSluttdato
+                                ? 'Ja, ' + formaterNullableIsoDato(arbeidsforhold.sluttdato)
+                                : 'Nei'
+                        }`}
+                    />
+                )}
+            </FlexColumnContainer>
+        </InfoSeksjonWrapper>
     );
 };
