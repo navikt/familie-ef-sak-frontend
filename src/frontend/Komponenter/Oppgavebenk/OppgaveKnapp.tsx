@@ -95,21 +95,7 @@ export const OppgaveKnapp: React.FC<{ oppgave: IOppgave }> = ({ oppgave }) => {
                 <OppgaveValgMeny valg={[{ label: 'Fjern meg', onClick: tilbakestillFordeling }]} />
             </FlexContainer>
         );
-    } else if (!oppgave.tilordnetRessurs) {
-        return (
-            <FlexContainer>
-                <TabellKnapp
-                    type={'button'}
-                    variant={'secondary'}
-                    size={'small'}
-                    onClick={utførHandling}
-                    disabled={laster}
-                >
-                    Tildel meg
-                </TabellKnapp>
-            </FlexContainer>
-        );
-    } else
+    } else if (oppgave.tilordnetRessurs) {
         return (
             <FlexContainer>
                 {oppgave.tilordnetRessurs}
@@ -117,6 +103,18 @@ export const OppgaveKnapp: React.FC<{ oppgave: IOppgave }> = ({ oppgave }) => {
                     valg={[{ label: 'Overta', onClick: settOppgaveTilSaksbehandler }]}
                 />
             </FlexContainer>
+        );
+    } else
+        return (
+            <TabellKnapp
+                type={'button'}
+                variant={'secondary'}
+                size={'small'}
+                onClick={utførHandling}
+                disabled={laster}
+            >
+                Tildel meg
+            </TabellKnapp>
         );
 };
 
