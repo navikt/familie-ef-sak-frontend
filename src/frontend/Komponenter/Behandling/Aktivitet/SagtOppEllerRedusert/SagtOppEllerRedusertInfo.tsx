@@ -23,13 +23,11 @@ const SagtOppEllerRedusertInfo: FC<Props> = ({ sagtOppEllerRedusert, dokumentasj
     return (
         <InformasjonContainer>
             {sagtOppEllerRedusert.sagtOppEllerRedusertStilling ? (
-                <>
-                    <HarSagtOppEllerRedusertStilling
-                        sagtOppEllerRedusertStilling={sagtOppEllerRedusertStilling}
-                        årsak={årsak}
-                        dato={dato}
-                    />
-                </>
+                <HarSagtOppEllerRedusertStilling
+                    sagtOppEllerRedusertStilling={sagtOppEllerRedusertStilling}
+                    årsak={årsak}
+                    dato={dato}
+                />
             ) : (
                 <BodyLongSmall className="tekstUtenIkon">
                     Spørsmålet om søker har sagt opp jobben eller redusert arbeidstiden har ikke
