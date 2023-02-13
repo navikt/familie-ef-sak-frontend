@@ -59,7 +59,11 @@ const EndreVurderingComponent: FC<{
         });
     };
 
-    const oppdaterBegrunnelse = (vurderinger: Vurdering[], index: number, nyttSvar: Vurdering) => {
+    const oppdaterBegrunnelse = (
+        vurderinger: Vurdering[],
+        delvilkårIndex: number,
+        nyttSvar: Vurdering
+    ) => {
         const { begrunnelse } = nyttSvar;
         const svarsalternativ: Svarsalternativ | undefined = hentSvarsalternativ(regler, nyttSvar);
         if (!svarsalternativ) {
@@ -73,11 +77,15 @@ const EndreVurderingComponent: FC<{
             oppdaterteSvar,
             () => begrunnelseErPåkrevdOgUtfyllt(svarsalternativ, begrunnelse)
         );
-        oppdaterVilkårsvar(index, maybeLeggTilNesteNodIVilkårsvar);
+        oppdaterVilkårsvar(delvilkårIndex, maybeLeggTilNesteNodIVilkårsvar);
         settIkkePersistertKomponent(vurdering.id);
     };
 
-    const oppdaterSvar = (vurderinger: Vurdering[], index: number, nyttSvar: Vurdering) => {
+    const oppdaterSvar = (
+        vurderinger: Vurdering[],
+        delvilkårIndex: number,
+        nyttSvar: Vurdering
+    ) => {
         const svarsalternativer: Svarsalternativ | undefined = hentSvarsalternativ(
             regler,
             nyttSvar
@@ -92,7 +100,7 @@ const EndreVurderingComponent: FC<{
             oppdaterteSvar,
             () => svarsalternativer.begrunnelseType !== BegrunnelseRegel.PÅKREVD
         );
-        oppdaterVilkårsvar(index, maybeLeggTilNesteNodIVilkårsvar);
+        oppdaterVilkårsvar(delvilkårIndex, maybeLeggTilNesteNodIVilkårsvar);
         settIkkePersistertKomponent(vurdering.id);
     };
 
@@ -115,7 +123,7 @@ const EndreVurderingComponent: FC<{
                 });
             }}
         >
-            {delvilkårsvurderinger.map((delvikår, index) => {
+            {delvilkårsvurderinger.map((delvikår, delvikårIndex) => {
                 return delvikår.vurderinger.map((svar) => {
                     const regel = regler[svar.regelId];
                     return (
@@ -124,12 +132,12 @@ const EndreVurderingComponent: FC<{
                                 vurdering={svar}
                                 regel={regel}
                                 settVurdering={(nyVurdering) =>
-                                    oppdaterSvar(delvikår.vurderinger, index, nyVurdering)
+                                    oppdaterSvar(delvikår.vurderinger, delvikårIndex, nyVurdering)
                                 }
                             />
                             <Begrunnelse
                                 onChange={(begrunnelse) =>
-                                    oppdaterBegrunnelse(delvikår.vurderinger, index, {
+                                    oppdaterBegrunnelse(delvikår.vurderinger, delvikårIndex, {
                                         ...svar,
                                         begrunnelse,
                                     })
