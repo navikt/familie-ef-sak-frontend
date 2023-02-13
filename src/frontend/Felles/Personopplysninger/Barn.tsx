@@ -9,6 +9,7 @@ import EtikettDød from '../Etiketter/EtikettDød';
 import { nullableDatoTilAlder } from '../../App/utils/dato';
 import { Popover, Table, Tag } from '@navikt/ds-react';
 import { Information } from '@navikt/ds-icons';
+import { formaterNullableIsoDato } from '../../App/utils/formatter';
 
 const SpanMedVenstreMargin = styled.span`
     margin-left: 15%;
@@ -56,8 +57,12 @@ const popoverContent = (barn: IBarn) => (
                 {barn.deltBosted.map((periode) => {
                     return (
                         <Table.Row key={periode.startdatoForKontrakt}>
-                            <Table.DataCell>{periode.startdatoForKontrakt}</Table.DataCell>
-                            <Table.DataCell>{periode.sluttdatoForKontrakt}</Table.DataCell>
+                            <Table.DataCell>
+                                {formaterNullableIsoDato(periode.startdatoForKontrakt)}
+                            </Table.DataCell>
+                            <Table.DataCell>
+                                {formaterNullableIsoDato(periode.sluttdatoForKontrakt)}
+                            </Table.DataCell>
                         </Table.Row>
                     );
                 })}
