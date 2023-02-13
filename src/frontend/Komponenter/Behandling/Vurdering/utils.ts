@@ -1,4 +1,4 @@
-import { Begrunnelse, BegrunnelseRegel, Regler, Svarsalternativ } from './typer';
+import { Begrunnelse, BegrunnelseRegel, RegelId, Regler, Svarsalternativ } from './typer';
 import { IDelvilkår, Vurdering } from '../Inngangsvilkår/vilkår';
 
 export const manglerBegrunnelse = (begrunnelse: string | undefined | null): boolean => {
@@ -71,12 +71,13 @@ export function erAlleDelvilkårBesvarte(
 }
 
 export function leggTilNesteIdHvis(
-    nesteStegId: string,
+    nesteRegelId: RegelId,
     nySvarArray: Vurdering[],
     hvisFunksjon: () => boolean
 ): Vurdering[] {
-    if (hvisFunksjon()) {
-        return [...nySvarArray, { regelId: nesteStegId }];
+    const inneholderAlleredeNesteRegelId = nySvarArray.some((v) => v.regelId === nesteRegelId);
+    if (nesteRegelId !== 'SLUTT_NODE' && !inneholderAlleredeNesteRegelId && hvisFunksjon()) {
+        return [...nySvarArray, { regelId: nesteRegelId }];
     }
     return nySvarArray;
 }

@@ -67,14 +67,10 @@ const EndreVurderingComponent: FC<{
 
         const svarsalternativ: Svarsalternativ | undefined = hentSvarsalternativ(regler, nyttSvar);
         if (svarsalternativ) {
-            const nesteStegId = svarsalternativ?.regelId;
             const maybeLeggTilNesteNodIVilkårsvar = leggTilNesteIdHvis(
-                nesteStegId,
+                svarsalternativ.regelId,
                 oppdaterteSvar,
-                () =>
-                    nesteStegId !== 'SLUTT_NODE' &&
-                    begrunnelseErPåkrevdOgUtfyllt(svarsalternativ, begrunnelse) &&
-                    !vurderinger.find((v) => v.regelId === nesteStegId)
+                () => begrunnelseErPåkrevdOgUtfyllt(svarsalternativ, begrunnelse)
             );
             oppdaterVilkårsvar(index, maybeLeggTilNesteNodIVilkårsvar);
         }
@@ -92,9 +88,7 @@ const EndreVurderingComponent: FC<{
             const maybeLeggTilNesteNodIVilkårsvar = leggTilNesteIdHvis(
                 svarsalternativer.regelId,
                 oppdaterteSvar,
-                () =>
-                    svarsalternativer.regelId !== 'SLUTT_NODE' &&
-                    svarsalternativer.begrunnelseType !== BegrunnelseRegel.PÅKREVD
+                () => svarsalternativer.begrunnelseType !== BegrunnelseRegel.PÅKREVD
             );
 
             oppdaterVilkårsvar(index, maybeLeggTilNesteNodIVilkårsvar);
