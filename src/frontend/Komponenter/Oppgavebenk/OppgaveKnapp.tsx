@@ -114,10 +114,7 @@ export const OppgaveKnapp: React.FC<{ oppgave: IOppgave }> = ({ oppgave }) => {
             <FlexContainer>
                 {oppgave.tilordnetRessurs}
                 <OppgaveValgMeny
-                    valg={[
-                        { label: 'Overta', onClick: settOppgaveTilSaksbehandler },
-                        { label: 'Sett på vent', onClick: settOppgaveTilSaksbehandler },
-                    ]}
+                    valg={[{ label: 'Overta', onClick: settOppgaveTilSaksbehandler }]}
                 />
             </FlexContainer>
         );
