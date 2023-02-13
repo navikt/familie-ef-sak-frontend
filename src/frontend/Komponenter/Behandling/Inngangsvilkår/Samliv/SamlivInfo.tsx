@@ -30,7 +30,7 @@ const SamlivInfo: FC<Props> = ({
 
     return (
         <InformasjonContainer>
-            {!skalViseSøknadsdata &&
+            {skalViseSøknadsdata &&
                 sivilstand.søknadsgrunnlag &&
                 bosituasjon &&
                 sivilstandsplaner && (
