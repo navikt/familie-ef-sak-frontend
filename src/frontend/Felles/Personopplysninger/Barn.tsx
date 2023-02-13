@@ -7,10 +7,18 @@ import styled from 'styled-components';
 import { KopierbartNullableFødselsnummer } from '../Fødselsnummer/KopierbartNullableFødselsnummer';
 import EtikettDød from '../Etiketter/EtikettDød';
 import { nullableDatoTilAlder } from '../../App/utils/dato';
-import { Button, Popover, Tag } from '@navikt/ds-react';
+import { Popover, Table, Tag } from '@navikt/ds-react';
+import { Information } from '@navikt/ds-icons';
 
 const SpanMedVenstreMargin = styled.span`
     margin-left: 15%;
+`;
+
+const StyledInformation = styled(Information)`
+    margin: 0.5rem 0.5rem 0 0.5rem;
+    &:hover {
+        cursor: pointer;
+    }
 `;
 
 const FlexDiv = styled.div`
@@ -34,9 +42,54 @@ const bostedStatus = (barn: IBarn) => {
     return '-'; // TODO : "Nei" vs "-" ?
 };
 
-const Barn: React.FC<{ barn: IBarn[] }> = ({ barn }) => {
-    const buttonRef = useRef<HTMLButtonElement>(null);
+const popoverContent = (barn: IBarn) => (
+    <Popover.Content>
+        <div>Delt bosted:</div>
+        <Table size={'small'}>
+            <Table.Header>
+                <Table.Row>
+                    <Table.HeaderCell scope="col">Fra</Table.HeaderCell>
+                    <Table.HeaderCell scope="col">Til</Table.HeaderCell>
+                </Table.Row>
+            </Table.Header>
+            <Table.Body>
+                {barn.deltBosted.map((periode) => {
+                    return (
+                        <Table.Row key={periode.startdatoForKontrakt}>
+                            <Table.DataCell>{periode.startdatoForKontrakt}</Table.DataCell>
+                            <Table.DataCell>{periode.sluttdatoForKontrakt}</Table.DataCell>
+                        </Table.Row>
+                    );
+                })}
+            </Table.Body>
+        </Table>
+    </Popover.Content>
+);
+
+const BarnBosted: React.FC<{ barn: IBarn }> = ({ barn }) => {
+    const iconRef = useRef<SVGSVGElement>(null);
     const [openState, setOpenState] = useState(false);
+
+    return (
+        <>
+            {bostedStatus(barn)}
+            {barn.deltBosted.length > 0 && (
+                <StyledInformation ref={iconRef} onClick={() => setOpenState(true)}>
+                    Åpne popover
+                </StyledInformation>
+            )}
+            <Popover
+                placement={'right'}
+                open={openState}
+                onClose={() => setOpenState(false)}
+                anchorEl={iconRef.current}
+                children={popoverContent(barn)}
+            />
+        </>
+    );
+};
+
+const Barn: React.FC<{ barn: IBarn[] }> = ({ barn }) => {
     return (
         <TabellWrapper>
             <TabellOverskrift Ikon={LiteBarn} tittel={'Barn'} />
@@ -71,28 +124,7 @@ const Barn: React.FC<{ barn: IBarn[] }> = ({ barn }) => {
                                     )}
                                 </BredTd>
                                 <BredTd>
-                                    {bostedStatus(barn)}
-                                    {barn.deltBosted.length > 0 && (
-                                        <Button ref={buttonRef} onClick={() => setOpenState(true)}>
-                                            Åpne popover
-                                        </Button>
-                                    )}
-                                    <Popover
-                                        placement={'right'}
-                                        open={openState}
-                                        onClose={() => setOpenState(false)}
-                                        anchorEl={buttonRef.current}
-                                    >
-                                        <Popover.Content>
-                                            {barn.deltBosted.map((periode) => {
-                                                return (
-                                                    periode.startdatoForKontrakt +
-                                                    ' ' +
-                                                    periode.sluttdatoForKontrakt
-                                                );
-                                            })}
-                                        </Popover.Content>
-                                    </Popover>
+                                    <BarnBosted barn={barn}></BarnBosted>
                                 </BredTd>
                             </tr>
                         );
