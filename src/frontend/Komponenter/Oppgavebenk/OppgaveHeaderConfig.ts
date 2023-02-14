@@ -56,6 +56,6 @@ export const OppgaveHeaderConfig: OppgaveHeaderConfig<IOppgave>[] = [
     {
         tekst: 'Saksbehandler',
         feltNavn: 'tilordnetRessurs',
-        erSorterbar: true,
+        erSorterbar: false,
     },
 ];
