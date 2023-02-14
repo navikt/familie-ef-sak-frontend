@@ -6,6 +6,7 @@ import { IAktivitet, ISagtOppEllerRedusertStilling } from '../../../App/typer/ak
 import { Begrunnelse, SvarId } from '../Vurdering/typer';
 import { ITidligereVedtaksperioder } from '../TidligereVedtaksperioder/typer';
 import { IDokumentasjon } from '../../../App/typer/felles';
+import { IAdresse, INavn } from '../../../App/typer/personopplysninger';
 
 export interface IVilkår {
     vurderinger: IVurdering[];
@@ -13,6 +14,7 @@ export interface IVilkår {
 }
 
 export interface IVilkårGrunnlag {
+    personalia: IPersonalia;
     tidligereVedtaksperioder: ITidligereVedtaksperioder;
     medlemskap: IMedlemskap;
     sivilstand: ISivilstandInngangsvilkår;
@@ -24,6 +26,12 @@ export interface IVilkårGrunnlag {
     registeropplysningerOpprettetTid: string;
     adresseopplysninger?: IAdresseopplysninger;
     dokumentasjon?: IDokumentasjonGrunnlag;
+}
+
+export interface IPersonalia {
+    personIdent: string;
+    navn: INavn;
+    bostedsadresse?: IAdresse;
 }
 
 export interface IAdresseopplysninger {
