@@ -13,11 +13,20 @@ import {
     useEkspanderbareVilkårpanelContext,
 } from '../../../../App/context/EkspanderbareVilkårpanelContext';
 
-const Container = styled.div`
+const FlexRow = styled.div`
     margin: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+`;
+
+const FlexColumn = styled.div`
     display: flex;
     flex-direction: column;
     gap: 1rem;
+`;
+
+const AlignBottom = styled.div`
+    align-self: end;
 `;
 
 interface Props {
@@ -63,32 +72,36 @@ export const InngangsvilkårHeader: React.FC<Props> = ({
     const skalViseGjenbrukVilkår = utledVilkårsgjenbruk(behandlingErRedigerbar, behandling);
 
     return (
-        <Container>
-            <OppdaterOpplysninger
-                oppdatertDato={oppdatertDato}
-                behandlingErRedigerbar={behandlingErRedigerbar}
-                oppdaterGrunnlagsdata={oppdaterGrunnlagsdata}
-                behandlingId={behandlingId}
-            />
-            {skalViseGjenbrukVilkår && (
-                <DataViewer response={{ behandlingerForVilkårsgjenbruk }}>
-                    {({ behandlingerForVilkårsgjenbruk }) =>
-                        behandlingerForVilkårsgjenbruk.length > 0 ? (
-                            <KopierInngangsvilkår
-                                behandlinger={behandlingerForVilkårsgjenbruk}
-                                behandlingId={behandlingId}
-                                gjenbrukInngangsvilkår={gjenbrukInngangsvilkår}
-                            />
-                        ) : (
-                            <></>
-                        )
-                    }
-                </DataViewer>
-            )}
-            <ÅpneOgLukkePanelKnapper
-                lukkAlle={() => lukkAlle(EVilkårstyper.INNGANGSVILKÅR)}
-                åpneAlle={() => åpneAlle(EVilkårstyper.INNGANGSVILKÅR)}
-            />
-        </Container>
+        <FlexRow>
+            <FlexColumn>
+                <OppdaterOpplysninger
+                    oppdatertDato={oppdatertDato}
+                    behandlingErRedigerbar={behandlingErRedigerbar}
+                    oppdaterGrunnlagsdata={oppdaterGrunnlagsdata}
+                    behandlingId={behandlingId}
+                />
+                {skalViseGjenbrukVilkår && (
+                    <DataViewer response={{ behandlingerForVilkårsgjenbruk }}>
+                        {({ behandlingerForVilkårsgjenbruk }) =>
+                            behandlingerForVilkårsgjenbruk.length > 0 ? (
+                                <KopierInngangsvilkår
+                                    behandlinger={behandlingerForVilkårsgjenbruk}
+                                    behandlingId={behandlingId}
+                                    gjenbrukInngangsvilkår={gjenbrukInngangsvilkår}
+                                />
+                            ) : (
+                                <></>
+                            )
+                        }
+                    </DataViewer>
+                )}
+            </FlexColumn>
+            <AlignBottom>
+                <ÅpneOgLukkePanelKnapper
+                    lukkAlle={() => lukkAlle(EVilkårstyper.INNGANGSVILKÅR)}
+                    åpneAlle={() => åpneAlle(EVilkårstyper.INNGANGSVILKÅR)}
+                />
+            </AlignBottom>
+        </FlexRow>
     );
 };
