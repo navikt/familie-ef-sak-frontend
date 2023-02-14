@@ -12,6 +12,8 @@ import {
     begrunnelseErPåkrevdOgUtfyllt,
     erAlleDelvilkårBesvarte,
     hentSvarsalternativ,
+    kanHaBegrunnelse,
+    kopierBegrunnelse,
     leggTilNesteIdHvis,
     oppdaterSvarIListe,
 } from './utils';
@@ -72,12 +74,12 @@ const EndreVurderingComponent: FC<{
 
         const oppdaterteSvar = oppdaterSvarIListe(nyttSvar, vurderinger, true);
 
-        const maybeLeggTilNesteNodIVilkårsvar = leggTilNesteIdHvis(
+        const oppdaterteSvarMedNesteRegel = leggTilNesteIdHvis(
             svarsalternativ.regelId,
             oppdaterteSvar,
             () => begrunnelseErPåkrevdOgUtfyllt(svarsalternativ, begrunnelse)
         );
-        oppdaterVilkårsvar(delvilkårIndex, maybeLeggTilNesteNodIVilkårsvar);
+        oppdaterVilkårsvar(delvilkårIndex, oppdaterteSvarMedNesteRegel);
         settIkkePersistertKomponent(vurdering.id);
     };
 
@@ -93,14 +95,26 @@ const EndreVurderingComponent: FC<{
         if (!svarsalternativer) {
             return;
         }
-        const oppdaterteSvar = oppdaterSvarIListe(nyttSvar, vurderinger);
+        const oppdaterteSvar = oppdaterSvarIListe(
+            nyttSvar,
+            vurderinger,
+            false,
+            kanHaBegrunnelse(svarsalternativer)
+        );
 
-        const maybeLeggTilNesteNodIVilkårsvar = leggTilNesteIdHvis(
+        const oppdaterteSvarMedNesteRegel = leggTilNesteIdHvis(
             svarsalternativer.regelId,
             oppdaterteSvar,
             () => svarsalternativer.begrunnelseType !== BegrunnelseRegel.PÅKREVD
         );
-        oppdaterVilkårsvar(delvilkårIndex, maybeLeggTilNesteNodIVilkårsvar);
+        const oppdaterteSvarMedKopiertBegrunnelse = kopierBegrunnelse(
+            vurderinger,
+            oppdaterteSvarMedNesteRegel,
+            nyttSvar,
+            svarsalternativer,
+            regler
+        );
+        oppdaterVilkårsvar(delvilkårIndex, oppdaterteSvarMedKopiertBegrunnelse);
         settIkkePersistertKomponent(vurdering.id);
     };
 

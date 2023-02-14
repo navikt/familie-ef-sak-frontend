@@ -1,5 +1,6 @@
-import { Begrunnelse, BegrunnelseRegel, RegelId, Regler, Svarsalternativ } from './typer';
+import { Begrunnelse, BegrunnelseRegel, Regel, RegelId, Regler, Svarsalternativ } from './typer';
 import { IDelvilkår, Vurdering } from '../Inngangsvilkår/vilkår';
+import { harIkkeVerdi, harVerdi } from '../../../App/utils/utils';
 
 export const manglerBegrunnelse = (begrunnelse: string | undefined | null): boolean => {
     return !begrunnelse || begrunnelse.trim().length === 0;
@@ -24,6 +25,14 @@ export function begrunnelseErPåkrevdOgUtfyllt(
     }
     return true;
 }
+
+export const forventerBegrunnelsePåAlleSvarsalternativ = (regel: Regel) => {
+    const svaralternativ = Object.values(regel.svarMapping);
+    return (
+        svaralternativ.length > 0 &&
+        svaralternativ.every((svar) => svar.begrunnelseType !== BegrunnelseRegel.UTEN)
+    );
+};
 
 export function hentSvarsalternativ(
     regler: Regler,
@@ -82,10 +91,14 @@ export function leggTilNesteIdHvis(
     return nySvarArray;
 }
 
+export const kanHaBegrunnelse = (svarsalternativ: Svarsalternativ) =>
+    svarsalternativ.begrunnelseType !== BegrunnelseRegel.UTEN;
+
 export const oppdaterSvarIListe = (
     nyttSvar: Vurdering,
     vurderinger: Vurdering[],
-    behållResterendeSvar = false
+    beholdResterendeSvar = false,
+    beholdBeskrivelse = false
 ): Vurdering[] => {
     const { svar, regelId } = nyttSvar;
 
@@ -96,7 +109,51 @@ export const oppdaterSvarIListe = (
         return vurderinger;
     }
 
-    return [...nySvarArray, nyttSvar].concat(
-        behållResterendeSvar ? [...vurderinger.slice(svarIndex + 1)] : []
+    const oppdatertNyttSvar = beholdBeskrivelse
+        ? { ...nyttSvar, begrunnelse: vurderinger[svarIndex].begrunnelse }
+        : nyttSvar;
+    return [...nySvarArray, oppdatertNyttSvar].concat(
+        beholdResterendeSvar ? [...vurderinger.slice(svarIndex + 1)] : []
     );
+};
+
+const harBegrunnelsePåNesteRegel = (svarsalternativer: Svarsalternativ, regler: Regler) =>
+    svarsalternativer.regelId !== 'SLUTT_NODE' &&
+    forventerBegrunnelsePåAlleSvarsalternativ(regler[svarsalternativer.regelId]);
+
+export const kopierBegrunnelse = (
+    tidligereVurderinger: Vurdering[],
+    nyeVurderinger: Vurdering[],
+    nyttSvar: Vurdering,
+    svarsalternativer: Svarsalternativ,
+    regler: Regler
+) => {
+    const svarIndex = tidligereVurderinger.findIndex((s) => s.regelId === nyttSvar.regelId);
+
+    const skalFlytteBegrunnelseEnNivåNed =
+        harVerdi(tidligereVurderinger[svarIndex].begrunnelse) &&
+        harIkkeVerdi(nyeVurderinger[svarIndex].begrunnelse) &&
+        harBegrunnelsePåNesteRegel(svarsalternativer, regler);
+
+    const skalFlytteBegrunnelseEnNivåOpp =
+        tidligereVurderinger.length > svarIndex + 1 &&
+        harVerdi(tidligereVurderinger[svarIndex + 1].begrunnelse) &&
+        harIkkeVerdi(nyeVurderinger[svarIndex].begrunnelse) &&
+        kanHaBegrunnelse(svarsalternativer);
+
+    if (skalFlytteBegrunnelseEnNivåNed) {
+        return nyeVurderinger.map((vurdering, index) =>
+            index === svarIndex + 1
+                ? { ...vurdering, begrunnelse: tidligereVurderinger[svarIndex].begrunnelse }
+                : vurdering
+        );
+    } else if (skalFlytteBegrunnelseEnNivåOpp) {
+        return nyeVurderinger.map((vurdering, index) =>
+            index === svarIndex
+                ? { ...vurdering, begrunnelse: tidligereVurderinger[svarIndex + 1].begrunnelse }
+                : vurdering
+        );
+    } else {
+        return nyeVurderinger;
+    }
 };
