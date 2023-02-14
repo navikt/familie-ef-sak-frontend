@@ -58,7 +58,13 @@ export const OppgaveKnapp: React.FC<{ oppgave: IOppgave; oppdaterOppgave: () => 
     const oppgaveTilordnetInnloggetSaksbehandler =
         oppgave.tilordnetRessurs === innloggetSaksbehandler.navIdent;
 
-    if (oppgaveTilordnetInnloggetSaksbehandler) {
+    const skalViseFortsettKnapp =
+        oppgaveTilordnetInnloggetSaksbehandler &&
+        [Handling.SAKSBEHANDLE, Handling.JOURNALFØR, Handling.JOURNALFØR_KLAGE].includes(
+            utledHandling(oppgave)
+        );
+
+    if (skalViseFortsettKnapp) {
         return (
             <FlexContainer>
                 <TabellKnapp
