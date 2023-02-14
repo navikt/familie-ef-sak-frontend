@@ -20,11 +20,6 @@ const Container = styled.div`
     gap: 1rem;
 `;
 
-const FlexRow = styled.div`
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-`;
 interface Props {
     oppdatertDato: string;
     behandlingErRedigerbar: boolean;
@@ -69,18 +64,12 @@ export const InngangsvilkårHeader: React.FC<Props> = ({
 
     return (
         <Container>
-            <FlexRow>
-                <OppdaterOpplysninger
-                    oppdatertDato={oppdatertDato}
-                    behandlingErRedigerbar={behandlingErRedigerbar}
-                    oppdaterGrunnlagsdata={oppdaterGrunnlagsdata}
-                    behandlingId={behandlingId}
-                />
-                <ÅpneOgLukkePanelKnapper
-                    lukkAlle={() => lukkAlle(EVilkårstyper.INNGANGSVILKÅR)}
-                    åpneAlle={() => åpneAlle(EVilkårstyper.INNGANGSVILKÅR)}
-                />
-            </FlexRow>
+            <OppdaterOpplysninger
+                oppdatertDato={oppdatertDato}
+                behandlingErRedigerbar={behandlingErRedigerbar}
+                oppdaterGrunnlagsdata={oppdaterGrunnlagsdata}
+                behandlingId={behandlingId}
+            />
             {skalViseGjenbrukVilkår && (
                 <DataViewer response={{ behandlingerForVilkårsgjenbruk }}>
                     {({ behandlingerForVilkårsgjenbruk }) =>
@@ -96,6 +85,10 @@ export const InngangsvilkårHeader: React.FC<Props> = ({
                     }
                 </DataViewer>
             )}
+            <ÅpneOgLukkePanelKnapper
+                lukkAlle={() => lukkAlle(EVilkårstyper.INNGANGSVILKÅR)}
+                åpneAlle={() => åpneAlle(EVilkårstyper.INNGANGSVILKÅR)}
+            />
         </Container>
     );
 };

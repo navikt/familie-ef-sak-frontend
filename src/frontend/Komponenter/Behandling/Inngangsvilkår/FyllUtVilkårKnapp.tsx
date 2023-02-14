@@ -11,7 +11,7 @@ import { useBehandling } from '../../../App/context/BehandlingContext';
 
 const VilkårKnapp = styled(Button)`
     margin-top: 1rem;
-    margin-left: 1rem;
+    margin-left: 2rem;
 `;
 
 interface Props {

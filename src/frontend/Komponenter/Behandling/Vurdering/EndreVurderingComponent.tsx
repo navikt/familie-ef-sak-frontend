@@ -44,7 +44,6 @@ const EndreVurderingComponent: FC<{
     const [delvilkårsvurderinger, settDelvilkårsvurderinger] = useState<IDelvilkår[]>(
         vurdering.delvilkårsvurderinger
     );
-    // const [vilkårsvurderingerFørEndring, settVilkårsvurderingerFørEndring] =
 
     const oppdaterVilkårsvar = (index: number, nySvarArray: Vurdering[]) => {
         settDelvilkårsvurderinger((prevSvar) => {
