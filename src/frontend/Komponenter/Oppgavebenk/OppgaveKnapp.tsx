@@ -32,7 +32,10 @@ const kanJournalføres = (oppgave: IOppgave) => {
     return oppgavetype === 'JFR';
 };
 
-export const OppgaveKnapp: React.FC<{ oppgave: IOppgave }> = ({ oppgave }) => {
+export const OppgaveKnapp: React.FC<{ oppgave: IOppgave; oppdaterOppgave: () => void }> = ({
+    oppgave,
+    oppdaterOppgave,
+}) => {
     const utledHandling = (oppgave: IOppgave): Handling => {
         if (måBehandlesIEFSak(oppgave)) {
             return Handling.SAKSBEHANDLE;
@@ -48,6 +51,11 @@ export const OppgaveKnapp: React.FC<{ oppgave: IOppgave }> = ({ oppgave }) => {
             return Handling.BEHANDLINGSOVERSIKT;
         }
         return Handling.INGEN;
+    };
+
+    const utførHandlingOgOppdaterOppgave = (handling: () => Promise<void>) => async () => {
+        await handling();
+        oppdaterOppgave();
     };
 
     const {
@@ -92,7 +100,14 @@ export const OppgaveKnapp: React.FC<{ oppgave: IOppgave }> = ({ oppgave }) => {
                 >
                     Fortsett
                 </TabellKnapp>
-                <OppgaveValgMeny valg={[{ label: 'Fjern meg', onClick: tilbakestillFordeling }]} />
+                <OppgaveValgMeny
+                    valg={[
+                        {
+                            label: 'Fjern meg',
+                            onClick: utførHandlingOgOppdaterOppgave(tilbakestillFordeling),
+                        },
+                    ]}
+                />
             </FlexContainer>
         );
     } else if (oppgave.tilordnetRessurs) {
@@ -100,7 +115,12 @@ export const OppgaveKnapp: React.FC<{ oppgave: IOppgave }> = ({ oppgave }) => {
             <FlexContainer>
                 {oppgave.tilordnetRessurs}
                 <OppgaveValgMeny
-                    valg={[{ label: 'Overta', onClick: settOppgaveTilSaksbehandler }]}
+                    valg={[
+                        {
+                            label: 'Overta',
+                            onClick: utførHandlingOgOppdaterOppgave(settOppgaveTilSaksbehandler),
+                        },
+                    ]}
                 />
             </FlexContainer>
         );
