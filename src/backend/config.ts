@@ -82,6 +82,19 @@ const Environment = (): IEnvironment => {
             endringsloggProxyUrl: 'https://familie-endringslogg.dev.intern.nav.no',
             roller: rollerDev,
         };
+    } else if (process.env.ENV === 'lokalt-mot-preprod') {
+        return {
+            buildPath: 'frontend_development',
+            namespace: 'local',
+            sakProxyUrl: 'https://familie-ef-sak.dev.intern.nav.no',
+            brevProxyUrl: 'http://familie-brev.dev.intern.nav.no',
+            aInntekt: 'https://arbeid-og-inntekt.dev.adeo.no',
+            gosys: 'https://gosys-q1.dev.intern.nav.no/gosys',
+            modia: 'https://app-q1.adeo.no/modiapersonoversikt',
+            historiskPensjon: 'https://historisk-pensjon.dev.intern.nav.no',
+            endringsloggProxyUrl: 'https://familie-endringslogg.dev.intern.nav.no',
+            roller: rollerDev,
+        };
     }
 
     return {
@@ -105,7 +118,11 @@ export const sessionConfig: ISessionKonfigurasjon = {
     navn: 'familie-ef-sak-v1',
     redisPassord: process.env.REDIS_PASSWORD,
     redisUrl: env.redisUrl,
-    secureCookie: !(process.env.ENV === 'local' || process.env.ENV === 'e2e'),
+    secureCookie: !(
+        process.env.ENV === 'local' ||
+        process.env.ENV === 'e2e' ||
+        process.env.ENV === 'lokalt-mot-preprod'
+    ),
     sessionMaxAgeSekunder: 12 * 60 * 60,
 };
 
