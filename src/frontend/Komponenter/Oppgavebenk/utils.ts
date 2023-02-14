@@ -1,5 +1,6 @@
 import { IOppgave } from './typer/oppgave';
 import { IdentGruppe } from '@navikt/familie-typer/dist/oppgave';
+import { Handling } from './typer/handling';
 
 export const måBehandlesIEFSak = (oppgave: IOppgave) => {
     const { behandlesAvApplikasjon, oppgavetype } = oppgave;
@@ -29,4 +30,23 @@ export const oppgaveErJournalførKlage = (oppgave: IOppgave) =>
 
 export const oppgaveErVurderKonsekvensForYtelse = (oppgave: IOppgave) => {
     return oppgave.oppgavetype === 'VUR_KONS_YTE';
+};
+
+const kanJournalføres = (oppgave: IOppgave) => oppgave.oppgavetype === 'JFR';
+
+export const utledHandling = (oppgave: IOppgave): Handling => {
+    if (måBehandlesIEFSak(oppgave)) {
+        return Handling.SAKSBEHANDLE;
+    } else if (oppgaveErJournalførKlage(oppgave)) {
+        return Handling.JOURNALFØR_KLAGE;
+    } else if (kanJournalføres(oppgave)) {
+        return Handling.JOURNALFØR;
+    } else if (oppgaveErTilbakekreving(oppgave)) {
+        return Handling.TILBAKE;
+    } else if (oppgaveErKlage(oppgave)) {
+        return Handling.KLAGE;
+    } else if (oppgaveErVurderKonsekvensForYtelse(oppgave)) {
+        return Handling.BEHANDLINGSOVERSIKT;
+    }
+    return Handling.INGEN;
 };

@@ -6,14 +6,7 @@ import { Handling } from './typer/handling';
 import { Button } from '@navikt/ds-react';
 import { EllipsisCircleH } from '@navikt/ds-icons';
 import styled from 'styled-components';
-import {
-    måBehandlesIEFSak,
-    oppgaveErJournalførKlage,
-    oppgaveErKlage,
-    oppgaveErTilbakekreving,
-    oppgaveErVurderKonsekvensForYtelse,
-    utledetFolkeregisterIdent,
-} from './utils';
+import { utledetFolkeregisterIdent, utledHandling } from './utils';
 import { Dropdown } from '@navikt/ds-react-internal';
 
 const TabellKnapp = styled(Button)`
@@ -26,34 +19,10 @@ const FlexContainer = styled.div`
     justify-content: space-between;
 `;
 
-const kanJournalføres = (oppgave: IOppgave) => oppgave.oppgavetype === 'JFR';
-
 export const OppgaveKnapp: React.FC<{ oppgave: IOppgave; oppdaterOppgave: () => void }> = ({
     oppgave,
     oppdaterOppgave,
 }) => {
-    const utledHandling = (oppgave: IOppgave): Handling => {
-        if (måBehandlesIEFSak(oppgave)) {
-            return Handling.SAKSBEHANDLE;
-        } else if (oppgaveErJournalførKlage(oppgave)) {
-            return Handling.JOURNALFØR_KLAGE;
-        } else if (kanJournalføres(oppgave)) {
-            return Handling.JOURNALFØR;
-        } else if (oppgaveErTilbakekreving(oppgave)) {
-            return Handling.TILBAKE;
-        } else if (oppgaveErKlage(oppgave)) {
-            return Handling.KLAGE;
-        } else if (oppgaveErVurderKonsekvensForYtelse(oppgave)) {
-            return Handling.BEHANDLINGSOVERSIKT;
-        }
-        return Handling.INGEN;
-    };
-
-    const utførHandlingOgOppdaterOppgave = (handling: () => Promise<void>) => async () => {
-        await handling();
-        oppdaterOppgave();
-    };
-
     const {
         gåTilBehandleSakOppgave,
         gåTilJournalføring,
@@ -79,6 +48,11 @@ export const OppgaveKnapp: React.FC<{ oppgave: IOppgave; oppdaterOppgave: () => 
             default:
                 plukkOppgaveOgGåTilBehandlingsoversikt(utledetFolkeregisterIdent(oppgave));
         }
+    };
+
+    const utførHandlingOgOppdaterOppgave = (handling: () => Promise<void>) => async () => {
+        await handling();
+        oppdaterOppgave();
     };
 
     const oppgaveTilordnetInnloggetSaksbehandler =
