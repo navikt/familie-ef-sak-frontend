@@ -26,11 +26,7 @@ const FlexContainer = styled.div`
     justify-content: space-between;
 `;
 
-const kanJournalføres = (oppgave: IOppgave) => {
-    const { oppgavetype } = oppgave;
-
-    return oppgavetype === 'JFR';
-};
+const kanJournalføres = (oppgave: IOppgave) => oppgave.oppgavetype === 'JFR';
 
 export const OppgaveKnapp: React.FC<{ oppgave: IOppgave; oppdaterOppgave: () => void }> = ({
     oppgave,
