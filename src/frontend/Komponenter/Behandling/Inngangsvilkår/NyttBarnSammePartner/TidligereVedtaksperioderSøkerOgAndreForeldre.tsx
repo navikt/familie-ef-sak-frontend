@@ -7,11 +7,9 @@ import {
 import { Tooltip } from '@navikt/ds-react';
 import { formatterBooleanEllerUkjent, mapTrueFalse } from '../../../../App/utils/formatter';
 import { nonNull } from '../../../../App/utils/utils';
-import { useBehandling } from '../../../../App/context/BehandlingContext';
-import DataViewer from '../../../../Felles/DataViewer/DataViewer';
-import { IPersonopplysninger } from '../../../../App/typer/personopplysninger';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 import TabellVisning from '../../Tabell/TabellVisning';
+import { IPersonalia } from '../vilkår';
 
 interface TidligereVedtaksperioderPåPartISak {
     fødselsnummer: string;
@@ -67,7 +65,7 @@ const jaNeiMedToolTip = (tidligereVedtak: ITidligereInnvilgetVedtak | undefined)
 };
 
 const mapSøker = (
-    personopplysninger: IPersonopplysninger,
+    personalia: IPersonalia,
     tidligereVedtaksperioder: ITidligereVedtaksperioder
 ): TidligereVedtaksperioderPåPartISak | undefined => {
     const tidligereVedtakFinnesIkke =
@@ -76,63 +74,50 @@ const mapSøker = (
         return undefined;
     }
     return {
-        navn: `${personopplysninger.navn.visningsnavn} (bruker)`,
-        fødselsnummer: personopplysninger.personIdent,
+        navn: `${personalia.navn.visningsnavn} (bruker)`,
+        fødselsnummer: personalia.personIdent,
         tidligereVedtaksperioder: tidligereVedtaksperioder,
     };
 };
 
 const TidligereVedtaksperioderSøkerOgAndreForeldre: FC<{
+    personalia: IPersonalia;
     tidligereVedtaksperioder: ITidligereVedtaksperioder;
     registergrunnlagNyttBarn: RegistergrunnlagNyttBarn[];
-}> = ({ tidligereVedtaksperioder, registergrunnlagNyttBarn }) => {
-    const { personopplysningerResponse } = useBehandling();
-
+}> = ({ personalia, tidligereVedtaksperioder, registergrunnlagNyttBarn }) => {
+    const søker = mapSøker(personalia, tidligereVedtaksperioder);
+    const andreForeldrer = mapAndreForeldrerMedTidligereVedaksperioder(registergrunnlagNyttBarn);
+    const verdier: TidligereVedtaksperioderPåPartISak[] = søker
+        ? [søker, ...andreForeldrer]
+        : andreForeldrer;
+    if (verdier.length === 0) {
+        return null;
+    }
     return (
-        <DataViewer response={{ personopplysningerResponse }}>
-            {({ personopplysningerResponse: personopplysninger }) => {
-                const søker = mapSøker(personopplysninger, tidligereVedtaksperioder);
-                const andreForeldrer =
-                    mapAndreForeldrerMedTidligereVedaksperioder(registergrunnlagNyttBarn);
-                const verdier: TidligereVedtaksperioderPåPartISak[] = søker
-                    ? [søker, ...andreForeldrer]
-                    : andreForeldrer;
-                if (verdier.length === 0) {
-                    return null;
-                }
-                return (
-                    <TabellVisning
-                        tittel={
-                            'Har brukeren eller annen forelder mottatt stønader etter kap. 15 før?'
-                        }
-                        ikonVisning={false}
-                        verdier={verdier}
-                        kolonner={[
-                            {
-                                overskrift: 'Navn',
-                                tekstVerdi: (d) => d.navn,
-                            },
-                            {
-                                overskrift: 'EF Sak',
-                                tekstVerdi: (d) => jaNeiMedToolTip(d.tidligereVedtaksperioder.sak),
-                            },
-                            {
-                                overskrift: 'Infotrygd (EF VP)',
-                                tekstVerdi: (d) =>
-                                    jaNeiMedToolTip(d.tidligereVedtaksperioder.infotrygd),
-                            },
-                            {
-                                overskrift: 'Infotrygd (PE PP)',
-                                tekstVerdi: (d) =>
-                                    formatterBooleanEllerUkjent(
-                                        d.tidligereVedtaksperioder.historiskPensjon
-                                    ),
-                            },
-                        ]}
-                    />
-                );
-            }}
-        </DataViewer>
+        <TabellVisning
+            tittel={'Har brukeren eller annen forelder mottatt stønader etter kap. 15 før?'}
+            ikonVisning={false}
+            verdier={verdier}
+            kolonner={[
+                {
+                    overskrift: 'Navn',
+                    tekstVerdi: (d) => d.navn,
+                },
+                {
+                    overskrift: 'EF Sak',
+                    tekstVerdi: (d) => jaNeiMedToolTip(d.tidligereVedtaksperioder.sak),
+                },
+                {
+                    overskrift: 'Infotrygd (EF VP)',
+                    tekstVerdi: (d) => jaNeiMedToolTip(d.tidligereVedtaksperioder.infotrygd),
+                },
+                {
+                    overskrift: 'Infotrygd (PE PP)',
+                    tekstVerdi: (d) =>
+                        formatterBooleanEllerUkjent(d.tidligereVedtaksperioder.historiskPensjon),
+                },
+            ]}
+        />
     );
 };
 

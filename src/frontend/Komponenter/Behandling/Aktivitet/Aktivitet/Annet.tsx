@@ -1,16 +1,14 @@
 import React, { FC } from 'react';
 import { ISærligeTilsynsbehov } from '../../../../App/typer/aktivitetstyper';
-import { GridTabell, GridTabellRad } from '../../../../Felles/Visningskomponenter/GridTabell';
 import styled from 'styled-components';
 import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { DinSituasjonTilTekst, EDinSituasjon } from './typer';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
 import { BodyLong, HelpText } from '@navikt/ds-react';
-import {
-    BodyLongSmall,
-    BodyShortSmall,
-    SmallTextLabel,
-} from '../../../../Felles/Visningskomponenter/Tekster';
+import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
+import { InfoSeksjonWrapper } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
+import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
+import { FlexColumnContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
 
 const StyledList = styled.ul`
     list-style-type: square;
@@ -36,9 +34,7 @@ const hjelpetekst = (
 
 const TittelHjelpetekstWrapper = styled.div`
     display: flex;
-    .litenSpacingHoyre {
-        padding-right: 1rem;
-    }
+    gap: 1rem;
 `;
 
 interface Props {
@@ -49,41 +45,46 @@ interface Props {
 const Annet: FC<Props> = ({ dinSituasjon, særligTilsynsbehov }) => {
     return (
         <>
-            <GridTabell kolonner={3}>
-                <TittelHjelpetekstWrapper className={'førsteDataKolonne'}>
-                    <SmallTextLabel className={'litenSpacingHoyre'}>Annet</SmallTextLabel>
-                    <HelpText placement={'top-start'}>{hjelpetekst}</HelpText>
-                </TittelHjelpetekstWrapper>
-
-                <Søknadsgrunnlag />
-                <BodyShortSmall className={'førsteDataKolonne'}>
-                    Mer om søkers situasjon
-                </BodyShortSmall>
-                <StyledList>
-                    {dinSituasjon.map((svarsalternativ) => (
-                        <li key={svarsalternativ}>
-                            <BodyShortSmall>{DinSituasjonTilTekst[svarsalternativ]}</BodyShortSmall>
-                        </li>
-                    ))}
-                </StyledList>
-
-                <GridTabellRad kolonner={3} overTabellRadPadding={2}>
+            <InfoSeksjonWrapper
+                ikon={<Søknadsgrunnlag />}
+                undertittel={
+                    <TittelHjelpetekstWrapper className={'førsteDataKolonne'}>
+                        Annet
+                        <HelpText placement={'top-start'}>{hjelpetekst}</HelpText>
+                    </TittelHjelpetekstWrapper>
+                }
+            >
+                <Informasjonsrad
+                    label="Mer om søkers situasjon"
+                    verdiSomString={false}
+                    verdi={
+                        <StyledList>
+                            {dinSituasjon.map((svarsalternativ) => (
+                                <li key={svarsalternativ}>
+                                    <BodyShortSmall>
+                                        {DinSituasjonTilTekst[svarsalternativ]}
+                                    </BodyShortSmall>
+                                </li>
+                            ))}
+                        </StyledList>
+                    }
+                />
+                <FlexColumnContainer gap={1}>
+                    <Informasjonsrad label="Om tilsynsbehov for: " />
                     {særligTilsynsbehov.map((barnetsBehov) => (
-                        <GridTabell key={barnetsBehov.id} kolonner={3} underTabellMargin={2}>
-                            <Søknadsgrunnlag />
-                            <BodyLongSmall>
-                                Om tilsynsbehov for: <br />
-                                {barnetsBehov.navn
+                        <Informasjonsrad
+                            label={
+                                barnetsBehov.navn
                                     ? `${barnetsBehov.navn} `
                                     : `Barn ${
                                           barnetsBehov.erBarnetFødt ? 'født ' : 'termindato '
-                                      } ${formaterNullableIsoDato(barnetsBehov.fødselTermindato)}`}
-                            </BodyLongSmall>
-                            <BodyShortSmall>{barnetsBehov.særligeTilsynsbehov}</BodyShortSmall>
-                        </GridTabell>
+                                      } ${formaterNullableIsoDato(barnetsBehov.fødselTermindato)}`
+                            }
+                            verdi={barnetsBehov.særligeTilsynsbehov}
+                        />
                     ))}
-                </GridTabellRad>
-            </GridTabell>
+                </FlexColumnContainer>
+            </InfoSeksjonWrapper>
         </>
     );
 };

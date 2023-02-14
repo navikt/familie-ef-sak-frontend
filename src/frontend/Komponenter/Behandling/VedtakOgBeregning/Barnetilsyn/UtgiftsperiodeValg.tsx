@@ -25,6 +25,7 @@ import { erOpphørEllerSanksjon, tomUtgiftsperiodeRad } from './utils';
 import PeriodetypeSelect from './PeriodetypeSelect';
 import AktivitetSelect from './AktivitetSelect';
 import { Sanksjonsmodal, SlettSanksjonsperiodeModal } from '../Felles/SlettSanksjonsperiodeModal';
+import { AGrayalpha300, AGrayalpha600, AWhite } from '@navikt/ds-tokens/dist/tokens';
 
 const UtgiftsperiodeRad = styled.div<{ lesevisning?: boolean; erHeader?: boolean }>`
     display: grid;
@@ -55,6 +56,25 @@ const IkonKnappWrapper = styled.div`
 
 const HorizontalScroll = styled.div<{ åpenHøyremeny: boolean }>`
     @media screen and (max-width: ${(p) => (p.åpenHøyremeny ? '1770px' : '1470px')}) {
+        // Noen mac innstillinger fjerner scroll-baren fra nettsiden. Denne stylingen gjør slik at baren alltid vises
+        // dersom det er behov for horisontal scrolling. Kun støttet i chrome.
+        ::-webkit-scrollbar {
+            -webkit-appearance: none;
+        }
+        ::-webkit-scrollbar:horizontal {
+            height: 11px;
+        }
+        ::-webkit-scrollbar-thumb {
+            border-radius: 8px;
+            border: 2px solid ${AWhite};
+            background-color: ${AGrayalpha300};
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: ${AGrayalpha600};
+        }
+        ::-webkit-scrollbar-track {
+            background-color: ${AWhite};
+        }
         overflow-x: scroll;
         overflow-y: hidden;
         white-space: nowrap;
