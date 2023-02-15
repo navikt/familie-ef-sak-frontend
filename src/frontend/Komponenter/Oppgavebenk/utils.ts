@@ -1,7 +1,7 @@
 import { IOppgave } from './typer/oppgave';
 import { IdentGruppe } from '@navikt/familie-typer/dist/oppgave';
 
-export const måBehandlesIEFSak = (oppgave: IOppgave) => {
+export const oppgaveErSaksbehandling = (oppgave: IOppgave) => {
     const { behandlesAvApplikasjon, oppgavetype } = oppgave;
     return (
         behandlesAvApplikasjon === 'familie-ef-sak' &&
@@ -31,4 +31,4 @@ export const oppgaveErVurderKonsekvensForYtelse = (oppgave: IOppgave) => {
     return oppgave.oppgavetype === 'VUR_KONS_YTE';
 };
 
-export const kanJournalføres = (oppgave: IOppgave) => oppgave.oppgavetype === 'JFR';
+export const oppgaveKanJournalføres = (oppgave: IOppgave) => oppgave.oppgavetype === 'JFR';

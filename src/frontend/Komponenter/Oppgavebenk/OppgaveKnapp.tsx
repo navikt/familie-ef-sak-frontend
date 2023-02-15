@@ -6,8 +6,8 @@ import { Button } from '@navikt/ds-react';
 import { EllipsisCircleH } from '@navikt/ds-icons';
 import styled from 'styled-components';
 import {
-    kanJournalføres,
-    måBehandlesIEFSak,
+    oppgaveKanJournalføres,
+    oppgaveErSaksbehandling,
     oppgaveErJournalførKlage,
     utledetFolkeregisterIdent,
 } from './utils';
@@ -41,11 +41,11 @@ export const OppgaveKnapp: React.FC<{ oppgave: IOppgave; oppdaterOppgave: () => 
     const { innloggetSaksbehandler } = useApp();
 
     const utførHandling = () => {
-        if (måBehandlesIEFSak(oppgave)) {
+        if (oppgaveErSaksbehandling(oppgave)) {
             gåTilBehandleSakOppgave();
         } else if (oppgaveErJournalførKlage(oppgave)) {
             gåTilJournalføring('klage');
-        } else if (kanJournalføres(oppgave)) {
+        } else if (oppgaveKanJournalføres(oppgave)) {
             gåTilJournalføring('stønad');
         } else {
             plukkOppgaveOgGåTilBehandlingsoversikt(utledetFolkeregisterIdent(oppgave));
@@ -62,9 +62,9 @@ export const OppgaveKnapp: React.FC<{ oppgave: IOppgave; oppdaterOppgave: () => 
 
     const skalViseFortsettKnapp =
         oppgaveTilordnetInnloggetSaksbehandler &&
-        (måBehandlesIEFSak(oppgave) ||
+        (oppgaveErSaksbehandling(oppgave) ||
             oppgaveErJournalførKlage(oppgave) ||
-            kanJournalføres(oppgave));
+            oppgaveKanJournalføres(oppgave));
 
     if (oppgaveTilordnetInnloggetSaksbehandler) {
         return (
