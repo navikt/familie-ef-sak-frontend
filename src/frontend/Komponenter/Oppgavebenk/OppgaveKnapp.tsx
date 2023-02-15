@@ -64,18 +64,22 @@ export const OppgaveKnapp: React.FC<{ oppgave: IOppgave; oppdaterOppgave: () => 
             utledHandling(oppgave)
         );
 
-    if (skalViseFortsettKnapp) {
+    if (oppgaveTilordnetInnloggetSaksbehandler) {
         return (
             <FlexContainer>
-                <TabellKnapp
-                    type={'button'}
-                    variant={'secondary'}
-                    size={'small'}
-                    onClick={utførHandling}
-                    disabled={laster}
-                >
-                    Fortsett
-                </TabellKnapp>
+                {skalViseFortsettKnapp ? (
+                    <TabellKnapp
+                        type={'button'}
+                        variant={'secondary'}
+                        size={'small'}
+                        onClick={utførHandling}
+                        disabled={laster}
+                    >
+                        Fortsett
+                    </TabellKnapp>
+                ) : (
+                    oppgave.tilordnetRessurs
+                )}
                 <OppgaveValgMeny
                     valg={[
                         {
