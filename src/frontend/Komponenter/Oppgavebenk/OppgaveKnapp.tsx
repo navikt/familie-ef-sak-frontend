@@ -2,11 +2,15 @@ import React from 'react';
 import { IOppgave } from './typer/oppgave';
 import { useOppgave } from '../../App/hooks/useOppgave';
 import { useApp } from '../../App/context/AppContext';
-import { Handling } from './typer/handling';
 import { Button } from '@navikt/ds-react';
 import { EllipsisCircleH } from '@navikt/ds-icons';
 import styled from 'styled-components';
-import { utledetFolkeregisterIdent, utledHandling } from './utils';
+import {
+    kanJournalføres,
+    måBehandlesIEFSak,
+    oppgaveErJournalførKlage,
+    utledetFolkeregisterIdent,
+} from './utils';
 import { Dropdown } from '@navikt/ds-react-internal';
 
 const TabellKnapp = styled(Button)`
@@ -37,18 +41,14 @@ export const OppgaveKnapp: React.FC<{ oppgave: IOppgave; oppdaterOppgave: () => 
     const { innloggetSaksbehandler } = useApp();
 
     const utførHandling = () => {
-        switch (utledHandling(oppgave)) {
-            case Handling.JOURNALFØR:
-                gåTilJournalføring('stønad');
-                break;
-            case Handling.JOURNALFØR_KLAGE:
-                gåTilJournalføring('klage');
-                break;
-            case Handling.SAKSBEHANDLE:
-                gåTilBehandleSakOppgave();
-                break;
-            default:
-                plukkOppgaveOgGåTilBehandlingsoversikt(utledetFolkeregisterIdent(oppgave));
+        if (måBehandlesIEFSak(oppgave)) {
+            gåTilBehandleSakOppgave();
+        } else if (oppgaveErJournalførKlage(oppgave)) {
+            gåTilJournalføring('klage');
+        } else if (kanJournalføres(oppgave)) {
+            gåTilJournalføring('stønad');
+        } else {
+            plukkOppgaveOgGåTilBehandlingsoversikt(utledetFolkeregisterIdent(oppgave));
         }
     };
 
@@ -62,9 +62,9 @@ export const OppgaveKnapp: React.FC<{ oppgave: IOppgave; oppdaterOppgave: () => 
 
     const skalViseFortsettKnapp =
         oppgaveTilordnetInnloggetSaksbehandler &&
-        [Handling.SAKSBEHANDLE, Handling.JOURNALFØR, Handling.JOURNALFØR_KLAGE].includes(
-            utledHandling(oppgave)
-        );
+        (måBehandlesIEFSak(oppgave) ||
+            oppgaveErJournalførKlage(oppgave) ||
+            kanJournalføres(oppgave));
 
     if (oppgaveTilordnetInnloggetSaksbehandler) {
         return (
