@@ -287,7 +287,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                     : 0
                             }`}</AntallBarn>
                         )}
-                        {!behandlingErRedigerbar || opphørEllerSanksjon ? (
+                        {opphørEllerSanksjon ? (
                             <div />
                         ) : (
                             <StyledInput
