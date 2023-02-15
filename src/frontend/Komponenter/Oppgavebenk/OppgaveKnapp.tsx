@@ -46,7 +46,7 @@ export const OppgaveKnapp: React.FC<{
         settFeilmelding(feilmelding);
     }, [feilmelding, settFeilmelding]);
 
-    const utførHandling = () => {
+    const gåTilOppgaveUtførelse = () => {
         if (oppgaveErSaksbehandling(oppgave)) {
             gåTilBehandleSakOppgave();
         } else if (oppgaveErJournalførKlage(oppgave)) {
@@ -80,7 +80,7 @@ export const OppgaveKnapp: React.FC<{
                         type={'button'}
                         variant={'secondary'}
                         size={'small'}
-                        onClick={utførHandling}
+                        onClick={gåTilOppgaveUtførelse}
                         disabled={laster}
                     >
                         Fortsett
@@ -118,7 +118,7 @@ export const OppgaveKnapp: React.FC<{
                 type={'button'}
                 variant={'secondary'}
                 size={'small'}
-                onClick={utførHandling}
+                onClick={gåTilOppgaveUtførelse}
                 disabled={laster}
             >
                 Tildel meg
