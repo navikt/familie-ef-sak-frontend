@@ -116,7 +116,7 @@ export const OppgaveKnapp: React.FC<{ oppgave: IOppgave; oppdaterOppgave: () => 
 
 type OppgaveValg = { label: string; onClick: () => void };
 
-const OppgaveValgMeny: React.FC<{ valg: oppgaveValg[] }> = ({ valg }) => {
+const OppgaveValgMeny: React.FC<{ valg: OppgaveValg[] }> = ({ valg }) => {
     return (
         <Dropdown>
             <Button
