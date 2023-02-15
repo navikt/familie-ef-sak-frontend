@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import OppgaveRad from './OppgaveRad';
 import { IOppgave } from './typer/oppgave';
 import 'nav-frontend-tabell-style';
@@ -9,6 +9,8 @@ import { OppgaveHeaderConfig } from './OppgaveHeaderConfig';
 import { IMappe } from './typer/mappe';
 import { Pagination } from '@navikt/ds-react';
 import styled from 'styled-components';
+import { useApp } from '../../App/context/AppContext';
+import { RessursFeilet, RessursStatus, RessursSuksess } from '../../App/typer/ressurs';
 
 const FlexBox = styled.div`
     display: flex;
@@ -21,19 +23,19 @@ export interface IOppgaverResponse {
 }
 
 interface Props {
-    oppgaveResponse: IOppgaverResponse;
+    oppgaver: IOppgave[];
     mapper: IMappe[];
     settFeilmelding: (feilmelding: string) => void;
-    oppdaterOppgave: (oppgaveId: string) => void;
 }
 
-const OppgaveTabell: React.FC<Props> = ({
-    oppgaveResponse,
-    mapper,
-    settFeilmelding,
-    oppdaterOppgave,
-}) => {
-    const oppgaveListe = oppgaveResponse.oppgaver;
+const OppgaveTabell: React.FC<Props> = ({ oppgaver, mapper, settFeilmelding }) => {
+    const { axiosRequest } = useApp();
+
+    const [oppgaveListe, settOppgaveListe] = useState<IOppgave[]>(oppgaver);
+
+    useEffect(() => {
+        settOppgaveListe(oppgaver);
+    }, [oppgaver]);
 
     const { sortertListe, settSortering, sortConfig } = useSorteringState<IOppgave>(oppgaveListe, {
         sorteringsfelt: 'fristFerdigstillelse',
@@ -52,6 +54,26 @@ const OppgaveTabell: React.FC<Props> = ({
         }, {} as Record<number, string>);
 
     const formaterteMapper = mapperAsRecord(mapper);
+
+    const oppdaterOppgave = (oppgaveId: string) => {
+        axiosRequest<IOppgave, null>({
+            method: 'GET',
+            url: `/familie-ef-sak/api/oppgave/oppslag/${oppgaveId}`,
+        }).then((res: RessursSuksess<IOppgave> | RessursFeilet) => {
+            if (res.status === RessursStatus.SUKSESS) {
+                settOppgaveListe((prevState) =>
+                    [...prevState].map((oppgave) => {
+                        if (oppgave.id.toString() == oppgaveId) {
+                            return res.data;
+                        }
+                        return oppgave;
+                    })
+                );
+            } else {
+                settFeilmelding(res.frontendFeilmelding);
+            }
+        });
+    };
 
     return (
         <>
