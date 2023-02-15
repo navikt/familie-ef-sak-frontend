@@ -62,7 +62,7 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaver, mapper, settFeilmelding }) =
         }).then((res: RessursSuksess<IOppgave> | RessursFeilet) => {
             if (res.status === RessursStatus.SUKSESS) {
                 settOppgaveListe((prevState) =>
-                    [...prevState].map((oppgave) => {
+                    prevState.map((oppgave) => {
                         if (oppgave.id.toString() == oppgaveId) {
                             return res.data;
                         }
