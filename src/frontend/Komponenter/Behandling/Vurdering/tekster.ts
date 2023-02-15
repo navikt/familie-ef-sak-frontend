@@ -53,6 +53,7 @@ export const svarTypeTilTekst: Record<string, string> = {
     IKKE_OPPFYLT: 'Nei',
     ARBEID_NORSK_ARBEIDSGIVER: 'Arbeid for norsk arbeidsgiver',
     UTENLANDSOPPHOLD_MINDRE_ENN_6_UKER: 'Utenlandsopphold på mindre enn 6 uker',
+    OPPHOLDER_SEG_I_ANNET_EØS_LAND: 'Oppholder seg i annet EØS-land',
     GJENLEVENDE_OVERTAR_OMSORG:
         'Ja, gjenlevende som etter dødsfallet overtar omsorgen for egne særkullsbarn',
     GJENLEVENDE_IKKE_RETT_TIL_YTELSER:
@@ -73,6 +74,8 @@ export const svarTypeTilTekst: Record<string, string> = {
         'Ja, totalvurdering viser at forholdene går inn under forskriften om kravet om fem års forutgående medlemskap',
     MEDLEM_MER_ENN_5_ÅR_EØS:
         'Ja, etter EØS-avtalen. Medlem fyller vilkåret om 5 års forutgående medlemskap ved sammenlegging av  medlemskapsperioder i annet EU/EØS-land.',
+    MEDLEM_MER_ENN_5_ÅR_EØS_ANNEN_FORELDER_TRYGDEDEKKET_I_NORGE:
+        'Ja, medlem fyller vilkåret om 5 års forutgående medlemskap opptjent i annet EU/EØS-land og annen forelder er trygdedekket i Norge som arbeidstaker.',
     RIMELIG_GRUNN_SAGT_OPP:
         'Hadde søker rimelig grunn til å si opp jobben eller redusere arbeidstiden?',
     SAMME_HUS_OG_FÆRRE_ENN_4_BOENHETER:
