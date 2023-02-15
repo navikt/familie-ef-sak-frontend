@@ -25,9 +25,9 @@ const FlexContainer = styled.div`
     gap: 0.5rem;
 `;
 
-export const OppgaveKnapp: React.FC<{ oppgave: IOppgave; oppdaterOppgave: () => void }> = ({
+export const OppgaveKnapp: React.FC<{ oppgave: IOppgave; hentOppgavePåNytt: () => void }> = ({
     oppgave,
-    oppdaterOppgave,
+    hentOppgavePåNytt,
 }) => {
     const {
         gåTilBehandleSakOppgave,
@@ -52,9 +52,9 @@ export const OppgaveKnapp: React.FC<{ oppgave: IOppgave; oppdaterOppgave: () => 
         }
     };
 
-    const utførHandlingOgOppdaterOppgave = (handling: () => Promise<void>) => async () => {
+    const utførHandlingOgHentOppgavePåNytt = (handling: () => Promise<void>) => async () => {
         await handling();
-        oppdaterOppgave();
+        hentOppgavePåNytt();
     };
 
     const oppgaveTilordnetInnloggetSaksbehandler =
@@ -86,7 +86,7 @@ export const OppgaveKnapp: React.FC<{ oppgave: IOppgave; oppdaterOppgave: () => 
                     valg={[
                         {
                             label: 'Fjern meg',
-                            onClick: utførHandlingOgOppdaterOppgave(tilbakestillFordeling),
+                            onClick: utførHandlingOgHentOppgavePåNytt(tilbakestillFordeling),
                         },
                     ]}
                 />
@@ -100,7 +100,7 @@ export const OppgaveKnapp: React.FC<{ oppgave: IOppgave; oppdaterOppgave: () => 
                     valg={[
                         {
                             label: 'Overta',
-                            onClick: utførHandlingOgOppdaterOppgave(settOppgaveTilSaksbehandler),
+                            onClick: utførHandlingOgHentOppgavePåNytt(settOppgaveTilSaksbehandler),
                         },
                     ]}
                 />

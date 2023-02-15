@@ -55,7 +55,7 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaver, mapper, settFeilmelding }) =
 
     const formaterteMapper = mapperAsRecord(mapper);
 
-    const oppdaterOppgave = (oppgaveId: string) => {
+    const hentOppgavePåNytt = (oppgaveId: string) => {
         axiosRequest<IOppgave, null>({
             method: 'GET',
             url: `/familie-ef-sak/api/oppgave/oppslag/${oppgaveId}`,
@@ -112,7 +112,7 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaver, mapper, settFeilmelding }) =
                             oppgave={v}
                             mapper={formaterteMapper}
                             settFeilmelding={settFeilmelding}
-                            opppdaterOppgave={() => oppdaterOppgave(v.id.toString())}
+                            hentOppgavePåNytt={() => hentOppgavePåNytt(v.id.toString())}
                         />
                     ))}
                 </tbody>

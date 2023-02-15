@@ -17,10 +17,10 @@ interface Props {
     oppgave: IOppgave;
     mapper: Record<number, string>;
     settFeilmelding: (feilmelding: string) => void;
-    opppdaterOppgave: () => void;
+    hentOppgavePåNytt: () => void;
 }
 
-const OppgaveRad: React.FC<Props> = ({ oppgave, mapper, settFeilmelding, opppdaterOppgave }) => {
+const OppgaveRad: React.FC<Props> = ({ oppgave, mapper, settFeilmelding, hentOppgavePåNytt }) => {
     const { feilmelding } = useOppgave(oppgave);
     const [anker, settAnker] = useState<Element | null>(null);
 
@@ -81,7 +81,7 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, mapper, settFeilmelding, opppdat
                 <td>{oppgave.tildeltEnhetsnr}</td>
                 <td>{enhetsmappe}</td>
                 <td>
-                    <OppgaveKnapp oppgave={oppgave} oppdaterOppgave={opppdaterOppgave} />
+                    <OppgaveKnapp oppgave={oppgave} hentOppgavePåNytt={hentOppgavePåNytt} />
                 </td>
             </tr>
         </>
