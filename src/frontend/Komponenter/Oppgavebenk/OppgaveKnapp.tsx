@@ -17,6 +17,8 @@ const TabellKnapp = styled(Button)`
 const FlexContainer = styled.div`
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
 `;
 
 export const OppgaveKnapp: React.FC<{ oppgave: IOppgave; oppdaterOppgave: () => void }> = ({
