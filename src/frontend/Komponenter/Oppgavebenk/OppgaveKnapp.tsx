@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { IOppgave } from './typer/oppgave';
 import { useOppgave } from '../../App/hooks/useOppgave';
 import { useApp } from '../../App/context/AppContext';
@@ -25,10 +25,11 @@ const FlexContainer = styled.div`
     gap: 0.5rem;
 `;
 
-export const OppgaveKnapp: React.FC<{ oppgave: IOppgave; hentOppgavePåNytt: () => void }> = ({
-    oppgave,
-    hentOppgavePåNytt,
-}) => {
+export const OppgaveKnapp: React.FC<{
+    oppgave: IOppgave;
+    hentOppgavePåNytt: () => void;
+    settFeilmelding: (feilmelding: string) => void;
+}> = ({ oppgave, hentOppgavePåNytt, settFeilmelding }) => {
     const {
         gåTilBehandleSakOppgave,
         gåTilJournalføring,
@@ -36,9 +37,14 @@ export const OppgaveKnapp: React.FC<{ oppgave: IOppgave; hentOppgavePåNytt: () 
         plukkOppgaveOgGåTilBehandlingsoversikt,
         tilbakestillFordeling,
         settOppgaveTilSaksbehandler,
+        feilmelding,
     } = useOppgave(oppgave);
 
     const { innloggetSaksbehandler } = useApp();
+
+    useEffect(() => {
+        settFeilmelding(feilmelding);
+    }, [feilmelding, settFeilmelding]);
 
     const utførHandling = () => {
         if (oppgaveErSaksbehandling(oppgave)) {
