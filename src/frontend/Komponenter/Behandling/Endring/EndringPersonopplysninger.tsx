@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, Heading } from '@navikt/ds-react';
+import { Heading } from '@navikt/ds-react';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { utledEndringerPåPersonopplysninger } from './utils';
 import { useToggles } from '../../../App/context/TogglesContext';
@@ -11,6 +11,15 @@ import {
     IEndringer,
     Personendring,
 } from './personopplysningerEndringer';
+import styled from 'styled-components';
+import { AlertWarning } from '../../../Felles/Visningskomponenter/Alerts';
+import { BodyLongMedium } from '../../../Felles/Visningskomponenter/Tekster';
+
+const Advarsel = styled(AlertWarning)`
+    .navds-alert__wrapper {
+        max-width: 60rem;
+    }
+`;
 
 const PersonEndring: React.FC<{ personendringer: Personendring[] }> = ({ personendringer }) => {
     return (
@@ -81,14 +90,14 @@ const Personopplysningsendringer: React.FC = () => {
                 }
 
                 return (
-                    <Alert variant="warning">
+                    <Advarsel>
                         <Heading spacing size="small" level="2">
                             Endring i Folkeregisteropplysninger
                         </Heading>
-                        <div>
-                            Det har vært endringer i bruker sine opplysninger fra Folkeregisteret
-                            siden denne behandlingen ble påbegynt. Endringene gjelder:
-                        </div>
+                        <BodyLongMedium>
+                            Bruker sine opplysninger fra Folkeregisteret har endret seg siden denne
+                            behandlingen ble påbegynt. Endringen gjelder:
+                        </BodyLongMedium>
                         <ul>
                             {endringer.map((personopplysning) => (
                                 <li key={personopplysning}>
@@ -100,7 +109,12 @@ const Personopplysningsendringer: React.FC = () => {
                                 </li>
                             ))}
                         </ul>
-                    </Alert>
+                        <BodyLongMedium>
+                            Saksbehandler må sjekke om endringen er relevant for behandlingen. Hvis
+                            endringen er relevant må man oppdatere registeropplysninger og vurdere
+                            aktuelle vilkår.
+                        </BodyLongMedium>
+                    </Advarsel>
                 );
             }}
         </DataViewer>
