@@ -1,14 +1,16 @@
 import * as React from 'react';
-import { useCallback, useEffect } from 'react';
-import { useHentVilkår } from '../../../App/hooks/useHentVilkår';
+import { useEffect } from 'react';
 import { TidligereVedtaksperioderType } from '../Inngangsvilkår/vilkår';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { Vilkårstittel } from '../Inngangsvilkår/Vilkårstittel';
 import VisEllerEndreVurdering from '../Vurdering/VisEllerEndreVurdering';
 import ToKolonnerLayout from '../../../Felles/Visningskomponenter/ToKolonnerLayout';
 import TidligereVedtaksperioderInfo from './TidligereVedtaksperioderInfo';
+import { useBehandling } from '../../../App/context/BehandlingContext';
+import { RessursStatus } from '../../../App/typer/ressurs';
 
 const TidligereVedtaksperioder: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
+    const { useHentVilkår } = useBehandling();
     const {
         hentVilkår,
         vilkår,
@@ -16,16 +18,14 @@ const TidligereVedtaksperioder: React.FC<{ behandlingId: string }> = ({ behandli
         lagreVurdering,
         feilmeldinger,
         nullstillVurdering,
-    } = useHentVilkår();
-
-    const hentVilkårCallback = useCallback(() => {
-        hentVilkår(behandlingId);
-        // eslint-disable-next-line
-    }, [behandlingId]);
+    } = useHentVilkår;
 
     useEffect(() => {
-        hentVilkårCallback();
-    }, [hentVilkårCallback]);
+        if (vilkår.status === RessursStatus.IKKE_HENTET) {
+            hentVilkår(behandlingId);
+        }
+        // eslint-disable-next-line
+    }, [behandlingId]);
 
     return (
         <DataViewer response={{ vilkår }}>

@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { Steg } from '../Høyremeny/Steg';
 import styled from 'styled-components';
@@ -17,7 +17,7 @@ import { NullstillVedtakModalContext } from './NullstillVedtakModalContext';
 import { SaksinformasjonSkolepenger } from './Skolepenger/SaksinformasjonSkolepenger';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 import { SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
-import { useHentVilkår } from '../../../App/hooks/useHentVilkår';
+import { RessursStatus } from '../../../App/typer/ressurs';
 
 const AlertErrorLeft = styled(AlertError)`
     margin-left: 2rem;
@@ -33,18 +33,18 @@ const AlertStripeIkkeFerdigBehandletVilkår = (): JSX.Element => (
 );
 
 export const VedtakOgBeregningSide: FC<{ behandlingId: string }> = ({ behandlingId }) => {
-    const { behandling } = useBehandling();
+    const { behandling, useHentVilkår } = useBehandling();
 
     const [visNullstillVedtakModal, settVisNullstillVedtakModal] = useState(false);
-    const { vilkår, hentVilkår } = useHentVilkår();
-
-    const hentVilkårCallback = useCallback(() => {
-        hentVilkår(behandlingId);
-    }, [behandlingId, hentVilkår]);
+    const { vilkår, hentVilkår } = useHentVilkår;
 
     useEffect(() => {
-        hentVilkårCallback();
-    }, [hentVilkårCallback]);
+        if (vilkår.status === RessursStatus.IKKE_HENTET) {
+            hentVilkår(behandlingId);
+        }
+        // eslint-disable-next-line
+    }, [behandlingId]);
+
     return (
         <NullstillVedtakModalContext.Provider
             value={{ visNullstillVedtakModal, settVisNullstillVedtakModal }}

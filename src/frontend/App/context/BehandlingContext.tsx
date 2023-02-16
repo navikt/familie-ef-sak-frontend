@@ -13,6 +13,7 @@ import { erBehandlingRedigerbar, utredesEllerFatterVedtak } from '../typer/behan
 import { useApp } from './AppContext';
 import { useHentUtestengelser } from '../hooks/useHentUtestengelser';
 import { useHentEndringerPersonopplysninger } from '../hooks/useHentEndringerPersonopplysninger';
+import { useHentVilkår } from '../hooks/useHentVilkår';
 
 const [BehandlingProvider, useBehandling] = constate(() => {
     const { axiosRequest } = useApp();
@@ -83,6 +84,8 @@ const [BehandlingProvider, useBehandling] = constate(() => {
         // eslint-disable-next-line
     }, [behandling]);
 
+    const useHentVilkårState = useHentVilkår();
+
     return {
         behandling,
         behandlingErRedigerbar,
@@ -102,6 +105,7 @@ const [BehandlingProvider, useBehandling] = constate(() => {
         utestengelser,
         endringerPersonopplysninger,
         nullstillGrunnlagsendringer,
+        useHentVilkår: useHentVilkårState,
     };
 });
 

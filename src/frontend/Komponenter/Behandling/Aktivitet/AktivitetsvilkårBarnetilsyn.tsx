@@ -1,17 +1,18 @@
 import React, { FC, useEffect } from 'react';
 import { RessursStatus } from '../../../App/typer/ressurs';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
-import { useHentVilkår } from '../../../App/hooks/useHentVilkår';
 import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
 import { AktivitetArbeid } from './AktivitetArbeid/AktivitetArbeid';
 import { Inntekt } from './Inntekt/Inntekt';
 import { AlderPåBarn } from './AlderPåBarn/AlderPåBarn';
 import { Behandling } from '../../../App/typer/fagsak';
 import { DokumentasjonsTilsynsutgifter } from './DokumentasjonTilsynsutgifter/DokumentasjonsTilsynsutgifter';
+import { useBehandling } from '../../../App/context/BehandlingContext';
 
 const AktivitetsVilkårBarnetilsyn: FC<{
     behandling: Behandling;
 }> = ({ behandling }) => {
+    const { useHentVilkår } = useBehandling();
     const {
         vilkår,
         hentVilkår,
@@ -19,16 +20,14 @@ const AktivitetsVilkårBarnetilsyn: FC<{
         feilmeldinger,
         nullstillVurdering,
         ikkeVurderVilkår,
-    } = useHentVilkår();
+    } = useHentVilkår;
     const skalViseSøknadsdata = behandling.behandlingsårsak === Behandlingsårsak.SØKNAD;
 
     const behandlingId = behandling.id;
 
     useEffect(() => {
-        if (behandlingId !== undefined) {
-            if (vilkår.status !== RessursStatus.SUKSESS) {
-                hentVilkår(behandlingId);
-            }
+        if (vilkår.status === RessursStatus.IKKE_HENTET) {
+            hentVilkår(behandlingId);
         }
         // eslint-disable-next-line
     }, [behandlingId]);

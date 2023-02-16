@@ -1,7 +1,5 @@
 import React, { FC } from 'react';
-import { RessursStatus } from '../../../App/typer/ressurs';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
-import { useHentVilkår } from '../../../App/hooks/useHentVilkår';
 import { NyttBarnSammePartner } from './NyttBarnSammePartner/NyttBarnSammePartner';
 import { Aleneomsorg } from './Aleneomsorg/Aleneomsorg';
 import { MorEllerFar } from './MorEllerFar/MorEllerFar';
@@ -15,12 +13,15 @@ import { formaterIsoDatoTidMedSekunder } from '../../../App/utils/formatter';
 import { InngangsvilkårHeader } from './InngangsvilkårHeader/InngangsvilkårHeader';
 import { useApp } from '../../../App/context/AppContext';
 import { FyllUtVilkårKnapp } from './FyllUtVilkårKnapp';
+import { RessursStatus } from '../../../App/typer/ressurs';
 
 interface Props {
     behandlingId: string;
 }
 
 const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
+    const { behandling, behandlingErRedigerbar, useHentVilkår } = useBehandling();
+    const { erSaksbehandler } = useApp();
     const {
         vilkår,
         hentVilkår,
@@ -30,16 +31,11 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
         ikkeVurderVilkår,
         oppdaterGrunnlagsdataOgHentVilkår,
         gjenbrukInngangsvilkår,
-    } = useHentVilkår();
-
-    const { behandling, behandlingErRedigerbar } = useBehandling();
-    const { erSaksbehandler } = useApp();
+    } = useHentVilkår;
 
     React.useEffect(() => {
-        if (behandlingId !== undefined) {
-            if (vilkår.status !== RessursStatus.SUKSESS) {
-                hentVilkår(behandlingId);
-            }
+        if (vilkår.status === RessursStatus.IKKE_HENTET) {
+            hentVilkår(behandlingId);
         }
         // eslint-disable-next-line
     }, [behandlingId]);

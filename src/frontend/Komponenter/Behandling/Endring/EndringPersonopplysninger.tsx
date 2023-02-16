@@ -1,5 +1,5 @@
-import React from 'react';
-import { Heading } from '@navikt/ds-react';
+import React, { useState } from 'react';
+import { Button, Heading } from '@navikt/ds-react';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { utledEndringerPåPersonopplysninger } from './utils';
 import { useToggles } from '../../../App/context/TogglesContext';
@@ -69,10 +69,14 @@ const Endringsdetaljer: React.FC<{ endringer: IEndringer; personopplysning: keyo
     }
 };
 
-const Personopplysningsendringer: React.FC = () => {
+const Personopplysningsendringer: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
     const { toggles } = useToggles();
     const skalViseKomponent = toggles[ToggleName.visEndringerPersonopplysninger];
-    const { endringerPersonopplysninger } = useBehandling();
+    const { endringerPersonopplysninger, nullstillGrunnlagsendringer, useHentVilkår } =
+        useBehandling();
+    const [nyGrunnlagsdataHentes, settNyGrunnlagsdataHentes] = useState(false);
+
+    const { oppdaterGrunnlagsdataOgHentVilkår } = useHentVilkår;
 
     if (!skalViseKomponent) {
         return <></>;
@@ -114,6 +118,22 @@ const Personopplysningsendringer: React.FC = () => {
                             endringen er relevant må man oppdatere registeropplysninger og vurdere
                             aktuelle vilkår.
                         </BodyLongMedium>
+                        <Button
+                            size={'small'}
+                            variant={'primary'}
+                            loading={nyGrunnlagsdataHentes}
+                            onClick={() => {
+                                if (!nyGrunnlagsdataHentes) {
+                                    settNyGrunnlagsdataHentes(true);
+                                    oppdaterGrunnlagsdataOgHentVilkår(behandlingId).then(() => {
+                                        nullstillGrunnlagsendringer();
+                                        settNyGrunnlagsdataHentes(false);
+                                    });
+                                }
+                            }}
+                        >
+                            Oppdater registeropplysninger i denne behandlingen
+                        </Button>
                     </Advarsel>
                 );
             }}
