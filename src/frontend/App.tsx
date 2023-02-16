@@ -69,7 +69,14 @@ export default App;
 const AppRoutes: React.FC<{ innloggetSaksbehandler: ISaksbehandler }> = ({
     innloggetSaksbehandler,
 }) => {
-    const { autentisert } = useApp();
+    const { autentisert, ulagretData } = useApp();
+
+    // Skal vise modal dersom saksbehandler refresher siden og har ulagrede endringer
+    window.onbeforeunload = (event: BeforeUnloadEvent) => {
+        if (ulagretData) {
+            event.returnValue = true;
+        }
+    };
 
     return (
         <BrowserRouter>

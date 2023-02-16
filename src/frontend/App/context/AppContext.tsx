@@ -124,6 +124,7 @@ const [AppProvider, useApp] = constate(({ autentisertSaksbehandler, appEnv }: IP
         erSaksbehandler,
         visUtestengModal,
         settVisUtestengModal,
+        ulagretData,
     };
 });
 
