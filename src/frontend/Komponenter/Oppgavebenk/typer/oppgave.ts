@@ -4,7 +4,7 @@ import { IOppgaveIdent } from '@navikt/familie-typer/dist/oppgave';
 
 export interface IOppgave {
     id: number;
-    identer: IOppgaveIdent[];
+    identer?: IOppgaveIdent[];
     tildeltEnhetsnr?: string;
     endretAvEnhetsnr?: string;
     eksisterendeOppgaveId?: string;

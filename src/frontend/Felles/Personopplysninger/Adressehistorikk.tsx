@@ -6,7 +6,6 @@ import { IngenData, TabellWrapper, Td } from './TabellWrapper';
 import styled from 'styled-components';
 import Beboere from './Beboere';
 import { formaterNullableIsoDato } from '../../App/utils/formatter';
-import { gyldigTilOgMedErNullEllerFremITid } from './adresseUtil';
 import { ModalWrapper } from '../Modal/ModalWrapper';
 import UtvidPanel from '../UtvidPanel/UtvidPanel';
 import { Button, HelpText, Label } from '@navikt/ds-react';
@@ -152,8 +151,7 @@ const Innhold: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string }> = ({
                                         {formaterNullableIsoDato(adresse.gyldigTilOgMed)}
                                     </div>
                                     {adresse.type === AdresseType.BOSTEDADRESSE &&
-                                        indeks === 0 &&
-                                        gyldigTilOgMedErNullEllerFremITid(adresse) && (
+                                        adresse.erGjeldende && (
                                             <Knapp
                                                 onClick={() => settBeboereAdresseIModal(adresse)}
                                                 variant={'secondary'}
