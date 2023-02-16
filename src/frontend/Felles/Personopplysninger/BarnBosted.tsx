@@ -1,7 +1,7 @@
+import React, { useRef, useState } from 'react';
 import { IBarn } from '../../App/typer/personopplysninger';
 import { Popover, Table } from '@navikt/ds-react';
 import { formaterNullableIsoDato } from '../../App/utils/formatter';
-import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Information } from '@navikt/ds-icons';
 
