@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { IOppgave } from './typer/oppgave';
 import { oppgaveTypeTilTekst, prioritetTilTekst } from './typer/oppgavetema';
 import {
@@ -8,7 +8,6 @@ import {
     oppgaveBehandlingstypeTilTekst,
 } from '../../App/typer/behandlingstema';
 import { formaterIsoDato, formaterIsoDatoTid } from '../../App/utils/formatter';
-import { useOppgave } from '../../App/hooks/useOppgave';
 import { Popover } from '@navikt/ds-react';
 import { utledetFolkeregisterIdent } from './utils';
 import { OppgaveKnapp } from './OppgaveKnapp';
@@ -17,16 +16,11 @@ interface Props {
     oppgave: IOppgave;
     mapper: Record<number, string>;
     settFeilmelding: (feilmelding: string) => void;
-    opppdaterOppgave: () => void;
+    hentOppgavePåNytt: () => void;
 }
 
-const OppgaveRad: React.FC<Props> = ({ oppgave, mapper, settFeilmelding, opppdaterOppgave }) => {
-    const { feilmelding } = useOppgave(oppgave);
+const OppgaveRad: React.FC<Props> = ({ oppgave, mapper, settFeilmelding, hentOppgavePåNytt }) => {
     const [anker, settAnker] = useState<Element | null>(null);
-
-    useEffect(() => {
-        settFeilmelding(feilmelding);
-    }, [feilmelding, settFeilmelding]);
 
     const togglePopover = (element: React.MouseEvent<HTMLElement>) => {
         settAnker(anker ? null : element.currentTarget);
@@ -81,7 +75,11 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, mapper, settFeilmelding, opppdat
                 <td>{oppgave.tildeltEnhetsnr}</td>
                 <td>{enhetsmappe}</td>
                 <td>
-                    <OppgaveKnapp oppgave={oppgave} oppdaterOppgave={opppdaterOppgave} />
+                    <OppgaveKnapp
+                        oppgave={oppgave}
+                        hentOppgavePåNytt={hentOppgavePåNytt}
+                        settFeilmelding={settFeilmelding}
+                    />
                 </td>
             </tr>
         </>

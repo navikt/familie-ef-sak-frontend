@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { IOppgave } from './typer/oppgave';
 import { useOppgave } from '../../App/hooks/useOppgave';
 import { useApp } from '../../App/context/AppContext';
-import { Handling } from './typer/handling';
 import { Button } from '@navikt/ds-react';
 import { EllipsisCircleH } from '@navikt/ds-icons';
 import styled from 'styled-components';
-import { utledetFolkeregisterIdent, utledHandling } from './utils';
+import {
+    oppgaveKanJournalføres,
+    oppgaveErSaksbehandling,
+    oppgaveErJournalførKlage,
+    utledetFolkeregisterIdent,
+} from './utils';
 import { Dropdown } from '@navikt/ds-react-internal';
 
 const TabellKnapp = styled(Button)`
@@ -17,12 +21,15 @@ const TabellKnapp = styled(Button)`
 const FlexContainer = styled.div`
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
 `;
 
-export const OppgaveKnapp: React.FC<{ oppgave: IOppgave; oppdaterOppgave: () => void }> = ({
-    oppgave,
-    oppdaterOppgave,
-}) => {
+export const OppgaveKnapp: React.FC<{
+    oppgave: IOppgave;
+    hentOppgavePåNytt: () => void;
+    settFeilmelding: (feilmelding: string) => void;
+}> = ({ oppgave, hentOppgavePåNytt, settFeilmelding }) => {
     const {
         gåTilBehandleSakOppgave,
         gåTilJournalføring,
@@ -30,29 +37,30 @@ export const OppgaveKnapp: React.FC<{ oppgave: IOppgave; oppdaterOppgave: () => 
         plukkOppgaveOgGåTilBehandlingsoversikt,
         tilbakestillFordeling,
         settOppgaveTilSaksbehandler,
+        feilmelding,
     } = useOppgave(oppgave);
 
     const { innloggetSaksbehandler } = useApp();
 
-    const utførHandling = () => {
-        switch (utledHandling(oppgave)) {
-            case Handling.JOURNALFØR:
-                gåTilJournalføring('stønad');
-                break;
-            case Handling.JOURNALFØR_KLAGE:
-                gåTilJournalføring('klage');
-                break;
-            case Handling.SAKSBEHANDLE:
-                gåTilBehandleSakOppgave();
-                break;
-            default:
-                plukkOppgaveOgGåTilBehandlingsoversikt(utledetFolkeregisterIdent(oppgave));
+    useEffect(() => {
+        settFeilmelding(feilmelding);
+    }, [feilmelding, settFeilmelding]);
+
+    const gåTilOppgaveUtførelse = () => {
+        if (oppgaveErSaksbehandling(oppgave)) {
+            gåTilBehandleSakOppgave();
+        } else if (oppgaveErJournalførKlage(oppgave)) {
+            gåTilJournalføring('klage');
+        } else if (oppgaveKanJournalføres(oppgave)) {
+            gåTilJournalføring('stønad');
+        } else {
+            plukkOppgaveOgGåTilBehandlingsoversikt(utledetFolkeregisterIdent(oppgave));
         }
     };
 
-    const utførHandlingOgOppdaterOppgave = (handling: () => Promise<void>) => async () => {
+    const utførHandlingOgHentOppgavePåNytt = (handling: () => Promise<void>) => async () => {
         await handling();
-        oppdaterOppgave();
+        hentOppgavePåNytt();
     };
 
     const oppgaveTilordnetInnloggetSaksbehandler =
@@ -60,27 +68,31 @@ export const OppgaveKnapp: React.FC<{ oppgave: IOppgave; oppdaterOppgave: () => 
 
     const skalViseFortsettKnapp =
         oppgaveTilordnetInnloggetSaksbehandler &&
-        [Handling.SAKSBEHANDLE, Handling.JOURNALFØR, Handling.JOURNALFØR_KLAGE].includes(
-            utledHandling(oppgave)
-        );
+        (oppgaveErSaksbehandling(oppgave) ||
+            oppgaveErJournalførKlage(oppgave) ||
+            oppgaveKanJournalføres(oppgave));
 
-    if (skalViseFortsettKnapp) {
+    if (oppgaveTilordnetInnloggetSaksbehandler) {
         return (
             <FlexContainer>
-                <TabellKnapp
-                    type={'button'}
-                    variant={'secondary'}
-                    size={'small'}
-                    onClick={utførHandling}
-                    disabled={laster}
-                >
-                    Fortsett
-                </TabellKnapp>
+                {skalViseFortsettKnapp ? (
+                    <TabellKnapp
+                        type={'button'}
+                        variant={'secondary'}
+                        size={'small'}
+                        onClick={gåTilOppgaveUtførelse}
+                        disabled={laster}
+                    >
+                        Fortsett
+                    </TabellKnapp>
+                ) : (
+                    oppgave.tilordnetRessurs
+                )}
                 <OppgaveValgMeny
                     valg={[
                         {
                             label: 'Fjern meg',
-                            onClick: utførHandlingOgOppdaterOppgave(tilbakestillFordeling),
+                            onClick: utførHandlingOgHentOppgavePåNytt(tilbakestillFordeling),
                         },
                     ]}
                 />
@@ -94,7 +106,7 @@ export const OppgaveKnapp: React.FC<{ oppgave: IOppgave; oppdaterOppgave: () => 
                     valg={[
                         {
                             label: 'Overta',
-                            onClick: utførHandlingOgOppdaterOppgave(settOppgaveTilSaksbehandler),
+                            onClick: utførHandlingOgHentOppgavePåNytt(settOppgaveTilSaksbehandler),
                         },
                     ]}
                 />
@@ -106,7 +118,7 @@ export const OppgaveKnapp: React.FC<{ oppgave: IOppgave; oppdaterOppgave: () => 
                 type={'button'}
                 variant={'secondary'}
                 size={'small'}
-                onClick={utførHandling}
+                onClick={gåTilOppgaveUtførelse}
                 disabled={laster}
             >
                 Tildel meg
@@ -114,9 +126,9 @@ export const OppgaveKnapp: React.FC<{ oppgave: IOppgave; oppdaterOppgave: () => 
         );
 };
 
-type oppgaveValg = { label: string; onClick: () => void };
+type OppgaveValg = { label: string; onClick: () => void };
 
-const OppgaveValgMeny: React.FC<{ valg: oppgaveValg[] }> = ({ valg }) => {
+const OppgaveValgMeny: React.FC<{ valg: OppgaveValg[] }> = ({ valg }) => {
     return (
         <Dropdown>
             <Button
@@ -127,8 +139,8 @@ const OppgaveValgMeny: React.FC<{ valg: oppgaveValg[] }> = ({ valg }) => {
             />
             <Dropdown.Menu>
                 <Dropdown.Menu.List>
-                    {valg.map((valg) => (
-                        <Dropdown.Menu.List.Item onClick={valg.onClick}>
+                    {valg.map((valg, indeks) => (
+                        <Dropdown.Menu.List.Item key={indeks} onClick={valg.onClick}>
                             {valg.label}
                         </Dropdown.Menu.List.Item>
                     ))}

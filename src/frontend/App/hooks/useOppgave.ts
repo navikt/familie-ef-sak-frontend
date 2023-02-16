@@ -40,6 +40,7 @@ export const useOppgave = (oppgave: IOppgave) => {
             if (res.status === RessursStatus.SUKSESS) {
                 return Promise.resolve();
             } else {
+                settFeilmelding(res.frontendFeilmelding);
                 return Promise.reject(
                     new Error(`Feilet fordeling av oppgave. Feil: ${res.frontendFeilmelding}`)
                 );
@@ -58,6 +59,7 @@ export const useOppgave = (oppgave: IOppgave) => {
                     if (res.status === RessursStatus.SUKSESS) {
                         return resolve(res.data.behandlingId);
                     }
+                    settFeilmelding(res.frontendFeilmelding);
                     return reject(new Error(res.frontendFeilmelding));
                 });
             })
