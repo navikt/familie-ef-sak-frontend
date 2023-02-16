@@ -8,6 +8,7 @@ import { KopierbartNullableFødselsnummer } from '../Fødselsnummer/KopierbartNu
 import EtikettDød from '../Etiketter/EtikettDød';
 import { nullableDatoTilAlder } from '../../App/utils/dato';
 import { Tag } from '@navikt/ds-react';
+import BarnBosted from './BarnBosted';
 
 const SpanMedVenstreMargin = styled.span`
     margin-left: 15%;
@@ -59,7 +60,9 @@ const Barn: React.FC<{ barn: IBarn[] }> = ({ barn }) => {
                                         </>
                                     )}
                                 </BredTd>
-                                <BredTd>{barn.borHosSøker ? 'Ja' : '-'}</BredTd>
+                                <BredTd>
+                                    <BarnBosted barn={barn}></BarnBosted>
+                                </BredTd>
                             </tr>
                         );
                     })}

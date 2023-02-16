@@ -22,13 +22,19 @@ export interface IPersonopplysninger {
     oppholdstillatelse: IOppholdstillatelse[];
     vergemål: IVergemål[];
 }
-
+export interface IDeltBostedPeriode {
+    startdatoForKontrakt: string;
+    sluttdatoForKontrakt: string;
+}
 export interface IBarn {
     navn: string;
     personIdent: string;
     annenForelder?: IAnnenForelderMinimum;
     adresse: IAdresse[];
+
     borHosSøker: boolean;
+    deltBosted: IDeltBostedPeriode[];
+    harDeltBostedNå: boolean;
     fødselsdato?: string;
     dødsdato?: string;
 }
