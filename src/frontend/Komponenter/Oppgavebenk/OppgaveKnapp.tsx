@@ -139,8 +139,8 @@ const OppgaveValgMeny: React.FC<{ valg: OppgaveValg[] }> = ({ valg }) => {
             />
             <Dropdown.Menu>
                 <Dropdown.Menu.List>
-                    {valg.map((valg) => (
-                        <Dropdown.Menu.List.Item onClick={valg.onClick}>
+                    {valg.map((valg, indeks) => (
+                        <Dropdown.Menu.List.Item key={indeks} onClick={valg.onClick}>
                             {valg.label}
                         </Dropdown.Menu.List.Item>
                     ))}
