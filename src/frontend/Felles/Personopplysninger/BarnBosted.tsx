@@ -5,11 +5,15 @@ import { formaterNullableIsoDato } from '../../App/utils/formatter';
 import styled from 'styled-components';
 import { Information } from '@navikt/ds-icons';
 
-const StyledInformation = styled(Information)`
+const StyledInformationIcon = styled(Information)`
     margin: 0.5rem 0.5rem 0 0.5rem;
     &:hover {
         cursor: pointer;
     }
+`;
+
+export const StyledDiv = styled.div`
+    margin-right: 1rem;
 `;
 
 const bostedStatus = (barn: IBarn) => {
@@ -37,7 +41,9 @@ const popoverContent = (barn: IBarn) => (
                     return (
                         <Table.Row key={periode.startdatoForKontrakt}>
                             <Table.DataCell>
-                                {formaterNullableIsoDato(periode.startdatoForKontrakt)}
+                                <StyledDiv>
+                                    {formaterNullableIsoDato(periode.startdatoForKontrakt)}
+                                </StyledDiv>
                             </Table.DataCell>
                             <Table.DataCell>
                                 {formaterNullableIsoDato(periode.sluttdatoForKontrakt)}
@@ -58,9 +64,9 @@ const BarnBosted: React.FC<{ barn: IBarn }> = ({ barn }) => {
         <>
             {bostedStatus(barn)}
             {barn.deltBosted.length > 0 && (
-                <StyledInformation ref={iconRef} onClick={() => setOpenState(true)}>
+                <StyledInformationIcon ref={iconRef} onClick={() => setOpenState(true)}>
                     Åpne popover
-                </StyledInformation>
+                </StyledInformationIcon>
             )}
             <Popover
                 placement={'right'}
