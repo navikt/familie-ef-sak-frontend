@@ -1,12 +1,12 @@
 import React, { useRef, useState } from 'react';
 import { IBarn } from '../../App/typer/personopplysninger';
-import { Popover, Table } from '@navikt/ds-react';
+import { BodyShort, Popover, Table } from '@navikt/ds-react';
 import { formaterNullableIsoDato } from '../../App/utils/formatter';
 import styled from 'styled-components';
 import { Information } from '@navikt/ds-icons';
 
-const StyledInformationIcon = styled(Information)`
-    margin: 0.5rem 0.5rem 0 0.5rem;
+const InformationIcon = styled(Information)`
+    margin-left: 0.5rem;
     &:hover {
         cursor: pointer;
     }
@@ -25,6 +25,11 @@ const bostedStatus = (barn: IBarn) => {
     }
     return '-'; // TODO : "Nei" vs "-" ?
 };
+
+const FlexBox = styled.div`
+    display: flex;
+    align-items: baseline;
+`;
 
 const popoverContent = (barn: IBarn) => (
     <Popover.Content>
@@ -61,12 +66,12 @@ const BarnBosted: React.FC<{ barn: IBarn }> = ({ barn }) => {
     const [openState, setOpenState] = useState(false);
 
     return (
-        <>
-            {bostedStatus(barn)}
+        <FlexBox>
+            <BodyShort>{bostedStatus(barn)}</BodyShort>
             {barn.deltBosted.length > 0 && (
-                <StyledInformationIcon ref={iconRef} onClick={() => setOpenState(true)}>
+                <InformationIcon ref={iconRef} onClick={() => setOpenState(true)}>
                     Åpne popover
-                </StyledInformationIcon>
+                </InformationIcon>
             )}
             <Popover
                 placement={'right'}
@@ -75,7 +80,7 @@ const BarnBosted: React.FC<{ barn: IBarn }> = ({ barn }) => {
                 anchorEl={iconRef.current}
                 children={popoverContent(barn)}
             />
-        </>
+        </FlexBox>
     );
 };
 
