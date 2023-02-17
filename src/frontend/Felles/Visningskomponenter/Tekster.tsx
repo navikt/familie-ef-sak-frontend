@@ -16,6 +16,12 @@ export const BodyLongSmall = forwardRef<HTMLParagraphElement, Omit<BodyLongProps
     }
 );
 
+export const BodyLongMedium = forwardRef<HTMLParagraphElement, Omit<BodyLongProps, 'size'>>(
+    (props, ref) => {
+        return <BodyLong size={'medium'} {...props} ref={ref} />;
+    }
+);
+
 export const BodyShortSmall = forwardRef<HTMLParagraphElement, Omit<BodyShortProps, 'size'>>(
     (props, ref) => {
         return <BodyShort size={'small'} {...props} ref={ref} />;
