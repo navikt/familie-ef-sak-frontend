@@ -1,5 +1,5 @@
-import React from 'react';
-import { Heading } from '@navikt/ds-react';
+import React, { useState } from 'react';
+import { Button, Heading } from '@navikt/ds-react';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { utledEndringerPåPersonopplysninger } from './utils';
 import { useToggles } from '../../../App/context/TogglesContext';
@@ -19,6 +19,10 @@ const Advarsel = styled(AlertWarning)`
     .navds-alert__wrapper {
         max-width: 60rem;
     }
+`;
+
+const OppdaterGrunnlagKnapp = styled(Button)`
+    margin: 0 1rem 0 0.5rem;
 `;
 
 const PersonEndring: React.FC<{ personendringer: Personendring[] }> = ({ personendringer }) => {
@@ -69,14 +73,28 @@ const Endringsdetaljer: React.FC<{ endringer: IEndringer; personopplysning: keyo
     }
 };
 
-const Personopplysningsendringer: React.FC = () => {
+const Personopplysningsendringer: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
     const { toggles } = useToggles();
     const skalViseKomponent = toggles[ToggleName.visEndringerPersonopplysninger];
-    const { endringerPersonopplysninger } = useBehandling();
+    const { endringerPersonopplysninger, nullstillGrunnlagsendringer, vilkårState } =
+        useBehandling();
+    const [nyGrunnlagsdataHentes, settNyGrunnlagsdataHentes] = useState(false);
+
+    const { oppdaterGrunnlagsdataOgHentVilkår } = vilkårState;
 
     if (!skalViseKomponent) {
         return <></>;
     }
+
+    const oppdaterGrunnlagsdata = () => {
+        if (!nyGrunnlagsdataHentes) {
+            settNyGrunnlagsdataHentes(true);
+            oppdaterGrunnlagsdataOgHentVilkår(behandlingId).then(() => {
+                nullstillGrunnlagsendringer();
+                settNyGrunnlagsdataHentes(false);
+            });
+        }
+    };
 
     return (
         <DataViewer response={{ endringerPersonopplysninger }}>
@@ -92,7 +110,7 @@ const Personopplysningsendringer: React.FC = () => {
                 return (
                     <Advarsel>
                         <Heading spacing size="small" level="2">
-                            Endring i Folkeregisteropplysninger
+                            Opplysninger fra Folkeregisteret er endret
                         </Heading>
                         <BodyLongMedium>
                             Bruker sine opplysninger fra Folkeregisteret har endret seg siden denne
@@ -110,10 +128,17 @@ const Personopplysningsendringer: React.FC = () => {
                             ))}
                         </ul>
                         <BodyLongMedium>
-                            Saksbehandler må sjekke om endringen er relevant for behandlingen. Hvis
-                            endringen er relevant må man oppdatere registeropplysninger og vurdere
-                            aktuelle vilkår.
+                            Saksbehandler må sjekke endringen, oppdatere registeropplysninger i
+                            behandlingen og eventuelt vurdere vilkår på nytt.
                         </BodyLongMedium>
+                        <OppdaterGrunnlagKnapp
+                            size={'small'}
+                            variant={'primary'}
+                            loading={nyGrunnlagsdataHentes}
+                            onClick={oppdaterGrunnlagsdata}
+                        >
+                            Oppdater registeropplysninger i denne behandlingen
+                        </OppdaterGrunnlagKnapp>
                     </Advarsel>
                 );
             }}
