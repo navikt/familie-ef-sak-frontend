@@ -82,6 +82,16 @@ const Personopplysningsendringer: React.FC<{ behandlingId: string }> = ({ behand
         return <></>;
     }
 
+    const oppdaterGrunnlagsdata = () => {
+        if (!nyGrunnlagsdataHentes) {
+            settNyGrunnlagsdataHentes(true);
+            oppdaterGrunnlagsdataOgHentVilkår(behandlingId).then(() => {
+                nullstillGrunnlagsendringer();
+                settNyGrunnlagsdataHentes(false);
+            });
+        }
+    };
+
     return (
         <DataViewer response={{ endringerPersonopplysninger }}>
             {({ endringerPersonopplysninger }) => {
@@ -122,15 +132,7 @@ const Personopplysningsendringer: React.FC<{ behandlingId: string }> = ({ behand
                             size={'small'}
                             variant={'primary'}
                             loading={nyGrunnlagsdataHentes}
-                            onClick={() => {
-                                if (!nyGrunnlagsdataHentes) {
-                                    settNyGrunnlagsdataHentes(true);
-                                    oppdaterGrunnlagsdataOgHentVilkår(behandlingId).then(() => {
-                                        nullstillGrunnlagsendringer();
-                                        settNyGrunnlagsdataHentes(false);
-                                    });
-                                }
-                            }}
+                            onClick={oppdaterGrunnlagsdata}
                         >
                             Oppdater registeropplysninger i denne behandlingen
                         </Button>
