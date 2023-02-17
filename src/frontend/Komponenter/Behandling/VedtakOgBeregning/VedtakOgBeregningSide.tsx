@@ -17,7 +17,6 @@ import { NullstillVedtakModalContext } from './NullstillVedtakModalContext';
 import { SaksinformasjonSkolepenger } from './Skolepenger/SaksinformasjonSkolepenger';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 import { SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
-import { RessursStatus } from '../../../App/typer/ressurs';
 
 const AlertErrorLeft = styled(AlertError)`
     margin-left: 2rem;
@@ -39,9 +38,7 @@ export const VedtakOgBeregningSide: FC<{ behandlingId: string }> = ({ behandling
     const { vilkår, hentVilkår } = vilkårState;
 
     useEffect(() => {
-        if (vilkår.status === RessursStatus.IKKE_HENTET) {
-            hentVilkår(behandlingId);
-        }
+        hentVilkår(behandlingId);
         // eslint-disable-next-line
     }, [behandlingId]);
 

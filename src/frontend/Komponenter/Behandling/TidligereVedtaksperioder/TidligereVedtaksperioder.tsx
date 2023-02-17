@@ -7,7 +7,6 @@ import VisEllerEndreVurdering from '../Vurdering/VisEllerEndreVurdering';
 import ToKolonnerLayout from '../../../Felles/Visningskomponenter/ToKolonnerLayout';
 import TidligereVedtaksperioderInfo from './TidligereVedtaksperioderInfo';
 import { useBehandling } from '../../../App/context/BehandlingContext';
-import { RessursStatus } from '../../../App/typer/ressurs';
 
 const TidligereVedtaksperioder: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
     const { vilkårState } = useBehandling();
@@ -21,9 +20,7 @@ const TidligereVedtaksperioder: React.FC<{ behandlingId: string }> = ({ behandli
     } = vilkårState;
 
     useEffect(() => {
-        if (vilkår.status === RessursStatus.IKKE_HENTET) {
-            hentVilkår(behandlingId);
-        }
+        hentVilkår(behandlingId);
         // eslint-disable-next-line
     }, [behandlingId]);
 

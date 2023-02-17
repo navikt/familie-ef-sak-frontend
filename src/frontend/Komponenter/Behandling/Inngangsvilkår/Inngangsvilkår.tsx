@@ -13,7 +13,6 @@ import { formaterIsoDatoTidMedSekunder } from '../../../App/utils/formatter';
 import { InngangsvilkårHeader } from './InngangsvilkårHeader/InngangsvilkårHeader';
 import { useApp } from '../../../App/context/AppContext';
 import { FyllUtVilkårKnapp } from './FyllUtVilkårKnapp';
-import { RessursStatus } from '../../../App/typer/ressurs';
 
 interface Props {
     behandlingId: string;
@@ -34,9 +33,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
     } = vilkårState;
 
     React.useEffect(() => {
-        if (vilkår.status === RessursStatus.IKKE_HENTET) {
-            hentVilkår(behandlingId);
-        }
+        hentVilkår(behandlingId);
         // eslint-disable-next-line
     }, [behandlingId]);
     return (

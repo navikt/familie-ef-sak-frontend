@@ -1,5 +1,4 @@
 import React, { FC, useEffect } from 'react';
-import { RessursStatus } from '../../../App/typer/ressurs';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { Aktivitet } from './Aktivitet/Aktivitet';
 import { SagtOppEllerRedusert } from './SagtOppEllerRedusert/SagtOppEllerRedusert';
@@ -21,9 +20,7 @@ const AktivitetsVilkårOvergangsstønad: FC<{ behandling: Behandling }> = ({ beh
 
     const behandlingId = behandling.id;
     useEffect(() => {
-        if (vilkår.status === RessursStatus.IKKE_HENTET) {
-            hentVilkår(behandlingId);
-        }
+        hentVilkår(behandlingId);
         // eslint-disable-next-line
     }, [behandlingId]);
 
