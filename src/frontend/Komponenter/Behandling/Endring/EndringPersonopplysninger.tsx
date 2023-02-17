@@ -110,7 +110,7 @@ const Personopplysningsendringer: React.FC<{ behandlingId: string }> = ({ behand
                 return (
                     <Advarsel>
                         <Heading spacing size="small" level="2">
-                            Endring i Folkeregisteropplysninger
+                            Opplysninger fra Folkeregisteret er endret
                         </Heading>
                         <BodyLongMedium>
                             Bruker sine opplysninger fra Folkeregisteret har endret seg siden denne
@@ -128,9 +128,8 @@ const Personopplysningsendringer: React.FC<{ behandlingId: string }> = ({ behand
                             ))}
                         </ul>
                         <BodyLongMedium>
-                            Saksbehandler må sjekke om endringen er relevant for behandlingen. Hvis
-                            endringen er relevant må man oppdatere registeropplysninger og vurdere
-                            aktuelle vilkår.
+                            Saksbehandler må sjekke endringen, oppdatere registeropplysninger i
+                            behandlingen og eventuelt vurdere vilkår på nytt.
                         </BodyLongMedium>
                         <OppdaterGrunnlagKnapp
                             size={'small'}
