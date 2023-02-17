@@ -15,6 +15,7 @@ import { kjønnType } from '@navikt/familie-typer';
 import { KvinneIkon, MannIkon } from '@navikt/familie-ikoner';
 import { IPersonIdent } from '../../App/typer/felles';
 import { v4 as uuidv4 } from 'uuid';
+import { useNavigate } from 'react-router-dom';
 
 const tilSøkeresultatListe = (resultat: ISøkPerson): ISøkeresultat[] => {
     return resultat.fagsakPersonId
@@ -33,7 +34,8 @@ const tilSøkeresultatListe = (resultat: ISøkPerson): ISøkeresultat[] => {
 const erPositivtTall = (verdi: string) => /^\d+$/.test(verdi) && Number(verdi) !== 0;
 
 const PersonSøk: React.FC = () => {
-    const { gåTilUrl, axiosRequest } = useApp();
+    const { axiosRequest } = useApp();
+    const navigate = useNavigate();
     const [resultat, settResultat] = useState<Ressurs<ISøkeresultat[]>>(byggTomRessurs());
     const [uuidSøk, settUuidSøk] = useState(uuidv4());
 
@@ -42,7 +44,7 @@ const PersonSøk: React.FC = () => {
     };
 
     const søkeresultatOnClick = (søkeresultat: ISøkeresultat) => {
-        gåTilUrl(`/person/${søkeresultat.fagsakId}`); // fagsakId er mappet fra fagsakPersonId
+        navigate(`/person/${søkeresultat.fagsakId}`); // fagsakId er mappet fra fagsakPersonId
         settUuidSøk(uuidv4()); // Brukes for å fjerne søkeresultatene ved å rerendre søkekomponenten
         nullstillResultat();
     };
