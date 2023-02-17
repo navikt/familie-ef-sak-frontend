@@ -35,9 +35,10 @@ export const useOppgave = (oppgave: IOppgave) => {
     const settOppgaveTilSaksbehandler = () => {
         return axiosRequest<string, null>({
             method: 'POST',
-            url: `/familie-ef-sak/api/oppgave/${oppgave.id}/fordel?saksbehandler=${
-                innloggetSaksbehandler?.navIdent
-            }${oppgave.versjon && '&versjon=' + oppgave.versjon}`,
+            url: `/familie-ef-sak/api/oppgave/${oppgave.id}/fordel?saksbehandler=${innloggetSaksbehandler?.navIdent}`,
+            params: oppgave.versjon && {
+                versjon: oppgave.versjon,
+            },
         }).then((res: RessursSuksess<string> | RessursFeilet) => {
             if (res.status === RessursStatus.SUKSESS) {
                 return Promise.resolve();
@@ -111,9 +112,10 @@ export const useOppgave = (oppgave: IOppgave) => {
         settLaster(true);
         return axiosRequest<string, null>({
             method: 'POST',
-            url: `/familie-ef-sak/api/oppgave/${oppgave.id}/tilbakestill${
-                oppgave.versjon && '?versjon=' + oppgave.versjon
-            }`,
+            url: `/familie-ef-sak/api/oppgave/${oppgave.id}/tilbakestill`,
+            params: oppgave.versjon && {
+                versjon: oppgave.versjon,
+            },
         })
             .then((res: RessursSuksess<string> | RessursFeilet) => {
                 if (res.status !== RessursStatus.SUKSESS) {
