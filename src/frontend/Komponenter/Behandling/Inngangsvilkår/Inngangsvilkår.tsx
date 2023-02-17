@@ -20,7 +20,7 @@ interface Props {
 }
 
 const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
-    const { behandling, behandlingErRedigerbar, useHentVilkår } = useBehandling();
+    const { behandling, behandlingErRedigerbar, vilkårState } = useBehandling();
     const { erSaksbehandler } = useApp();
     const {
         vilkår,
@@ -31,7 +31,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
         ikkeVurderVilkår,
         oppdaterGrunnlagsdataOgHentVilkår,
         gjenbrukInngangsvilkår,
-    } = useHentVilkår;
+    } = vilkårState;
 
     React.useEffect(() => {
         if (vilkår.status === RessursStatus.IKKE_HENTET) {

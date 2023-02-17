@@ -30,7 +30,7 @@ const oppdaterInngangsvilkårMedVurdering = (
     },
 });
 
-export interface UseHentVilkår {
+export interface UseVilkår {
     vilkår: Ressurs<IVilkår>;
     hentVilkår: (behandlingId: string) => void;
     oppdaterGrunnlagsdataOgHentVilkår: (behandlingId: string) => Promise<void>;
@@ -47,7 +47,7 @@ export interface UseHentVilkår {
     gjenbrukInngangsvilkår: (behandlingId: string, kopierBehandlingId: string) => void;
 }
 
-export const useHentVilkår = (): UseHentVilkår => {
+export const useVilkår = (): UseVilkår => {
     const { axiosRequest, settToast } = useApp();
 
     const [feilmeldinger, settFeilmeldinger] = useState<Vurderingsfeilmelding>({});

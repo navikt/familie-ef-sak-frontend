@@ -10,7 +10,7 @@ import { useBehandling } from '../../../App/context/BehandlingContext';
 import { RessursStatus } from '../../../App/typer/ressurs';
 
 const TidligereVedtaksperioder: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
-    const { useHentVilkår } = useBehandling();
+    const { vilkårState } = useBehandling();
     const {
         hentVilkår,
         vilkår,
@@ -18,7 +18,7 @@ const TidligereVedtaksperioder: React.FC<{ behandlingId: string }> = ({ behandli
         lagreVurdering,
         feilmeldinger,
         nullstillVurdering,
-    } = useHentVilkår;
+    } = vilkårState;
 
     useEffect(() => {
         if (vilkår.status === RessursStatus.IKKE_HENTET) {

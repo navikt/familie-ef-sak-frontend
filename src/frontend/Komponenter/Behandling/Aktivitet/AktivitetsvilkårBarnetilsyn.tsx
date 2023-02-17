@@ -12,7 +12,7 @@ import { useBehandling } from '../../../App/context/BehandlingContext';
 const AktivitetsVilkårBarnetilsyn: FC<{
     behandling: Behandling;
 }> = ({ behandling }) => {
-    const { useHentVilkår } = useBehandling();
+    const { vilkårState } = useBehandling();
     const {
         vilkår,
         hentVilkår,
@@ -20,7 +20,7 @@ const AktivitetsVilkårBarnetilsyn: FC<{
         feilmeldinger,
         nullstillVurdering,
         ikkeVurderVilkår,
-    } = useHentVilkår;
+    } = vilkårState;
     const skalViseSøknadsdata = behandling.behandlingsårsak === Behandlingsårsak.SØKNAD;
 
     const behandlingId = behandling.id;

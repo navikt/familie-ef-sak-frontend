@@ -8,7 +8,7 @@ import { Behandling } from '../../../App/typer/fagsak';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 
 const AktivitetsVilkårOvergangsstønad: FC<{ behandling: Behandling }> = ({ behandling }) => {
-    const { useHentVilkår } = useBehandling();
+    const { vilkårState } = useBehandling();
     const {
         vilkår,
         hentVilkår,
@@ -16,7 +16,7 @@ const AktivitetsVilkårOvergangsstønad: FC<{ behandling: Behandling }> = ({ beh
         feilmeldinger,
         nullstillVurdering,
         ikkeVurderVilkår,
-    } = useHentVilkår;
+    } = vilkårState;
     const skalViseSøknadsdata = behandling.behandlingsårsak === Behandlingsårsak.SØKNAD;
 
     const behandlingId = behandling.id;

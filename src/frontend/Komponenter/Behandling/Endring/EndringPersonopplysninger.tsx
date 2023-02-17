@@ -72,11 +72,11 @@ const Endringsdetaljer: React.FC<{ endringer: IEndringer; personopplysning: keyo
 const Personopplysningsendringer: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
     const { toggles } = useToggles();
     const skalViseKomponent = toggles[ToggleName.visEndringerPersonopplysninger];
-    const { endringerPersonopplysninger, nullstillGrunnlagsendringer, useHentVilkår } =
+    const { endringerPersonopplysninger, nullstillGrunnlagsendringer, vilkårState } =
         useBehandling();
     const [nyGrunnlagsdataHentes, settNyGrunnlagsdataHentes] = useState(false);
 
-    const { oppdaterGrunnlagsdataOgHentVilkår } = useHentVilkår;
+    const { oppdaterGrunnlagsdataOgHentVilkår } = vilkårState;
 
     if (!skalViseKomponent) {
         return <></>;

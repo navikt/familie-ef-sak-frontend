@@ -33,10 +33,10 @@ const AlertStripeIkkeFerdigBehandletVilkår = (): JSX.Element => (
 );
 
 export const VedtakOgBeregningSide: FC<{ behandlingId: string }> = ({ behandlingId }) => {
-    const { behandling, useHentVilkår } = useBehandling();
+    const { behandling, vilkårState } = useBehandling();
 
     const [visNullstillVedtakModal, settVisNullstillVedtakModal] = useState(false);
-    const { vilkår, hentVilkår } = useHentVilkår;
+    const { vilkår, hentVilkår } = vilkårState;
 
     useEffect(() => {
         if (vilkår.status === RessursStatus.IKKE_HENTET) {
