@@ -21,6 +21,10 @@ const Advarsel = styled(AlertWarning)`
     }
 `;
 
+const OppdaterGrunnlagKnapp = styled(Button)`
+    margin: 0 1rem 0 0.5rem;
+`;
+
 const PersonEndring: React.FC<{ personendringer: Personendring[] }> = ({ personendringer }) => {
     return (
         <>
@@ -128,14 +132,14 @@ const Personopplysningsendringer: React.FC<{ behandlingId: string }> = ({ behand
                             endringen er relevant må man oppdatere registeropplysninger og vurdere
                             aktuelle vilkår.
                         </BodyLongMedium>
-                        <Button
+                        <OppdaterGrunnlagKnapp
                             size={'small'}
                             variant={'primary'}
                             loading={nyGrunnlagsdataHentes}
                             onClick={oppdaterGrunnlagsdata}
                         >
                             Oppdater registeropplysninger i denne behandlingen
-                        </Button>
+                        </OppdaterGrunnlagKnapp>
                     </Advarsel>
                 );
             }}
