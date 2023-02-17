@@ -84,7 +84,7 @@ const [BehandlingProvider, useBehandling] = constate(() => {
         // eslint-disable-next-line
     }, [behandling]);
 
-    const vilkårState = useVilkår();
+    const vilkårState = useVilkår(behandlingId);
 
     return {
         behandling,

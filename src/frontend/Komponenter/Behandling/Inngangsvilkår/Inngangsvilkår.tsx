@@ -35,10 +35,10 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
 
     React.useEffect(() => {
         if (vilkår.status === RessursStatus.IKKE_HENTET) {
-            hentVilkår(behandlingId);
+            hentVilkår();
         }
         // eslint-disable-next-line
-    }, [behandlingId]);
+    }, []);
     return (
         <DataViewer response={{ vilkår, behandling }}>
             {({ vilkår, behandling }) => {

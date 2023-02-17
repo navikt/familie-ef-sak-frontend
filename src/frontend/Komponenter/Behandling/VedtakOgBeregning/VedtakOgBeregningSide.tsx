@@ -40,10 +40,10 @@ export const VedtakOgBeregningSide: FC<{ behandlingId: string }> = ({ behandling
 
     useEffect(() => {
         if (vilkår.status === RessursStatus.IKKE_HENTET) {
-            hentVilkår(behandlingId);
+            hentVilkår();
         }
         // eslint-disable-next-line
-    }, [behandlingId]);
+    }, []);
 
     return (
         <NullstillVedtakModalContext.Provider

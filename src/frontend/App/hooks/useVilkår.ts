@@ -32,8 +32,8 @@ const oppdaterInngangsvilkårMedVurdering = (
 
 export interface UseVilkår {
     vilkår: Ressurs<IVilkår>;
-    hentVilkår: (behandlingId: string) => void;
-    oppdaterGrunnlagsdataOgHentVilkår: (behandlingId: string) => Promise<void>;
+    hentVilkår: () => void;
+    oppdaterGrunnlagsdataOgHentVilkår: () => Promise<void>;
     lagreVurdering: (
         vurdering: SvarPåVilkårsvurdering
     ) => Promise<RessursSuksess<IVurdering> | RessursFeilet>;
@@ -47,7 +47,7 @@ export interface UseVilkår {
     gjenbrukInngangsvilkår: (behandlingId: string, kopierBehandlingId: string) => void;
 }
 
-export const useVilkår = (): UseVilkår => {
+export const useVilkår = (behandlingId: string): UseVilkår => {
     const { axiosRequest, settToast } = useApp();
 
     const [feilmeldinger, settFeilmeldinger] = useState<Vurderingsfeilmelding>({});
@@ -132,26 +132,25 @@ export const useVilkår = (): UseVilkår => {
             return respons;
         });
     };
-    const hentVilkår = useCallback(
-        (behandlingId: string) => {
-            axiosRequest<IVilkår, void>({
-                method: 'GET',
-                url: `/familie-ef-sak/api/vurdering/${behandlingId}/vilkar`,
-            }).then((hentetInngangsvilkår: RessursSuksess<IVilkår> | RessursFeilet) => {
-                settVilkår(hentetInngangsvilkår);
-            });
-        },
-        [axiosRequest]
-    );
+
+    const hentVilkår = useCallback(() => {
+        axiosRequest<IVilkår, void>({
+            method: 'GET',
+            url: `/familie-ef-sak/api/vurdering/${behandlingId}/vilkar`,
+        }).then((hentetInngangsvilkår: RessursSuksess<IVilkår> | RessursFeilet) => {
+            settVilkår(hentetInngangsvilkår);
+        });
+    }, [axiosRequest, behandlingId]);
+
     const oppdaterGrunnlagsdataOgHentVilkår = useCallback(
-        (behandlingId: string) =>
+        () =>
             axiosRequest<IVilkår, void>({
                 method: 'GET',
                 url: `/familie-ef-sak/api/vurdering/${behandlingId}/oppdater`,
             }).then((hentetInngangsvilkår: RessursSuksess<IVilkår> | RessursFeilet) => {
                 settVilkår(hentetInngangsvilkår);
             }),
-        [axiosRequest]
+        [axiosRequest, behandlingId]
     );
     const gjenbrukInngangsvilkår = useCallback(
         (behandlingId: string, kopierBehandlingId: string) => {

@@ -16,7 +16,7 @@ const VilkårKnapp = styled(Button)`
 
 interface Props {
     behandling: Behandling;
-    hentVilkår: (behandlingId: string) => void;
+    hentVilkår: () => void;
     behandlingErRedigerbar: boolean;
 }
 
@@ -39,7 +39,7 @@ export const FyllUtVilkårKnapp: React.FC<Props> = ({
         };
         axiosRequest<string, null>(requestConfig).then((res) => {
             if (res.status === RessursStatus.SUKSESS) {
-                hentVilkår(behandlingId);
+                hentVilkår();
                 hentBehandling.rerun();
             } else {
                 settFeilmelding(res.frontendFeilmelding);

@@ -21,14 +21,13 @@ const AktivitetsVilkårSkolepenger: FC<{
         ikkeVurderVilkår,
     } = vilkårState;
     const skalViseSøknadsdata = behandling.behandlingsårsak === Behandlingsårsak.SØKNAD;
-    const behandlingId = behandling.id;
 
     useEffect(() => {
         if (vilkår.status === RessursStatus.IKKE_HENTET) {
-            hentVilkår(behandlingId);
+            hentVilkår();
         }
         // eslint-disable-next-line
-    }, [behandlingId]);
+    }, []);
 
     return (
         <DataViewer response={{ vilkår }}>

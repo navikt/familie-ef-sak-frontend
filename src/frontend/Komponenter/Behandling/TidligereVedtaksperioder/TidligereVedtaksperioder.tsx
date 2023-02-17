@@ -9,7 +9,7 @@ import TidligereVedtaksperioderInfo from './TidligereVedtaksperioderInfo';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { RessursStatus } from '../../../App/typer/ressurs';
 
-const TidligereVedtaksperioder: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
+const TidligereVedtaksperioder: React.FC<{ behandlingId: string }> = () => {
     const { vilkårState } = useBehandling();
     const {
         hentVilkår,
@@ -22,10 +22,10 @@ const TidligereVedtaksperioder: React.FC<{ behandlingId: string }> = ({ behandli
 
     useEffect(() => {
         if (vilkår.status === RessursStatus.IKKE_HENTET) {
-            hentVilkår(behandlingId);
+            hentVilkår();
         }
         // eslint-disable-next-line
-    }, [behandlingId]);
+    }, []);
 
     return (
         <DataViewer response={{ vilkår }}>
