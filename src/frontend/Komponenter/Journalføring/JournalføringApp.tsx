@@ -4,7 +4,7 @@ import { erAvTypeFeil, RessursStatus } from '../../App/typer/ressurs';
 import styled from 'styled-components';
 import Brukerinfo from './Brukerinfo';
 import DokumentVisning from './Dokumentvisning';
-import { behandlingstemaTilTekst } from '../../App/typer/behandlingstema';
+import { Behandlingstema, behandlingstemaTilTekst } from '../../App/typer/behandlingstema';
 import {
     JournalføringStateRequest,
     useJournalføringState,
@@ -124,6 +124,11 @@ export const JournalføringApp: React.FC = () => {
     return <JournalføringWrapper komponent={JournalføringAppContent} />;
 };
 
+const utledHeading = (behandlingsTema: Behandlingstema | undefined) => {
+    const stønadstype = behandlingsTema ? ': ' + behandlingstemaTilTekst[behandlingsTema] : '';
+    return `Registrere journalpost${stønadstype}`;
+};
+
 const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
     oppgaveId,
     journalResponse,
@@ -234,14 +239,12 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
     };
 
     return (
-        <SideLayout className={'container'}>
-            <Heading size={'xlarge'} level={'1'}>{`Registrere journalpost${
-                journalResponse.journalpost.behandlingstema
-                    ? ': ' + behandlingstemaTilTekst[journalResponse.journalpost.behandlingstema]
-                    : ''
-            }`}</Heading>
+        <>
             <Kolonner>
                 <Venstrekolonne>
+                    <Heading size={'medium'} level={'1'}>
+                        {utledHeading(journalResponse.journalpost.behandlingstema)}
+                    </Heading>
                     {fagsak.status === RessursStatus.SUKSESS && (
                         <ÅpneKlager fagsakPersonId={fagsak.data.fagsakPersonId} />
                     )}
@@ -327,7 +330,7 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
                 settVisModal={journalpostState.settJournalføringIkkeMuligModal}
                 erPapirSøknad={erPapirsøknad}
             />
-        </SideLayout>
+        </>
     );
 };
 

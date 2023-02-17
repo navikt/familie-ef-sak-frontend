@@ -5,6 +5,7 @@ import VisDokumentTittel from './VisDokumentTittel';
 import { IJournalpost } from '../../App/typer/journalføring';
 import { OrNothing } from '../../App/hooks/felles/useSorteringState';
 import { Heading } from '@navikt/ds-react';
+import { ABorderSubtle } from '@navikt/ds-tokens';
 
 interface DokumentVisningProps {
     journalPost: IJournalpost;
@@ -14,19 +15,20 @@ interface DokumentVisningProps {
     erPapirsøknad: boolean;
 }
 
-const StyledListe = styled.ul`
-    min-width: 40vw;
+const Liste = styled.ul`
+    min-width: 30vw;
     list-style: none;
     padding-left: 0;
+    margin-top: 0;
 `;
 
-const StyledDokumentWrapper = styled.div`
+const Container = styled.div`
     margin-top: 1rem;
 `;
 
-const StyledListeElement = styled.li`
+const ListeRad = styled.li`
     line-height: 2rem;
-    border-bottom: 1px solid #c6c2bf;
+    border-bottom: 1px solid ${ABorderSubtle};
     padding: 0.5rem;
 `;
 
@@ -50,13 +52,13 @@ const DokumentVisning: React.FC<DokumentVisningProps> = ({
     };
 
     return (
-        <StyledDokumentWrapper>
+        <Container>
             <Heading size={'medium'} level={'2'}>
                 Dokumenter
             </Heading>
-            <StyledListe>
+            <Liste>
                 {journalPost.dokumenter.map((dokument) => (
-                    <StyledListeElement key={dokument.dokumentInfoId}>
+                    <ListeRad key={dokument.dokumentInfoId}>
                         {dokumentForRedigering === dokument.dokumentInfoId ? (
                             <EndreDokumentTittel
                                 endreDokumentNavn={endreDokumentNavn(dokument.dokumentInfoId)}
@@ -75,10 +77,10 @@ const DokumentVisning: React.FC<DokumentVisningProps> = ({
                                 logiskeVedlegg={erPapirsøknad ? dokument.logiskeVedlegg : []}
                             />
                         )}
-                    </StyledListeElement>
+                    </ListeRad>
                 ))}
-            </StyledListe>
-        </StyledDokumentWrapper>
+            </Liste>
+        </Container>
     );
 };
 

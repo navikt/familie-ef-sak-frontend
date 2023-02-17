@@ -9,6 +9,10 @@ interface BrukerinfoProps {
     personIdent: string;
 }
 
+const Container = styled.div`
+    margin-top: 1rem;
+`;
+
 const FlexDiv = styled.div`
     display: flex;
     > :last-child {
@@ -18,15 +22,15 @@ const FlexDiv = styled.div`
 
 const Brukerinfo: React.FC<BrukerinfoProps> = ({ navn, personIdent }) => {
     return (
-        <>
-            <Heading size={'medium'} level={'2'}>
+        <Container>
+            <Heading size={'small'} level={'2'}>
                 Navn og fødselsnummer
             </Heading>
             <FlexDiv>
                 <BodyShortSmall>{navn} -</BodyShortSmall>
                 <KopierbartNullableFødselsnummer fødselsnummer={personIdent} />
             </FlexDiv>
-        </>
+        </Container>
     );
 };
 

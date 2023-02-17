@@ -8,9 +8,10 @@ const IkonKnapp = styled(Button)`
     margin-right: 0.5rem;
 `;
 
-const StyledDokumentRad = styled.div`
+const DokumentRad = styled.div`
     display: flex;
     justify-content: space-between;
+    word-break: break-word;
 `;
 
 const LogiskeVedlegg = styled.div`
@@ -32,7 +33,7 @@ const VisDokumentTittel: React.FC<VisDokumentTittelProps> = ({
 }) => {
     return (
         <>
-            <StyledDokumentRad>
+            <DokumentRad>
                 <span>{dokumentTittel}</span>
                 <div>
                     <IkonKnapp
@@ -50,7 +51,7 @@ const VisDokumentTittel: React.FC<VisDokumentTittelProps> = ({
                         onClick={hentDokument}
                     />
                 </div>
-            </StyledDokumentRad>
+            </DokumentRad>
             {logiskeVedlegg.length > 0 && (
                 <LogiskeVedlegg>
                     {logiskeVedlegg.map((vedlegg) => (

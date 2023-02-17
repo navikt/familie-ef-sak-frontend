@@ -24,8 +24,12 @@ interface INyBehandling {
     behandlingstype: Behandlingstype;
 }
 
-const StyledNyBehandlingRad = styled.tr`
+const TableRow = styled.tr`
     background-color: #cce1f3;
+`;
+
+const Container = styled.div`
+    margin-top: 1rem;
 `;
 
 const BehandlingInnold: React.FC<Props> = ({
@@ -85,7 +89,7 @@ const BehandlingInnold: React.FC<Props> = ({
     };
 
     return (
-        <>
+        <Container>
             <Heading size={'medium'} level={'2'}>
                 Behandling
             </Heading>
@@ -126,7 +130,7 @@ const BehandlingInnold: React.FC<Props> = ({
                                     </tr>
                                 ))}
                                 {nyBehandling && (
-                                    <StyledNyBehandlingRad>
+                                    <TableRow>
                                         <td>
                                             <Checkbox
                                                 onChange={håndterCheck('ny')}
@@ -139,7 +143,7 @@ const BehandlingInnold: React.FC<Props> = ({
                                         <td>{nyBehandling.behandlingstype}</td>
                                         <td>NY</td>
                                         <td>–</td>
-                                    </StyledNyBehandlingRad>
+                                    </TableRow>
                                 )}
                             </>
                         )}
@@ -156,7 +160,7 @@ const BehandlingInnold: React.FC<Props> = ({
                     <span>Opprett ny behandling</span>
                 </Button>
             )}
-        </>
+        </Container>
     );
 };
 

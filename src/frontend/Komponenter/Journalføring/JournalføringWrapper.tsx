@@ -7,23 +7,24 @@ import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { IJojurnalpostResponse } from '../../App/typer/journalføring';
 import styled from 'styled-components';
 
-export const SideLayout = styled.div`
-    margin: 0 auto;
-    padding: 2rem;
-`;
+export const SideLayout = styled.div``;
 
 export const Kolonner = styled.div`
-    margin-top: 2rem;
     display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
     flex-wrap: wrap;
+    align-items: stretch;
+    height: calc(100vh - 4rem);
 `;
 
 export const Venstrekolonne = styled.div`
-    margin-right: 2rem;
+    padding: 1rem 2rem 0 2rem;
+    height: inherit;
+    overflow: auto;
 `;
-export const Høyrekolonne = styled.div``;
+export const Høyrekolonne = styled.div`
+    display: flex;
+    flex: 1 1 auto;
+`;
 export const FlexKnapper = styled.div`
     margin: 1rem;
     display: flex;

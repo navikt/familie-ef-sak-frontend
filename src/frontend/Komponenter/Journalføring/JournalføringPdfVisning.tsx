@@ -1,12 +1,16 @@
-import PdfVisning from '../../Felles/Pdf/PdfVisning';
 import React, { useEffect } from 'react';
 import { HentDokumentResponse } from '../../App/hooks/useHentDokument';
 import styled from 'styled-components';
 import { Button } from '@navikt/ds-react';
+import IframeDokument from './IframeDokument';
 
 const FlexKnapper = styled.div`
     display: flex;
     justify-content: space-between;
+`;
+
+const Wrapper = styled.div`
+    flex: 1 1 auto;
 `;
 
 const JournalføringPdfVisning: React.FC<{ hentDokumentResponse: HentDokumentResponse }> = ({
@@ -21,17 +25,17 @@ const JournalføringPdfVisning: React.FC<{ hentDokumentResponse: HentDokumentRes
     }, []);
 
     return (
-        <>
-            <FlexKnapper>
-                <Button type={'button'} variant={'secondary'} onClick={() => hentForrigeDokument()}>
-                    Forrige Dokument
-                </Button>
-                <Button type={'button'} variant={'secondary'} onClick={() => hentNesteDokument()}>
-                    Neste Dokument
-                </Button>
-            </FlexKnapper>
-            <PdfVisning pdfFilInnhold={valgtDokument} />
-        </>
+        <Wrapper>
+            {/*<FlexKnapper>*/}
+            {/*    <Button type={'button'} variant={'secondary'} onClick={() => hentForrigeDokument()}>*/}
+            {/*        Forrige Dokument*/}
+            {/*    </Button>*/}
+            {/*    <Button type={'button'} variant={'secondary'} onClick={() => hentNesteDokument()}>*/}
+            {/*        Neste Dokument*/}
+            {/*    </Button>*/}
+            {/*</FlexKnapper>*/}
+            <IframeDokument pdfFilInnhold={valgtDokument}></IframeDokument>
+        </Wrapper>
     );
 };
 
