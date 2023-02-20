@@ -103,7 +103,7 @@ const lagEksterneLenker = (
         if (toggles[ToggleName.opprettBehandlingForFerdigstiltJournalpost]) {
             eksterneLenker.push({
                 name: '[Admin] Lag behandling fra journalpost',
-                href: '/admin/ny-behandling-for-ferdigstilt-journalpost/',
+                href: '/admin/ny-behandling-for-ferdigstilt-journalpost',
             });
         }
         eksterneLenker.push({
