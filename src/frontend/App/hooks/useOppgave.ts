@@ -36,11 +36,13 @@ export const useOppgave = (oppgave: IOppgave) => {
         return axiosRequest<string, null>({
             method: 'POST',
             url: `/familie-ef-sak/api/oppgave/${oppgave.id}/fordel?saksbehandler=${innloggetSaksbehandler?.navIdent}`,
+            params: oppgave.versjon && {
+                versjon: oppgave.versjon,
+            },
         }).then((res: RessursSuksess<string> | RessursFeilet) => {
             if (res.status === RessursStatus.SUKSESS) {
                 return Promise.resolve();
             } else {
-                settFeilmelding(res.frontendFeilmelding);
                 return Promise.reject(
                     new Error(`Feilet fordeling av oppgave. Feil: ${res.frontendFeilmelding}`)
                 );
@@ -106,17 +108,21 @@ export const useOppgave = (oppgave: IOppgave) => {
     };
 
     const tilbakestillFordeling = () => {
-        settLaster(true);
         return axiosRequest<string, null>({
             method: 'POST',
             url: `/familie-ef-sak/api/oppgave/${oppgave.id}/tilbakestill`,
-        })
-            .then((res: RessursSuksess<string> | RessursFeilet) => {
-                if (res.status !== RessursStatus.SUKSESS) {
-                    settFeilmelding(res.frontendFeilmelding);
-                }
-            })
-            .finally(() => settLaster(false));
+            params: oppgave.versjon && {
+                versjon: oppgave.versjon,
+            },
+        }).then((res: RessursSuksess<string> | RessursFeilet) => {
+            if (res.status === RessursStatus.SUKSESS) {
+                return Promise.resolve();
+            } else {
+                return Promise.reject(
+                    new Error(`Feilet fordeling av oppgave. Feil: ${res.frontendFeilmelding}`)
+                );
+            }
+        });
     };
 
     return {

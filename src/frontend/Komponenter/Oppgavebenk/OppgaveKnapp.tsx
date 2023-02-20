@@ -58,9 +58,10 @@ export const OppgaveKnapp: React.FC<{
         }
     };
 
-    const utførHandlingOgHentOppgavePåNytt = (handling: () => Promise<void>) => async () => {
-        await handling();
-        hentOppgavePåNytt();
+    const utførHandlingOgHentOppgavePåNytt = (handling: () => Promise<void>) => () => {
+        handling()
+            .then(() => hentOppgavePåNytt())
+            .catch((error: Error) => settFeilmelding(error.message));
     };
 
     const oppgaveTilordnetInnloggetSaksbehandler =
