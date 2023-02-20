@@ -108,7 +108,11 @@ const Adresser: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string; type?: 
                         <tr>
                             <Kolonnetittel text={'Adresse'} width={35} />
                             <Kolonnetittel
-                                text={type === AdresseType.BOSTEDADRESSE ? '' : 'Adressetype'}
+                                text={
+                                    type === AdresseType.BOSTEDADRESSE
+                                        ? 'Angitt flyttedato'
+                                        : 'Adressetype'
+                                }
                                 width={15}
                             />
                             <Kolonnetittel text={'Fra'} width={15} />
@@ -137,14 +141,12 @@ const Innhold: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string }> = ({
                                 {adresse.visningsadresse}
                                 {adresse.erGjeldende ? ' (gjeldende)' : ''}
                             </Td>
-                            <Td>{adresse.type !== AdresseType.BOSTEDADRESSE && adresse.type}</Td>
                             <Td>
-                                {formaterNullableIsoDato(
-                                    adresse.type === AdresseType.BOSTEDADRESSE
-                                        ? adresse.angittFlyttedato || adresse.gyldigFraOgMed
-                                        : adresse.gyldigFraOgMed
-                                )}
+                                {adresse.type === AdresseType.BOSTEDADRESSE
+                                    ? formaterNullableIsoDato(adresse.angittFlyttedato)
+                                    : adresse.type}
                             </Td>
+                            <Td>{formaterNullableIsoDato(adresse.gyldigFraOgMed)}</Td>
                             <Td>
                                 <StyledFlexDiv>
                                     <div style={{ margin: 'auto 0' }}>
