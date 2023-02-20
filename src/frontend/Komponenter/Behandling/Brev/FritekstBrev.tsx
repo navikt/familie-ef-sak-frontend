@@ -1,10 +1,7 @@
-import React, { ChangeEvent, useEffect, useMemo, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { IPersonopplysninger } from '../../../App/typer/personopplysninger';
 import { useApp } from '../../../App/context/AppContext';
-import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
-import { AxiosRequestConfig } from 'axios';
-import { useDataHenter } from '../../../App/hooks/felles/useDataHenter';
+import { Ressurs } from '../../../App/typer/ressurs';
 import { useDebouncedCallback } from 'use-debounce';
 import {
     AvsnittMedId,
@@ -56,14 +53,6 @@ const FritekstBrev: React.FC<Props> = ({
 
     const { axiosRequest } = useApp();
 
-    const personopplysningerConfig: AxiosRequestConfig = useMemo(
-        () => ({
-            method: 'GET',
-            url: `/familie-ef-sak/api/personopplysninger/behandling/${behandlingId}`,
-        }),
-        [behandlingId]
-    );
-
     const endreBrevType = (nyBrevType: FrittståendeBrevtype | FritekstBrevtype) => {
         settBrevType(nyBrevType as FritekstBrevtype);
     };
@@ -110,8 +99,6 @@ const FritekstBrev: React.FC<Props> = ({
         };
     };
 
-    const personopplysninger = useDataHenter<IPersonopplysninger, null>(personopplysningerConfig);
-
     const mellomlagreFritekstbrev = (brev: IFritekstBrev): void => {
         axiosRequest<string, IFritekstBrev>({
             method: 'POST',
@@ -121,7 +108,6 @@ const FritekstBrev: React.FC<Props> = ({
     };
 
     const genererBrev = () => {
-        if (personopplysninger.status !== RessursStatus.SUKSESS) return;
         if (!brevType) return;
 
         const brev: IFritekstBrev = {

@@ -1,15 +1,19 @@
-import { IBarn } from '../../App/typer/personopplysninger';
-import { Popover, Table } from '@navikt/ds-react';
-import { formaterNullableIsoDato } from '../../App/utils/formatter';
 import React, { useRef, useState } from 'react';
+import { IBarn } from '../../App/typer/personopplysninger';
+import { BodyShort, Popover, Table } from '@navikt/ds-react';
+import { formaterNullableIsoDato } from '../../App/utils/formatter';
 import styled from 'styled-components';
 import { Information } from '@navikt/ds-icons';
 
-const StyledInformation = styled(Information)`
-    margin: 0.5rem 0.5rem 0 0.5rem;
+const InformationIcon = styled(Information)`
+    margin-left: 0.5rem;
     &:hover {
         cursor: pointer;
     }
+`;
+
+export const StyledDiv = styled.div`
+    margin-right: 1rem;
 `;
 
 const bostedStatus = (barn: IBarn) => {
@@ -21,6 +25,11 @@ const bostedStatus = (barn: IBarn) => {
     }
     return '-'; // TODO : "Nei" vs "-" ?
 };
+
+const FlexBox = styled.div`
+    display: flex;
+    align-items: baseline;
+`;
 
 const popoverContent = (barn: IBarn) => (
     <Popover.Content>
@@ -37,7 +46,9 @@ const popoverContent = (barn: IBarn) => (
                     return (
                         <Table.Row key={periode.startdatoForKontrakt}>
                             <Table.DataCell>
-                                {formaterNullableIsoDato(periode.startdatoForKontrakt)}
+                                <StyledDiv>
+                                    {formaterNullableIsoDato(periode.startdatoForKontrakt)}
+                                </StyledDiv>
                             </Table.DataCell>
                             <Table.DataCell>
                                 {formaterNullableIsoDato(periode.sluttdatoForKontrakt)}
@@ -55,12 +66,12 @@ const BarnBosted: React.FC<{ barn: IBarn }> = ({ barn }) => {
     const [openState, setOpenState] = useState(false);
 
     return (
-        <>
-            {bostedStatus(barn)}
+        <FlexBox>
+            <BodyShort>{bostedStatus(barn)}</BodyShort>
             {barn.deltBosted.length > 0 && (
-                <StyledInformation ref={iconRef} onClick={() => setOpenState(true)}>
+                <InformationIcon ref={iconRef} onClick={() => setOpenState(true)}>
                     Åpne popover
-                </StyledInformation>
+                </InformationIcon>
             )}
             <Popover
                 placement={'right'}
@@ -69,7 +80,7 @@ const BarnBosted: React.FC<{ barn: IBarn }> = ({ barn }) => {
                 anchorEl={iconRef.current}
                 children={popoverContent(barn)}
             />
-        </>
+        </FlexBox>
     );
 };
 

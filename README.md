@@ -40,6 +40,13 @@ Appen krever en del environment variabler og legges til i .env fila i root på p
     
 ```
 
+### Kjøre lokalt mot preprod
+
+```
+ENV=lokalt-mot-preprod
+EF_SAK_SCOPE=api://dev-gcp.teamfamilie.familie-ef-sak/.default
+```
+
 
 For å bygge prodversjon kjør `yarn build`. Prodversjonen vil ikke kjøre lokalt med mindre det gjøres en del endringer i forbindelse med uthenting av environment variabler og URLer for uthenting av informasjon.
 

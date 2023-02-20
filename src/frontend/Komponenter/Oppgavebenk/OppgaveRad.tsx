@@ -116,9 +116,9 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, mapper, settFeilmelding }) => {
 
     const typeBehandling = behandlingstype ? behandlingstype : behandlingstema;
 
-    const utledetFolkeregisterIdent = oppgave.identer.filter(
-        (i) => i.gruppe === IdentGruppe.FOLKEREGISTERIDENT
-    )[0].ident;
+    const utledetFolkeregisterIdent =
+        oppgave.identer?.filter((i) => i.gruppe === IdentGruppe.FOLKEREGISTERIDENT)[0]?.ident ||
+        'Ukjent personident';
 
     const utledKnappPåHandling = () => {
         switch (utledHandling(oppgave)) {

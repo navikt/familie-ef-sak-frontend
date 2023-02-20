@@ -1,16 +1,16 @@
 import React, { FC, useEffect } from 'react';
-import { RessursStatus } from '../../../App/typer/ressurs';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
-import { useHentVilkår } from '../../../App/hooks/useHentVilkår';
 import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
 import { Behandling } from '../../../App/typer/fagsak';
 import { RettTilOvergangsstønad } from './Skolepenger/RettTilOvergangsstønad';
 import { DokumentasjonUtdanning } from './Skolepenger/DokumentasjonUtdanning';
 import { UtdanningHensiktsmessig } from './Skolepenger/UtdanningHensiktsmessig';
+import { useBehandling } from '../../../App/context/BehandlingContext';
 
 const AktivitetsVilkårSkolepenger: FC<{
     behandling: Behandling;
 }> = ({ behandling }) => {
+    const { vilkårState } = useBehandling();
     const {
         vilkår,
         hentVilkår,
@@ -18,16 +18,12 @@ const AktivitetsVilkårSkolepenger: FC<{
         feilmeldinger,
         nullstillVurdering,
         ikkeVurderVilkår,
-    } = useHentVilkår();
+    } = vilkårState;
     const skalViseSøknadsdata = behandling.behandlingsårsak === Behandlingsårsak.SØKNAD;
     const behandlingId = behandling.id;
 
     useEffect(() => {
-        if (behandlingId !== undefined) {
-            if (vilkår.status !== RessursStatus.SUKSESS) {
-                hentVilkår(behandlingId);
-            }
-        }
+        hentVilkår(behandlingId);
         // eslint-disable-next-line
     }, [behandlingId]);
 

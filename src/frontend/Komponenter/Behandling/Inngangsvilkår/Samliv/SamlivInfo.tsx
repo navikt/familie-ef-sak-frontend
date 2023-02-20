@@ -25,8 +25,14 @@ const SamlivInfo: FC<Props> = ({
     behandlingId,
     behandlingsstatus,
 }) => {
-    const { sivilstand, bosituasjon, sivilstandsplaner, adresseopplysninger, dokumentasjon } =
-        grunnlag;
+    const {
+        personalia,
+        sivilstand,
+        bosituasjon,
+        sivilstandsplaner,
+        adresseopplysninger,
+        dokumentasjon,
+    } = grunnlag;
 
     return (
         <InformasjonContainer>
@@ -66,7 +72,7 @@ const SamlivInfo: FC<Props> = ({
                     </>
                 )}
             {behandlingsstatus !== BehandlingStatus.FERDIGSTILT && (
-                <Bostedsadresse behandlingId={behandlingId} />
+                <Bostedsadresse behandlingId={behandlingId} personalia={personalia} />
             )}
             {skalViseSøknadsdata && <Addresseopplysninger data={adresseopplysninger} />}
             {skalViseSøknadsdata && (

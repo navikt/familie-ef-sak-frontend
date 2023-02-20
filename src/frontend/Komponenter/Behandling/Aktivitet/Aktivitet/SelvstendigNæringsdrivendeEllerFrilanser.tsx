@@ -4,46 +4,42 @@ import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { ArbeidssituasjonTilTekst, EArbeidssituasjon } from './typer';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
-import { BodyShortSmall, SmallTextLabel } from '../../../../Felles/Visningskomponenter/Tekster';
+import { InfoSeksjonWrapper } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
+import { FlexColumnContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
+import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
 
 const SelvstendigNæringsdrivendeEllerFrilanser: FC<{
     firma: ISelvstendig;
     stønadstype: Stønadstype;
 }> = ({ firma, stønadstype }) => {
     return (
-        <>
-            <Søknadsgrunnlag />
-            <SmallTextLabel className={'undertittel'}>
-                {
-                    ArbeidssituasjonTilTekst[
-                        EArbeidssituasjon.erSelvstendigNæringsdriveneEllerFrilanser
-                    ]
-                }
-            </SmallTextLabel>
-            <BodyShortSmall className={'førsteDataKolonne'}> Firma</BodyShortSmall>
-            <BodyShortSmall> {firma.firmanavn}</BodyShortSmall>
-            <BodyShortSmall className={'førsteDataKolonne'}>Organisasjonsnummer</BodyShortSmall>
-            <BodyShortSmall>{firma.organisasjonsnummer}</BodyShortSmall>
-            <BodyShortSmall className={'førsteDataKolonne'}>Etableringsdato</BodyShortSmall>
-            <BodyShortSmall>{formaterNullableIsoDato(firma.etableringsdato)}</BodyShortSmall>
-            {stønadstype === Stønadstype.OVERGANGSSTØNAD && (
-                <>
-                    <BodyShortSmall className={'førsteDataKolonne'}>
-                        Stillingsprosent
-                    </BodyShortSmall>
-                    <BodyShortSmall>{firma.arbeidsmengde + ' %'}</BodyShortSmall>
-                </>
-            )}
-            {(stønadstype === Stønadstype.OVERGANGSSTØNAD ||
-                stønadstype === Stønadstype.BARNETILSYN) && (
-                <>
-                    <BodyShortSmall className={'førsteDataKolonne'}>
-                        Beskrivelse av arbeidsuke
-                    </BodyShortSmall>
-                    <BodyShortSmall>{firma.hvordanSerArbeidsukenUt}</BodyShortSmall>
-                </>
-            )}
-        </>
+        <InfoSeksjonWrapper
+            undertittel={
+                ArbeidssituasjonTilTekst[
+                    EArbeidssituasjon.erSelvstendigNæringsdriveneEllerFrilanser
+                ]
+            }
+            ikon={<Søknadsgrunnlag />}
+        >
+            <FlexColumnContainer gap={0.75}>
+                <Informasjonsrad label="Firma" verdi={firma.firmanavn} />
+                <Informasjonsrad label="Organisasjonsnummer" verdi={firma.organisasjonsnummer} />
+                <Informasjonsrad
+                    label="Etableringsdato"
+                    verdi={formaterNullableIsoDato(firma.etableringsdato)}
+                />
+                {stønadstype === Stønadstype.OVERGANGSSTØNAD && (
+                    <Informasjonsrad label="Stillingsprosent" verdi={firma.arbeidsmengde + ' %'} />
+                )}
+                {(stønadstype === Stønadstype.OVERGANGSSTØNAD ||
+                    stønadstype === Stønadstype.BARNETILSYN) && (
+                    <Informasjonsrad
+                        label="Beskrivelse av arbeidsuke"
+                        verdi={firma.hvordanSerArbeidsukenUt}
+                    />
+                )}
+            </FlexColumnContainer>
+        </InfoSeksjonWrapper>
     );
 };
 
