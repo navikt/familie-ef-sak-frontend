@@ -19,7 +19,6 @@ import { useApp } from '../../../App/context/AppContext';
 import { Alert, BodyShort, Button, Detail, Heading, Label } from '@navikt/ds-react';
 import { BodyShortSmall, SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
 import { SuccessStroke } from '@navikt/ds-icons';
-import { useNavigate } from 'react-router-dom';
 
 export const BorderBox = styled.div`
     border: 1px solid #c6c2bf;
@@ -59,7 +58,7 @@ const AngreSendTilBeslutterContainer = styled.div`
 `;
 
 const Totrinnskontroll: FC = () => {
-    const navigate = useNavigate();
+    const { gåTilUrl } = useApp();
     const [visGodkjentModal, settVisGodkjentModal] = useState(false);
 
     return (
@@ -71,7 +70,7 @@ const Totrinnskontroll: FC = () => {
                 onClose={() => settVisGodkjentModal(false)}
                 aksjonsknapper={{
                     hovedKnapp: {
-                        onClick: () => navigate('/oppgavebenk'),
+                        onClick: () => gåTilUrl('/oppgavebenk'),
                         tekst: 'Til oppgavebenk',
                     },
                     lukkKnapp: { onClick: () => settVisGodkjentModal(false), tekst: 'Lukk' },

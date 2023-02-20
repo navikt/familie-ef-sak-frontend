@@ -8,7 +8,6 @@ import {
     lagJournalføringKlageUrl,
     lagJournalføringUrl,
 } from '../../Komponenter/Journalføring/journalføringUtil';
-import { useNavigate } from 'react-router-dom';
 
 interface OppgaveDto {
     behandlingId: string;
@@ -17,23 +16,21 @@ interface OppgaveDto {
 
 // eslint-disable-next-line
 export const useOppgave = (oppgave: IOppgave) => {
-    const { axiosRequest, innloggetSaksbehandler } = useApp();
-    const navigate = useNavigate();
+    const { gåTilUrl, axiosRequest, innloggetSaksbehandler } = useApp();
     const [feilmelding, settFeilmelding] = useState<string>('');
     const [laster, settLaster] = useState<boolean>(false);
     const { fagsak, hentFagsak } = useHentFagsak();
 
     useEffect(() => {
         if (fagsak.status === RessursStatus.SUKSESS) {
-            navigate(`/person/${fagsak.data.fagsakPersonId}`);
+            gåTilUrl(`/person/${fagsak.data.fagsakPersonId}`);
         } else if (erAvTypeFeil(fagsak)) {
             settFeilmelding(
                 'Henting av fagsak feilet, prøv på nytt. Feil: ' +
                     (fagsak.frontendFeilmelding || fagsak.errorMelding || 'Ukjent feil')
             );
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [fagsak]);
+    }, [fagsak, gåTilUrl]);
 
     const settOppgaveTilSaksbehandler = () => {
         return axiosRequest<string, null>({
@@ -66,7 +63,7 @@ export const useOppgave = (oppgave: IOppgave) => {
             })
             .then((behandlingId) => {
                 settOppgaveTilSaksbehandler()
-                    .then(() => navigate(`/behandling/${behandlingId}`))
+                    .then(() => gåTilUrl(`/behandling/${behandlingId}`))
                     .catch((error: Error) => {
                         settFeilmelding(error.message);
                     })
@@ -84,7 +81,7 @@ export const useOppgave = (oppgave: IOppgave) => {
         const oppgaveId = oppgave.id || '';
         settOppgaveTilSaksbehandler()
             .then(() =>
-                navigate(
+                gåTilUrl(
                     type === 'klage'
                         ? lagJournalføringKlageUrl(journalpostId, oppgaveId)
                         : lagJournalføringUrl(journalpostId, oppgaveId)

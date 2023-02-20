@@ -18,7 +18,6 @@ import {
 } from '@navikt/ds-react';
 import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 import { ÅrsakUnderkjent, årsakUnderkjentTilTekst } from '../../../App/typer/totrinnskontroll';
-import { useNavigate } from 'react-router-dom';
 
 const WrapperMedMargin = styled.div`
     display: block;
@@ -67,9 +66,8 @@ const FatterVedtak: React.FC<{
     const [begrunnelse, settBegrunnelse] = useState<string>();
     const [feil, settFeil] = useState<string>();
     const [laster, settLaster] = useState<boolean>(false);
-    const { axiosRequest, settToast } = useApp();
+    const { axiosRequest, settToast, gåTilUrl } = useApp();
     const { hentBehandlingshistorikk, hentTotrinnskontroll } = useBehandling();
-    const navigate = useNavigate();
 
     const erUtfylt =
         godkjent === Totrinnsresultat.GODKJENT ||
@@ -101,7 +99,7 @@ const FatterVedtak: React.FC<{
                         settVisGodkjentModal(true);
                     } else {
                         settToast(EToast.VEDTAK_UNDERKJENT);
-                        navigate('/oppgavebenk');
+                        gåTilUrl('/oppgavebenk');
                     }
                 } else {
                     settFeil(response.frontendFeilmeldingUtenFeilkode);
