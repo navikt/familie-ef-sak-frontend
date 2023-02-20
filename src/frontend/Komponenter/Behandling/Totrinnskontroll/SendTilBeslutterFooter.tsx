@@ -9,7 +9,6 @@ import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
 import { Button } from '@navikt/ds-react';
 import { AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
 import { ABorderStrong } from '@navikt/ds-tokens/dist/tokens';
-import { useNavigate } from 'react-router-dom';
 
 const Footer = styled.footer`
     width: calc(100%);
@@ -40,8 +39,7 @@ const SendTilBeslutterFooter: React.FC<{
     behandlingErRedigerbar,
     ferdigstillUtenBeslutter,
 }) => {
-    const { axiosRequest } = useApp();
-    const navigate = useNavigate();
+    const { axiosRequest, gåTilUrl } = useApp();
     const { hentTotrinnskontroll, hentBehandling, hentBehandlingshistorikk } = useBehandling();
     const [laster, settLaster] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>();
@@ -104,7 +102,7 @@ const SendTilBeslutterFooter: React.FC<{
                 onClose={() => settVisModal(false)}
                 aksjonsknapper={{
                     hovedKnapp: {
-                        onClick: () => navigate('/oppgavebenk'),
+                        onClick: () => gåTilUrl('/oppgavebenk'),
                         tekst: 'Til oppgavebenk',
                     },
                     lukkKnapp: {
