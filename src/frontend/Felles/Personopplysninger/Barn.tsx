@@ -1,3 +1,4 @@
+import React from 'react';
 import { IBarn } from '../../App/typer/personopplysninger';
 import TabellOverskrift from './TabellOverskrift';
 import LiteBarn from '../Ikoner/LiteBarn';
@@ -70,6 +71,7 @@ const Barn: React.FC<{ barn: IBarn[] }> = ({ barn }) => {
         </TabellWrapper>
     );
 };
+
 const FødselsnummerBarn: React.FC<{
     fødselsnummer: string;
     fødselsdato?: string;
