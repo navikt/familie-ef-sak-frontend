@@ -4,7 +4,6 @@ import { erAvTypeFeil, RessursStatus } from '../../App/typer/ressurs';
 import styled from 'styled-components';
 import Brukerinfo from './Brukerinfo';
 import DokumentVisning from './Dokumentvisning';
-import { behandlingstemaTilTekst } from '../../App/typer/behandlingstema';
 import {
     JournalføringStateRequest,
     useJournalføringState,
@@ -33,13 +32,12 @@ import { Behandlingstype } from '../../App/typer/behandlingstype';
 import { erGyldigDato } from '../../App/utils/dato';
 import { ModalWrapper } from '../../Felles/Modal/ModalWrapper';
 import { AlertError } from '../../Felles/Visningskomponenter/Alerts';
-import { harTittelForAlleDokumenter } from './journalføringUtil';
+import { harTittelForAlleDokumenter, utledKolonneTittel } from './utils';
 import JournalføringWrapper, {
     FlexKnapper,
     Høyrekolonne,
     JournalføringAppProps,
     Kolonner,
-    SideLayout,
     Venstrekolonne,
 } from './JournalføringWrapper';
 import JournalføringPdfVisning from './JournalføringPdfVisning';
@@ -234,14 +232,12 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
     };
 
     return (
-        <SideLayout className={'container'}>
-            <Heading size={'xlarge'} level={'1'}>{`Registrere journalpost${
-                journalResponse.journalpost.behandlingstema
-                    ? ': ' + behandlingstemaTilTekst[journalResponse.journalpost.behandlingstema]
-                    : ''
-            }`}</Heading>
+        <>
             <Kolonner>
                 <Venstrekolonne>
+                    <Heading size={'medium'} level={'1'}>
+                        {utledKolonneTittel(journalResponse.journalpost.behandlingstema, 'vanlig')}
+                    </Heading>
                     {fagsak.status === RessursStatus.SUKSESS && (
                         <ÅpneKlager fagsakPersonId={fagsak.data.fagsakPersonId} />
                     )}
@@ -327,7 +323,7 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
                 settVisModal={journalpostState.settJournalføringIkkeMuligModal}
                 erPapirSøknad={erPapirsøknad}
             />
-        </SideLayout>
+        </>
     );
 };
 

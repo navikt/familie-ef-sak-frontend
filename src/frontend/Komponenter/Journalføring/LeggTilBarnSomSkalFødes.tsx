@@ -13,7 +13,7 @@ const Tittel = styled(Heading)`
     color: ${ABlue300};
 `;
 
-const LeggTilBarnContent = styled.div`
+const Container = styled.div`
     margin: 0.5rem 0;
 `;
 
@@ -69,7 +69,7 @@ const LeggTilBarnSomSkalFødes: React.FC<{
         );
 
     return (
-        <LeggTilBarnContent>
+        <Container>
             <Tittel spacing size="xsmall" level="6">
                 {tittel}
             </Tittel>
@@ -108,7 +108,7 @@ const LeggTilBarnSomSkalFødes: React.FC<{
                     </LeggTilBarnKnapp>
                 </div>
             </InlineContent>
-        </LeggTilBarnContent>
+        </Container>
     );
 };
 

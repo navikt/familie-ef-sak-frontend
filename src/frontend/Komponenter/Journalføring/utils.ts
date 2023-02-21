@@ -1,3 +1,38 @@
+import { DokumentTitler, IJojurnalpostResponse } from '../../App/typer/journalføring';
+import { Behandlingstema, behandlingstemaTilTekst } from '../../App/typer/behandlingstema';
+
+export const JOURNALPOST_QUERY_STRING = 'journalpostId';
+export const OPPGAVEID_QUERY_STRING = 'oppgaveId';
+
+export const lagJournalføringKlageUrl = (
+    journalpostId: string,
+    oppgaveId: string | number
+): string => {
+    return `/journalfor-klage?${JOURNALPOST_QUERY_STRING}=${journalpostId}&${OPPGAVEID_QUERY_STRING}=${oppgaveId}`;
+};
+
+export const lagJournalføringUrl = (journalpostId: string, oppgaveId: string | number): string => {
+    return `/journalfor?${JOURNALPOST_QUERY_STRING}=${journalpostId}&${OPPGAVEID_QUERY_STRING}=${oppgaveId}`;
+};
+
+export const harTittelForAlleDokumenter = (
+    journalResponse: IJojurnalpostResponse,
+    dokumentTitler?: DokumentTitler
+) =>
+    journalResponse.journalpost.dokumenter
+        .map((d) => d.tittel || (dokumentTitler && dokumentTitler[d.dokumentInfoId]))
+        .every((tittel) => tittel && tittel.trim());
+
+export const utledKolonneTittel = (
+    behandlingsTema: Behandlingstema | undefined,
+    fra: 'klage' | 'vanlig'
+) => {
+    const prefix = 'Registrere journalpost';
+    const type = fra === 'klage' ? ' for klage' : '';
+    const stønadstype = behandlingsTema ? ': ' + behandlingstemaTilTekst[behandlingsTema] : '';
+    return `${prefix}${type}${stønadstype}`;
+};
+
 export const dokumentTitler: { value: string; label: string }[] = [
     { value: 'Uttalelse tilbakekreving', label: 'Uttalelse tilbakekreving' },
     { value: 'Uttalelse', label: 'Uttalelse' },

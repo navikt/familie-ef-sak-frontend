@@ -1,37 +1,35 @@
-import PdfVisning from '../../Felles/Pdf/PdfVisning';
 import React, { useEffect } from 'react';
 import { HentDokumentResponse } from '../../App/hooks/useHentDokument';
 import styled from 'styled-components';
-import { Button } from '@navikt/ds-react';
+import DataViewer from '../../Felles/DataViewer/DataViewer';
+import { base64toBlob } from '../../App/utils/utils';
 
-const FlexKnapper = styled.div`
-    display: flex;
-    justify-content: space-between;
+const Container = styled.div`
+    flex: 1 1 auto;
 `;
 
 const JournalføringPdfVisning: React.FC<{ hentDokumentResponse: HentDokumentResponse }> = ({
     hentDokumentResponse,
 }) => {
-    const { hentFørsteDokument, hentForrigeDokument, hentNesteDokument, valgtDokument } =
-        hentDokumentResponse;
+    const { hentFørsteDokument, valgtDokument } = hentDokumentResponse;
 
     useEffect(() => {
         hentFørsteDokument();
-        // eslint-disable-next-line
-    }, []);
+    }, [hentFørsteDokument]);
 
     return (
-        <>
-            <FlexKnapper>
-                <Button type={'button'} variant={'secondary'} onClick={() => hentForrigeDokument()}>
-                    Forrige Dokument
-                </Button>
-                <Button type={'button'} variant={'secondary'} onClick={() => hentNesteDokument()}>
-                    Neste Dokument
-                </Button>
-            </FlexKnapper>
-            <PdfVisning pdfFilInnhold={valgtDokument} />
-        </>
+        <Container>
+            <DataViewer response={{ valgtDokument }}>
+                {({ valgtDokument }) => {
+                    const blob = base64toBlob(valgtDokument, 'application/pdf');
+                    const pdfUrl = window.URL.createObjectURL(blob);
+
+                    return (
+                        <iframe title={'dokument'} src={pdfUrl} width={'100%'} height={'100%'} />
+                    );
+                }}
+            </DataViewer>
+        </Container>
     );
 };
 
