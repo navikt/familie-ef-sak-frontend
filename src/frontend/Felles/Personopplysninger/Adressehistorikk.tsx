@@ -9,6 +9,7 @@ import { formaterNullableIsoDato } from '../../App/utils/formatter';
 import { ModalWrapper } from '../Modal/ModalWrapper';
 import UtvidPanel from '../UtvidPanel/UtvidPanel';
 import { Button, HelpText, Label } from '@navikt/ds-react';
+import { BodyLongSmall } from '../Visningskomponenter/Tekster';
 
 const StyledFlexDiv = styled.div`
     display: flex;
@@ -18,6 +19,10 @@ const StyledFlexDiv = styled.div`
 const Knapp = styled(Button)`
     padding-left: 1.25rem;
     padding-right: 1.25rem;
+`;
+
+const FetTekst = styled.span`
+    font-weight: bold;
 `;
 
 const MAX_LENGDE_ADRESSER = 5;
@@ -79,10 +84,26 @@ const Kolonnetittel: React.FC<{ text: string; width: number }> = ({ text, width 
 );
 
 const TittelbeskrivelseBostedsadresser: React.ReactElement = (
-    <HelpText title="Gjeldende" placement={'right'}>
-        En person skal til enhver tid ha kun en folkeregistrert bostedsadresse. I EF Sak er denne
-        adressen markert med "(gjeldende)". Vær oppmerksom på at det i noen tilfeller ikke vil være
-        adressen med den nyeste fra-datoen som er gjeldende.
+    <HelpText title="Gjeldende og kolonner" placement={'right'}>
+        <BodyLongSmall>
+            <FetTekst>Gjeldende adresse:</FetTekst>
+            En person skal til enhver tid ha kun én folkeregistrert bostedsadresse. I EF Sak er
+            denne adressen markert med "(gjeldende)". Vær oppmerksom på at det i noen tilfeller ikke
+            vil være adressen med den nyeste fra-datoen som er gjeldende
+        </BodyLongSmall>
+        <BodyLongSmall>
+            <FetTekst>Angitt flyttedato:</FetTekst>Datoen personen selv har oppgitt for flytting til
+            ny bolig
+        </BodyLongSmall>
+        <BodyLongSmall>
+            <FetTekst>Fra og med:</FetTekst>
+            Folkeregisterets vedtaksdato for gyldighet på bostedsregistreringen
+        </BodyLongSmall>
+        <BodyLongSmall>
+            <FetTekst>Til og med:</FetTekst>
+            Folkeregisterets opphørsdato (dersom den er kjent). Personen er ikke registrert bosatt
+            på adressen iht Folkeregisteret
+        </BodyLongSmall>
     </HelpText>
 );
 
@@ -115,8 +136,8 @@ const Adresser: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string; type?: 
                                 }
                                 width={15}
                             />
-                            <Kolonnetittel text={'Fra'} width={15} />
-                            <Kolonnetittel text={'Til'} width={20} />
+                            <Kolonnetittel text={'Fra og med'} width={15} />
+                            <Kolonnetittel text={'Til og med'} width={20} />
                         </tr>
                     </thead>
                     <Innhold adresser={adresser} fagsakPersonId={fagsakPersonId} />
