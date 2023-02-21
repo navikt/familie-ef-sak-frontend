@@ -59,23 +59,23 @@ export const svarTypeTilTekst: Record<string, string> = {
     GJENLEVENDE_IKKE_RETT_TIL_YTELSER:
         'Ja, gjenlevende som etter dødsfallet får barn som avdøde ikke er mor/far til, og som ikke har rett til ytelser etter kap.17',
     ANDRE_FORELDER_MEDLEM_MINST_5_ÅR_AVBRUDD_MINDRE_ENN_10_ÅR:
-        'Ja, medlem og bosatt når stønadstilfellet oppstod, den andre forelderen har vært medlem i minst fem år etter fylte 16 år når krav fremsettes, og avbruddet er mindre enn 10 år',
+        'Ja, medlem og bosatt når stønadstilfellet oppstod, den andre forelderen har vært medlem i minst 5 år etter fylte 16 år når krav fremsettes, og avbruddet er mindre enn 10 år',
     ANDRE_FORELDER_MEDLEM_MINST_7_ÅR_AVBRUDD_MER_ENN_10_ÅR:
-        'Ja, medlem og bosatt når stønadstilfellet oppstod, den andre forelderen har vært medlem i minst syv år etter fylte 16 år når krav fremsettes, og avbruddet er mer enn 10 år',
+        'Ja, medlem og bosatt når stønadstilfellet oppstod, den andre forelderen har vært medlem i minst 7 år etter fylte 16 år når krav fremsettes, og avbruddet er mer enn 10 år',
     ANDRE_FORELDER_MEDLEM_SISTE_5_ÅR:
-        'Ja, medlem og bosatt når stønadstilfellet oppstod, den andre forelderen er bosatt og har vært medlem siste fem år',
+        'Ja, medlem og bosatt når stønadstilfellet oppstod, den andre forelderen er bosatt og har vært medlem siste 5 år',
     I_LANDET_FOR_GJENFORENING_ELLER_GIFTE_SEG:
         'Ja, medlem og bosatt når stønadstilfellet oppstod, kom til landet for gjenforening med ektefelle/samboer med felles barn, eller for å gifte seg med en som er bosatt, og hadde gyldig oppholdstillatelse ved ankomst',
     MEDLEM_MER_ENN_5_ÅR_AVBRUDD_MINDRE_ENN_10_ÅR:
         'Ja, medlem i minst 5 år etter fylte 16 år når krav fremsettes, og avbruddet er mindre enn 10 år',
     MEDLEM_MER_ENN_7_ÅR_AVBRUDD_MER_ENN_10ÅR:
-        'Ja, medlem i minst syv år etter fylte 16 år når krav fremsettes, og avbruddet er mer enn 10 år',
+        'Ja, medlem i minst 7 år etter fylte 16 år når krav fremsettes, og avbruddet er mer enn 10 år',
     TOTALVURDERING_OPPFYLLER_FORSKRIFT:
-        'Ja, totalvurdering viser at forholdene går inn under forskriften om kravet om fem års forutgående medlemskap',
+        'Ja, totalvurdering viser at forholdene går inn under forskriften om kravet om 5 års forutgående medlemskap',
     MEDLEM_MER_ENN_5_ÅR_EØS:
-        'Ja, etter EØS-avtalen. Medlem fyller vilkåret om 5 års forutgående medlemskap ved sammenlegging av  medlemskapsperioder i annet EU/EØS-land.',
+        'Ja, EØS-borger fyller vilkåret om 5 års forutgående medlemskap etter sammenlegging med medlemskapsperioder i annet EU/EØS-land',
     MEDLEM_MER_ENN_5_ÅR_EØS_ANNEN_FORELDER_TRYGDEDEKKET_I_NORGE:
-        'Ja, medlem fyller vilkåret om 5 års forutgående medlemskap opptjent i annet EU/EØS-land og annen forelder er trygdedekket i Norge som arbeidstaker.',
+        'Ja, EØS-borger fyller vilkåret om 5 års forutgående medlemskap etter bestemmelsene i annet EU/EØS-land, og den andre forelderen er EØS-borger og trygdedekket i Norge som yrkesaktiv',
     RIMELIG_GRUNN_SAGT_OPP:
         'Hadde søker rimelig grunn til å si opp jobben eller redusere arbeidstiden?',
     SAMME_HUS_OG_FÆRRE_ENN_4_BOENHETER:
