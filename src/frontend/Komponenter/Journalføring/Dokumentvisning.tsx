@@ -5,7 +5,7 @@ import VisDokumentTittel from './VisDokumentTittel';
 import { IJournalpost } from '../../App/typer/journalføring';
 import { OrNothing } from '../../App/hooks/felles/useSorteringState';
 import { Heading } from '@navikt/ds-react';
-import { ABorderSubtle } from '@navikt/ds-tokens';
+import { ABorderDivider } from '@navikt/ds-tokens/dist/tokens';
 
 interface DokumentVisningProps {
     journalPost: IJournalpost;
@@ -28,7 +28,7 @@ const Container = styled.div`
 
 const ListeRad = styled.li`
     line-height: 2rem;
-    border-bottom: 1px solid ${ABorderSubtle};
+    border-bottom: 1px solid ${ABorderDivider};
     padding: 0.5rem;
 `;
 
@@ -66,6 +66,8 @@ const DokumentVisning: React.FC<DokumentVisningProps> = ({
                             />
                         ) : (
                             <VisDokumentTittel
+                                journalPostId={journalPost.journalpostId}
+                                dokumentInfo={dokument}
                                 dokumentTittel={
                                     (dokumentTitler && dokumentTitler[dokument.dokumentInfoId]) ||
                                     dokument.tittel

@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useQueryParams } from '../../App/hooks/felles/useQueryParams';
-import { JOURNALPOST_QUERY_STRING, OPPGAVEID_QUERY_STRING } from './journalføringUtil';
+import { JOURNALPOST_QUERY_STRING, OPPGAVEID_QUERY_STRING } from './utils';
 import { useHentJournalpost } from '../../App/hooks/useHentJournalpost';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { IJojurnalpostResponse } from '../../App/typer/journalføring';
@@ -13,18 +13,23 @@ export const Kolonner = styled.div`
     display: flex;
     flex-wrap: wrap;
     align-items: stretch;
-    height: calc(100vh - 4rem);
 `;
 
 export const Venstrekolonne = styled.div`
     padding: 1rem 2rem 0 2rem;
     height: inherit;
     overflow: auto;
+    @media (min-width: 1225px) {
+        height: calc(100vh - 4rem);
+    }
 `;
 export const Høyrekolonne = styled.div`
     display: flex;
     flex: 1 1 auto;
+    min-width: 450px;
+    height: calc(100vh - 4rem);
 `;
+
 export const FlexKnapper = styled.div`
     margin: 1rem;
     display: flex;

@@ -37,7 +37,7 @@ type Dokumentvariant = { variantformat: string };
 type LogiskVedlegg = { logiskVedleggId: string; tittel: string };
 type RelevantDato = { dato: string; datotype: string };
 
-interface DokumentInfo {
+export interface DokumentInfo {
     dokumentInfoId: string;
     tittel?: string;
     brevkode?: string;

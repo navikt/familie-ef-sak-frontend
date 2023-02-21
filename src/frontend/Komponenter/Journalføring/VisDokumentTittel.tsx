@@ -1,8 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 import { ILogiskVedlegg } from '../../App/typer/dokumentliste';
-import { BodyShort, Button } from '@navikt/ds-react';
-import { EditFilled, FileContent } from '@navikt/ds-icons';
+import { BodyShort, Button, Label, Link } from '@navikt/ds-react';
+import { EditFilled, ExternalLink, FileContent } from '@navikt/ds-icons';
+import { åpneFilIEgenTab } from '../../App/utils/utils';
+import { DokumentInfo } from '../../App/typer/journalføring';
 
 const IkonKnapp = styled(Button)`
     margin-right: 0.5rem;
@@ -18,7 +20,14 @@ const LogiskeVedlegg = styled.div`
     padding-left: 0.5rem;
 `;
 
+const DokumentTittel = styled.div`
+    display: flex;
+    align-items: center;
+`;
+
 interface VisDokumentTittelProps {
+    journalPostId: string;
+    dokumentInfo: DokumentInfo;
     settDokumentForRedigering: () => void;
     hentDokument: () => void;
     dokumentTittel?: string;
@@ -26,15 +35,34 @@ interface VisDokumentTittelProps {
 }
 
 const VisDokumentTittel: React.FC<VisDokumentTittelProps> = ({
+    journalPostId,
+    dokumentInfo,
     dokumentTittel,
     hentDokument,
     settDokumentForRedigering,
     logiskeVedlegg,
 }) => {
+    const tittel = dokumentTittel ? dokumentTittel : 'Ukjent';
+
     return (
         <>
             <DokumentRad>
-                <span>{dokumentTittel}</span>
+                <DokumentTittel>
+                    <Label as={'p'}>
+                        <Link onClick={hentDokument} href={'#'}>
+                            {dokumentTittel ? dokumentTittel : 'Ukjent'}
+                        </Link>
+                    </Label>
+                    <Button
+                        type={'button'}
+                        variant={'tertiary'}
+                        size={'small'}
+                        icon={<ExternalLink aria-hidden />}
+                        onClick={() =>
+                            åpneFilIEgenTab(journalPostId, dokumentInfo.dokumentInfoId, tittel)
+                        }
+                    />
+                </DokumentTittel>
                 <div>
                     <IkonKnapp
                         type="button"

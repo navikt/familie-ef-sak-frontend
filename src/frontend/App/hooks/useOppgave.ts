@@ -7,7 +7,7 @@ import { Stønadstype } from '../typer/behandlingstema';
 import {
     lagJournalføringKlageUrl,
     lagJournalføringUrl,
-} from '../../Komponenter/Journalføring/journalføringUtil';
+} from '../../Komponenter/Journalføring/utils';
 
 interface OppgaveDto {
     behandlingId: string;
