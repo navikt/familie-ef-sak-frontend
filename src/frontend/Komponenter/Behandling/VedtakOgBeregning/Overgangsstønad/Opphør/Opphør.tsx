@@ -9,12 +9,12 @@ import {
     IVedtakType,
 } from '../../../../../App/typer/vedtak';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../../../App/typer/ressurs';
-import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
 import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import { AlertError } from '../../../../../Felles/Visningskomponenter/Alerts';
 import { Button } from '@navikt/ds-react';
+import { useRedirectEtterLagring } from '../../../../../App/hooks/felles/useRedirectEtterLagring';
 
 const StyledFormElement = styled.div`
     margin-top: 2rem;
@@ -25,6 +25,7 @@ export const Opphør: React.FC<{
     behandlingId: string;
     lagretVedtak?: IVedtakForOvergangsstønad;
 }> = ({ behandlingId, lagretVedtak }) => {
+    const { utførRedirect } = useRedirectEtterLagring(`/behandling/${behandlingId}/simulering`);
     const [laster, settLaster] = useState(false);
     const lagretOpphørtVedtak =
         lagretVedtak?._type === IVedtakType.Opphør ? (lagretVedtak as IOpphørtVedtak) : undefined;
@@ -36,12 +37,12 @@ export const Opphør: React.FC<{
     const { behandlingErRedigerbar, hentBehandling } = useBehandling();
     const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
         useApp();
-    const navigate = useNavigate();
 
     const lagreVedtak = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (opphørtBegrunnelse && opphørtFra) {
             settLaster(true);
+            nullstillIkkePersisterteKomponenter();
             const opphør: IOpphørtVedtak = {
                 resultatType: EBehandlingResultat.OPPHØRT,
                 opphørFom: opphørtFra,
@@ -64,9 +65,8 @@ export const Opphør: React.FC<{
 
     const håndterOpphørtVedtak = (res: RessursSuksess<string> | RessursFeilet) => {
         if (res.status === RessursStatus.SUKSESS) {
-            navigate(`/behandling/${behandlingId}/simulering`);
             hentBehandling.rerun();
-            nullstillIkkePersisterteKomponenter();
+            utførRedirect();
         } else {
             settFeilmelding(res.frontendFeilmelding);
         }

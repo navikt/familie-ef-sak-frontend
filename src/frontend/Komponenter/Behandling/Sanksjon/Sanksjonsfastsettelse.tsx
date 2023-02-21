@@ -10,7 +10,6 @@ import {
     sanksjonsårsakTilTekst,
 } from '../../../App/typer/Sanksjonsårsak';
 import { useApp } from '../../../App/context/AppContext';
-import { useNavigate } from 'react-router-dom';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import {
     EAktivitet,
@@ -42,6 +41,7 @@ import { AlertInfo, AlertWarning } from '../../../Felles/Visningskomponenter/Ale
 import { EnsligErrorMessage } from '../../../Felles/ErrorMessage/EnsligErrorMessage';
 import { Button, Heading } from '@navikt/ds-react';
 import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
+import { useRedirectEtterLagring } from '../../../App/hooks/felles/useRedirectEtterLagring';
 
 export type SanksjonereVedtakForm = ISanksjonereVedtakDto;
 
@@ -116,7 +116,7 @@ const SanksjonsvedtakVisning: FC<{
     const { hentBehandling, behandlingErRedigerbar } = useBehandling();
     const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
         useApp();
-    const navigate = useNavigate();
+    const { utførRedirect } = useRedirectEtterLagring(`/behandling/${behandling.id}/simulering`);
     const [laster, settLaster] = useState<boolean>(false);
 
     const formState = useFormState<SanksjonereVedtakForm>(
@@ -131,12 +131,11 @@ const SanksjonsvedtakVisning: FC<{
     const internBegrunnelse = formState.getProps('internBegrunnelse') as FieldState;
 
     const håndterVedtaksresultat =
-        (nesteUrl: string): ((res: RessursSuksess<string> | RessursFeilet) => void) =>
+        (): ((res: RessursSuksess<string> | RessursFeilet) => void) =>
         (res: RessursSuksess<string> | RessursFeilet) => {
             if (res.status === RessursStatus.SUKSESS) {
-                navigate(nesteUrl);
+                utførRedirect();
                 hentBehandling.rerun();
-                nullstillIkkePersisterteKomponenter();
             } else {
                 settFeilmelding(res.frontendFeilmelding);
             }
@@ -144,13 +143,13 @@ const SanksjonsvedtakVisning: FC<{
 
     const lagreVedtak = (vedtaksRequest: ISanksjonereVedtakForOvergangsstønad) => {
         settLaster(true);
-
+        nullstillIkkePersisterteKomponenter();
         axiosRequest<string, ISanksjonereVedtakForOvergangsstønad>({
             method: 'POST',
             url: `/familie-ef-sak/api/vedtak/${behandling.id}/lagre-vedtak`,
             data: vedtaksRequest,
         })
-            .then(håndterVedtaksresultat(`/behandling/${behandling.id}/simulering`))
+            .then(håndterVedtaksresultat())
             .finally(() => {
                 settLaster(false);
             });
