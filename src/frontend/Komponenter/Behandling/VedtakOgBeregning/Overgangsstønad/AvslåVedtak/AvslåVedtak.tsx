@@ -1,7 +1,6 @@
 import React, { FormEvent, useState } from 'react';
 import { useApp } from '../../../../../App/context/AppContext';
 import { Ressurs, RessursStatus } from '../../../../../App/typer/ressurs';
-import { useNavigate } from 'react-router-dom';
 import { useBehandling } from '../../../../../App/context/BehandlingContext';
 import {
     EAvslagÅrsak,
@@ -14,6 +13,7 @@ import { Behandling } from '../../../../../App/typer/fagsak';
 import AvslåVedtakForm from './AvslåVedtakForm';
 import { Behandlingstype } from '../../../../../App/typer/behandlingstype';
 import { Stønadstype } from '../../../../../App/typer/behandlingstema';
+import { useRedirectEtterLagring } from '../../../../../App/hooks/felles/useRedirectEtterLagring';
 
 export const AvslåVedtak: React.FC<{
     behandling: Behandling;
@@ -21,6 +21,7 @@ export const AvslåVedtak: React.FC<{
     alleVilkårOppfylt: boolean;
     ikkeOppfyltVilkårEksisterer: boolean;
 }> = ({ behandling, lagretVedtak, alleVilkårOppfylt, ikkeOppfyltVilkårEksisterer }) => {
+    const { utførRedirect } = useRedirectEtterLagring(`/behandling/${behandling.id}/brev`);
     const lagretAvslåBehandling =
         lagretVedtak?._type === IVedtakType.Avslag ? (lagretVedtak as IAvslagVedtak) : undefined;
     const [avslagBegrunnelse, settAvslagBegrunnelse] = useState<string>(
@@ -36,7 +37,6 @@ export const AvslåVedtak: React.FC<{
         skalVelgeÅrsak && (!avslagÅrsak || avslagÅrsak === EAvslagÅrsak.VILKÅR_IKKE_OPPFYLT);
 
     const [laster, settLaster] = useState<boolean>();
-    const navigate = useNavigate();
     const { hentBehandling, behandlingErRedigerbar } = useBehandling();
     const { axiosRequest, nullstillIkkePersisterteKomponenter } = useApp();
 
@@ -52,13 +52,12 @@ export const AvslåVedtak: React.FC<{
         alleVilkårOppfylt &&
         !ikkeOppfyltVilkårEksisterer;
 
-    const håndterVedtaksresultat = (nesteUrl: string) => {
+    const håndterVedtaksresultat = () => {
         return (res: Ressurs<string>) => {
             switch (res.status) {
                 case RessursStatus.SUKSESS:
-                    navigate(nesteUrl);
+                    utførRedirect();
                     hentBehandling.rerun();
-                    nullstillIkkePersisterteKomponenter();
                     break;
                 case RessursStatus.HENTER:
                 case RessursStatus.IKKE_HENTET:
@@ -71,12 +70,13 @@ export const AvslåVedtak: React.FC<{
 
     const avslåBehandling = () => {
         settLaster(true);
+        nullstillIkkePersisterteKomponenter();
         axiosRequest<string, IAvslagVedtak>({
             method: 'POST',
             url: `/familie-ef-sak/api/vedtak/${behandling.id}/lagre-vedtak`,
             data: lagVedtakRequest(),
         })
-            .then(håndterVedtaksresultat(`/behandling/${behandling.id}/brev`))
+            .then(håndterVedtaksresultat())
             .finally(() => {
                 settLaster(false);
             });

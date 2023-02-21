@@ -5,7 +5,6 @@ import ReactRouterPrompt from 'react-router-prompt';
 
 const UlagretDataModal: FC = () => {
     const { nullstillIkkePersisterteKomponenter, ulagretData } = useApp();
-
     return (
         <ReactRouterPrompt when={ulagretData}>
             {({ isActive, onConfirm, onCancel }) => (

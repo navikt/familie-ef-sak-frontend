@@ -24,7 +24,6 @@ import TilleggsstønadValg, { tomTilleggsstønadRad } from './Tilleggsstønadsva
 import { FieldState } from '../../../../App/hooks/felles/useFieldState';
 import { useApp } from '../../../../App/context/AppContext';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../../App/typer/ressurs';
-import { useNavigate } from 'react-router-dom';
 import { IBarnMedSamvær } from '../../Inngangsvilkår/Aleneomsorg/typer';
 import { UtregningstabellBarnetilsyn } from './UtregnignstabellBarnetilsyn';
 import { IngenBegrunnelseOppgitt } from '../Overgangsstønad/InnvilgeVedtak/IngenBegrunnelseOppgitt';
@@ -32,6 +31,7 @@ import { EnsligTextArea } from '../../../../Felles/Input/TekstInput/EnsligTextAr
 import { VEDTAK_OG_BEREGNING } from '../Felles/konstanter';
 import { blirNullUtbetalingPgaOverstigendeKontantstøtte } from '../Felles/utils';
 import { tomUtgiftsperiodeRad } from './utils';
+import { useRedirectEtterLagring } from '../../../../App/hooks/felles/useRedirectEtterLagring';
 
 export type InnvilgeVedtakForm = {
     utgiftsperioder: IUtgiftsperiode[];
@@ -120,7 +120,7 @@ export const Vedtaksform: React.FC<{
     );
     const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
         useApp();
-    const navigate = useNavigate();
+    const { utførRedirect } = useRedirectEtterLagring(`/behandling/${behandling.id}/simulering`);
 
     const formState = useFormState<InnvilgeVedtakForm>(
         initFormState(lagretInnvilgetVedtak),
@@ -164,25 +164,24 @@ export const Vedtaksform: React.FC<{
 
     const lagreVedtak = (vedtaksRequest: IInnvilgeVedtakForBarnetilsyn) => {
         settLaster(true);
-
+        nullstillIkkePersisterteKomponenter();
         axiosRequest<string, IInnvilgeVedtakForBarnetilsyn>({
             method: 'POST',
             url: `/familie-ef-sak/api/vedtak/${behandling.id}/lagre-vedtak`,
             data: vedtaksRequest,
         })
-            .then(håndterVedtaksresultat(`/behandling/${behandling.id}/simulering`))
+            .then(håndterVedtaksresultat())
             .finally(() => {
                 settLaster(false);
             });
     };
 
-    const håndterVedtaksresultat = (nesteUrl: string) => {
+    const håndterVedtaksresultat = () => {
         return (res: Ressurs<string>) => {
             switch (res.status) {
                 case RessursStatus.SUKSESS:
-                    navigate(nesteUrl);
+                    utførRedirect();
                     hentBehandling.rerun();
-                    nullstillIkkePersisterteKomponenter();
                     break;
                 case RessursStatus.HENTER:
                 case RessursStatus.IKKE_HENTET:

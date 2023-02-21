@@ -59,7 +59,9 @@ const [AppProvider, useApp] = constate(({ autentisertSaksbehandler, appEnv }: IP
     };
 
     const nullstillIkkePersisterteKomponenter = () => {
-        settIkkePersisterteKomponenter(new Set());
+        if (ikkePersisterteKomponenter.size > 0) {
+            settIkkePersisterteKomponenter(new Set());
+        }
     };
 
     const axiosRequest: AxiosRequestCallback = useCallback(
@@ -93,6 +95,7 @@ const [AppProvider, useApp] = constate(({ autentisertSaksbehandler, appEnv }: IP
         settIkkePersistertKomponent,
         nullstillIkkePersistertKomponent,
         nullstillIkkePersisterteKomponenter,
+        ikkePersisterteKomponenter,
         ulagretData,
         toast,
         settToast,
