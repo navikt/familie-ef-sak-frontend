@@ -152,7 +152,7 @@ const PersonHeaderComponent: FC<{ data: IPersonopplysninger; behandling?: Behand
 
             axiosRequest<ISøkPerson, IPersonIdent>({
                 method: 'POST',
-                url: `/familie-ef-sak/api/sok/`,
+                url: `/familie-ef-sak/api/sok`,
                 data: { personIdent: personIdent },
             }).then((respons: RessursSuksess<ISøkPerson> | RessursFeilet) => {
                 if (respons.status === RessursStatus.SUKSESS) {

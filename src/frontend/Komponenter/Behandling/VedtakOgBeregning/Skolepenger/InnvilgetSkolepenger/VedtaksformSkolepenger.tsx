@@ -144,7 +144,7 @@ export const VedtaksformSkolepenger: React.FC<{
         if (formState.customValidate(validerInnvilgetVedtakFormBeregning)) {
             axiosRequest<IBeregningSkolepengerResponse, IBeregningsrequestSkolepenger>({
                 method: 'POST',
-                url: `/familie-ef-sak/api/beregning/skolepenger/`,
+                url: `/familie-ef-sak/api/beregning/skolepenger`,
                 data: {
                     behandlingId: behandling.id,
                     skoleårsperioder: skoleårsPerioderState.value,

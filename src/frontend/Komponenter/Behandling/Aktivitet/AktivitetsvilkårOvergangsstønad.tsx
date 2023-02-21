@@ -1,13 +1,13 @@
 import React, { FC, useEffect } from 'react';
-import { RessursStatus } from '../../../App/typer/ressurs';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
-import { useHentVilkår } from '../../../App/hooks/useHentVilkår';
 import { Aktivitet } from './Aktivitet/Aktivitet';
 import { SagtOppEllerRedusert } from './SagtOppEllerRedusert/SagtOppEllerRedusert';
 import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
 import { Behandling } from '../../../App/typer/fagsak';
+import { useBehandling } from '../../../App/context/BehandlingContext';
 
 const AktivitetsVilkårOvergangsstønad: FC<{ behandling: Behandling }> = ({ behandling }) => {
+    const { vilkårState } = useBehandling();
     const {
         vilkår,
         hentVilkår,
@@ -15,16 +15,12 @@ const AktivitetsVilkårOvergangsstønad: FC<{ behandling: Behandling }> = ({ beh
         feilmeldinger,
         nullstillVurdering,
         ikkeVurderVilkår,
-    } = useHentVilkår();
+    } = vilkårState;
     const skalViseSøknadsdata = behandling.behandlingsårsak === Behandlingsårsak.SØKNAD;
 
     const behandlingId = behandling.id;
     useEffect(() => {
-        if (behandlingId !== undefined) {
-            if (vilkår.status !== RessursStatus.SUKSESS) {
-                hentVilkår(behandlingId);
-            }
-        }
+        hentVilkår(behandlingId);
         // eslint-disable-next-line
     }, [behandlingId]);
 

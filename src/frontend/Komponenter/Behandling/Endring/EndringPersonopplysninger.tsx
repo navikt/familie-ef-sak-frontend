@@ -1,5 +1,5 @@
-import React from 'react';
-import { Alert, Heading } from '@navikt/ds-react';
+import React, { useState } from 'react';
+import { Button, Heading } from '@navikt/ds-react';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { utledEndringerPåPersonopplysninger } from './utils';
 import { useToggles } from '../../../App/context/TogglesContext';
@@ -11,6 +11,19 @@ import {
     IEndringer,
     Personendring,
 } from './personopplysningerEndringer';
+import styled from 'styled-components';
+import { AlertWarning } from '../../../Felles/Visningskomponenter/Alerts';
+import { BodyLongMedium } from '../../../Felles/Visningskomponenter/Tekster';
+
+const Advarsel = styled(AlertWarning)`
+    .navds-alert__wrapper {
+        max-width: 60rem;
+    }
+`;
+
+const OppdaterGrunnlagKnapp = styled(Button)`
+    margin: 0 1rem 0 0.5rem;
+`;
 
 const PersonEndring: React.FC<{ personendringer: Personendring[] }> = ({ personendringer }) => {
     return (
@@ -60,14 +73,28 @@ const Endringsdetaljer: React.FC<{ endringer: IEndringer; personopplysning: keyo
     }
 };
 
-const Personopplysningsendringer: React.FC = () => {
+const Personopplysningsendringer: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
     const { toggles } = useToggles();
     const skalViseKomponent = toggles[ToggleName.visEndringerPersonopplysninger];
-    const { endringerPersonopplysninger } = useBehandling();
+    const { endringerPersonopplysninger, nullstillGrunnlagsendringer, vilkårState } =
+        useBehandling();
+    const [nyGrunnlagsdataHentes, settNyGrunnlagsdataHentes] = useState(false);
+
+    const { oppdaterGrunnlagsdataOgHentVilkår } = vilkårState;
 
     if (!skalViseKomponent) {
         return <></>;
     }
+
+    const oppdaterGrunnlagsdata = () => {
+        if (!nyGrunnlagsdataHentes) {
+            settNyGrunnlagsdataHentes(true);
+            oppdaterGrunnlagsdataOgHentVilkår(behandlingId).then(() => {
+                nullstillGrunnlagsendringer();
+                settNyGrunnlagsdataHentes(false);
+            });
+        }
+    };
 
     return (
         <DataViewer response={{ endringerPersonopplysninger }}>
@@ -81,14 +108,14 @@ const Personopplysningsendringer: React.FC = () => {
                 }
 
                 return (
-                    <Alert variant="warning">
+                    <Advarsel>
                         <Heading spacing size="small" level="2">
-                            Endring i Folkeregisteropplysninger
+                            Opplysninger fra Folkeregisteret er endret
                         </Heading>
-                        <div>
-                            Det har vært endringer i bruker sine opplysninger fra Folkeregisteret
-                            siden denne behandlingen ble påbegynt. Endringene gjelder:
-                        </div>
+                        <BodyLongMedium>
+                            Bruker sine opplysninger fra Folkeregisteret har endret seg siden denne
+                            behandlingen ble påbegynt. Endringen gjelder:
+                        </BodyLongMedium>
                         <ul>
                             {endringer.map((personopplysning) => (
                                 <li key={personopplysning}>
@@ -100,7 +127,19 @@ const Personopplysningsendringer: React.FC = () => {
                                 </li>
                             ))}
                         </ul>
-                    </Alert>
+                        <BodyLongMedium>
+                            Saksbehandler må sjekke endringen, oppdatere registeropplysninger i
+                            behandlingen og eventuelt vurdere vilkår på nytt.
+                        </BodyLongMedium>
+                        <OppdaterGrunnlagKnapp
+                            size={'small'}
+                            variant={'primary'}
+                            loading={nyGrunnlagsdataHentes}
+                            onClick={oppdaterGrunnlagsdata}
+                        >
+                            Oppdater registeropplysninger i denne behandlingen
+                        </OppdaterGrunnlagKnapp>
+                    </Advarsel>
                 );
             }}
         </DataViewer>

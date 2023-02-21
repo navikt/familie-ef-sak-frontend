@@ -1,14 +1,15 @@
 import * as React from 'react';
-import { useCallback, useEffect } from 'react';
-import { useHentVilkår } from '../../../App/hooks/useHentVilkår';
+import { useEffect } from 'react';
 import { TidligereVedtaksperioderType } from '../Inngangsvilkår/vilkår';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { Vilkårstittel } from '../Inngangsvilkår/Vilkårstittel';
 import VisEllerEndreVurdering from '../Vurdering/VisEllerEndreVurdering';
 import ToKolonnerLayout from '../../../Felles/Visningskomponenter/ToKolonnerLayout';
 import TidligereVedtaksperioderInfo from './TidligereVedtaksperioderInfo';
+import { useBehandling } from '../../../App/context/BehandlingContext';
 
 const TidligereVedtaksperioder: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
+    const { vilkårState } = useBehandling();
     const {
         hentVilkår,
         vilkår,
@@ -16,16 +17,12 @@ const TidligereVedtaksperioder: React.FC<{ behandlingId: string }> = ({ behandli
         lagreVurdering,
         feilmeldinger,
         nullstillVurdering,
-    } = useHentVilkår();
+    } = vilkårState;
 
-    const hentVilkårCallback = useCallback(() => {
+    useEffect(() => {
         hentVilkår(behandlingId);
         // eslint-disable-next-line
     }, [behandlingId]);
-
-    useEffect(() => {
-        hentVilkårCallback();
-    }, [hentVilkårCallback]);
 
     return (
         <DataViewer response={{ vilkår }}>
