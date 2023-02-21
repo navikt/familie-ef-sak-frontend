@@ -117,8 +117,7 @@ const lagEksterneLenker = (
 export const HeaderMedSøk: React.FunctionComponent<IHeaderMedSøkProps> = ({
     innloggetSaksbehandler,
 }) => {
-    const { axiosRequest, gåTilUrl, appEnv, valgtFagsakId, valgtFagsakPersonId, personIdent } =
-        useApp();
+    const { axiosRequest, appEnv, valgtFagsakId, valgtFagsakPersonId, personIdent } = useApp();
     const { toggles } = useToggles();
     const eksterneLenker = useMemo(
         () =>
@@ -145,10 +144,7 @@ export const HeaderMedSøk: React.FunctionComponent<IHeaderMedSøkProps> = ({
     return (
         <Sticky>
             <Header
-                tittelOnClick={() => {
-                    gåTilUrl('/');
-                }}
-                tittelHref={'#'}
+                tittelHref={'/'}
                 tittel="NAV Enslig mor eller far"
                 brukerinfo={{
                     navn: innloggetSaksbehandler?.displayName || 'Ukjent',

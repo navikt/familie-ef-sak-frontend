@@ -27,9 +27,6 @@ const [AppProvider, useApp] = constate(({ autentisertSaksbehandler, appEnv }: IP
         new Set()
     );
     const [ulagretData, settUlagretData] = useState<boolean>(ikkePersisterteKomponenter.size > 0);
-    const [valgtSide, settValgtSide] = useState<string | undefined>();
-    const [visUlagretDataModal, settVisUlagretDataModal] = useState(false);
-    const [byttUrl, settByttUrl] = useState(false);
     const [toast, settToast] = useState<EToast | undefined>();
     const [valgtFagsakId, settValgtFagsakId] = useState<string>();
     const [valgtFagsakPersonId, settValgtFagsakPersonId] = useState<string>();
@@ -65,16 +62,6 @@ const [AppProvider, useApp] = constate(({ autentisertSaksbehandler, appEnv }: IP
         settIkkePersisterteKomponenter(new Set());
     };
 
-    const gåTilUrl = (url: string) => {
-        if (ulagretData) {
-            settValgtSide(url);
-            settVisUlagretDataModal(true);
-        } else {
-            settValgtSide(url);
-            settByttUrl(true);
-        }
-    };
-
     const axiosRequest: AxiosRequestCallback = useCallback(
         <RES, REQ>(
             config: AxiosRequestConfig<REQ>
@@ -106,12 +93,7 @@ const [AppProvider, useApp] = constate(({ autentisertSaksbehandler, appEnv }: IP
         settIkkePersistertKomponent,
         nullstillIkkePersistertKomponent,
         nullstillIkkePersisterteKomponenter,
-        gåTilUrl,
-        valgtSide,
-        visUlagretDataModal,
-        settVisUlagretDataModal,
-        byttUrl,
-        settByttUrl,
+        ulagretData,
         toast,
         settToast,
         appEnv,

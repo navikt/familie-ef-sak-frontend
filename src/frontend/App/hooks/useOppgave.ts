@@ -8,6 +8,7 @@ import {
     lagJournalføringKlageUrl,
     lagJournalføringUrl,
 } from '../../Komponenter/Journalføring/utils';
+import { useNavigate } from 'react-router-dom';
 
 interface OppgaveDto {
     behandlingId: string;
@@ -16,21 +17,23 @@ interface OppgaveDto {
 
 // eslint-disable-next-line
 export const useOppgave = (oppgave: IOppgave) => {
-    const { gåTilUrl, axiosRequest, innloggetSaksbehandler } = useApp();
+    const { axiosRequest, innloggetSaksbehandler } = useApp();
+    const navigate = useNavigate();
     const [feilmelding, settFeilmelding] = useState<string>('');
     const [laster, settLaster] = useState<boolean>(false);
     const { fagsak, hentFagsak } = useHentFagsak();
 
     useEffect(() => {
         if (fagsak.status === RessursStatus.SUKSESS) {
-            gåTilUrl(`/person/${fagsak.data.fagsakPersonId}`);
+            navigate(`/person/${fagsak.data.fagsakPersonId}`);
         } else if (erAvTypeFeil(fagsak)) {
             settFeilmelding(
                 'Henting av fagsak feilet, prøv på nytt. Feil: ' +
                     (fagsak.frontendFeilmelding || fagsak.errorMelding || 'Ukjent feil')
             );
         }
-    }, [fagsak, gåTilUrl]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [fagsak]);
 
     const settOppgaveTilSaksbehandler = () => {
         return axiosRequest<string, null>({
@@ -63,7 +66,7 @@ export const useOppgave = (oppgave: IOppgave) => {
             })
             .then((behandlingId) => {
                 settOppgaveTilSaksbehandler()
-                    .then(() => gåTilUrl(`/behandling/${behandlingId}`))
+                    .then(() => navigate(`/behandling/${behandlingId}`))
                     .catch((error: Error) => {
                         settFeilmelding(error.message);
                     })
@@ -81,7 +84,7 @@ export const useOppgave = (oppgave: IOppgave) => {
         const oppgaveId = oppgave.id || '';
         settOppgaveTilSaksbehandler()
             .then(() =>
-                gåTilUrl(
+                navigate(
                     type === 'klage'
                         ? lagJournalføringKlageUrl(journalpostId, oppgaveId)
                         : lagJournalføringUrl(journalpostId, oppgaveId)
