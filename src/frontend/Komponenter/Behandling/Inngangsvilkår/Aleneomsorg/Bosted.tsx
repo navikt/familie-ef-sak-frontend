@@ -3,7 +3,7 @@ import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
 import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 import { IDeltBostedPeriode } from '../../../../App/typer/personopplysninger';
 import styled from 'styled-components';
-import { Popover, Table } from '@navikt/ds-react';
+import { BodyShort, Popover, Table } from '@navikt/ds-react';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
 import { Information } from '@navikt/ds-icons';
 
@@ -18,10 +18,11 @@ interface Props {
 const FlexBox = styled.div`
     display: flex;
     align-items: baseline;
+    gap: 0.5rem;
 `;
 
 const InformationIcon = styled(Information)`
-    margin-left: 0.5rem;
+    gap: 0.5rem;
 
     &:hover {
         cursor: pointer;
@@ -41,7 +42,7 @@ const utledBostedTekst = (harDeltBosted: boolean, harSammeAdresse: boolean | und
 };
 const popoverContent = (deltBosted: IDeltBostedPeriode) => (
     <Popover.Content>
-        <div>Delt bosted:</div>
+        <BodyShort>Delt bosted:</BodyShort>
         <Table size={'small'}>
             <Table.Header>
                 <Table.Row>
