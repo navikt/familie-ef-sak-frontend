@@ -22,7 +22,6 @@ const FlexBox = styled.div`
 `;
 
 const InformationIcon = styled(Information)`
-    gap: 0.5rem;
 
     &:hover {
         cursor: pointer;
