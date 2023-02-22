@@ -10,6 +10,7 @@ import {
     oppgaveErSaksbehandling,
     oppgaveErJournalførKlage,
     utledetFolkeregisterIdent,
+    oppgaveErTilbakekreving,
 } from './utils';
 import { Dropdown } from '@navikt/ds-react-internal';
 
@@ -71,7 +72,8 @@ export const OppgaveKnapp: React.FC<{
         oppgaveTilordnetInnloggetSaksbehandler &&
         (oppgaveErSaksbehandling(oppgave) ||
             oppgaveErJournalførKlage(oppgave) ||
-            oppgaveKanJournalføres(oppgave));
+            oppgaveKanJournalføres(oppgave) ||
+            oppgaveErTilbakekreving(oppgave));
 
     if (oppgaveTilordnetInnloggetSaksbehandler) {
         return (
