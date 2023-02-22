@@ -10,8 +10,7 @@ import OppgaveFiltrering from './OppgaveFiltrering';
 import { erProd } from '../../App/utils/miljø';
 import styled from 'styled-components';
 import { AlertInfo } from '../../Felles/Visningskomponenter/Alerts';
-
-export type OppgaveRessurs = Ressurs<IOppgaverResponse>;
+import DataViewer from '../../Felles/DataViewer/DataViewer';
 
 const InfoVisning = styled(AlertInfo)`
     margin-top: 2rem;
@@ -28,7 +27,10 @@ const TabellContainer = styled.div`
 
 export const OppgavebenkApp: React.FC = () => {
     const { axiosRequest, erSaksbehandler } = useApp();
-    const [oppgaveRessurs, settOppgaveRessurs] = useState<OppgaveRessurs>(byggTomRessurs());
+    const [oppgaveRessurs, settOppgaveRessurs] = useState<Ressurs<IOppgaverResponse>>(
+        byggTomRessurs()
+    );
+
     const [mapper, settMapper] = useState<IMappe[]>(tomMappeListe);
     const [feilmelding, settFeilmelding] = useState<string>('');
 
@@ -38,7 +40,9 @@ export const OppgavebenkApp: React.FC = () => {
                 method: 'POST',
                 url: `/familie-ef-sak/api/oppgave/soek`,
                 data,
-            }).then((res: Ressurs<IOppgaverResponse>) => settOppgaveRessurs(res));
+            }).then((res: Ressurs<IOppgaverResponse>) => {
+                settOppgaveRessurs(res);
+            });
         },
         [axiosRequest]
     );
@@ -76,11 +80,15 @@ export const OppgavebenkApp: React.FC = () => {
                     settFeilmelding={settFeilmelding}
                 />
                 <TabellContainer>
-                    <OppgaveTabell
-                        oppgaveRessurs={oppgaveRessurs}
-                        mapper={mapper}
-                        settFeilmelding={settFeilmelding}
-                    />
+                    <DataViewer response={{ oppgaveRessurs }}>
+                        {({ oppgaveRessurs }) => (
+                            <OppgaveTabell
+                                oppgaver={oppgaveRessurs.oppgaver}
+                                mapper={mapper}
+                                settFeilmelding={settFeilmelding}
+                            />
+                        )}
+                    </DataViewer>
                 </TabellContainer>
             </Side>
         );

@@ -36,6 +36,9 @@ export const useOppgave = (oppgave: IOppgave) => {
         return axiosRequest<string, null>({
             method: 'POST',
             url: `/familie-ef-sak/api/oppgave/${oppgave.id}/fordel?saksbehandler=${innloggetSaksbehandler?.navIdent}`,
+            params: oppgave.versjon && {
+                versjon: oppgave.versjon,
+            },
         }).then((res: RessursSuksess<string> | RessursFeilet) => {
             if (res.status === RessursStatus.SUKSESS) {
                 return Promise.resolve();
@@ -58,6 +61,7 @@ export const useOppgave = (oppgave: IOppgave) => {
                     if (res.status === RessursStatus.SUKSESS) {
                         return resolve(res.data.behandlingId);
                     }
+                    settFeilmelding(res.frontendFeilmelding);
                     return reject(new Error(res.frontendFeilmelding));
                 });
             })
@@ -103,6 +107,24 @@ export const useOppgave = (oppgave: IOppgave) => {
             .finally(() => settLaster(false));
     };
 
+    const tilbakestillFordeling = () => {
+        return axiosRequest<string, null>({
+            method: 'POST',
+            url: `/familie-ef-sak/api/oppgave/${oppgave.id}/tilbakestill`,
+            params: oppgave.versjon && {
+                versjon: oppgave.versjon,
+            },
+        }).then((res: RessursSuksess<string> | RessursFeilet) => {
+            if (res.status === RessursStatus.SUKSESS) {
+                return Promise.resolve();
+            } else {
+                return Promise.reject(
+                    new Error(`Feilet fordeling av oppgave. Feil: ${res.frontendFeilmelding}`)
+                );
+            }
+        });
+    };
+
     return {
         feilmelding,
         settFeilmelding,
@@ -110,5 +132,7 @@ export const useOppgave = (oppgave: IOppgave) => {
         gåTilJournalføring,
         laster,
         plukkOppgaveOgGåTilBehandlingsoversikt,
+        tilbakestillFordeling,
+        settOppgaveTilSaksbehandler,
     };
 };
