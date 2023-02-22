@@ -15,6 +15,7 @@ import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import { AlertError } from '../../../../../Felles/Visningskomponenter/Alerts';
 import { Button } from '@navikt/ds-react';
 import { useRedirectEtterLagring } from '../../../../../App/hooks/felles/useRedirectEtterLagring';
+import { v4 as uuidv4 } from 'uuid';
 
 const StyledFormElement = styled.div`
     margin-top: 2rem;
@@ -68,6 +69,7 @@ export const Opphør: React.FC<{
             hentBehandling.rerun();
             utførRedirect();
         } else {
+            settIkkePersistertKomponent(uuidv4());
             settFeilmelding(res.frontendFeilmelding);
         }
     };

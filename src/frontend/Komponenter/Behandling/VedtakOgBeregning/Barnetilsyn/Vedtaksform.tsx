@@ -32,6 +32,7 @@ import { VEDTAK_OG_BEREGNING } from '../Felles/konstanter';
 import { blirNullUtbetalingPgaOverstigendeKontantstøtte } from '../Felles/utils';
 import { tomUtgiftsperiodeRad } from './utils';
 import { useRedirectEtterLagring } from '../../../../App/hooks/felles/useRedirectEtterLagring';
+import { v4 as uuidv4 } from 'uuid';
 
 export type InnvilgeVedtakForm = {
     utgiftsperioder: IUtgiftsperiode[];
@@ -187,6 +188,7 @@ export const Vedtaksform: React.FC<{
                 case RessursStatus.IKKE_HENTET:
                     break;
                 default:
+                    settIkkePersistertKomponent(uuidv4());
                     settFeilmelding(res.frontendFeilmelding);
             }
         };

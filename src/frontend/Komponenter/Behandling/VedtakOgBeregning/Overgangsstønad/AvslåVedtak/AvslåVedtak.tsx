@@ -14,6 +14,7 @@ import AvslåVedtakForm from './AvslåVedtakForm';
 import { Behandlingstype } from '../../../../../App/typer/behandlingstype';
 import { Stønadstype } from '../../../../../App/typer/behandlingstema';
 import { useRedirectEtterLagring } from '../../../../../App/hooks/felles/useRedirectEtterLagring';
+import { v4 as uuidv4 } from 'uuid';
 
 export const AvslåVedtak: React.FC<{
     behandling: Behandling;
@@ -38,7 +39,8 @@ export const AvslåVedtak: React.FC<{
 
     const [laster, settLaster] = useState<boolean>();
     const { hentBehandling, behandlingErRedigerbar } = useBehandling();
-    const { axiosRequest, nullstillIkkePersisterteKomponenter } = useApp();
+    const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
+        useApp();
 
     const lagVedtakRequest = (): IAvslagVedtak => ({
         resultatType: EBehandlingResultat.AVSLÅ,
@@ -63,6 +65,7 @@ export const AvslåVedtak: React.FC<{
                 case RessursStatus.IKKE_HENTET:
                     break;
                 default:
+                    settIkkePersistertKomponent(uuidv4());
                     settFeilmelding(res.frontendFeilmelding);
             }
         };

@@ -235,6 +235,7 @@ export const InnvilgeVedtak: React.FC<{
                     break;
                 default:
                     settFeilmelding(res.frontendFeilmelding);
+                    settIkkePersistertKomponent(uuidv4());
             }
         };
     };

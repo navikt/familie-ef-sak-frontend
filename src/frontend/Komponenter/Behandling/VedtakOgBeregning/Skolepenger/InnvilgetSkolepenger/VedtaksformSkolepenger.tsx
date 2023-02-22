@@ -30,6 +30,7 @@ import OpphørSkolepenger from '../OpphørSkolepenger/OpphørSkolepenger';
 import { BodyShortSmall } from '../../../../../Felles/Visningskomponenter/Tekster';
 import { ARed500 } from '@navikt/ds-tokens/dist/tokens';
 import { useRedirectEtterLagring } from '../../../../../App/hooks/felles/useRedirectEtterLagring';
+import { v4 as uuidv4 } from 'uuid';
 
 export type InnvilgeVedtakForm = {
     skoleårsperioder: ISkoleårsperiodeSkolepenger[];
@@ -116,6 +117,7 @@ export const VedtaksformSkolepenger: React.FC<{
                 case RessursStatus.IKKE_HENTET:
                     break;
                 default:
+                    settIkkePersistertKomponent(uuidv4());
                     settFeilmelding(res.frontendFeilmelding);
             }
         };

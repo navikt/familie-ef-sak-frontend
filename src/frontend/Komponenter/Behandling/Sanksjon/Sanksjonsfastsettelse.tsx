@@ -42,6 +42,7 @@ import { EnsligErrorMessage } from '../../../Felles/ErrorMessage/EnsligErrorMess
 import { Button, Heading } from '@navikt/ds-react';
 import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 import { useRedirectEtterLagring } from '../../../App/hooks/felles/useRedirectEtterLagring';
+import { v4 as uuidv4 } from 'uuid';
 
 export type SanksjonereVedtakForm = ISanksjonereVedtakDto;
 
@@ -137,6 +138,7 @@ const SanksjonsvedtakVisning: FC<{
                 utførRedirect();
                 hentBehandling.rerun();
             } else {
+                settIkkePersistertKomponent(uuidv4());
                 settFeilmelding(res.frontendFeilmelding);
             }
         };

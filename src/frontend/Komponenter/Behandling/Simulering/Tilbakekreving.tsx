@@ -9,6 +9,7 @@ import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 import { Loader } from '@navikt/ds-react';
 import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 import { useRedirectEtterLagring } from '../../../App/hooks/felles/useRedirectEtterLagring';
+import { v4 as uuidv4 } from 'uuid';
 
 export enum ITilbakekrevingsvalg {
     OPPRETT_MED_VARSEL = 'OPPRETT_MED_VARSEL',
@@ -39,7 +40,8 @@ export interface TilbakekrevingProps {
 }
 
 export const Tilbakekreving: React.FC<TilbakekrevingProps> = ({ behandlingId }) => {
-    const { axiosRequest, nullstillIkkePersisterteKomponenter } = useApp();
+    const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
+        useApp();
     const { behandlingErRedigerbar, behandling } = useBehandling();
     const [tilbakekrevingsvalg, settTilbakekrevingsvalg] = useState<ITilbakekrevingsvalg>();
     const [varseltekst, settVarseltekst] = useState<string>('');
@@ -142,6 +144,7 @@ export const Tilbakekreving: React.FC<TilbakekrevingProps> = ({ behandlingId }) 
                     case RessursStatus.IKKE_HENTET:
                         break;
                     default:
+                        settIkkePersistertKomponent(uuidv4());
                         settFeilmelding(response.frontendFeilmelding || 'Noe gikk galt');
                 }
             })

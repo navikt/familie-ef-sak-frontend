@@ -95,7 +95,6 @@ const [AppProvider, useApp] = constate(({ autentisertSaksbehandler, appEnv }: IP
         settIkkePersistertKomponent,
         nullstillIkkePersistertKomponent,
         nullstillIkkePersisterteKomponenter,
-        ikkePersisterteKomponenter,
         ulagretData,
         toast,
         settToast,
