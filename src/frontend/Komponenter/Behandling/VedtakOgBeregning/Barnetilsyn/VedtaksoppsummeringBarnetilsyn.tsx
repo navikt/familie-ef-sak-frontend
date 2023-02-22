@@ -19,13 +19,12 @@ const OppsummeringContainer = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
-    margin-right: 0.5rem;
+    margin: 1rem 2rem 1rem 2rem;
+    gap: 1rem;
     flex-wrap: wrap;
 `;
 
 const Oppsummeringsboks = styled.div`
-    margin: 1rem;
-    margin-right: 0.5rem;
     padding: 1rem;
 `;
 

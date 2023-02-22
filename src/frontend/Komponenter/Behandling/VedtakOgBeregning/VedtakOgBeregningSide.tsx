@@ -14,7 +14,6 @@ import VedtakOgBeregningSkolepenger from './Skolepenger/VedtakOgBeregningSkolepe
 import { VedtaksoppsummeringSkolepenger } from './Skolepenger/VedtaksoppsummeringSkolepenger';
 import { NullstillVedtakModal } from './Felles/NullstillVedtakModal';
 import { NullstillVedtakModalContext } from './NullstillVedtakModalContext';
-import { SaksinformasjonSkolepenger } from './Skolepenger/SaksinformasjonSkolepenger';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 import { SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
 
@@ -121,8 +120,6 @@ const VedtakOgBeregningSideSkolepenger: React.FC<{
     return (
         <>
             <VedtaksoppsummeringSkolepenger vilkår={vilkår} behandling={behandling} />
-            <SaksinformasjonSkolepenger vilkår={vilkår} behandling={behandling} />
-
             {behandling.steg === Steg.VILKÅR ? (
                 <AlertStripeIkkeFerdigBehandletVilkår />
             ) : (

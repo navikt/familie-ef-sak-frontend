@@ -13,23 +13,22 @@ import { Heading } from '@navikt/ds-react';
 import { Behandling } from '../../../../App/typer/fagsak';
 import { Behandlingsårsak } from '../../../../App/typer/Behandlingsårsak';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
-import { ABgSubtle } from '@navikt/ds-tokens/dist/tokens';
+import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
 
 const OppsummeringContainer = styled.div<{ åpenHøyremeny: boolean }>`
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
-    margin-right: 0.5rem;
+    margin: 1rem 2rem 1rem 2rem;
+    gap: 1rem;
     @media only screen and (max-width: ${(p) => (p.åpenHøyremeny ? '1450px' : '1150px')}) {
         flex-wrap: wrap;
     }
 `;
 
 const Oppsummeringsboks = styled.div`
-    margin: 1rem;
-    margin-right: 0.5rem;
     padding: 1rem;
-    background-color: ${ABgSubtle};
+    background-color: ${AGray50};
 `;
 
 export const VedtaksoppsummeringOvergangsstønad: React.FC<{
