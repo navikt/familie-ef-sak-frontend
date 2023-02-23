@@ -127,7 +127,7 @@ const PersonHeaderComponent: FC<{ data: IPersonopplysninger; behandling?: Behand
         fødselsdato,
     } = data;
 
-    const { axiosRequest, erSaksbehandler } = useApp();
+    const { axiosRequest, gåTilUrl, erSaksbehandler } = useApp();
     const [fagsakPersonId, settFagsakPersonId] = useState<string>('');
     const [erMigrert, settErMigrert] = useState(false);
     const [feilFagsakHenting, settFeilFagsakHenting] = useState<string>();
@@ -152,7 +152,7 @@ const PersonHeaderComponent: FC<{ data: IPersonopplysninger; behandling?: Behand
 
             axiosRequest<ISøkPerson, IPersonIdent>({
                 method: 'POST',
-                url: `/familie-ef-sak/api/sok/`,
+                url: `/familie-ef-sak/api/sok`,
                 data: { personIdent: personIdent },
             }).then((respons: RessursSuksess<ISøkPerson> | RessursFeilet) => {
                 if (respons.status === RessursStatus.SUKSESS) {
@@ -179,7 +179,14 @@ const PersonHeaderComponent: FC<{ data: IPersonopplysninger; behandling?: Behand
                 ident={personIdent}
                 kjønn={kjønn}
                 navn={
-                    <ResponsivLenke role={'link'} href={`/person/${fagsakPersonId}`}>
+                    <ResponsivLenke
+                        role={'link'}
+                        href={`/person/${fagsakPersonId}`}
+                        onClick={(e: MouseEvent) => {
+                            e.preventDefault();
+                            gåTilUrl(`/person/${fagsakPersonId}`);
+                        }}
+                    >
                         <Visningsnavn>{visningsnavn}</Visningsnavn>
                     </ResponsivLenke>
                 }

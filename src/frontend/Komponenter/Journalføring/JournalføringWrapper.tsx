@@ -1,29 +1,35 @@
 import React, { FunctionComponent, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useQueryParams } from '../../App/hooks/felles/useQueryParams';
-import { JOURNALPOST_QUERY_STRING, OPPGAVEID_QUERY_STRING } from './journalføringUtil';
+import { JOURNALPOST_QUERY_STRING, OPPGAVEID_QUERY_STRING } from './utils';
 import { useHentJournalpost } from '../../App/hooks/useHentJournalpost';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { IJojurnalpostResponse } from '../../App/typer/journalføring';
 import styled from 'styled-components';
 
-export const SideLayout = styled.div`
-    margin: 0 auto;
-    padding: 2rem;
-`;
+export const SideLayout = styled.div``;
 
 export const Kolonner = styled.div`
-    margin-top: 2rem;
     display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
     flex-wrap: wrap;
+    align-items: stretch;
 `;
 
 export const Venstrekolonne = styled.div`
-    margin-right: 2rem;
+    padding: 1rem 2rem 0 2rem;
+    height: inherit;
+    overflow: auto;
+    @media (min-width: 1225px) {
+        height: calc(100vh - 4rem);
+    }
 `;
-export const Høyrekolonne = styled.div``;
+export const Høyrekolonne = styled.div`
+    display: flex;
+    flex: 1 1 auto;
+    min-width: 450px;
+    height: calc(100vh - 4rem);
+`;
+
 export const FlexKnapper = styled.div`
     margin: 1rem;
     display: flex;

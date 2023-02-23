@@ -103,7 +103,7 @@ const lagEksterneLenker = (
         if (toggles[ToggleName.opprettBehandlingForFerdigstiltJournalpost]) {
             eksterneLenker.push({
                 name: '[Admin] Lag behandling fra journalpost',
-                href: '/admin/ny-behandling-for-ferdigstilt-journalpost/',
+                href: '/admin/ny-behandling-for-ferdigstilt-journalpost',
             });
         }
         eksterneLenker.push({
@@ -117,7 +117,8 @@ const lagEksterneLenker = (
 export const HeaderMedSøk: React.FunctionComponent<IHeaderMedSøkProps> = ({
     innloggetSaksbehandler,
 }) => {
-    const { axiosRequest, appEnv, valgtFagsakId, valgtFagsakPersonId, personIdent } = useApp();
+    const { axiosRequest, gåTilUrl, appEnv, valgtFagsakId, valgtFagsakPersonId, personIdent } =
+        useApp();
     const { toggles } = useToggles();
     const eksterneLenker = useMemo(
         () =>
@@ -144,7 +145,10 @@ export const HeaderMedSøk: React.FunctionComponent<IHeaderMedSøkProps> = ({
     return (
         <Sticky>
             <Header
-                tittelHref={'/'}
+                tittelOnClick={() => {
+                    gåTilUrl('/');
+                }}
+                tittelHref={'#'}
                 tittel="NAV Enslig mor eller far"
                 brukerinfo={{
                     navn: innloggetSaksbehandler?.displayName || 'Ukjent',

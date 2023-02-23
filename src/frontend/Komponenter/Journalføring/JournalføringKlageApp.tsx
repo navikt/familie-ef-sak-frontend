@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { erAvTypeFeil, Ressurs, RessursStatus } from '../../App/typer/ressurs';
 import Brukerinfo from './Brukerinfo';
 import DokumentVisning from './Dokumentvisning';
-import { behandlingstemaTilTekst, Stønadstype } from '../../App/typer/behandlingstema';
+import { Stønadstype } from '../../App/typer/behandlingstema';
 import { useHentDokument } from '../../App/hooks/useHentDokument';
 import { useHentFagsak } from '../../App/hooks/useHentFagsak';
 import { useApp } from '../../App/context/AppContext';
@@ -15,7 +15,7 @@ import {
 import { IJojurnalpostResponse } from '../../App/typer/journalføring';
 import { VelgFagsakForIkkeSøknad } from './VelgFagsakForIkkeSøknad';
 import { AlertError } from '../../Felles/Visningskomponenter/Alerts';
-import { harTittelForAlleDokumenter } from './journalføringUtil';
+import { harTittelForAlleDokumenter, utledKolonneTittel } from './utils';
 import JournalføringWrapper, {
     FlexKnapper,
     Høyrekolonne,
@@ -147,13 +147,11 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
 
     return (
         <SideLayout className={'container'}>
-            <Heading size={'xlarge'} level={'1'}>{`Registrere journalpost for klage ${
-                journalResponse.journalpost.behandlingstema
-                    ? ': ' + behandlingstemaTilTekst[journalResponse.journalpost.behandlingstema]
-                    : ''
-            }`}</Heading>
             <Kolonner>
                 <Venstrekolonne>
+                    <Heading size={'medium'} level={'1'}>
+                        {utledKolonneTittel(journalResponse.journalpost.behandlingstema, 'klage')}
+                    </Heading>
                     {fagsak.status === RessursStatus.SUKSESS && (
                         <ÅpneKlager fagsakPersonId={fagsak.data.fagsakPersonId} />
                     )}

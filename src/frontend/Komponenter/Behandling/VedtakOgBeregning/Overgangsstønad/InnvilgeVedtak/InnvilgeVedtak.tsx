@@ -186,7 +186,7 @@ export const InnvilgeVedtak: React.FC<{
         if (formState.customValidate(validerVedtaksperioder)) {
             axiosRequest<IBeløpsperiode[], IBeregningsrequest>({
                 method: 'POST',
-                url: `/familie-ef-sak/api/beregning/`,
+                url: `/familie-ef-sak/api/beregning`,
                 data: {
                     vedtaksperioder: vedtaksperioder,
                     inntekt: inntektsperioder.map((v) => ({

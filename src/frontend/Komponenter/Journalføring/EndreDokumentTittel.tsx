@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import CreatableSelect from 'react-select/creatable';
-import { dokumentTitler } from './konstanter/dokumenttitler';
+import { dokumentTitler } from './utils';
 import { CSSObjectWithLabel, StylesConfig } from 'react-select';
 import { Button } from '@navikt/ds-react';
 import { ABlue500, ABlue800, ABorderStrong } from '@navikt/ds-tokens/dist/tokens';

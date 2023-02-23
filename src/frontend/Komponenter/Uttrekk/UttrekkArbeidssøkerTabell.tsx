@@ -4,9 +4,9 @@ import AdressebeskyttelseVarsel from '../../Felles/Varsel/AdressebeskyttelseVars
 import { formaterNullableIsoDatoTid, nullableBooleanTilTekst } from '../../App/utils/formatter';
 import { IUttrekkArbeidssøker } from './UttrekkArbeidssøker';
 import styled from 'styled-components';
+import { useApp } from '../../App/context/AppContext';
 import { Button, Link } from '@navikt/ds-react';
 import { SmallTextLabel } from '../../Felles/Visningskomponenter/Tekster';
-import { useNavigate } from 'react-router-dom';
 
 const StyledTable = styled.table`
     width: 70%;
@@ -21,7 +21,7 @@ const UttrekkArbeidssøkerTabell: React.FC<{
     arbeidssøkere: IUttrekkArbeidssøker[];
     settKontrollert: (id: string, kontrollert: boolean) => void;
 }> = ({ arbeidssøkere, settKontrollert }) => {
-    const navigate = useNavigate();
+    const { gåTilUrl } = useApp();
     return (
         <StyledTable className="tabell">
             <thead>
@@ -42,7 +42,7 @@ const UttrekkArbeidssøkerTabell: React.FC<{
                                         href={'#'}
                                         onClick={(e) => {
                                             e.preventDefault();
-                                            navigate(`/fagsak/${arbeidssøker.fagsakId}`);
+                                            gåTilUrl(`/fagsak/${arbeidssøker.fagsakId}`);
                                         }}
                                         style={{ marginRight: '1rem' }}
                                     >

@@ -7,8 +7,7 @@ import { Stønadstype } from '../typer/behandlingstema';
 import {
     lagJournalføringKlageUrl,
     lagJournalføringUrl,
-} from '../../Komponenter/Journalføring/journalføringUtil';
-import { useNavigate } from 'react-router-dom';
+} from '../../Komponenter/Journalføring/utils';
 
 interface OppgaveDto {
     behandlingId: string;
@@ -17,28 +16,29 @@ interface OppgaveDto {
 
 // eslint-disable-next-line
 export const useOppgave = (oppgave: IOppgave) => {
-    const { axiosRequest, innloggetSaksbehandler } = useApp();
-    const navigate = useNavigate();
+    const { gåTilUrl, axiosRequest, innloggetSaksbehandler } = useApp();
     const [feilmelding, settFeilmelding] = useState<string>('');
     const [laster, settLaster] = useState<boolean>(false);
     const { fagsak, hentFagsak } = useHentFagsak();
 
     useEffect(() => {
         if (fagsak.status === RessursStatus.SUKSESS) {
-            navigate(`/person/${fagsak.data.fagsakPersonId}`);
+            gåTilUrl(`/person/${fagsak.data.fagsakPersonId}`);
         } else if (erAvTypeFeil(fagsak)) {
             settFeilmelding(
                 'Henting av fagsak feilet, prøv på nytt. Feil: ' +
                     (fagsak.frontendFeilmelding || fagsak.errorMelding || 'Ukjent feil')
             );
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [fagsak]);
+    }, [fagsak, gåTilUrl]);
 
     const settOppgaveTilSaksbehandler = () => {
         return axiosRequest<string, null>({
             method: 'POST',
             url: `/familie-ef-sak/api/oppgave/${oppgave.id}/fordel?saksbehandler=${innloggetSaksbehandler?.navIdent}`,
+            params: oppgave.versjon && {
+                versjon: oppgave.versjon,
+            },
         }).then((res: RessursSuksess<string> | RessursFeilet) => {
             if (res.status === RessursStatus.SUKSESS) {
                 return Promise.resolve();
@@ -61,12 +61,13 @@ export const useOppgave = (oppgave: IOppgave) => {
                     if (res.status === RessursStatus.SUKSESS) {
                         return resolve(res.data.behandlingId);
                     }
+                    settFeilmelding(res.frontendFeilmelding);
                     return reject(new Error(res.frontendFeilmelding));
                 });
             })
             .then((behandlingId) => {
                 settOppgaveTilSaksbehandler()
-                    .then(() => navigate(`/behandling/${behandlingId}`))
+                    .then(() => gåTilUrl(`/behandling/${behandlingId}`))
                     .catch((error: Error) => {
                         settFeilmelding(error.message);
                     })
@@ -84,7 +85,7 @@ export const useOppgave = (oppgave: IOppgave) => {
         const oppgaveId = oppgave.id || '';
         settOppgaveTilSaksbehandler()
             .then(() =>
-                navigate(
+                gåTilUrl(
                     type === 'klage'
                         ? lagJournalføringKlageUrl(journalpostId, oppgaveId)
                         : lagJournalføringUrl(journalpostId, oppgaveId)
@@ -106,6 +107,24 @@ export const useOppgave = (oppgave: IOppgave) => {
             .finally(() => settLaster(false));
     };
 
+    const tilbakestillFordeling = () => {
+        return axiosRequest<string, null>({
+            method: 'POST',
+            url: `/familie-ef-sak/api/oppgave/${oppgave.id}/tilbakestill`,
+            params: oppgave.versjon && {
+                versjon: oppgave.versjon,
+            },
+        }).then((res: RessursSuksess<string> | RessursFeilet) => {
+            if (res.status === RessursStatus.SUKSESS) {
+                return Promise.resolve();
+            } else {
+                return Promise.reject(
+                    new Error(`Feilet fordeling av oppgave. Feil: ${res.frontendFeilmelding}`)
+                );
+            }
+        });
+    };
+
     return {
         feilmelding,
         settFeilmelding,
@@ -113,5 +132,7 @@ export const useOppgave = (oppgave: IOppgave) => {
         gåTilJournalføring,
         laster,
         plukkOppgaveOgGåTilBehandlingsoversikt,
+        tilbakestillFordeling,
+        settOppgaveTilSaksbehandler,
     };
 };

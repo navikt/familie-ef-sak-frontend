@@ -1,11 +1,12 @@
-import { BodyShort, Label } from '@navikt/ds-react';
+import { Heading } from '@navikt/ds-react';
 import React from 'react';
 import { IJojurnalpostResponse } from '../../App/typer/journalføring';
 import styled from 'styled-components';
-import { lagJournalføringKlageUrl, lagJournalføringUrl } from './journalføringUtil';
+import { lagJournalføringKlageUrl, lagJournalføringUrl } from './utils';
 import { Link } from 'react-router-dom';
 
-const TittelOgLink = styled.div`
+const Container = styled.div`
+    margin-top: 1rem;
     display: flex;
     justify-content: space-between;
 `;
@@ -18,10 +19,14 @@ const JournalpostTittelOgLenke: React.FC<{
     const journalpost = journalResponse.journalpost;
     const journalpostId = journalpost.journalpostId;
     return (
-        <TittelOgLink>
+        <Container>
             <div>
-                <Label>Journalposttittel</Label>
-                <BodyShort>{journalpost.tittel}</BodyShort>
+                <Heading size={'small'} level={'2'}>
+                    Journalposttittel
+                </Heading>
+                <Heading size={'xsmall'} level={'3'}>
+                    {journalpost.tittel}
+                </Heading>
             </div>
             {!journalResponse.harStrukturertSøknad &&
                 (fra === 'klage' ? (
@@ -33,7 +38,7 @@ const JournalpostTittelOgLenke: React.FC<{
                         Journalføringen gjelder en klage
                     </Link>
                 ))}
-        </TittelOgLink>
+        </Container>
     );
 };
 export default JournalpostTittelOgLenke;

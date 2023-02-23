@@ -17,7 +17,7 @@ export const useHentSøkPerson = (): HentSøkPersonResponse => {
             settResponse(byggHenterRessurs());
             axiosRequest<ISøkPerson, IPersonIdent>({
                 method: 'POST',
-                url: `/familie-ef-sak/api/sok/`,
+                url: `/familie-ef-sak/api/sok`,
                 data: { personIdent: personIdent },
             }).then((res: Ressurs<ISøkPerson>) => settResponse(res));
         },
