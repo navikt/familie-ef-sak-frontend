@@ -76,6 +76,10 @@ const AleneomsorgInfo: FC<{
                 harSammeAdresseRegister={registergrunnlag.harSammeAdresse}
                 harSammeAdresseSøknad={søknadsgrunnlag.harSammeAdresse}
                 erBarnetFødt={!!registergrunnlag.fødselsnummer}
+                deltBosted={registergrunnlag.deltBosted}
+                harDeltBostedVedGrunnlagsdataopprettelse={
+                    registergrunnlag.harDeltBostedVedGrunnlagsdataopprettelse
+                }
             />
             {skalViseSøknadsdata && søknadsgrunnlag.skalBoBorHosSøker && (
                 <Informasjonsrad
