@@ -35,7 +35,7 @@ export const OppgaveKnapp: React.FC<{
         gåTilBehandleSakOppgave,
         gåTilJournalføring,
         laster,
-        plukkOppgaveOgGåTilBehandlingsoversikt,
+        hentFagsakOgTriggRedirectTilBehandlingsoversikt,
         tilbakestillFordeling,
         settOppgaveTilSaksbehandler,
         feilmelding,
@@ -47,6 +47,11 @@ export const OppgaveKnapp: React.FC<{
         settFeilmelding(feilmelding);
     }, [feilmelding, settFeilmelding]);
 
+    const tildelOgGåTilOppgaveutførelse = () =>
+        settOppgaveTilSaksbehandler()
+            .then(gåTilOppgaveUtførelse)
+            .catch((e) => settFeilmelding(e.message));
+
     const gåTilOppgaveUtførelse = () => {
         if (oppgaveErSaksbehandling(oppgave)) {
             gåTilBehandleSakOppgave();
@@ -55,7 +60,7 @@ export const OppgaveKnapp: React.FC<{
         } else if (oppgaveKanJournalføres(oppgave)) {
             gåTilJournalføring('stønad');
         } else {
-            plukkOppgaveOgGåTilBehandlingsoversikt(utledetFolkeregisterIdent(oppgave));
+            hentFagsakOgTriggRedirectTilBehandlingsoversikt(utledetFolkeregisterIdent(oppgave));
         }
     };
 
@@ -121,7 +126,7 @@ export const OppgaveKnapp: React.FC<{
                 type={'button'}
                 variant={'secondary'}
                 size={'small'}
-                onClick={gåTilOppgaveUtførelse}
+                onClick={tildelOgGåTilOppgaveutførelse}
                 disabled={laster}
             >
                 Tildel meg
