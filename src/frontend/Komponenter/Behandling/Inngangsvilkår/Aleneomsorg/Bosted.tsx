@@ -22,7 +22,6 @@ const FlexBox = styled.div`
 `;
 
 const InformationIcon = styled(Information)`
-
     &:hover {
         cursor: pointer;
     }
