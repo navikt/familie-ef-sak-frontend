@@ -11,6 +11,8 @@ enum EBehandlingFlettefelt {
     tomdatoInnvilgelseBarnetilsyn = 'tomdatoInnvilgelseBarnetilsyn',
     fomdatoRevurderingBT = 'fomdatoRevurderingBT',
     tomdatoRevurderingBT = 'tomdatoRevurderingBT',
+    belopInntektPlussTiProsentv2 = 'belopInntektPlussTiProsentv2', // Innvilgelse 10% økning
+    belopInntektMinusTiProsentv2 = 'belopInntektMinusTiProsentv2', // Innvilgelse 10% reduksjon
 }
 
 enum EBehandlingValgfelt {
@@ -52,6 +54,20 @@ export const useVerdierForBrev = (
             const fraDato = formaterIsoDato(beløpsperioder[0].periode.fradato);
 
             if (innholderBeløpsperioderForOvergangsstønad(beløpsperioder)) {
+                const inntektsgrunnlag =
+                    beløpsperioder[beløpsperioder.length - 1].beregningsgrunnlag.inntekt;
+
+                const tiProsentØkning = inntektsgrunnlag * 1.1;
+                const tiProsentReduksjon = inntektsgrunnlag * 0.9;
+
+                settFlettefeltStore((prevState) => ({
+                    ...prevState,
+                    [EBehandlingFlettefelt.belopInntektPlussTiProsentv2]:
+                        tiProsentØkning.toString(),
+                    [EBehandlingFlettefelt.belopInntektMinusTiProsentv2]:
+                        tiProsentReduksjon.toString(),
+                }));
+
                 settValgfeltStore((prevState) => ({
                     ...prevState,
                     [EBehandlingValgfelt.avslutningHjemmel]: harSamordningsfradrag(beløpsperioder)
