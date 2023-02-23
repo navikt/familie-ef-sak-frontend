@@ -21,7 +21,6 @@ export const useOppgave = (oppgave: IOppgave) => {
     const { fagsak, hentFagsak } = useHentFagsak();
 
     const settOppgaveTilSaksbehandler = () => {
-        if (laster) return;
         settLaster(true);
         return axiosRequest<string, null>({
             method: 'POST',
@@ -94,7 +93,6 @@ export const useOppgave = (oppgave: IOppgave) => {
     }, [fagsak, gåTilUrl]);
 
     const tilbakestillFordeling = () => {
-        if (laster) return;
         settLaster(true);
         return axiosRequest<string, null>({
             method: 'POST',
