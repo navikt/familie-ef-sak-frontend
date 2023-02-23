@@ -14,43 +14,35 @@ interface OppgaveDto {
     gsakId: string;
 }
 
-// eslint-disable-next-line
 export const useOppgave = (oppgave: IOppgave) => {
     const { gåTilUrl, axiosRequest, innloggetSaksbehandler } = useApp();
     const [feilmelding, settFeilmelding] = useState<string>('');
     const [laster, settLaster] = useState<boolean>(false);
     const { fagsak, hentFagsak } = useHentFagsak();
 
-    useEffect(() => {
-        if (fagsak.status === RessursStatus.SUKSESS) {
-            gåTilUrl(`/person/${fagsak.data.fagsakPersonId}`);
-        } else if (erAvTypeFeil(fagsak)) {
-            settFeilmelding(
-                'Henting av fagsak feilet, prøv på nytt. Feil: ' +
-                    (fagsak.frontendFeilmelding || fagsak.errorMelding || 'Ukjent feil')
-            );
-        }
-    }, [fagsak, gåTilUrl]);
-
     const settOppgaveTilSaksbehandler = () => {
+        settLaster(true);
         return axiosRequest<string, null>({
             method: 'POST',
             url: `/familie-ef-sak/api/oppgave/${oppgave.id}/fordel?saksbehandler=${innloggetSaksbehandler?.navIdent}`,
             params: oppgave.versjon && {
                 versjon: oppgave.versjon,
             },
-        }).then((res: RessursSuksess<string> | RessursFeilet) => {
-            if (res.status === RessursStatus.SUKSESS) {
-                return Promise.resolve();
-            } else {
-                return Promise.reject(
-                    new Error(`Feilet fordeling av oppgave. Feil: ${res.frontendFeilmelding}`)
-                );
-            }
-        });
+        })
+            .then((res: RessursSuksess<string> | RessursFeilet) => {
+                if (res.status === RessursStatus.SUKSESS) {
+                    return Promise.resolve();
+                } else {
+                    return Promise.reject(
+                        new Error(`Feilet fordeling av oppgave. Feil: ${res.frontendFeilmelding}`)
+                    );
+                }
+            })
+            .finally(() => settLaster(false));
     };
 
     const gåTilBehandleSakOppgave = () => {
+        if (laster) return;
         settLaster(true);
         axiosRequest<OppgaveDto, { oppgaveId: string }>({
             method: 'GET',
@@ -66,12 +58,7 @@ export const useOppgave = (oppgave: IOppgave) => {
                 });
             })
             .then((behandlingId) => {
-                settOppgaveTilSaksbehandler()
-                    .then(() => gåTilUrl(`/behandling/${behandlingId}`))
-                    .catch((error: Error) => {
-                        settFeilmelding(error.message);
-                    })
-                    .finally(() => settLaster(false));
+                gåTilUrl(`/behandling/${behandlingId}`);
             })
             .catch((error: Error) => {
                 settFeilmelding(error.message);
@@ -80,49 +67,50 @@ export const useOppgave = (oppgave: IOppgave) => {
     };
 
     const gåTilJournalføring = (type: 'klage' | 'stønad') => {
-        settLaster(true);
         const journalpostId = oppgave.journalpostId || '';
         const oppgaveId = oppgave.id || '';
-        settOppgaveTilSaksbehandler()
-            .then(() =>
-                gåTilUrl(
-                    type === 'klage'
-                        ? lagJournalføringKlageUrl(journalpostId, oppgaveId)
-                        : lagJournalføringUrl(journalpostId, oppgaveId)
-                )
-            )
-            .catch((error: Error) => {
-                settFeilmelding(error.message);
-            })
-            .finally(() => settLaster(false));
+
+        gåTilUrl(
+            type === 'klage'
+                ? lagJournalføringKlageUrl(journalpostId, oppgaveId)
+                : lagJournalføringUrl(journalpostId, oppgaveId)
+        );
     };
 
-    const plukkOppgaveOgGåTilBehandlingsoversikt = (personIdent: string) => {
-        settLaster(true);
-        settOppgaveTilSaksbehandler()
-            .then(() => hentFagsak(personIdent, Stønadstype.OVERGANGSSTØNAD)) //TODO: Når vi får behandlingstema på tilbakekrevingsoppgaver vi bruke behandlingstema til å sjekke stønadstype
-            .catch((error: Error) => {
-                settFeilmelding(error.message);
-            })
-            .finally(() => settLaster(false));
+    const hentFagsakOgTriggRedirectTilBehandlingsoversikt = (personIdent: string) => {
+        hentFagsak(personIdent, Stønadstype.OVERGANGSSTØNAD); //TODO: Når vi får behandlingstema på tilbakekrevingsoppgaver vi bruke behandlingstema til å sjekke stønadstype
     };
+
+    useEffect(() => {
+        if (fagsak.status === RessursStatus.SUKSESS) {
+            gåTilUrl(`/person/${fagsak.data.fagsakPersonId}`);
+        } else if (erAvTypeFeil(fagsak)) {
+            settFeilmelding(
+                'Henting av fagsak feilet, prøv på nytt. Feil: ' +
+                    (fagsak.frontendFeilmelding || fagsak.errorMelding || 'Ukjent feil')
+            );
+        }
+    }, [fagsak, gåTilUrl]);
 
     const tilbakestillFordeling = () => {
+        settLaster(true);
         return axiosRequest<string, null>({
             method: 'POST',
             url: `/familie-ef-sak/api/oppgave/${oppgave.id}/tilbakestill`,
             params: oppgave.versjon && {
                 versjon: oppgave.versjon,
             },
-        }).then((res: RessursSuksess<string> | RessursFeilet) => {
-            if (res.status === RessursStatus.SUKSESS) {
-                return Promise.resolve();
-            } else {
-                return Promise.reject(
-                    new Error(`Feilet fordeling av oppgave. Feil: ${res.frontendFeilmelding}`)
-                );
-            }
-        });
+        })
+            .then((res: RessursSuksess<string> | RessursFeilet) => {
+                if (res.status === RessursStatus.SUKSESS) {
+                    return Promise.resolve();
+                } else {
+                    return Promise.reject(
+                        new Error(`Feilet fordeling av oppgave. Feil: ${res.frontendFeilmelding}`)
+                    );
+                }
+            })
+            .finally(() => settLaster(false));
     };
 
     return {
@@ -131,7 +119,7 @@ export const useOppgave = (oppgave: IOppgave) => {
         gåTilBehandleSakOppgave,
         gåTilJournalføring,
         laster,
-        plukkOppgaveOgGåTilBehandlingsoversikt,
+        hentFagsakOgTriggRedirectTilBehandlingsoversikt,
         tilbakestillFordeling,
         settOppgaveTilSaksbehandler,
     };
