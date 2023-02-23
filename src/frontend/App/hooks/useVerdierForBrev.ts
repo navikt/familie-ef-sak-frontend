@@ -1,6 +1,14 @@
 import { useEffect, useState } from 'react';
 import { formaterIsoDato } from '../utils/formatter';
-import { IBeløpsperiode, IBeregningsperiodeBarnetilsyn } from '../typer/vedtak';
+import {
+    EAvslagÅrsak,
+    EBehandlingResultat,
+    IBeløpsperiode,
+    IBeregningsperiodeBarnetilsyn,
+} from '../typer/vedtak';
+import { useHentVedtak } from './useHentVedtak';
+import { RessursStatus } from '../typer/ressurs';
+import { useHentForrigeInntektsgrunnlag } from './useHentForrigeInntektsgrunnlag';
 
 enum EBehandlingFlettefelt {
     fomdatoInnvilgelseForstegangsbehandling = 'fomdatoInnvilgelseForstegangsbehandling',
@@ -13,6 +21,9 @@ enum EBehandlingFlettefelt {
     tomdatoRevurderingBT = 'tomdatoRevurderingBT',
     belopInntektPlussTiProsentv2 = 'belopInntektPlussTiProsentv2', // Innvilgelse 10% økning
     belopInntektMinusTiProsentv2 = 'belopInntektMinusTiProsentv2', // Innvilgelse 10% reduksjon
+    navarendeArsinntekt = 'navarendeArsinntekt', // Avslag nåværende inntekt
+    manedsinntektTiProsentOkning = 'manedsinntektTiProsentOkning', // Avslag 10% økning
+    manedsinntektTiProsentReduksjon = 'manedsinntektTiProsentReduksjon', // Avslag 10% reduksjon
 }
 
 enum EBehandlingValgfelt {
@@ -36,7 +47,8 @@ export type ValgfeltStore = {
 };
 
 export const useVerdierForBrev = (
-    beløpsperioder: IBeløpsperiode[] | IBeregningsperiodeBarnetilsyn[] | undefined
+    beløpsperioder: IBeløpsperiode[] | IBeregningsperiodeBarnetilsyn[] | undefined,
+    behandlingId: string
 ): {
     flettefeltStore: FlettefeltStore;
     valgfeltStore: ValgfeltStore;
@@ -45,6 +57,9 @@ export const useVerdierForBrev = (
     const [flettefeltStore, settFlettefeltStore] = useState<FlettefeltStore>({});
     const [valgfeltStore, settValgfeltStore] = useState<ValgfeltStore>({});
     const [delmalStore, settDelmalStore] = useState<DelmalStore>([]);
+    const { hentVedtak, vedtak } = useHentVedtak(behandlingId);
+    const { forrigeInntektsgrunnlag, hentForrigeInntektsgrunnlag } =
+        useHentForrigeInntektsgrunnlag(behandlingId);
 
     useEffect(() => {
         if (beløpsperioder && beløpsperioder.length > 0) {
@@ -95,6 +110,39 @@ export const useVerdierForBrev = (
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [beløpsperioder]);
+
+    useEffect(() => {
+        hentVedtak();
+    }, [hentVedtak]);
+
+    useEffect(() => {
+        if (
+            vedtak.status === RessursStatus.SUKSESS &&
+            vedtak.data?.resultatType === EBehandlingResultat.AVSLÅ &&
+            vedtak.data.avslåÅrsak === EAvslagÅrsak.MINDRE_INNTEKTSENDRINGER
+        ) {
+            hentForrigeInntektsgrunnlag();
+        }
+    }, [vedtak, hentForrigeInntektsgrunnlag]);
+
+    useEffect(() => {
+        if (
+            forrigeInntektsgrunnlag.status === RessursStatus.SUKSESS &&
+            forrigeInntektsgrunnlag.data
+        ) {
+            const nåværendeInntekt = forrigeInntektsgrunnlag.data;
+            const tiProsentØkning = nåværendeInntekt * 1.1;
+            const tiProsentReduksjon = nåværendeInntekt * 0.9;
+
+            settFlettefeltStore((prevState) => ({
+                ...prevState,
+                [EBehandlingFlettefelt.navarendeArsinntekt]: nåværendeInntekt.toString(),
+                [EBehandlingFlettefelt.manedsinntektTiProsentOkning]: tiProsentØkning.toString(),
+                [EBehandlingFlettefelt.manedsinntektTiProsentReduksjon]:
+                    tiProsentReduksjon.toString(),
+            }));
+        }
+    }, [forrigeInntektsgrunnlag]);
 
     return { flettefeltStore, valgfeltStore, delmalStore };
 };
