@@ -14,7 +14,6 @@ interface OppgaveDto {
     gsakId: string;
 }
 
-// eslint-disable-next-line
 export const useOppgave = (oppgave: IOppgave) => {
     const { gåTilUrl, axiosRequest, innloggetSaksbehandler } = useApp();
     const [feilmelding, settFeilmelding] = useState<string>('');
@@ -22,24 +21,29 @@ export const useOppgave = (oppgave: IOppgave) => {
     const { fagsak, hentFagsak } = useHentFagsak();
 
     const settOppgaveTilSaksbehandler = () => {
+        if (laster) return;
+        settLaster(true);
         return axiosRequest<string, null>({
             method: 'POST',
             url: `/familie-ef-sak/api/oppgave/${oppgave.id}/fordel?saksbehandler=${innloggetSaksbehandler?.navIdent}`,
             params: oppgave.versjon && {
                 versjon: oppgave.versjon,
             },
-        }).then((res: RessursSuksess<string> | RessursFeilet) => {
-            if (res.status === RessursStatus.SUKSESS) {
-                return Promise.resolve();
-            } else {
-                return Promise.reject(
-                    new Error(`Feilet fordeling av oppgave. Feil: ${res.frontendFeilmelding}`)
-                );
-            }
-        });
+        })
+            .then((res: RessursSuksess<string> | RessursFeilet) => {
+                if (res.status === RessursStatus.SUKSESS) {
+                    return Promise.resolve();
+                } else {
+                    return Promise.reject(
+                        new Error(`Feilet fordeling av oppgave. Feil: ${res.frontendFeilmelding}`)
+                    );
+                }
+            })
+            .finally(() => settLaster(false));
     };
 
     const gåTilBehandleSakOppgave = () => {
+        if (laster) return;
         settLaster(true);
         axiosRequest<OppgaveDto, { oppgaveId: string }>({
             method: 'GET',
@@ -90,21 +94,25 @@ export const useOppgave = (oppgave: IOppgave) => {
     }, [fagsak, gåTilUrl]);
 
     const tilbakestillFordeling = () => {
+        if (laster) return;
+        settLaster(true);
         return axiosRequest<string, null>({
             method: 'POST',
             url: `/familie-ef-sak/api/oppgave/${oppgave.id}/tilbakestill`,
             params: oppgave.versjon && {
                 versjon: oppgave.versjon,
             },
-        }).then((res: RessursSuksess<string> | RessursFeilet) => {
-            if (res.status === RessursStatus.SUKSESS) {
-                return Promise.resolve();
-            } else {
-                return Promise.reject(
-                    new Error(`Feilet fordeling av oppgave. Feil: ${res.frontendFeilmelding}`)
-                );
-            }
-        });
+        })
+            .then((res: RessursSuksess<string> | RessursFeilet) => {
+                if (res.status === RessursStatus.SUKSESS) {
+                    return Promise.resolve();
+                } else {
+                    return Promise.reject(
+                        new Error(`Feilet fordeling av oppgave. Feil: ${res.frontendFeilmelding}`)
+                    );
+                }
+            })
+            .finally(() => settLaster(false));
     };
 
     return {
