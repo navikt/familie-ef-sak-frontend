@@ -37,7 +37,8 @@ export const useHentBeløpsperioder = (
         (vedtaksresultat: EBehandlingResultat | undefined) => {
             if (
                 harVedtaksresultatMedTilkjentYtelse(vedtaksresultat) &&
-                vedtaksresultat != EBehandlingResultat.OPPHØRT
+                vedtaksresultat != EBehandlingResultat.OPPHØRT &&
+                vedtaksresultat != EBehandlingResultat.SANKSJONERE
             ) {
                 const behandlingConfig: AxiosRequestConfig = {
                     method: 'GET',
