@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { formaterIsoDato } from '../utils/formatter';
+import { formaterIsoDato, formaterTallMedTusenSkille } from '../utils/formatter';
 import {
     EAvslagÅrsak,
     EBehandlingResultat,
@@ -83,10 +83,8 @@ export const useVerdierForBrev = (
                 const inntektsgrunnlag =
                     beløpsperioder[beløpsperioder.length - 1].beregningsgrunnlag.inntekt;
 
-                const tiProsentØkning =
-                    beregnTiProsentØkningIMånedsinntekt(inntektsgrunnlag).toString();
-                const tiProsentReduksjon =
-                    beregnTiProsentReduksjonIMånedsinntekt(inntektsgrunnlag).toString();
+                const tiProsentØkning = beregnTiProsentØkningIMånedsinntekt(inntektsgrunnlag);
+                const tiProsentReduksjon = beregnTiProsentReduksjonIMånedsinntekt(inntektsgrunnlag);
 
                 settFlettefeltStore((prevState) => ({
                     ...prevState,
@@ -155,7 +153,7 @@ const innholderBeløpsperioderForOvergangsstønad = (
 };
 
 export const beregnTiProsentØkningIMånedsinntekt = (årsinntekt: number) =>
-    Math.floor((årsinntekt / 12) * 1.1);
+    formaterTallMedTusenSkille(Math.floor((årsinntekt / 12) * 1.1));
 
 export const beregnTiProsentReduksjonIMånedsinntekt = (årsinntekt: number) =>
-    Math.floor((årsinntekt / 12) * 0.9);
+    formaterTallMedTusenSkille(Math.floor((årsinntekt / 12) * 0.9));

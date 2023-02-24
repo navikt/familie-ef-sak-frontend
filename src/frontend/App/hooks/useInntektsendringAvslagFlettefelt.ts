@@ -13,6 +13,7 @@ import {
     IVedtakForOvergangsstønad,
     IVedtakType,
 } from '../typer/vedtak';
+import { formaterTallMedTusenSkille } from '../utils/formatter';
 
 export const useInntektsendringAvslagFlettefelt = (
     forrigeBehandlingId: string | undefined,
@@ -44,11 +45,10 @@ export const useInntektsendringAvslagFlettefelt = (
 
                         leggTilNyeFlettefelt({
                             [EBehandlingFlettefelt.navarendeArsinntekt]:
-                                nåværendeInntekt.toString(),
-                            [EBehandlingFlettefelt.manedsinntektTiProsentOkning]:
-                                tiProsentØkning.toString(),
+                                formaterTallMedTusenSkille(nåværendeInntekt),
+                            [EBehandlingFlettefelt.manedsinntektTiProsentOkning]: tiProsentØkning,
                             [EBehandlingFlettefelt.manedsinntektTiProsentReduksjon]:
-                                tiProsentReduksjon.toString(),
+                                tiProsentReduksjon,
                         });
                     }
                 }
