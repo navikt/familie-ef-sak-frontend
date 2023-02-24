@@ -10,6 +10,7 @@ import { Button, Heading, HelpText } from '@navikt/ds-react';
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
 import { NullstillVedtakModalContext } from './NullstillVedtakModalContext';
 import { EnsligFamilieSelect } from '../../../../Felles/Input/EnsligFamilieSelect';
+import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
 
 interface Props {
     behandling: Behandling;
@@ -40,6 +41,11 @@ const HjelpeTekst = styled(HelpText)`
     margin-left: 1rem;
 `;
 
+const Container = styled.section`
+    padding: 1rem;
+    background-color: ${AGray50};
+`;
+
 const SelectVedtaksresultat = (props: Props): JSX.Element => {
     const { behandlingErRedigerbar } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
@@ -52,8 +58,8 @@ const SelectVedtaksresultat = (props: Props): JSX.Element => {
     const { settVisNullstillVedtakModal } = useContext(NullstillVedtakModalContext);
 
     return (
-        <section>
-            <Heading spacing size="small" level="5">
+        <Container>
+            <Heading spacing size="small">
                 Vedtaksresultat
             </Heading>
             <FlexDiv>
@@ -122,7 +128,7 @@ const SelectVedtaksresultat = (props: Props): JSX.Element => {
                     </Button>
                 )}
             </FlexDiv>
-        </section>
+        </Container>
     );
 };
 

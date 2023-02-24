@@ -24,20 +24,10 @@ import { EnsligErrorMessage } from '../../../../../Felles/ErrorMessage/EnsligErr
 import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 import { TextLabel } from '../../../../../Felles/Visningskomponenter/Tekster';
 
-const InntektContainer = styled.div<{ lesevisning?: boolean }>`
+const Grid = styled.div<{ lesevisning?: boolean }>`
     display: grid;
-    grid-template-area: fraOgMedVelger inntekt samordningsfradrag samordningsfradragstype fjernRadKnapp leggTilKnapp;
     grid-template-columns: ${(props) =>
         props.lesevisning ? '8rem 11rem 13.5rem 13rem' : '13rem 12rem 12rem 12rem 3rem 3rem'};
-    grid-gap: 1rem;
-    margin-bottom: 0.5rem;
-`;
-
-const TittelContainer = styled.div<{ lesevisning?: boolean }>`
-    display: grid;
-    grid-template-area: fraOgMedVelger inntekt samordningsfradrag samordningsfradragstype;
-    grid-template-columns: ${(props) =>
-        props.lesevisning ? '8rem 11rem 13.5rem 13rem' : '13rem 12rem 12rem 12rem 4rem'};
     grid-gap: 1rem;
     margin-bottom: 0.5rem;
 `;
@@ -51,28 +41,24 @@ export const tomInntektsperiodeRad = (årMånedFra?: string): IInntektsperiode =
     endretKey: uuidv4(),
 });
 
-const KnappWrapper = styled.div`
-    button {
-        width: 3rem;
-    }
-`;
-
 interface Props {
+    className?: string;
     inntektsperiodeListe: ListState<IInntektsperiode>;
-    valideringsfeil?: FormErrors<InnvilgeVedtakForm>['inntekter'];
-    setValideringsFeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>;
     samordningsfradragstype: FieldState;
-    skalVelgeSamordningstype: boolean;
     samordningValideringsfeil?: FormErrors<InnvilgeVedtakForm>['samordningsfradragType'];
+    setValideringsFeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>;
+    skalVelgeSamordningstype: boolean;
+    valideringsfeil?: FormErrors<InnvilgeVedtakForm>['inntekter'];
 }
 
 const InntektsperiodeValg: React.FC<Props> = ({
+    className,
     inntektsperiodeListe,
-    valideringsfeil,
-    setValideringsFeil,
     samordningsfradragstype,
-    skalVelgeSamordningstype,
     samordningValideringsfeil,
+    setValideringsFeil,
+    skalVelgeSamordningstype,
+    valideringsfeil,
 }) => {
     const { behandlingErRedigerbar } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
@@ -98,20 +84,20 @@ const InntektsperiodeValg: React.FC<Props> = ({
     };
 
     return (
-        <>
-            <TittelContainer lesevisning={!behandlingErRedigerbar}>
+        <div className={className}>
+            <Grid lesevisning={!behandlingErRedigerbar}>
                 <TextLabel>Fra</TextLabel>
                 <TextLabel>Forventet inntekt (år)</TextLabel>
                 <TextLabel>Samordningsfradrag (mnd)</TextLabel>
                 <TextLabel>Type samordningsfradrag</TextLabel>
-            </TittelContainer>
+            </Grid>
             {inntektsperiodeListe.value.map((rad, index) => {
                 const skalViseFjernKnapp =
                     behandlingErRedigerbar &&
                     index !== 0 &&
                     (skalViseLeggTilKnapp || index === inntektsperiodeListe.value.length - 1);
                 return (
-                    <InntektContainer key={rad.endretKey} lesevisning={!behandlingErRedigerbar}>
+                    <Grid key={rad.endretKey} lesevisning={!behandlingErRedigerbar}>
                         <MånedÅrVelger
                             disabled={index === 0}
                             feilmelding={valideringsfeil && valideringsfeil[index]?.årMånedFra}
@@ -192,39 +178,35 @@ const InntektsperiodeValg: React.FC<Props> = ({
                             </EnsligFamilieSelect>
                             <EnsligErrorMessage>{samordningValideringsfeil}</EnsligErrorMessage>
                         </div>
-                        {skalViseFjernKnapp ? (
-                            <KnappWrapper>
-                                <FjernKnapp
+                        {skalViseLeggTilKnapp && (
+                            <Tooltip content="Legg til rad under" placement="right">
+                                <LeggTilKnapp
                                     onClick={() => {
-                                        inntektsperiodeListe.remove(index);
-                                        setValideringsFeil(
-                                            (prevState: FormErrors<InnvilgeVedtakForm>) => {
-                                                const inntekter = (
-                                                    prevState.inntekter ?? []
-                                                ).filter((_, i) => i !== index);
-                                                return { ...prevState, inntekter };
-                                            }
-                                        );
+                                        leggTilTomRadUnder(index);
                                     }}
-                                    ikontekst={'Fjern inntektsperiode'}
+                                    ikontekst={'Legg til ny rad'}
                                 />
-                            </KnappWrapper>
+                            </Tooltip>
+                        )}
+                        {skalViseFjernKnapp ? (
+                            <FjernKnapp
+                                onClick={() => {
+                                    inntektsperiodeListe.remove(index);
+                                    setValideringsFeil(
+                                        (prevState: FormErrors<InnvilgeVedtakForm>) => {
+                                            const inntekter = (prevState.inntekter ?? []).filter(
+                                                (_, i) => i !== index
+                                            );
+                                            return { ...prevState, inntekter };
+                                        }
+                                    );
+                                }}
+                                ikontekst={'Fjern inntektsperiode'}
+                            />
                         ) : (
                             <div />
                         )}
-                        {skalViseLeggTilKnapp && (
-                            <Tooltip content="Legg til rad under" placement="right">
-                                <KnappWrapper>
-                                    <LeggTilKnapp
-                                        onClick={() => {
-                                            leggTilTomRadUnder(index);
-                                        }}
-                                        ikontekst={'Legg til ny rad'}
-                                    />
-                                </KnappWrapper>
-                            </Tooltip>
-                        )}
-                    </InntektContainer>
+                    </Grid>
                 );
             })}
             {behandlingErRedigerbar && (
@@ -233,7 +215,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                     knappetekst=" Legg til inntektsperiode"
                 />
             )}
-        </>
+        </div>
     );
 };
 

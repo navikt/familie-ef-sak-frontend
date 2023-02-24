@@ -25,9 +25,8 @@ import {
     SlettSanksjonsperiodeModal,
 } from '../../Felles/SlettSanksjonsperiodeModal';
 
-const VedtakPeriodeContainer = styled.div<{ lesevisning?: boolean }>`
+const Grid = styled.div<{ lesevisning?: boolean }>`
     display: grid;
-    grid-template-areas: 'periodetype aktivitetstype fraOgMedVelger tilOgMedVelger antallMåneder fjernknapp leggTilKnapp';
     grid-template-columns: ${(props) =>
         props.lesevisning
             ? '9rem 10rem 8rem 8rem 7rem'
@@ -36,30 +35,16 @@ const VedtakPeriodeContainer = styled.div<{ lesevisning?: boolean }>`
     margin-bottom: 0.5rem;
 `;
 
-const KolonneHeaderWrapper = styled.div<{ lesevisning?: boolean }>`
-    display: grid;
-    grid-template-areas: 'periodetype aktivitetstype fraOgMedVelger tilOgMedVelger';
-    grid-template-columns: ${(props) =>
-        props.lesevisning ? '9rem 10rem 8rem 8rem 7rem' : '12rem 12rem 14rem 14rem 4rem'};
-    grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
-    margin-bottom: 0.5rem;
-`;
-
-const KnappWrapper = styled.div`
-    button {
-        width: 3rem;
-    }
-`;
-
 const StyledLeggTilKnapp = styled(LeggTilKnapp)`
     margin-top: 0.5rem;
 `;
 
 interface Props {
-    vedtaksperiodeListe: ListState<IVedtaksperiode>;
-    valideringsfeil?: FormErrors<InnvilgeVedtakForm>['perioder'];
+    className?: string;
     setValideringsFeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>;
     låsVedtaksperiodeRad?: boolean;
+    valideringsfeil?: FormErrors<InnvilgeVedtakForm>['perioder'];
+    vedtaksperiodeListe: ListState<IVedtaksperiode>;
 }
 
 export const tomVedtaksperiodeRad = (årMånedFra?: string): IVedtaksperiode => ({
@@ -70,10 +55,11 @@ export const tomVedtaksperiodeRad = (årMånedFra?: string): IVedtaksperiode => 
 });
 
 const VedtaksperiodeValg: React.FC<Props> = ({
-    vedtaksperiodeListe,
-    valideringsfeil,
-    setValideringsFeil,
+    className,
     låsVedtaksperiodeRad,
+    setValideringsFeil,
+    valideringsfeil,
+    vedtaksperiodeListe,
 }) => {
     const { behandlingErRedigerbar } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
@@ -152,22 +138,19 @@ const VedtaksperiodeValg: React.FC<Props> = ({
     };
 
     return (
-        <>
-            <KolonneHeaderWrapper lesevisning={!behandlingErRedigerbar}>
+        <div className={className}>
+            <Grid lesevisning={!behandlingErRedigerbar}>
                 <Label>Periodetype</Label>
                 <Label>Aktivitet</Label>
                 <Label>Fra og med</Label>
                 <Label>Til og med</Label>
-            </KolonneHeaderWrapper>
+            </Grid>
             {vedtaksperiodeListe.value.map((vedtaksperiode, index) => {
                 const { periodeType, aktivitet, årMånedFra, årMånedTil } = vedtaksperiode;
                 const antallMåneder = kalkulerAntallMåneder(årMånedFra, årMånedTil);
                 const skalViseFjernKnapp = behandlingErRedigerbar && index !== 0;
                 return (
-                    <VedtakPeriodeContainer
-                        key={vedtaksperiode.endretKey}
-                        lesevisning={!behandlingErRedigerbar}
-                    >
+                    <Grid key={vedtaksperiode.endretKey} lesevisning={!behandlingErRedigerbar}>
                         <VedtakperiodeSelect
                             feil={valideringsfeil && valideringsfeil[index]?.periodeType}
                             oppdaterVedtakslisteElement={(property, value) =>
@@ -205,29 +188,25 @@ const VedtaksperiodeValg: React.FC<Props> = ({
                         <Label style={{ marginTop: behandlingErRedigerbar ? '0.65rem' : 0 }}>
                             {antallMåneder && `${antallMåneder} mnd`}
                         </Label>
-                        {skalViseFjernKnapp ? (
-                            <KnappWrapper>
-                                <FjernKnapp
-                                    onClick={() => slettPeriodeModalHvisSanksjon(index)}
-                                    ikontekst={'Fjern vedtaksperiode'}
+                        {behandlingErRedigerbar && (
+                            <Tooltip content="Legg til rad under" placement="right">
+                                <LeggTilKnapp
+                                    onClick={() => {
+                                        leggTilTomRadUnder(index);
+                                    }}
+                                    ikontekst={'Legg til ny rad'}
                                 />
-                            </KnappWrapper>
+                            </Tooltip>
+                        )}
+                        {skalViseFjernKnapp ? (
+                            <FjernKnapp
+                                onClick={() => slettPeriodeModalHvisSanksjon(index)}
+                                ikontekst={'Fjern vedtaksperiode'}
+                            />
                         ) : (
                             <div />
                         )}
-                        {behandlingErRedigerbar && (
-                            <Tooltip content="Legg til rad under" placement="right">
-                                <KnappWrapper>
-                                    <LeggTilKnapp
-                                        onClick={() => {
-                                            leggTilTomRadUnder(index);
-                                        }}
-                                        ikontekst={'Legg til ny rad'}
-                                    />
-                                </KnappWrapper>
-                            </Tooltip>
-                        )}
-                    </VedtakPeriodeContainer>
+                    </Grid>
                 );
             })}
             {behandlingErRedigerbar && (
@@ -241,7 +220,7 @@ const VedtaksperiodeValg: React.FC<Props> = ({
                 slettPeriode={slettPeriode}
                 lukkModal={lukkSanksjonsmodal}
             />
-        </>
+        </div>
     );
 };
 
