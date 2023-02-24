@@ -8,19 +8,19 @@ import Info from './Info';
 export const VilkårsresultatIkon: FC<{
     vilkårsresultat: Vilkårsresultat;
     className?: string;
-    heigth?: number;
+    height?: number;
     width?: number;
-}> = ({ vilkårsresultat, className, heigth = 23, width = 21 }) => {
+}> = ({ vilkårsresultat, className, height = 23, width = 21 }) => {
     switch (vilkårsresultat) {
         case Vilkårsresultat.IKKE_TATT_STILLING_TIL:
-            return <IkkeVurdert className={className} heigth={heigth} width={width} />;
+            return <IkkeVurdert className={className} height={height} width={width} />;
         case Vilkårsresultat.OPPFYLT:
         case Vilkårsresultat.AUTOMATISK_OPPFYLT:
-            return <Oppfylt className={className} heigth={heigth} width={width} />;
+            return <Oppfylt className={className} height={height} width={width} />;
         case Vilkårsresultat.IKKE_OPPFYLT:
-            return <IkkeOppfylt className={className} heigth={heigth} width={width} />;
+            return <IkkeOppfylt className={className} height={height} width={width} />;
         case Vilkårsresultat.SKAL_IKKE_VURDERES:
-            return <Info heigth={heigth} width={width} />;
+            return <Info className={className} height={height} width={width} />;
         default:
             return null;
     }

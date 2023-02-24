@@ -158,7 +158,7 @@ const SendtTilBeslutter: React.FC<{
                 Totrinnskontroll
             </Heading>
             <div className="ikon-med-tekst">
-                <Info heigth={20} width={20} />
+                <Info height={20} width={20} />
                 <SmallTextLabel>Vedtaket er sendt til godkjenning</SmallTextLabel>
             </div>
             <div>
