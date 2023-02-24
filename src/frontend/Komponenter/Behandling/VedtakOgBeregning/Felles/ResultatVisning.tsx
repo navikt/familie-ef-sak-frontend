@@ -11,12 +11,14 @@ import { VilkårsresultatIkon } from '../../../../Felles/Ikoner/Vilkårsresultat
 import { Label } from '@navikt/ds-react';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 
-const Ikontekst = styled(BodyShortSmall)`
-    margin-left: 0.25rem;
+const FlexBox = styled.div`
+    display: flex;
+    gap: 0.25rem;
 `;
 
-const ResultatIkonOgTekstWrapper = styled.div`
-    display: flex;
+const ResultatIkon = styled(VilkårsresultatIkon)`
+    min-width: 21px;
+    min-height: 23px;
 `;
 
 const ResultatGrid = styled.div`
@@ -45,14 +47,12 @@ export const ResultatVisning: React.FC<{
                 .map(([vilkårsresultat, antallVilkårsresultat], i) => (
                     <ResultatGrid key={i}>
                         <Label size="small">{i == 0 ? tittel : ''}</Label>
-                        <ResultatIkonOgTekstWrapper>
-                            <VilkårsresultatIkon
-                                vilkårsresultat={vilkårsresultat as Vilkårsresultat}
-                            />
-                            <Ikontekst>
+                        <FlexBox>
+                            <ResultatIkon vilkårsresultat={vilkårsresultat as Vilkårsresultat} />
+                            <BodyShortSmall>
                                 {`${antallVilkårsresultat} av ${antallVilkårTotalt} ${resultatTilTekst[vilkårsresultat]}`}
-                            </Ikontekst>
-                        </ResultatIkonOgTekstWrapper>
+                            </BodyShortSmall>
+                        </FlexBox>
                     </ResultatGrid>
                 ))}
         </>

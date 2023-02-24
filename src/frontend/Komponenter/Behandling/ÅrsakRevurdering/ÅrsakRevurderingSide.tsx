@@ -65,4 +65,4 @@ export const ÅrsakRevurderingSide: React.FC<Props> = ({ behandlingId }) => {
 };
 
 const ÅrsakRevurderingIkon: React.FC<{ oppfylt: boolean }> = ({ oppfylt }) =>
-    oppfylt ? <Oppfylt heigth={23} width={21} /> : <IkkeVurdert heigth={23} width={21} />;
+    oppfylt ? <Oppfylt height={23} width={21} /> : <IkkeVurdert height={23} width={21} />;

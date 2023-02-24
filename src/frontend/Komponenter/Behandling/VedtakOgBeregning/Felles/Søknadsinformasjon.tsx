@@ -11,7 +11,7 @@ import { BodyShort, Heading } from '@navikt/ds-react';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
 
-const BoldTekst = styled(BodyShortSmall)`
+const BodyShortLiten = styled(BodyShortSmall)`
     margin-left: 0.25rem;
 `;
 
@@ -20,7 +20,7 @@ const Container = styled.div`
     background-color: ${AGray50};
 `;
 
-const Bodyshort = styled(BodyShort)`
+const BodyShortRight = styled(BodyShort)`
     justify-self: end;
 `;
 
@@ -61,25 +61,25 @@ export const Søknadsinformasjon: React.FC<{ behandlingId: string }> = ({ behand
                         <ResultatGrid>
                             <IkonOgTekstWrapper>
                                 <Søknadsgrunnlag />
-                                <BoldTekst>Søknadsdato:</BoldTekst>
+                                <BodyShortLiten>Søknadsdato:</BodyShortLiten>
                             </IkonOgTekstWrapper>
-                            <Bodyshort size="small">
+                            <BodyShortRight size="small">
                                 {formaterNullableIsoDato(søknadDataResponse.søknadsdato)}
-                            </Bodyshort>
+                            </BodyShortRight>
                         </ResultatGrid>
                         <ResultatGrid>
                             <IkonOgTekstWrapper>
                                 <Søknadsgrunnlag />
-                                <BoldTekst>Søker stønad fra:</BoldTekst>
+                                <BodyShortLiten>Søker stønad fra:</BodyShortLiten>
                             </IkonOgTekstWrapper>
                             {månedÅrEllerNull && (
-                                <Bodyshort size="small">{månedÅrEllerNull}</Bodyshort>
+                                <BodyShortRight size="small">{månedÅrEllerNull}</BodyShortRight>
                             )}
                         </ResultatGrid>
                         {!månedÅrEllerNull && (
-                            <Bodyshort size="small">
+                            <BodyShortRight size="small">
                                 Søker ikke stønad fra bestemt tidspunkt
-                            </Bodyshort>
+                            </BodyShortRight>
                         )}
                     </Container>
                 );

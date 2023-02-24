@@ -1,17 +1,17 @@
 import * as React from 'react';
 
-interface IIkkeOppfylt {
+interface Props {
     className?: string;
-    heigth?: number;
+    height?: number;
     width?: number;
 }
 
-const IkkeOppfylt: React.FC<IIkkeOppfylt> = ({ className, heigth, width }) => {
+const IkkeOppfylt: React.FC<Props> = ({ className, height, width }) => {
     return (
         <svg
             aria-labelledby={'ikkeOppfylt'}
             className={className}
-            height={heigth}
+            height={height}
             width={width}
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"

@@ -13,12 +13,12 @@ export const ResultatSwitch: FC<{
 }> = ({ vilkårsresultat, className, height = 23, width = 21 }) => {
     switch (vilkårsresultat) {
         case Vilkårsresultat.OPPFYLT:
-            return <Oppfylt className={className} heigth={height} width={width} />;
+            return <Oppfylt className={className} height={height} width={width} />;
         case Vilkårsresultat.IKKE_TATT_STILLING_TIL:
-            return <IkkeVurdert className={className} heigth={height} width={width} />;
+            return <IkkeVurdert className={className} height={height} width={width} />;
         case Vilkårsresultat.SKAL_IKKE_VURDERES:
-            return <Info className={className} heigth={height} width={width} />;
+            return <Info className={className} height={height} width={width} />;
         default:
-            return <IkkeOppfylt className={className} heigth={height} width={width} />;
+            return <IkkeOppfylt className={className} height={height} width={width} />;
     }
 };
