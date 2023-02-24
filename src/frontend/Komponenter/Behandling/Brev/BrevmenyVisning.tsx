@@ -69,6 +69,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     mellomlagretBrevVerdier,
     brevMal,
     stønadstype,
+    behandling,
 }) => {
     const { axiosRequest } = useApp();
     const { mellomlagreSanitybrev } = useMellomlagringBrev(behandlingId);
@@ -76,7 +77,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     const [brevmalFeil, settBrevmalFeil] = useState('');
     const { flettefeltStore, valgfeltStore, delmalStore } = useVerdierForBrev(
         beløpsperioder,
-        behandlingId
+        behandling
     );
 
     useEffect(() => {

@@ -8,9 +8,10 @@ import {
 } from '../typer/vedtak';
 import { useHentVedtak } from './useHentVedtak';
 import { RessursStatus } from '../typer/ressurs';
-import { useHentForrigeInntektsgrunnlag } from './useHentForrigeInntektsgrunnlag';
+import { Behandling } from '../typer/fagsak';
+import { useInntektsendringAvslagFlettefelt } from './useInntektsendringAvslagFlettefelt';
 
-enum EBehandlingFlettefelt {
+export enum EBehandlingFlettefelt {
     fomdatoInnvilgelseForstegangsbehandling = 'fomdatoInnvilgelseForstegangsbehandling',
     tomdatoInnvilgelseForstegangsbehandling = 'tomdatoInnvilgelseForstegangsbehandling',
     fomdatoInnvilgelse = 'fomdatoInnvilgelse',
@@ -48,7 +49,7 @@ export type ValgfeltStore = {
 
 export const useVerdierForBrev = (
     beløpsperioder: IBeløpsperiode[] | IBeregningsperiodeBarnetilsyn[] | undefined,
-    behandlingId: string
+    behandling: Behandling
 ): {
     flettefeltStore: FlettefeltStore;
     valgfeltStore: ValgfeltStore;
@@ -57,9 +58,19 @@ export const useVerdierForBrev = (
     const [flettefeltStore, settFlettefeltStore] = useState<FlettefeltStore>({});
     const [valgfeltStore, settValgfeltStore] = useState<ValgfeltStore>({});
     const [delmalStore, settDelmalStore] = useState<DelmalStore>([]);
-    const { hentVedtak, vedtak } = useHentVedtak(behandlingId);
-    const { forrigeInntektsgrunnlag, hentForrigeInntektsgrunnlag } =
-        useHentForrigeInntektsgrunnlag(behandlingId);
+    const { hentVedtak, vedtak } = useHentVedtak(behandling.id);
+
+    const leggTilNyeFlettefelt = (nyeFlettefelt: FlettefeltStore) => {
+        settFlettefeltStore((prevState) => ({
+            ...prevState,
+            ...nyeFlettefelt,
+        }));
+    };
+
+    const { settFlettefeltForAvslagMindreInntektsøkning } = useInntektsendringAvslagFlettefelt(
+        behandling.forrigeBehandlingId,
+        leggTilNyeFlettefelt
+    );
 
     useEffect(() => {
         if (beløpsperioder && beløpsperioder.length > 0) {
@@ -108,7 +119,6 @@ export const useVerdierForBrev = (
                 [EBehandlingFlettefelt.tomdatoRevurderingBT]: tilDato,
             }));
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [beløpsperioder]);
 
     useEffect(() => {
@@ -121,28 +131,9 @@ export const useVerdierForBrev = (
             vedtak.data?.resultatType === EBehandlingResultat.AVSLÅ &&
             vedtak.data.avslåÅrsak === EAvslagÅrsak.MINDRE_INNTEKTSENDRINGER
         ) {
-            hentForrigeInntektsgrunnlag();
+            settFlettefeltForAvslagMindreInntektsøkning();
         }
-    }, [vedtak, hentForrigeInntektsgrunnlag]);
-
-    useEffect(() => {
-        if (
-            forrigeInntektsgrunnlag.status === RessursStatus.SUKSESS &&
-            forrigeInntektsgrunnlag.data
-        ) {
-            const nåværendeInntekt = forrigeInntektsgrunnlag.data;
-            const tiProsentØkning = nåværendeInntekt * 1.1;
-            const tiProsentReduksjon = nåværendeInntekt * 0.9;
-
-            settFlettefeltStore((prevState) => ({
-                ...prevState,
-                [EBehandlingFlettefelt.navarendeArsinntekt]: nåværendeInntekt.toString(),
-                [EBehandlingFlettefelt.manedsinntektTiProsentOkning]: tiProsentØkning.toString(),
-                [EBehandlingFlettefelt.manedsinntektTiProsentReduksjon]:
-                    tiProsentReduksjon.toString(),
-            }));
-        }
-    }, [forrigeInntektsgrunnlag]);
+    }, [vedtak, settFlettefeltForAvslagMindreInntektsøkning]);
 
     return { flettefeltStore, valgfeltStore, delmalStore };
 };
@@ -163,8 +154,8 @@ const innholderBeløpsperioderForOvergangsstønad = (
     );
 };
 
-const beregnTiProsentØkningIMånedsinntekt = (årsinntekt: number) =>
+export const beregnTiProsentØkningIMånedsinntekt = (årsinntekt: number) =>
     Math.floor((årsinntekt / 12) * 1.1);
 
-const beregnTiProsentReduksjonIMånedsinntekt = (årsinntekt: number) =>
+export const beregnTiProsentReduksjonIMånedsinntekt = (årsinntekt: number) =>
     Math.floor((årsinntekt / 12) * 0.9);
