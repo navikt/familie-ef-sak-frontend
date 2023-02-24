@@ -72,15 +72,15 @@ export const useVerdierForBrev = (
                 const inntektsgrunnlag =
                     beløpsperioder[beløpsperioder.length - 1].beregningsgrunnlag.inntekt;
 
-                const tiProsentØkning = inntektsgrunnlag * 1.1;
-                const tiProsentReduksjon = inntektsgrunnlag * 0.9;
+                const tiProsentØkning =
+                    beregnTiProsentØkningIMånedsinntekt(inntektsgrunnlag).toString();
+                const tiProsentReduksjon =
+                    beregnTiProsentReduksjonIMånedsinntekt(inntektsgrunnlag).toString();
 
                 settFlettefeltStore((prevState) => ({
                     ...prevState,
-                    [EBehandlingFlettefelt.belopInntektPlussTiProsentv2]:
-                        tiProsentØkning.toString(),
-                    [EBehandlingFlettefelt.belopInntektMinusTiProsentv2]:
-                        tiProsentReduksjon.toString(),
+                    [EBehandlingFlettefelt.belopInntektPlussTiProsentv2]: tiProsentØkning,
+                    [EBehandlingFlettefelt.belopInntektMinusTiProsentv2]: tiProsentReduksjon,
                 }));
 
                 settValgfeltStore((prevState) => ({
@@ -162,3 +162,9 @@ const innholderBeløpsperioderForOvergangsstønad = (
         (beløpsperiode) => (beløpsperiode as IBeløpsperiode).beløpFørSamordning !== undefined
     );
 };
+
+const beregnTiProsentØkningIMånedsinntekt = (årsinntekt: number) =>
+    Math.floor((årsinntekt / 12) * 1.1);
+
+const beregnTiProsentReduksjonIMånedsinntekt = (årsinntekt: number) =>
+    Math.floor((årsinntekt / 12) * 0.9);
