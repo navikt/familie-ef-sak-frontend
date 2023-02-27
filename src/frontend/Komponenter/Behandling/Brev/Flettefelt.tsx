@@ -2,7 +2,7 @@ import { erFlettefeltFritektsfelt, finnFlettefeltVisningsnavnFraRef } from './Br
 import React from 'react';
 import { BrevStruktur, FlettefeltMedVerdi, Flettefeltreferanse } from './BrevTyper';
 import styled from 'styled-components';
-import { Textarea, TextField } from '@navikt/ds-react';
+import { BodyShort, Label, Textarea, TextField } from '@navikt/ds-react';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const StyledInput = styled(({ fetLabel, ...props }) => <TextField autoComplete="off" {...props} />)`
@@ -41,7 +41,12 @@ export const Flettefelt: React.FC<Props> = ({
             />
         );
     } else {
-        return (
+        return flettefeltMedVerdi?.automatiskUtfylt ? (
+            <div>
+                <Label>{finnFlettefeltVisningsnavnFraRef(dokument, flettefelt._ref)}</Label>
+                <BodyShort>{flettefeltMedVerdi.verdi}</BodyShort>
+            </div>
+        ) : (
             <StyledInput
                 fetLabel={fetLabel}
                 label={finnFlettefeltVisningsnavnFraRef(dokument, flettefelt._ref)}

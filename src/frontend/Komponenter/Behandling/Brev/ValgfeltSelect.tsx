@@ -13,7 +13,9 @@ import styled from 'styled-components';
 import { Checkbox, Label, Select } from '@navikt/ds-react';
 
 const StyledValgfeltSelect = styled.div`
-    padding-bottom: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 `;
 
 interface Props {
