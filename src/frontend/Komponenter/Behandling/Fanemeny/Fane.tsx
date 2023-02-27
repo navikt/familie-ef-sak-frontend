@@ -2,7 +2,6 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import { ISide, SideNavn } from './sider';
-import { useApp } from '../../../App/context/AppContext';
 import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 import { ABlue400, ABlue500, AGray100, AGray300, ATextAction } from '@navikt/ds-tokens/dist/tokens';
 
@@ -70,7 +69,6 @@ interface Props {
 }
 
 const Fane: React.FC<Props> = ({ side, behandlingId, index, deaktivert }) => {
-    const { gåTilUrl } = useApp();
     const fanenavn = side.navn === SideNavn.KORRIGERING_UTEN_BREV ? SideNavn.BREV : side.navn;
     return (
         <>
@@ -80,14 +78,7 @@ const Fane: React.FC<Props> = ({ side, behandlingId, index, deaktivert }) => {
                 </StyledTekst>
             )}
             {!deaktivert && (
-                <StyledNavLink
-                    key={side.navn}
-                    to={`/behandling/${behandlingId}/${side.href}`}
-                    onClick={(e) => {
-                        e.preventDefault();
-                        gåTilUrl(`/behandling/${behandlingId}/${side.href}`);
-                    }}
-                >
+                <StyledNavLink key={side.navn} to={`/behandling/${behandlingId}/${side.href}`}>
                     <StyledLenketekst>
                         {index + 1}. {fanenavn}
                     </StyledLenketekst>

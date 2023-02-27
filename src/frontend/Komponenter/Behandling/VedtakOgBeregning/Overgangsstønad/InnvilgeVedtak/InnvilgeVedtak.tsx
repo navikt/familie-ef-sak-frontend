@@ -21,7 +21,6 @@ import {
     RessursSuksess,
 } from '../../../../../App/typer/ressurs';
 import { useBehandling } from '../../../../../App/context/BehandlingContext';
-import { useNavigate } from 'react-router-dom';
 import { useApp } from '../../../../../App/context/AppContext';
 import { Behandling } from '../../../../../App/typer/fagsak';
 import { v4 as uuidv4 } from 'uuid';
@@ -46,6 +45,7 @@ import { RevurderesFraOgMed } from '../../Felles/RevurderesFraOgMed';
 import { IVilkår } from '../../../Inngangsvilkår/vilkår';
 import { utledYngsteBarnFødselsdato } from './fødselsdatoUtils';
 import { oppdaterVedtakMedEndretKey } from './utils';
+import { useRedirectEtterLagring } from '../../../../../App/hooks/felles/useRedirectEtterLagring';
 import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
 
 export type InnvilgeVedtakForm = Omit<
@@ -94,7 +94,7 @@ export const InnvilgeVedtak: React.FC<{
     const { hentBehandling, behandlingErRedigerbar } = useBehandling();
     const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
         useApp();
-    const navigate = useNavigate();
+    const { utførRedirect } = useRedirectEtterLagring(`/behandling/${behandling.id}/simulering`);
     const [laster, settLaster] = useState<boolean>(false);
     const [beregnetStønad, settBeregnetStønad] = useState<Ressurs<IBeløpsperiode[]>>(
         byggTomRessurs()
@@ -241,31 +241,32 @@ export const InnvilgeVedtak: React.FC<{
         hentVedtakshistorikk(revurderesFra);
     }, [revurderesFra, hentVedtakshistorikk]);
 
-    const håndterVedtaksresultat = (nesteUrl: string) => {
+    const håndterVedtaksresultat = () => {
         return (res: Ressurs<string>) => {
             switch (res.status) {
                 case RessursStatus.SUKSESS:
-                    navigate(nesteUrl);
                     hentBehandling.rerun();
-                    nullstillIkkePersisterteKomponenter();
+                    utførRedirect();
                     break;
                 case RessursStatus.HENTER:
                 case RessursStatus.IKKE_HENTET:
                     break;
                 default:
                     settFeilmelding(res.frontendFeilmelding);
+                    settIkkePersistertKomponent(uuidv4());
             }
         };
     };
 
     const lagreVedtak = (vedtaksRequest: IInnvilgeVedtakForOvergangsstønad) => {
         settLaster(true);
+        nullstillIkkePersisterteKomponenter();
         axiosRequest<string, IInnvilgeVedtakForOvergangsstønad>({
             method: 'POST',
             url: `/familie-ef-sak/api/vedtak/${behandling.id}/lagre-vedtak`,
             data: vedtaksRequest,
         })
-            .then(håndterVedtaksresultat(`/behandling/${behandling.id}/simulering`))
+            .then(håndterVedtaksresultat())
             .finally(() => {
                 settLaster(false);
             });

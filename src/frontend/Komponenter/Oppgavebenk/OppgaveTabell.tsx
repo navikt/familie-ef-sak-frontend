@@ -1,7 +1,4 @@
-import React from 'react';
-import { RessursStatus, RessursSuksess } from '../../App/typer/ressurs';
-import SystemetLaster from '../../Felles/SystemetLaster/SystemetLaster';
-import { OppgaveRessurs } from './OppgavebenkApp';
+import React, { useEffect, useState } from 'react';
 import OppgaveRad from './OppgaveRad';
 import { IOppgave } from './typer/oppgave';
 import 'nav-frontend-tabell-style';
@@ -9,11 +6,11 @@ import OppgaveSorteringsHeader from './OppgaveSorteringHeader';
 import { useSorteringState } from '../../App/hooks/felles/useSorteringState';
 import { usePagineringState } from '../../App/hooks/felles/usePaginerState';
 import { OppgaveHeaderConfig } from './OppgaveHeaderConfig';
-import AlertStripeFeilPreWrap from '../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import { IMappe } from './typer/mappe';
-import { AlertError, AlertInfo } from '../../Felles/Visningskomponenter/Alerts';
 import { Pagination } from '@navikt/ds-react';
 import styled from 'styled-components';
+import { useApp } from '../../App/context/AppContext';
+import { RessursFeilet, RessursStatus, RessursSuksess } from '../../App/typer/ressurs';
 
 const FlexBox = styled.div`
     display: flex;
@@ -26,18 +23,19 @@ export interface IOppgaverResponse {
 }
 
 interface Props {
-    oppgaveRessurs: OppgaveRessurs;
+    oppgaver: IOppgave[];
     mapper: IMappe[];
     settFeilmelding: (feilmelding: string) => void;
 }
 
-const OppgaveTabell: React.FC<Props> = ({ oppgaveRessurs, mapper, settFeilmelding }) => {
-    const { status } = oppgaveRessurs;
+const OppgaveTabell: React.FC<Props> = ({ oppgaver, mapper, settFeilmelding }) => {
+    const { axiosRequest } = useApp();
 
-    const oppgaveListe =
-        status === RessursStatus.SUKSESS
-            ? (oppgaveRessurs as RessursSuksess<IOppgaverResponse>).data.oppgaver
-            : [];
+    const [oppgaveListe, settOppgaveListe] = useState<IOppgave[]>(oppgaver);
+
+    useEffect(() => {
+        settOppgaveListe(oppgaver);
+    }, [oppgaver]);
 
     const { sortertListe, settSortering, sortConfig } = useSorteringState<IOppgave>(oppgaveListe, {
         sorteringsfelt: 'fristFerdigstillelse',
@@ -45,7 +43,7 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaveRessurs, mapper, settFeilmeldin
     });
 
     const { valgtSide, settValgtSide, slicedListe, antallSider } = usePagineringState(
-        status === RessursStatus.SUKSESS ? sortertListe : [],
+        sortertListe,
         1,
         15
     );
@@ -57,22 +55,25 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaveRessurs, mapper, settFeilmeldin
 
     const formaterteMapper = mapperAsRecord(mapper);
 
-    if (status === RessursStatus.HENTER) {
-        return <SystemetLaster />;
-    } else if (status === RessursStatus.IKKE_TILGANG) {
-        return <AlertError children="Ikke tilgang!" />;
-    } else if (
-        oppgaveRessurs.status === RessursStatus.FEILET ||
-        oppgaveRessurs.status === RessursStatus.FUNKSJONELL_FEIL
-    ) {
-        return (
-            <AlertStripeFeilPreWrap
-                children={`Noe gikk galt - ${oppgaveRessurs.frontendFeilmelding}`}
-            />
-        );
-    } else if (status === RessursStatus.IKKE_HENTET) {
-        return <AlertInfo> Du må utføre et søk for å se oppgaver i listen.</AlertInfo>;
-    }
+    const hentOppgavePåNytt = (oppgaveId: string) => {
+        axiosRequest<IOppgave, null>({
+            method: 'GET',
+            url: `/familie-ef-sak/api/oppgave/oppslag/${oppgaveId}`,
+        }).then((res: RessursSuksess<IOppgave> | RessursFeilet) => {
+            if (res.status === RessursStatus.SUKSESS) {
+                settOppgaveListe((prevState) =>
+                    prevState.map((oppgave) => {
+                        if (oppgave.id.toString() == oppgaveId) {
+                            return res.data;
+                        }
+                        return oppgave;
+                    })
+                );
+            } else {
+                settFeilmelding(res.frontendFeilmelding);
+            }
+        });
+    };
 
     return (
         <>
@@ -111,6 +112,7 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaveRessurs, mapper, settFeilmeldin
                             oppgave={v}
                             mapper={formaterteMapper}
                             settFeilmelding={settFeilmelding}
+                            hentOppgavePåNytt={() => hentOppgavePåNytt(v.id.toString())}
                         />
                     ))}
                 </tbody>
