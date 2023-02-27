@@ -3,9 +3,9 @@ import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
 import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 import { IDeltBostedPeriode } from '../../../../App/typer/personopplysninger';
 import styled from 'styled-components';
-import { BodyShort, Popover, Table } from '@navikt/ds-react';
-import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
+import { Popover } from '@navikt/ds-react';
 import { Information } from '@navikt/ds-icons';
+import { popoverContentDeltBosted } from '../../../../Felles/Personopplysninger/BarnDeltBosted';
 
 interface Props {
     harSammeAdresseSøknad?: boolean;
@@ -38,47 +38,6 @@ const utledBostedTekst = (harDeltBosted: boolean, harSammeAdresse: boolean | und
     }
     return 'Ikke registrert på brukers adresse';
 };
-const historiskTekst = (historisk: boolean) => {
-    if (historisk) {
-        return 'Ja';
-    }
-    return 'Nei';
-};
-const popoverContent = (deltBostedPerioder: IDeltBostedPeriode[]) => (
-    <Popover.Content>
-        <BodyShort>Delt bosted:</BodyShort>
-        <Table size={'small'}>
-            <Table.Header>
-                <Table.Row>
-                    <Table.HeaderCell scope="col">Fra</Table.HeaderCell>
-                    <Table.HeaderCell scope="col">Til</Table.HeaderCell>
-                    <Table.HeaderCell scope="col">Historisk</Table.HeaderCell>
-                </Table.Row>
-            </Table.Header>
-            <Table.Body>
-                {deltBostedPerioder.map((deltBostedPeriode) => {
-                    return (
-                        <Table.Row key={deltBostedPeriode.startdatoForKontrakt}>
-                            <Table.DataCell>
-                                <StyledDiv>
-                                    {formaterNullableIsoDato(
-                                        deltBostedPeriode.startdatoForKontrakt
-                                    )}
-                                </StyledDiv>
-                            </Table.DataCell>
-                            <Table.DataCell>
-                                {formaterNullableIsoDato(deltBostedPeriode.sluttdatoForKontrakt)}
-                            </Table.DataCell>
-                            <Table.DataCell>
-                                {historiskTekst(deltBostedPeriode.historisk)}
-                            </Table.DataCell>
-                        </Table.Row>
-                    );
-                })}
-            </Table.Body>
-        </Table>
-    </Popover.Content>
-);
 const Bosted: FC<Props> = ({
     harSammeAdresseSøknad,
     harSammeAdresseRegister,
@@ -111,7 +70,7 @@ const Bosted: FC<Props> = ({
                                 open={openState}
                                 onClose={() => setOpenState(false)}
                                 anchorEl={iconRef.current}
-                                children={popoverContent(deltBostedPerioder)}
+                                children={popoverContentDeltBosted(deltBostedPerioder)}
                             />
                         </>
                     )}
