@@ -7,7 +7,6 @@ import { useApp } from '../../../../App/context/AppContext';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../../App/typer/ressurs';
 import { VEDTAK_OG_BEREGNING } from '../Felles/konstanter';
-import { useEffectNotInitialRender } from '../../../../App/hooks/felles/useEffectNotInitialRender';
 import { RevurderesFraOgMed } from '../Felles/RevurderesFraOgMed';
 import { Vedtaksform } from './Vedtaksform';
 import { oppdaterVedtakMedEndretKey, oppdaterVedtakMedInitPeriodeOgOpphørshulll } from './utils';
@@ -56,12 +55,6 @@ export const InnvilgeBarnetilsyn: FC<{
         [axiosRequest, behandling]
     );
 
-    useEffectNotInitialRender(() => {
-        if (!revurderesFra) return;
-
-        hentVedtakshistorikk(revurderesFra);
-    }, [revurderesFra, hentVedtakshistorikk]);
-
     const vedtak = useMemo(
         () => oppdaterVedtakMedEndretKey(vedtakshistorikk || lagretVedtak),
         [vedtakshistorikk, lagretVedtak]
@@ -73,6 +66,7 @@ export const InnvilgeBarnetilsyn: FC<{
                 <RevurderesFraOgMed
                     settRevurderesFra={settRevurderesFra}
                     revurderesFra={revurderesFra}
+                    hentVedtakshistorikk={hentVedtakshistorikk}
                     feilmelding={revurderesFraOgMedFeilmelding}
                     revurdererFraPeriodeUtenStønad={revurderesFraPeriodeUtenStønad}
                     type={'BARNETILSYN'}

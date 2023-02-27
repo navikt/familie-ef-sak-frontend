@@ -35,7 +35,6 @@ import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTex
 import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import styled from 'styled-components';
 import { Button, Heading } from '@navikt/ds-react';
-import { useEffectNotInitialRender } from '../../../../../App/hooks/felles/useEffectNotInitialRender';
 import {
     fyllHullMedOpphør,
     revurdererFraPeriodeUtenStønad,
@@ -217,12 +216,6 @@ export const InnvilgeVedtak: React.FC<{
         [axiosRequest, behandling]
     );
 
-    useEffectNotInitialRender(() => {
-        if (!revurderesFra) return;
-
-        hentVedtakshistorikk(revurderesFra);
-    }, [revurderesFra, hentVedtakshistorikk]);
-
     const håndterVedtaksresultat = () => {
         return (res: Ressurs<string>) => {
             switch (res.status) {
@@ -278,6 +271,7 @@ export const InnvilgeVedtak: React.FC<{
                 {behandling.forrigeBehandlingId && behandlingErRedigerbar ? (
                     <RevurderesFraOgMed
                         settRevurderesFra={settRevurderesFra}
+                        hentVedtakshistorikk={hentVedtakshistorikk}
                         revurderesFra={revurderesFra}
                         feilmelding={revurderesFraOgMedFeilmelding}
                         revurdererFraPeriodeUtenStønad={revurdererFraPeriodeUtenStønad(
