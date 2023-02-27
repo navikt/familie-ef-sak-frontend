@@ -27,6 +27,8 @@ export const Flettefelt: React.FC<Props> = ({
     flettefelter,
     handleFlettefeltInput,
 }) => {
+    const flettefeltMedVerdi = flettefelter?.find((felt) => felt._ref === flettefelt._ref);
+
     if (erFlettefeltFritektsfelt(dokument, flettefelt._ref)) {
         return (
             <Textarea
@@ -34,7 +36,7 @@ export const Flettefelt: React.FC<Props> = ({
                 onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
                     handleFlettefeltInput(e.target.value, flettefelt);
                 }}
-                value={flettefelter?.find((felt) => felt._ref === flettefelt._ref)?.verdi || ''}
+                value={flettefeltMedVerdi?.verdi || ''}
                 maxLength={0}
             />
         );
@@ -46,7 +48,8 @@ export const Flettefelt: React.FC<Props> = ({
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     handleFlettefeltInput(e.target.value, flettefelt);
                 }}
-                value={flettefelter?.find((felt) => felt._ref === flettefelt._ref)?.verdi || ''}
+                value={flettefeltMedVerdi?.verdi || ''}
+                disabled={flettefeltMedVerdi?.automatiskUtfylt}
             />
         );
     }

@@ -73,6 +73,7 @@ export const initFlettefelterMedVerdi = (
         verdi:
             flettefeltStore[flettefeltReferanse.felt] ||
             hentVerdiFraMellomlagerEllerNull(flettefeltFraMellomlager, flettefeltReferanse._id),
+        automatiskUtfylt: !!flettefeltStore[flettefeltReferanse.felt],
     }));
 
 export const initValgteFelt = (
