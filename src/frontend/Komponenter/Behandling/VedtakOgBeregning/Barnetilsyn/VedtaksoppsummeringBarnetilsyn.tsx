@@ -8,25 +8,17 @@ import {
 import { Behandling } from '../../../../App/typer/fagsak';
 import styled from 'styled-components';
 import { Heading } from '@navikt/ds-react';
-import { ResultatVisning } from '../Felles/ResultatVisning';
-import { sorterUtBarnetilsynsvilkår, sorterUtInngangsvilkår } from '../Felles/utils';
 import { Behandlingsårsak } from '../../../../App/typer/Behandlingsårsak';
-import { Søknadsdatoer } from '../Overgangsstønad/Søknadsdatoer';
+import { Søknadsinformasjon } from '../Felles/Søknadsinformasjon';
 import { OppsummeringAvBarn } from './OppsummeringAvBarn';
 import { BreakWordNormaltekst } from '../../../../Felles/Visningskomponenter/BreakWordNormaltekst';
+import { Vilkårsvurdering } from '../Felles/Vilkårsvurdering';
 
 const OppsummeringContainer = styled.div`
     display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    margin-right: 0.5rem;
+    margin: 1rem 2rem 1rem 2rem;
+    gap: 1rem;
     flex-wrap: wrap;
-`;
-
-const Oppsummeringsboks = styled.div`
-    margin: 1rem;
-    margin-right: 0.5rem;
-    padding: 1rem;
 `;
 
 const BegrunnelseTilsynsutgifter = styled.div`
@@ -52,8 +44,6 @@ export const VedtaksoppsummeringBarnetilsyn: React.FC<{
     behandling: Behandling;
 }> = ({ vilkår, behandling }) => {
     const skalViseSøknadsdata = behandling.behandlingsårsak === Behandlingsårsak.SØKNAD;
-    const inngangsvilkår = sorterUtInngangsvilkår(vilkår);
-    const barnetilsynsvilkår = sorterUtBarnetilsynsvilkår(vilkår);
     const barnPåBehandling = vilkår.grunnlag.barnMedSamvær;
     const finnesBarnPåBehandling = vilkår.grunnlag.barnMedSamvær.length > 0;
 
@@ -72,29 +62,8 @@ export const VedtaksoppsummeringBarnetilsyn: React.FC<{
     return (
         <>
             <OppsummeringContainer>
-                <Oppsummeringsboks>
-                    <Heading spacing size="small" level="5">
-                        Vilkårsvurdering
-                    </Heading>
-                    <ResultatVisning
-                        vilkårsvurderinger={inngangsvilkår}
-                        tittel="Inngangsvilkår:"
-                        stønadstype={behandling.stønadstype}
-                    />
-                    <ResultatVisning
-                        vilkårsvurderinger={barnetilsynsvilkår}
-                        tittel="Aktivitetsvilkår:"
-                        stønadstype={behandling.stønadstype}
-                    />
-                </Oppsummeringsboks>
-                {skalViseSøknadsdata && (
-                    <Oppsummeringsboks>
-                        <Søknadsdatoer
-                            behandlingId={behandling.id}
-                            stønadstype={behandling.stønadstype}
-                        />
-                    </Oppsummeringsboks>
-                )}
+                <Vilkårsvurdering vilkår={vilkår} />
+                {skalViseSøknadsdata && <Søknadsinformasjon behandlingId={behandling.id} />}
             </OppsummeringContainer>
             {finnesBarnPåBehandling && (
                 <OppsummeringContainer>

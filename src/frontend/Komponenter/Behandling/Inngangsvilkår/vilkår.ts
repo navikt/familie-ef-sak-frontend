@@ -123,6 +123,15 @@ export const resultatTilTall: Record<Vilkårsresultat, number> = {
     SKAL_IKKE_VURDERES: 6,
 };
 
+export const resultatTilTekst: Record<string, string> = {
+    OPPFYLT: 'oppfylt',
+    AUTOMATISK_OPPFYLT: 'oppfylt (automatisk)',
+    IKKE_TATT_STILLING_TIL: 'ikke vurdert',
+    IKKE_OPPFYLT: 'ikke oppfylt',
+    IKKE_AKTUELL: 'ikke aktuell',
+    SKAL_IKKE_VURDERES: 'ikke vurdert',
+};
+
 /**
  * Gjør det mulig å splitte opp vurderinger i eks Medlemskap, Aleneomsorg, etc.
  * Når man eks legger til en vurdering til medlemskap i VurderingConfig nå så kommer den opp automatisk

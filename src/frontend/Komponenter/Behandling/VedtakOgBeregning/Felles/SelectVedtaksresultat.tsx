@@ -8,7 +8,7 @@ import { VEDTAK_OG_BEREGNING } from './konstanter';
 import { useApp } from '../../../../App/context/AppContext';
 import { Button, Heading, HelpText } from '@navikt/ds-react';
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
-import { NullstillVedtakModalContext } from '../NullstillVedtakModalContext';
+import { NullstillVedtakModalContext } from './NullstillVedtakModalContext';
 import { EnsligFamilieSelect } from '../../../../Felles/Input/EnsligFamilieSelect';
 
 interface Props {

@@ -1,18 +1,18 @@
 import * as React from 'react';
 
-interface IInfo {
+interface Props {
     className?: string;
-    heigth?: number;
+    height?: number;
     width?: number;
 }
 
-const Info: React.FunctionComponent<IInfo> = ({ className, heigth, width }) => {
+const Info: React.FunctionComponent<Props> = ({ className, height, width }) => {
     return (
         <svg
             aria-labelledby={'info'}
             className={className}
             focusable="false"
-            height={heigth}
+            height={height}
             width={width}
             viewBox="0 0 24 24"
         >
