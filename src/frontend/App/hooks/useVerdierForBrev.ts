@@ -86,11 +86,10 @@ export const useVerdierForBrev = (
                 const tiProsentØkning = beregnTiProsentØkningIMånedsinntekt(inntektsgrunnlag);
                 const tiProsentReduksjon = beregnTiProsentReduksjonIMånedsinntekt(inntektsgrunnlag);
 
-                settFlettefeltStore((prevState) => ({
-                    ...prevState,
+                leggTilNyeFlettefelt({
                     [EBehandlingFlettefelt.belopInntektPlussTiProsentv2]: tiProsentØkning,
                     [EBehandlingFlettefelt.belopInntektMinusTiProsentv2]: tiProsentReduksjon,
-                }));
+                });
 
                 settValgfeltStore((prevState) => ({
                     ...prevState,
@@ -105,8 +104,7 @@ export const useVerdierForBrev = (
                 ]);
             }
 
-            settFlettefeltStore((prevState) => ({
-                ...prevState,
+            leggTilNyeFlettefelt({
                 [EBehandlingFlettefelt.tomdatoInnvilgelseForstegangsbehandling]: tilDato,
                 [EBehandlingFlettefelt.fomdatoInnvilgelseForstegangsbehandling]: fraDato,
                 [EBehandlingFlettefelt.tomdatoInnvilgelse]: tilDato,
@@ -115,7 +113,7 @@ export const useVerdierForBrev = (
                 [EBehandlingFlettefelt.tomdatoInnvilgelseBarnetilsyn]: tilDato,
                 [EBehandlingFlettefelt.fomdatoRevurderingBT]: fraDato,
                 [EBehandlingFlettefelt.tomdatoRevurderingBT]: tilDato,
-            }));
+            });
         }
     }, [beløpsperioder]);
 
