@@ -11,7 +11,7 @@ interface Props {
     harSammeAdresseSøknad?: boolean;
     harSammeAdresseRegister?: boolean;
     erBarnetFødt: boolean;
-    deltBosted: IDeltBostedPeriode | undefined;
+    deltBostedPerioder: IDeltBostedPeriode[];
     harDeltBostedVedGrunnlagsdataopprettelse: boolean;
 }
 
@@ -38,7 +38,13 @@ const utledBostedTekst = (harDeltBosted: boolean, harSammeAdresse: boolean | und
     }
     return 'Ikke registrert på brukers adresse';
 };
-const popoverContent = (deltBosted: IDeltBostedPeriode) => (
+const historiskTekst = (historisk: boolean) => {
+    if (historisk) {
+        return 'Ja';
+    }
+    return 'Nei';
+};
+const popoverContent = (deltBostedPerioder: IDeltBostedPeriode[]) => (
     <Popover.Content>
         <BodyShort>Delt bosted:</BodyShort>
         <Table size={'small'}>
@@ -46,19 +52,29 @@ const popoverContent = (deltBosted: IDeltBostedPeriode) => (
                 <Table.Row>
                     <Table.HeaderCell scope="col">Fra</Table.HeaderCell>
                     <Table.HeaderCell scope="col">Til</Table.HeaderCell>
+                    <Table.HeaderCell scope="col">Historisk</Table.HeaderCell>
                 </Table.Row>
             </Table.Header>
             <Table.Body>
-                <Table.Row key={deltBosted.startdatoForKontrakt}>
-                    <Table.DataCell>
-                        <StyledDiv>
-                            {formaterNullableIsoDato(deltBosted.startdatoForKontrakt)}
-                        </StyledDiv>
-                    </Table.DataCell>
-                    <Table.DataCell>
-                        {formaterNullableIsoDato(deltBosted.sluttdatoForKontrakt)}
-                    </Table.DataCell>
-                </Table.Row>
+                {deltBostedPerioder.map((deltBostedPeriode) => {
+                    return (
+                        <Table.Row key={deltBostedPeriode.startdatoForKontrakt}>
+                            <Table.DataCell>
+                                <StyledDiv>
+                                    {formaterNullableIsoDato(
+                                        deltBostedPeriode.startdatoForKontrakt
+                                    )}
+                                </StyledDiv>
+                            </Table.DataCell>
+                            <Table.DataCell>
+                                {formaterNullableIsoDato(deltBostedPeriode.sluttdatoForKontrakt)}
+                            </Table.DataCell>
+                            <Table.DataCell>
+                                {historiskTekst(deltBostedPeriode.historisk)}
+                            </Table.DataCell>
+                        </Table.Row>
+                    );
+                })}
             </Table.Body>
         </Table>
     </Popover.Content>
@@ -67,7 +83,7 @@ const Bosted: FC<Props> = ({
     harSammeAdresseSøknad,
     harSammeAdresseRegister,
     erBarnetFødt,
-    deltBosted,
+    deltBostedPerioder,
     harDeltBostedVedGrunnlagsdataopprettelse,
 }) => {
     const iconRef = useRef<SVGSVGElement>(null);
@@ -85,7 +101,7 @@ const Bosted: FC<Props> = ({
                             harSammeAdresseRegister
                         )}
                     />
-                    {deltBosted && (
+                    {deltBostedPerioder.length > 0 && (
                         <>
                             <InformationIcon ref={iconRef} onClick={() => setOpenState(true)}>
                                 Åpne popover
@@ -95,7 +111,7 @@ const Bosted: FC<Props> = ({
                                 open={openState}
                                 onClose={() => setOpenState(false)}
                                 anchorEl={iconRef.current}
-                                children={popoverContent(deltBosted)}
+                                children={popoverContent(deltBostedPerioder)}
                             />
                         </>
                     )}

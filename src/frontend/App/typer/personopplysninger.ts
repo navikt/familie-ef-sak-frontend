@@ -25,6 +25,7 @@ export interface IPersonopplysninger {
 export interface IDeltBostedPeriode {
     startdatoForKontrakt: string;
     sluttdatoForKontrakt: string;
+    historisk: boolean;
 }
 export interface IBarn {
     navn: string;
@@ -33,7 +34,7 @@ export interface IBarn {
     adresse: IAdresse[];
 
     borHosSøker: boolean;
-    deltBosted: IDeltBostedPeriode[];
+    deltBostedPerioder: IDeltBostedPeriode[];
     harDeltBostedNå: boolean;
     fødselsdato?: string;
     dødsdato?: string;

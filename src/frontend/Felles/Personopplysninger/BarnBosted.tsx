@@ -5,8 +5,13 @@ import { formaterNullableIsoDato } from '../../App/utils/formatter';
 import styled from 'styled-components';
 import { Information } from '@navikt/ds-icons';
 
+const FlexBox = styled.div`
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+`;
+
 const InformationIcon = styled(Information)`
-    margin-left: 0.5rem;
     &:hover {
         cursor: pointer;
     }
@@ -26,32 +31,39 @@ const bostedStatus = (barn: IBarn) => {
     return '-'; // TODO : "Nei" vs "-" ?
 };
 
-const FlexBox = styled.div`
-    display: flex;
-    align-items: baseline;
-`;
-
+const historiskTekst = (historisk: boolean) => {
+    if (historisk) {
+        return 'Ja';
+    }
+    return 'Nei';
+};
 const popoverContent = (barn: IBarn) => (
     <Popover.Content>
-        <div>Delt bosted:</div>
+        <BodyShort>Delt bosted:</BodyShort>
         <Table size={'small'}>
             <Table.Header>
                 <Table.Row>
                     <Table.HeaderCell scope="col">Fra</Table.HeaderCell>
                     <Table.HeaderCell scope="col">Til</Table.HeaderCell>
+                    <Table.HeaderCell scope="col">Historisk</Table.HeaderCell>
                 </Table.Row>
             </Table.Header>
             <Table.Body>
-                {barn.deltBosted.map((periode) => {
+                {barn.deltBostedPerioder.map((deltBostedPeriode) => {
                     return (
-                        <Table.Row key={periode.startdatoForKontrakt}>
+                        <Table.Row key={deltBostedPeriode.startdatoForKontrakt}>
                             <Table.DataCell>
                                 <StyledDiv>
-                                    {formaterNullableIsoDato(periode.startdatoForKontrakt)}
+                                    {formaterNullableIsoDato(
+                                        deltBostedPeriode.startdatoForKontrakt
+                                    )}
                                 </StyledDiv>
                             </Table.DataCell>
                             <Table.DataCell>
-                                {formaterNullableIsoDato(periode.sluttdatoForKontrakt)}
+                                {formaterNullableIsoDato(deltBostedPeriode.sluttdatoForKontrakt)}
+                            </Table.DataCell>
+                            <Table.DataCell>
+                                {historiskTekst(deltBostedPeriode.historisk)}
                             </Table.DataCell>
                         </Table.Row>
                     );
@@ -68,7 +80,7 @@ const BarnBosted: React.FC<{ barn: IBarn }> = ({ barn }) => {
     return (
         <FlexBox>
             <BodyShort>{bostedStatus(barn)}</BodyShort>
-            {barn.deltBosted.length > 0 && (
+            {barn.deltBostedPerioder.length > 0 && (
                 <InformationIcon ref={iconRef} onClick={() => setOpenState(true)}>
                     Åpne popover
                 </InformationIcon>
