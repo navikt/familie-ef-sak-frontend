@@ -1,13 +1,6 @@
 import { useEffect, useState } from 'react';
 import { formaterIsoDato, formaterTallMedTusenSkille } from '../utils/formatter';
-import {
-    EAvslagÅrsak,
-    EBehandlingResultat,
-    IBeløpsperiode,
-    IBeregningsperiodeBarnetilsyn,
-} from '../typer/vedtak';
-import { useHentVedtak } from './useHentVedtak';
-import { RessursStatus } from '../typer/ressurs';
+import { IBeløpsperiode, IBeregningsperiodeBarnetilsyn } from '../typer/vedtak';
 import { Behandling } from '../typer/fagsak';
 import { useInntektsendringAvslagFlettefelt } from './useInntektsendringAvslagFlettefelt';
 
@@ -58,7 +51,6 @@ export const useVerdierForBrev = (
     const [flettefeltStore, settFlettefeltStore] = useState<FlettefeltStore>({});
     const [valgfeltStore, settValgfeltStore] = useState<ValgfeltStore>({});
     const [delmalStore, settDelmalStore] = useState<DelmalStore>([]);
-    const { hentVedtak, vedtak } = useHentVedtak(behandling.id);
 
     const leggTilNyeFlettefelt = (nyeFlettefelt: FlettefeltStore) => {
         settFlettefeltStore((prevState) => ({
@@ -68,6 +60,7 @@ export const useVerdierForBrev = (
     };
 
     const { settFlettefeltForAvslagMindreInntektsøkning } = useInntektsendringAvslagFlettefelt(
+        behandling.id,
         behandling.forrigeBehandlingId,
         leggTilNyeFlettefelt
     );
@@ -118,18 +111,8 @@ export const useVerdierForBrev = (
     }, [beløpsperioder]);
 
     useEffect(() => {
-        hentVedtak();
-    }, [hentVedtak]);
-
-    useEffect(() => {
-        if (
-            vedtak.status === RessursStatus.SUKSESS &&
-            vedtak.data?.resultatType === EBehandlingResultat.AVSLÅ &&
-            vedtak.data.avslåÅrsak === EAvslagÅrsak.MINDRE_INNTEKTSENDRINGER
-        ) {
-            settFlettefeltForAvslagMindreInntektsøkning();
-        }
-    }, [vedtak, settFlettefeltForAvslagMindreInntektsøkning]);
+        settFlettefeltForAvslagMindreInntektsøkning();
+    }, [settFlettefeltForAvslagMindreInntektsøkning]);
 
     return { flettefeltStore, valgfeltStore, delmalStore };
 };
