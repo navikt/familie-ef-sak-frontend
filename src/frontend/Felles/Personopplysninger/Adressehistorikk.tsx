@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
-import TabellOverskrift from './TabellOverskrift';
 import Bygning from '../Ikoner/Bygning';
 import { AdresseType, IAdresse } from '../../App/typer/personopplysninger';
-import { IngenData, TabellWrapper, Td } from './TabellWrapper';
+import { IngenData, Td } from './TabellWrapper';
 import styled from 'styled-components';
 import Beboere from './Beboere';
 import { formaterNullableIsoDato } from '../../App/utils/formatter';
 import { ModalWrapper } from '../Modal/ModalWrapper';
 import UtvidPanel from '../UtvidPanel/UtvidPanel';
-import { Button, HelpText, Label } from '@navikt/ds-react';
+import { Button, Label } from '@navikt/ds-react';
 import { BodyLongSmall } from '../Visningskomponenter/Tekster';
+import PersonopplysningerPanel from './PersonopplysningPanel';
 
 const StyledFlexDiv = styled.div`
     display: flex;
@@ -84,7 +84,7 @@ const Kolonnetittel: React.FC<{ text: string; width: number }> = ({ text, width 
 );
 
 const TittelbeskrivelseBostedsadresser: React.ReactElement = (
-    <HelpText title="Gjeldende og kolonner" placement={'right'}>
+    <>
         <BodyLongSmall>
             <FetTekst>Gjeldende adresse:</FetTekst>
             En person skal til enhver tid ha kun én folkeregistrert bostedsadresse. I EF Sak er
@@ -104,7 +104,7 @@ const TittelbeskrivelseBostedsadresser: React.ReactElement = (
             Folkeregisterets opphørsdato (dersom den er kjent). Personen er ikke registrert bosatt
             på adressen iht Folkeregisteret
         </BodyLongSmall>
-    </HelpText>
+    </>
 );
 
 const Adresser: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string; type?: AdresseType }> = ({
@@ -113,16 +113,15 @@ const Adresser: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string; type?: 
     type,
 }) => {
     return (
-        <TabellWrapper>
-            <TabellOverskrift
-                Ikon={Bygning}
-                tittel={type === AdresseType.BOSTEDADRESSE ? 'Bostedsadresser' : 'Andre adresser'}
-                tittelbeskrivelse={
-                    type === AdresseType.BOSTEDADRESSE
-                        ? TittelbeskrivelseBostedsadresser
-                        : undefined
-                }
-            />
+        <PersonopplysningerPanel
+            Ikon={Bygning}
+            tittel={type === AdresseType.BOSTEDADRESSE ? 'Bostedsadresser' : 'Andre adresser'}
+            tittelBeskrivelse={
+                type === AdresseType.BOSTEDADRESSE
+                    ? { header: 'Adresseforklaring ', innhold: TittelbeskrivelseBostedsadresser }
+                    : undefined
+            }
+        >
             {(adresser.length !== 0 && (
                 <table className="tabell">
                     <thead>
@@ -143,7 +142,7 @@ const Adresser: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string; type?: 
                     <Innhold adresser={adresser} fagsakPersonId={fagsakPersonId} />
                 </table>
             )) || <IngenData />}
-        </TabellWrapper>
+        </PersonopplysningerPanel>
     );
 };
 

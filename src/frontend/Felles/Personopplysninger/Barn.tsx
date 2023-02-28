@@ -1,14 +1,14 @@
 import React from 'react';
 import { IBarn } from '../../App/typer/personopplysninger';
-import TabellOverskrift from './TabellOverskrift';
 import LiteBarn from '../Ikoner/LiteBarn';
-import { BredTd, KolonneTitler, TabellWrapper } from './TabellWrapper';
+import { BredTd, KolonneTitler } from './TabellWrapper';
 import styled from 'styled-components';
 import { KopierbartNullableFødselsnummer } from '../Fødselsnummer/KopierbartNullableFødselsnummer';
 import EtikettDød from '../Etiketter/EtikettDød';
 import { nullableDatoTilAlder } from '../../App/utils/dato';
 import { Tag } from '@navikt/ds-react';
 import BarnBosted from './BarnBosted';
+import PersonopplysningerPanel from './PersonopplysningPanel';
 
 const SpanMedVenstreMargin = styled.span`
     margin-left: 15%;
@@ -28,8 +28,7 @@ const sorterBarnPåAlderInc = (a: IBarn, b: IBarn) => {
 
 const Barn: React.FC<{ barn: IBarn[] }> = ({ barn }) => {
     return (
-        <TabellWrapper>
-            <TabellOverskrift Ikon={LiteBarn} tittel={'Barn'} />
+        <PersonopplysningerPanel Ikon={LiteBarn} tittel={'Barn'}>
             <table className="tabell">
                 <KolonneTitler titler={titler} />
                 <tbody>
@@ -68,7 +67,7 @@ const Barn: React.FC<{ barn: IBarn[] }> = ({ barn }) => {
                     })}
                 </tbody>
             </table>
-        </TabellWrapper>
+        </PersonopplysningerPanel>
     );
 };
 

@@ -1,16 +1,15 @@
 import React from 'react';
-import TabellOverskrift from './TabellOverskrift';
-import { BredTd, IngenData, KolonneTitler, TabellWrapper } from './TabellWrapper';
+import { BredTd, IngenData, KolonneTitler } from './TabellWrapper';
 import { IOppholdstillatelse, oppholdTilTekst } from '../../App/typer/personopplysninger';
 import Pass from '../Ikoner/Pass';
 import { formaterNullableIsoDato } from '../../App/utils/formatter';
+import PersonopplysningerPanel from './PersonopplysningPanel';
 
 const Oppholdstillatelse: React.FC<{ oppholdstillatelser: IOppholdstillatelse[] }> = ({
     oppholdstillatelser,
 }) => {
     return (
-        <TabellWrapper>
-            <TabellOverskrift Ikon={Pass} tittel={'Oppholdstillatelse'} />
+        <PersonopplysningerPanel Ikon={Pass} tittel={'Oppholdstillatelse'}>
             {(oppholdstillatelser.length !== 0 && (
                 <table className="tabell">
                     <KolonneTitler titler={['Type', 'Fra', 'Til', '']} />
@@ -34,7 +33,7 @@ const Oppholdstillatelse: React.FC<{ oppholdstillatelser: IOppholdstillatelse[] 
                     </tbody>
                 </table>
             )) || <IngenData />}
-        </TabellWrapper>
+        </PersonopplysningerPanel>
     );
 };
 

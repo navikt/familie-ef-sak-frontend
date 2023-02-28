@@ -1,19 +1,18 @@
 import React from 'react';
-import TabellOverskrift from './TabellOverskrift';
 import Hjerte from '../Ikoner/Hjerte';
-import { KolonneTitler, TabellWrapper } from './TabellWrapper';
+import { KolonneTitler } from './TabellWrapper';
 import { ISivilstand, sivilstandTilTekst } from '../../App/typer/personopplysninger';
 import { KopierbartNullableFødselsnummer } from '../Fødselsnummer/KopierbartNullableFødselsnummer';
 import { formaterNullableIsoDato } from '../../App/utils/formatter';
 import EtikettDød from '../Etiketter/EtikettDød';
 import { BodyShortSmall } from '../Visningskomponenter/Tekster';
+import PersonopplysningerPanel from './PersonopplysningPanel';
 
 const titler = ['Status', 'Dato', 'Navn partner', 'Fødselsnummer'];
 
 const Sivilstatus: React.FC<{ sivilstander: ISivilstand[] }> = ({ sivilstander }) => {
     return (
-        <TabellWrapper>
-            <TabellOverskrift Ikon={Hjerte} tittel={'Sivilstatus'} />
+        <PersonopplysningerPanel tittel="Sivilstatus" Ikon={Hjerte}>
             <table className="tabell">
                 <KolonneTitler titler={titler} />
                 <tbody>
@@ -45,7 +44,7 @@ const Sivilstatus: React.FC<{ sivilstander: ISivilstand[] }> = ({ sivilstander }
                     })}
                 </tbody>
             </table>
-        </TabellWrapper>
+        </PersonopplysningerPanel>
     );
 };
 

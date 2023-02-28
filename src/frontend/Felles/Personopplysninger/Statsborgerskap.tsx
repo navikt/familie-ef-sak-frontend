@@ -1,17 +1,16 @@
 import React from 'react';
-import TabellOverskrift from './TabellOverskrift';
-import { BredTd, KolonneTitler, TabellWrapper } from './TabellWrapper';
+import { BredTd, KolonneTitler } from './TabellWrapper';
 import { Folkeregisterpersonstatus, IStatsborgerskap } from '../../App/typer/personopplysninger';
 import Pass from '../Ikoner/Pass';
 import { formaterNullableIsoDato } from '../../App/utils/formatter';
+import PersonopplysningerPanel from './PersonopplysningPanel';
 
 const Statsborgerskap: React.FC<{
     statsborgerskap: IStatsborgerskap[];
     folkeregisterPersonstatus?: Folkeregisterpersonstatus;
 }> = ({ statsborgerskap, folkeregisterPersonstatus }) => {
     return (
-        <TabellWrapper>
-            <TabellOverskrift Ikon={Pass} tittel={'Statsborgerskap'} />
+        <PersonopplysningerPanel Ikon={Pass} tittel={'Statsborgerskap'}>
             <table className="tabell">
                 <KolonneTitler titler={['Land', 'Fra', 'Til', 'Personstatus']} />
                 <tbody>
@@ -34,7 +33,7 @@ const Statsborgerskap: React.FC<{
                     })}
                 </tbody>
             </table>
-        </TabellWrapper>
+        </PersonopplysningerPanel>
     );
 };
 

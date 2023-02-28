@@ -1,11 +1,11 @@
 import React from 'react';
 import { IInnflyttingTilNorge, IUtflyttingFraNorge } from '../../App/typer/personopplysninger';
-import { BredTd, IngenData, KolonneTitler, TabellWrapper } from './TabellWrapper';
-import TabellOverskrift from './TabellOverskrift';
+import { BredTd, IngenData, KolonneTitler } from './TabellWrapper';
 import FlyMedSky from '../Ikoner/FlyMedSky';
 import { formaterNullableIsoDato, formaterNullableIsoÅr } from '../../App/utils/formatter';
 import styled from 'styled-components';
 import { HelpText } from '@navikt/ds-react';
+import PersonopplysningerPanel from './PersonopplysningPanel';
 
 interface Props {
     innvandringer: IInnflyttingTilNorge[];
@@ -31,32 +31,28 @@ export const headerForInnflyttingTabell: React.ReactNode = (
 const InnvandringUtVandring: React.FC<Props> = ({ innvandringer, utvandringer }) => {
     if (innvandringer.length === 0 && utvandringer.length === 0) {
         return (
-            <TabellWrapper>
-                <TabellOverskrift Ikon={FlyMedSky} tittel={'Innvandring og utvandring'} />
+            <PersonopplysningerPanel Ikon={FlyMedSky} tittel={'Innvandring og utvandring'}>
                 <IngenData />
-            </TabellWrapper>
+            </PersonopplysningerPanel>
         );
     } else if (innvandringer.length === 0) {
         return (
-            <TabellWrapper>
-                <TabellOverskrift Ikon={FlyMedSky} tittel={'Innvandring og utvandring'} />
+            <PersonopplysningerPanel Ikon={FlyMedSky} tittel={'Innvandring og utvandring'}>
                 <Utvandring utvandringer={utvandringer} />
-            </TabellWrapper>
+            </PersonopplysningerPanel>
         );
     } else if (utvandringer.length === 0) {
         return (
-            <TabellWrapper>
-                <TabellOverskrift Ikon={FlyMedSky} tittel={'Innvandring og utvandring'} />
+            <PersonopplysningerPanel Ikon={FlyMedSky} tittel={'Innvandring og utvandring'}>
                 <Innvandring innvandringer={innvandringer} />
-            </TabellWrapper>
+            </PersonopplysningerPanel>
         );
     } else {
         return (
-            <TabellWrapper erDobbelTabell>
-                <TabellOverskrift Ikon={FlyMedSky} tittel={'Innvandring og utvandring'} />
+            <PersonopplysningerPanel Ikon={FlyMedSky} tittel={'Innvandring og utvandring'}>
                 <Innvandring innvandringer={innvandringer} dobbelTabell />
                 <Utvandring utvandringer={utvandringer} dobbelTabell />
-            </TabellWrapper>
+            </PersonopplysningerPanel>
         );
     }
 };

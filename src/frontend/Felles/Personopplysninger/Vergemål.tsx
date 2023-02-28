@@ -1,18 +1,17 @@
 import React from 'react';
-import TabellOverskrift from './TabellOverskrift';
 import SkrivendeBlyant from '../Ikoner/SkrivendeBlyant';
-import { BredTd, IngenData, KolonneTitler, TabellWrapper } from './TabellWrapper';
+import { BredTd, IngenData, KolonneTitler } from './TabellWrapper';
 import {
     IVergemål,
     vergemålOmfangTilTekst,
     vergemålTypeTilTekst,
 } from '../../App/typer/personopplysninger';
 import { tekstMapping } from '../../App/utils/tekstmapping';
+import PersonopplysningerPanel from './PersonopplysningPanel';
 
 const Vergemål: React.FC<{ vergemål: IVergemål[] }> = ({ vergemål }) => {
     return (
-        <TabellWrapper>
-            <TabellOverskrift Ikon={SkrivendeBlyant} tittel={'Vergemål'} />
+        <PersonopplysningerPanel Ikon={SkrivendeBlyant} tittel={'Vergemål'}>
             {(vergemål.length !== 0 && (
                 <table className="tabell">
                     <KolonneTitler
@@ -37,7 +36,7 @@ const Vergemål: React.FC<{ vergemål: IVergemål[] }> = ({ vergemål }) => {
                     </tbody>
                 </table>
             )) || <IngenData />}
-        </TabellWrapper>
+        </PersonopplysningerPanel>
     );
 };
 

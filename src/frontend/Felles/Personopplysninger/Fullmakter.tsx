@@ -1,14 +1,13 @@
 import React from 'react';
-import TabellOverskrift from './TabellOverskrift';
 import SkrivendeBlyant from '../Ikoner/SkrivendeBlyant';
-import { BredTd, IngenData, KolonneTitler, TabellWrapper } from './TabellWrapper';
+import { BredTd, IngenData, KolonneTitler } from './TabellWrapper';
 import { IFullmakt } from '../../App/typer/personopplysninger';
 import { formaterNullableIsoDato } from '../../App/utils/formatter';
+import PersonopplysningerPanel from './PersonopplysningPanel';
 
 const Fullmakter: React.FC<{ fullmakter: IFullmakt[] }> = ({ fullmakter }) => {
     return (
-        <TabellWrapper>
-            <TabellOverskrift Ikon={SkrivendeBlyant} tittel={'Fullmakter'} />
+        <PersonopplysningerPanel Ikon={SkrivendeBlyant} tittel={'Fullmakter'}>
             {(fullmakter.length !== 0 && (
                 <table className="tabell">
                     <KolonneTitler
@@ -33,7 +32,7 @@ const Fullmakter: React.FC<{ fullmakter: IFullmakt[] }> = ({ fullmakter }) => {
                     </tbody>
                 </table>
             )) || <IngenData />}
-        </TabellWrapper>
+        </PersonopplysningerPanel>
     );
 };
 

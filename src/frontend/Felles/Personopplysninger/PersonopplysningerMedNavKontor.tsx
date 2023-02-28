@@ -12,6 +12,14 @@ import NavKontor from './NavKontor';
 import { INavKontor, IPersonopplysninger } from '../../App/typer/personopplysninger';
 import { Ressurs } from '../../App/typer/ressurs';
 import Vergemål from './Vergemål';
+import styled from 'styled-components';
+
+const Container = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin: 2rem;
+`;
 
 const PersonopplysningerMedNavKontor: React.FC<{
     personopplysninger: IPersonopplysninger;
@@ -31,7 +39,7 @@ const PersonopplysningerMedNavKontor: React.FC<{
         vergemål,
     } = personopplysninger;
     return (
-        <>
+        <Container>
             <Adressehistorikk adresser={adresse} fagsakPersonId={fagsakPersonId} />
             <Sivilstatus sivilstander={sivilstand} />
             <Barn barn={barn} />
@@ -52,7 +60,7 @@ const PersonopplysningerMedNavKontor: React.FC<{
                     return <NavKontor navKontor={navKontor} />;
                 }}
             </DataViewer>
-        </>
+        </Container>
     );
 };
 
