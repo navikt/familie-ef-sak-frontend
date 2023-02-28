@@ -26,7 +26,7 @@ export const useInntektsendringAvslagFlettefelt = (
             method: 'GET',
             url: `/familie-ef-sak/api/vedtak/${forrigeBehandlingId}`,
         };
-        axiosRequest<IVedtakForOvergangsstønad | undefined, string>(behandlingConfig).then(
+        axiosRequest<IVedtakForOvergangsstønad | undefined, null>(behandlingConfig).then(
             (res: Ressurs<IVedtakForOvergangsstønad | undefined>) => {
                 if (
                     res.status === RessursStatus.SUKSESS &&
