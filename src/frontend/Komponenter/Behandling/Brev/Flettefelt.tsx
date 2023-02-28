@@ -67,7 +67,6 @@ export const Flettefelt: React.FC<Props> = ({
                     handleFlettefeltInput(e.target.value, flettefelt);
                 }}
                 value={flettefeltMedVerdi?.verdi || ''}
-                disabled={flettefeltMedVerdi?.automatiskUtfylt}
             />
         );
     }
