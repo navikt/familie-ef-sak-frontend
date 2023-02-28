@@ -12,7 +12,7 @@ import { Flettefelt } from './Flettefelt';
 import styled from 'styled-components';
 import { Checkbox, Label, Select } from '@navikt/ds-react';
 
-const StyledValgfeltSelect = styled.div`
+const Container = styled.div`
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
@@ -67,7 +67,7 @@ export const ValgfeltSelect: React.FC<Props> = ({
     };
 
     return (
-        <StyledValgfeltSelect>
+        <Container>
             {valgFelt.valgMuligheter.length > 1 ? (
                 <Select
                     label={valgFelt.valgfeltVisningsnavn}
@@ -132,6 +132,6 @@ export const ValgfeltSelect: React.FC<Props> = ({
                         })
                     );
                 })}
-        </StyledValgfeltSelect>
+        </Container>
     );
 };
