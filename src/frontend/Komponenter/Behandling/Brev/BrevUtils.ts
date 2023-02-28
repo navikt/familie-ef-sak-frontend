@@ -17,16 +17,22 @@ const lagTomtAvsnitt = (): AvsnittMedId => ({
     id: uuidv4(),
 });
 
-export const finnFlettefeltVisningsnavnFraRef = (dokument: BrevStruktur, ref: string): string => {
-    const flettefeltNavnFraRef = dokument?.flettefelter?.flettefeltReferanse?.find(
+export const finnFlettefeltNavnOgBeskrivelseFraRef = (
+    dokument: BrevStruktur,
+    ref: string
+): { flettefeltNavn: string; flettefeltBeskrivelse?: string } => {
+    const flettefeltFraRef = dokument?.flettefelter?.flettefeltReferanse?.find(
         (felt) => felt._id === ref
     );
 
-    if (!flettefeltNavnFraRef) return '';
+    if (!flettefeltFraRef) return { flettefeltNavn: '' };
 
-    return flettefeltNavnFraRef.feltVisningsnavn
-        ? flettefeltNavnFraRef.feltVisningsnavn
-        : flettefeltNavnFraRef.felt;
+    return {
+        flettefeltNavn: flettefeltFraRef.feltVisningsnavn
+            ? flettefeltFraRef.feltVisningsnavn
+            : flettefeltFraRef.felt,
+        flettefeltBeskrivelse: flettefeltFraRef.beskrivelse,
+    };
 };
 
 export const finnFletteFeltApinavnFraRef = (dokument: BrevStruktur, ref: string): string => {
@@ -73,6 +79,7 @@ export const initFlettefelterMedVerdi = (
         verdi:
             flettefeltStore[flettefeltReferanse.felt] ||
             hentVerdiFraMellomlagerEllerNull(flettefeltFraMellomlager, flettefeltReferanse._id),
+        automatiskUtfylt: !!flettefeltStore[flettefeltReferanse.felt],
     }));
 
 export const initValgteFelt = (
