@@ -1,8 +1,8 @@
-import { erFlettefeltFritektsfelt, finnFlettefeltVisningsnavnFraRef } from './BrevUtils';
+import { erFlettefeltFritektsfelt, finnFlettefeltNavnOgBeskrivelseFraRef } from './BrevUtils';
 import React from 'react';
 import { BrevStruktur, FlettefeltMedVerdi, Flettefeltreferanse } from './BrevTyper';
 import styled from 'styled-components';
-import { BodyShort, Label, Textarea, TextField } from '@navikt/ds-react';
+import { BodyShort, HelpText, Label, Textarea, TextField } from '@navikt/ds-react';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const StyledInput = styled(({ fetLabel, ...props }) => <TextField autoComplete="off" {...props} />)`
@@ -10,6 +10,11 @@ const StyledInput = styled(({ fetLabel, ...props }) => <TextField autoComplete="
     .skjemaelement__label {
         font-weight: ${(fetLabel) => (fetLabel ? 600 : 300)};
     }
+`;
+
+const TekstMedHjelpetekstWrapper = styled.div`
+    display: flex;
+    gap: 1rem;
 `;
 
 interface Props {
@@ -28,11 +33,15 @@ export const Flettefelt: React.FC<Props> = ({
     handleFlettefeltInput,
 }) => {
     const flettefeltMedVerdi = flettefelter?.find((felt) => felt._ref === flettefelt._ref);
+    const { flettefeltNavn, flettefeltBeskrivelse } = finnFlettefeltNavnOgBeskrivelseFraRef(
+        dokument,
+        flettefelt._ref
+    );
 
     if (erFlettefeltFritektsfelt(dokument, flettefelt._ref)) {
         return (
             <Textarea
-                label={finnFlettefeltVisningsnavnFraRef(dokument, flettefelt._ref)}
+                label={flettefeltNavn}
                 onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
                     handleFlettefeltInput(e.target.value, flettefelt);
                 }}
@@ -43,13 +52,17 @@ export const Flettefelt: React.FC<Props> = ({
     } else {
         return flettefeltMedVerdi?.automatiskUtfylt ? (
             <div>
-                <Label>{finnFlettefeltVisningsnavnFraRef(dokument, flettefelt._ref)}</Label>
-                <BodyShort>{flettefeltMedVerdi.verdi}</BodyShort>
+                <Label>{flettefeltNavn}</Label>
+                <TekstMedHjelpetekstWrapper>
+                    <BodyShort>{flettefeltMedVerdi.verdi}</BodyShort>
+                    {flettefeltBeskrivelse && <HelpText>{flettefeltBeskrivelse}</HelpText>}
+                </TekstMedHjelpetekstWrapper>
             </div>
         ) : (
             <StyledInput
                 fetLabel={fetLabel}
-                label={finnFlettefeltVisningsnavnFraRef(dokument, flettefelt._ref)}
+                description={flettefeltBeskrivelse}
+                label={flettefeltNavn}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     handleFlettefeltInput(e.target.value, flettefelt);
                 }}

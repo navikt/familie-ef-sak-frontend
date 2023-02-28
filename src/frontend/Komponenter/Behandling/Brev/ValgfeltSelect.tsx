@@ -75,6 +75,7 @@ export const ValgfeltSelect: React.FC<Props> = ({
                     onChange={(e) =>
                         doSettValgteFelt(valgFelt.valgFeltApiNavn, e.target.value, delmal)
                     }
+                    description={valgFelt.valgfeltBeskrivelse}
                 >
                     <option value="">Ikke valgt</option>
                     {valgFelt.valgMuligheter.map((valgMulighet: Valgmulighet) => (

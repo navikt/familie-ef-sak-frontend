@@ -42,6 +42,7 @@ interface Flettefelt {
     erFritektsfelt?: boolean;
     feltVisningsnavn?: string;
     _id: string;
+    beskrivelse?: string;
 }
 
 export interface Flettefeltreferanse {
@@ -66,6 +67,7 @@ export interface ValgFelt {
     valgMuligheter: Valgmulighet[];
     valgfeltVisningsnavn: string;
     valgFeltApiNavn: string;
+    valgfeltBeskrivelse?: string;
 }
 
 export interface Delmal {
