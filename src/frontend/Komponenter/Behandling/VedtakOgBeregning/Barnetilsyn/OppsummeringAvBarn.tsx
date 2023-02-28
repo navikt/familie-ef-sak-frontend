@@ -11,7 +11,7 @@ import { datoTilAlder, tilDato } from '../../../../App/utils/dato';
 import { Vilkårsresultat } from '../../Inngangsvilkår/vilkår';
 import { formaterIsoDato } from '../../../../App/utils/formatter';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
-import { AGray50, ABorderDivider } from '@navikt/ds-tokens/dist/tokens';
+import { ABorderDivider, AGray50 } from '@navikt/ds-tokens/dist/tokens';
 
 const Container = styled.div`
     padding: 1rem;
@@ -64,6 +64,13 @@ const FlexDiv = styled.div`
     justify-content: flex-start;
 `;
 
+const FlexBox = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 8.5rem;
+`;
+
 export const OppsummeringAvBarn: React.FC<{
     barn: IBarnMedSamvær;
     vilkårsresultatAleneomsorg: Vilkårsresultat;
@@ -80,6 +87,14 @@ export const OppsummeringAvBarn: React.FC<{
     const alder = datoTilAlder(tilDato(fødselsdatostring));
     const navnOgAlder = `${barn.registergrunnlag.navn} (${alder})`;
     const barnepassordninger = barn.barnepass?.barnepassordninger || [];
+    const søkesOmBarnetilsynForBarn = barn.barnepass?.skalHaBarnepass;
+
+    const aleneomsorgVilkårsresultat = søkesOmBarnetilsynForBarn
+        ? vilkårsresultatAleneomsorg
+        : Vilkårsresultat.SKAL_IKKE_VURDERES;
+    const alderPåBarnVilkårsresultat = søkesOmBarnetilsynForBarn
+        ? vilkårsresultatAlderPåBarn
+        : Vilkårsresultat.SKAL_IKKE_VURDERES;
 
     return (
         <Container>
@@ -93,50 +108,58 @@ export const OppsummeringAvBarn: React.FC<{
                 {barnepassordninger.map((barnepassordning, index) => {
                     return (
                         <React.Fragment key={index}>
-                            <GridLinje>
-                                <IkonOgTekstWrapper>
-                                    <Søknadsgrunnlag />
-                                    <BoldTekst size="small">Barnepassordning</BoldTekst>
-                                </IkonOgTekstWrapper>
-                                <Label size="small">
-                                    {typeBarnepassordningTilTekst[barnepassordning.type]}
-                                </Label>
-                            </GridLinje>
-                            <GridLinje>
-                                <IkonOgTekstWrapper>
-                                    <Søknadsgrunnlag />
-                                    <MarginTekst>Navn passordning</MarginTekst>
-                                </IkonOgTekstWrapper>
-                                <BodyShortSmall>{barnepassordning.navn}</BodyShortSmall>
-                            </GridLinje>
-                            <GridLinje>
-                                <IkonOgTekstWrapper>
-                                    <Søknadsgrunnlag />
-                                    <MarginTekst>Periode passordning</MarginTekst>
-                                </IkonOgTekstWrapper>
-                                <BodyShortSmall>
-                                    {formaterIsoDato(barnepassordning.fra)} -{' '}
-                                    {formaterIsoDato(barnepassordning.til)}
-                                </BodyShortSmall>
-                            </GridLinje>
-                            <NedersteGridLinje>
-                                <IkonOgTekstWrapper>
-                                    <Søknadsgrunnlag />
-                                    <MarginTekst>Utgifter per måned</MarginTekst>
-                                </IkonOgTekstWrapper>
-                                <BodyShortSmall>{barnepassordning.beløp},-</BodyShortSmall>
-                            </NedersteGridLinje>
+                            {søkesOmBarnetilsynForBarn ? (
+                                <>
+                                    <GridLinje>
+                                        <IkonOgTekstWrapper>
+                                            <Søknadsgrunnlag />
+                                            <BoldTekst size="small">Barnepassordning</BoldTekst>
+                                        </IkonOgTekstWrapper>
+                                        <Label size="small">
+                                            {typeBarnepassordningTilTekst[barnepassordning.type]}
+                                        </Label>
+                                    </GridLinje>
+                                    <GridLinje>
+                                        <IkonOgTekstWrapper>
+                                            <Søknadsgrunnlag />
+                                            <MarginTekst>Navn passordning</MarginTekst>
+                                        </IkonOgTekstWrapper>
+                                        <BodyShortSmall>{barnepassordning.navn}</BodyShortSmall>
+                                    </GridLinje>
+                                    <GridLinje>
+                                        <IkonOgTekstWrapper>
+                                            <Søknadsgrunnlag />
+                                            <MarginTekst>Periode passordning</MarginTekst>
+                                        </IkonOgTekstWrapper>
+                                        <BodyShortSmall>
+                                            {formaterIsoDato(barnepassordning.fra)} -{' '}
+                                            {formaterIsoDato(barnepassordning.til)}
+                                        </BodyShortSmall>
+                                    </GridLinje>
+                                    <NedersteGridLinje>
+                                        <IkonOgTekstWrapper>
+                                            <Søknadsgrunnlag />
+                                            <MarginTekst>Utgifter per måned</MarginTekst>
+                                        </IkonOgTekstWrapper>
+                                        <BodyShortSmall>{barnepassordning.beløp},-</BodyShortSmall>
+                                    </NedersteGridLinje>
+                                </>
+                            ) : (
+                                <FlexBox>
+                                    <BodyShortSmall>Ikke søkt</BodyShortSmall>
+                                </FlexBox>
+                            )}
                         </React.Fragment>
                     );
                 })}
             </BottomBorder>
             <FlexDiv>
                 <ResultatIkonOgTekstWrapper>
-                    <ResultatSwitch vilkårsresultat={vilkårsresultatAleneomsorg} />
+                    <ResultatSwitch vilkårsresultat={aleneomsorgVilkårsresultat} />
                     <Ikontekst>Aleneomsorg</Ikontekst>
                 </ResultatIkonOgTekstWrapper>
                 <ResultatIkonOgTekstWrapper>
-                    <ResultatSwitch vilkårsresultat={vilkårsresultatAlderPåBarn} />
+                    <ResultatSwitch vilkårsresultat={alderPåBarnVilkårsresultat} />
                     <Ikontekst>Alder på barn</Ikontekst>
                 </ResultatIkonOgTekstWrapper>
             </FlexDiv>
