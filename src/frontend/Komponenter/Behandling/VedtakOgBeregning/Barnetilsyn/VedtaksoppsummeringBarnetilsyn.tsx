@@ -21,9 +21,9 @@ const OppsummeringContainer = styled.div`
     flex-wrap: wrap;
 `;
 
-const BegrunnelseTilsynsutgifter = styled.div`
-    margin: 1rem;
-    padding: 1rem;
+const Container = styled.div`
+    margin: 1rem 1rem 0 1rem;
+    padding: 1rem 1rem 1rem 2rem;
 `;
 
 const lagVilkåresresultatPerBarn = (
@@ -84,12 +84,12 @@ export const VedtaksoppsummeringBarnetilsyn: React.FC<{
                 </OppsummeringContainer>
             )}
             {begrunnelseForTilsynsutgiftVilkår && (
-                <BegrunnelseTilsynsutgifter>
+                <Container>
                     <Heading spacing size="small" level="5">
                         Vurdering tilsynsutgifter
                     </Heading>
                     <BreakWordNormaltekst>{begrunnelseForTilsynsutgiftVilkår}</BreakWordNormaltekst>
-                </BegrunnelseTilsynsutgifter>
+                </Container>
             )}
         </>
     );

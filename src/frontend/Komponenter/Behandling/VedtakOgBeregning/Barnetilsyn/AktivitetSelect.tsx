@@ -61,7 +61,6 @@ const AktivitetSelect: React.FC<Props> = ({
             }}
             erLesevisning={erLesevisning || skalIkkeVelgeAktivitet}
             lesevisningVerdi={utledLesevisningVerdi()}
-            size={'small'}
         >
             <option value="">Velg</option>
             {valgbareAktivitetstyper.map((aktivitet) => (

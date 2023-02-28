@@ -13,35 +13,37 @@ const HovedKnapp = styled(Button)`
     margin-top: 1rem;
 `;
 
-const Container = styled.div`
+const Container = styled.div<{ erOvergangsstønad: boolean }>`
     margin-top: 1rem;
-    padding: 0.4rem 1rem 1rem 1rem;
+    padding: ${(props) => (props.erOvergangsstønad ? '0.4rem 1rem 1rem 1rem' : '1rem')};
     background-color: ${AGray50};
 `;
 
 interface Props {
-    avslagÅrsak?: EAvslagÅrsak;
-    settAvslagÅrsak: (årsak: EAvslagÅrsak) => void;
-    lagreVedtak: (e: FormEvent<HTMLFormElement>) => void;
     avslagBegrunnelse: string;
-    settAvslagBegrunnelse: (begrunnelse: string) => void;
-    laster: boolean;
-    feilmelding?: string;
+    avslagÅrsak?: EAvslagÅrsak;
     behandlingErRedigerbar: boolean;
+    erOvergangsstønad: boolean;
+    feilmelding?: string;
     feilmeldingÅrsak: string;
+    lagreVedtak: (e: FormEvent<HTMLFormElement>) => void;
+    laster: boolean;
+    settAvslagBegrunnelse: (begrunnelse: string) => void;
+    settAvslagÅrsak: (årsak: EAvslagÅrsak) => void;
     skalVelgeÅrsak: boolean;
 }
 
 const AvslåVedtakForm: React.FC<Props> = ({
-    avslagÅrsak,
-    settAvslagÅrsak,
-    lagreVedtak,
     avslagBegrunnelse,
-    settAvslagBegrunnelse,
-    feilmelding,
-    laster,
+    avslagÅrsak,
     behandlingErRedigerbar,
+    erOvergangsstønad,
+    feilmelding,
     feilmeldingÅrsak,
+    lagreVedtak,
+    laster,
+    settAvslagBegrunnelse,
+    settAvslagÅrsak,
     skalVelgeÅrsak,
 }) => {
     const { settIkkePersistertKomponent } = useApp();
@@ -53,7 +55,7 @@ const AvslåVedtakForm: React.FC<Props> = ({
     return (
         <>
             <form onSubmit={lagreVedtak}>
-                <Container>
+                <Container erOvergangsstønad={erOvergangsstønad}>
                     {skalVelgeÅrsak && (
                         <SelectAvslagÅrsak
                             avslagÅrsak={avslagÅrsak}

@@ -18,12 +18,15 @@ import {
     SmallTextLabel,
 } from '../../../../Felles/Visningskomponenter/Tekster';
 
-const Rad = styled.div<{ erTittelRad?: boolean }>`
+const InnholdRad = styled.div`
     display: grid;
-    grid-template-area: periode antallBarn utgifter kontantstøtte tilleggsstønad beløp notifikasjon;
     grid-template-columns: 8rem 5.5rem 4rem 6rem 7rem 10rem 2rem;
     grid-gap: 1rem;
-    margin-bottom: ${(props) => (props.erTittelRad ? '0.5rem' : '0')};
+    margin-left: 1rem;
+`;
+
+const TittelRad = styled(InnholdRad)`
+    margin-bottom: 0.5rem;
 `;
 
 const HøyrejustertTekst = styled(BodyShortSmall)`
@@ -45,24 +48,25 @@ const AdvarselContainter = styled.div`
 
 export const UtregningstabellBarnetilsyn: React.FC<{
     beregningsresultat: Ressurs<IBeregningsperiodeBarnetilsyn[]>;
-}> = ({ beregningsresultat }) => {
+    className?: string;
+}> = ({ beregningsresultat, className }) => {
     return (
         <DataViewer response={{ beregningsresultat }}>
             {({ beregningsresultat }) => (
-                <>
+                <div className={className}>
                     <Heading spacing size={'small'} level={'5'}>
                         Utregning
                     </Heading>
-                    <Rad erTittelRad>
+                    <TittelRad>
                         <SmallTextLabel>Periode</SmallTextLabel>
                         <HøyrejusterElement>Ant. barn</HøyrejusterElement>
                         <HøyrejusterElement>Utgifter</HøyrejusterElement>
                         <HøyrejusterElement>Kontantstøtte</HøyrejusterElement>
                         <HøyrejusterElement>Tilleggsstønad</HøyrejusterElement>
                         <HøyrejusterElement>Stønadsbeløp pr. mnd</HøyrejusterElement>
-                    </Rad>
+                    </TittelRad>
                     {beregningsresultat.map((rad) => (
-                        <Rad>
+                        <InnholdRad>
                             <BodyShortSmall>
                                 {`${formaterNullableMånedÅr(
                                     rad.periode.fradato
@@ -98,7 +102,7 @@ export const UtregningstabellBarnetilsyn: React.FC<{
                                     </HelpText>
                                 </VenstrejustertElement>
                             )}
-                        </Rad>
+                        </InnholdRad>
                     ))}
                     {blirNullUtbetalingPgaOverstigendeKontantstøtte(beregningsresultat) && (
                         <AdvarselContainter>
@@ -114,7 +118,7 @@ export const UtregningstabellBarnetilsyn: React.FC<{
                             </Alert>
                         </AdvarselContainter>
                     )}
-                </>
+                </div>
             )}
         </DataViewer>
     );

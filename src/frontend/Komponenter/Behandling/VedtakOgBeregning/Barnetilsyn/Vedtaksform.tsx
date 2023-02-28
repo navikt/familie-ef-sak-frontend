@@ -33,6 +33,7 @@ import { blirNullUtbetalingPgaOverstigendeKontantstøtte } from '../Felles/utils
 import { tomUtgiftsperiodeRad } from './utils';
 import { useRedirectEtterLagring } from '../../../../App/hooks/felles/useRedirectEtterLagring';
 import { v4 as uuidv4 } from 'uuid';
+import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
 
 export type InnvilgeVedtakForm = {
     utgiftsperioder: IUtgiftsperiode[];
@@ -45,11 +46,20 @@ export type InnvilgeVedtakForm = {
     begrunnelse?: string;
 };
 
-const WrapperDobbelMarginTop = styled.div`
-    margin-top: 2rem;
+const Container = styled.section`
+    margin-top: 1rem;
+    padding: 1rem;
 `;
 
-const WrapperMarginTop = styled.div`
+const InputContainer = styled(Container)`
+    background-color: ${AGray50};
+`;
+
+const UtregningTabell = styled(UtregningstabellBarnetilsyn)`
+    margin-top: 1rem;
+`;
+
+const HovedKnapp = styled(Button)`
     margin-top: 1rem;
 `;
 
@@ -267,17 +277,17 @@ export const Vedtaksform: React.FC<{
 
     return (
         <form onSubmit={formState.onSubmit(handleSubmit)}>
-            <Heading spacing size="small" level="5">
-                Utgifter til barnetilsyn
-            </Heading>
-            <UtgiftsperiodeValg
-                utgiftsperioder={utgiftsperiodeState}
-                valideringsfeil={formState.errors.utgiftsperioder}
-                settValideringsFeil={formState.setErrors}
-                barn={barn}
-                låsFraDatoFørsteRad={låsFraDatoFørsteRad}
-            />
-            <div>
+            <InputContainer>
+                <Heading spacing size="small" level="5">
+                    Utgifter til barnetilsyn
+                </Heading>
+                <UtgiftsperiodeValg
+                    utgiftsperioder={utgiftsperiodeState}
+                    valideringsfeil={formState.errors.utgiftsperioder}
+                    settValideringsFeil={formState.setErrors}
+                    barn={barn}
+                    låsFraDatoFørsteRad={låsFraDatoFørsteRad}
+                />
                 {!behandlingErRedigerbar && begrunnelseState.value === '' ? (
                     <IngenBegrunnelseOppgitt />
                 ) : (
@@ -293,53 +303,44 @@ export const Vedtaksform: React.FC<{
                         feilmelding={formState.errors.begrunnelse}
                     />
                 )}
-            </div>
-            <WrapperDobbelMarginTop>
-                <Heading spacing size="small" level="5">
-                    Kontantstøtte
-                </Heading>
+            </InputContainer>
+            <InputContainer>
                 <KontantstøtteValg
+                    erLesevisning={!behandlingErRedigerbar}
                     kontantstøtte={kontantstøtteState}
                     kontantstøttePerioder={kontantstøttePeriodeState}
-                    valideringsfeil={formState.errors}
                     settValideringsFeil={formState.setErrors}
+                    valideringsfeil={formState.errors}
                 />
-            </WrapperDobbelMarginTop>
-            <WrapperMarginTop>
-                <Heading spacing size="small" level="5">
-                    Tilleggsstønadsforskriften
-                </Heading>
+            </InputContainer>
+            <InputContainer>
                 <TilleggsstønadValg
+                    erLesevisning={!behandlingErRedigerbar}
+                    settValideringsfeil={formState.setErrors}
+                    stønadsreduksjon={stønadsreduksjonState}
                     tilleggsstønad={tilleggsstønadState}
                     tilleggsstønadBegrunnelse={tilleggsstønadBegrunnelseState}
-                    stønadsreduksjon={stønadsreduksjonState}
                     tilleggsstønadPerioder={tilleggsstønadsperiodeState}
                     valideringsfeil={formState.errors}
-                    settValideringsfeil={formState.setErrors}
                 />
-            </WrapperMarginTop>
-            {feilmelding && (
-                <AlertStripeFeilPreWrap style={{ marginTop: '2rem' }}>
-                    {feilmelding}
-                </AlertStripeFeilPreWrap>
-            )}
-            {behandlingErRedigerbar && (
-                <WrapperDobbelMarginTop>
+            </InputContainer>
+            <Container>
+                {behandlingErRedigerbar && (
                     <Button variant={'secondary'} onClick={beregnBarnetilsyn} type={'button'}>
                         Beregn
                     </Button>
-                </WrapperDobbelMarginTop>
-            )}
-            <WrapperDobbelMarginTop>
-                <UtregningstabellBarnetilsyn beregningsresultat={beregningsresultat} />
-            </WrapperDobbelMarginTop>
-
+                )}
+                <UtregningTabell beregningsresultat={beregningsresultat} />
+                {feilmelding && (
+                    <AlertStripeFeilPreWrap style={{ marginTop: '2rem' }}>
+                        {feilmelding}
+                    </AlertStripeFeilPreWrap>
+                )}
+            </Container>
             {behandlingErRedigerbar && (
-                <WrapperDobbelMarginTop>
-                    <Button variant="primary" disabled={laster} type={'submit'}>
-                        Lagre vedtak
-                    </Button>
-                </WrapperDobbelMarginTop>
+                <HovedKnapp variant="primary" disabled={laster} type={'submit'}>
+                    Lagre vedtak
+                </HovedKnapp>
             )}
         </form>
     );

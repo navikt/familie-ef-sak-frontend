@@ -1,6 +1,5 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
-import { useBehandling } from '../../../../App/context/BehandlingContext';
 import { VEDTAK_OG_BEREGNING } from '../Felles/konstanter';
 import {
     EKontantstøttePeriodeProperty,
@@ -15,42 +14,37 @@ import { InnvilgeVedtakForm } from './Vedtaksform';
 import { harTallverdi, tilHeltall, tilTallverdi } from '../../../../App/utils/utils';
 import LeggTilKnapp from '../../../../Felles/Knapper/LeggTilKnapp';
 import { FieldState } from '../../../../App/hooks/felles/useFieldState';
-import { Label, Radio, Tooltip } from '@navikt/ds-react';
+import { Heading, Label, Tooltip } from '@navikt/ds-react';
 import InputMedTusenSkille from '../../../../Felles/Visningskomponenter/InputMedTusenskille';
-import { EnsligRadioGruppe } from '../../../../Felles/Input/EnsligRadioGruppe';
 import FjernKnapp from '../../../../Felles/Knapper/FjernKnapp';
 import { v4 as uuidv4 } from 'uuid';
+import JaNeiRadioGruppe from '../Felles/JaNeiRadioGruppe';
 
-const KontantstøttePeriodeContainer = styled.div<{ lesevisning?: boolean }>`
+const InnholdRad = styled.div<{ lesevisning: boolean }>`
     display: grid;
-    grid-template-areas: 'fraOgMedVelger tilOgMedVelger kontantstøtte slettKnapp leggTilKnapp';
     grid-template-columns: ${(props) =>
-        props.lesevisning ? '8rem 10rem 7rem 7rem 7rem' : '13rem 13rem 6rem 4rem 3rem'};
+        props.lesevisning ? '9.5rem 9rem 7rem 7rem 7rem' : '13rem 13rem 6rem 4rem 3rem'};
     grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
     margin-bottom: 0.5rem;
 `;
 
-const KolonneHeaderWrapper = styled.div<{ lesevisning?: boolean }>`
-    display: grid;
-    grid-template-areas: 'fraOgMedVelger tilOgMedVelger kontantstøtte';
-    grid-template-columns: ${(props) =>
-        props.lesevisning ? '8rem 10rem 7rem' : '13rem 13rem 6rem'};
-    grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
-    margin-bottom: 0.5rem;
+const TittelRad = styled(InnholdRad)`
+    margin-top: 1rem;
 `;
 
-const StyledInput = styled(InputMedTusenSkille)`
-    text-align: left;
+const Input = styled(InputMedTusenSkille)`
+    text-align: right;
 `;
 const ContainerMedLuftUnder = styled.div`
     margin-bottom: 1rem;
 `;
 
 interface Props {
+    erLesevisning: boolean;
     kontantstøtte: FieldState;
     kontantstøttePerioder: ListState<IPeriodeMedBeløp>;
-    valideringsfeil?: FormErrors<InnvilgeVedtakForm>;
     settValideringsFeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>;
+    valideringsfeil?: FormErrors<InnvilgeVedtakForm>;
 }
 
 export const tomKontantstøtteRad = (): IPeriodeMedBeløp => ({
@@ -61,12 +55,12 @@ export const tomKontantstøtteRad = (): IPeriodeMedBeløp => ({
 });
 
 const KontantstøtteValg: React.FC<Props> = ({
+    erLesevisning,
     kontantstøtte,
     kontantstøttePerioder,
-    valideringsfeil,
     settValideringsFeil,
+    valideringsfeil,
 }) => {
-    const { behandlingErRedigerbar } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
 
     const oppdaterKontantstøttePeriode = (
@@ -103,42 +97,34 @@ const KontantstøtteValg: React.FC<Props> = ({
         }
     };
 
+    const radioGruppeTekst =
+        'Er det søkt om, utbetales det eller har det blitt utbetalt kontantstøtte til brukeren eller en brukeren bor med i perioden(e) det er søkt om?';
+
     return (
         <>
-            <EnsligRadioGruppe
-                legend="Er det søkt om, utbetales det eller har det blitt utbetalt kontantstøtte til brukeren eller en brukeren bor med i perioden(e) det er søkt om?"
+            <Heading spacing size="small" level="5">
+                Kontantstøtte
+            </Heading>
+            <JaNeiRadioGruppe
                 error={valideringsfeil?.harKontantstøtte}
-                erLesevisning={!behandlingErRedigerbar}
+                legend={radioGruppeTekst}
+                lesevisning={erLesevisning}
+                onChange={(event) => kontantstøtte.onChange(event)}
                 value={kontantstøtte.value as ERadioValg}
-            >
-                <Radio
-                    name={'Kontantstøtte'}
-                    value={ERadioValg.JA}
-                    onChange={(event) => kontantstøtte.onChange(event)}
-                >
-                    Ja
-                </Radio>
-                <Radio
-                    name={'Kontantstøtte'}
-                    value={ERadioValg.NEI}
-                    onChange={(event) => kontantstøtte.onChange(event)}
-                >
-                    Nei
-                </Radio>
-            </EnsligRadioGruppe>
+            />
             {kontantstøtte.value === ERadioValg.JA && (
                 <>
-                    <KolonneHeaderWrapper lesevisning={!behandlingErRedigerbar}>
+                    <TittelRad lesevisning={erLesevisning}>
                         <Label>Periode fra og med</Label>
                         <Label>Periode til og med</Label>
                         <Label>Kontantstøtte</Label>
-                    </KolonneHeaderWrapper>
+                    </TittelRad>
                     {kontantstøttePerioder.value.map((periode, index) => {
                         const { årMånedFra, årMånedTil, beløp } = periode;
-                        const skalViseFjernKnapp = behandlingErRedigerbar && index !== 0;
+                        const skalViseFjernKnapp = !erLesevisning && index !== 0;
                         return (
                             <React.Fragment key={periode.endretKey}>
-                                <KontantstøttePeriodeContainer>
+                                <InnholdRad lesevisning={erLesevisning}>
                                     <MånedÅrPeriode
                                         årMånedFraInitiell={årMånedFra}
                                         årMånedTilInitiell={årMånedTil}
@@ -157,9 +143,9 @@ const KontantstøtteValg: React.FC<Props> = ({
                                             valideringsfeil?.kontantstøtteperioder &&
                                             valideringsfeil.kontantstøtteperioder[index]?.årMånedFra
                                         }
-                                        erLesevisning={!behandlingErRedigerbar}
+                                        erLesevisning={erLesevisning}
                                     />
-                                    <StyledInput
+                                    <Input
                                         type="number"
                                         size={'small'}
                                         onKeyPress={tilHeltall}
@@ -172,7 +158,7 @@ const KontantstøtteValg: React.FC<Props> = ({
                                                 tilTallverdi(e.target.value)
                                             );
                                         }}
-                                        erLesevisning={!behandlingErRedigerbar}
+                                        erLesevisning={erLesevisning}
                                         label={'Utgifter kontantstøtte'}
                                         hideLabel
                                     />
@@ -197,7 +183,7 @@ const KontantstøtteValg: React.FC<Props> = ({
                                     ) : (
                                         <div />
                                     )}
-                                    {behandlingErRedigerbar && (
+                                    {!erLesevisning && (
                                         <Tooltip content="Legg til rad under" placement="right">
                                             <LeggTilKnapp
                                                 onClick={() => leggTilTomRadUnder(index)}
@@ -205,12 +191,12 @@ const KontantstøtteValg: React.FC<Props> = ({
                                             />
                                         </Tooltip>
                                     )}
-                                </KontantstøttePeriodeContainer>
+                                </InnholdRad>
                             </React.Fragment>
                         );
                     })}
                     <ContainerMedLuftUnder>
-                        {behandlingErRedigerbar && (
+                        {!erLesevisning && (
                             <LeggTilKnapp
                                 onClick={() => kontantstøttePerioder.push(tomKontantstøtteRad())}
                                 knappetekst="Legg til periode"

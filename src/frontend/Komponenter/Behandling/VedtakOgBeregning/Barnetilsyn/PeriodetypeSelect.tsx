@@ -42,7 +42,6 @@ const PeriodetypeSelect: FC<Props> = ({
             }}
             erLesevisning={lesevisning || periodetype === EUtgiftsperiodetype.SANKSJON_1_MND}
             lesevisningVerdi={periodetype && utgiftsperiodetypeTilTekst[periodetype]}
-            size={'small'}
         >
             <option value="">Velg</option>
             {valgbarePeriodetyper.map((type) => (

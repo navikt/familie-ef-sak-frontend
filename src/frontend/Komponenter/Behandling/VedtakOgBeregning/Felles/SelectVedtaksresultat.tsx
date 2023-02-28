@@ -106,7 +106,7 @@ const SelectVedtaksresultat = (props: Props): JSX.Element => {
                         Opphørt
                     </option>
                 </StyledSelect>
-                {behandling.stønadstype === Stønadstype.BARNETILSYN && (
+                {behandling.stønadstype === Stønadstype.BARNETILSYN && behandlingErRedigerbar && (
                     <HjelpeTekst title="Hvor kommer dette fra?" placement={'right'}>
                         <div>
                             Hvis kontantstøtten overstiger tilsynsutgiftene skal saksbehandler

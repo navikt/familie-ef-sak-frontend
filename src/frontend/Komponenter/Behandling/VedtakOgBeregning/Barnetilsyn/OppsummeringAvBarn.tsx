@@ -46,7 +46,7 @@ const NedersteGridLinje = styled(GridLinje)`
     margin-bottom: 1.25rem;
 `;
 
-const BorderWrapper = styled.div`
+const BottomBorder = styled.div`
     margin-top: 1rem;
     border-bottom: 1px solid ${ABorderDivider};
     margin-bottom: 1.25rem;
@@ -86,7 +86,7 @@ export const OppsummeringAvBarn: React.FC<{
             <Heading spacing size="small" level="5">
                 {navnOgAlder}
             </Heading>
-            <BorderWrapper>
+            <BottomBorder>
                 {barnepassordninger.length === 0 && (
                     <BodyShortSmall>Ingen søknadsinformasjon</BodyShortSmall>
                 )}
@@ -129,7 +129,7 @@ export const OppsummeringAvBarn: React.FC<{
                         </React.Fragment>
                     );
                 })}
-            </BorderWrapper>
+            </BottomBorder>
             <FlexDiv>
                 <ResultatIkonOgTekstWrapper>
                     <ResultatSwitch vilkårsresultat={vilkårsresultatAleneomsorg} />

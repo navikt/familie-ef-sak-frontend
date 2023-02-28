@@ -244,7 +244,6 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                 periodetype === EUtgiftsperiodetype.SANKSJON_1_MND
                             }
                             disabledFra={index === 0 && låsFraDatoFørsteRad}
-                            size={'small'}
                         />
                         {behandlingErRedigerbar && !opphørEllerSanksjon ? (
                             <FamilieReactSelect
