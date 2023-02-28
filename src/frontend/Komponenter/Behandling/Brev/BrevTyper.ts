@@ -51,7 +51,7 @@ export interface Flettefeltreferanse {
 
 export interface FlettefeltMedVerdi extends Flettefeltreferanse {
     verdi: string | null;
-    automatiskUtfylt: boolean;
+    automatiskUtfylt?: boolean;
 }
 
 export interface Valgmulighet {
