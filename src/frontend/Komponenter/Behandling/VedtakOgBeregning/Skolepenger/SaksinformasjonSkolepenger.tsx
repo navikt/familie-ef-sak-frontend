@@ -21,6 +21,7 @@ import {
     BodyShortSmall,
     DetailSmall,
 } from '../../../../Felles/Visningskomponenter/Tekster';
+import { ABorderDivider, AGray50 } from '@navikt/ds-tokens/dist/tokens';
 
 type Props = {
     vilkår: IVilkår;
@@ -58,12 +59,11 @@ const FlexBoks = styled.div`
     flex-wrap: wrap;
 `;
 
-const GråBoks = styled.div`
-    background-color: #e5e5e5;
+export const GråBoks = styled.div`
+    background-color: ${AGray50};
     max-width: 750px;
     min-width: 400px;
     padding: 1rem;
-    margin: 2rem 0 1rem 2rem;
     border-radius: 4px;
     display: flex;
     flex-direction: column;
@@ -71,7 +71,7 @@ const GråBoks = styled.div`
 
     &:before {
         content: '';
-        border: 0.5px solid #d3d3d3;
+        border-bottom: 1px solid ${ABorderDivider};
         align-self: stretch;
     }
 `;
@@ -97,7 +97,7 @@ type SøknadsinfoProps = {
     utdanning?: IUnderUtdanning;
     skalViseSøknadsinfo: boolean;
 };
-const SøknadsinformajsonUtdanning: React.FC<SøknadsinfoProps> = ({
+export const SøknadsinformajsonUtdanning: React.FC<SøknadsinfoProps> = ({
     utdanning,
     skalViseSøknadsinfo,
 }) => {
@@ -135,7 +135,7 @@ const SøknadsinformajsonUtdanning: React.FC<SøknadsinfoProps> = ({
     );
 };
 
-const SaksbehanldingsinformasjonUtdanning: React.FC<{ vilkår: IVilkår }> = ({ vilkår }) => {
+export const SaksbehanldingsinformasjonUtdanning: React.FC<{ vilkår: IVilkår }> = ({ vilkår }) => {
     const begrunnelseDokumentasjonUtdanning = utledBegrunnelseFraVilkårOgRegel(
         vilkår.vurderinger,
         AktivitetsvilkårType.DOKUMENTASJON_AV_UTDANNING,
@@ -156,7 +156,7 @@ const SaksbehanldingsinformasjonUtdanning: React.FC<{ vilkår: IVilkår }> = ({ 
     );
 };
 
-const SaksbehanldingsinformasjonUtgifter: React.FC<{ vilkår: IVilkår }> = ({ vilkår }) => {
+export const SaksbehanldingsinformasjonUtgifter: React.FC<{ vilkår: IVilkår }> = ({ vilkår }) => {
     const begrunnelseDokumentasjonUtgifterUtdanning = utledBegrunnelseFraVilkårOgRegel(
         vilkår.vurderinger,
         AktivitetsvilkårType.DOKUMENTASJON_AV_UTDANNING,
@@ -177,7 +177,7 @@ const SaksbehanldingsinformasjonUtgifter: React.FC<{ vilkår: IVilkår }> = ({ v
     );
 };
 
-const SøknadsinformajsonUtgifter: React.FC<SøknadsinfoProps> = ({
+export const SøknadsinformajsonUtgifter: React.FC<SøknadsinfoProps> = ({
     utdanning,
     skalViseSøknadsinfo,
 }) => {

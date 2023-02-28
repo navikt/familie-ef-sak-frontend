@@ -1,10 +1,9 @@
 import * as React from 'react';
 import { FC } from 'react';
-import { IVurdering, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
 import styled from 'styled-components';
 import { delvilkårTypeTilTekst, svarTypeTilTekst } from './tekster';
 import { BrukerMedBlyantIkon } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
-import { resultatTilTekst } from '../VedtakOgBeregning/Felles/ResultatVisning';
+import { IVurdering, resultatTilTekst, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
 import { BreakWordNormaltekst } from '../../../Felles/Visningskomponenter/BreakWordNormaltekst';
 import { formaterIsoDatoTidMedSekunder } from '../../../App/utils/formatter';
 import { Button, ErrorMessage, Heading } from '@navikt/ds-react';
