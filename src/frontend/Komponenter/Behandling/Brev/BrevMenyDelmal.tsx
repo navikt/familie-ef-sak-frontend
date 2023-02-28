@@ -19,7 +19,7 @@ const DelmalValg = styled.div`
     gap: 0.5rem;
 `;
 
-const StyledInnhold = styled(Accordion.Content)`
+const AccordionInnhold = styled(Accordion.Content)`
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -102,7 +102,7 @@ export const BrevMenyDelmal: React.FC<Props> = ({
                         {delmal?.delmalNavn}
                     </Accordion.Header>
                     {ekspanderbartPanelÅpen && (
-                        <StyledInnhold style={{ border: 'none', padding: '1rem' }}>
+                        <AccordionInnhold>
                             {delmalValgfelt &&
                                 delmalValgfelt.map((valgFelt, index) => (
                                     <ValgfeltSelect
@@ -134,7 +134,7 @@ export const BrevMenyDelmal: React.FC<Props> = ({
                                         key={flettefelt._ref}
                                     />
                                 ))}
-                        </StyledInnhold>
+                        </AccordionInnhold>
                     )}
                 </Accordion.Item>
             </Accordion>
