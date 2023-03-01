@@ -1,7 +1,7 @@
 import React from 'react';
 import { IBarn } from '../../App/typer/personopplysninger';
 import LiteBarn from '../Ikoner/LiteBarn';
-import { KolonneTitler } from './TabellWrapper';
+import { KolonneTitler, SmallTabelMedTilpassetBredde } from './TabellWrapper';
 import styled from 'styled-components';
 import { KopierbartNullableFødselsnummer } from '../Fødselsnummer/KopierbartNullableFødselsnummer';
 import EtikettDød from '../Etiketter/EtikettDød';
@@ -27,7 +27,7 @@ const sorterBarnPåAlderInc = (a: IBarn, b: IBarn) => {
 const Barn: React.FC<{ barn: IBarn[] }> = ({ barn }) => {
     return (
         <PersonopplysningerPanel Ikon={LiteBarn} tittel={'Barn'}>
-            <Table className="innhold" size="small">
+            <SmallTabelMedTilpassetBredde>
                 <KolonneTitler titler={titler} />
                 <Table.Body>
                     {barn.sort(sorterBarnPåAlderInc).map((barn) => {
@@ -64,7 +64,7 @@ const Barn: React.FC<{ barn: IBarn[] }> = ({ barn }) => {
                         );
                     })}
                 </Table.Body>
-            </Table>
+            </SmallTabelMedTilpassetBredde>
         </PersonopplysningerPanel>
     );
 };

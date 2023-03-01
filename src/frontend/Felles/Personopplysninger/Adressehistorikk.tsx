@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Bygning from '../Ikoner/Bygning';
 import { AdresseType, IAdresse } from '../../App/typer/personopplysninger';
-import { IngenData, KolonneTitler } from './TabellWrapper';
+import { IngenData, KolonneTitler, SmallTabelMedTilpassetBredde } from './TabellWrapper';
 import styled from 'styled-components';
 import Beboere from './Beboere';
 import { formaterNullableIsoDato } from '../../App/utils/formatter';
@@ -117,7 +117,7 @@ const Adresser: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string; type?: 
             }
         >
             {(adresser.length !== 0 && (
-                <Table className="innhold" size="small">
+                <SmallTabelMedTilpassetBredde>
                     <KolonneTitler
                         titler={[
                             'Adresse',
@@ -130,7 +130,7 @@ const Adresser: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string; type?: 
                     />
 
                     <Innhold adresser={adresser} fagsakPersonId={fagsakPersonId} />
-                </Table>
+                </SmallTabelMedTilpassetBredde>
             )) || <IngenData />}
         </PersonopplysningerPanel>
     );

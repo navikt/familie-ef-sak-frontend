@@ -1,6 +1,6 @@
 import React from 'react';
 import SkrivendeBlyant from '../Ikoner/SkrivendeBlyant';
-import { IngenData, KolonneTitler } from './TabellWrapper';
+import { IngenData, KolonneTitler, SmallTabelMedTilpassetBredde } from './TabellWrapper';
 import { IFullmakt } from '../../App/typer/personopplysninger';
 import { formaterNullableIsoDato } from '../../App/utils/formatter';
 import PersonopplysningerPanel from './PersonopplysningPanel';
@@ -10,7 +10,7 @@ const Fullmakter: React.FC<{ fullmakter: IFullmakt[] }> = ({ fullmakter }) => {
     return (
         <PersonopplysningerPanel Ikon={SkrivendeBlyant} tittel={'Fullmakter'}>
             {(fullmakter.length !== 0 && (
-                <Table className="innhold" size="small">
+                <SmallTabelMedTilpassetBredde>
                     <KolonneTitler
                         titler={['Fullmektig', 'Områder', 'Fødselsnummer', 'Fra', 'Til']}
                     />
@@ -31,7 +31,7 @@ const Fullmakter: React.FC<{ fullmakter: IFullmakt[] }> = ({ fullmakter }) => {
                             );
                         })}
                     </Table.Body>
-                </Table>
+                </SmallTabelMedTilpassetBredde>
             )) || <IngenData />}
         </PersonopplysningerPanel>
     );

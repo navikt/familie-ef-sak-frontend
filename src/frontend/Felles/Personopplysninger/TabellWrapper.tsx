@@ -49,6 +49,10 @@ export const StyledInnholdWrapper = styled.div`
     grid-area: innhold;
 `;
 
+export const SmallTabelMedTilpassetBredde = styled(Table).attrs({ size: 'small' })`
+    max-width: max-content;
+`;
+
 type Kolonnetittel = string | React.ReactNode;
 
 export const KolonneTitler: React.FC<{ titler: Kolonnetittel[] }> = ({ titler }) => {

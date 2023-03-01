@@ -1,6 +1,6 @@
 import React from 'react';
 import Hjerte from '../Ikoner/Hjerte';
-import { KolonneTitler } from './TabellWrapper';
+import { KolonneTitler, SmallTabelMedTilpassetBredde } from './TabellWrapper';
 import { ISivilstand, sivilstandTilTekst } from '../../App/typer/personopplysninger';
 import { KopierbartNullableFødselsnummer } from '../Fødselsnummer/KopierbartNullableFødselsnummer';
 import { formaterNullableIsoDato } from '../../App/utils/formatter';
@@ -14,7 +14,7 @@ const titler = ['Status', 'Dato', 'Navn partner', 'Fødselsnummer'];
 const Sivilstatus: React.FC<{ sivilstander: ISivilstand[] }> = ({ sivilstander }) => {
     return (
         <PersonopplysningerPanel tittel="Sivilstatus" Ikon={Hjerte}>
-            <Table className="innhold" size="small">
+            <SmallTabelMedTilpassetBredde>
                 <KolonneTitler titler={titler} />
                 <Table.Body>
                     {sivilstander.map((sivilstand, indeks) => {
@@ -46,7 +46,7 @@ const Sivilstatus: React.FC<{ sivilstander: ISivilstand[] }> = ({ sivilstander }
                         );
                     })}
                 </Table.Body>
-            </Table>
+            </SmallTabelMedTilpassetBredde>
         </PersonopplysningerPanel>
     );
 };

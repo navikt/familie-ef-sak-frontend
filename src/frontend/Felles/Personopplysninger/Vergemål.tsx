@@ -1,6 +1,6 @@
 import React from 'react';
 import SkrivendeBlyant from '../Ikoner/SkrivendeBlyant';
-import { IngenData, KolonneTitler } from './TabellWrapper';
+import { IngenData, KolonneTitler, SmallTabelMedTilpassetBredde } from './TabellWrapper';
 import {
     IVergemål,
     vergemålOmfangTilTekst,
@@ -14,7 +14,7 @@ const Vergemål: React.FC<{ vergemål: IVergemål[] }> = ({ vergemål }) => {
     return (
         <PersonopplysningerPanel Ikon={SkrivendeBlyant} tittel={'Vergemål'}>
             {(vergemål.length !== 0 && (
-                <Table className="innhold" size="small">
+                <SmallTabelMedTilpassetBredde>
                     <KolonneTitler
                         titler={['Type', 'Omfang', 'Verge', 'Fødselsnummer', 'Embete']}
                     />
@@ -35,7 +35,7 @@ const Vergemål: React.FC<{ vergemål: IVergemål[] }> = ({ vergemål }) => {
                             );
                         })}
                     </Table.Body>
-                </Table>
+                </SmallTabelMedTilpassetBredde>
             )) || <IngenData />}
         </PersonopplysningerPanel>
     );

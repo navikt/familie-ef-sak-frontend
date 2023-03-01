@@ -1,5 +1,5 @@
 import React from 'react';
-import { KolonneTitler } from './TabellWrapper';
+import { KolonneTitler, SmallTabelMedTilpassetBredde } from './TabellWrapper';
 import { Folkeregisterpersonstatus, IStatsborgerskap } from '../../App/typer/personopplysninger';
 import Pass from '../Ikoner/Pass';
 import { formaterNullableIsoDato } from '../../App/utils/formatter';
@@ -12,7 +12,7 @@ const Statsborgerskap: React.FC<{
 }> = ({ statsborgerskap, folkeregisterPersonstatus }) => {
     return (
         <PersonopplysningerPanel Ikon={Pass} tittel={'Statsborgerskap'}>
-            <Table className="innhold" size="small">
+            <SmallTabelMedTilpassetBredde>
                 <KolonneTitler titler={['Land', 'Fra', 'Til', 'Personstatus']} />
                 <Table.Body>
                     {statsborgerskap.map((statsborgerskap, indeks) => {
@@ -33,7 +33,7 @@ const Statsborgerskap: React.FC<{
                         );
                     })}
                 </Table.Body>
-            </Table>
+            </SmallTabelMedTilpassetBredde>
         </PersonopplysningerPanel>
     );
 };

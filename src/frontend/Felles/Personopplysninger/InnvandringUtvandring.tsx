@@ -1,6 +1,6 @@
 import React from 'react';
 import { IInnflyttingTilNorge, IUtflyttingFraNorge } from '../../App/typer/personopplysninger';
-import { IngenData, KolonneTitler } from './TabellWrapper';
+import { IngenData, KolonneTitler, SmallTabelMedTilpassetBredde } from './TabellWrapper';
 import FlyMedSky from '../Ikoner/FlyMedSky';
 import { formaterNullableIsoDato, formaterNullableIsoÅr } from '../../App/utils/formatter';
 import styled from 'styled-components';
@@ -59,7 +59,7 @@ const InnvandringUtVandring: React.FC<Props> = ({ innvandringer, utvandringer })
 
 const Innvandring: React.FC<{ innvandringer: IInnflyttingTilNorge[] }> = ({ innvandringer }) => {
     return (
-        <Table className={'innhold'} size="small">
+        <SmallTabelMedTilpassetBredde>
             <KolonneTitler titler={['Innvandret fra', headerForInnflyttingTabell, '', '']} />
             <Table.Body>
                 {innvandringer.map((innflytting, indeks) => {
@@ -80,13 +80,13 @@ const Innvandring: React.FC<{ innvandringer: IInnflyttingTilNorge[] }> = ({ innv
                     );
                 })}
             </Table.Body>
-        </Table>
+        </SmallTabelMedTilpassetBredde>
     );
 };
 
 const Utvandring: React.FC<{ utvandringer: IUtflyttingFraNorge[] }> = ({ utvandringer }) => {
     return (
-        <Table className={'innhold'} size="small">
+        <SmallTabelMedTilpassetBredde>
             <KolonneTitler titler={['Utvandret til', 'Utflyttingsdato', '', '']} />
             <Table.Body>
                 {utvandringer.map((utflytting, indeks) => {
@@ -107,7 +107,7 @@ const Utvandring: React.FC<{ utvandringer: IUtflyttingFraNorge[] }> = ({ utvandr
                     );
                 })}
             </Table.Body>
-        </Table>
+        </SmallTabelMedTilpassetBredde>
     );
 };
 
