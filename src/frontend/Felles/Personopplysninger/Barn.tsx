@@ -10,12 +10,10 @@ import { Table, Tag } from '@navikt/ds-react';
 import BarnBosted from './BarnBosted';
 import PersonopplysningerPanel from './PersonopplysningPanel';
 
-const SpanMedVenstreMargin = styled.span`
-    margin-left: 15%;
-`;
-
 const FlexDiv = styled.div`
     display: flex;
+    gap: 1rem;
+    align-items: center;
 `;
 
 const titler = ['Navn', 'Fødselsnummer', 'Annen forelder', 'Bor med bruker'];
@@ -82,18 +80,20 @@ const FødselsnummerBarn: React.FC<{
         <Table.DataCell>
             <FlexDiv>
                 <KopierbartNullableFødselsnummer fødselsnummer={fødselsnummer} />
-                {!dødsdato && (
-                    <SpanMedVenstreMargin>
-                        {alder !== undefined ? (
-                            alder < 18 ? (
-                                <Tag variant={'success'}>{alder} år</Tag>
-                            ) : (
-                                <Tag variant={'info'}>Over 18 år</Tag>
-                            )
-                        ) : (
-                            <Tag variant={'warning'}>Ukjent alder</Tag>
-                        )}
-                    </SpanMedVenstreMargin>
+                {!dødsdato && alder !== undefined ? (
+                    alder < 18 ? (
+                        <Tag variant={'success'} size="small">
+                            {alder} år
+                        </Tag>
+                    ) : (
+                        <Tag variant={'info'} size="small">
+                            Over 18 år
+                        </Tag>
+                    )
+                ) : (
+                    <Tag variant={'warning'} size="small">
+                        Ukjent alder
+                    </Tag>
                 )}
             </FlexDiv>
         </Table.DataCell>
