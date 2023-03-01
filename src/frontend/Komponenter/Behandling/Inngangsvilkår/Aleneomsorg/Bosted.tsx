@@ -3,15 +3,15 @@ import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
 import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 import { IDeltBostedPeriode } from '../../../../App/typer/personopplysninger';
 import styled from 'styled-components';
-import { BodyShort, Popover, Table } from '@navikt/ds-react';
-import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
+import { Popover } from '@navikt/ds-react';
 import { Information } from '@navikt/ds-icons';
+import { popoverContentDeltBosted } from '../../../../Felles/Personopplysninger/BarnDeltBosted';
 
 interface Props {
     harSammeAdresseSøknad?: boolean;
     harSammeAdresseRegister?: boolean;
     erBarnetFødt: boolean;
-    deltBosted: IDeltBostedPeriode | undefined;
+    deltBostedPerioder: IDeltBostedPeriode[];
     harDeltBostedVedGrunnlagsdataopprettelse: boolean;
 }
 
@@ -38,36 +38,11 @@ const utledBostedTekst = (harDeltBosted: boolean, harSammeAdresse: boolean | und
     }
     return 'Ikke registrert på brukers adresse';
 };
-const popoverContent = (deltBosted: IDeltBostedPeriode) => (
-    <Popover.Content>
-        <BodyShort>Delt bosted:</BodyShort>
-        <Table size={'small'}>
-            <Table.Header>
-                <Table.Row>
-                    <Table.HeaderCell scope="col">Fra</Table.HeaderCell>
-                    <Table.HeaderCell scope="col">Til</Table.HeaderCell>
-                </Table.Row>
-            </Table.Header>
-            <Table.Body>
-                <Table.Row key={deltBosted.startdatoForKontrakt}>
-                    <Table.DataCell>
-                        <StyledDiv>
-                            {formaterNullableIsoDato(deltBosted.startdatoForKontrakt)}
-                        </StyledDiv>
-                    </Table.DataCell>
-                    <Table.DataCell>
-                        {formaterNullableIsoDato(deltBosted.sluttdatoForKontrakt)}
-                    </Table.DataCell>
-                </Table.Row>
-            </Table.Body>
-        </Table>
-    </Popover.Content>
-);
 const Bosted: FC<Props> = ({
     harSammeAdresseSøknad,
     harSammeAdresseRegister,
     erBarnetFødt,
-    deltBosted,
+    deltBostedPerioder,
     harDeltBostedVedGrunnlagsdataopprettelse,
 }) => {
     const iconRef = useRef<SVGSVGElement>(null);
@@ -85,7 +60,7 @@ const Bosted: FC<Props> = ({
                             harSammeAdresseRegister
                         )}
                     />
-                    {deltBosted && (
+                    {deltBostedPerioder.length > 0 && (
                         <>
                             <InformationIcon ref={iconRef} onClick={() => setOpenState(true)}>
                                 Åpne popover
@@ -95,7 +70,7 @@ const Bosted: FC<Props> = ({
                                 open={openState}
                                 onClose={() => setOpenState(false)}
                                 anchorEl={iconRef.current}
-                                children={popoverContent(deltBosted)}
+                                children={popoverContentDeltBosted(deltBostedPerioder)}
                             />
                         </>
                     )}
