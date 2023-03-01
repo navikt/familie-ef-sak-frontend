@@ -4,24 +4,23 @@ import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 
 const Panel = styled.div`
-    display: grid;
-    grid-template-columns: 32px max-content;
-    grid-template-rows: auto;
-    grid-template-areas: 'ikon tittel' '. innhold';
     background-color: ${AGray50};
     padding: 1rem;
-    gap: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+`;
 
-    .ikon {
-        grid-area: ikon;
-        display: flex;
-        justify-content: center;
-    }
+const TittelMedIkon = styled.div`
+    display: flex;
+    gap: 1rem;
+`;
 
-    .innhold {
-        grid-area: innhold;
-        margin-left: -12px;
-    }
+const InnholdWrapper = styled.div`
+    padding-left: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 `;
 
 const Tittel = styled.div`
@@ -36,20 +35,20 @@ const PersonopplysningerPanel: React.FC<{
 }> = ({ Ikon, tittel, children, tittelBeskrivelse }) => {
     return (
         <Panel>
-            <div className="ikon">
+            <TittelMedIkon className="ikon">
                 <Ikon />
-            </div>
-            <Tittel>
-                <Heading size="small" className="tittel">
-                    {tittel}
-                </Heading>
-                {tittelBeskrivelse && (
-                    <ReadMore size="small" header={tittelBeskrivelse.header}>
-                        {tittelBeskrivelse.innhold}
-                    </ReadMore>
-                )}
-            </Tittel>
-            {children}
+                <Tittel>
+                    <Heading size="small" className="tittel">
+                        {tittel}
+                    </Heading>
+                    {tittelBeskrivelse && (
+                        <ReadMore size="small" header={tittelBeskrivelse.header}>
+                            {tittelBeskrivelse.innhold}
+                        </ReadMore>
+                    )}
+                </Tittel>
+            </TittelMedIkon>
+            <InnholdWrapper>{children}</InnholdWrapper>
         </Panel>
     );
 };
