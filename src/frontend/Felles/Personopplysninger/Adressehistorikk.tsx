@@ -7,7 +7,7 @@ import Beboere from './Beboere';
 import { formaterNullableIsoDato } from '../../App/utils/formatter';
 import { ModalWrapper } from '../Modal/ModalWrapper';
 import UtvidPanel from '../UtvidPanel/UtvidPanel';
-import { Button, Table } from '@navikt/ds-react';
+import { Button, Table, Tag } from '@navikt/ds-react';
 import { BodyLongSmall } from '../Visningskomponenter/Tekster';
 import PersonopplysningerPanel from './PersonopplysningPanel';
 
@@ -26,6 +26,18 @@ const FetTekst = styled.span`
 `;
 
 const MAX_LENGDE_ADRESSER = 5;
+
+const TekstMedTagWrapper = styled.div`
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+`;
+
+const BostedsadresserBeskrivelseWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+`;
 
 const Adressehistorikk: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string }> = ({
     adresser,
@@ -78,7 +90,7 @@ const AdressehistorikkMedLesMerKnapp: React.FC<{
 };
 
 const TittelbeskrivelseBostedsadresser: React.ReactElement = (
-    <>
+    <BostedsadresserBeskrivelseWrapper>
         <BodyLongSmall>
             <FetTekst>Gjeldende adresse:</FetTekst>
             En person skal til enhver tid ha kun én folkeregistrert bostedsadresse. I EF Sak er
@@ -98,7 +110,7 @@ const TittelbeskrivelseBostedsadresser: React.ReactElement = (
             Folkeregisterets opphørsdato (dersom den er kjent). Personen er ikke registrert bosatt
             på adressen iht Folkeregisteret
         </BodyLongSmall>
-    </>
+    </BostedsadresserBeskrivelseWrapper>
 );
 
 const Adresser: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string; type?: AdresseType }> = ({
@@ -148,8 +160,14 @@ const Innhold: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string }> = ({
                     return (
                         <Table.Row key={indeks}>
                             <Table.DataCell>
-                                {adresse.visningsadresse}
-                                {adresse.erGjeldende ? ' (gjeldende)' : ''}
+                                <TekstMedTagWrapper>
+                                    {adresse.visningsadresse}
+                                    {adresse.erGjeldende && (
+                                        <Tag variant="success" size="small">
+                                            Gjeldende
+                                        </Tag>
+                                    )}
+                                </TekstMedTagWrapper>
                             </Table.DataCell>
                             <Table.DataCell>
                                 {adresse.type === AdresseType.BOSTEDADRESSE
