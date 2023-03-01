@@ -1,52 +1,37 @@
 import React from 'react';
-import { IVurdering, resultatTilTall, Vilkårsresultat } from '../../Inngangsvilkår/vilkår';
+import {
+    IVurdering,
+    resultatTilTall,
+    resultatTilTekst,
+    Vilkårsresultat,
+} from '../../Inngangsvilkår/vilkår';
 import { mapVilkårtypeTilResultat, summerVilkårsresultat } from './utils';
 import styled from 'styled-components';
 import { VilkårsresultatIkon } from '../../../../Felles/Ikoner/VilkårsresultatIkon';
 import { Label } from '@navikt/ds-react';
-import { Stønadstype } from '../../../../App/typer/behandlingstema';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 
-const Ikontekst = styled(BodyShortSmall)`
-    margin-left: 0.25rem;
-`;
-
-const BoldTekst = styled(Label)`
-    margin-right: 1rem;
-`;
-
-const Container = styled.div<{ stønadstype: Stønadstype }>`
-    width: ${(p) => (p.stønadstype === Stønadstype.OVERGANGSSTØNAD ? '280px' : '300px')};
-`;
-
-const ResultatIkonOgTekstWrapper = styled.div`
+const FlexBox = styled.div`
     display: flex;
-    justify-content: flex-start;
+    gap: 0.25rem;
+`;
+
+const ResultatIkon = styled(VilkårsresultatIkon)`
+    min-width: 21px;
+    min-height: 23px;
+`;
+
+const ResultatGrid = styled.div`
+    display: grid;
+    grid-template-columns: 8.5rem 7.25rem;
+    grid-gap: 1rem;
     margin-bottom: 0.5rem;
 `;
-
-const ResultatGrid = styled.div<{ stønadstype: Stønadstype }>`
-    display: grid;
-    grid-template-area: vilkårstype vilkårsoppsummering;
-    grid-template-columns: ${(p) =>
-            p.stønadstype === Stønadstype.OVERGANGSSTØNAD ? '7rem' : '8.5rem'} 10.5rem;
-    grid-gap: 1rem;
-`;
-
-export const resultatTilTekst: Record<string, string> = {
-    OPPFYLT: 'oppfylt',
-    AUTOMATISK_OPPFYLT: 'oppfylt (automatisk)',
-    IKKE_TATT_STILLING_TIL: 'ikke vurdert',
-    IKKE_OPPFYLT: 'ikke oppfylt',
-    IKKE_AKTUELL: 'ikke aktuell',
-    SKAL_IKKE_VURDERES: 'ikke vurdert',
-};
 
 export const ResultatVisning: React.FC<{
     vilkårsvurderinger: IVurdering[];
     tittel: string;
-    stønadstype: Stønadstype;
-}> = ({ vilkårsvurderinger, tittel, stønadstype }) => {
+}> = ({ vilkårsvurderinger, tittel }) => {
     const vilkårtypeTilResultat = mapVilkårtypeTilResultat(vilkårsvurderinger);
     const antallVilkårTotalt = Object.keys(vilkårtypeTilResultat).length;
     const oppsummeringAvVilkårsresultat = summerVilkårsresultat(vilkårtypeTilResultat);
@@ -56,22 +41,20 @@ export const ResultatVisning: React.FC<{
     };
 
     return (
-        <Container stønadstype={stønadstype}>
+        <>
             {Object.entries(oppsummeringAvVilkårsresultat)
                 .sort(sorterVilkårsresultat)
                 .map(([vilkårsresultat, antallVilkårsresultat], i) => (
-                    <ResultatGrid stønadstype={stønadstype} key={i}>
-                        <BoldTekst size="small">{i == 0 ? tittel : ''}</BoldTekst>
-                        <ResultatIkonOgTekstWrapper>
-                            <VilkårsresultatIkon
-                                vilkårsresultat={vilkårsresultat as Vilkårsresultat}
-                            />
-                            <Ikontekst>
+                    <ResultatGrid key={i}>
+                        <Label size="small">{i == 0 ? tittel : ''}</Label>
+                        <FlexBox>
+                            <ResultatIkon vilkårsresultat={vilkårsresultat as Vilkårsresultat} />
+                            <BodyShortSmall>
                                 {`${antallVilkårsresultat} av ${antallVilkårTotalt} ${resultatTilTekst[vilkårsresultat]}`}
-                            </Ikontekst>
-                        </ResultatIkonOgTekstWrapper>
+                            </BodyShortSmall>
+                        </FlexBox>
                     </ResultatGrid>
                 ))}
-        </Container>
+        </>
     );
 };

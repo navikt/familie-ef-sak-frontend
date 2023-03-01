@@ -1,5 +1,6 @@
 import { EÅrsakBarnepass } from '../../Aktivitet/AlderPåBarn/AlderPåBarnTyper';
 import { ITidligereVedtaksperioder } from '../../TidligereVedtaksperioder/typer';
+import { IDeltBostedPeriode } from '../../../../App/typer/personopplysninger';
 
 export interface IBarnMedSamvær {
     barnId: string;
@@ -89,6 +90,9 @@ export interface IBarnMedSamværRegistergrunnlag {
     navn?: string;
     fødselsnummer?: string;
     harSammeAdresse?: boolean;
+    deltBosted?: IDeltBostedPeriode;
+    deltBostedPerioder: IDeltBostedPeriode[];
+    harDeltBostedVedGrunnlagsdataopprettelse: boolean;
     forelder?: IAnnenForelder;
     dødsdato?: string;
     fødselsdato?: string;

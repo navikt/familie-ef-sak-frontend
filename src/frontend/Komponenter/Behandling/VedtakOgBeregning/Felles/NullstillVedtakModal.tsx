@@ -22,7 +22,7 @@ export const NullstillVedtakModal: React.FC<{
     settVisModal: React.Dispatch<React.SetStateAction<boolean>>;
     behandlingId: string;
 }> = ({ visModal, settVisModal, behandlingId }) => {
-    const { axiosRequest, settToast } = useApp();
+    const { axiosRequest, settToast, nullstillIkkePersisterteKomponenter } = useApp();
     const { hentBehandling } = useBehandling();
     const [feilmelding, settFeilmelding] = useState('');
 
@@ -35,6 +35,7 @@ export const NullstillVedtakModal: React.FC<{
                 settFeilmelding('');
                 hentBehandling.rerun();
                 settVisModal(false);
+                nullstillIkkePersisterteKomponenter();
                 settToast(EToast.VEDTAK_NULLSTILT);
             } else {
                 settFeilmelding(resp.frontendFeilmelding);

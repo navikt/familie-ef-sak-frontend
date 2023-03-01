@@ -21,7 +21,6 @@ import {
     RessursSuksess,
 } from '../../../../../App/typer/ressurs';
 import { useBehandling } from '../../../../../App/context/BehandlingContext';
-import { useNavigate } from 'react-router-dom';
 import { useApp } from '../../../../../App/context/AppContext';
 import { Behandling } from '../../../../../App/typer/fagsak';
 import { v4 as uuidv4 } from 'uuid';
@@ -36,7 +35,6 @@ import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTex
 import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import styled from 'styled-components';
 import { Button, Heading } from '@navikt/ds-react';
-import { useEffectNotInitialRender } from '../../../../../App/hooks/felles/useEffectNotInitialRender';
 import {
     fyllHullMedOpphør,
     revurdererFraPeriodeUtenStønad,
@@ -46,6 +44,7 @@ import { RevurderesFraOgMed } from '../../Felles/RevurderesFraOgMed';
 import { IVilkår } from '../../../Inngangsvilkår/vilkår';
 import { utledYngsteBarnFødselsdato } from './fødselsdatoUtils';
 import { oppdaterVedtakMedEndretKey } from './utils';
+import { useRedirectEtterLagring } from '../../../../../App/hooks/felles/useRedirectEtterLagring';
 
 export type InnvilgeVedtakForm = Omit<
     Omit<IInnvilgeVedtakForOvergangsstønad, 'resultatType'>,
@@ -76,7 +75,7 @@ export const InnvilgeVedtak: React.FC<{
     const { hentBehandling, behandlingErRedigerbar } = useBehandling();
     const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
         useApp();
-    const navigate = useNavigate();
+    const { utførRedirect } = useRedirectEtterLagring(`/behandling/${behandling.id}/simulering`);
     const [laster, settLaster] = useState<boolean>(false);
     const [beregnetStønad, settBeregnetStønad] = useState<Ressurs<IBeløpsperiode[]>>(
         byggTomRessurs()
@@ -217,37 +216,32 @@ export const InnvilgeVedtak: React.FC<{
         [axiosRequest, behandling]
     );
 
-    useEffectNotInitialRender(() => {
-        if (!revurderesFra) return;
-
-        hentVedtakshistorikk(revurderesFra);
-    }, [revurderesFra, hentVedtakshistorikk]);
-
-    const håndterVedtaksresultat = (nesteUrl: string) => {
+    const håndterVedtaksresultat = () => {
         return (res: Ressurs<string>) => {
             switch (res.status) {
                 case RessursStatus.SUKSESS:
-                    navigate(nesteUrl);
                     hentBehandling.rerun();
-                    nullstillIkkePersisterteKomponenter();
+                    utførRedirect();
                     break;
                 case RessursStatus.HENTER:
                 case RessursStatus.IKKE_HENTET:
                     break;
                 default:
                     settFeilmelding(res.frontendFeilmelding);
+                    settIkkePersistertKomponent(uuidv4());
             }
         };
     };
 
     const lagreVedtak = (vedtaksRequest: IInnvilgeVedtakForOvergangsstønad) => {
         settLaster(true);
+        nullstillIkkePersisterteKomponenter();
         axiosRequest<string, IInnvilgeVedtakForOvergangsstønad>({
             method: 'POST',
             url: `/familie-ef-sak/api/vedtak/${behandling.id}/lagre-vedtak`,
             data: vedtaksRequest,
         })
-            .then(håndterVedtaksresultat(`/behandling/${behandling.id}/simulering`))
+            .then(håndterVedtaksresultat())
             .finally(() => {
                 settLaster(false);
             });
@@ -277,6 +271,7 @@ export const InnvilgeVedtak: React.FC<{
                 {behandling.forrigeBehandlingId && behandlingErRedigerbar ? (
                     <RevurderesFraOgMed
                         settRevurderesFra={settRevurderesFra}
+                        hentVedtakshistorikk={hentVedtakshistorikk}
                         revurderesFra={revurderesFra}
                         feilmelding={revurderesFraOgMedFeilmelding}
                         revurdererFraPeriodeUtenStønad={revurdererFraPeriodeUtenStønad(

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useApp } from '../../../App/context/AppContext';
 import { Ressurs, RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
-import { useNavigate } from 'react-router-dom';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { VisTilbakekreving } from './VisTilbakekreving';
 import { TilbakekrevingSkjema } from './TilbakekrevingSkjema';
@@ -9,6 +8,8 @@ import { BehandlingStatus } from '../../../App/typer/behandlingstatus';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 import { Loader } from '@navikt/ds-react';
 import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
+import { useRedirectEtterLagring } from '../../../App/hooks/felles/useRedirectEtterLagring';
+import { v4 as uuidv4 } from 'uuid';
 
 export enum ITilbakekrevingsvalg {
     OPPRETT_MED_VARSEL = 'OPPRETT_MED_VARSEL',
@@ -39,9 +40,9 @@ export interface TilbakekrevingProps {
 }
 
 export const Tilbakekreving: React.FC<TilbakekrevingProps> = ({ behandlingId }) => {
-    const { axiosRequest, nullstillIkkePersisterteKomponenter } = useApp();
+    const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
+        useApp();
     const { behandlingErRedigerbar, behandling } = useBehandling();
-    const navigate = useNavigate();
     const [tilbakekrevingsvalg, settTilbakekrevingsvalg] = useState<ITilbakekrevingsvalg>();
     const [varseltekst, settVarseltekst] = useState<string>('');
     const [begrunnelse, settBegrunnelse] = useState<string>('');
@@ -52,6 +53,8 @@ export const Tilbakekreving: React.FC<TilbakekrevingProps> = ({ behandlingId }) 
 
     const [åpenTilbakekrevingStatus, settÅpenTilbakekrevingStatus] =
         useState<ÅpenTilbakekrevingStatus>(ÅpenTilbakekrevingStatus.LASTER);
+
+    const { utførRedirect } = useRedirectEtterLagring(`/behandling/${behandlingId}/brev`);
 
     useEffect(() => {
         if (behandling.status === RessursStatus.SUKSESS) {
@@ -122,6 +125,7 @@ export const Tilbakekreving: React.FC<TilbakekrevingProps> = ({ behandlingId }) 
         }
         settFeilmelding('');
         settLåsKnapp(true);
+        nullstillIkkePersisterteKomponenter();
         axiosRequest<string, ITilbakekreving>({
             method: 'POST',
             url: `/familie-ef-sak/api/tilbakekreving/${behandlingId}`,
@@ -134,13 +138,13 @@ export const Tilbakekreving: React.FC<TilbakekrevingProps> = ({ behandlingId }) 
             .then((response: Ressurs<string>) => {
                 switch (response.status) {
                     case RessursStatus.SUKSESS:
-                        navigate(`/behandling/${behandlingId}/brev`);
-                        nullstillIkkePersisterteKomponenter();
+                        utførRedirect();
                         break;
                     case RessursStatus.HENTER:
                     case RessursStatus.IKKE_HENTET:
                         break;
                     default:
+                        settIkkePersistertKomponent(uuidv4());
                         settFeilmelding(response.frontendFeilmelding || 'Noe gikk galt');
                 }
             })

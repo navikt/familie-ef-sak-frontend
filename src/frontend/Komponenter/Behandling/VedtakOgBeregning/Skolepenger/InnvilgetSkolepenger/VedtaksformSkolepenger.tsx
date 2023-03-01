@@ -17,7 +17,6 @@ import { Button, Heading } from '@navikt/ds-react';
 import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
 import { useApp } from '../../../../../App/context/AppContext';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../../../App/typer/ressurs';
-import { useNavigate } from 'react-router-dom';
 import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
 import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import { UtregningstabellSkolepenger } from '../UtregnignstabellSkolepenger';
@@ -30,6 +29,8 @@ import SkoleårsperioderSkolepenger from './SkoleårsperioderSkolepenger';
 import OpphørSkolepenger from '../OpphørSkolepenger/OpphørSkolepenger';
 import { BodyShortSmall } from '../../../../../Felles/Visningskomponenter/Tekster';
 import { ARed500 } from '@navikt/ds-tokens/dist/tokens';
+import { useRedirectEtterLagring } from '../../../../../App/hooks/felles/useRedirectEtterLagring';
+import { v4 as uuidv4 } from 'uuid';
 
 export type InnvilgeVedtakForm = {
     skoleårsperioder: ISkoleårsperiodeSkolepenger[];
@@ -72,7 +73,7 @@ export const VedtaksformSkolepenger: React.FC<{
     );
     const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
         useApp();
-    const navigate = useNavigate();
+    const { utførRedirect } = useRedirectEtterLagring(`/behandling/${behandling.id}/simulering`);
     const formState = useFormState<InnvilgeVedtakForm>(
         {
             skoleårsperioder: lagretInnvilgetVedtak
@@ -93,30 +94,30 @@ export const VedtaksformSkolepenger: React.FC<{
 
     const lagreVedtak = (vedtaksRequest: IVedtakForSkolepenger) => {
         settLaster(true);
-
+        nullstillIkkePersisterteKomponenter();
         axiosRequest<string, IVedtakForSkolepenger>({
             method: 'POST',
             url: `/familie-ef-sak/api/vedtak/${behandling.id}/lagre-vedtak`,
             data: vedtaksRequest,
         })
-            .then(håndterVedtaksresultat(`/behandling/${behandling.id}/simulering`))
+            .then(håndterVedtaksresultat())
             .finally(() => {
                 settLaster(false);
             });
     };
 
-    const håndterVedtaksresultat = (nesteUrl: string) => {
+    const håndterVedtaksresultat = () => {
         return (res: Ressurs<string>) => {
             switch (res.status) {
                 case RessursStatus.SUKSESS:
-                    navigate(nesteUrl);
+                    utførRedirect();
                     hentBehandling.rerun();
-                    nullstillIkkePersisterteKomponenter();
                     break;
                 case RessursStatus.HENTER:
                 case RessursStatus.IKKE_HENTET:
                     break;
                 default:
+                    settIkkePersistertKomponent(uuidv4());
                     settFeilmelding(res.frontendFeilmelding);
             }
         };
