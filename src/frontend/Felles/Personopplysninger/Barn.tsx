@@ -1,12 +1,12 @@
 import React from 'react';
 import { IBarn } from '../../App/typer/personopplysninger';
 import LiteBarn from '../Ikoner/LiteBarn';
-import { BredTd, KolonneTitler } from './TabellWrapper';
+import { KolonneTitler } from './TabellWrapper';
 import styled from 'styled-components';
 import { KopierbartNullableFødselsnummer } from '../Fødselsnummer/KopierbartNullableFødselsnummer';
 import EtikettDød from '../Etiketter/EtikettDød';
 import { nullableDatoTilAlder } from '../../App/utils/dato';
-import { Tag } from '@navikt/ds-react';
+import { Table, Tag } from '@navikt/ds-react';
 import BarnBosted from './BarnBosted';
 import PersonopplysningerPanel from './PersonopplysningPanel';
 
@@ -29,22 +29,22 @@ const sorterBarnPåAlderInc = (a: IBarn, b: IBarn) => {
 const Barn: React.FC<{ barn: IBarn[] }> = ({ barn }) => {
     return (
         <PersonopplysningerPanel Ikon={LiteBarn} tittel={'Barn'}>
-            <table className="tabell">
+            <Table className="innhold" size="small">
                 <KolonneTitler titler={titler} />
-                <tbody>
+                <Table.Body>
                     {barn.sort(sorterBarnPåAlderInc).map((barn) => {
                         return (
-                            <tr key={barn.personIdent}>
-                                <BredTd>
+                            <Table.Row key={barn.personIdent}>
+                                <Table.DataCell>
                                     {barn.navn}
                                     {barn.dødsdato && <EtikettDød dødsdato={barn.dødsdato} />}
-                                </BredTd>
+                                </Table.DataCell>
                                 <FødselsnummerBarn
                                     fødselsnummer={barn.personIdent}
                                     fødselsdato={barn.fødselsdato}
                                     dødsdato={barn.dødsdato}
                                 />
-                                <BredTd>
+                                <Table.DataCell>
                                     {barn.annenForelder && (
                                         <>
                                             <KopierbartNullableFødselsnummer
@@ -58,15 +58,15 @@ const Barn: React.FC<{ barn: IBarn[] }> = ({ barn }) => {
                                             )}
                                         </>
                                     )}
-                                </BredTd>
-                                <BredTd>
+                                </Table.DataCell>
+                                <Table.DataCell>
                                     <BarnBosted barn={barn}></BarnBosted>
-                                </BredTd>
-                            </tr>
+                                </Table.DataCell>
+                            </Table.Row>
                         );
                     })}
-                </tbody>
-            </table>
+                </Table.Body>
+            </Table>
         </PersonopplysningerPanel>
     );
 };
@@ -79,7 +79,7 @@ const FødselsnummerBarn: React.FC<{
     const alder = nullableDatoTilAlder(fødselsdato);
 
     return (
-        <BredTd>
+        <Table.DataCell>
             <FlexDiv>
                 <KopierbartNullableFødselsnummer fødselsnummer={fødselsnummer} />
                 {!dødsdato && (
@@ -96,7 +96,7 @@ const FødselsnummerBarn: React.FC<{
                     </SpanMedVenstreMargin>
                 )}
             </FlexDiv>
-        </BredTd>
+        </Table.DataCell>
     );
 };
 

@@ -1,10 +1,10 @@
 import React from 'react';
 import { IInnflyttingTilNorge, IUtflyttingFraNorge } from '../../App/typer/personopplysninger';
-import { BredTd, IngenData, KolonneTitler } from './TabellWrapper';
+import { IngenData, KolonneTitler } from './TabellWrapper';
 import FlyMedSky from '../Ikoner/FlyMedSky';
 import { formaterNullableIsoDato, formaterNullableIsoÅr } from '../../App/utils/formatter';
 import styled from 'styled-components';
-import { HelpText } from '@navikt/ds-react';
+import { HelpText, Table } from '@navikt/ds-react';
 import PersonopplysningerPanel from './PersonopplysningPanel';
 
 interface Props {
@@ -50,66 +50,64 @@ const InnvandringUtVandring: React.FC<Props> = ({ innvandringer, utvandringer })
     } else {
         return (
             <PersonopplysningerPanel Ikon={FlyMedSky} tittel={'Innvandring og utvandring'}>
-                <Innvandring innvandringer={innvandringer} dobbelTabell />
-                <Utvandring utvandringer={utvandringer} dobbelTabell />
+                <Innvandring innvandringer={innvandringer} />
+                <Utvandring utvandringer={utvandringer} />
             </PersonopplysningerPanel>
         );
     }
 };
 
-const Innvandring: React.FC<{ innvandringer: IInnflyttingTilNorge[]; dobbelTabell?: boolean }> = ({
-    innvandringer,
-    dobbelTabell,
-}) => {
+const Innvandring: React.FC<{ innvandringer: IInnflyttingTilNorge[] }> = ({ innvandringer }) => {
     return (
-        <table className={dobbelTabell ? 'tabell første-tabell' : 'tabell'}>
+        <Table className={'innhold'} size="small">
             <KolonneTitler titler={['Innvandret fra', headerForInnflyttingTabell, '', '']} />
-            <tbody>
+            <Table.Body>
                 {innvandringer.map((innflytting, indeks) => {
                     return (
                         <tr key={indeks}>
-                            <BredTd>
+                            <Table.DataCell>
                                 {innflytting.fraflyttingsland +
                                     (innflytting.fraflyttingssted
                                         ? ', ' + innflytting.fraflyttingssted
                                         : '')}
-                            </BredTd>
-                            <BredTd>{formaterNullableIsoÅr(innflytting.dato)}</BredTd>
-                            <BredTd />
-                            <BredTd />
+                            </Table.DataCell>
+                            <Table.DataCell>
+                                {formaterNullableIsoÅr(innflytting.dato)}
+                            </Table.DataCell>
+                            <Table.DataCell />
+                            <Table.DataCell />
                         </tr>
                     );
                 })}
-            </tbody>
-        </table>
+            </Table.Body>
+        </Table>
     );
 };
 
-const Utvandring: React.FC<{ utvandringer: IUtflyttingFraNorge[]; dobbelTabell?: boolean }> = ({
-    utvandringer,
-    dobbelTabell,
-}) => {
+const Utvandring: React.FC<{ utvandringer: IUtflyttingFraNorge[] }> = ({ utvandringer }) => {
     return (
-        <table className={dobbelTabell ? 'tabell andre-tabell' : 'tabell'}>
+        <Table className={'innhold'} size="small">
             <KolonneTitler titler={['Utvandret til', 'Utflyttingsdato', '', '']} />
-            <tbody>
+            <Table.Body>
                 {utvandringer.map((utflytting, indeks) => {
                     return (
                         <tr key={indeks}>
-                            <BredTd>
+                            <Table.DataCell>
                                 {utflytting.tilflyttingsland +
                                     (utflytting.tilflyttingssted
                                         ? ', ' + utflytting.tilflyttingssted
                                         : '')}
-                            </BredTd>
-                            <BredTd>{formaterNullableIsoDato(utflytting.dato)}</BredTd>
-                            <BredTd />
-                            <BredTd />
+                            </Table.DataCell>
+                            <Table.DataCell>
+                                {formaterNullableIsoDato(utflytting.dato)}
+                            </Table.DataCell>
+                            <Table.DataCell />
+                            <Table.DataCell />
                         </tr>
                     );
                 })}
-            </tbody>
-        </table>
+            </Table.Body>
+        </Table>
     );
 };
 

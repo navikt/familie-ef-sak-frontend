@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 const Panel = styled.div`
     display: grid;
-    grid-template-columns: 32px auto;
+    grid-template-columns: 32px max-content;
     grid-template-rows: auto;
     grid-template-areas: 'ikon tittel' '. innhold';
     background-color: ${AGray50};
@@ -20,6 +20,7 @@ const Panel = styled.div`
 
     .innhold {
         grid-area: innhold;
+        margin-left: -12px;
     }
 `;
 
@@ -48,7 +49,7 @@ const PersonopplysningerPanel: React.FC<{
                     </ReadMore>
                 )}
             </Tittel>
-            <div className="innhold">{children}</div>
+            {children}
         </Panel>
     );
 };

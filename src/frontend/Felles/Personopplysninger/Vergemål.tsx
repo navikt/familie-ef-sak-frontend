@@ -1,6 +1,6 @@
 import React from 'react';
 import SkrivendeBlyant from '../Ikoner/SkrivendeBlyant';
-import { BredTd, IngenData, KolonneTitler } from './TabellWrapper';
+import { IngenData, KolonneTitler } from './TabellWrapper';
 import {
     IVergemål,
     vergemålOmfangTilTekst,
@@ -8,33 +8,34 @@ import {
 } from '../../App/typer/personopplysninger';
 import { tekstMapping } from '../../App/utils/tekstmapping';
 import PersonopplysningerPanel from './PersonopplysningPanel';
+import { Table } from '@navikt/ds-react';
 
 const Vergemål: React.FC<{ vergemål: IVergemål[] }> = ({ vergemål }) => {
     return (
         <PersonopplysningerPanel Ikon={SkrivendeBlyant} tittel={'Vergemål'}>
             {(vergemål.length !== 0 && (
-                <table className="tabell">
+                <Table className="innhold" size="small">
                     <KolonneTitler
                         titler={['Type', 'Omfang', 'Verge', 'Fødselsnummer', 'Embete']}
                     />
-                    <tbody>
+                    <Table.Body>
                         {vergemål.map((vergemål, indeks) => {
                             return (
-                                <tr key={indeks}>
-                                    <BredTd>
+                                <Table.Row key={indeks}>
+                                    <Table.DataCell>
                                         {tekstMapping(vergemål.type, vergemålTypeTilTekst)}
-                                    </BredTd>
-                                    <BredTd>
+                                    </Table.DataCell>
+                                    <Table.DataCell>
                                         {tekstMapping(vergemål.omfang, vergemålOmfangTilTekst)}
-                                    </BredTd>
-                                    <BredTd>{vergemål.navn}</BredTd>
-                                    <BredTd>{vergemål.motpartsPersonident}</BredTd>
-                                    <BredTd>{vergemål.embete}</BredTd>
-                                </tr>
+                                    </Table.DataCell>
+                                    <Table.DataCell>{vergemål.navn}</Table.DataCell>
+                                    <Table.DataCell>{vergemål.motpartsPersonident}</Table.DataCell>
+                                    <Table.DataCell>{vergemål.embete}</Table.DataCell>
+                                </Table.Row>
                             );
                         })}
-                    </tbody>
-                </table>
+                    </Table.Body>
+                </Table>
             )) || <IngenData />}
         </PersonopplysningerPanel>
     );

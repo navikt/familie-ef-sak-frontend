@@ -5,17 +5,13 @@ import Bygning from '../Ikoner/Bygning';
 import styled from 'styled-components';
 import PersonopplysningerPanel from './PersonopplysningPanel';
 
-const StyledBygning = styled(Bygning)`
-    grid-area: ikon;
-`;
-
 const StyledKontorNavn = styled.div`
-    grid-area: kontor;
+    grid-area: innhold;
 `;
 
 const NavKontor: React.FC<{ navKontor?: INavKontor }> = ({ navKontor }) => {
     return (
-        <PersonopplysningerPanel Ikon={StyledBygning} tittel="NAV-kontor">
+        <PersonopplysningerPanel Ikon={Bygning} tittel="NAV-kontor">
             <StyledKontorNavn>
                 {navKontor ? `${navKontor.enhetNr} - ${navKontor.navn}` : <IngenData />}
             </StyledKontorNavn>

@@ -7,30 +7,33 @@ import { formaterNullableIsoDato } from '../../App/utils/formatter';
 import EtikettDød from '../Etiketter/EtikettDød';
 import { BodyShortSmall } from '../Visningskomponenter/Tekster';
 import PersonopplysningerPanel from './PersonopplysningPanel';
+import { Table } from '@navikt/ds-react';
 
 const titler = ['Status', 'Dato', 'Navn partner', 'Fødselsnummer'];
 
 const Sivilstatus: React.FC<{ sivilstander: ISivilstand[] }> = ({ sivilstander }) => {
     return (
         <PersonopplysningerPanel tittel="Sivilstatus" Ikon={Hjerte}>
-            <table className="tabell">
+            <Table className="innhold" size="small">
                 <KolonneTitler titler={titler} />
-                <tbody>
+                <Table.Body>
                     {sivilstander.map((sivilstand, indeks) => {
                         return (
-                            <tr key={indeks}>
-                                <td>
+                            <Table.Row key={indeks}>
+                                <Table.DataCell>
                                     {sivilstandTilTekst[sivilstand.type]}{' '}
                                     {sivilstand.erGjeldende ? '(gjeldende)' : ''}
-                                </td>
-                                <td>{formaterNullableIsoDato(sivilstand.gyldigFraOgMed)}</td>
-                                <td>
+                                </Table.DataCell>
+                                <Table.DataCell>
+                                    {formaterNullableIsoDato(sivilstand.gyldigFraOgMed)}
+                                </Table.DataCell>
+                                <Table.DataCell>
                                     {sivilstand.navn}
                                     {sivilstand.dødsdato && (
                                         <EtikettDød dødsdato={sivilstand.dødsdato} />
                                     )}
-                                </td>
-                                <td>
+                                </Table.DataCell>
+                                <Table.DataCell>
                                     {sivilstand.relatertVedSivilstand ? (
                                         <KopierbartNullableFødselsnummer
                                             fødselsnummer={sivilstand.relatertVedSivilstand}
@@ -38,12 +41,12 @@ const Sivilstatus: React.FC<{ sivilstander: ISivilstand[] }> = ({ sivilstander }
                                     ) : (
                                         <BodyShortSmall>-</BodyShortSmall>
                                     )}
-                                </td>
-                            </tr>
+                                </Table.DataCell>
+                            </Table.Row>
                         );
                     })}
-                </tbody>
-            </table>
+                </Table.Body>
+            </Table>
         </PersonopplysningerPanel>
     );
 };

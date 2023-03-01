@@ -1,9 +1,10 @@
 import React from 'react';
-import { BredTd, KolonneTitler } from './TabellWrapper';
+import { KolonneTitler } from './TabellWrapper';
 import { Folkeregisterpersonstatus, IStatsborgerskap } from '../../App/typer/personopplysninger';
 import Pass from '../Ikoner/Pass';
 import { formaterNullableIsoDato } from '../../App/utils/formatter';
 import PersonopplysningerPanel from './PersonopplysningPanel';
+import { Table } from '@navikt/ds-react';
 
 const Statsborgerskap: React.FC<{
     statsborgerskap: IStatsborgerskap[];
@@ -11,28 +12,28 @@ const Statsborgerskap: React.FC<{
 }> = ({ statsborgerskap, folkeregisterPersonstatus }) => {
     return (
         <PersonopplysningerPanel Ikon={Pass} tittel={'Statsborgerskap'}>
-            <table className="tabell">
+            <Table className="innhold" size="small">
                 <KolonneTitler titler={['Land', 'Fra', 'Til', 'Personstatus']} />
-                <tbody>
+                <Table.Body>
                     {statsborgerskap.map((statsborgerskap, indeks) => {
                         return (
-                            <tr key={indeks}>
-                                <BredTd>{statsborgerskap.land}</BredTd>
-                                <BredTd>
+                            <Table.Row key={indeks}>
+                                <Table.DataCell>{statsborgerskap.land}</Table.DataCell>
+                                <Table.DataCell>
                                     {formaterNullableIsoDato(statsborgerskap.gyldigFraOgMedDato)}
-                                </BredTd>
-                                <BredTd>
+                                </Table.DataCell>
+                                <Table.DataCell>
                                     {formaterNullableIsoDato(statsborgerskap.gyldigTilOgMedDato)}
-                                </BredTd>
-                                <BredTd>
+                                </Table.DataCell>
+                                <Table.DataCell>
                                     {statsborgerskap.land.toLowerCase() === 'norge' &&
                                         folkeregisterPersonstatus}
-                                </BredTd>
-                            </tr>
+                                </Table.DataCell>
+                            </Table.Row>
                         );
                     })}
-                </tbody>
-            </table>
+                </Table.Body>
+            </Table>
         </PersonopplysningerPanel>
     );
 };

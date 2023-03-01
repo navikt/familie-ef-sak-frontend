@@ -1,36 +1,37 @@
 import React from 'react';
 import SkrivendeBlyant from '../Ikoner/SkrivendeBlyant';
-import { BredTd, IngenData, KolonneTitler } from './TabellWrapper';
+import { IngenData, KolonneTitler } from './TabellWrapper';
 import { IFullmakt } from '../../App/typer/personopplysninger';
 import { formaterNullableIsoDato } from '../../App/utils/formatter';
 import PersonopplysningerPanel from './PersonopplysningPanel';
+import { Table } from '@navikt/ds-react';
 
 const Fullmakter: React.FC<{ fullmakter: IFullmakt[] }> = ({ fullmakter }) => {
     return (
         <PersonopplysningerPanel Ikon={SkrivendeBlyant} tittel={'Fullmakter'}>
             {(fullmakter.length !== 0 && (
-                <table className="tabell">
+                <Table className="innhold" size="small">
                     <KolonneTitler
                         titler={['Fullmektig', 'Områder', 'Fødselsnummer', 'Fra', 'Til']}
                     />
-                    <tbody>
+                    <Table.Body>
                         {fullmakter.map((fullmakt, indeks) => {
                             return (
-                                <tr key={indeks}>
-                                    <BredTd>{fullmakt.navn}</BredTd>
-                                    <BredTd>{fullmakt.områder.join()}</BredTd>
-                                    <BredTd>{fullmakt.motpartsPersonident}</BredTd>
-                                    <BredTd>
+                                <Table.Row key={indeks}>
+                                    <Table.DataCell>{fullmakt.navn}</Table.DataCell>
+                                    <Table.DataCell>{fullmakt.områder.join()}</Table.DataCell>
+                                    <Table.DataCell>{fullmakt.motpartsPersonident}</Table.DataCell>
+                                    <Table.DataCell>
                                         {formaterNullableIsoDato(fullmakt.gyldigFraOgMed)}
-                                    </BredTd>
-                                    <BredTd>
+                                    </Table.DataCell>
+                                    <Table.DataCell>
                                         {formaterNullableIsoDato(fullmakt.gyldigTilOgMed)}
-                                    </BredTd>
-                                </tr>
+                                    </Table.DataCell>
+                                </Table.Row>
                             );
                         })}
-                    </tbody>
-                </table>
+                    </Table.Body>
+                </Table>
             )) || <IngenData />}
         </PersonopplysningerPanel>
     );

@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import Bygning from '../Ikoner/Bygning';
 import { AdresseType, IAdresse } from '../../App/typer/personopplysninger';
-import { IngenData, Td } from './TabellWrapper';
+import { IngenData, KolonneTitler } from './TabellWrapper';
 import styled from 'styled-components';
 import Beboere from './Beboere';
 import { formaterNullableIsoDato } from '../../App/utils/formatter';
 import { ModalWrapper } from '../Modal/ModalWrapper';
 import UtvidPanel from '../UtvidPanel/UtvidPanel';
-import { Button, Label } from '@navikt/ds-react';
+import { Button, Table } from '@navikt/ds-react';
 import { BodyLongSmall } from '../Visningskomponenter/Tekster';
 import PersonopplysningerPanel from './PersonopplysningPanel';
 
@@ -77,12 +77,6 @@ const AdressehistorikkMedLesMerKnapp: React.FC<{
     }
 };
 
-const Kolonnetittel: React.FC<{ text: string; width: number }> = ({ text, width }) => (
-    <Td width={`${width}%`}>
-        <Label as={'p'}>{text}</Label>
-    </Td>
-);
-
 const TittelbeskrivelseBostedsadresser: React.ReactElement = (
     <>
         <BodyLongSmall>
@@ -123,24 +117,20 @@ const Adresser: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string; type?: 
             }
         >
             {(adresser.length !== 0 && (
-                <table className="tabell">
-                    <thead>
-                        <tr>
-                            <Kolonnetittel text={'Adresse'} width={35} />
-                            <Kolonnetittel
-                                text={
-                                    type === AdresseType.BOSTEDADRESSE
-                                        ? 'Angitt flyttedato'
-                                        : 'Adressetype'
-                                }
-                                width={15}
-                            />
-                            <Kolonnetittel text={'Fra og med'} width={15} />
-                            <Kolonnetittel text={'Til og med'} width={20} />
-                        </tr>
-                    </thead>
+                <Table className="innhold" size="small">
+                    <KolonneTitler
+                        titler={[
+                            'Adresse',
+                            type === AdresseType.BOSTEDADRESSE
+                                ? 'Angitt flyttedato'
+                                : 'Adressetype',
+                            'Fra og med',
+                            'Til og med',
+                        ]}
+                    />
+
                     <Innhold adresser={adresser} fagsakPersonId={fagsakPersonId} />
-                </table>
+                </Table>
             )) || <IngenData />}
         </PersonopplysningerPanel>
     );
@@ -153,21 +143,23 @@ const Innhold: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string }> = ({
     const [beboereAdresseIModal, settBeboereAdresseIModal] = useState<IAdresse>();
     return (
         <>
-            <tbody>
+            <Table.Body>
                 {adresser.map((adresse, indeks) => {
                     return (
-                        <tr key={indeks}>
-                            <Td>
+                        <Table.Row key={indeks}>
+                            <Table.DataCell>
                                 {adresse.visningsadresse}
                                 {adresse.erGjeldende ? ' (gjeldende)' : ''}
-                            </Td>
-                            <Td>
+                            </Table.DataCell>
+                            <Table.DataCell>
                                 {adresse.type === AdresseType.BOSTEDADRESSE
                                     ? formaterNullableIsoDato(adresse.angittFlyttedato)
                                     : adresse.type}
-                            </Td>
-                            <Td>{formaterNullableIsoDato(adresse.gyldigFraOgMed)}</Td>
-                            <Td>
+                            </Table.DataCell>
+                            <Table.DataCell>
+                                {formaterNullableIsoDato(adresse.gyldigFraOgMed)}
+                            </Table.DataCell>
+                            <Table.DataCell>
                                 <StyledFlexDiv>
                                     <div style={{ margin: 'auto 0' }}>
                                         {formaterNullableIsoDato(adresse.gyldigTilOgMed)}
@@ -184,11 +176,11 @@ const Innhold: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string }> = ({
                                             </Knapp>
                                         )}
                                 </StyledFlexDiv>
-                            </Td>
-                        </tr>
+                            </Table.DataCell>
+                        </Table.Row>
                     );
                 })}
-            </tbody>
+            </Table.Body>
             <ModalWrapper
                 tittel={'Beboere'}
                 visModal={beboereAdresseIModal != undefined}

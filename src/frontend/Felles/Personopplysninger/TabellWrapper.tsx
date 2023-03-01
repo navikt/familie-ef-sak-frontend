@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import React from 'react';
 import { BodyShortSmall } from '../Visningskomponenter/Tekster';
+import { Table } from '@navikt/ds-react';
 
 export const BredTd = styled.td`
     width: ${(props) => props.width ?? '25%'};
@@ -52,15 +53,13 @@ type Kolonnetittel = string | React.ReactNode;
 
 export const KolonneTitler: React.FC<{ titler: Kolonnetittel[] }> = ({ titler }) => {
     return (
-        <thead>
-            <tr>
+        <Table.Header>
+            <Table.Row>
                 {titler.map((tittel, indeks) => (
-                    <BredTd key={indeks} width={100 / titler.length} className={'columnHeader'}>
-                        {tittel}
-                    </BredTd>
+                    <Table.HeaderCell key={indeks}>{tittel}</Table.HeaderCell>
                 ))}
-            </tr>
-        </thead>
+            </Table.Row>
+        </Table.Header>
     );
 };
 
