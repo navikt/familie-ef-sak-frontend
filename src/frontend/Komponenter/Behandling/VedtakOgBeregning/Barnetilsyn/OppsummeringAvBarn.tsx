@@ -16,6 +16,7 @@ import { ABorderDivider, AGray50 } from '@navikt/ds-tokens/dist/tokens';
 const Container = styled.div`
     padding: 1rem;
     background-color: ${AGray50};
+    width: 27rem;
 `;
 
 const BoldTekst = styled(Label)`
