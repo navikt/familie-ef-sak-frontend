@@ -59,7 +59,7 @@ const InnflyttingUtflytting: React.FC<Props> = ({ innflyttinger, utflyttinger })
 const Innflytting: React.FC<{ innflyttinger: IInnflyttingTilNorge[] }> = ({ innflyttinger }) => {
     return (
         <SmallTabelMedTilpassetBredde>
-            <KolonneTitler titler={['Innvandret fra', headerForInnflyttingTabell, '', '']} />
+            <KolonneTitler titler={['Innflyttet fra', headerForInnflyttingTabell, '', '']} />
             <Table.Body>
                 {innflyttinger.map((innflytting, indeks) => {
                     return (
@@ -86,7 +86,7 @@ const Innflytting: React.FC<{ innflyttinger: IInnflyttingTilNorge[] }> = ({ innf
 const Utflytting: React.FC<{ utflyttinger: IUtflyttingFraNorge[] }> = ({ utflyttinger }) => {
     return (
         <SmallTabelMedTilpassetBredde>
-            <KolonneTitler titler={['Utvandret til', 'Utflyttingsdato', '', '']} />
+            <KolonneTitler titler={['Utflyttet til', 'Utflyttingsdato', '', '']} />
             <Table.Body>
                 {utflyttinger.map((utflytting, indeks) => {
                     return (
