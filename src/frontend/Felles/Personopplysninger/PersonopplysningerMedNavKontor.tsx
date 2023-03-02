@@ -1,6 +1,6 @@
 import React from 'react';
 import 'nav-frontend-tabell-style';
-import InnflyttingUtflytting from './InnvandringUtvandring';
+import InnflyttingUtflytting from './InnflyttingUtflytting';
 import Barn from './Barn';
 import Adressehistorikk from './Adressehistorikk';
 import Sivilstatus from './Sivilstatus';
