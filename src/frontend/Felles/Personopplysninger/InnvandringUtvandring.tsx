@@ -30,7 +30,7 @@ export const headerForInnflyttingTabell: React.ReactNode = (
     </InnflyttetÅrHeader>
 );
 
-const InnvandringUtVandring: React.FC<Props> = ({ innflyttinger, utflyttinger }) => {
+const InnflyttingUtflytting: React.FC<Props> = ({ innflyttinger, utflyttinger }) => {
     const tittel = 'Innflytting og utflytting';
     if (innflyttinger.length === 0 && utflyttinger.length === 0) {
         return <PersonopplysningerPanel Ikon={FlyMedSky} tittel={tittel} />;
@@ -110,4 +110,4 @@ const Utflytting: React.FC<{ utflyttinger: IUtflyttingFraNorge[] }> = ({ utflytt
     );
 };
 
-export default InnvandringUtVandring;
+export default InnflyttingUtflytting;
