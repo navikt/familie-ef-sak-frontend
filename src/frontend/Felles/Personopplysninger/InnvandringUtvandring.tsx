@@ -31,23 +31,24 @@ export const headerForInnflyttingTabell: React.ReactNode = (
 );
 
 const InnvandringUtVandring: React.FC<Props> = ({ innvandringer, utvandringer }) => {
+    const tittel = 'Innflytting og utflytting';
     if (innvandringer.length === 0 && utvandringer.length === 0) {
-        return <PersonopplysningerPanel Ikon={FlyMedSky} tittel={'Innvandring og utvandring'} />;
+        return <PersonopplysningerPanel Ikon={FlyMedSky} tittel={tittel} />;
     } else if (innvandringer.length === 0) {
         return (
-            <PersonopplysningerPanel Ikon={FlyMedSky} tittel={'Innvandring og utvandring'}>
+            <PersonopplysningerPanel Ikon={FlyMedSky} tittel={tittel}>
                 <Utvandring utvandringer={utvandringer} />
             </PersonopplysningerPanel>
         );
     } else if (utvandringer.length === 0) {
         return (
-            <PersonopplysningerPanel Ikon={FlyMedSky} tittel={'Innvandring og utvandring'}>
+            <PersonopplysningerPanel Ikon={FlyMedSky} tittel={tittel}>
                 <Innvandring innvandringer={innvandringer} />
             </PersonopplysningerPanel>
         );
     } else {
         return (
-            <PersonopplysningerPanel Ikon={FlyMedSky} tittel={'Innvandring og utvandring'}>
+            <PersonopplysningerPanel Ikon={FlyMedSky} tittel={tittel}>
                 <Innvandring innvandringer={innvandringer} />
                 <Utvandring utvandringer={utvandringer} />
             </PersonopplysningerPanel>
