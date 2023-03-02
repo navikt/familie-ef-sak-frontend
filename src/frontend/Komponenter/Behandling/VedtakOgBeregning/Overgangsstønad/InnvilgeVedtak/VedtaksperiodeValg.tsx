@@ -28,14 +28,15 @@ import {
 const Grid = styled.div<{ lesevisning?: boolean }>`
     display: grid;
     grid-template-columns: ${(props) =>
-        props.lesevisning
-            ? '9rem 10rem 8rem 8rem 7rem'
-            : '12rem 12rem 14rem 14rem 4.5rem 3rem 3rem'};
-    grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
-    margin-bottom: 0.5rem;
+        props.lesevisning ? 'repeat(5, max-content)' : '12rem 12rem repeat(5, max-content)'};
+    grid-gap: 0.5rem 1rem;
+
+    .ny-rad {
+        grid-column: 1;
+    }
 `;
 
-const StyledLeggTilKnapp = styled(LeggTilKnapp)`
+const LeggTilRadKnapp = styled(LeggTilKnapp)`
     margin-top: 0.5rem;
 `;
 
@@ -144,73 +145,74 @@ const VedtaksperiodeValg: React.FC<Props> = ({
                 <Label>Aktivitet</Label>
                 <Label>Fra og med</Label>
                 <Label>Til og med</Label>
-            </Grid>
-            {vedtaksperiodeListe.value.map((vedtaksperiode, index) => {
-                const { periodeType, aktivitet, årMånedFra, årMånedTil } = vedtaksperiode;
-                const antallMåneder = kalkulerAntallMåneder(årMånedFra, årMånedTil);
-                const skalViseFjernKnapp = behandlingErRedigerbar && index !== 0;
-                return (
-                    <Grid key={vedtaksperiode.endretKey} lesevisning={!behandlingErRedigerbar}>
-                        <VedtakperiodeSelect
-                            feil={valideringsfeil && valideringsfeil[index]?.periodeType}
-                            oppdaterVedtakslisteElement={(property, value) =>
-                                oppdaterVedtakslisteElement(index, property, value)
-                            }
-                            behandlingErRedigerbar={behandlingErRedigerbar}
-                            periodeType={periodeType}
-                            index={index}
-                        />
-                        <AktivitetspliktVelger
-                            index={index}
-                            aktivitet={aktivitet}
-                            periodeType={periodeType}
-                            oppdaterVedtakslisteElement={oppdaterVedtakslisteElement}
-                            erLesevisning={!behandlingErRedigerbar}
-                            aktivitetfeil={valideringsfeil && valideringsfeil[index]?.aktivitet}
-                        />
-                        <MånedÅrPeriode
-                            årMånedFraInitiell={årMånedFra}
-                            årMånedTilInitiell={årMånedTil}
-                            index={index}
-                            onEndre={(verdi, periodeVariant) => {
-                                oppdaterVedtakslisteElement(
-                                    index,
-                                    periodeVariantTilVedtaksperiodeProperty(periodeVariant),
-                                    verdi
-                                );
-                            }}
-                            feilmelding={valideringsfeil && valideringsfeil[index]?.årMånedFra}
-                            erLesevisning={
-                                !behandlingErRedigerbar || periodeType === EPeriodetype.SANKSJON
-                            }
-                            disabledFra={index === 0 && låsVedtaksperiodeRad}
-                        />
-                        <Label style={{ marginTop: behandlingErRedigerbar ? '0.65rem' : 0 }}>
-                            {antallMåneder && `${antallMåneder} mnd`}
-                        </Label>
-                        {behandlingErRedigerbar && (
-                            <Tooltip content="Legg til rad under" placement="right">
-                                <LeggTilKnapp
-                                    onClick={() => {
-                                        leggTilTomRadUnder(index);
-                                    }}
-                                    ikontekst={'Legg til ny rad'}
-                                />
-                            </Tooltip>
-                        )}
-                        {skalViseFjernKnapp ? (
-                            <FjernKnapp
-                                onClick={() => slettPeriodeModalHvisSanksjon(index)}
-                                ikontekst={'Fjern vedtaksperiode'}
+                {vedtaksperiodeListe.value.map((vedtaksperiode, index) => {
+                    const { periodeType, aktivitet, årMånedFra, årMånedTil } = vedtaksperiode;
+                    const antallMåneder = kalkulerAntallMåneder(årMånedFra, årMånedTil);
+                    const skalViseFjernKnapp = behandlingErRedigerbar && index !== 0;
+                    return (
+                        <>
+                            <VedtakperiodeSelect
+                                className={'ny-rad'}
+                                feil={valideringsfeil && valideringsfeil[index]?.periodeType}
+                                oppdaterVedtakslisteElement={(property, value) =>
+                                    oppdaterVedtakslisteElement(index, property, value)
+                                }
+                                behandlingErRedigerbar={behandlingErRedigerbar}
+                                periodeType={periodeType}
+                                index={index}
                             />
-                        ) : (
-                            <div />
-                        )}
-                    </Grid>
-                );
-            })}
+                            <AktivitetspliktVelger
+                                index={index}
+                                aktivitet={aktivitet}
+                                periodeType={periodeType}
+                                oppdaterVedtakslisteElement={oppdaterVedtakslisteElement}
+                                erLesevisning={!behandlingErRedigerbar}
+                                aktivitetfeil={valideringsfeil && valideringsfeil[index]?.aktivitet}
+                            />
+                            <MånedÅrPeriode
+                                årMånedFraInitiell={årMånedFra}
+                                årMånedTilInitiell={årMånedTil}
+                                index={index}
+                                onEndre={(verdi, periodeVariant) => {
+                                    oppdaterVedtakslisteElement(
+                                        index,
+                                        periodeVariantTilVedtaksperiodeProperty(periodeVariant),
+                                        verdi
+                                    );
+                                }}
+                                feilmelding={valideringsfeil && valideringsfeil[index]?.årMånedFra}
+                                erLesevisning={
+                                    !behandlingErRedigerbar || periodeType === EPeriodetype.SANKSJON
+                                }
+                                disabledFra={index === 0 && låsVedtaksperiodeRad}
+                            />
+                            <Label style={{ marginTop: behandlingErRedigerbar ? '0.65rem' : 0 }}>
+                                {antallMåneder && `${antallMåneder} mnd`}
+                            </Label>
+                            {behandlingErRedigerbar && (
+                                <Tooltip content="Legg til rad under" placement="right">
+                                    <LeggTilKnapp
+                                        onClick={() => {
+                                            leggTilTomRadUnder(index);
+                                        }}
+                                        ikontekst={'Legg til ny rad'}
+                                    />
+                                </Tooltip>
+                            )}
+                            {skalViseFjernKnapp ? (
+                                <FjernKnapp
+                                    onClick={() => slettPeriodeModalHvisSanksjon(index)}
+                                    ikontekst={'Fjern vedtaksperiode'}
+                                />
+                            ) : (
+                                <div />
+                            )}
+                        </>
+                    );
+                })}
+            </Grid>
             {behandlingErRedigerbar && (
-                <StyledLeggTilKnapp
+                <LeggTilRadKnapp
                     onClick={() => vedtaksperiodeListe.push(tomVedtaksperiodeRad())}
                     knappetekst="Legg til vedtaksperiode"
                 />
