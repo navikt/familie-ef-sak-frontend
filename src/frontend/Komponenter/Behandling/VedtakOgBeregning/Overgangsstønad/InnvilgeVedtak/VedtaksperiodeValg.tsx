@@ -24,6 +24,7 @@ import {
     Sanksjonsmodal,
     SlettSanksjonsperiodeModal,
 } from '../../Felles/SlettSanksjonsperiodeModal';
+import { HorizontalScroll } from '../../Felles/HorizontalScroll';
 
 const Grid = styled.div<{ lesevisning?: boolean }>`
     display: grid;
@@ -62,7 +63,7 @@ const VedtaksperiodeValg: React.FC<Props> = ({
     valideringsfeil,
     vedtaksperiodeListe,
 }) => {
-    const { behandlingErRedigerbar } = useBehandling();
+    const { behandlingErRedigerbar, åpenHøyremeny } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
 
     const [sanksjonsmodal, settSanksjonsmodal] = useState<Sanksjonsmodal>({
@@ -139,7 +140,12 @@ const VedtaksperiodeValg: React.FC<Props> = ({
     };
 
     return (
-        <div className={className}>
+        <HorizontalScroll
+            className={className}
+            synligVedLukketMeny={'1145px'}
+            synligVedÅpenMeny={'1440px'}
+            åpenHøyremeny={åpenHøyremeny}
+        >
             <Grid lesevisning={!behandlingErRedigerbar}>
                 <Label>Periodetype</Label>
                 <Label>Aktivitet</Label>
@@ -222,7 +228,7 @@ const VedtaksperiodeValg: React.FC<Props> = ({
                 slettPeriode={slettPeriode}
                 lukkModal={lukkSanksjonsmodal}
             />
-        </div>
+        </HorizontalScroll>
     );
 };
 

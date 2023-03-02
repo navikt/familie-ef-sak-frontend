@@ -23,6 +23,7 @@ import { EnsligFamilieSelect } from '../../../../../Felles/Input/EnsligFamilieSe
 import { EnsligErrorMessage } from '../../../../../Felles/ErrorMessage/EnsligErrorMessage';
 import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 import { TextLabel } from '../../../../../Felles/Visningskomponenter/Tekster';
+import { HorizontalScroll } from '../../Felles/HorizontalScroll';
 
 const Grid = styled.div<{ lesevisning?: boolean }>`
     display: grid;
@@ -67,7 +68,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
     skalVelgeSamordningstype,
     valideringsfeil,
 }) => {
-    const { behandlingErRedigerbar } = useBehandling();
+    const { behandlingErRedigerbar, åpenHøyremeny } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
     const skalViseLeggTilKnapp = behandlingErRedigerbar;
 
@@ -91,7 +92,12 @@ const InntektsperiodeValg: React.FC<Props> = ({
     };
 
     return (
-        <div className={className}>
+        <HorizontalScroll
+            className={className}
+            synligVedLukketMeny={'1080px'}
+            synligVedÅpenMeny={'1320px'}
+            åpenHøyremeny={åpenHøyremeny}
+        >
             <Grid lesevisning={!behandlingErRedigerbar}>
                 <TextLabel>Fra</TextLabel>
                 <TextLabel>Forventet inntekt (år)</TextLabel>
@@ -230,7 +236,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                     knappetekst=" Legg til inntektsperiode"
                 />
             )}
-        </div>
+        </HorizontalScroll>
     );
 };
 
