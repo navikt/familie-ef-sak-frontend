@@ -55,7 +55,7 @@ const PersonopplysningerMedNavKontor: React.FC<{
             <Oppholdstillatelse oppholdstillatelser={oppholdstillatelse} />
             <InnvandringUtVandring
                 innvandringer={innflyttingTilNorge}
-                utvandringer={utflyttingFraNorge}
+                utflyttinger={utflyttingFraNorge}
             />
             <Vergemål vergemål={vergemål} />
             <Fullmakter fullmakter={fullmakt} />
