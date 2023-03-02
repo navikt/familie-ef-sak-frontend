@@ -16,7 +16,7 @@ const FlexDiv = styled.div`
     align-items: center;
 `;
 
-const titler = ['Navn', 'Fødselsnummer', 'Annen forelder', 'Bor med bruker'];
+const titler = ['Navn', 'Fødselsnummer', 'Annen forelder', 'Fødselsnummer', 'Bor med bruker'];
 
 const sorterBarnPåAlderInc = (a: IBarn, b: IBarn) => {
     const alderBarnA = a.fødselsdato ? (nullableDatoTilAlder(a.fødselsdato) as number) : 1000;
@@ -42,21 +42,21 @@ const Barn: React.FC<{ barn: IBarn[] }> = ({ barn }) => {
                                     fødselsdato={barn.fødselsdato}
                                     dødsdato={barn.dødsdato}
                                 />
-                                <Table.DataCell>
-                                    {barn.annenForelder && (
-                                        <>
+                                {barn.annenForelder && (
+                                    <>
+                                        <Table.DataCell>{barn.annenForelder.navn}</Table.DataCell>
+                                        <Table.DataCell>
                                             <KopierbartNullableFødselsnummer
                                                 fødselsnummer={barn.annenForelder.personIdent}
                                             />
-                                            {barn.annenForelder.navn}
                                             {barn.annenForelder.dødsdato && (
                                                 <EtikettDød
                                                     dødsdato={barn.annenForelder.dødsdato}
                                                 />
                                             )}
-                                        </>
-                                    )}
-                                </Table.DataCell>
+                                        </Table.DataCell>
+                                    </>
+                                )}
                                 <Table.DataCell>
                                     <BarnBosted barn={barn}></BarnBosted>
                                 </Table.DataCell>
