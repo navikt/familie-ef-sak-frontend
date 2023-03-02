@@ -11,14 +11,8 @@ import { Button, Table, Tag } from '@navikt/ds-react';
 import { BodyLongSmall } from '../Visningskomponenter/Tekster';
 import PersonopplysningerPanel from './PersonopplysningPanel';
 
-const StyledFlexDiv = styled.div`
-    display: flex;
-    justify-content: space-between;
-`;
-
 const Knapp = styled(Button)`
-    padding-left: 1.25rem;
-    padding-right: 1.25rem;
+    margin: 0.5rem 0.75rem;
 `;
 
 const FetTekst = styled.span`
@@ -178,23 +172,19 @@ const Innhold: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string }> = ({
                                 {formaterNullableIsoDato(adresse.gyldigFraOgMed)}
                             </Table.DataCell>
                             <Table.DataCell>
-                                <StyledFlexDiv>
-                                    <div style={{ margin: 'auto 0' }}>
-                                        {formaterNullableIsoDato(adresse.gyldigTilOgMed)}
-                                    </div>
-                                    {adresse.type === AdresseType.BOSTEDADRESSE &&
-                                        adresse.erGjeldende && (
-                                            <Knapp
-                                                onClick={() => settBeboereAdresseIModal(adresse)}
-                                                variant={'secondary'}
-                                                size={'small'}
-                                                type={'button'}
-                                            >
-                                                Se Beboere
-                                            </Knapp>
-                                        )}
-                                </StyledFlexDiv>
+                                {formaterNullableIsoDato(adresse.gyldigTilOgMed)}
                             </Table.DataCell>
+
+                            {adresse.type === AdresseType.BOSTEDADRESSE && adresse.erGjeldende && (
+                                <Knapp
+                                    onClick={() => settBeboereAdresseIModal(adresse)}
+                                    variant={'secondary'}
+                                    size={'small'}
+                                    type={'button'}
+                                >
+                                    Se Beboere
+                                </Knapp>
+                            )}
                         </Table.Row>
                     );
                 })}
