@@ -44,10 +44,6 @@ export const TabellWrapper = styled.div<{ erDobbelTabell?: boolean }>`
     }
 `;
 
-export const StyledInnholdWrapper = styled.div`
-    grid-area: innhold;
-`;
-
 export const SmallTabelMedTilpassetBredde = styled(Table).attrs({ size: 'small' })`
     max-width: max-content;
 `;
