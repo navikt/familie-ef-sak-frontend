@@ -2,7 +2,10 @@ import React from 'react';
 import { KolonneTitler, SmallTabelMedTilpassetBredde } from './TabellWrapper';
 import { Folkeregisterpersonstatus, IStatsborgerskap } from '../../App/typer/personopplysninger';
 import Pass from '../Ikoner/Pass';
-import { formaterNullableIsoDato } from '../../App/utils/formatter';
+import {
+    formaterNullableIsoDato,
+    formaterStrengMedStorForbokstav,
+} from '../../App/utils/formatter';
 import PersonopplysningerPanel from './PersonopplysningPanel';
 import { Table } from '@navikt/ds-react';
 
@@ -27,7 +30,8 @@ const Statsborgerskap: React.FC<{
                                 </Table.DataCell>
                                 <Table.DataCell>
                                     {statsborgerskap.land.toLowerCase() === 'norge' &&
-                                        folkeregisterPersonstatus}
+                                        folkeregisterPersonstatus &&
+                                        formaterStrengMedStorForbokstav(folkeregisterPersonstatus)}
                                 </Table.DataCell>
                             </Table.Row>
                         );
