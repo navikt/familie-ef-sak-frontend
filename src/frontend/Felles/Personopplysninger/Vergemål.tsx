@@ -1,6 +1,6 @@
 import React from 'react';
 import SkrivendeBlyant from '../Ikoner/SkrivendeBlyant';
-import { IngenData, KolonneTitler, SmallTabelMedTilpassetBredde } from './TabellWrapper';
+import { KolonneTitler, SmallTabelMedTilpassetBredde } from './TabellWrapper';
 import {
     IVergemål,
     vergemålOmfangTilTekst,
@@ -14,7 +14,7 @@ import { KopierbartNullableFødselsnummer } from '../Fødselsnummer/KopierbartNu
 const Vergemål: React.FC<{ vergemål: IVergemål[] }> = ({ vergemål }) => {
     return (
         <PersonopplysningerPanel Ikon={SkrivendeBlyant} tittel={'Vergemål'}>
-            {(vergemål.length !== 0 && (
+            {vergemål.length !== 0 && (
                 <SmallTabelMedTilpassetBredde>
                     <KolonneTitler
                         titler={['Verge', 'Fødselsnummer', 'Omfang', 'Type', 'Embete']}
@@ -43,7 +43,7 @@ const Vergemål: React.FC<{ vergemål: IVergemål[] }> = ({ vergemål }) => {
                         })}
                     </Table.Body>
                 </SmallTabelMedTilpassetBredde>
-            )) || <IngenData />}
+            )}
         </PersonopplysningerPanel>
     );
 };

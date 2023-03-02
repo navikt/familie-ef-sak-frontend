@@ -1,4 +1,4 @@
-import { Heading, ReadMore } from '@navikt/ds-react';
+import { BodyShort, Heading, ReadMore } from '@navikt/ds-react';
 import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
 import React, { ReactNode } from 'react';
 import styled from 'styled-components';
@@ -23,6 +23,10 @@ const InnholdWrapper = styled.div`
     gap: 1rem;
 `;
 
+const IngenData = styled(BodyShort)`
+    padding-left: 2.5rem;
+`;
+
 const Tittel = styled.div`
     grid-area: tittel;
 `;
@@ -31,7 +35,7 @@ const PersonopplysningerPanel: React.FC<{
     Ikon: React.FC;
     tittel: string;
     tittelBeskrivelse?: { header: string; innhold: React.ReactElement };
-    children: ReactNode;
+    children?: ReactNode;
 }> = ({ Ikon, tittel, children, tittelBeskrivelse }) => {
     return (
         <Panel>
@@ -48,7 +52,11 @@ const PersonopplysningerPanel: React.FC<{
                     )}
                 </Tittel>
             </TittelMedIkon>
-            <InnholdWrapper>{children}</InnholdWrapper>
+            {children ? (
+                <InnholdWrapper>{children}</InnholdWrapper>
+            ) : (
+                <IngenData size="small">Ingen data</IngenData>
+            )}
         </Panel>
     );
 };

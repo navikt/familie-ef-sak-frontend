@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import React from 'react';
-import { BodyShortSmall } from '../Visningskomponenter/Tekster';
 import { Table } from '@navikt/ds-react';
 
 export const BredTd = styled.td`
@@ -64,13 +63,5 @@ export const KolonneTitler: React.FC<{ titler: Kolonnetittel[] }> = ({ titler })
                 ))}
             </Table.Row>
         </Table.Header>
-    );
-};
-
-export const IngenData: React.FC = () => {
-    return (
-        <StyledInnholdWrapper>
-            <BodyShortSmall>Ingen data</BodyShortSmall>
-        </StyledInnholdWrapper>
     );
 };

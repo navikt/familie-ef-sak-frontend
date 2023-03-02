@@ -1,6 +1,6 @@
 import React from 'react';
 import { IInnflyttingTilNorge, IUtflyttingFraNorge } from '../../App/typer/personopplysninger';
-import { IngenData, KolonneTitler, SmallTabelMedTilpassetBredde } from './TabellWrapper';
+import { KolonneTitler, SmallTabelMedTilpassetBredde } from './TabellWrapper';
 import FlyMedSky from '../Ikoner/FlyMedSky';
 import { formaterNullableIsoDato, formaterNullableIsoÅr } from '../../App/utils/formatter';
 import styled from 'styled-components';
@@ -32,11 +32,7 @@ export const headerForInnflyttingTabell: React.ReactNode = (
 
 const InnvandringUtVandring: React.FC<Props> = ({ innvandringer, utvandringer }) => {
     if (innvandringer.length === 0 && utvandringer.length === 0) {
-        return (
-            <PersonopplysningerPanel Ikon={FlyMedSky} tittel={'Innvandring og utvandring'}>
-                <IngenData />
-            </PersonopplysningerPanel>
-        );
+        return <PersonopplysningerPanel Ikon={FlyMedSky} tittel={'Innvandring og utvandring'} />;
     } else if (innvandringer.length === 0) {
         return (
             <PersonopplysningerPanel Ikon={FlyMedSky} tittel={'Innvandring og utvandring'}>
