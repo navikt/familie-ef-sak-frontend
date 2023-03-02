@@ -1,21 +1,27 @@
 import React from 'react';
-import { IngenData } from './TabellWrapper';
 import { INavKontor } from '../../App/typer/personopplysninger';
-import Bygning from '../Ikoner/Bygning';
 import styled from 'styled-components';
-import PersonopplysningerPanel from './PersonopplysningPanel';
+import { Detail } from '@navikt/ds-react';
+import { Office1 } from '@navikt/ds-icons';
 
-const StyledKontorNavn = styled.div`
-    grid-area: innhold;
+const NavKontorContainer = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 0.5rem;
+`;
+
+const OfficeIkon = styled(Office1)`
+    width: 1rem;
+    height: 1rem;
 `;
 
 const NavKontor: React.FC<{ navKontor?: INavKontor }> = ({ navKontor }) => {
     return (
-        <PersonopplysningerPanel Ikon={Bygning} tittel="NAV-kontor">
-            <StyledKontorNavn>
-                {navKontor ? `${navKontor.enhetNr} - ${navKontor.navn}` : <IngenData />}
-            </StyledKontorNavn>
-        </PersonopplysningerPanel>
+        <NavKontorContainer>
+            <OfficeIkon />
+            <Detail>{navKontor ? `${navKontor.enhetNr} - ${navKontor.navn}` : 'Ingen data'}</Detail>
+        </NavKontorContainer>
     );
 };
 

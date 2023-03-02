@@ -40,6 +40,11 @@ const PersonopplysningerMedNavKontor: React.FC<{
     } = personopplysninger;
     return (
         <Container>
+            <DataViewer response={{ navKontor }}>
+                {({ navKontor }) => {
+                    return <NavKontor navKontor={navKontor} />;
+                }}
+            </DataViewer>
             <Adressehistorikk adresser={adresse} fagsakPersonId={fagsakPersonId} />
             <Sivilstatus sivilstander={sivilstand} />
             <Barn barn={barn} />
@@ -52,14 +57,8 @@ const PersonopplysningerMedNavKontor: React.FC<{
                 innvandringer={innflyttingTilNorge}
                 utvandringer={utflyttingFraNorge}
             />
-            <Fullmakter fullmakter={fullmakt} />
             <Vergemål vergemål={vergemål} />
-
-            <DataViewer response={{ navKontor }}>
-                {({ navKontor }) => {
-                    return <NavKontor navKontor={navKontor} />;
-                }}
-            </DataViewer>
+            <Fullmakter fullmakter={fullmakt} />
         </Container>
     );
 };
