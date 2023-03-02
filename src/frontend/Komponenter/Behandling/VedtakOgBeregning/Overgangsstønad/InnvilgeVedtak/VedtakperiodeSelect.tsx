@@ -4,20 +4,14 @@ import {
     EVedtaksperiodeProperty,
     periodetypeTilTekst,
 } from '../../../../../App/typer/vedtak';
-import styled from 'styled-components';
 import { EnsligFamilieSelect } from '../../../../../Felles/Input/EnsligFamilieSelect';
-
-const StyledSelect = styled(EnsligFamilieSelect)`
-    align-items: start;
-    min-width: 140px;
-    max-width: 200px;
-`;
 
 interface VedtakperiodeSelectProps {
     oppdaterVedtakslisteElement: (
         property: EVedtaksperiodeProperty,
         value: string | number | undefined
     ) => void;
+    className?: string;
     behandlingErRedigerbar: boolean;
     periodeType: EPeriodetype | '' | undefined;
     index: number;
@@ -34,13 +28,15 @@ const valgbarePeriodetyper = [
 ];
 
 const VedtakperiodeSelect: FC<VedtakperiodeSelectProps> = ({
+    className,
     oppdaterVedtakslisteElement,
     behandlingErRedigerbar,
     periodeType,
     feil,
 }) => {
     return (
-        <StyledSelect
+        <EnsligFamilieSelect
+            className={className}
             label="Periodetype"
             hideLabel
             value={periodeType}
@@ -57,7 +53,7 @@ const VedtakperiodeSelect: FC<VedtakperiodeSelectProps> = ({
                     {periodetypeTilTekst[type]}
                 </option>
             ))}
-        </StyledSelect>
+        </EnsligFamilieSelect>
     );
 };
 

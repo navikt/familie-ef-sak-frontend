@@ -31,10 +31,6 @@ const AktivitetKolonne = styled.div<{ medPadding?: boolean }>`
     }
 `;
 
-const StyledFamilieSelect = styled(EnsligFamilieSelect)`
-    align-items: start;
-`;
-
 const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
     const {
         periodeType,
@@ -53,7 +49,7 @@ const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
     switch (periodeType) {
         case EPeriodetype.FORLENGELSE:
             return (
-                <StyledFamilieSelect
+                <EnsligFamilieSelect
                     label={'Velg aktivitet'}
                     hideLabel
                     value={aktivitet || ''}
@@ -78,12 +74,12 @@ const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
                             </option>
                         );
                     })}
-                </StyledFamilieSelect>
+                </EnsligFamilieSelect>
             );
         case EPeriodetype.HOVEDPERIODE:
         case EPeriodetype.NY_PERIODE_FOR_NYTT_BARN:
             return (
-                <StyledFamilieSelect
+                <EnsligFamilieSelect
                     label={'Velg aktivitet'}
                     hideLabel
                     value={aktivitet || ''}
@@ -114,11 +110,11 @@ const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
                             </optgroup>
                         );
                     })}
-                </StyledFamilieSelect>
+                </EnsligFamilieSelect>
             );
         case EPeriodetype.UTVIDELSE:
             return (
-                <StyledFamilieSelect
+                <EnsligFamilieSelect
                     label={'Velg aktivitet'}
                     hideLabel
                     value={aktivitet || ''}
@@ -143,7 +139,7 @@ const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
                             </option>
                         );
                     })}
-                </StyledFamilieSelect>
+                </EnsligFamilieSelect>
             );
         case EPeriodetype.PERIODE_FØR_FØDSEL:
             return (
