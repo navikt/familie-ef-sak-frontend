@@ -127,9 +127,7 @@ const Adresser: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string; type?: 
                     <KolonneTitler
                         titler={[
                             'Adresse',
-                            type === AdresseType.BOSTEDADRESSE
-                                ? 'Angitt flyttedato'
-                                : 'Adressetype',
+                            type === AdresseType.BOSTEDADRESSE ? 'Angitt flyttedato' : 'Type',
                             'Fra og med',
                             'Til og med',
                         ]}
