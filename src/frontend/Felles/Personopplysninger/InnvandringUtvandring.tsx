@@ -4,7 +4,7 @@ import { IngenData, KolonneTitler, SmallTabelMedTilpassetBredde } from './Tabell
 import FlyMedSky from '../Ikoner/FlyMedSky';
 import { formaterNullableIsoDato, formaterNullableIsoÅr } from '../../App/utils/formatter';
 import styled from 'styled-components';
-import { HelpText, Table } from '@navikt/ds-react';
+import { HelpText, Label, Table } from '@navikt/ds-react';
 import PersonopplysningerPanel from './PersonopplysningPanel';
 
 interface Props {
@@ -12,20 +12,22 @@ interface Props {
     utvandringer: IUtflyttingFraNorge[];
 }
 
-const StyledInnflyttetÅrHeader = styled.div`
-    padding-right: 1rem;
+const InnflyttetÅrHeader = styled.div`
+    display: flex;
+    gap: 1rem;
+    align-items: center;
 `;
 
 export const headerForInnflyttingTabell: React.ReactNode = (
-    <div style={{ display: 'flex' }}>
-        <StyledInnflyttetÅrHeader>Innflyttet år</StyledInnflyttetÅrHeader>
+    <InnflyttetÅrHeader>
+        <Label size="small">Innflyttet år</Label>
         <HelpText>
             Innflyttet år er basert på Folkeregisteret sitt gyldighetstidspunktet for innflytting.
             Denne har nødvendigvis ikke noen sammenheng med når innflyttingen skjedde i
             virkeligheten. Dersom man skal finne ut når en innflytting gjelder fra må man se på
             andre opplysninger, f.eks. den norske bostedsadressens fra-dato.
         </HelpText>
-    </div>
+    </InnflyttetÅrHeader>
 );
 
 const InnvandringUtVandring: React.FC<Props> = ({ innvandringer, utvandringer }) => {

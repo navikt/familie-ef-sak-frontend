@@ -28,7 +28,8 @@ const bostedStatus = (barn: IBarn) => {
 
 const FlexBox = styled.div`
     display: flex;
-    align-items: baseline;
+    align-items: center;
+    justify-content: space-between;
 `;
 
 const popoverContent = (barn: IBarn) => (
@@ -67,7 +68,7 @@ const BarnBosted: React.FC<{ barn: IBarn }> = ({ barn }) => {
 
     return (
         <FlexBox>
-            <BodyShort>{bostedStatus(barn)}</BodyShort>
+            <BodyShort size="small">{bostedStatus(barn)}</BodyShort>
             {barn.deltBosted.length > 0 && (
                 <InformationIcon ref={iconRef} onClick={() => setOpenState(true)}>
                     Åpne popover
