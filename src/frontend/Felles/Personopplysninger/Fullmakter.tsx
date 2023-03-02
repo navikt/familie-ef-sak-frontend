@@ -5,6 +5,7 @@ import { IFullmakt } from '../../App/typer/personopplysninger';
 import { formaterNullableIsoDato } from '../../App/utils/formatter';
 import PersonopplysningerPanel from './PersonopplysningPanel';
 import { Table } from '@navikt/ds-react';
+import { KopierbartNullableFødselsnummer } from '../Fødselsnummer/KopierbartNullableFødselsnummer';
 
 const Fullmakter: React.FC<{ fullmakter: IFullmakt[] }> = ({ fullmakter }) => {
     return (
@@ -12,15 +13,19 @@ const Fullmakter: React.FC<{ fullmakter: IFullmakt[] }> = ({ fullmakter }) => {
             {(fullmakter.length !== 0 && (
                 <SmallTabelMedTilpassetBredde>
                     <KolonneTitler
-                        titler={['Fullmektig', 'Områder', 'Fødselsnummer', 'Fra', 'Til']}
+                        titler={['Fullmektig', 'Fødselsnummer', 'Områder', 'Fra', 'Til']}
                     />
                     <Table.Body>
                         {fullmakter.map((fullmakt, indeks) => {
                             return (
                                 <Table.Row key={indeks}>
                                     <Table.DataCell>{fullmakt.navn}</Table.DataCell>
+                                    <Table.DataCell>
+                                        <KopierbartNullableFødselsnummer
+                                            fødselsnummer={fullmakt.motpartsPersonident}
+                                        />
+                                    </Table.DataCell>
                                     <Table.DataCell>{fullmakt.områder.join()}</Table.DataCell>
-                                    <Table.DataCell>{fullmakt.motpartsPersonident}</Table.DataCell>
                                     <Table.DataCell>
                                         {formaterNullableIsoDato(fullmakt.gyldigFraOgMed)}
                                     </Table.DataCell>
