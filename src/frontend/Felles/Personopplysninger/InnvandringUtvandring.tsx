@@ -8,7 +8,7 @@ import { HelpText, Label, Table } from '@navikt/ds-react';
 import PersonopplysningerPanel from './PersonopplysningPanel';
 
 interface Props {
-    innvandringer: IInnflyttingTilNorge[];
+    innflyttinger: IInnflyttingTilNorge[];
     utflyttinger: IUtflyttingFraNorge[];
 }
 
@@ -30,11 +30,11 @@ export const headerForInnflyttingTabell: React.ReactNode = (
     </InnflyttetÅrHeader>
 );
 
-const InnvandringUtVandring: React.FC<Props> = ({ innvandringer, utflyttinger }) => {
+const InnvandringUtVandring: React.FC<Props> = ({ innflyttinger, utflyttinger }) => {
     const tittel = 'Innflytting og utflytting';
-    if (innvandringer.length === 0 && utflyttinger.length === 0) {
+    if (innflyttinger.length === 0 && utflyttinger.length === 0) {
         return <PersonopplysningerPanel Ikon={FlyMedSky} tittel={tittel} />;
-    } else if (innvandringer.length === 0) {
+    } else if (innflyttinger.length === 0) {
         return (
             <PersonopplysningerPanel Ikon={FlyMedSky} tittel={tittel}>
                 <Utflytting utflyttinger={utflyttinger} />
@@ -43,25 +43,25 @@ const InnvandringUtVandring: React.FC<Props> = ({ innvandringer, utflyttinger })
     } else if (utflyttinger.length === 0) {
         return (
             <PersonopplysningerPanel Ikon={FlyMedSky} tittel={tittel}>
-                <Innvandring innvandringer={innvandringer} />
+                <Innflytting innflyttinger={innflyttinger} />
             </PersonopplysningerPanel>
         );
     } else {
         return (
             <PersonopplysningerPanel Ikon={FlyMedSky} tittel={tittel}>
-                <Innvandring innvandringer={innvandringer} />
+                <Innflytting innflyttinger={innflyttinger} />
                 <Utflytting utflyttinger={utflyttinger} />
             </PersonopplysningerPanel>
         );
     }
 };
 
-const Innvandring: React.FC<{ innvandringer: IInnflyttingTilNorge[] }> = ({ innvandringer }) => {
+const Innflytting: React.FC<{ innflyttinger: IInnflyttingTilNorge[] }> = ({ innflyttinger }) => {
     return (
         <SmallTabelMedTilpassetBredde>
             <KolonneTitler titler={['Innvandret fra', headerForInnflyttingTabell, '', '']} />
             <Table.Body>
-                {innvandringer.map((innflytting, indeks) => {
+                {innflyttinger.map((innflytting, indeks) => {
                     return (
                         <tr key={indeks}>
                             <Table.DataCell>
