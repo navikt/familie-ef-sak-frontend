@@ -2,7 +2,7 @@ import * as React from 'react';
 import { FC } from 'react';
 import styled from 'styled-components';
 import { delvilkårTypeTilTekst, svarTypeTilTekst } from './tekster';
-import { BrukerMedBlyantIkon } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
+import { BrukerMedBlyantIkon, CogIkon } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { IVurdering, resultatTilTekst, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
 import { BreakWordNormaltekst } from '../../../Felles/Visningskomponenter/BreakWordNormaltekst';
 import { formaterIsoDatoTidMedSekunder } from '../../../App/utils/formatter';
@@ -10,9 +10,9 @@ import { Button, ErrorMessage, Heading } from '@navikt/ds-react';
 import { Delete, Edit } from '@navikt/ds-icons';
 import {
     SistOppdatertOgVurderingWrapper,
+    TittelOgKnappWrapper,
     VertikalStrek,
     VurderingLesemodusGrid,
-    TittelOgKnappWrapper,
 } from './StyledVurdering';
 import {
     BodyShortSmall,
@@ -82,9 +82,11 @@ const VisVurdering: FC<Props> = ({
     const erAutomatiskVurdert = vurdering.delvilkårsvurderinger.every(
         (delvilkårsvurdering) => delvilkårsvurdering.resultat === Vilkårsresultat.AUTOMATISK_OPPFYLT
     );
+
     return (
         <VurderingLesemodusGrid key={vurdering.id}>
-            <BrukerMedBlyantIkon />
+            {erAutomatiskVurdert && <CogIkon />}
+            {!erAutomatiskVurdert && <BrukerMedBlyantIkon />}
 
             <TittelOgKnappWrapper>
                 <StyledIkonOgTittel>
