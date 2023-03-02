@@ -90,7 +90,6 @@ export interface IBarnMedSamværRegistergrunnlag {
     navn?: string;
     fødselsnummer?: string;
     harSammeAdresse?: boolean;
-    deltBosted?: IDeltBostedPeriode;
     deltBostedPerioder: IDeltBostedPeriode[];
     harDeltBostedVedGrunnlagsdataopprettelse: boolean;
     forelder?: IAnnenForelder;
