@@ -112,27 +112,27 @@ const Adresser: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string; type?: 
     fagsakPersonId,
     type,
 }) => {
+    const tittelBeskrivelse =
+        type === AdresseType.BOSTEDADRESSE
+            ? { header: 'Adresseforklaring ', innhold: TittelbeskrivelseBostedsadresser }
+            : undefined;
+
+    const kolonneTitler = [
+        'Adresse',
+        type === AdresseType.BOSTEDADRESSE ? 'Angitt flyttedato' : 'Type',
+        'Fra og med',
+        'Til og med',
+    ];
+
     return (
         <PersonopplysningerPanel
             Ikon={Bygning}
             tittel={type === AdresseType.BOSTEDADRESSE ? 'Bostedsadresser' : 'Andre adresser'}
-            tittelBeskrivelse={
-                type === AdresseType.BOSTEDADRESSE
-                    ? { header: 'Adresseforklaring ', innhold: TittelbeskrivelseBostedsadresser }
-                    : undefined
-            }
+            tittelBeskrivelse={tittelBeskrivelse}
         >
             {adresser.length !== 0 && (
                 <SmallTabelMedTilpassetBredde>
-                    <KolonneTitler
-                        titler={[
-                            'Adresse',
-                            type === AdresseType.BOSTEDADRESSE ? 'Angitt flyttedato' : 'Type',
-                            'Fra og med',
-                            'Til og med',
-                        ]}
-                    />
-
+                    <KolonneTitler titler={kolonneTitler} />
                     <Innhold adresser={adresser} fagsakPersonId={fagsakPersonId} />
                 </SmallTabelMedTilpassetBredde>
             )}
