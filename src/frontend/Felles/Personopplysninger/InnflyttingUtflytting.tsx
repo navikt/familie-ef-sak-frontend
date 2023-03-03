@@ -8,8 +8,8 @@ import { HelpText, Label, Table } from '@navikt/ds-react';
 import PersonopplysningerPanel from './PersonopplysningPanel';
 
 interface Props {
-    innvandringer: IInnflyttingTilNorge[];
-    utvandringer: IUtflyttingFraNorge[];
+    innflyttinger: IInnflyttingTilNorge[];
+    utflyttinger: IUtflyttingFraNorge[];
 }
 
 const InnflyttetÅrHeader = styled.div`
@@ -30,37 +30,38 @@ export const headerForInnflyttingTabell: React.ReactNode = (
     </InnflyttetÅrHeader>
 );
 
-const InnvandringUtVandring: React.FC<Props> = ({ innvandringer, utvandringer }) => {
-    if (innvandringer.length === 0 && utvandringer.length === 0) {
-        return <PersonopplysningerPanel Ikon={FlyMedSky} tittel={'Innvandring og utvandring'} />;
-    } else if (innvandringer.length === 0) {
+const InnflyttingUtflytting: React.FC<Props> = ({ innflyttinger, utflyttinger }) => {
+    const tittel = 'Innflytting og utflytting';
+    if (innflyttinger.length === 0 && utflyttinger.length === 0) {
+        return <PersonopplysningerPanel Ikon={FlyMedSky} tittel={tittel} />;
+    } else if (innflyttinger.length === 0) {
         return (
-            <PersonopplysningerPanel Ikon={FlyMedSky} tittel={'Innvandring og utvandring'}>
-                <Utvandring utvandringer={utvandringer} />
+            <PersonopplysningerPanel Ikon={FlyMedSky} tittel={tittel}>
+                <Utflytting utflyttinger={utflyttinger} />
             </PersonopplysningerPanel>
         );
-    } else if (utvandringer.length === 0) {
+    } else if (utflyttinger.length === 0) {
         return (
-            <PersonopplysningerPanel Ikon={FlyMedSky} tittel={'Innvandring og utvandring'}>
-                <Innvandring innvandringer={innvandringer} />
+            <PersonopplysningerPanel Ikon={FlyMedSky} tittel={tittel}>
+                <Innflytting innflyttinger={innflyttinger} />
             </PersonopplysningerPanel>
         );
     } else {
         return (
-            <PersonopplysningerPanel Ikon={FlyMedSky} tittel={'Innvandring og utvandring'}>
-                <Innvandring innvandringer={innvandringer} />
-                <Utvandring utvandringer={utvandringer} />
+            <PersonopplysningerPanel Ikon={FlyMedSky} tittel={tittel}>
+                <Innflytting innflyttinger={innflyttinger} />
+                <Utflytting utflyttinger={utflyttinger} />
             </PersonopplysningerPanel>
         );
     }
 };
 
-const Innvandring: React.FC<{ innvandringer: IInnflyttingTilNorge[] }> = ({ innvandringer }) => {
+const Innflytting: React.FC<{ innflyttinger: IInnflyttingTilNorge[] }> = ({ innflyttinger }) => {
     return (
         <SmallTable>
-            <KolonneTitler titler={['Innvandret fra', headerForInnflyttingTabell, '', '']} />
+            <KolonneTitler titler={['Innflyttet fra', headerForInnflyttingTabell, '', '']} />
             <Table.Body>
-                {innvandringer.map((innflytting, indeks) => {
+                {innflyttinger.map((innflytting, indeks) => {
                     return (
                         <tr key={indeks}>
                             <Table.DataCell>
@@ -82,12 +83,12 @@ const Innvandring: React.FC<{ innvandringer: IInnflyttingTilNorge[] }> = ({ innv
     );
 };
 
-const Utvandring: React.FC<{ utvandringer: IUtflyttingFraNorge[] }> = ({ utvandringer }) => {
+const Utflytting: React.FC<{ utflyttinger: IUtflyttingFraNorge[] }> = ({ utflyttinger }) => {
     return (
         <SmallTable>
-            <KolonneTitler titler={['Utvandret til', 'Utflyttingsdato', '', '']} />
+            <KolonneTitler titler={['Utflyttet til', 'Utflyttingsdato', '', '']} />
             <Table.Body>
-                {utvandringer.map((utflytting, indeks) => {
+                {utflyttinger.map((utflytting, indeks) => {
                     return (
                         <tr key={indeks}>
                             <Table.DataCell>
@@ -109,4 +110,4 @@ const Utvandring: React.FC<{ utvandringer: IUtflyttingFraNorge[] }> = ({ utvandr
     );
 };
 
-export default InnvandringUtVandring;
+export default InnflyttingUtflytting;

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Bygning from '../Ikoner/Bygning';
 import { AdresseType, IAdresse } from '../../App/typer/personopplysninger';
-import { KolonneTitler, SmallTabelMedTilpassetBredde } from './TabellWrapper';
+import { KolonneTitler, SmallTable } from './TabellWrapper';
 import styled from 'styled-components';
 import Beboere from './Beboere';
 import { formaterNullableIsoDato } from '../../App/utils/formatter';
@@ -131,10 +131,10 @@ const Adresser: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string; type?: 
             tittelBeskrivelse={tittelBeskrivelse}
         >
             {adresser.length !== 0 && (
-                <SmallTabelMedTilpassetBredde>
+                <SmallTable>
                     <KolonneTitler titler={kolonneTitler} />
                     <Innhold adresser={adresser} fagsakPersonId={fagsakPersonId} />
-                </SmallTabelMedTilpassetBredde>
+                </SmallTable>
             )}
         </PersonopplysningerPanel>
     );

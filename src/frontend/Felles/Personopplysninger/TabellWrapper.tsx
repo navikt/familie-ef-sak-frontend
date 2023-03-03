@@ -44,7 +44,7 @@ export const TabellWrapper = styled.div<{ erDobbelTabell?: boolean }>`
     }
 `;
 
-export const SmallTabelMedTilpassetBredde = styled(Table).attrs({ size: 'small' })`
+export const SmallTable = styled(Table).attrs({ size: 'small' })`
     max-width: max-content;
 `;
 
