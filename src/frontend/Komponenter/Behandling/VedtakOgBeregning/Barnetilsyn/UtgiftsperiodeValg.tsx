@@ -27,31 +27,32 @@ import AktivitetSelect from './AktivitetSelect';
 import { Sanksjonsmodal, SlettSanksjonsperiodeModal } from '../Felles/SlettSanksjonsperiodeModal';
 import { HorizontalScroll } from '../Felles/HorizontalScroll';
 
-const UtgiftsperiodeRad = styled.div<{ lesevisning?: boolean; erHeader?: boolean }>`
+const Grid = styled.div<{ lesevisning?: boolean }>`
     display: grid;
     grid-template-columns: ${(props) =>
         props.lesevisning
-            ? '8rem 8rem 10rem 10rem 12rem 4rem 4rem'
-            : '10rem 10rem 12.5rem 12.5rem 25rem 2rem 4rem 3rem 3rem'};
-    grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
-    padding-bottom: ${(props) => (props.erHeader ? '0.5rem' : 0)};
+            ? 'repeat(7, max-content)'
+            : '9rem 9rem repeat(2, max-content) 20rem 2rem 4rem repeat(2, max-content)'};
+    grid-gap: 0.5rem 1rem;
+    margin-bottom: 0.5rem;
+
+    .ny-rad {
+        grid-column: 1;
+    }
 `;
 
-const AntallBarn = styled(BodyShortSmall)<{ lesevisning: boolean }>`
-    margin-top: ${(props) => (props.lesevisning ? '0.65rem' : '0rem')};
-    text-align: center;
+const SentrertBodySort = styled(BodyShortSmall)`
+    display: flex;
+    justify-content: center;
+    align-items: center;
 `;
 
-const StyledInput = styled(InputMedTusenSkille)`
-    text-align: left;
+const BarnVelger = styled(FamilieReactSelect)`
+    margin-bottom: -1rem;
 `;
 
-const ContainerMedLuftUnder = styled.div`
+const MarginBottomDiv = styled.div`
     margin-bottom: 1rem;
-`;
-
-const IkonKnappWrapper = styled.div`
-    display: block;
 `;
 
 interface Props {
@@ -159,11 +160,11 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
 
     return (
         <HorizontalScroll
-            synligVedLukketMeny={'1470px'}
-            synligVedÅpenMeny={'1770px'}
+            synligVedLukketMeny={'1445px'}
+            synligVedÅpenMeny={'1745px'}
             åpenHøyremeny={åpenHøyremeny}
         >
-            <UtgiftsperiodeRad lesevisning={!behandlingErRedigerbar} erHeader>
+            <Grid lesevisning={!behandlingErRedigerbar}>
                 <Label>Periodetype</Label>
                 <Label>Aktivitet</Label>
                 <Label>Periode fra og med</Label>
@@ -171,150 +172,140 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                 <Label>Velg barn</Label>
                 <Label>Ant.</Label>
                 <Label>Utgifter</Label>
-            </UtgiftsperiodeRad>
-            {utgiftsperioder.value.map((utgiftsperiode, index) => {
-                const { periodetype, aktivitetstype, årMånedFra, årMånedTil, utgifter } =
-                    utgiftsperiode;
-                const skalViseFjernKnapp = behandlingErRedigerbar && index !== 0;
-                const barnForPeriode = barnFormatertForBarnVelger(barn);
-                const ikkeValgteBarn = barnForPeriode.filter((barn) =>
-                    utgiftsperiode.barn.includes(barn.value)
-                );
-                const opphørEllerSanksjon = erOpphørEllerSanksjon(periodetype);
-
-                return (
-                    <UtgiftsperiodeRad
-                        key={utgiftsperiode.endretKey}
-                        lesevisning={!behandlingErRedigerbar}
-                    >
-                        <PeriodetypeSelect
-                            periodetype={periodetype}
-                            oppdaterUtgiftsperiodeElement={(property, value) =>
-                                oppdaterUtgiftsperiode(index, property, value)
-                            }
-                            lesevisning={!behandlingErRedigerbar}
-                            feil={valideringsfeil && valideringsfeil[index]?.periodetype}
-                        />
-                        <AktivitetSelect
-                            periodetype={periodetype}
-                            aktivitet={aktivitetstype}
-                            oppdaterUtgiftsperiodeElement={(property, value) =>
-                                oppdaterUtgiftsperiode(index, property, value)
-                            }
-                            erLesevisning={!behandlingErRedigerbar}
-                            feil={valideringsfeil && valideringsfeil[index]?.aktivitetstype}
-                        />
-                        <MånedÅrPeriode
-                            årMånedFraInitiell={årMånedFra}
-                            årMånedTilInitiell={årMånedTil}
-                            index={index}
-                            onEndre={(verdi, periodeVariant) => {
-                                oppdaterUtgiftsperiode(
-                                    index,
-                                    periodeVariantTilUtgiftsperiodeProperty(periodeVariant),
-                                    verdi
-                                );
-                            }}
-                            feilmelding={valideringsfeil && valideringsfeil[index]?.årMånedFra}
-                            erLesevisning={
-                                !behandlingErRedigerbar ||
-                                periodetype === EUtgiftsperiodetype.SANKSJON_1_MND
-                            }
-                            disabledFra={index === 0 && låsFraDatoFørsteRad}
-                        />
-                        {behandlingErRedigerbar && !opphørEllerSanksjon ? (
-                            <FamilieReactSelect
-                                placeholder={'Velg barn'}
-                                label={''}
-                                options={barnForPeriode}
-                                creatable={false}
-                                isMulti={true}
-                                isDisabled={opphørEllerSanksjon}
-                                defaultValue={ikkeValgteBarn}
-                                value={opphørEllerSanksjon ? [] : ikkeValgteBarn}
-                                feil={valideringsfeil && valideringsfeil[index]?.barn[0]}
-                                onChange={(valgtBarn) => {
-                                    oppdaterUtgiftsperiode(
-                                        index,
-                                        EUtgiftsperiodeProperty.barn,
-                                        valgtBarn === null
-                                            ? []
-                                            : [...mapValgtBarn(valgtBarn as ISelectOption[])]
-                                    );
-                                }}
+                {utgiftsperioder.value.map((utgiftsperiode, index) => {
+                    const { periodetype, aktivitetstype, årMånedFra, årMånedTil, utgifter } =
+                        utgiftsperiode;
+                    const skalViseFjernKnapp = behandlingErRedigerbar && index !== 0;
+                    const barnForPeriode = barnFormatertForBarnVelger(barn);
+                    const ikkeValgteBarn = barnForPeriode.filter((barn) =>
+                        utgiftsperiode.barn.includes(barn.value)
+                    );
+                    const opphørEllerSanksjon = erOpphørEllerSanksjon(periodetype);
+                    const antallBarn = utgiftsperioder.value[index].barn
+                        ? utgiftsperioder.value[index].barn?.length
+                        : 0;
+                    return (
+                        <React.Fragment key={utgiftsperiode.endretKey}>
+                            <PeriodetypeSelect
+                                className={'ny-rad'}
+                                periodetype={periodetype}
+                                oppdaterUtgiftsperiodeElement={(property, value) =>
+                                    oppdaterUtgiftsperiode(index, property, value)
+                                }
+                                lesevisning={!behandlingErRedigerbar}
+                                feil={valideringsfeil && valideringsfeil[index]?.periodetype}
                             />
-                        ) : (
-                            <ContainerMedLuftUnder>
-                                {barnForPeriode
-                                    .filter((barn) => utgiftsperiode.barn.includes(barn.value))
-                                    .map((barn) => (
-                                        <BodyShortSmall key={barn.value}>
-                                            {barn.label}
-                                        </BodyShortSmall>
-                                    ))}
-                            </ContainerMedLuftUnder>
-                        )}
-                        {opphørEllerSanksjon ? (
-                            <div />
-                        ) : (
-                            <AntallBarn lesevisning={behandlingErRedigerbar}>{`${
-                                utgiftsperioder.value[index].barn
-                                    ? utgiftsperioder.value[index].barn?.length
-                                    : 0
-                            }`}</AntallBarn>
-                        )}
-                        {opphørEllerSanksjon ? (
-                            <div />
-                        ) : (
-                            <StyledInput
-                                onKeyPress={tilHeltall}
-                                type="number"
-                                size={'small'}
-                                value={harTallverdi(utgifter) ? utgifter : ''}
-                                disabled={opphørEllerSanksjon}
-                                onChange={(e) => {
-                                    oppdaterUtgiftsperiode(
-                                        index,
-                                        EUtgiftsperiodeProperty.utgifter,
-                                        tilTallverdi(e.target.value)
-                                    );
-                                }}
+                            <AktivitetSelect
+                                periodetype={periodetype}
+                                aktivitet={aktivitetstype}
+                                oppdaterUtgiftsperiodeElement={(property, value) =>
+                                    oppdaterUtgiftsperiode(index, property, value)
+                                }
                                 erLesevisning={!behandlingErRedigerbar}
-                                label={'Utgifter'}
-                                hideLabel
+                                feil={valideringsfeil && valideringsfeil[index]?.aktivitetstype}
                             />
-                        )}
-                        {behandlingErRedigerbar && (
-                            <IkonKnappWrapper>
+                            <MånedÅrPeriode
+                                årMånedFraInitiell={årMånedFra}
+                                årMånedTilInitiell={årMånedTil}
+                                index={index}
+                                onEndre={(verdi, periodeVariant) => {
+                                    oppdaterUtgiftsperiode(
+                                        index,
+                                        periodeVariantTilUtgiftsperiodeProperty(periodeVariant),
+                                        verdi
+                                    );
+                                }}
+                                feilmelding={valideringsfeil && valideringsfeil[index]?.årMånedFra}
+                                erLesevisning={
+                                    !behandlingErRedigerbar ||
+                                    periodetype === EUtgiftsperiodetype.SANKSJON_1_MND
+                                }
+                                disabledFra={index === 0 && låsFraDatoFørsteRad}
+                            />
+                            {behandlingErRedigerbar && !opphørEllerSanksjon ? (
+                                <BarnVelger
+                                    placeholder={'Velg barn'}
+                                    label={''}
+                                    options={barnForPeriode}
+                                    creatable={false}
+                                    isMulti={true}
+                                    isDisabled={opphørEllerSanksjon}
+                                    defaultValue={ikkeValgteBarn}
+                                    value={opphørEllerSanksjon ? [] : ikkeValgteBarn}
+                                    feil={valideringsfeil && valideringsfeil[index]?.barn[0]}
+                                    onChange={(valgtBarn) => {
+                                        oppdaterUtgiftsperiode(
+                                            index,
+                                            EUtgiftsperiodeProperty.barn,
+                                            valgtBarn === null
+                                                ? []
+                                                : [...mapValgtBarn(valgtBarn as ISelectOption[])]
+                                        );
+                                    }}
+                                />
+                            ) : (
+                                <MarginBottomDiv>
+                                    {barnForPeriode
+                                        .filter((barn) => utgiftsperiode.barn.includes(barn.value))
+                                        .map((barn) => (
+                                            <BodyShortSmall key={barn.value}>
+                                                {barn.label}
+                                            </BodyShortSmall>
+                                        ))}
+                                </MarginBottomDiv>
+                            )}
+                            {opphørEllerSanksjon ? (
+                                <div />
+                            ) : (
+                                <SentrertBodySort>{antallBarn}</SentrertBodySort>
+                            )}
+                            {opphørEllerSanksjon ? (
+                                <div />
+                            ) : (
+                                <InputMedTusenSkille
+                                    onKeyPress={tilHeltall}
+                                    type="number"
+                                    size={'small'}
+                                    value={harTallverdi(utgifter) ? utgifter : ''}
+                                    disabled={opphørEllerSanksjon}
+                                    onChange={(e) => {
+                                        oppdaterUtgiftsperiode(
+                                            index,
+                                            EUtgiftsperiodeProperty.utgifter,
+                                            tilTallverdi(e.target.value)
+                                        );
+                                    }}
+                                    erLesevisning={!behandlingErRedigerbar}
+                                    label={'Utgifter'}
+                                    hideLabel
+                                />
+                            )}
+                            {behandlingErRedigerbar && (
                                 <Tooltip content="Legg til rad under" placement="right">
                                     <LeggTilKnapp
                                         onClick={() => leggTilTomRadUnder(index)}
                                         ikontekst={'Legg til ny rad'}
                                     />
                                 </Tooltip>
-                            </IkonKnappWrapper>
-                        )}
-                        {skalViseFjernKnapp ? (
-                            <IkonKnappWrapper>
+                            )}
+                            {skalViseFjernKnapp ? (
                                 <FjernKnapp
                                     onClick={() => slettPeriodeModalHvisSanksjon(index)}
                                     ikontekst={'Fjern utgiftsperiode'}
                                 />
-                            </IkonKnappWrapper>
-                        ) : (
-                            <div />
-                        )}
-                    </UtgiftsperiodeRad>
-                );
-            })}
-            <ContainerMedLuftUnder>
-                {behandlingErRedigerbar && (
-                    <LeggTilKnapp
-                        onClick={() => utgiftsperioder.push(tomUtgiftsperiodeRad())}
-                        knappetekst="Legg til vedtaksperiode"
-                    />
-                )}
-            </ContainerMedLuftUnder>
+                            ) : (
+                                <div />
+                            )}
+                        </React.Fragment>
+                    );
+                })}
+            </Grid>
+            {behandlingErRedigerbar && (
+                <LeggTilKnapp
+                    onClick={() => utgiftsperioder.push(tomUtgiftsperiodeRad())}
+                    knappetekst="Legg til vedtaksperiode"
+                />
+            )}
             <SlettSanksjonsperiodeModal
                 sanksjonsmodal={sanksjonsmodal}
                 slettPeriode={slettPeriode}

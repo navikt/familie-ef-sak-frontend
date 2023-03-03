@@ -63,6 +63,10 @@ const HovedKnapp = styled(Button)`
     margin-top: 1rem;
 `;
 
+const TextArea = styled(EnsligTextArea)`
+    margin-top: 0.5rem;
+`;
+
 const initKontantstøttestate = (vedtak: IInnvilgeVedtakForBarnetilsyn | undefined) =>
     vedtak
         ? vedtak.perioderKontantstøtte && vedtak.perioderKontantstøtte.length > 0
@@ -291,7 +295,7 @@ export const Vedtaksform: React.FC<{
                 {!behandlingErRedigerbar && begrunnelseState.value === '' ? (
                     <IngenBegrunnelseOppgitt />
                 ) : (
-                    <EnsligTextArea
+                    <TextArea
                         erLesevisning={!behandlingErRedigerbar}
                         value={begrunnelseState.value}
                         onChange={(event) => {

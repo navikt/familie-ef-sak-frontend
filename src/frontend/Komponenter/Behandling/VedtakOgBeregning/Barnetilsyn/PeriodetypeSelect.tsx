@@ -4,44 +4,40 @@ import {
     EUtgiftsperiodetype,
     utgiftsperiodetypeTilTekst,
 } from '../../../../App/typer/vedtak';
-import styled from 'styled-components';
 import { EnsligFamilieSelect } from '../../../../Felles/Input/EnsligFamilieSelect';
 
-const StyledSelect = styled(EnsligFamilieSelect)`
-    align-items: start;
-    min-width: 140px;
-    max-width: 200px;
-`;
-
 interface Props {
-    periodetype: EUtgiftsperiodetype | '' | undefined;
+    className?: string;
+    feil?: string;
+    lesevisning: boolean;
     oppdaterUtgiftsperiodeElement: (
         property: EUtgiftsperiodeProperty,
         value: string | undefined
     ) => void;
-    lesevisning: boolean;
-    feil?: string;
+    periodetype: EUtgiftsperiodetype | '' | undefined;
 }
 
 const valgbarePeriodetyper = [EUtgiftsperiodetype.ORDINÆR, EUtgiftsperiodetype.OPPHØR];
 
 const PeriodetypeSelect: FC<Props> = ({
-    periodetype,
-    oppdaterUtgiftsperiodeElement,
-    lesevisning,
+    className,
     feil,
+    lesevisning,
+    oppdaterUtgiftsperiodeElement,
+    periodetype,
 }) => {
     return (
-        <StyledSelect
-            label="Periodetype"
-            hideLabel
-            value={periodetype}
+        <EnsligFamilieSelect
+            className={className}
+            erLesevisning={lesevisning || periodetype === EUtgiftsperiodetype.SANKSJON_1_MND}
             error={feil}
+            hideLabel
+            label="Periodetype"
+            lesevisningVerdi={periodetype && utgiftsperiodetypeTilTekst[periodetype]}
             onChange={(e) => {
                 oppdaterUtgiftsperiodeElement(EUtgiftsperiodeProperty.periodetype, e.target.value);
             }}
-            erLesevisning={lesevisning || periodetype === EUtgiftsperiodetype.SANKSJON_1_MND}
-            lesevisningVerdi={periodetype && utgiftsperiodetypeTilTekst[periodetype]}
+            value={periodetype}
         >
             <option value="">Velg</option>
             {valgbarePeriodetyper.map((type) => (
@@ -49,7 +45,7 @@ const PeriodetypeSelect: FC<Props> = ({
                     {utgiftsperiodetypeTilTekst[type]}
                 </option>
             ))}
-        </StyledSelect>
+        </EnsligFamilieSelect>
     );
 };
 

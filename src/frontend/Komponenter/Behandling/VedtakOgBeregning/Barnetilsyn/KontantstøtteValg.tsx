@@ -19,17 +19,25 @@ import InputMedTusenSkille from '../../../../Felles/Visningskomponenter/InputMed
 import FjernKnapp from '../../../../Felles/Knapper/FjernKnapp';
 import { v4 as uuidv4 } from 'uuid';
 import JaNeiRadioGruppe from '../Felles/JaNeiRadioGruppe';
+import { HorizontalScroll } from '../Felles/HorizontalScroll';
+import { useBehandling } from '../../../../App/context/BehandlingContext';
 
-const InnholdRad = styled.div<{ lesevisning: boolean }>`
+const Grid = styled.div<{ lesevisning: boolean }>`
     display: grid;
     grid-template-columns: ${(props) =>
-        props.lesevisning ? '9.5rem 9rem 7rem 7rem 7rem' : '13rem 13rem 6rem 4rem 3rem'};
-    grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
+        props.lesevisning
+            ? 'repeat(3, max-content)'
+            : 'repeat(2, max-content) 6rem repeat(2, max-content)'};
+    grid-gap: 0.5rem 1rem;
     margin-bottom: 0.5rem;
+
+    .ny-rad {
+        grid-column: 1;
+    }
 `;
 
-const TittelRad = styled(InnholdRad)`
-    margin-top: 1rem;
+const RadioGruppe = styled(JaNeiRadioGruppe)`
+    margin-bottom: 1rem;
 `;
 
 const Input = styled(InputMedTusenSkille)`
@@ -62,6 +70,7 @@ const KontantstøtteValg: React.FC<Props> = ({
     valideringsfeil,
 }) => {
     const { settIkkePersistertKomponent } = useApp();
+    const { åpenHøyremeny } = useBehandling();
 
     const oppdaterKontantstøttePeriode = (
         index: number,
@@ -105,7 +114,7 @@ const KontantstøtteValg: React.FC<Props> = ({
             <Heading spacing size="small" level="5">
                 Kontantstøtte
             </Heading>
-            <JaNeiRadioGruppe
+            <RadioGruppe
                 error={valideringsfeil?.harKontantstøtte}
                 legend={radioGruppeTekst}
                 lesevisning={erLesevisning}
@@ -113,21 +122,27 @@ const KontantstøtteValg: React.FC<Props> = ({
                 value={kontantstøtte.value as ERadioValg}
             />
             {kontantstøtte.value === ERadioValg.JA && (
-                <>
-                    <TittelRad lesevisning={erLesevisning}>
+                <HorizontalScroll
+                    synligVedLukketMeny={'780px'}
+                    synligVedÅpenMeny={'1075px'}
+                    åpenHøyremeny={åpenHøyremeny}
+                >
+                    <Grid lesevisning={erLesevisning}>
                         <Label>Periode fra og med</Label>
                         <Label>Periode til og med</Label>
                         <Label>Kontantstøtte</Label>
-                    </TittelRad>
-                    {kontantstøttePerioder.value.map((periode, index) => {
-                        const { årMånedFra, årMånedTil, beløp } = periode;
-                        const skalViseFjernKnapp = !erLesevisning && index !== 0;
-                        return (
-                            <React.Fragment key={periode.endretKey}>
-                                <InnholdRad lesevisning={erLesevisning}>
+                        {kontantstøttePerioder.value.map((periode, index) => {
+                            const { årMånedFra, årMånedTil, beløp } = periode;
+                            const skalViseFjernKnapp = !erLesevisning && index !== 0;
+                            return (
+                                <React.Fragment key={periode.endretKey}>
                                     <MånedÅrPeriode
-                                        årMånedFraInitiell={årMånedFra}
-                                        årMånedTilInitiell={årMånedTil}
+                                        className={'ny-rad'}
+                                        erLesevisning={erLesevisning}
+                                        feilmelding={
+                                            valideringsfeil?.kontantstøtteperioder &&
+                                            valideringsfeil.kontantstøtteperioder[index]?.årMånedFra
+                                        }
                                         index={index}
                                         onEndre={(verdi, periodeVariant) => {
                                             settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
@@ -139,11 +154,8 @@ const KontantstøtteValg: React.FC<Props> = ({
                                                 verdi
                                             );
                                         }}
-                                        feilmelding={
-                                            valideringsfeil?.kontantstøtteperioder &&
-                                            valideringsfeil.kontantstøtteperioder[index]?.årMånedFra
-                                        }
-                                        erLesevisning={erLesevisning}
+                                        årMånedFraInitiell={årMånedFra}
+                                        årMånedTilInitiell={årMånedTil}
                                     />
                                     <Input
                                         type="number"
@@ -162,6 +174,14 @@ const KontantstøtteValg: React.FC<Props> = ({
                                         label={'Utgifter kontantstøtte'}
                                         hideLabel
                                     />
+                                    {!erLesevisning && (
+                                        <Tooltip content="Legg til rad under" placement="right">
+                                            <LeggTilKnapp
+                                                onClick={() => leggTilTomRadUnder(index)}
+                                                ikontekst={'Legg til ny rad'}
+                                            />
+                                        </Tooltip>
+                                    )}
                                     {skalViseFjernKnapp ? (
                                         <FjernKnapp
                                             onClick={() => {
@@ -183,18 +203,10 @@ const KontantstøtteValg: React.FC<Props> = ({
                                     ) : (
                                         <div />
                                     )}
-                                    {!erLesevisning && (
-                                        <Tooltip content="Legg til rad under" placement="right">
-                                            <LeggTilKnapp
-                                                onClick={() => leggTilTomRadUnder(index)}
-                                                ikontekst={'Legg til ny rad'}
-                                            />
-                                        </Tooltip>
-                                    )}
-                                </InnholdRad>
-                            </React.Fragment>
-                        );
-                    })}
+                                </React.Fragment>
+                            );
+                        })}
+                    </Grid>
                     <ContainerMedLuftUnder>
                         {!erLesevisning && (
                             <LeggTilKnapp
@@ -203,7 +215,7 @@ const KontantstøtteValg: React.FC<Props> = ({
                             />
                         )}
                     </ContainerMedLuftUnder>
-                </>
+                </HorizontalScroll>
             )}
         </>
     );
