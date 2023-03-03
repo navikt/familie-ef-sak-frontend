@@ -12,14 +12,14 @@ interface Props {
     utflyttinger: IUtflyttingFraNorge[];
 }
 
-const InnflyttetÅrHeader = styled.div`
+const FlexBoxCenter = styled.div`
     display: flex;
     gap: 1rem;
     align-items: center;
 `;
 
 export const headerForInnflyttingTabell: React.ReactNode = (
-    <InnflyttetÅrHeader>
+    <FlexBoxCenter>
         <Label size="small">Innflyttet år</Label>
         <HelpText>
             Innflyttet år er basert på Folkeregisteret sitt gyldighetstidspunktet for innflytting.
@@ -27,7 +27,7 @@ export const headerForInnflyttingTabell: React.ReactNode = (
             virkeligheten. Dersom man skal finne ut når en innflytting gjelder fra må man se på
             andre opplysninger, f.eks. den norske bostedsadressens fra-dato.
         </HelpText>
-    </InnflyttetÅrHeader>
+    </FlexBoxCenter>
 );
 
 const InnflyttingUtflytting: React.FC<Props> = ({ innflyttinger, utflyttinger }) => {
