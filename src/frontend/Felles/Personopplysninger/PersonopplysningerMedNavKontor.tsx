@@ -17,8 +17,8 @@ import styled from 'styled-components';
 const Container = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    margin: 2rem;
+    gap: 0.5rem;
+    margin: 1rem 2rem;
 `;
 
 const PersonopplysningerMedNavKontor: React.FC<{

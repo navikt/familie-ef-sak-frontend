@@ -6,9 +6,6 @@ import styled from 'styled-components';
 const Panel = styled.div`
     background-color: ${AGray50};
     padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
 `;
 
 const TittelMedIkon = styled.div`
