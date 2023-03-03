@@ -80,21 +80,22 @@ const FødselsnummerBarn: React.FC<{
         <Table.DataCell>
             <FlexDiv>
                 <KopierbartNullableFødselsnummer fødselsnummer={fødselsnummer} />
-                {!dødsdato && alder !== undefined ? (
-                    alder < 18 ? (
-                        <Tag variant={'success'} size="small">
-                            {alder} år
-                        </Tag>
+                {!dødsdato &&
+                    (alder !== undefined ? (
+                        alder < 18 ? (
+                            <Tag variant={'success'} size="small">
+                                {alder} år
+                            </Tag>
+                        ) : (
+                            <Tag variant={'info'} size="small">
+                                Over 18 år
+                            </Tag>
+                        )
                     ) : (
-                        <Tag variant={'info'} size="small">
-                            Over 18 år
+                        <Tag variant={'warning'} size="small">
+                            Ukjent alder
                         </Tag>
-                    )
-                ) : (
-                    <Tag variant={'warning'} size="small">
-                        Ukjent alder
-                    </Tag>
-                )}
+                    ))}
             </FlexDiv>
         </Table.DataCell>
     );
