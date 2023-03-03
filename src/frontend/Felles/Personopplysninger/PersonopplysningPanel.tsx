@@ -27,10 +27,6 @@ const IngenData = styled(BodyShort)`
     padding-left: 2.5rem;
 `;
 
-const Tittel = styled.div`
-    grid-area: tittel;
-`;
-
 const PersonopplysningerPanel: React.FC<{
     Ikon: React.FC;
     tittel: string;
@@ -41,7 +37,7 @@ const PersonopplysningerPanel: React.FC<{
         <Panel>
             <TittelMedIkon className="ikon">
                 <Ikon />
-                <Tittel>
+                <div>
                     <Heading size="small" className="tittel">
                         {tittel}
                     </Heading>
@@ -50,7 +46,7 @@ const PersonopplysningerPanel: React.FC<{
                             {tittelBeskrivelse.innhold}
                         </ReadMore>
                     )}
-                </Tittel>
+                </div>
             </TittelMedIkon>
             {children ? (
                 <InnholdWrapper>{children}</InnholdWrapper>

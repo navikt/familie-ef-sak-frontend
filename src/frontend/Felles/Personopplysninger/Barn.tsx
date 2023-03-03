@@ -1,7 +1,7 @@
 import React from 'react';
 import { IBarn } from '../../App/typer/personopplysninger';
 import LiteBarn from '../Ikoner/LiteBarn';
-import { KolonneTitler, SmallTabelMedTilpassetBredde } from './TabellWrapper';
+import { KolonneTitler, SmallTable } from './TabellWrapper';
 import styled from 'styled-components';
 import { KopierbartNullableFødselsnummer } from '../Fødselsnummer/KopierbartNullableFødselsnummer';
 import EtikettDød from '../Etiketter/EtikettDød';
@@ -27,7 +27,7 @@ const sorterBarnPåAlderInc = (a: IBarn, b: IBarn) => {
 const Barn: React.FC<{ barn: IBarn[] }> = ({ barn }) => {
     return (
         <PersonopplysningerPanel Ikon={LiteBarn} tittel={'Barn'}>
-            <SmallTabelMedTilpassetBredde>
+            <SmallTable>
                 <KolonneTitler titler={titler} />
                 <Table.Body>
                     {barn.sort(sorterBarnPåAlderInc).map((barn) => {
@@ -64,7 +64,7 @@ const Barn: React.FC<{ barn: IBarn[] }> = ({ barn }) => {
                         );
                     })}
                 </Table.Body>
-            </SmallTabelMedTilpassetBredde>
+            </SmallTable>
         </PersonopplysningerPanel>
     );
 };
@@ -80,21 +80,22 @@ const FødselsnummerBarn: React.FC<{
         <Table.DataCell>
             <FlexDiv>
                 <KopierbartNullableFødselsnummer fødselsnummer={fødselsnummer} />
-                {!dødsdato && alder !== undefined ? (
-                    alder < 18 ? (
-                        <Tag variant={'success'} size="small">
-                            {alder} år
-                        </Tag>
+                {!dødsdato &&
+                    (alder !== undefined ? (
+                        alder < 18 ? (
+                            <Tag variant={'success'} size="small">
+                                {alder} år
+                            </Tag>
+                        ) : (
+                            <Tag variant={'info'} size="small">
+                                Over 18 år
+                            </Tag>
+                        )
                     ) : (
-                        <Tag variant={'info'} size="small">
-                            Over 18 år
+                        <Tag variant={'warning'} size="small">
+                            Ukjent alder
                         </Tag>
-                    )
-                ) : (
-                    <Tag variant={'warning'} size="small">
-                        Ukjent alder
-                    </Tag>
-                )}
+                    ))}
             </FlexDiv>
         </Table.DataCell>
     );

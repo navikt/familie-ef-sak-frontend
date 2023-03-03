@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Bygning from '../Ikoner/Bygning';
 import { AdresseType, IAdresse } from '../../App/typer/personopplysninger';
-import { KolonneTitler, SmallTabelMedTilpassetBredde } from './TabellWrapper';
+import { KolonneTitler, SmallTable } from './TabellWrapper';
 import styled from 'styled-components';
 import Beboere from './Beboere';
 import { formaterNullableIsoDato } from '../../App/utils/formatter';
@@ -21,13 +21,13 @@ const FetTekst = styled.span`
 
 const MAX_LENGDE_ADRESSER = 5;
 
-const TekstMedTagWrapper = styled.div`
+const FlexBoxCenter = styled.div`
     display: flex;
     gap: 0.5rem;
     align-items: center;
 `;
 
-const BostedsadresserBeskrivelseWrapper = styled.div`
+const FlexBoxColumn = styled.div`
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -84,7 +84,7 @@ const AdressehistorikkMedLesMerKnapp: React.FC<{
 };
 
 const TittelbeskrivelseBostedsadresser: React.ReactElement = (
-    <BostedsadresserBeskrivelseWrapper>
+    <FlexBoxColumn>
         <BodyLongSmall>
             <FetTekst>Gjeldende adresse:</FetTekst>
             En person skal til enhver tid ha kun én folkeregistrert bostedsadresse. I EF Sak er
@@ -104,7 +104,7 @@ const TittelbeskrivelseBostedsadresser: React.ReactElement = (
             Folkeregisterets opphørsdato (dersom den er kjent). Personen er ikke registrert bosatt
             på adressen iht Folkeregisteret
         </BodyLongSmall>
-    </BostedsadresserBeskrivelseWrapper>
+    </FlexBoxColumn>
 );
 
 const Adresser: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string; type?: AdresseType }> = ({
@@ -112,29 +112,29 @@ const Adresser: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string; type?: 
     fagsakPersonId,
     type,
 }) => {
+    const tittelBeskrivelse =
+        type === AdresseType.BOSTEDADRESSE
+            ? { header: 'Adresseforklaring ', innhold: TittelbeskrivelseBostedsadresser }
+            : undefined;
+
+    const kolonneTitler = [
+        'Adresse',
+        type === AdresseType.BOSTEDADRESSE ? 'Angitt flyttedato' : 'Type',
+        'Fra og med',
+        'Til og med',
+    ];
+
     return (
         <PersonopplysningerPanel
             Ikon={Bygning}
             tittel={type === AdresseType.BOSTEDADRESSE ? 'Bostedsadresser' : 'Andre adresser'}
-            tittelBeskrivelse={
-                type === AdresseType.BOSTEDADRESSE
-                    ? { header: 'Adresseforklaring ', innhold: TittelbeskrivelseBostedsadresser }
-                    : undefined
-            }
+            tittelBeskrivelse={tittelBeskrivelse}
         >
             {adresser.length !== 0 && (
-                <SmallTabelMedTilpassetBredde>
-                    <KolonneTitler
-                        titler={[
-                            'Adresse',
-                            type === AdresseType.BOSTEDADRESSE ? 'Angitt flyttedato' : 'Type',
-                            'Fra og med',
-                            'Til og med',
-                        ]}
-                    />
-
+                <SmallTable>
+                    <KolonneTitler titler={kolonneTitler} />
                     <Innhold adresser={adresser} fagsakPersonId={fagsakPersonId} />
-                </SmallTabelMedTilpassetBredde>
+                </SmallTable>
             )}
         </PersonopplysningerPanel>
     );
@@ -152,14 +152,14 @@ const Innhold: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string }> = ({
                     return (
                         <Table.Row key={indeks}>
                             <Table.DataCell>
-                                <TekstMedTagWrapper>
+                                <FlexBoxCenter>
                                     {adresse.visningsadresse}
                                     {adresse.erGjeldende && (
                                         <Tag variant="success" size="small">
                                             Gjeldende
                                         </Tag>
                                     )}
-                                </TekstMedTagWrapper>
+                                </FlexBoxCenter>
                             </Table.DataCell>
                             <Table.DataCell>
                                 {adresse.type === AdresseType.BOSTEDADRESSE

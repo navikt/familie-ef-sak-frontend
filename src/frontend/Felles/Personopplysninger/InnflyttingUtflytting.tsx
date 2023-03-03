@@ -1,6 +1,6 @@
 import React from 'react';
 import { IInnflyttingTilNorge, IUtflyttingFraNorge } from '../../App/typer/personopplysninger';
-import { KolonneTitler, SmallTabelMedTilpassetBredde } from './TabellWrapper';
+import { KolonneTitler, SmallTable } from './TabellWrapper';
 import FlyMedSky from '../Ikoner/FlyMedSky';
 import { formaterNullableIsoDato, formaterNullableIsoÅr } from '../../App/utils/formatter';
 import styled from 'styled-components';
@@ -58,7 +58,7 @@ const InnflyttingUtflytting: React.FC<Props> = ({ innflyttinger, utflyttinger })
 
 const Innflytting: React.FC<{ innflyttinger: IInnflyttingTilNorge[] }> = ({ innflyttinger }) => {
     return (
-        <SmallTabelMedTilpassetBredde>
+        <SmallTable>
             <KolonneTitler titler={['Innflyttet fra', headerForInnflyttingTabell, '', '']} />
             <Table.Body>
                 {innflyttinger.map((innflytting, indeks) => {
@@ -79,13 +79,13 @@ const Innflytting: React.FC<{ innflyttinger: IInnflyttingTilNorge[] }> = ({ innf
                     );
                 })}
             </Table.Body>
-        </SmallTabelMedTilpassetBredde>
+        </SmallTable>
     );
 };
 
 const Utflytting: React.FC<{ utflyttinger: IUtflyttingFraNorge[] }> = ({ utflyttinger }) => {
     return (
-        <SmallTabelMedTilpassetBredde>
+        <SmallTable>
             <KolonneTitler titler={['Utflyttet til', 'Utflyttingsdato', '', '']} />
             <Table.Body>
                 {utflyttinger.map((utflytting, indeks) => {
@@ -106,7 +106,7 @@ const Utflytting: React.FC<{ utflyttinger: IUtflyttingFraNorge[] }> = ({ utflytt
                     );
                 })}
             </Table.Body>
-        </SmallTabelMedTilpassetBredde>
+        </SmallTable>
     );
 };
 
