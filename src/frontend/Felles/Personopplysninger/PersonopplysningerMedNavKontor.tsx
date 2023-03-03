@@ -1,6 +1,6 @@
 import React from 'react';
 import 'nav-frontend-tabell-style';
-import InnvandringUtVandring from './InnvandringUtvandring';
+import InnflyttingUtflytting from './InnflyttingUtflytting';
 import Barn from './Barn';
 import Adressehistorikk from './Adressehistorikk';
 import Sivilstatus from './Sivilstatus';
@@ -53,9 +53,9 @@ const PersonopplysningerMedNavKontor: React.FC<{
                 folkeregisterPersonstatus={folkeregisterpersonstatus}
             />
             <Oppholdstillatelse oppholdstillatelser={oppholdstillatelse} />
-            <InnvandringUtVandring
-                innvandringer={innflyttingTilNorge}
-                utvandringer={utflyttingFraNorge}
+            <InnflyttingUtflytting
+                innflyttinger={innflyttingTilNorge}
+                utflyttinger={utflyttingFraNorge}
             />
             <Vergemål vergemål={vergemål} />
             <Fullmakter fullmakter={fullmakt} />
