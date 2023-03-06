@@ -156,7 +156,7 @@ const VedtaksperiodeValg: React.FC<Props> = ({
                     const antallMåneder = kalkulerAntallMåneder(årMånedFra, årMånedTil);
                     const skalViseFjernKnapp = behandlingErRedigerbar && index !== 0;
                     return (
-                        <>
+                        <React.Fragment key={vedtaksperiode.endretKey}>
                             <VedtakperiodeSelect
                                 className={'ny-rad'}
                                 feil={valideringsfeil && valideringsfeil[index]?.periodeType}
@@ -213,7 +213,7 @@ const VedtaksperiodeValg: React.FC<Props> = ({
                             ) : (
                                 <div />
                             )}
-                        </>
+                        </React.Fragment>
                     );
                 })}
             </Grid>
