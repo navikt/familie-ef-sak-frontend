@@ -4,10 +4,6 @@ import styled from 'styled-components';
 import { AlertWarning } from '../../../../Felles/Visningskomponenter/Alerts';
 import { EnsligErrorMessage } from '../../../../Felles/ErrorMessage/EnsligErrorMessage';
 
-const WrapperMarginBottom = styled.div`
-    margin-bottom: 2rem;
-`;
-
 const Advarsel = styled(AlertWarning)`
     margin-top: 0.5rem;
     max-width: 60rem;
@@ -30,22 +26,24 @@ const revurderesFørFørstePeriodeAdvarsel = (type: Type) => {
 };
 
 export const RevurderesFraOgMed: React.FC<{
-    settRevurderesFra: Dispatch<SetStateAction<string | undefined>>;
-    revurderesFra: string | undefined;
-    hentVedtakshistorikk: (revurderesFra: string) => void;
+    className?: string;
     feilmelding: string | null;
+    hentVedtakshistorikk: (revurderesFra: string) => void;
+    revurderesFra: string | undefined;
     revurdererFraPeriodeUtenStønad: boolean;
+    settRevurderesFra: Dispatch<SetStateAction<string | undefined>>;
     type: Type;
 }> = ({
-    settRevurderesFra,
-    revurderesFra,
-    hentVedtakshistorikk,
+    className,
     feilmelding,
+    hentVedtakshistorikk,
+    revurderesFra,
     revurdererFraPeriodeUtenStønad,
+    settRevurderesFra,
     type,
 }) => {
     return (
-        <WrapperMarginBottom>
+        <div className={className}>
             <MånedÅrVelger
                 label={'Revurderes fra og med'}
                 onEndret={(årMåned) => {
@@ -62,6 +60,6 @@ export const RevurderesFraOgMed: React.FC<{
             {revurdererFraPeriodeUtenStønad && (
                 <Advarsel>{revurderesFørFørstePeriodeAdvarsel(type)}</Advarsel>
             )}
-        </WrapperMarginBottom>
+        </div>
     );
 };

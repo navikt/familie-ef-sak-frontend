@@ -12,29 +12,26 @@ import { BodyShortSmall, SmallTextLabel } from '../../../../../Felles/Visningsko
 
 interface Props {
     beregnetStønad: Ressurs<IBeløpsperiode[]>;
+    className?: string;
 }
 
 const InnholdContainer = styled.div`
     display: grid;
-    grid-template-area: periode inntekt beløpFørSamordning samordningsfradrag stønadsbeløp;
     grid-template-columns: 8rem 5.5rem 10rem 12rem 10rem;
     grid-gap: 1rem;
+    margin-left: 1rem;
 `;
 
-const TittelContainer = styled.div`
-    display: grid;
-    grid-template-area: periode inntekt beløpFørSamordning samordningsfradrag stønadsbeløp;
-    grid-template-columns: 8rem 5.5rem 10rem 12rem 10rem;
-    grid-gap: 1rem;
+const TittelContainer = styled(InnholdContainer)`
     margin-bottom: 0.5rem;
 `;
 
-const Utregningstabell: React.FC<Props> = ({ beregnetStønad }) => {
+const Utregningstabell: React.FC<Props> = ({ beregnetStønad, className }) => {
     return (
         <DataViewer response={{ beregnetStønad }}>
             {({ beregnetStønad }) => {
                 return (
-                    <>
+                    <div className={className}>
                         <Heading spacing size="small" level="5">
                             Utregning
                         </Heading>
@@ -76,7 +73,7 @@ const Utregningstabell: React.FC<Props> = ({ beregnetStønad }) => {
                                 </InnholdContainer>
                             );
                         })}
-                    </>
+                    </div>
                 );
             }}
         </DataViewer>

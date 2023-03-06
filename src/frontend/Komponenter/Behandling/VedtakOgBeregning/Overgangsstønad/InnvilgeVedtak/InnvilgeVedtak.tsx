@@ -45,17 +45,35 @@ import { IVilkår } from '../../../Inngangsvilkår/vilkår';
 import { utledYngsteBarnFødselsdato } from './fødselsdatoUtils';
 import { oppdaterVedtakMedEndretKey } from './utils';
 import { useRedirectEtterLagring } from '../../../../../App/hooks/felles/useRedirectEtterLagring';
+import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
 
 export type InnvilgeVedtakForm = Omit<
     Omit<IInnvilgeVedtakForOvergangsstønad, 'resultatType'>,
     '_type'
 > & { yngsteBarnFødselsdato?: string };
 
-const WrapperDobbelMarginTop = styled.div`
-    margin-top: 2rem;
+const Container = styled.section`
+    margin-top: 1rem;
+    padding: 1rem;
 `;
 
-const WrapperMarginTop = styled.div`
+const InputContainer = styled(Container)`
+    background-color: ${AGray50};
+`;
+
+const UtregningTabell = styled(Utregningstabell)`
+    margin-top: 1rem;
+`;
+
+const HovedKnapp = styled(Button)`
+    margin-top: 1rem;
+`;
+
+const VedtaksperiodeVelger = styled(VedtaksperiodeValg)`
+    margin-top: 1rem;
+`;
+
+const InntektsperiodeVelger = styled(InntektsperiodeValg)`
     margin-top: 1rem;
 `;
 
@@ -267,8 +285,8 @@ export const InnvilgeVedtak: React.FC<{
 
     return (
         <form onSubmit={formState.onSubmit(handleSubmit)}>
-            <WrapperDobbelMarginTop>
-                {behandling.forrigeBehandlingId && behandlingErRedigerbar ? (
+            {behandling.forrigeBehandlingId && behandlingErRedigerbar ? (
+                <InputContainer>
                     <RevurderesFraOgMed
                         settRevurderesFra={settRevurderesFra}
                         hentVedtakshistorikk={hentVedtakshistorikk}
@@ -280,41 +298,39 @@ export const InnvilgeVedtak: React.FC<{
                         )}
                         type={'OVERGANGSSTØNAD'}
                     />
-                ) : null}
-                {skalViseVedtaksperiodeOgInntekt && (
-                    <>
-                        <Heading spacing size="small" level="5">
-                            Vedtaksperiode
-                        </Heading>
-                        {!behandlingErRedigerbar && periodeBegrunnelse.value === '' ? (
-                            <IngenBegrunnelseOppgitt />
-                        ) : (
-                            <EnsligTextArea
-                                value={periodeBegrunnelse.value}
-                                onChange={(event) => {
-                                    settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
-                                    periodeBegrunnelse.onChange(event);
-                                }}
-                                label="Begrunnelse for vedtaksperiode"
-                                maxLength={0}
-                                erLesevisning={!behandlingErRedigerbar}
-                                feilmelding={formState.errors.periodeBegrunnelse}
-                            />
-                        )}
-                        <WrapperMarginTop>
-                            <VedtaksperiodeValg
-                                vedtaksperiodeListe={vedtaksperiodeState}
-                                valideringsfeil={formState.errors.perioder}
-                                setValideringsFeil={formState.setErrors}
-                                låsVedtaksperiodeRad={låsVedtaksperiodeRad}
-                            />
-                        </WrapperMarginTop>
-                    </>
-                )}
-            </WrapperDobbelMarginTop>
+                </InputContainer>
+            ) : null}
+            {skalViseVedtaksperiodeOgInntekt && (
+                <InputContainer>
+                    <Heading spacing size="small" level="5">
+                        Vedtaksperiode
+                    </Heading>
+                    {!behandlingErRedigerbar && periodeBegrunnelse.value === '' ? (
+                        <IngenBegrunnelseOppgitt />
+                    ) : (
+                        <EnsligTextArea
+                            value={periodeBegrunnelse.value}
+                            onChange={(event) => {
+                                settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+                                periodeBegrunnelse.onChange(event);
+                            }}
+                            label="Begrunnelse for vedtaksperiode"
+                            maxLength={0}
+                            erLesevisning={!behandlingErRedigerbar}
+                            feilmelding={formState.errors.periodeBegrunnelse}
+                        />
+                    )}
+                    <VedtaksperiodeVelger
+                        låsVedtaksperiodeRad={låsVedtaksperiodeRad}
+                        setValideringsFeil={formState.setErrors}
+                        valideringsfeil={formState.errors.perioder}
+                        vedtaksperiodeListe={vedtaksperiodeState}
+                    />
+                </InputContainer>
+            )}
             {skalViseVedtaksperiodeOgInntekt && (
                 <>
-                    <WrapperMarginTop>
+                    <InputContainer>
                         <Heading spacing size="small" level="5">
                             Inntekt
                         </Heading>
@@ -333,46 +349,36 @@ export const InnvilgeVedtak: React.FC<{
                                 feilmelding={formState.errors.inntektBegrunnelse}
                             />
                         )}
-                        <WrapperMarginTop>
-                            <InntektsperiodeValg
-                                inntektsperiodeListe={inntektsperiodeState}
-                                valideringsfeil={formState.errors.inntekter}
-                                setValideringsFeil={formState.setErrors}
-                                samordningsfradragstype={typeSamordningsfradag}
-                                skalVelgeSamordningstype={skalVelgeSamordningstype}
-                                samordningValideringsfeil={formState.errors.samordningsfradragType}
-                            />
-                        </WrapperMarginTop>
+                        <InntektsperiodeVelger
+                            inntektsperiodeListe={inntektsperiodeState}
+                            valideringsfeil={formState.errors.inntekter}
+                            setValideringsFeil={formState.setErrors}
+                            samordningsfradragstype={typeSamordningsfradag}
+                            skalVelgeSamordningstype={skalVelgeSamordningstype}
+                            samordningValideringsfeil={formState.errors.samordningsfradragType}
+                        />
+                    </InputContainer>
+                    <Container>
                         {behandlingErRedigerbar && (
-                            <WrapperMarginTop>
-                                <Button
-                                    onClick={beregnPerioder}
-                                    variant={'secondary'}
-                                    type={'button'}
-                                >
-                                    Beregn
-                                </Button>
-                            </WrapperMarginTop>
-                        )}
-                    </WrapperMarginTop>
-                    <WrapperDobbelMarginTop>
-                        <Utregningstabell beregnetStønad={beregnetStønad} />
-                    </WrapperDobbelMarginTop>
-                    {feilmelding && (
-                        <AlertStripeFeilPreWrap style={{ marginTop: '2rem' }}>
-                            {feilmelding}
-                        </AlertStripeFeilPreWrap>
-                    )}
-                    {behandlingErRedigerbar && (
-                        <WrapperDobbelMarginTop>
-                            <Button
-                                variant={'primary'}
-                                disabled={laster || !!revurderesFraOgMedFeilmelding}
-                                type={'submit'}
-                            >
-                                Lagre vedtak
+                            <Button onClick={beregnPerioder} variant={'secondary'} type={'button'}>
+                                Beregn
                             </Button>
-                        </WrapperDobbelMarginTop>
+                        )}
+                        <UtregningTabell beregnetStønad={beregnetStønad} />
+                        {feilmelding && (
+                            <AlertStripeFeilPreWrap style={{ marginTop: '2rem' }}>
+                                {feilmelding}
+                            </AlertStripeFeilPreWrap>
+                        )}
+                    </Container>
+                    {behandlingErRedigerbar && (
+                        <HovedKnapp
+                            variant={'primary'}
+                            disabled={laster || !!revurderesFraOgMedFeilmelding}
+                            type={'submit'}
+                        >
+                            Lagre vedtak
+                        </HovedKnapp>
                     )}
                 </>
             )}
