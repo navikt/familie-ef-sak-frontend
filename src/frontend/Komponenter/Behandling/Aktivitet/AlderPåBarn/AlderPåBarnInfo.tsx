@@ -34,7 +34,7 @@ const AlderPåBarnInfo: FC<{ gjeldendeBarn: IBarnMedSamvær; skalViseSøknadsdat
             )}
             {barnepass && barnepass.årsakBarnepass && (
                 <Informasjonsrad
-                    ikon={VilkårInfoIkon.REGISTER}
+                    ikon={VilkårInfoIkon.SØKNAD}
                     label="Hvorfor trenger barnet pass?"
                     verdi={ÅrsakBarnepassTilTekst[barnepass.årsakBarnepass]}
                 />
