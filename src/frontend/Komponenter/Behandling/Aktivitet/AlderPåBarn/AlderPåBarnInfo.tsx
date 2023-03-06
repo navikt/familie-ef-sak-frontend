@@ -1,54 +1,45 @@
 import React, { FC } from 'react';
-import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
-import { Registergrunnlag, Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { IBarnMedSamvær } from '../../Inngangsvilkår/Aleneomsorg/typer';
 import { KopierbartNullableFødselsnummer } from '../../../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
-import EtikettDød from '../../../../Felles/Etiketter/EtikettDød';
 import { ÅrsakBarnepassTilTekst } from './AlderPåBarnTyper';
-import { nullableDatoTilAlder } from '../../../../App/utils/dato';
-import { BodyShortSmall, SmallTextLabel } from '../../../../Felles/Visningskomponenter/Tekster';
+import { utledNavnOgAlder } from '../../Inngangsvilkår/utils';
+import { BarneInfoWrapper, VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
+import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
 
 const AlderPåBarnInfo: FC<{ gjeldendeBarn: IBarnMedSamvær; skalViseSøknadsdata?: boolean }> = ({
     gjeldendeBarn,
 }) => {
     const { registergrunnlag, barnepass } = gjeldendeBarn;
 
-    const alder = nullableDatoTilAlder(registergrunnlag.fødselsdato);
-
     return (
-        <>
-            <GridTabell kolonner={3}>
-                {registergrunnlag.navn ? (
-                    <>
-                        <Registergrunnlag />
-                        <SmallTextLabel>
-                            {registergrunnlag.navn} ({alder} år)
-                            {registergrunnlag.dødsdato && (
-                                <EtikettDød dødsdato={registergrunnlag.dødsdato} />
-                            )}
-                        </SmallTextLabel>
-                    </>
-                ) : null}
-                {registergrunnlag.fødselsnummer ? (
-                    <>
-                        <Registergrunnlag />
-                        <BodyShortSmall>Fødsels eller D-nummer</BodyShortSmall>
+        <BarneInfoWrapper
+            navnOgAlderPåBarn={utledNavnOgAlder(
+                registergrunnlag.navn,
+                registergrunnlag.fødselsdato,
+                registergrunnlag.dødsdato
+            )}
+            dødsdato={registergrunnlag.dødsdato}
+        >
+            {registergrunnlag.fødselsnummer && (
+                <Informasjonsrad
+                    ikon={VilkårInfoIkon.REGISTER}
+                    label="Fødsels eller D-nummer"
+                    verdiSomString={false}
+                    verdi={
                         <KopierbartNullableFødselsnummer
                             fødselsnummer={registergrunnlag.fødselsnummer}
                         />
-                    </>
-                ) : null}
-                {barnepass && barnepass.årsakBarnepass ? (
-                    <>
-                        <Søknadsgrunnlag />
-                        <BodyShortSmall>Hvorfor trenger barnet pass?</BodyShortSmall>
-                        <SmallTextLabel>
-                            {ÅrsakBarnepassTilTekst[barnepass.årsakBarnepass]}
-                        </SmallTextLabel>
-                    </>
-                ) : null}
-            </GridTabell>
-        </>
+                    }
+                />
+            )}
+            {barnepass && barnepass.årsakBarnepass && (
+                <Informasjonsrad
+                    ikon={VilkårInfoIkon.REGISTER}
+                    label="Hvorfor trenger barnet pass?"
+                    verdi={ÅrsakBarnepassTilTekst[barnepass.årsakBarnepass]}
+                />
+            )}
+        </BarneInfoWrapper>
     );
 };
 
