@@ -177,7 +177,7 @@ const Innhold: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string }> = ({
                                 <Knapp
                                     onClick={() => settBeboereAdresseIModal(adresse)}
                                     variant={'secondary'}
-                                    size={'small'}
+                                    size={'xsmall'}
                                     type={'button'}
                                 >
                                     Se Beboere
