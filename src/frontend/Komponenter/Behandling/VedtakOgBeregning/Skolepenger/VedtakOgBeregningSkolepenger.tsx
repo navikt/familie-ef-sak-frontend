@@ -15,18 +15,14 @@ import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 import { VedtaksformSkolepenger } from './InnvilgetSkolepenger/VedtaksformSkolepenger';
 import { AvslåVedtak } from '../Overgangsstønad/AvslåVedtak/AvslåVedtak';
 
+const Container = styled.div`
+    padding: 0 2rem 1rem 2rem;
+`;
+
 interface Props {
     behandling: Behandling;
     vilkår: IVilkår;
 }
-
-const Wrapper = styled.div`
-    padding: 1rem 2rem;
-`;
-
-const WrapperMarginTop = styled.div`
-    margin-top: 1rem;
-`;
 
 const VedtakOgBeregningSkolepenger: FC<Props> = ({ behandling, vilkår }) => {
     const { id: behandlingId, forrigeBehandlingId } = behandling;
@@ -52,7 +48,7 @@ const VedtakOgBeregningSkolepenger: FC<Props> = ({ behandling, vilkår }) => {
     }, [vedtak]);
 
     return (
-        <Wrapper>
+        <Container>
             <SelectVedtaksresultat
                 behandling={behandling}
                 resultatType={resultatType}
@@ -60,64 +56,62 @@ const VedtakOgBeregningSkolepenger: FC<Props> = ({ behandling, vilkår }) => {
                 alleVilkårOppfylt={alleVilkårOppfylt}
                 skalViseNullstillVedtakKnapp={skalViseNullstillVedtakKnapp(vedtak)}
             />
-            <WrapperMarginTop>
-                <DataViewer response={{ vedtak, vedtakForrigeBehandling }}>
-                    {({ vedtak, vedtakForrigeBehandling }) => {
-                        const vedtakForSkolepenger = vedtak as unknown as IVedtakForSkolepenger;
-                        switch (resultatType) {
-                            case EBehandlingResultat.INNVILGE:
-                                return (
-                                    <VedtaksformSkolepenger
-                                        key={'innvilgelse'}
-                                        behandling={behandling}
-                                        erOpphør={false}
-                                        lagretInnvilgetVedtak={
-                                            vedtakForSkolepenger?._type ===
-                                            IVedtakType.InnvilgelseSkolepenger
-                                                ? vedtakForSkolepenger
-                                                : undefined
-                                        }
-                                        forrigeVedtak={
-                                            vedtakForrigeBehandling &&
-                                            (vedtakForrigeBehandling as unknown as IVedtakForSkolepenger)
-                                        }
-                                    />
-                                );
-                            case EBehandlingResultat.OPPHØRT:
-                                return (
-                                    <VedtaksformSkolepenger
-                                        key={'opphør'}
-                                        behandling={behandling}
-                                        erOpphør={true}
-                                        lagretInnvilgetVedtak={
-                                            vedtakForSkolepenger?._type ===
-                                            IVedtakType.OpphørSkolepenger
-                                                ? vedtakForSkolepenger
-                                                : undefined
-                                        }
-                                        forrigeVedtak={
-                                            vedtakForrigeBehandling &&
-                                            (vedtakForrigeBehandling as unknown as IVedtakForSkolepenger)
-                                        }
-                                    />
-                                );
-                            case EBehandlingResultat.AVSLÅ:
-                                return (
-                                    <AvslåVedtak
-                                        behandling={behandling}
-                                        alleVilkårOppfylt={alleVilkårOppfylt}
-                                        ikkeOppfyltVilkårEksisterer={true}
-                                        lagretVedtak={vedtak}
-                                    />
-                                );
-                            case undefined:
-                            default:
-                                return null;
-                        }
-                    }}
-                </DataViewer>
-            </WrapperMarginTop>
-        </Wrapper>
+            <DataViewer response={{ vedtak, vedtakForrigeBehandling }}>
+                {({ vedtak, vedtakForrigeBehandling }) => {
+                    const vedtakForSkolepenger = vedtak as unknown as IVedtakForSkolepenger;
+                    switch (resultatType) {
+                        case EBehandlingResultat.INNVILGE:
+                            return (
+                                <VedtaksformSkolepenger
+                                    key={'innvilgelse'}
+                                    behandling={behandling}
+                                    erOpphør={false}
+                                    lagretInnvilgetVedtak={
+                                        vedtakForSkolepenger?._type ===
+                                        IVedtakType.InnvilgelseSkolepenger
+                                            ? vedtakForSkolepenger
+                                            : undefined
+                                    }
+                                    forrigeVedtak={
+                                        vedtakForrigeBehandling &&
+                                        (vedtakForrigeBehandling as unknown as IVedtakForSkolepenger)
+                                    }
+                                />
+                            );
+                        case EBehandlingResultat.OPPHØRT:
+                            return (
+                                <VedtaksformSkolepenger
+                                    key={'opphør'}
+                                    behandling={behandling}
+                                    erOpphør={true}
+                                    lagretInnvilgetVedtak={
+                                        vedtakForSkolepenger?._type ===
+                                        IVedtakType.OpphørSkolepenger
+                                            ? vedtakForSkolepenger
+                                            : undefined
+                                    }
+                                    forrigeVedtak={
+                                        vedtakForrigeBehandling &&
+                                        (vedtakForrigeBehandling as unknown as IVedtakForSkolepenger)
+                                    }
+                                />
+                            );
+                        case EBehandlingResultat.AVSLÅ:
+                            return (
+                                <AvslåVedtak
+                                    behandling={behandling}
+                                    alleVilkårOppfylt={alleVilkårOppfylt}
+                                    ikkeOppfyltVilkårEksisterer={true}
+                                    lagretVedtak={vedtak}
+                                />
+                            );
+                        case undefined:
+                        default:
+                            return null;
+                    }
+                }}
+            </DataViewer>
+        </Container>
     );
 };
 

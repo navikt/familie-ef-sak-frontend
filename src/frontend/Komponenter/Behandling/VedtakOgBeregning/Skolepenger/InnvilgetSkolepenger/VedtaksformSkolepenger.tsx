@@ -28,21 +28,29 @@ import { tomSkoleårsperiodeSkolepenger } from '../typer';
 import SkoleårsperioderSkolepenger from './SkoleårsperioderSkolepenger';
 import OpphørSkolepenger from '../OpphørSkolepenger/OpphørSkolepenger';
 import { BodyShortSmall } from '../../../../../Felles/Visningskomponenter/Tekster';
-import { ARed500 } from '@navikt/ds-tokens/dist/tokens';
+import { AGray50, ARed500 } from '@navikt/ds-tokens/dist/tokens';
 import { useRedirectEtterLagring } from '../../../../../App/hooks/felles/useRedirectEtterLagring';
 import { v4 as uuidv4 } from 'uuid';
-
-export type InnvilgeVedtakForm = {
-    skoleårsperioder: ISkoleårsperiodeSkolepenger[];
-    begrunnelse?: string;
-};
 
 const WrapperDobbelMarginTop = styled.div`
     margin-top: 2rem;
 `;
 
+const BeregnKnapp = styled(Button)`
+    margin: 2rem 1rem;
+`;
+
 export const AdvarselTekst = styled(BodyShortSmall)`
     color: ${ARed500};
+`;
+
+const Container = styled.section`
+    margin-top: 1rem;
+    padding: 1rem;
+`;
+
+const InputContainer = styled(Container)`
+    background-color: ${AGray50};
 `;
 
 export const defaultSkoleårsperioder = (
@@ -54,6 +62,11 @@ export const defaultSkoleårsperioder = (
     } else {
         return [tomSkoleårsperiodeSkolepenger()];
     }
+};
+
+export type InnvilgeVedtakForm = {
+    skoleårsperioder: ISkoleårsperiodeSkolepenger[];
+    begrunnelse?: string;
 };
 
 export const VedtaksformSkolepenger: React.FC<{
@@ -169,20 +182,22 @@ export const VedtaksformSkolepenger: React.FC<{
 
     return (
         <form onSubmit={formState.onSubmit(handleSubmit)}>
-            <Heading spacing size="small" level="5">
-                Utgifter til skolepenger
-            </Heading>
-            <EnsligTextArea
-                erLesevisning={!behandlingErRedigerbar}
-                value={begrunnelseState.value}
-                onChange={(event) => {
-                    settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
-                    begrunnelseState.onChange(event);
-                }}
-                label={'Begrunnelse'}
-                maxLength={0}
-                feilmelding={formState.errors.begrunnelse}
-            />
+            <InputContainer>
+                <Heading spacing size="small" level="5">
+                    Utgifter til skolepenger
+                </Heading>
+                <EnsligTextArea
+                    erLesevisning={!behandlingErRedigerbar}
+                    value={begrunnelseState.value}
+                    onChange={(event) => {
+                        settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+                        begrunnelseState.onChange(event);
+                    }}
+                    label={'Begrunnelse'}
+                    maxLength={0}
+                    feilmelding={formState.errors.begrunnelse}
+                />
+            </InputContainer>
             {!erOpphør ? (
                 <SkoleårsperioderSkolepenger
                     skoleårsperioder={skoleårsPerioderState}
@@ -205,16 +220,16 @@ export const VedtaksformSkolepenger: React.FC<{
                 </AlertStripeFeilPreWrap>
             )}
             {behandlingErRedigerbar && !erOpphør && (
-                <WrapperDobbelMarginTop>
-                    <Button variant={'secondary'} onClick={beregnSkolepenger} type={'button'}>
+                <>
+                    <BeregnKnapp variant={'secondary'} onClick={beregnSkolepenger} type={'button'}>
                         Beregn
-                    </Button>
+                    </BeregnKnapp>
                     {visFeilmelding && (
                         <AdvarselTekst>
                             Kan ikke lagre vedtaket før beregning er utført
                         </AdvarselTekst>
                     )}
-                </WrapperDobbelMarginTop>
+                </>
             )}
             <WrapperDobbelMarginTop>
                 <UtregningstabellSkolepenger

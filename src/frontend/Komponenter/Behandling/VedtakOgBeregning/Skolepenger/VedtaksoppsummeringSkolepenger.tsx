@@ -9,7 +9,7 @@ import {
     GråBoks,
     SaksbehanldingsinformasjonUtdanning,
     SaksbehanldingsinformasjonUtgifter,
-    SøknadsinformajsonUtdanning,
+    SøknadsinformasjonUtdanning,
     SøknadsinformajsonUtgifter,
 } from './SaksinformasjonSkolepenger';
 import { Vilkårsvurdering } from '../Felles/Vilkårsvurdering';
@@ -40,7 +40,7 @@ export const VedtaksoppsummeringSkolepenger: React.FC<{
             </OppsummeringContainer>
             <OppsummeringContainer åpenHøyremeny={true}>
                 <GråBoks>
-                    <SøknadsinformajsonUtdanning
+                    <SøknadsinformasjonUtdanning
                         utdanning={utdanning}
                         skalViseSøknadsinfo={skalViseSøknadsinfo}
                     />

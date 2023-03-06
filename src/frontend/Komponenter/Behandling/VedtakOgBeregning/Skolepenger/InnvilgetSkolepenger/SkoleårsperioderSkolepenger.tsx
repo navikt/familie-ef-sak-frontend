@@ -13,17 +13,16 @@ import UtgiftsperiodeSkolepenger from './UtgiftsperiodeSkolepenger';
 import { tomSkoleårsperiodeSkolepenger } from '../typer';
 import { oppdaterValideringsfeil } from '../utils';
 import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
-import { ABgSubtle } from '@navikt/ds-tokens/dist/tokens';
+import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
 
 const Skoleårsperiode = styled.div`
-    margin: 1rem;
-    margin-right: 0.5rem;
-    margin-left: 0rem;
+    margin: 1rem 0.5rem 1rem 0;
     padding: 1rem;
-    background-color: ${ABgSubtle};
+    background-color: ${AGray50};
 `;
-const ContainerMedLuftUnder = styled.div`
-    margin-bottom: 1rem;
+
+const LeggTilSkoleår = styled(LeggTilKnapp)`
+    margin-left: 1rem;
 `;
 
 interface Props {
@@ -127,14 +126,12 @@ const SkoleårsperioderSkolepenger: React.FC<Props> = ({
                     </>
                 );
             })}
-            <ContainerMedLuftUnder>
-                {behandlingErRedigerbar && (
-                    <LeggTilKnapp
-                        onClick={() => skoleårsperioder.push(tomSkoleårsperiodeSkolepenger())}
-                        knappetekst="Legg til skoleår"
-                    />
-                )}
-            </ContainerMedLuftUnder>
+            {behandlingErRedigerbar && (
+                <LeggTilSkoleår
+                    onClick={() => skoleårsperioder.push(tomSkoleårsperiodeSkolepenger())}
+                    knappetekst="Legg til skoleår"
+                />
+            )}
         </>
     );
 };

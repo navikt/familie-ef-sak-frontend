@@ -35,7 +35,7 @@ export const SaksinformasjonSkolepenger: React.FC<Props> = ({ vilkår, behandlin
     return (
         <FlexBoks>
             <GråBoks>
-                <SøknadsinformajsonUtdanning
+                <SøknadsinformasjonUtdanning
                     utdanning={utdanning}
                     skalViseSøknadsinfo={skalViseSøknadsinfo}
                 />
@@ -97,7 +97,7 @@ type SøknadsinfoProps = {
     utdanning?: IUnderUtdanning;
     skalViseSøknadsinfo: boolean;
 };
-export const SøknadsinformajsonUtdanning: React.FC<SøknadsinfoProps> = ({
+export const SøknadsinformasjonUtdanning: React.FC<SøknadsinfoProps> = ({
     utdanning,
     skalViseSøknadsinfo,
 }) => {
