@@ -14,30 +14,23 @@ import { InfoSeksjonWrapper, VilkårInfoIkon } from '../../Vilkårpanel/VilkårI
 
 interface Props {
     aktivitet: IAktivitet;
-    skalViseSøknadsdata: boolean;
     stønadstype: Stønadstype;
     dokumentasjon?: IDokumentasjonGrunnlag;
 }
 
-const AktivitetArbeidInfo: FC<Props> = ({
-    aktivitet,
-    skalViseSøknadsdata,
-    stønadstype,
-    dokumentasjon,
-}) => {
+const AktivitetArbeidInfo: FC<Props> = ({ aktivitet, stønadstype, dokumentasjon }) => {
     const { arbeidsforhold, selvstendig, aksjeselskap, virksomhet, erIArbeid } = aktivitet;
 
     return (
         <InformasjonContainer>
-            {skalViseSøknadsdata && erIArbeid === EErIArbeid.NeiFordiJegErSyk && (
+            {erIArbeid === EErIArbeid.NeiFordiJegErSyk && (
                 <Informasjonsrad
                     ikon={VilkårInfoIkon.SØKNAD}
                     label={'Er ikke i arbeid fordi søker er syk'}
                 />
             )}
 
-            {skalViseSøknadsdata &&
-                arbeidsforhold &&
+            {arbeidsforhold &&
                 arbeidsforhold.map((arbeidsgiver, index) => (
                     <ArbeidstakerLønnsmottakerSomFrilanser
                         key={arbeidsgiver.arbeidsgivernavn + index}
@@ -46,8 +39,7 @@ const AktivitetArbeidInfo: FC<Props> = ({
                     />
                 ))}
 
-            {skalViseSøknadsdata &&
-                selvstendig &&
+            {selvstendig &&
                 selvstendig.map((firma, index) => (
                     <SelvstendigNæringsdrivendeEllerFrilanser
                         key={firma.organisasjonsnummer + index}
@@ -56,8 +48,7 @@ const AktivitetArbeidInfo: FC<Props> = ({
                     />
                 ))}
 
-            {skalViseSøknadsdata &&
-                aksjeselskap &&
+            {aksjeselskap &&
                 aksjeselskap.map((selskap, index) => (
                     <Aksjeselskap
                         key={selskap.navn + index}
@@ -66,7 +57,7 @@ const AktivitetArbeidInfo: FC<Props> = ({
                     />
                 ))}
 
-            {skalViseSøknadsdata && virksomhet && (
+            {virksomhet && (
                 <InfoSeksjonWrapper
                     undertittel={
                         ArbeidssituasjonTilTekst[EArbeidssituasjon.etablererEgenVirksomhet]
@@ -79,7 +70,7 @@ const AktivitetArbeidInfo: FC<Props> = ({
                     />
                 </InfoSeksjonWrapper>
             )}
-            {skalViseSøknadsdata && (
+            {
                 <>
                     <DokumentasjonSendtInn
                         dokumentasjon={dokumentasjon?.erIArbeid}
@@ -91,7 +82,7 @@ const AktivitetArbeidInfo: FC<Props> = ({
                         tittel={'Næringsfaglig vurdering av virksomheten du etablerer'}
                     />
                 </>
-            )}
+            }
         </InformasjonContainer>
     );
 };
