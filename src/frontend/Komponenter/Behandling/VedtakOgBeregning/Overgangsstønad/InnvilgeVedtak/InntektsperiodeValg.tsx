@@ -110,7 +110,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                         index !== 0 &&
                         (skalViseLeggTilKnapp || index === inntektsperiodeListe.value.length - 1);
                     return (
-                        <>
+                        <React.Fragment key={rad.endretKey}>
                             <MånedÅrVelger
                                 className={'ny-rad'}
                                 disabled={index === 0}
@@ -226,7 +226,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                             ) : (
                                 <div />
                             )}
-                        </>
+                        </React.Fragment>
                     );
                 })}
             </Grid>
