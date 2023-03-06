@@ -7,7 +7,7 @@ import { popoverContentDeltBosted } from './BarnDeltBosted';
 
 const FlexBox = styled.div`
     display: flex;
-    align-items: baseline;
+    align-items: center;
     gap: 0.5rem;
 `;
 
