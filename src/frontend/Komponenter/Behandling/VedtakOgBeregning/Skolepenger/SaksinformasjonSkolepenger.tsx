@@ -61,8 +61,7 @@ const FlexBoks = styled.div`
 
 export const GråBoks = styled.div`
     background-color: ${AGray50};
-    max-width: 750px;
-    min-width: 400px;
+    width: 26rem;
     padding: 1rem;
     border-radius: 4px;
     display: flex;
@@ -187,7 +186,7 @@ export const SøknadsinformajsonUtgifter: React.FC<SøknadsinfoProps> = ({
                 Søknadsinformasjon - Utgifter
             </Heading>
             {utdanning && skalViseSøknadsinfo ? (
-                <TokolonnersGrid paddingBottom={2.8}>
+                <TokolonnersGrid paddingBottom={4.8}>
                     <Søknad height={20} />
                     <BodyShortSmall>Semesteravgift</BodyShortSmall>
                     <HøyrestiltBodyShort>
