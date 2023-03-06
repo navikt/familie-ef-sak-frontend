@@ -42,10 +42,13 @@ const Barn: React.FC<{ barn: IBarn[] }> = ({ barn }) => {
                                     fødselsdato={barn.fødselsdato}
                                     dødsdato={barn.dødsdato}
                                 />
-                                {barn.annenForelder && (
-                                    <>
-                                        <Table.DataCell>{barn.annenForelder.navn}</Table.DataCell>
-                                        <Table.DataCell>
+
+                                <Table.DataCell>
+                                    {barn.annenForelder && barn.annenForelder.navn}
+                                </Table.DataCell>
+                                <Table.DataCell>
+                                    {barn.annenForelder && (
+                                        <>
                                             <KopierbartNullableFødselsnummer
                                                 fødselsnummer={barn.annenForelder.personIdent}
                                             />
@@ -54,9 +57,10 @@ const Barn: React.FC<{ barn: IBarn[] }> = ({ barn }) => {
                                                     dødsdato={barn.annenForelder.dødsdato}
                                                 />
                                             )}
-                                        </Table.DataCell>
-                                    </>
-                                )}
+                                        </>
+                                    )}
+                                </Table.DataCell>
+
                                 <Table.DataCell>
                                     <BarnBosted barn={barn}></BarnBosted>
                                 </Table.DataCell>
