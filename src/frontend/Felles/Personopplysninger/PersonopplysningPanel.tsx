@@ -11,11 +11,12 @@ const Panel = styled.div`
 const TittelMedIkon = styled.div`
     display: flex;
     gap: 1rem;
+    align-items: center;
 `;
 
 const IkonWrapper = styled.div`
-    width: 25px;
-    height: 25px;
+    width: 24px;
+    height: 24px;
     display: flex;
     justify-content: center;
 `;
@@ -27,7 +28,7 @@ const InnholdWrapper = styled.div`
     gap: 1rem;
 `;
 
-const IngenData = styled(BodyShort)`
+const ReadMoreMedMarginLeft = styled(ReadMore)`
     padding-left: 2.5rem;
 `;
 
@@ -43,22 +44,17 @@ const PersonopplysningerPanel: React.FC<{
                 <IkonWrapper>
                     <Ikon />
                 </IkonWrapper>
-                <div>
-                    <Heading size="small" className="tittel">
-                        {tittel}
-                    </Heading>
-                    {tittelBeskrivelse && (
-                        <ReadMore size="small" header={tittelBeskrivelse.header}>
-                            {tittelBeskrivelse.innhold}
-                        </ReadMore>
-                    )}
-                </div>
+                <Heading size="small" className="tittel">
+                    {tittel}
+                </Heading>
+                {!children && <BodyShort size="small">(Ingen data)</BodyShort>}
             </TittelMedIkon>
-            {children ? (
-                <InnholdWrapper>{children}</InnholdWrapper>
-            ) : (
-                <IngenData size="small">Ingen data</IngenData>
+            {tittelBeskrivelse && (
+                <ReadMoreMedMarginLeft size="small" header={tittelBeskrivelse.header}>
+                    {tittelBeskrivelse.innhold}
+                </ReadMoreMedMarginLeft>
             )}
+            {children && <InnholdWrapper>{children}</InnholdWrapper>}
         </Panel>
     );
 };
