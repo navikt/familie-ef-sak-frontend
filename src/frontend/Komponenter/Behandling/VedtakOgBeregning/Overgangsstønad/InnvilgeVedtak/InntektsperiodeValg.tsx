@@ -23,17 +23,23 @@ import { EnsligFamilieSelect } from '../../../../../Felles/Input/EnsligFamilieSe
 import { EnsligErrorMessage } from '../../../../../Felles/ErrorMessage/EnsligErrorMessage';
 import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 import { TextLabel } from '../../../../../Felles/Visningskomponenter/Tekster';
-import { HorizontalScroll } from '../../Felles/HorizontalScroll';
 
-const Grid = styled.div<{ lesevisning?: boolean }>`
+const InntektContainer = styled.div<{ lesevisning?: boolean }>`
     display: grid;
+    grid-template-area: fraOgMedVelger inntekt samordningsfradrag samordningsfradragstype fjernRadKnapp leggTilKnapp;
     grid-template-columns: ${(props) =>
-        props.lesevisning ? 'repeat(4, max-content)' : ' repeat(6, max-content)'};
-    grid-gap: 0.5rem 1rem;
+        props.lesevisning ? '8rem 11rem 13.5rem 13rem' : '13rem 12rem 12rem 12rem 3rem 3rem'};
+    grid-gap: 1rem;
+    margin-bottom: 0.5rem;
+`;
 
-    .ny-rad {
-        grid-column: 1;
-    }
+const TittelContainer = styled.div<{ lesevisning?: boolean }>`
+    display: grid;
+    grid-template-area: fraOgMedVelger inntekt samordningsfradrag samordningsfradragstype;
+    grid-template-columns: ${(props) =>
+        props.lesevisning ? '8rem 11rem 13.5rem 13rem' : '13rem 12rem 12rem 12rem 4rem'};
+    grid-gap: 1rem;
+    margin-bottom: 0.5rem;
 `;
 
 const StyledInput = styled(InputMedTusenSkille)`
@@ -45,30 +51,30 @@ export const tomInntektsperiodeRad = (årMånedFra?: string): IInntektsperiode =
     endretKey: uuidv4(),
 });
 
-const LeggTilRadKnapp = styled(LeggTilKnapp)`
-    margin-top: 0.5rem;
+const KnappWrapper = styled.div`
+    button {
+        width: 3rem;
+    }
 `;
 
 interface Props {
-    className?: string;
     inntektsperiodeListe: ListState<IInntektsperiode>;
-    samordningsfradragstype: FieldState;
-    samordningValideringsfeil?: FormErrors<InnvilgeVedtakForm>['samordningsfradragType'];
-    setValideringsFeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>;
-    skalVelgeSamordningstype: boolean;
     valideringsfeil?: FormErrors<InnvilgeVedtakForm>['inntekter'];
+    setValideringsFeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>;
+    samordningsfradragstype: FieldState;
+    skalVelgeSamordningstype: boolean;
+    samordningValideringsfeil?: FormErrors<InnvilgeVedtakForm>['samordningsfradragType'];
 }
 
 const InntektsperiodeValg: React.FC<Props> = ({
-    className,
     inntektsperiodeListe,
-    samordningsfradragstype,
-    samordningValideringsfeil,
-    setValideringsFeil,
-    skalVelgeSamordningstype,
     valideringsfeil,
+    setValideringsFeil,
+    samordningsfradragstype,
+    skalVelgeSamordningstype,
+    samordningValideringsfeil,
 }) => {
-    const { behandlingErRedigerbar, åpenHøyremeny } = useBehandling();
+    const { behandlingErRedigerbar } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
     const skalViseLeggTilKnapp = behandlingErRedigerbar;
 
@@ -92,123 +98,102 @@ const InntektsperiodeValg: React.FC<Props> = ({
     };
 
     return (
-        <HorizontalScroll
-            className={className}
-            synligVedLukketMeny={'1080px'}
-            synligVedÅpenMeny={'1320px'}
-            åpenHøyremeny={åpenHøyremeny}
-        >
-            <Grid lesevisning={!behandlingErRedigerbar}>
+        <>
+            <TittelContainer lesevisning={!behandlingErRedigerbar}>
                 <TextLabel>Fra</TextLabel>
                 <TextLabel>Forventet inntekt (år)</TextLabel>
                 <TextLabel>Samordningsfradrag (mnd)</TextLabel>
                 <TextLabel>Type samordningsfradrag</TextLabel>
+            </TittelContainer>
+            {inntektsperiodeListe.value.map((rad, index) => {
+                const skalViseFjernKnapp =
+                    behandlingErRedigerbar &&
+                    index !== 0 &&
+                    (skalViseLeggTilKnapp || index === inntektsperiodeListe.value.length - 1);
+                return (
+                    <InntektContainer key={rad.endretKey} lesevisning={!behandlingErRedigerbar}>
+                        <MånedÅrVelger
+                            disabled={index === 0}
+                            feilmelding={valideringsfeil && valideringsfeil[index]?.årMånedFra}
+                            aria-label={'Inntekt fra'}
+                            onEndret={(e) => {
+                                oppdaterInntektslisteElement(
+                                    index,
+                                    EInntektsperiodeProperty.årMånedFra,
+                                    e
+                                );
+                            }}
+                            årMånedInitiell={rad.årMånedFra}
+                            antallÅrTilbake={10}
+                            antallÅrFrem={4}
+                            lesevisning={!behandlingErRedigerbar}
+                        />
 
-                {inntektsperiodeListe.value.map((rad, index) => {
-                    const skalViseFjernKnapp =
-                        behandlingErRedigerbar &&
-                        index !== 0 &&
-                        (skalViseLeggTilKnapp || index === inntektsperiodeListe.value.length - 1);
-                    return (
-                        <>
-                            <MånedÅrVelger
-                                className={'ny-rad'}
-                                disabled={index === 0}
-                                feilmelding={valideringsfeil && valideringsfeil[index]?.årMånedFra}
-                                aria-label={'Inntekt fra'}
-                                onEndret={(e) => {
-                                    oppdaterInntektslisteElement(
-                                        index,
-                                        EInntektsperiodeProperty.årMånedFra,
-                                        e
-                                    );
-                                }}
-                                årMånedInitiell={rad.årMånedFra}
-                                antallÅrTilbake={10}
-                                antallÅrFrem={4}
-                                lesevisning={!behandlingErRedigerbar}
-                            />
-
-                            <StyledInput
-                                label={'Forventet inntekt'}
+                        <StyledInput
+                            label={'Forventet inntekt'}
+                            hideLabel
+                            type="number"
+                            value={harTallverdi(rad.forventetInntekt) ? rad.forventetInntekt : ''}
+                            onChange={(e) => {
+                                settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+                                oppdaterInntektslisteElement(
+                                    index,
+                                    EInntektsperiodeProperty.forventetInntekt,
+                                    tilTallverdi(e.target.value)
+                                );
+                            }}
+                            erLesevisning={!behandlingErRedigerbar}
+                        />
+                        <StyledInput
+                            label={'Samordningsfradrag (mnd)'}
+                            hideLabel
+                            type="number"
+                            value={
+                                harTallverdi(rad.samordningsfradrag) ? rad.samordningsfradrag : ''
+                            }
+                            onChange={(e) => {
+                                settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+                                oppdaterInntektslisteElement(
+                                    index,
+                                    EInntektsperiodeProperty.samordningsfradrag,
+                                    tilTallverdi(e.target.value)
+                                );
+                            }}
+                            erLesevisning={!behandlingErRedigerbar}
+                        />
+                        <div>
+                            <EnsligFamilieSelect
+                                label={'Type samordninsfradrag'}
                                 hideLabel
-                                type="number"
+                                size={'medium'}
                                 value={
-                                    harTallverdi(rad.forventetInntekt) ? rad.forventetInntekt : ''
+                                    skalVelgeSamordningstype ? samordningsfradragstype.value : ''
                                 }
-                                onChange={(e) => {
+                                onChange={(event) => {
                                     settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
-                                    oppdaterInntektslisteElement(
-                                        index,
-                                        EInntektsperiodeProperty.forventetInntekt,
-                                        tilTallverdi(e.target.value)
-                                    );
+                                    samordningsfradragstype.onChange(event);
                                 }}
+                                disabled={!skalVelgeSamordningstype || index > 0}
                                 erLesevisning={!behandlingErRedigerbar}
-                            />
-                            <StyledInput
-                                label={'Samordningsfradrag (mnd)'}
-                                hideLabel
-                                type="number"
-                                value={
-                                    harTallverdi(rad.samordningsfradrag)
-                                        ? rad.samordningsfradrag
-                                        : ''
+                                lesevisningVerdi={
+                                    samordningsfradragstype.value &&
+                                    samordningsfradagTilTekst[
+                                        samordningsfradragstype.value as ESamordningsfradragtype
+                                    ]
                                 }
-                                onChange={(e) => {
-                                    settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
-                                    oppdaterInntektslisteElement(
-                                        index,
-                                        EInntektsperiodeProperty.samordningsfradrag,
-                                        tilTallverdi(e.target.value)
-                                    );
-                                }}
-                                erLesevisning={!behandlingErRedigerbar}
-                            />
-                            <div>
-                                <EnsligFamilieSelect
-                                    label={'Type samordninsfradrag'}
-                                    hideLabel
-                                    size={'medium'}
-                                    value={
-                                        skalVelgeSamordningstype
-                                            ? samordningsfradragstype.value
-                                            : ''
-                                    }
-                                    onChange={(event) => {
-                                        settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
-                                        samordningsfradragstype.onChange(event);
-                                    }}
-                                    disabled={!skalVelgeSamordningstype || index > 0}
-                                    erLesevisning={!behandlingErRedigerbar}
-                                    lesevisningVerdi={
-                                        samordningsfradragstype.value &&
-                                        samordningsfradagTilTekst[
-                                            samordningsfradragstype.value as ESamordningsfradragtype
-                                        ]
-                                    }
-                                >
-                                    <option value="">Velg</option>
-                                    <option value={ESamordningsfradragtype.GJENLEVENDEPENSJON}>
-                                        Gjenlevendepensjon
-                                    </option>
-                                    <option value={ESamordningsfradragtype.UFØRETRYGD}>
-                                        Uføretrygd
-                                    </option>
-                                </EnsligFamilieSelect>
-                                <EnsligErrorMessage>{samordningValideringsfeil}</EnsligErrorMessage>
-                            </div>
-                            {skalViseLeggTilKnapp && (
-                                <Tooltip content="Legg til rad under" placement="right">
-                                    <LeggTilKnapp
-                                        onClick={() => {
-                                            leggTilTomRadUnder(index);
-                                        }}
-                                        ikontekst={'Legg til ny rad'}
-                                    />
-                                </Tooltip>
-                            )}
-                            {skalViseFjernKnapp ? (
+                            >
+                                <option value="">Velg</option>
+                                <option value={ESamordningsfradragtype.GJENLEVENDEPENSJON}>
+                                    Gjenlevendepensjon
+                                </option>
+                                <option value={ESamordningsfradragtype.UFØRETRYGD}>
+                                    Uføretrygd
+                                </option>
+                            </EnsligFamilieSelect>
+                            <EnsligErrorMessage>{samordningValideringsfeil}</EnsligErrorMessage>
+                        </div>
+                        {skalViseFjernKnapp ? (
+                            <KnappWrapper>
                                 <FjernKnapp
                                     onClick={() => {
                                         inntektsperiodeListe.remove(index);
@@ -223,20 +208,32 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                     }}
                                     ikontekst={'Fjern inntektsperiode'}
                                 />
-                            ) : (
-                                <div />
-                            )}
-                        </>
-                    );
-                })}
-            </Grid>
+                            </KnappWrapper>
+                        ) : (
+                            <div />
+                        )}
+                        {skalViseLeggTilKnapp && (
+                            <Tooltip content="Legg til rad under" placement="right">
+                                <KnappWrapper>
+                                    <LeggTilKnapp
+                                        onClick={() => {
+                                            leggTilTomRadUnder(index);
+                                        }}
+                                        ikontekst={'Legg til ny rad'}
+                                    />
+                                </KnappWrapper>
+                            </Tooltip>
+                        )}
+                    </InntektContainer>
+                );
+            })}
             {behandlingErRedigerbar && (
-                <LeggTilRadKnapp
+                <LeggTilKnapp
                     onClick={() => inntektsperiodeListe.push(tomInntektsperiodeRad())}
                     knappetekst=" Legg til inntektsperiode"
                 />
             )}
-        </HorizontalScroll>
+        </>
     );
 };
 

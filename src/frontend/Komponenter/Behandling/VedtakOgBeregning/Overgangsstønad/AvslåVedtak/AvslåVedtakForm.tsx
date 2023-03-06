@@ -7,16 +7,13 @@ import { useApp } from '../../../../../App/context/AppContext';
 import SelectAvslagÅrsak from './SelectAvslagÅrsak';
 import { EAvslagÅrsak } from '../../../../../App/typer/vedtak';
 import { Button } from '@navikt/ds-react';
-import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
 
-const HovedKnapp = styled(Button)`
-    margin-top: 1rem;
+const StyledForm = styled.form`
+    margin-top: 2rem;
 `;
 
-const Container = styled.div`
-    margin-top: 1rem;
-    padding: 0.4rem 1rem 1rem 1rem;
-    background-color: ${AGray50};
+const HovedKnapp = styled(Button)`
+    margin-top: 2rem;
 `;
 
 interface Props {
@@ -52,32 +49,30 @@ const AvslåVedtakForm: React.FC<Props> = ({
 
     return (
         <>
-            <form onSubmit={lagreVedtak}>
-                <Container>
-                    {skalVelgeÅrsak && (
-                        <SelectAvslagÅrsak
-                            avslagÅrsak={avslagÅrsak}
-                            settAvslagÅrsak={settAvslagÅrsak}
-                            feilmelding={feilmeldingÅrsak}
-                        />
-                    )}
-                    <EnsligTextArea
-                        value={avslagBegrunnelse}
-                        onChange={(e) => {
-                            settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
-                            settAvslagBegrunnelse(e.target.value);
-                        }}
-                        label="Begrunnelse"
-                        maxLength={0}
-                        erLesevisning={!behandlingErRedigerbar}
+            <StyledForm onSubmit={lagreVedtak}>
+                {skalVelgeÅrsak && (
+                    <SelectAvslagÅrsak
+                        avslagÅrsak={avslagÅrsak}
+                        settAvslagÅrsak={settAvslagÅrsak}
+                        feilmelding={feilmeldingÅrsak}
                     />
-                </Container>
+                )}
+                <EnsligTextArea
+                    value={avslagBegrunnelse}
+                    onChange={(e) => {
+                        settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+                        settAvslagBegrunnelse(e.target.value);
+                    }}
+                    label="Begrunnelse"
+                    maxLength={0}
+                    erLesevisning={!behandlingErRedigerbar}
+                />
                 {behandlingErRedigerbar && (
                     <HovedKnapp type="submit" disabled={laster}>
                         Lagre vedtak
                     </HovedKnapp>
                 )}
-            </form>
+            </StyledForm>
             {feilmelding && (
                 <AlertStripeFeilPreWrap style={{ marginTop: '2rem' }}>
                     {feilmelding}

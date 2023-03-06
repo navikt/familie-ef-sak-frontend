@@ -12,16 +12,15 @@ const StyledFamilieTextArea: React.FC<IFamilieTextareaProps> = styled(FamilieTex
 type Props = { feilmelding?: string } & IFamilieTextareaProps;
 
 export const EnsligTextArea: React.FC<Props> = ({
-    className,
-    erLesevisning,
-    feilmelding,
+    value,
+    onChange,
     label,
     maxLength,
-    onChange,
-    value,
+    erLesevisning,
+    feilmelding,
 }) => {
     return (
-        <div className={className}>
+        <>
             <StyledFamilieTextArea
                 value={value}
                 onChange={(e) => onChange && onChange(e)}
@@ -30,6 +29,6 @@ export const EnsligTextArea: React.FC<Props> = ({
                 erLesevisning={erLesevisning}
             />
             <EnsligErrorMessage>{feilmelding}</EnsligErrorMessage>
-        </div>
+        </>
     );
 };

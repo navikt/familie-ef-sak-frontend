@@ -20,9 +20,9 @@ import { AlertError } from '../Visningskomponenter/Alerts';
  * T[P] = Behandling og IPersonoppslyninger
  */
 interface DataViewerProps<T extends Record<string, unknown>> {
-    alertStripeVariant?: AlertStripeVariant;
-    children: ((data: T) => React.ReactElement | null) | ReactNode;
     response: { [P in keyof T]: Ressurs<T[P]> };
+    children: ((data: T) => React.ReactElement | null) | ReactNode;
+    alertStripeVariant?: AlertStripeVariant;
 }
 
 // eslint-disable-next-line

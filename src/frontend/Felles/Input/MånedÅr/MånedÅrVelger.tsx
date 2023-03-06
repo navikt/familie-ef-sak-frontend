@@ -22,9 +22,19 @@ const DatolabelStyle = styled.label`
     margin-bottom: 0.5em;
 `;
 
+const StyledMånedVelger = styled(MånedVelger)`
+    margin-right: 0.25rem;
+    gap: 0;
+`;
+
+const StyledÅrVelger = styled(Årvelger)`
+    gap: 0;
+`;
+
 const FlexDiv = styled.div`
     display: flex;
-    gap: 0.25rem;
+    width: max-content;
+    margin-right: 2rem;
 `;
 
 const MånedÅrVelger: React.FC<Props> = ({
@@ -62,14 +72,14 @@ const MånedÅrVelger: React.FC<Props> = ({
                 </DatolabelStyle>
             )}
             <FlexDiv>
-                <MånedVelger
+                <StyledMånedVelger
                     måned={måned}
                     settMåned={settMåned}
                     lesevisning={lesevisning}
                     disabled={disabled}
                     size={size}
                 />
-                <Årvelger
+                <StyledÅrVelger
                     år={år}
                     settÅr={settÅr}
                     antallÅrTilbake={antallÅrTilbake}

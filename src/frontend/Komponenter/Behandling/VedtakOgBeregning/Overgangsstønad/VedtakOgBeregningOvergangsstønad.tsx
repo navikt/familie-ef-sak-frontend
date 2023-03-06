@@ -18,8 +18,8 @@ interface Props {
     vilkår: IVilkår;
 }
 
-const Container = styled.div`
-    padding: 0 2rem 1rem 2rem;
+const Wrapper = styled.div`
+    padding: 1rem 2rem;
 `;
 
 const VedtakOgBeregningOvergangsstønad: FC<Props> = ({ behandling, vilkår }) => {
@@ -43,7 +43,7 @@ const VedtakOgBeregningOvergangsstønad: FC<Props> = ({ behandling, vilkår }) =
         <DataViewer response={{ vedtak }}>
             {({ vedtak }) => {
                 return (
-                    <Container>
+                    <Wrapper>
                         <SelectVedtaksresultat
                             behandling={behandling}
                             resultatType={resultatType}
@@ -59,7 +59,7 @@ const VedtakOgBeregningOvergangsstønad: FC<Props> = ({ behandling, vilkår }) =
                             ikkeOppfyltVilkårEksisterer={ikkeOppfyltVilkårEksisterer}
                             vilkår={vilkår}
                         />
-                    </Container>
+                    </Wrapper>
                 );
             }}
         </DataViewer>
