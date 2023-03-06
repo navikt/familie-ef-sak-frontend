@@ -14,9 +14,10 @@ import { tomSkoleårsperiodeSkolepenger } from '../typer';
 import { oppdaterValideringsfeil } from '../utils';
 import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
+import { HorizontalScroll } from '../../Felles/HorizontalScroll';
 
 const Skoleårsperiode = styled.div`
-    margin: 1rem 0.5rem 1rem 0;
+    margin: 1rem 0;
     padding: 1rem;
     background-color: ${AGray50};
 `;
@@ -40,7 +41,7 @@ const SkoleårsperioderSkolepenger: React.FC<Props> = ({
     settValideringsFeil,
     oppdaterHarUtførtBeregning,
 }) => {
-    const { behandlingErRedigerbar } = useBehandling();
+    const { behandlingErRedigerbar, åpenHøyremeny } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
 
     const fjernSkoleårsperiode = (index: number) => {
@@ -75,53 +76,60 @@ const SkoleårsperioderSkolepenger: React.FC<Props> = ({
                 return (
                     <>
                         <Skoleårsperiode key={index}>
-                            <SkoleårDelårsperiode
-                                data={skoleårsperiode.perioder}
-                                oppdater={(perioder) =>
-                                    oppdaterSkoleårsperioder(index, 'perioder', perioder)
-                                }
-                                behandlingErRedigerbar={behandlingErRedigerbar}
-                                valideringsfeil={
-                                    valideringsfeil && valideringsfeil[index]?.perioder
-                                }
-                                settValideringsFeil={(oppdaterteFeil) =>
-                                    oppdaterValideringsfeil(
-                                        settValideringsFeil,
-                                        index,
-                                        'perioder',
-                                        oppdaterteFeil
-                                    )
-                                }
-                            />
-                            <UtgiftsperiodeSkolepenger
-                                data={skoleårsperiode.utgiftsperioder}
-                                oppdater={(utgiftsperioder) =>
-                                    oppdaterSkoleårsperioder(
-                                        index,
-                                        'utgiftsperioder',
-                                        utgiftsperioder
-                                    )
-                                }
-                                behandlingErRedigerbar={behandlingErRedigerbar}
-                                valideringsfeil={
-                                    valideringsfeil && valideringsfeil[index]?.utgiftsperioder
-                                }
-                                settValideringsFeil={(oppdaterteFeil) =>
-                                    oppdaterValideringsfeil(
-                                        settValideringsFeil,
-                                        index,
-                                        'utgiftsperioder',
-                                        oppdaterteFeil
-                                    )
-                                }
-                                låsteUtgiftIder={låsteUtgiftIder}
-                            />
-                            {skalViseFjernKnapp && (
-                                <FjernKnapp
-                                    onClick={() => fjernSkoleårsperiode(index)}
-                                    knappetekst={'Fjern skoleårsperiode'}
+                            <HorizontalScroll
+                                key={index}
+                                synligVedLukketMeny={'1035px'}
+                                synligVedÅpenMeny={'1330px'}
+                                åpenHøyremeny={åpenHøyremeny}
+                            >
+                                <SkoleårDelårsperiode
+                                    data={skoleårsperiode.perioder}
+                                    oppdater={(perioder) =>
+                                        oppdaterSkoleårsperioder(index, 'perioder', perioder)
+                                    }
+                                    behandlingErRedigerbar={behandlingErRedigerbar}
+                                    valideringsfeil={
+                                        valideringsfeil && valideringsfeil[index]?.perioder
+                                    }
+                                    settValideringsFeil={(oppdaterteFeil) =>
+                                        oppdaterValideringsfeil(
+                                            settValideringsFeil,
+                                            index,
+                                            'perioder',
+                                            oppdaterteFeil
+                                        )
+                                    }
                                 />
-                            )}
+                                <UtgiftsperiodeSkolepenger
+                                    data={skoleårsperiode.utgiftsperioder}
+                                    oppdater={(utgiftsperioder) =>
+                                        oppdaterSkoleårsperioder(
+                                            index,
+                                            'utgiftsperioder',
+                                            utgiftsperioder
+                                        )
+                                    }
+                                    behandlingErRedigerbar={behandlingErRedigerbar}
+                                    valideringsfeil={
+                                        valideringsfeil && valideringsfeil[index]?.utgiftsperioder
+                                    }
+                                    settValideringsFeil={(oppdaterteFeil) =>
+                                        oppdaterValideringsfeil(
+                                            settValideringsFeil,
+                                            index,
+                                            'utgiftsperioder',
+                                            oppdaterteFeil
+                                        )
+                                    }
+                                    låsteUtgiftIder={låsteUtgiftIder}
+                                />
+                                {skalViseFjernKnapp && (
+                                    <FjernKnapp
+                                        onClick={() => fjernSkoleårsperiode(index)}
+                                        knappetekst={'Fjern skoleårsperiode'}
+                                    />
+                                )}
+                            </HorizontalScroll>
                         </Skoleårsperiode>
                     </>
                 );

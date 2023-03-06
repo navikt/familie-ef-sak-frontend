@@ -17,18 +17,18 @@ import { EnsligFamilieSelect } from '../../../../../Felles/Input/EnsligFamilieSe
 import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 import { BodyShortSmall } from '../../../../../Felles/Visningskomponenter/Tekster';
 
-const SkoleårsperiodeRad = styled.div<{
+const Grid = styled.div<{
     lesevisning?: boolean;
-    erHeader?: boolean;
     skoleårErFjernet?: boolean;
 }>`
     display: grid;
-    grid-template-areas: 'studietype fraOgMedVelger tilOgMedVelger antallMnd studiebelastning';
-    grid-template-columns: ${(props) =>
-        props.lesevisning ? '10rem 9rem 9rem 5rem 7rem' : '12rem 13rem 12.5rem 5rem 8rem 4rem'};
-    grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
-    margin-bottom: ${(props) => (props.erHeader ? '0rem' : '0.5rem')};
+    grid-template-columns: repeat(6, max-content);
+    grid-gap: 0.5rem 1rem;
+
     text-decoration: ${(props) => (props.skoleårErFjernet ? 'line-through' : 'inherit')};
+    .ny-rad {
+        grid-column: 1;
+    }
 `;
 
 const AntallMåneder = styled(BodyShortSmall)<{ erLesevisning: boolean }>`
@@ -42,6 +42,7 @@ const ContainerMedLuftUnder = styled.div`
 `;
 
 const StyledInput = styled(InputUtenSpinner)`
+    width: 8rem;
     text-align: left;
 `;
 
@@ -98,28 +99,23 @@ const SkoleårDelårsperiode: React.FC<ValideringsPropsMedOppdatering<IPeriodeSk
 
     return (
         <>
-            <SkoleårsperiodeRad lesevisning={!behandlingErRedigerbar} erHeader>
+            <Grid lesevisning={!behandlingErRedigerbar} skoleårErFjernet={skoleårErFjernet}>
                 <Label>Studietype</Label>
                 <Label>Periode fra og med</Label>
                 <Label>Periode til og med</Label>
-                <Label>Ant. mnd</Label>
+                <Label>Ant.</Label>
                 <Label>Studiebelastning</Label>
-            </SkoleårsperiodeRad>
-            {data.map((periode, index) => {
-                const { studietype, årMånedFra, årMånedTil, studiebelastning } = periode;
-                const skalViseFjernKnapp =
-                    behandlingErRedigerbar &&
-                    index === data.length - 1 &&
-                    index !== 0 &&
-                    !skoleårErFjernet;
-                return (
-                    <>
-                        <SkoleårsperiodeRad
-                            key={index}
-                            lesevisning={erLesevisning}
-                            skoleårErFjernet={skoleårErFjernet}
-                        >
+                {data.map((periode, index) => {
+                    const { studietype, årMånedFra, årMånedTil, studiebelastning } = periode;
+                    const skalViseFjernKnapp =
+                        behandlingErRedigerbar &&
+                        index === data.length - 1 &&
+                        index !== 0 &&
+                        !skoleårErFjernet;
+                    return (
+                        <React.Fragment key={index}>
                             <StyledSelect
+                                className={'ny-rad'}
                                 label="Periodetype"
                                 hideLabel
                                 value={studietype}
@@ -183,10 +179,10 @@ const SkoleårDelårsperiode: React.FC<ValideringsPropsMedOppdatering<IPeriodeSk
                                     />
                                 </IkonKnappWrapper>
                             )}
-                        </SkoleårsperiodeRad>
-                    </>
-                );
-            })}
+                        </React.Fragment>
+                    );
+                })}
+            </Grid>
             <ContainerMedLuftUnder>
                 {!erLesevisning && !erOpphør && (
                     <LeggTilKnapp
