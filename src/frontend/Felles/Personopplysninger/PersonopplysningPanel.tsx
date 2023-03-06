@@ -13,6 +13,13 @@ const TittelMedIkon = styled.div`
     gap: 1rem;
 `;
 
+const IkonWrapper = styled.div`
+    width: 25px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+`;
+
 const InnholdWrapper = styled.div`
     padding-left: 1.75rem;
     display: flex;
@@ -33,7 +40,9 @@ const PersonopplysningerPanel: React.FC<{
     return (
         <Panel>
             <TittelMedIkon className="ikon">
-                <Ikon />
+                <IkonWrapper>
+                    <Ikon />
+                </IkonWrapper>
                 <div>
                     <Heading size="small" className="tittel">
                         {tittel}
