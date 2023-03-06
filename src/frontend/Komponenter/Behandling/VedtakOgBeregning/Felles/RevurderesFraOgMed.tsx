@@ -28,16 +28,18 @@ const revurderesFørFørstePeriodeAdvarsel = (type: Type) => {
 export const RevurderesFraOgMed: React.FC<{
     className?: string;
     feilmelding: string | null;
+    hentVedtakshistorikk: (revurderesFra: string) => void;
     revurderesFra: string | undefined;
     revurdererFraPeriodeUtenStønad: boolean;
     settRevurderesFra: Dispatch<SetStateAction<string | undefined>>;
     type: Type;
 }> = ({
     className,
-    settRevurderesFra,
-    revurderesFra,
     feilmelding,
+    hentVedtakshistorikk,
+    revurderesFra,
     revurdererFraPeriodeUtenStønad,
+    settRevurderesFra,
     type,
 }) => {
     return (
@@ -48,6 +50,7 @@ export const RevurderesFraOgMed: React.FC<{
                     if (!årMåned) return;
 
                     settRevurderesFra(årMåned);
+                    hentVedtakshistorikk(årMåned);
                 }}
                 antallÅrTilbake={5}
                 antallÅrFrem={3}
