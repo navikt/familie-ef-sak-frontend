@@ -3,25 +3,16 @@ import {
     IBarnMedSamvær,
     typeBarnepassordningTilTekst,
 } from '../../Inngangsvilkår/Aleneomsorg/typer';
-import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
-import { Registergrunnlag, Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
-import EtikettDød from '../../../../Felles/Etiketter/EtikettDød';
-import { nullableDatoTilAlder } from '../../../../App/utils/dato';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
-import styled from 'styled-components';
-import { BodyShortSmall, SmallTextLabel } from '../../../../Felles/Visningskomponenter/Tekster';
-
-const TekstMedVenstrePadding = styled(BodyShortSmall)`
-    padding-left: 0.5rem;
-    font-style: italic;
-`;
+import { utledNavnOgAlder } from '../../Inngangsvilkår/utils';
+import { BarneInfoWrapper, VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
+import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
 
 const TilsynsutgifterBarnInfo: FC<{
     gjeldendeBarn: IBarnMedSamvær;
     skalViseSøknadsdata?: boolean;
 }> = ({ gjeldendeBarn }) => {
     const { registergrunnlag, barnepass } = gjeldendeBarn;
-    const alder = nullableDatoTilAlder(registergrunnlag.fødselsdato);
     const harPassordning = barnepass && barnepass.barnepassordninger;
     const passordningTittel =
         harPassordning && barnepass?.barnepassordninger.length > 1
@@ -30,83 +21,63 @@ const TilsynsutgifterBarnInfo: FC<{
 
     if (!gjeldendeBarn.barnepass?.skalHaBarnepass) {
         return (
-            <GridTabell kolonner={1}>
-                {registergrunnlag.navn ? (
-                    <>
-                        <Registergrunnlag />
-                        <SmallTextLabel>
-                            {registergrunnlag.navn} ({alder} år)
-                            {registergrunnlag.dødsdato && (
-                                <EtikettDød dødsdato={registergrunnlag.dødsdato} />
-                            )}
-                        </SmallTextLabel>
-                    </>
-                ) : null}
-                <TekstMedVenstrePadding>Ingen søknadsopplysninger</TekstMedVenstrePadding>
-            </GridTabell>
+            <BarneInfoWrapper
+                navnOgAlderPåBarn={utledNavnOgAlder(
+                    registergrunnlag.navn,
+                    registergrunnlag.fødselsdato,
+                    registergrunnlag.dødsdato
+                )}
+                dødsdato={registergrunnlag.dødsdato}
+            >
+                <Informasjonsrad label="Ingen søknadsopplysninger" />
+            </BarneInfoWrapper>
         );
     }
 
     return (
-        <GridTabell kolonner={3}>
-            {registergrunnlag.navn ? (
+        <BarneInfoWrapper
+            navnOgAlderPåBarn={utledNavnOgAlder(
+                registergrunnlag.navn,
+                registergrunnlag.fødselsdato,
+                registergrunnlag.dødsdato
+            )}
+            dødsdato={registergrunnlag.dødsdato}
+        >
+            {harPassordning && (
                 <>
-                    <Registergrunnlag />
-                    <SmallTextLabel>
-                        {registergrunnlag.navn} ({alder} år)
-                        {registergrunnlag.dødsdato && (
-                            <EtikettDød dødsdato={registergrunnlag.dødsdato} />
-                        )}
-                    </SmallTextLabel>
-                </>
-            ) : null}
-            {harPassordning ? (
-                <>
-                    <Søknadsgrunnlag />
-                    <BodyShortSmall>{passordningTittel}</BodyShortSmall>
-                    <BodyShortSmall>
-                        {barnepass?.barnepassordninger.map((ordning) => {
+                    <Informasjonsrad
+                        ikon={VilkårInfoIkon.SØKNAD}
+                        label={passordningTittel}
+                        verdi={barnepass?.barnepassordninger.map((ordning) => {
                             return typeBarnepassordningTilTekst[ordning.type]; //TODO: Ta hensyn til at barn kan ha flere passordninger
                         })}
-                    </BodyShortSmall>
-                </>
-            ) : null}
-            {harPassordning ? (
-                <>
-                    <Søknadsgrunnlag />
-                    <BodyShortSmall>Navn passordning</BodyShortSmall>
-                    <BodyShortSmall>
-                        {barnepass?.barnepassordninger.map((ordning) => {
+                    />
+                    <Informasjonsrad
+                        ikon={VilkårInfoIkon.SØKNAD}
+                        label="Navn passordning"
+                        verdi={barnepass?.barnepassordninger.map((ordning) => {
                             return ordning.navn; //TODO: Ta hensyn til at barn kan ha flere passordninger
                         })}
-                    </BodyShortSmall>
-                </>
-            ) : null}
-            {harPassordning ? (
-                <>
-                    <Søknadsgrunnlag />
-                    <BodyShortSmall>Periode passordning</BodyShortSmall>
-                    <BodyShortSmall>
-                        {barnepass?.barnepassordninger.map((ordning) => {
+                    />
+                    <Informasjonsrad
+                        ikon={VilkårInfoIkon.SØKNAD}
+                        label="Periode passordning"
+                        verdi={barnepass?.barnepassordninger.map((ordning) => {
                             return `${formaterNullableIsoDato(
                                 ordning.fra
                             )} - ${formaterNullableIsoDato(ordning.til)}`; //TODO: Ta hensyn til at barn kan ha flere passordninger
                         })}
-                    </BodyShortSmall>
-                </>
-            ) : null}
-            {harPassordning ? (
-                <>
-                    <Søknadsgrunnlag />
-                    <BodyShortSmall>Utgifter</BodyShortSmall>
-                    <BodyShortSmall>
-                        {barnepass?.barnepassordninger.map((ordning) => {
+                    />
+                    <Informasjonsrad
+                        ikon={VilkårInfoIkon.SØKNAD}
+                        label="Utgifter"
+                        verdi={barnepass?.barnepassordninger.map((ordning) => {
                             return ordning.beløp + ',-'; //TODO: Ta hensyn til at barn kan ha flere passordninger
                         })}
-                    </BodyShortSmall>
+                    />
                 </>
-            ) : null}
-        </GridTabell>
+            )}
+        </BarneInfoWrapper>
     );
 };
 
