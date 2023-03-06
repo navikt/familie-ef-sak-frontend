@@ -1,24 +1,18 @@
 import React, { useState } from 'react';
-import TabellOverskrift from './TabellOverskrift';
 import Bygning from '../Ikoner/Bygning';
 import { AdresseType, IAdresse } from '../../App/typer/personopplysninger';
-import { IngenData, TabellWrapper, Td } from './TabellWrapper';
+import { KolonneTitler, SmallTable } from './TabellWrapper';
 import styled from 'styled-components';
 import Beboere from './Beboere';
 import { formaterNullableIsoDato } from '../../App/utils/formatter';
 import { ModalWrapper } from '../Modal/ModalWrapper';
 import UtvidPanel from '../UtvidPanel/UtvidPanel';
-import { Button, HelpText, Label } from '@navikt/ds-react';
+import { Button, Table, Tag } from '@navikt/ds-react';
 import { BodyLongSmall } from '../Visningskomponenter/Tekster';
-
-const StyledFlexDiv = styled.div`
-    display: flex;
-    justify-content: space-between;
-`;
+import PersonopplysningerPanel from './PersonopplysningPanel';
 
 const Knapp = styled(Button)`
-    padding-left: 1.25rem;
-    padding-right: 1.25rem;
+    margin: 0.5rem 0.75rem;
 `;
 
 const FetTekst = styled.span`
@@ -26,6 +20,18 @@ const FetTekst = styled.span`
 `;
 
 const MAX_LENGDE_ADRESSER = 5;
+
+const FlexBoxCenter = styled.div`
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+`;
+
+const FlexBoxColumn = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+`;
 
 const Adressehistorikk: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string }> = ({
     adresser,
@@ -77,14 +83,8 @@ const AdressehistorikkMedLesMerKnapp: React.FC<{
     }
 };
 
-const Kolonnetittel: React.FC<{ text: string; width: number }> = ({ text, width }) => (
-    <Td width={`${width}%`}>
-        <Label as={'p'}>{text}</Label>
-    </Td>
-);
-
 const TittelbeskrivelseBostedsadresser: React.ReactElement = (
-    <HelpText title="Gjeldende og kolonner" placement={'right'}>
+    <FlexBoxColumn>
         <BodyLongSmall>
             <FetTekst>Gjeldende adresse:</FetTekst>
             En person skal til enhver tid ha kun én folkeregistrert bostedsadresse. I EF Sak er
@@ -104,7 +104,7 @@ const TittelbeskrivelseBostedsadresser: React.ReactElement = (
             Folkeregisterets opphørsdato (dersom den er kjent). Personen er ikke registrert bosatt
             på adressen iht Folkeregisteret
         </BodyLongSmall>
-    </HelpText>
+    </FlexBoxColumn>
 );
 
 const Adresser: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string; type?: AdresseType }> = ({
@@ -112,38 +112,31 @@ const Adresser: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string; type?: 
     fagsakPersonId,
     type,
 }) => {
+    const tittelBeskrivelse =
+        type === AdresseType.BOSTEDADRESSE
+            ? { header: 'Adresseforklaring ', innhold: TittelbeskrivelseBostedsadresser }
+            : undefined;
+
+    const kolonneTitler = [
+        'Adresse',
+        type === AdresseType.BOSTEDADRESSE ? 'Angitt flyttedato' : 'Type',
+        'Fra og med',
+        'Til og med',
+    ];
+
     return (
-        <TabellWrapper>
-            <TabellOverskrift
-                Ikon={Bygning}
-                tittel={type === AdresseType.BOSTEDADRESSE ? 'Bostedsadresser' : 'Andre adresser'}
-                tittelbeskrivelse={
-                    type === AdresseType.BOSTEDADRESSE
-                        ? TittelbeskrivelseBostedsadresser
-                        : undefined
-                }
-            />
-            {(adresser.length !== 0 && (
-                <table className="tabell">
-                    <thead>
-                        <tr>
-                            <Kolonnetittel text={'Adresse'} width={35} />
-                            <Kolonnetittel
-                                text={
-                                    type === AdresseType.BOSTEDADRESSE
-                                        ? 'Angitt flyttedato'
-                                        : 'Adressetype'
-                                }
-                                width={15}
-                            />
-                            <Kolonnetittel text={'Fra og med'} width={15} />
-                            <Kolonnetittel text={'Til og med'} width={20} />
-                        </tr>
-                    </thead>
+        <PersonopplysningerPanel
+            Ikon={Bygning}
+            tittel={type === AdresseType.BOSTEDADRESSE ? 'Bostedsadresser' : 'Andre adresser'}
+            tittelBeskrivelse={tittelBeskrivelse}
+        >
+            {adresser.length !== 0 && (
+                <SmallTable>
+                    <KolonneTitler titler={kolonneTitler} />
                     <Innhold adresser={adresser} fagsakPersonId={fagsakPersonId} />
-                </table>
-            )) || <IngenData />}
-        </TabellWrapper>
+                </SmallTable>
+            )}
+        </PersonopplysningerPanel>
     );
 };
 
@@ -154,42 +147,46 @@ const Innhold: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string }> = ({
     const [beboereAdresseIModal, settBeboereAdresseIModal] = useState<IAdresse>();
     return (
         <>
-            <tbody>
+            <Table.Body>
                 {adresser.map((adresse, indeks) => {
                     return (
-                        <tr key={indeks}>
-                            <Td>
-                                {adresse.visningsadresse}
-                                {adresse.erGjeldende ? ' (gjeldende)' : ''}
-                            </Td>
-                            <Td>
+                        <Table.Row key={indeks}>
+                            <Table.DataCell>
+                                <FlexBoxCenter>
+                                    {adresse.visningsadresse}
+                                    {adresse.erGjeldende && (
+                                        <Tag variant="success" size="small">
+                                            Gjeldende
+                                        </Tag>
+                                    )}
+                                </FlexBoxCenter>
+                            </Table.DataCell>
+                            <Table.DataCell>
                                 {adresse.type === AdresseType.BOSTEDADRESSE
                                     ? formaterNullableIsoDato(adresse.angittFlyttedato)
                                     : adresse.type}
-                            </Td>
-                            <Td>{formaterNullableIsoDato(adresse.gyldigFraOgMed)}</Td>
-                            <Td>
-                                <StyledFlexDiv>
-                                    <div style={{ margin: 'auto 0' }}>
-                                        {formaterNullableIsoDato(adresse.gyldigTilOgMed)}
-                                    </div>
-                                    {adresse.type === AdresseType.BOSTEDADRESSE &&
-                                        adresse.erGjeldende && (
-                                            <Knapp
-                                                onClick={() => settBeboereAdresseIModal(adresse)}
-                                                variant={'secondary'}
-                                                size={'small'}
-                                                type={'button'}
-                                            >
-                                                Se Beboere
-                                            </Knapp>
-                                        )}
-                                </StyledFlexDiv>
-                            </Td>
-                        </tr>
+                            </Table.DataCell>
+                            <Table.DataCell>
+                                {formaterNullableIsoDato(adresse.gyldigFraOgMed)}
+                            </Table.DataCell>
+                            <Table.DataCell>
+                                {formaterNullableIsoDato(adresse.gyldigTilOgMed)}
+                            </Table.DataCell>
+
+                            {adresse.type === AdresseType.BOSTEDADRESSE && adresse.erGjeldende && (
+                                <Knapp
+                                    onClick={() => settBeboereAdresseIModal(adresse)}
+                                    variant={'secondary'}
+                                    size={'xsmall'}
+                                    type={'button'}
+                                >
+                                    Se Beboere
+                                </Knapp>
+                            )}
+                        </Table.Row>
                     );
                 })}
-            </tbody>
+            </Table.Body>
             <ModalWrapper
                 tittel={'Beboere'}
                 visModal={beboereAdresseIModal != undefined}

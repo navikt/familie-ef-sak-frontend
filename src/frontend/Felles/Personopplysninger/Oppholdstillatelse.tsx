@@ -1,40 +1,40 @@
 import React from 'react';
-import TabellOverskrift from './TabellOverskrift';
-import { BredTd, IngenData, KolonneTitler, TabellWrapper } from './TabellWrapper';
+import { KolonneTitler, SmallTable } from './TabellWrapper';
 import { IOppholdstillatelse, oppholdTilTekst } from '../../App/typer/personopplysninger';
 import Pass from '../Ikoner/Pass';
 import { formaterNullableIsoDato } from '../../App/utils/formatter';
+import PersonopplysningerPanel from './PersonopplysningPanel';
+import { Table } from '@navikt/ds-react';
 
 const Oppholdstillatelse: React.FC<{ oppholdstillatelser: IOppholdstillatelse[] }> = ({
     oppholdstillatelser,
 }) => {
     return (
-        <TabellWrapper>
-            <TabellOverskrift Ikon={Pass} tittel={'Oppholdstillatelse'} />
-            {(oppholdstillatelser.length !== 0 && (
-                <table className="tabell">
+        <PersonopplysningerPanel Ikon={Pass} tittel={'Oppholdstillatelse'}>
+            {oppholdstillatelser.length !== 0 && (
+                <SmallTable>
                     <KolonneTitler titler={['Type', 'Fra', 'Til', '']} />
-                    <tbody>
+                    <Table.Body>
                         {oppholdstillatelser.map((oppholdstillatelse, indeks) => {
                             return (
-                                <tr key={indeks}>
-                                    <BredTd>
+                                <Table.Row key={indeks}>
+                                    <Table.DataCell>
                                         {oppholdTilTekst[oppholdstillatelse.oppholdstillatelse]}
-                                    </BredTd>
-                                    <BredTd>
+                                    </Table.DataCell>
+                                    <Table.DataCell>
                                         {formaterNullableIsoDato(oppholdstillatelse.fraDato)}
-                                    </BredTd>
-                                    <BredTd>
+                                    </Table.DataCell>
+                                    <Table.DataCell>
                                         {formaterNullableIsoDato(oppholdstillatelse.tilDato)}
-                                    </BredTd>
-                                    <BredTd />
-                                </tr>
+                                    </Table.DataCell>
+                                    <Table.DataCell />
+                                </Table.Row>
                             );
                         })}
-                    </tbody>
-                </table>
-            )) || <IngenData />}
-        </TabellWrapper>
+                    </Table.Body>
+                </SmallTable>
+            )}
+        </PersonopplysningerPanel>
     );
 };
 

@@ -1,40 +1,44 @@
 import React from 'react';
-import TabellOverskrift from './TabellOverskrift';
-import { BredTd, KolonneTitler, TabellWrapper } from './TabellWrapper';
+import { KolonneTitler, SmallTable } from './TabellWrapper';
 import { Folkeregisterpersonstatus, IStatsborgerskap } from '../../App/typer/personopplysninger';
 import Pass from '../Ikoner/Pass';
-import { formaterNullableIsoDato } from '../../App/utils/formatter';
+import {
+    formaterNullableIsoDato,
+    formaterStrengMedStorForbokstav,
+} from '../../App/utils/formatter';
+import PersonopplysningerPanel from './PersonopplysningPanel';
+import { Table } from '@navikt/ds-react';
 
 const Statsborgerskap: React.FC<{
     statsborgerskap: IStatsborgerskap[];
     folkeregisterPersonstatus?: Folkeregisterpersonstatus;
 }> = ({ statsborgerskap, folkeregisterPersonstatus }) => {
     return (
-        <TabellWrapper>
-            <TabellOverskrift Ikon={Pass} tittel={'Statsborgerskap'} />
-            <table className="tabell">
+        <PersonopplysningerPanel Ikon={Pass} tittel={'Statsborgerskap'}>
+            <SmallTable>
                 <KolonneTitler titler={['Land', 'Fra', 'Til', 'Personstatus']} />
-                <tbody>
+                <Table.Body>
                     {statsborgerskap.map((statsborgerskap, indeks) => {
                         return (
-                            <tr key={indeks}>
-                                <BredTd>{statsborgerskap.land}</BredTd>
-                                <BredTd>
+                            <Table.Row key={indeks}>
+                                <Table.DataCell>{statsborgerskap.land}</Table.DataCell>
+                                <Table.DataCell>
                                     {formaterNullableIsoDato(statsborgerskap.gyldigFraOgMedDato)}
-                                </BredTd>
-                                <BredTd>
+                                </Table.DataCell>
+                                <Table.DataCell>
                                     {formaterNullableIsoDato(statsborgerskap.gyldigTilOgMedDato)}
-                                </BredTd>
-                                <BredTd>
+                                </Table.DataCell>
+                                <Table.DataCell>
                                     {statsborgerskap.land.toLowerCase() === 'norge' &&
-                                        folkeregisterPersonstatus}
-                                </BredTd>
-                            </tr>
+                                        folkeregisterPersonstatus &&
+                                        formaterStrengMedStorForbokstav(folkeregisterPersonstatus)}
+                                </Table.DataCell>
+                            </Table.Row>
                         );
                     })}
-                </tbody>
-            </table>
-        </TabellWrapper>
+                </Table.Body>
+            </SmallTable>
+        </PersonopplysningerPanel>
     );
 };
 
