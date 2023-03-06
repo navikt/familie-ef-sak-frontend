@@ -7,7 +7,7 @@ import { popoverContentDeltBosted } from './BarnDeltBosted';
 
 const FlexBox = styled.div`
     display: flex;
-    align-items: baseline;
+    align-items: center;
     gap: 0.5rem;
 `;
 
@@ -33,7 +33,7 @@ const BarnBosted: React.FC<{ barn: IBarn }> = ({ barn }) => {
 
     return (
         <FlexBox>
-            <BodyShort>{bostedStatus(barn)}</BodyShort>
+            <BodyShort size="small">{bostedStatus(barn)}</BodyShort>
             {barn.deltBosted.length > 0 && (
                 <InformationIcon ref={iconRef} onClick={() => setOpenState(true)}>
                     Åpne popover

@@ -32,12 +32,8 @@ import { AGray50, ARed500 } from '@navikt/ds-tokens/dist/tokens';
 import { useRedirectEtterLagring } from '../../../../../App/hooks/felles/useRedirectEtterLagring';
 import { v4 as uuidv4 } from 'uuid';
 
-const WrapperDobbelMarginTop = styled.div`
-    margin-top: 2rem;
-`;
-
 const BeregnKnapp = styled(Button)`
-    margin: 2rem 1rem;
+    margin: 2rem 1rem 1rem 1rem;
 `;
 
 export const AdvarselTekst = styled(BodyShortSmall)`
@@ -51,6 +47,10 @@ const Container = styled.section`
 
 const InputContainer = styled(Container)`
     background-color: ${AGray50};
+`;
+
+const HovedKnapp = styled(Button)`
+    margin-top: 1rem;
 `;
 
 export const defaultSkoleårsperioder = (
@@ -198,20 +198,20 @@ export const VedtaksformSkolepenger: React.FC<{
                     feilmelding={formState.errors.begrunnelse}
                 />
             </InputContainer>
-            {!erOpphør ? (
+            {erOpphør ? (
+                <OpphørSkolepenger
+                    skoleårsperioder={skoleårsPerioderState}
+                    forrigeSkoleårsperioder={forrigeVedtak?.skoleårsperioder || []}
+                    valideringsfeil={formState.errors.skoleårsperioder}
+                    settValideringsFeil={formState.setErrors}
+                />
+            ) : (
                 <SkoleårsperioderSkolepenger
                     skoleårsperioder={skoleårsPerioderState}
                     låsteUtgiftIder={utgiftsIderForrigeBehandling}
                     valideringsfeil={formState.errors.skoleårsperioder}
                     settValideringsFeil={formState.setErrors}
                     oppdaterHarUtførtBeregning={settHarUtførtBeregning}
-                />
-            ) : (
-                <OpphørSkolepenger
-                    skoleårsperioder={skoleårsPerioderState}
-                    forrigeSkoleårsperioder={forrigeVedtak?.skoleårsperioder || []}
-                    valideringsfeil={formState.errors.skoleårsperioder}
-                    settValideringsFeil={formState.setErrors}
                 />
             )}
             {feilmelding && (
@@ -220,7 +220,7 @@ export const VedtaksformSkolepenger: React.FC<{
                 </AlertStripeFeilPreWrap>
             )}
             {behandlingErRedigerbar && !erOpphør && (
-                <>
+                <div>
                     <BeregnKnapp variant={'secondary'} onClick={beregnSkolepenger} type={'button'}>
                         Beregn
                     </BeregnKnapp>
@@ -229,20 +229,16 @@ export const VedtaksformSkolepenger: React.FC<{
                             Kan ikke lagre vedtaket før beregning er utført
                         </AdvarselTekst>
                     )}
-                </>
+                </div>
             )}
-            <WrapperDobbelMarginTop>
-                <UtregningstabellSkolepenger
-                    beregningsresultat={beregningsresultat}
-                    skjulVisning={behandlingErRedigerbar && !harUtførtBeregning}
-                />
-            </WrapperDobbelMarginTop>
+            <UtregningstabellSkolepenger
+                beregningsresultat={beregningsresultat}
+                skjulVisning={behandlingErRedigerbar && !harUtførtBeregning}
+            />
             {behandlingErRedigerbar && (
-                <WrapperDobbelMarginTop>
-                    <Button variant="primary" disabled={laster} type={'submit'}>
-                        Lagre vedtak
-                    </Button>
-                </WrapperDobbelMarginTop>
+                <HovedKnapp variant="primary" disabled={laster} type={'submit'}>
+                    Lagre vedtak
+                </HovedKnapp>
             )}
         </form>
     );

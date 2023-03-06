@@ -1,6 +1,6 @@
 import React from 'react';
 import 'nav-frontend-tabell-style';
-import InnvandringUtVandring from './InnvandringUtvandring';
+import InnflyttingUtflytting from './InnflyttingUtflytting';
 import Barn from './Barn';
 import Adressehistorikk from './Adressehistorikk';
 import Sivilstatus from './Sivilstatus';
@@ -12,6 +12,14 @@ import NavKontor from './NavKontor';
 import { INavKontor, IPersonopplysninger } from '../../App/typer/personopplysninger';
 import { Ressurs } from '../../App/typer/ressurs';
 import Vergemål from './Vergemål';
+import styled from 'styled-components';
+
+const Container = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 1rem 2rem;
+`;
 
 const PersonopplysningerMedNavKontor: React.FC<{
     personopplysninger: IPersonopplysninger;
@@ -31,7 +39,12 @@ const PersonopplysningerMedNavKontor: React.FC<{
         vergemål,
     } = personopplysninger;
     return (
-        <>
+        <Container>
+            <DataViewer response={{ navKontor }}>
+                {({ navKontor }) => {
+                    return <NavKontor navKontor={navKontor} />;
+                }}
+            </DataViewer>
             <Adressehistorikk adresser={adresse} fagsakPersonId={fagsakPersonId} />
             <Sivilstatus sivilstander={sivilstand} />
             <Barn barn={barn} />
@@ -40,19 +53,13 @@ const PersonopplysningerMedNavKontor: React.FC<{
                 folkeregisterPersonstatus={folkeregisterpersonstatus}
             />
             <Oppholdstillatelse oppholdstillatelser={oppholdstillatelse} />
-            <InnvandringUtVandring
-                innvandringer={innflyttingTilNorge}
-                utvandringer={utflyttingFraNorge}
+            <InnflyttingUtflytting
+                innflyttinger={innflyttingTilNorge}
+                utflyttinger={utflyttingFraNorge}
             />
-            <Fullmakter fullmakter={fullmakt} />
             <Vergemål vergemål={vergemål} />
-
-            <DataViewer response={{ navKontor }}>
-                {({ navKontor }) => {
-                    return <NavKontor navKontor={navKontor} />;
-                }}
-            </DataViewer>
-        </>
+            <Fullmakter fullmakter={fullmakt} />
+        </Container>
     );
 };
 

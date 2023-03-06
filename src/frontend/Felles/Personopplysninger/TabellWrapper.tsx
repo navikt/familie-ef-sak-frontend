@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import React from 'react';
-import { BodyShortSmall } from '../Visningskomponenter/Tekster';
+import { Table } from '@navikt/ds-react';
 
 export const BredTd = styled.td`
     width: ${(props) => props.width ?? '25%'};
@@ -44,30 +44,20 @@ export const TabellWrapper = styled.div<{ erDobbelTabell?: boolean }>`
     }
 `;
 
-export const StyledInnholdWrapper = styled.div`
-    grid-area: innhold;
+export const SmallTable = styled(Table).attrs({ size: 'small' })`
+    max-width: max-content;
 `;
 
 type Kolonnetittel = string | React.ReactNode;
 
 export const KolonneTitler: React.FC<{ titler: Kolonnetittel[] }> = ({ titler }) => {
     return (
-        <thead>
-            <tr>
+        <Table.Header>
+            <Table.Row>
                 {titler.map((tittel, indeks) => (
-                    <BredTd key={indeks} width={100 / titler.length} className={'columnHeader'}>
-                        {tittel}
-                    </BredTd>
+                    <Table.HeaderCell key={indeks}>{tittel}</Table.HeaderCell>
                 ))}
-            </tr>
-        </thead>
-    );
-};
-
-export const IngenData: React.FC = () => {
-    return (
-        <StyledInnholdWrapper>
-            <BodyShortSmall>Ingen data</BodyShortSmall>
-        </StyledInnholdWrapper>
+            </Table.Row>
+        </Table.Header>
     );
 };

@@ -16,6 +16,7 @@ const Rad = styled.div<{ erTittelRad?: boolean }>`
     grid-template-columns: 6rem 4rem 4rem;
     grid-gap: 1rem;
     margin-bottom: ${(props) => (props.erTittelRad ? '0.5rem' : '0')};
+    margin-left: 1rem;
 `;
 
 const HøyrejustertNormaltekst = styled(BodyShortSmall)`
@@ -24,6 +25,10 @@ const HøyrejustertNormaltekst = styled(BodyShortSmall)`
 
 const HøyrejusterElement = styled(SmallTextLabel)`
     text-align: right;
+`;
+
+const Container = styled.div`
+    margin-left: 1rem;
 `;
 
 export const UtregningstabellSkolepenger: React.FC<{
@@ -36,7 +41,7 @@ export const UtregningstabellSkolepenger: React.FC<{
     return (
         <DataViewer response={{ beregningsresultat }}>
             {({ beregningsresultat }) => (
-                <>
+                <Container>
                     <Heading spacing size={'small'} level={'5'}>
                         Utregning
                     </Heading>
@@ -60,7 +65,7 @@ export const UtregningstabellSkolepenger: React.FC<{
                             </Rad>
                         );
                     })}
-                </>
+                </Container>
             )}
         </DataViewer>
     );

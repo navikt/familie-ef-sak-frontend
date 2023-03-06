@@ -1,43 +1,50 @@
 import React from 'react';
-import TabellOverskrift from './TabellOverskrift';
 import SkrivendeBlyant from '../Ikoner/SkrivendeBlyant';
-import { BredTd, IngenData, KolonneTitler, TabellWrapper } from './TabellWrapper';
+import { KolonneTitler, SmallTable } from './TabellWrapper';
 import {
     IVergemål,
     vergemålOmfangTilTekst,
     vergemålTypeTilTekst,
 } from '../../App/typer/personopplysninger';
 import { tekstMapping } from '../../App/utils/tekstmapping';
+import PersonopplysningerPanel from './PersonopplysningPanel';
+import { Table } from '@navikt/ds-react';
+import { KopierbartNullableFødselsnummer } from '../Fødselsnummer/KopierbartNullableFødselsnummer';
 
 const Vergemål: React.FC<{ vergemål: IVergemål[] }> = ({ vergemål }) => {
     return (
-        <TabellWrapper>
-            <TabellOverskrift Ikon={SkrivendeBlyant} tittel={'Vergemål'} />
-            {(vergemål.length !== 0 && (
-                <table className="tabell">
+        <PersonopplysningerPanel Ikon={SkrivendeBlyant} tittel={'Vergemål'}>
+            {vergemål.length !== 0 && (
+                <SmallTable>
                     <KolonneTitler
-                        titler={['Type', 'Omfang', 'Verge', 'Fødselsnummer', 'Embete']}
+                        titler={['Verge', 'Fødselsnummer', 'Omfang', 'Type', 'Embete']}
                     />
-                    <tbody>
+                    <Table.Body>
                         {vergemål.map((vergemål, indeks) => {
                             return (
-                                <tr key={indeks}>
-                                    <BredTd>
-                                        {tekstMapping(vergemål.type, vergemålTypeTilTekst)}
-                                    </BredTd>
-                                    <BredTd>
+                                <Table.Row key={indeks}>
+                                    <Table.DataCell>{vergemål.navn}</Table.DataCell>
+                                    <Table.DataCell>
+                                        {vergemål.motpartsPersonident && (
+                                            <KopierbartNullableFødselsnummer
+                                                fødselsnummer={vergemål.motpartsPersonident}
+                                            />
+                                        )}
+                                    </Table.DataCell>
+                                    <Table.DataCell>
                                         {tekstMapping(vergemål.omfang, vergemålOmfangTilTekst)}
-                                    </BredTd>
-                                    <BredTd>{vergemål.navn}</BredTd>
-                                    <BredTd>{vergemål.motpartsPersonident}</BredTd>
-                                    <BredTd>{vergemål.embete}</BredTd>
-                                </tr>
+                                    </Table.DataCell>
+                                    <Table.DataCell>
+                                        {tekstMapping(vergemål.type, vergemålTypeTilTekst)}
+                                    </Table.DataCell>
+                                    <Table.DataCell>{vergemål.embete}</Table.DataCell>
+                                </Table.Row>
                             );
                         })}
-                    </tbody>
-                </table>
-            )) || <IngenData />}
-        </TabellWrapper>
+                    </Table.Body>
+                </SmallTable>
+            )}
+        </PersonopplysningerPanel>
     );
 };
 
