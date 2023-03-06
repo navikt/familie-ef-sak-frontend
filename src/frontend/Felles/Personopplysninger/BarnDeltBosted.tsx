@@ -1,5 +1,5 @@
 import { IDeltBostedPeriode } from '../../App/typer/personopplysninger';
-import { BodyShort, Popover, Table } from '@navikt/ds-react';
+import { BodyShort, Popover, Table, Tag } from '@navikt/ds-react';
 import { formaterNullableIsoDato } from '../../App/utils/formatter';
 import React from 'react';
 import styled from 'styled-components';
@@ -13,7 +13,14 @@ export const VenstreMargin = styled(StyledDiv)`
     margin-left: 1rem;
 `;
 
-const utledHistoriskTekst = (historisk: boolean) => (historisk ? '' : '(gjeldende)');
+const utledHistoriskTag = (historisk: boolean) =>
+    historisk ? (
+        ''
+    ) : (
+        <Tag variant="success" size="small">
+            Gjeldende
+        </Tag>
+    );
 
 const deltBostedPeriodeKey = (deltBostedPeriode: IDeltBostedPeriode) =>
     `${deltBostedPeriode.startdatoForKontrakt}-${deltBostedPeriode.sluttdatoForKontrakt}`;
@@ -51,7 +58,7 @@ export const popoverContentDeltBosted = (deltBostedPerioder: IDeltBostedPeriode[
                             </Table.DataCell>
                             <Table.DataCell>
                                 <VenstreMargin historisk={deltBostedPeriode.historisk}>
-                                    {utledHistoriskTekst(deltBostedPeriode.historisk)}
+                                    {utledHistoriskTag(deltBostedPeriode.historisk)}
                                 </VenstreMargin>
                             </Table.DataCell>
                         </Table.Row>
