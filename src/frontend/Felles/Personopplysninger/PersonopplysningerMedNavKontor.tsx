@@ -13,6 +13,7 @@ import { INavKontor, IPersonopplysninger } from '../../App/typer/personopplysnin
 import { Ressurs } from '../../App/typer/ressurs';
 import Vergemål from './Vergemål';
 import styled from 'styled-components';
+import { IFagsakPerson } from '../../App/typer/fagsak';
 
 const Container = styled.div`
     display: flex;
@@ -24,8 +25,8 @@ const Container = styled.div`
 const PersonopplysningerMedNavKontor: React.FC<{
     personopplysninger: IPersonopplysninger;
     navKontor: Ressurs<INavKontor | undefined>;
-    fagsakPersonId: string;
-}> = ({ personopplysninger, navKontor, fagsakPersonId }) => {
+    fagsakPerson: IFagsakPerson;
+}> = ({ personopplysninger, navKontor, fagsakPerson }) => {
     const {
         adresse,
         sivilstand,
@@ -38,6 +39,11 @@ const PersonopplysningerMedNavKontor: React.FC<{
         oppholdstillatelse,
         vergemål,
     } = personopplysninger;
+    const harFagsak = !!(
+        fagsakPerson.barnetilsyn ||
+        fagsakPerson.skolepenger ||
+        fagsakPerson.overgangsstønad
+    );
     return (
         <Container>
             <DataViewer response={{ navKontor }}>
@@ -45,9 +51,9 @@ const PersonopplysningerMedNavKontor: React.FC<{
                     return <NavKontor navKontor={navKontor} />;
                 }}
             </DataViewer>
-            <Adressehistorikk adresser={adresse} fagsakPersonId={fagsakPersonId} />
-            <Sivilstatus sivilstander={sivilstand} />
-            <Barn barn={barn} />
+            <Adressehistorikk adresser={adresse} fagsakPersonId={fagsakPerson.id} />
+            <Sivilstatus sivilstander={sivilstand} harFagsak={harFagsak} />
+            <Barn barn={barn} harFagsak={harFagsak} />
             <Statsborgerskap
                 statsborgerskap={statsborgerskap}
                 folkeregisterPersonstatus={folkeregisterpersonstatus}

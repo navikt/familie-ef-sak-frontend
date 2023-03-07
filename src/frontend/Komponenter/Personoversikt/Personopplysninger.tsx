@@ -4,11 +4,12 @@ import PersonopplysningerMedNavKontor from '../../Felles/Personopplysninger/Pers
 import { IPersonIdent } from '../../App/typer/felles';
 import { AxiosRequestConfig } from 'axios';
 import { useDataHenter } from '../../App/hooks/felles/useDataHenter';
+import { IFagsakPerson } from '../../App/typer/fagsak';
 
 const Personopplysninger: React.FC<{
     personopplysninger: IPersonopplysninger;
-    fagsakPersonId: string;
-}> = ({ personopplysninger, fagsakPersonId }) => {
+    fagsakPerson: IFagsakPerson;
+}> = ({ personopplysninger, fagsakPerson }) => {
     const personIdent = personopplysninger.personIdent;
     const navKontorConfig: AxiosRequestConfig = useMemo(
         () => ({
@@ -25,7 +26,7 @@ const Personopplysninger: React.FC<{
         <PersonopplysningerMedNavKontor
             personopplysninger={personopplysninger}
             navKontor={navKontor}
-            fagsakPersonId={fagsakPersonId}
+            fagsakPerson={fagsakPerson}
         />
     );
 };

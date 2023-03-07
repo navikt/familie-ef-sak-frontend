@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 import { useApp } from '../../App/context/AppContext';
 import { EToast, toastTilTekst } from '../../App/typer/toast';
-import { AlertSuccess } from '../Visningskomponenter/Alerts';
+import { AlertError, AlertSuccess } from '../Visningskomponenter/Alerts';
 
 const ContainerTopRight = styled.div`
     z-index: 9999;
@@ -36,6 +36,12 @@ export const Toast: React.FC = () => {
         case null:
         case undefined:
             return null;
+        case EToast.REDIRECT_ANNEN_RELASJON_FEILET:
+            return (
+                <ContainerTopRight>
+                    <AlertError>{toastTilTekst[toast]}</AlertError>
+                </ContainerTopRight>
+            );
         case EToast.INNGANGSVILKÅR_GJENBRUKT:
             return (
                 <ContainerTopMiddle>
