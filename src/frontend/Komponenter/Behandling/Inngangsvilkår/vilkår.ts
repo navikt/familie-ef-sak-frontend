@@ -49,6 +49,12 @@ export interface IVurdering {
     endretAv: string;
     endretTid: string;
     delvilkårsvurderinger: IDelvilkår[];
+    gjenbrukt?: Gjenbrukt;
+}
+
+export interface Gjenbrukt {
+    behandlingId: string;
+    endretTid: string;
 }
 
 export interface IDokumentasjonGrunnlag {

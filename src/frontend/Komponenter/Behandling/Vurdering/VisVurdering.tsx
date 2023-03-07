@@ -72,7 +72,9 @@ const VisVurdering: FC<Props> = ({
     tittelTekst,
 }) => {
     const vilkårsresultat = vurdering.resultat;
-    const sistOppdatert = formaterIsoDatoTidMedSekunder(vurdering.endretTid);
+    const sistOppdatert = formaterIsoDatoTidMedSekunder(
+        vurdering.gjenbrukt?.endretTid || vurdering.endretTid
+    );
     const vurderingerBesvartAvSaksbehandler = vurdering.delvilkårsvurderinger.filter(
         (delvilkårsvurdering) =>
             delvilkårsvurdering.resultat === Vilkårsresultat.OPPFYLT ||
@@ -135,12 +137,14 @@ const VisVurdering: FC<Props> = ({
 
             <VertikalStrek />
             <SistOppdatertOgVurderingWrapper>
-                {sistOppdatert &&
-                    (vilkårsresultat === Vilkårsresultat.OPPFYLT ||
-                        vilkårsresultat === Vilkårsresultat.AUTOMATISK_OPPFYLT ||
-                        vilkårsresultat === Vilkårsresultat.IKKE_OPPFYLT) && (
-                        <SistOppdatertTekst>Sist endret dato - {sistOppdatert}</SistOppdatertTekst>
-                    )}
+                {(vilkårsresultat === Vilkårsresultat.OPPFYLT ||
+                    vilkårsresultat === Vilkårsresultat.AUTOMATISK_OPPFYLT ||
+                    vilkårsresultat === Vilkårsresultat.IKKE_OPPFYLT) && (
+                    <SistOppdatertTekst>
+                        Sist endret dato - {sistOppdatert}
+                        {vurdering.gjenbrukt ? ` (gjenbrukt)` : ``}
+                    </SistOppdatertTekst>
+                )}
                 <StyledVilkår>
                     {vurderingerBesvartAvSaksbehandler.map((delvilkårsvurdering) =>
                         delvilkårsvurdering.vurderinger.map((vurdering) => (
