@@ -10,7 +10,6 @@ import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
 
 const TilsynsutgifterBarnInfo: FC<{
     gjeldendeBarn: IBarnMedSamvær;
-    skalViseSøknadsdata?: boolean;
 }> = ({ gjeldendeBarn }) => {
     const { registergrunnlag, barnepass } = gjeldendeBarn;
     const harPassordning = barnepass && barnepass.barnepassordninger;

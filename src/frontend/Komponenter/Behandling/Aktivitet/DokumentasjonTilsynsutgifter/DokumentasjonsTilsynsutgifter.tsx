@@ -50,10 +50,7 @@ export const DokumentasjonsTilsynsutgifter: React.FC<VilkårProps> = ({
                                 const erSisteBarn = index === grunnlag.barnMedSamvær.length - 1;
                                 return (
                                     <React.Fragment key={index}>
-                                        <TilsynsutgifterBarnInfo
-                                            gjeldendeBarn={barn}
-                                            skalViseSøknadsdata={skalViseSøknadsdata}
-                                        />
+                                        <TilsynsutgifterBarnInfo gjeldendeBarn={barn} />
                                         {erSisteBarn && skalViseSøknadsdata && (
                                             <>
                                                 <DokumentasjonSendtInn
