@@ -70,19 +70,16 @@ const AktivitetArbeidInfo: FC<Props> = ({ aktivitet, stønadstype, dokumentasjon
                     />
                 </InfoSeksjonWrapper>
             )}
-            {
-                <>
-                    <DokumentasjonSendtInn
-                        dokumentasjon={dokumentasjon?.erIArbeid}
-                        tittel={'Dokumentasjon som viser at du er for syk til å være i arbeid'}
-                    />
 
-                    <DokumentasjonSendtInn
-                        dokumentasjon={dokumentasjon?.virksomhet}
-                        tittel={'Næringsfaglig vurdering av virksomheten du etablerer'}
-                    />
-                </>
-            }
+            <DokumentasjonSendtInn
+                dokumentasjon={dokumentasjon?.erIArbeid}
+                tittel={'Dokumentasjon som viser at du er for syk til å være i arbeid'}
+            />
+
+            <DokumentasjonSendtInn
+                dokumentasjon={dokumentasjon?.virksomhet}
+                tittel={'Næringsfaglig vurdering av virksomheten du etablerer'}
+            />
         </InformasjonContainer>
     );
 };
