@@ -2,7 +2,6 @@ import React from 'react';
 import { IAnnenForelder } from '../Aleneomsorg/typer';
 import { KopierbartNullableFødselsnummer } from '../../../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
-import { FlexDiv } from '../../../Oppgavebenk/OppgaveFiltrering';
 import { harVerdi } from '../../../../App/utils/utils';
 import EtikettDød from '../../../../Felles/Etiketter/EtikettDød';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
@@ -13,7 +12,10 @@ interface Props {
     forelder: IAnnenForelder;
 }
 
-const FlexDivMedGap = styled(FlexDiv)`
+const AnnenForelderWrapper = styled.div`
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
     gap: 0.5rem;
 `;
 
@@ -21,7 +23,7 @@ export const AnnenForelderNavnOgFnr: React.FC<Props> = ({ forelder }) => {
     const { navn, fødselsnummer, fødselsdato, dødsfall } = forelder;
 
     return (
-        <FlexDivMedGap>
+        <AnnenForelderWrapper>
             <LenkeTilPersonopplysningsside personIdent={fødselsnummer}>
                 {harVerdi(navn) && navn !== 'ikke oppgitt' ? `${navn}` : 'Ikke oppgitt navn'}
             </LenkeTilPersonopplysningsside>
@@ -35,6 +37,6 @@ export const AnnenForelderNavnOgFnr: React.FC<Props> = ({ forelder }) => {
                 )}
             </BodyShortSmall>
             {dødsfall && <EtikettDød dødsdato={dødsfall} />}
-        </FlexDivMedGap>
+        </AnnenForelderWrapper>
     );
 };
