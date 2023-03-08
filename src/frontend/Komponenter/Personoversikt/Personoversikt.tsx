@@ -19,6 +19,8 @@ import { useSetPersonIdent } from '../../App/hooks/useSetPersonIdent';
 import { useHentFagsakPerson } from '../../App/hooks/useHentFagsakPerson';
 import { Tabs } from '@navikt/ds-react';
 import { InntektForPerson } from './InntektForPerson';
+import { ToggleName } from '../../App/context/toggles';
+import { useToggles } from '../../App/context/TogglesContext';
 
 type TabWithRouter = {
     label: string;
@@ -89,7 +91,15 @@ const tabs: TabWithRouter[] = [
     {
         label: 'Inntekt',
         path: 'inntekt',
-        komponent: (fagsakPerson) => <InntektForPerson fagsakPerson={fagsakPerson} />,
+        komponent: (fagsakPerson) => {
+            // eslint-disable-next-line react-hooks/rules-of-hooks
+            const { toggles } = useToggles();
+            return (
+                toggles[ToggleName.visInntektPersonoversikt] && (
+                    <InntektForPerson fagsakPerson={fagsakPerson} />
+                )
+            );
+        },
     },
 ];
 
