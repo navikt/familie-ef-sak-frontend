@@ -23,6 +23,16 @@ import { v4 as uuidv4 } from 'uuid';
 import JaNeiRadioGruppe from '../Felles/JaNeiRadioGruppe';
 import { HorizontalScroll } from '../Felles/HorizontalScroll';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
+import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
+
+const Container = styled.div`
+    padding: 1rem;
+    background-color: ${AGray50};
+
+    .spacing {
+        margin-bottom: 0.5rem;
+    }
+`;
 
 const Grid = styled.div<{ lesevisning: boolean }>`
     display: grid;
@@ -38,12 +48,8 @@ const Grid = styled.div<{ lesevisning: boolean }>`
     }
 `;
 
-const StyledInput = styled(InputMedTusenSkille)`
+const Input = styled(InputMedTusenSkille)`
     text-align: right;
-`;
-
-const RadioGruppe = styled(JaNeiRadioGruppe)`
-    margin-bottom: 1rem;
 `;
 
 interface Props {
@@ -123,11 +129,12 @@ const TilleggsstønadValg: React.FC<Props> = ({
         'Skal stønaden reduseres fordi brukeren har fått utbetalt stønad for tilsyn av barn etter tilleggsstønadsforskriften?';
 
     return (
-        <>
+        <Container>
             <Heading spacing size="small" level="5">
                 Tilleggsstønadsforskriften
             </Heading>
-            <RadioGruppe
+            <JaNeiRadioGruppe
+                className={'spacing'}
                 error={valideringsfeil?.harKontantstøtte}
                 legend={erDetSøktOmTekst}
                 lesevisning={erLesevisning}
@@ -135,7 +142,8 @@ const TilleggsstønadValg: React.FC<Props> = ({
                 value={tilleggsstønad.value as ERadioValg}
             />
             {søktTilleggsstønad && (
-                <RadioGruppe
+                <JaNeiRadioGruppe
+                    className={'spacing'}
                     error={valideringsfeil?.skalStønadReduseres}
                     legend={skalStønadReduseresTekst}
                     lesevisning={erLesevisning}
@@ -180,7 +188,7 @@ const TilleggsstønadValg: React.FC<Props> = ({
                                         årMånedFraInitiell={årMånedFra}
                                         årMånedTilInitiell={årMånedTil}
                                     />
-                                    <StyledInput
+                                    <Input
                                         erLesevisning={erLesevisning}
                                         hideLabel
                                         label={'Stønadsreduksjon'}
@@ -251,7 +259,7 @@ const TilleggsstønadValg: React.FC<Props> = ({
                     value={tilleggsstønadBegrunnelse.value}
                 />
             )}
-        </>
+        </Container>
     );
 };
 
