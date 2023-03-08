@@ -21,6 +21,12 @@ import { v4 as uuidv4 } from 'uuid';
 import JaNeiRadioGruppe from '../Felles/JaNeiRadioGruppe';
 import { HorizontalScroll } from '../Felles/HorizontalScroll';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
+import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
+
+const Container = styled.div`
+    padding: 1rem;
+    background-color: ${AGray50};
+`;
 
 const Grid = styled.div<{ lesevisning: boolean }>`
     display: grid;
@@ -36,15 +42,8 @@ const Grid = styled.div<{ lesevisning: boolean }>`
     }
 `;
 
-const RadioGruppe = styled(JaNeiRadioGruppe)`
-    margin-bottom: 1rem;
-`;
-
 const Input = styled(InputMedTusenSkille)`
     text-align: right;
-`;
-const ContainerMedLuftUnder = styled.div`
-    margin-bottom: 1rem;
 `;
 
 interface Props {
@@ -110,11 +109,11 @@ const KontantstøtteValg: React.FC<Props> = ({
         'Er det søkt om, utbetales det eller har det blitt utbetalt kontantstøtte til brukeren eller en brukeren bor med i perioden(e) det er søkt om?';
 
     return (
-        <>
+        <Container>
             <Heading spacing size="small" level="5">
                 Kontantstøtte
             </Heading>
-            <RadioGruppe
+            <JaNeiRadioGruppe
                 error={valideringsfeil?.harKontantstøtte}
                 legend={radioGruppeTekst}
                 lesevisning={erLesevisning}
@@ -207,17 +206,15 @@ const KontantstøtteValg: React.FC<Props> = ({
                             );
                         })}
                     </Grid>
-                    <ContainerMedLuftUnder>
-                        {!erLesevisning && (
-                            <LeggTilKnapp
-                                onClick={() => kontantstøttePerioder.push(tomKontantstøtteRad())}
-                                knappetekst="Legg til periode"
-                            />
-                        )}
-                    </ContainerMedLuftUnder>
+                    {!erLesevisning && (
+                        <LeggTilKnapp
+                            onClick={() => kontantstøttePerioder.push(tomKontantstøtteRad())}
+                            knappetekst="Legg til periode"
+                        />
+                    )}
                 </HorizontalScroll>
             )}
-        </>
+        </Container>
     );
 };
 

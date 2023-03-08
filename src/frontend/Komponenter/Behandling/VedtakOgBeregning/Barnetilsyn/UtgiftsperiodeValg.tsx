@@ -18,7 +18,7 @@ import { harTallverdi, tilHeltall, tilTallverdi } from '../../../../App/utils/ut
 import InputMedTusenSkille from '../../../../Felles/Visningskomponenter/InputMedTusenskille';
 import { IBarnMedSamvær } from '../../Inngangsvilkår/Aleneomsorg/typer';
 import { datoTilAlder } from '../../../../App/utils/dato';
-import { Label, Tooltip } from '@navikt/ds-react';
+import { Heading, Label, Tooltip } from '@navikt/ds-react';
 import FjernKnapp from '../../../../Felles/Knapper/FjernKnapp';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 import { erOpphørEllerSanksjon, tomUtgiftsperiodeRad } from './utils';
@@ -26,6 +26,15 @@ import PeriodetypeSelect from './PeriodetypeSelect';
 import AktivitetSelect from './AktivitetSelect';
 import { Sanksjonsmodal, SlettSanksjonsperiodeModal } from '../Felles/SlettSanksjonsperiodeModal';
 import { HorizontalScroll } from '../Felles/HorizontalScroll';
+import { FieldState } from '../../../../App/hooks/felles/useFieldState';
+import { IngenBegrunnelseOppgitt } from '../Overgangsstønad/InnvilgeVedtak/IngenBegrunnelseOppgitt';
+import { EnsligTextArea } from '../../../../Felles/Input/TekstInput/EnsligTextArea';
+import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
+
+const Container = styled.div`
+    padding: 1rem;
+    background-color: ${AGray50};
+`;
 
 const Grid = styled.div<{ lesevisning?: boolean }>`
     display: grid;
@@ -55,17 +64,23 @@ const MarginBottomDiv = styled.div`
     margin-bottom: 1rem;
 `;
 
+const TextArea = styled(EnsligTextArea)`
+    margin-top: 0.5rem;
+`;
+
 interface Props {
-    utgiftsperioder: ListState<IUtgiftsperiode>;
-    valideringsfeil?: FormErrors<InnvilgeVedtakForm>['utgiftsperioder'];
+    begrunnelseState: FieldState;
+    errorState: FormErrors<InnvilgeVedtakForm>;
+    utgiftsperioderState: ListState<IUtgiftsperiode>;
     settValideringsFeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>;
     barn: IBarnMedSamvær[];
     låsFraDatoFørsteRad: boolean;
 }
 
 const UtgiftsperiodeValg: React.FC<Props> = ({
-    utgiftsperioder,
-    valideringsfeil,
+    begrunnelseState,
+    errorState,
+    utgiftsperioderState,
     settValideringsFeil,
     barn,
     låsFraDatoFørsteRad,
@@ -87,9 +102,9 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
         ) {
             oppdaterUtgiftsperiodeDersomMidlertidigOpphør(index);
         } else {
-            utgiftsperioder.update(
+            utgiftsperioderState.update(
                 {
-                    ...utgiftsperioder.value[index],
+                    ...utgiftsperioderState.value[index],
                     [property]: value,
                 },
                 index
@@ -99,7 +114,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
     };
 
     const leggTilTomRadUnder = (index: number) => {
-        utgiftsperioder.setValue((prevState) => [
+        utgiftsperioderState.setValue((prevState) => [
             ...prevState.slice(0, index + 1),
             tomUtgiftsperiodeRad(),
             ...prevState.slice(index + 1, prevState.length),
@@ -107,9 +122,9 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
     };
 
     const oppdaterUtgiftsperiodeDersomMidlertidigOpphør = (index: number) => {
-        utgiftsperioder.update(
+        utgiftsperioderState.update(
             {
-                ...utgiftsperioder.value[index],
+                ...utgiftsperioderState.value[index],
                 [EUtgiftsperiodeProperty.periodetype]: EUtgiftsperiodetype.OPPHØR,
                 [EUtgiftsperiodeProperty.aktivitetstype]: undefined,
                 [EUtgiftsperiodeProperty.barn]: [],
@@ -138,7 +153,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
         if (sanksjonsmodal.visModal) {
             lukkSanksjonsmodal();
         }
-        utgiftsperioder.remove(index);
+        utgiftsperioderState.remove(index);
         settValideringsFeil((prevState: FormErrors<InnvilgeVedtakForm>) => {
             const utgiftsperioder = (prevState.utgiftsperioder ?? []).filter((_, i) => i !== index);
             return { ...prevState, utgiftsperioder };
@@ -146,7 +161,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
     };
 
     const slettPeriodeModalHvisSanksjon = (index: number) => {
-        const periode = utgiftsperioder.value[index];
+        const periode = utgiftsperioderState.value[index];
         if (periode.periodetype === EUtgiftsperiodetype.SANKSJON_1_MND) {
             settSanksjonsmodal({
                 visModal: true,
@@ -159,159 +174,197 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
     };
 
     return (
-        <HorizontalScroll
-            synligVedLukketMeny={'1445px'}
-            synligVedÅpenMeny={'1745px'}
-            åpenHøyremeny={åpenHøyremeny}
-        >
-            <Grid lesevisning={!behandlingErRedigerbar}>
-                <Label>Periodetype</Label>
-                <Label>Aktivitet</Label>
-                <Label>Periode fra og med</Label>
-                <Label>Periode til og med</Label>
-                <Label>Velg barn</Label>
-                <Label>Ant.</Label>
-                <Label>Utgifter</Label>
-                {utgiftsperioder.value.map((utgiftsperiode, index) => {
-                    const { periodetype, aktivitetstype, årMånedFra, årMånedTil, utgifter } =
-                        utgiftsperiode;
-                    const skalViseFjernKnapp = behandlingErRedigerbar && index !== 0;
-                    const barnForPeriode = barnFormatertForBarnVelger(barn);
-                    const ikkeValgteBarn = barnForPeriode.filter((barn) =>
-                        utgiftsperiode.barn.includes(barn.value)
-                    );
-                    const opphørEllerSanksjon = erOpphørEllerSanksjon(periodetype);
-                    const antallBarn = utgiftsperioder.value[index].barn
-                        ? utgiftsperioder.value[index].barn?.length
-                        : 0;
-                    return (
-                        <React.Fragment key={utgiftsperiode.endretKey}>
-                            <PeriodetypeSelect
-                                className={'ny-rad'}
-                                periodetype={periodetype}
-                                oppdaterUtgiftsperiodeElement={(property, value) =>
-                                    oppdaterUtgiftsperiode(index, property, value)
-                                }
-                                lesevisning={!behandlingErRedigerbar}
-                                feil={valideringsfeil && valideringsfeil[index]?.periodetype}
-                            />
-                            <AktivitetSelect
-                                periodetype={periodetype}
-                                aktivitet={aktivitetstype}
-                                oppdaterUtgiftsperiodeElement={(property, value) =>
-                                    oppdaterUtgiftsperiode(index, property, value)
-                                }
-                                erLesevisning={!behandlingErRedigerbar}
-                                feil={valideringsfeil && valideringsfeil[index]?.aktivitetstype}
-                            />
-                            <MånedÅrPeriode
-                                årMånedFraInitiell={årMånedFra}
-                                årMånedTilInitiell={årMånedTil}
-                                index={index}
-                                onEndre={(verdi, periodeVariant) => {
-                                    oppdaterUtgiftsperiode(
-                                        index,
-                                        periodeVariantTilUtgiftsperiodeProperty(periodeVariant),
-                                        verdi
-                                    );
-                                }}
-                                feilmelding={valideringsfeil && valideringsfeil[index]?.årMånedFra}
-                                erLesevisning={
-                                    !behandlingErRedigerbar ||
-                                    periodetype === EUtgiftsperiodetype.SANKSJON_1_MND
-                                }
-                                disabledFra={index === 0 && låsFraDatoFørsteRad}
-                            />
-                            {behandlingErRedigerbar && !opphørEllerSanksjon ? (
-                                <BarnVelger
-                                    placeholder={'Velg barn'}
-                                    label={''}
-                                    options={barnForPeriode}
-                                    creatable={false}
-                                    isMulti={true}
-                                    isDisabled={opphørEllerSanksjon}
-                                    defaultValue={ikkeValgteBarn}
-                                    value={opphørEllerSanksjon ? [] : ikkeValgteBarn}
-                                    feil={valideringsfeil && valideringsfeil[index]?.barn[0]}
-                                    onChange={(valgtBarn) => {
-                                        oppdaterUtgiftsperiode(
-                                            index,
-                                            EUtgiftsperiodeProperty.barn,
-                                            valgtBarn === null
-                                                ? []
-                                                : [...mapValgtBarn(valgtBarn as ISelectOption[])]
-                                        );
-                                    }}
+        <Container>
+            <HorizontalScroll
+                synligVedLukketMeny={'1445px'}
+                synligVedÅpenMeny={'1745px'}
+                åpenHøyremeny={åpenHøyremeny}
+            >
+                <Heading spacing size="small" level="5">
+                    Utgifter til barnetilsyn
+                </Heading>
+                <Grid lesevisning={!behandlingErRedigerbar}>
+                    <Label>Periodetype</Label>
+                    <Label>Aktivitet</Label>
+                    <Label>Periode fra og med</Label>
+                    <Label>Periode til og med</Label>
+                    <Label>Velg barn</Label>
+                    <Label>Ant.</Label>
+                    <Label>Utgifter</Label>
+                    {utgiftsperioderState.value.map((utgiftsperiode, index) => {
+                        const { periodetype, aktivitetstype, årMånedFra, årMånedTil, utgifter } =
+                            utgiftsperiode;
+                        const skalViseFjernKnapp = behandlingErRedigerbar && index !== 0;
+                        const barnForPeriode = barnFormatertForBarnVelger(barn);
+                        const ikkeValgteBarn = barnForPeriode.filter((barn) =>
+                            utgiftsperiode.barn.includes(barn.value)
+                        );
+                        const opphørEllerSanksjon = erOpphørEllerSanksjon(periodetype);
+                        const antallBarn = utgiftsperioderState.value[index].barn
+                            ? utgiftsperioderState.value[index].barn?.length
+                            : 0;
+                        return (
+                            <React.Fragment key={utgiftsperiode.endretKey}>
+                                <PeriodetypeSelect
+                                    className={'ny-rad'}
+                                    periodetype={periodetype}
+                                    oppdaterUtgiftsperiodeElement={(property, value) =>
+                                        oppdaterUtgiftsperiode(index, property, value)
+                                    }
+                                    lesevisning={!behandlingErRedigerbar}
+                                    feil={
+                                        errorState.utgiftsperioder &&
+                                        errorState.utgiftsperioder[index]?.periodetype
+                                    }
                                 />
-                            ) : (
-                                <MarginBottomDiv>
-                                    {barnForPeriode
-                                        .filter((barn) => utgiftsperiode.barn.includes(barn.value))
-                                        .map((barn) => (
-                                            <BodyShortSmall key={barn.value}>
-                                                {barn.label}
-                                            </BodyShortSmall>
-                                        ))}
-                                </MarginBottomDiv>
-                            )}
-                            {opphørEllerSanksjon ? (
-                                <div />
-                            ) : (
-                                <SentrertBodySort>{antallBarn}</SentrertBodySort>
-                            )}
-                            {opphørEllerSanksjon ? (
-                                <div />
-                            ) : (
-                                <InputMedTusenSkille
-                                    onKeyPress={tilHeltall}
-                                    type="number"
-                                    size={'small'}
-                                    value={harTallverdi(utgifter) ? utgifter : ''}
-                                    disabled={opphørEllerSanksjon}
-                                    onChange={(e) => {
-                                        oppdaterUtgiftsperiode(
-                                            index,
-                                            EUtgiftsperiodeProperty.utgifter,
-                                            tilTallverdi(e.target.value)
-                                        );
-                                    }}
+                                <AktivitetSelect
+                                    periodetype={periodetype}
+                                    aktivitet={aktivitetstype}
+                                    oppdaterUtgiftsperiodeElement={(property, value) =>
+                                        oppdaterUtgiftsperiode(index, property, value)
+                                    }
                                     erLesevisning={!behandlingErRedigerbar}
-                                    label={'Utgifter'}
-                                    hideLabel
+                                    feil={
+                                        errorState.utgiftsperioder &&
+                                        errorState.utgiftsperioder[index]?.aktivitetstype
+                                    }
                                 />
-                            )}
-                            {behandlingErRedigerbar && (
-                                <Tooltip content="Legg til rad under" placement="right">
-                                    <LeggTilKnapp
-                                        onClick={() => leggTilTomRadUnder(index)}
-                                        ikontekst={'Legg til ny rad'}
+                                <MånedÅrPeriode
+                                    årMånedFraInitiell={årMånedFra}
+                                    årMånedTilInitiell={årMånedTil}
+                                    index={index}
+                                    onEndre={(verdi, periodeVariant) => {
+                                        oppdaterUtgiftsperiode(
+                                            index,
+                                            periodeVariantTilUtgiftsperiodeProperty(periodeVariant),
+                                            verdi
+                                        );
+                                    }}
+                                    feilmelding={
+                                        errorState.utgiftsperioder &&
+                                        errorState.utgiftsperioder[index]?.årMånedFra
+                                    }
+                                    erLesevisning={
+                                        !behandlingErRedigerbar ||
+                                        periodetype === EUtgiftsperiodetype.SANKSJON_1_MND
+                                    }
+                                    disabledFra={index === 0 && låsFraDatoFørsteRad}
+                                />
+                                {behandlingErRedigerbar && !opphørEllerSanksjon ? (
+                                    <BarnVelger
+                                        placeholder={'Velg barn'}
+                                        label={''}
+                                        options={barnForPeriode}
+                                        creatable={false}
+                                        isMulti={true}
+                                        isDisabled={opphørEllerSanksjon}
+                                        defaultValue={ikkeValgteBarn}
+                                        value={opphørEllerSanksjon ? [] : ikkeValgteBarn}
+                                        feil={
+                                            errorState.utgiftsperioder &&
+                                            errorState.utgiftsperioder[index]?.barn[0]
+                                        }
+                                        onChange={(valgtBarn) => {
+                                            oppdaterUtgiftsperiode(
+                                                index,
+                                                EUtgiftsperiodeProperty.barn,
+                                                valgtBarn === null
+                                                    ? []
+                                                    : [
+                                                          ...mapValgtBarn(
+                                                              valgtBarn as ISelectOption[]
+                                                          ),
+                                                      ]
+                                            );
+                                        }}
                                     />
-                                </Tooltip>
-                            )}
-                            {skalViseFjernKnapp ? (
-                                <FjernKnapp
-                                    onClick={() => slettPeriodeModalHvisSanksjon(index)}
-                                    ikontekst={'Fjern utgiftsperiode'}
-                                />
-                            ) : (
-                                <div />
-                            )}
-                        </React.Fragment>
-                    );
-                })}
-            </Grid>
-            {behandlingErRedigerbar && (
-                <LeggTilKnapp
-                    onClick={() => utgiftsperioder.push(tomUtgiftsperiodeRad())}
-                    knappetekst="Legg til vedtaksperiode"
+                                ) : (
+                                    <MarginBottomDiv>
+                                        {barnForPeriode
+                                            .filter((barn) =>
+                                                utgiftsperiode.barn.includes(barn.value)
+                                            )
+                                            .map((barn) => (
+                                                <BodyShortSmall key={barn.value}>
+                                                    {barn.label}
+                                                </BodyShortSmall>
+                                            ))}
+                                    </MarginBottomDiv>
+                                )}
+                                {opphørEllerSanksjon ? (
+                                    <div />
+                                ) : (
+                                    <SentrertBodySort>{antallBarn}</SentrertBodySort>
+                                )}
+                                {opphørEllerSanksjon ? (
+                                    <div />
+                                ) : (
+                                    <InputMedTusenSkille
+                                        onKeyPress={tilHeltall}
+                                        type="number"
+                                        size={'small'}
+                                        value={harTallverdi(utgifter) ? utgifter : ''}
+                                        disabled={opphørEllerSanksjon}
+                                        onChange={(e) => {
+                                            oppdaterUtgiftsperiode(
+                                                index,
+                                                EUtgiftsperiodeProperty.utgifter,
+                                                tilTallverdi(e.target.value)
+                                            );
+                                        }}
+                                        erLesevisning={!behandlingErRedigerbar}
+                                        label={'Utgifter'}
+                                        hideLabel
+                                    />
+                                )}
+                                {behandlingErRedigerbar && (
+                                    <Tooltip content="Legg til rad under" placement="right">
+                                        <LeggTilKnapp
+                                            onClick={() => leggTilTomRadUnder(index)}
+                                            ikontekst={'Legg til ny rad'}
+                                        />
+                                    </Tooltip>
+                                )}
+                                {skalViseFjernKnapp ? (
+                                    <FjernKnapp
+                                        onClick={() => slettPeriodeModalHvisSanksjon(index)}
+                                        ikontekst={'Fjern utgiftsperiode'}
+                                    />
+                                ) : (
+                                    <div />
+                                )}
+                            </React.Fragment>
+                        );
+                    })}
+                </Grid>
+                {behandlingErRedigerbar && (
+                    <LeggTilKnapp
+                        onClick={() => utgiftsperioderState.push(tomUtgiftsperiodeRad())}
+                        knappetekst="Legg til vedtaksperiode"
+                    />
+                )}
+                <SlettSanksjonsperiodeModal
+                    sanksjonsmodal={sanksjonsmodal}
+                    slettPeriode={slettPeriode}
+                    lukkModal={lukkSanksjonsmodal}
+                />
+            </HorizontalScroll>
+            {!behandlingErRedigerbar && begrunnelseState.value === '' ? (
+                <IngenBegrunnelseOppgitt />
+            ) : (
+                <TextArea
+                    erLesevisning={!behandlingErRedigerbar}
+                    value={begrunnelseState.value}
+                    onChange={(event) => {
+                        settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+                        begrunnelseState.onChange(event);
+                    }}
+                    label={'Begrunnelse for vedtaksperiode'}
+                    maxLength={0}
+                    feilmelding={errorState.begrunnelse}
                 />
             )}
-            <SlettSanksjonsperiodeModal
-                sanksjonsmodal={sanksjonsmodal}
-                slettPeriode={slettPeriode}
-                lukkModal={lukkSanksjonsmodal}
-            />
-        </HorizontalScroll>
+        </Container>
     );
 };
 

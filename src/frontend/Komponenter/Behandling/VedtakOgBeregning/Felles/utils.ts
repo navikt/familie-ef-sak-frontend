@@ -165,12 +165,11 @@ export const utledHjelpetekstForBeløpFørFratrekkOgSatsjusteringForVedtaksside 
 
 export const blirNullUtbetalingPgaOverstigendeKontantstøtte = (
     perioder: IBeregningsperiodeBarnetilsyn[]
-): boolean => {
-    return perioder.every(
+): boolean =>
+    perioder.every(
         (periode) =>
             periode.beregningsgrunnlag.kontantstøttebeløp >= periode.beregningsgrunnlag.utgifter
     );
-};
 
 export const skalViseNullstillVedtakKnapp = (
     vedtak: Ressurs<IVedtakForOvergangsstønad | undefined>

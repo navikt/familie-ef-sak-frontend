@@ -18,32 +18,34 @@ import {
     SmallTextLabel,
 } from '../../../../Felles/Visningskomponenter/Tekster';
 
-const InnholdRad = styled.div`
-    display: grid;
-    grid-template-columns: 8rem 5.5rem 4rem 6rem 7rem 10rem 2rem;
-    grid-gap: 1rem;
-    margin-left: 1rem;
+const Container = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-width: 46rem;
 `;
 
-const TittelRad = styled(InnholdRad)`
-    margin-bottom: 0.5rem;
+const Grid = styled.div`
+    display: grid;
+    grid-template-columns: repeat(7, max-content);
+    column-gap: 1rem;
+    padding-left: 1rem;
+
+    .tittel-rad {
+        display: contents;
+    }
+
+    .tittel-rad > p {
+        margin-bottom: 0.5rem;
+    }
+
+    .ny-rad {
+        grid-column: 1;
+    }
 `;
 
 const HøyrejustertTekst = styled(BodyShortSmall)`
     text-align: right;
-`;
-
-const HøyrejusterElement = styled(SmallTextLabel)`
-    text-align: right;
-`;
-
-const VenstrejustertElement = styled(SmallTextLabel)`
-    text-align: left;
-`;
-
-const AdvarselContainter = styled.div`
-    margin-top: 1rem;
-    max-width: 43.5rem;
 `;
 
 export const UtregningstabellBarnetilsyn: React.FC<{
@@ -53,46 +55,46 @@ export const UtregningstabellBarnetilsyn: React.FC<{
     return (
         <DataViewer response={{ beregningsresultat }}>
             {({ beregningsresultat }) => (
-                <div className={className}>
-                    <Heading spacing size={'small'} level={'5'}>
+                <Container className={className}>
+                    <Heading size={'small'} level={'5'}>
                         Utregning
                     </Heading>
-                    <TittelRad>
-                        <SmallTextLabel>Periode</SmallTextLabel>
-                        <HøyrejusterElement>Ant. barn</HøyrejusterElement>
-                        <HøyrejusterElement>Utgifter</HøyrejusterElement>
-                        <HøyrejusterElement>Kontantstøtte</HøyrejusterElement>
-                        <HøyrejusterElement>Tilleggsstønad</HøyrejusterElement>
-                        <HøyrejusterElement>Stønadsbeløp pr. mnd</HøyrejusterElement>
-                    </TittelRad>
-                    {beregningsresultat.map((rad) => (
-                        <InnholdRad>
-                            <BodyShortSmall>
-                                {`${formaterNullableMånedÅr(
-                                    rad.periode.fradato
-                                )} - ${formaterNullableMånedÅr(rad.periode.tildato)}`}
-                            </BodyShortSmall>
-                            <HøyrejustertTekst>
-                                {rad.beregningsgrunnlag.antallBarn}
-                            </HøyrejustertTekst>
-                            <HøyrejustertTekst>
-                                {formaterTallMedTusenSkille(rad.beregningsgrunnlag.utgifter)}
-                            </HøyrejustertTekst>
-                            <HøyrejustertTekst>
-                                {formaterTallMedTusenSkille(
-                                    rad.beregningsgrunnlag.kontantstøttebeløp
-                                )}
-                            </HøyrejustertTekst>
-                            <HøyrejustertTekst>
-                                {formaterTallMedTusenSkille(
-                                    rad.beregningsgrunnlag.tilleggsstønadsbeløp
-                                )}
-                            </HøyrejustertTekst>
-                            <HøyrejustertTekst>
-                                {formaterTallMedTusenSkille(rad.beløp)}
-                            </HøyrejustertTekst>
-                            {rad.beløpFørFratrekkOgSatsjustering > rad.sats && (
-                                <VenstrejustertElement>
+                    <Grid>
+                        <div className={'tittel-rad'}>
+                            <SmallTextLabel>Periode</SmallTextLabel>
+                            <SmallTextLabel>Ant. barn</SmallTextLabel>
+                            <SmallTextLabel>Utgifter</SmallTextLabel>
+                            <SmallTextLabel>Kontantstøtte</SmallTextLabel>
+                            <SmallTextLabel>Tilleggsstønad</SmallTextLabel>
+                            <SmallTextLabel>Stønadsbeløp pr. mnd</SmallTextLabel>
+                        </div>
+                        {beregningsresultat.map((rad) => (
+                            <React.Fragment key={rad.periode.fradato}>
+                                <BodyShortSmall className={'ny-rad'}>
+                                    {`${formaterNullableMånedÅr(
+                                        rad.periode.fradato
+                                    )} - ${formaterNullableMånedÅr(rad.periode.tildato)}`}
+                                </BodyShortSmall>
+                                <HøyrejustertTekst>
+                                    {rad.beregningsgrunnlag.antallBarn}
+                                </HøyrejustertTekst>
+                                <HøyrejustertTekst>
+                                    {formaterTallMedTusenSkille(rad.beregningsgrunnlag.utgifter)}
+                                </HøyrejustertTekst>
+                                <HøyrejustertTekst>
+                                    {formaterTallMedTusenSkille(
+                                        rad.beregningsgrunnlag.kontantstøttebeløp
+                                    )}
+                                </HøyrejustertTekst>
+                                <HøyrejustertTekst>
+                                    {formaterTallMedTusenSkille(
+                                        rad.beregningsgrunnlag.tilleggsstønadsbeløp
+                                    )}
+                                </HøyrejustertTekst>
+                                <HøyrejustertTekst>
+                                    {formaterTallMedTusenSkille(rad.beløp)}
+                                </HøyrejustertTekst>
+                                {rad.beløpFørFratrekkOgSatsjustering > rad.sats && (
                                     <HelpText title="Hvor kommer beløpet fra?" placement={'right'}>
                                         {utledHjelpetekstForBeløpFørFratrekkOgSatsjustering(
                                             rad.beregningsgrunnlag.antallBarn,
@@ -100,12 +102,12 @@ export const UtregningstabellBarnetilsyn: React.FC<{
                                             rad.sats
                                         )}
                                     </HelpText>
-                                </VenstrejustertElement>
-                            )}
-                        </InnholdRad>
-                    ))}
-                    {blirNullUtbetalingPgaOverstigendeKontantstøtte(beregningsresultat) && (
-                        <AdvarselContainter>
+                                )}
+                            </React.Fragment>
+                        ))}
+                    </Grid>
+                    {blirNullUtbetalingPgaOverstigendeKontantstøtte(beregningsresultat) ||
+                        (blirNullUtbetalingPgaOverstigendeKontantstøtte(beregningsresultat) && (
                             <Alert variant={'warning'} size={'medium'}>
                                 <Heading spacing size="xsmall" level="5">
                                     Avslag/Opphør - kontantstøtte overstiger tilsynsutgifter.
@@ -116,9 +118,8 @@ export const UtregningstabellBarnetilsyn: React.FC<{
                                     kontantstøtte"
                                 </BodyLongSmall>
                             </Alert>
-                        </AdvarselContainter>
-                    )}
-                </div>
+                        ))}
+                </Container>
             )}
         </DataViewer>
     );

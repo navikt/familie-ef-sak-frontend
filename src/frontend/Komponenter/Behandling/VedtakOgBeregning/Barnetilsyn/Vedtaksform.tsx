@@ -14,10 +14,9 @@ import React, { useEffect, useState } from 'react';
 import useFormState, { FormState } from '../../../../App/hooks/felles/useFormState';
 import { validerInnvilgetVedtakForm, validerPerioder } from './vedtaksvalidering';
 import { ListState } from '../../../../App/hooks/felles/useListState';
-import AlertStripeFeilPreWrap from '../../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
 import styled from 'styled-components';
-import { Button, Heading } from '@navikt/ds-react';
+import { Button } from '@navikt/ds-react';
 import UtgiftsperiodeValg from './UtgiftsperiodeValg';
 import KontantstøtteValg, { tomKontantstøtteRad } from './KontantstøtteValg';
 import TilleggsstønadValg, { tomTilleggsstønadRad } from './Tilleggsstønadsvalg';
@@ -26,14 +25,11 @@ import { useApp } from '../../../../App/context/AppContext';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../../App/typer/ressurs';
 import { IBarnMedSamvær } from '../../Inngangsvilkår/Aleneomsorg/typer';
 import { UtregningstabellBarnetilsyn } from './UtregnignstabellBarnetilsyn';
-import { IngenBegrunnelseOppgitt } from '../Overgangsstønad/InnvilgeVedtak/IngenBegrunnelseOppgitt';
-import { EnsligTextArea } from '../../../../Felles/Input/TekstInput/EnsligTextArea';
-import { VEDTAK_OG_BEREGNING } from '../Felles/konstanter';
 import { blirNullUtbetalingPgaOverstigendeKontantstøtte } from '../Felles/utils';
 import { tomUtgiftsperiodeRad } from './utils';
 import { useRedirectEtterLagring } from '../../../../App/hooks/felles/useRedirectEtterLagring';
 import { v4 as uuidv4 } from 'uuid';
-import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
+import { AlertError } from '../../../../Felles/Visningskomponenter/Alerts';
 
 export type InnvilgeVedtakForm = {
     utgiftsperioder: IUtgiftsperiode[];
@@ -46,25 +42,27 @@ export type InnvilgeVedtakForm = {
     begrunnelse?: string;
 };
 
-const Container = styled.section`
-    margin-top: 1rem;
-    padding: 1rem;
+const Form = styled.form`
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 `;
 
-const InputContainer = styled(Container)`
-    background-color: ${AGray50};
+const Utregningstabell = styled(UtregningstabellBarnetilsyn)`
+    margin-left: 1rem;
 `;
 
-const UtregningTabell = styled(UtregningstabellBarnetilsyn)`
-    margin-top: 1rem;
+const AlertStripe = styled(AlertError)`
+    max-width: 47rem;
+`;
+
+const BeregnKnapp = styled(Button)`
+    margin-left: 1rem;
+    width: 6rem;
 `;
 
 const HovedKnapp = styled(Button)`
-    margin-top: 1rem;
-`;
-
-const TextArea = styled(EnsligTextArea)`
-    margin-top: 0.5rem;
+    width: 9rem;
 `;
 
 const initKontantstøttestate = (vedtak: IInnvilgeVedtakForBarnetilsyn | undefined) =>
@@ -280,72 +278,43 @@ export const Vedtaksform: React.FC<{
     }, [beregningsresultat, settResultatType]);
 
     return (
-        <form onSubmit={formState.onSubmit(handleSubmit)}>
-            <InputContainer>
-                <Heading spacing size="small" level="5">
-                    Utgifter til barnetilsyn
-                </Heading>
-                <UtgiftsperiodeValg
-                    utgiftsperioder={utgiftsperiodeState}
-                    valideringsfeil={formState.errors.utgiftsperioder}
-                    settValideringsFeil={formState.setErrors}
-                    barn={barn}
-                    låsFraDatoFørsteRad={låsFraDatoFørsteRad}
-                />
-                {!behandlingErRedigerbar && begrunnelseState.value === '' ? (
-                    <IngenBegrunnelseOppgitt />
-                ) : (
-                    <TextArea
-                        erLesevisning={!behandlingErRedigerbar}
-                        value={begrunnelseState.value}
-                        onChange={(event) => {
-                            settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
-                            begrunnelseState.onChange(event);
-                        }}
-                        label={'Begrunnelse for vedtaksperiode'}
-                        maxLength={0}
-                        feilmelding={formState.errors.begrunnelse}
-                    />
-                )}
-            </InputContainer>
-            <InputContainer>
-                <KontantstøtteValg
-                    erLesevisning={!behandlingErRedigerbar}
-                    kontantstøtte={kontantstøtteState}
-                    kontantstøttePerioder={kontantstøttePeriodeState}
-                    settValideringsFeil={formState.setErrors}
-                    valideringsfeil={formState.errors}
-                />
-            </InputContainer>
-            <InputContainer>
-                <TilleggsstønadValg
-                    erLesevisning={!behandlingErRedigerbar}
-                    settValideringsfeil={formState.setErrors}
-                    stønadsreduksjon={stønadsreduksjonState}
-                    tilleggsstønad={tilleggsstønadState}
-                    tilleggsstønadBegrunnelse={tilleggsstønadBegrunnelseState}
-                    tilleggsstønadPerioder={tilleggsstønadsperiodeState}
-                    valideringsfeil={formState.errors}
-                />
-            </InputContainer>
-            <Container>
-                {behandlingErRedigerbar && (
-                    <Button variant={'secondary'} onClick={beregnBarnetilsyn} type={'button'}>
-                        Beregn
-                    </Button>
-                )}
-                <UtregningTabell beregningsresultat={beregningsresultat} />
-                {feilmelding && (
-                    <AlertStripeFeilPreWrap style={{ marginTop: '2rem' }}>
-                        {feilmelding}
-                    </AlertStripeFeilPreWrap>
-                )}
-            </Container>
+        <Form onSubmit={formState.onSubmit(handleSubmit)}>
+            <UtgiftsperiodeValg
+                begrunnelseState={begrunnelseState}
+                errorState={formState.errors}
+                utgiftsperioderState={utgiftsperiodeState}
+                settValideringsFeil={formState.setErrors}
+                barn={barn}
+                låsFraDatoFørsteRad={låsFraDatoFørsteRad}
+            />
+            <KontantstøtteValg
+                erLesevisning={!behandlingErRedigerbar}
+                kontantstøtte={kontantstøtteState}
+                kontantstøttePerioder={kontantstøttePeriodeState}
+                settValideringsFeil={formState.setErrors}
+                valideringsfeil={formState.errors}
+            />
+            <TilleggsstønadValg
+                erLesevisning={!behandlingErRedigerbar}
+                settValideringsfeil={formState.setErrors}
+                stønadsreduksjon={stønadsreduksjonState}
+                tilleggsstønad={tilleggsstønadState}
+                tilleggsstønadBegrunnelse={tilleggsstønadBegrunnelseState}
+                tilleggsstønadPerioder={tilleggsstønadsperiodeState}
+                valideringsfeil={formState.errors}
+            />
+            {behandlingErRedigerbar && (
+                <BeregnKnapp variant={'secondary'} onClick={beregnBarnetilsyn} type={'button'}>
+                    Beregn
+                </BeregnKnapp>
+            )}
+            <Utregningstabell beregningsresultat={beregningsresultat} />
+            {feilmelding && <AlertStripe>{feilmelding}</AlertStripe>}
             {behandlingErRedigerbar && (
                 <HovedKnapp variant="primary" disabled={laster} type={'submit'}>
                     Lagre vedtak
                 </HovedKnapp>
             )}
-        </form>
+        </Form>
     );
 };
