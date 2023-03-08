@@ -1,39 +1,44 @@
 import React from 'react';
-import TabellOverskrift from './TabellOverskrift';
 import SkrivendeBlyant from '../Ikoner/SkrivendeBlyant';
-import { BredTd, IngenData, KolonneTitler, TabellWrapper } from './TabellWrapper';
+import { KolonneTitler, SmallTable } from './TabellWrapper';
 import { IFullmakt } from '../../App/typer/personopplysninger';
 import { formaterNullableIsoDato } from '../../App/utils/formatter';
+import PersonopplysningerPanel from './PersonopplysningPanel';
+import { Table } from '@navikt/ds-react';
+import { KopierbartNullableFødselsnummer } from '../Fødselsnummer/KopierbartNullableFødselsnummer';
 
 const Fullmakter: React.FC<{ fullmakter: IFullmakt[] }> = ({ fullmakter }) => {
     return (
-        <TabellWrapper>
-            <TabellOverskrift Ikon={SkrivendeBlyant} tittel={'Fullmakter'} />
-            {(fullmakter.length !== 0 && (
-                <table className="tabell">
+        <PersonopplysningerPanel Ikon={SkrivendeBlyant} tittel={'Fullmakter'}>
+            {fullmakter.length !== 0 && (
+                <SmallTable>
                     <KolonneTitler
-                        titler={['Fullmektig', 'Områder', 'Fødselsnummer', 'Fra', 'Til']}
+                        titler={['Fullmektig', 'Fødselsnummer', 'Områder', 'Fra', 'Til']}
                     />
-                    <tbody>
+                    <Table.Body>
                         {fullmakter.map((fullmakt, indeks) => {
                             return (
-                                <tr key={indeks}>
-                                    <BredTd>{fullmakt.navn}</BredTd>
-                                    <BredTd>{fullmakt.områder.join()}</BredTd>
-                                    <BredTd>{fullmakt.motpartsPersonident}</BredTd>
-                                    <BredTd>
+                                <Table.Row key={indeks}>
+                                    <Table.DataCell>{fullmakt.navn}</Table.DataCell>
+                                    <Table.DataCell>
+                                        <KopierbartNullableFødselsnummer
+                                            fødselsnummer={fullmakt.motpartsPersonident}
+                                        />
+                                    </Table.DataCell>
+                                    <Table.DataCell>{fullmakt.områder.join()}</Table.DataCell>
+                                    <Table.DataCell>
                                         {formaterNullableIsoDato(fullmakt.gyldigFraOgMed)}
-                                    </BredTd>
-                                    <BredTd>
+                                    </Table.DataCell>
+                                    <Table.DataCell>
                                         {formaterNullableIsoDato(fullmakt.gyldigTilOgMed)}
-                                    </BredTd>
-                                </tr>
+                                    </Table.DataCell>
+                                </Table.Row>
                             );
                         })}
-                    </tbody>
-                </table>
-            )) || <IngenData />}
-        </TabellWrapper>
+                    </Table.Body>
+                </SmallTable>
+            )}
+        </PersonopplysningerPanel>
     );
 };
 

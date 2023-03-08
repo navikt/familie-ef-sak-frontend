@@ -14,12 +14,22 @@ import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTex
 import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import { AlertError } from '../../../../../Felles/Visningskomponenter/Alerts';
 import { Button } from '@navikt/ds-react';
+import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
 import { useRedirectEtterLagring } from '../../../../../App/hooks/felles/useRedirectEtterLagring';
 import { v4 as uuidv4 } from 'uuid';
 
-const StyledFormElement = styled.div`
-    margin-top: 2rem;
-    margin-bottom: 2rem;
+const Container = styled.div`
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: ${AGray50};
+`;
+
+const HovedKnapp = styled(Button)`
+    margin-top: 1rem;
+`;
+
+const TextArea = styled(EnsligTextArea)`
+    margin-top: 1rem;
 `;
 
 export const Opphør: React.FC<{
@@ -77,21 +87,19 @@ export const Opphør: React.FC<{
     return (
         <>
             <form onSubmit={lagreVedtak}>
-                <StyledFormElement>
+                <Container>
                     <MånedÅrVelger
                         label={'Opphør fra og med'}
                         onEndret={(årMåned) => {
                             settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
                             årMåned && settOpphørtFra(årMåned);
                         }}
-                        antallÅrTilbake={3}
+                        antallÅrTilbake={4}
                         antallÅrFrem={3}
                         disabled={!behandlingErRedigerbar}
                         årMånedInitiell={opphørtFra}
                     />
-                </StyledFormElement>
-                <StyledFormElement>
-                    <EnsligTextArea
+                    <TextArea
                         label={'Begrunnelse for opphør'}
                         maxLength={0}
                         erLesevisning={!behandlingErRedigerbar}
@@ -101,14 +109,12 @@ export const Opphør: React.FC<{
                             settOpphørtBegrunnelse(begrunnelse.target.value);
                         }}
                     />
-                </StyledFormElement>
-                <StyledFormElement>
-                    {behandlingErRedigerbar && (
-                        <Button type="submit" disabled={laster}>
-                            Lagre vedtak
-                        </Button>
-                    )}
-                </StyledFormElement>
+                </Container>
+                {behandlingErRedigerbar && (
+                    <HovedKnapp type="submit" disabled={laster}>
+                        Lagre vedtak
+                    </HovedKnapp>
+                )}
             </form>
             {feilmelding && <AlertError>{feilmelding}</AlertError>}
         </>

@@ -13,13 +13,13 @@ interface Props {
 
 const Container = styled.div`
     flex: 1 0 30rem;
-    max-width: 46rem;
     padding: 1rem;
     background-color: ${AGray50};
 `;
 
 const Div = styled.div`
     margin-top: 0.5rem;
+    max-width: 46rem;
 `;
 
 const FlexBox = styled.div`
