@@ -3,12 +3,13 @@ import { useBehandling } from '../../../App/context/BehandlingContext';
 import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { Behandling } from '../../../App/typer/fagsak';
 import { useApp } from '../../../App/context/AppContext';
-import { useNavigate } from 'react-router-dom';
 import { EToast } from '../../../App/typer/toast';
 import { EHenlagtårsak } from '../../../App/typer/Behandlingsårsak';
 import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
 import { Alert, Radio, RadioGroup } from '@navikt/ds-react';
 import styled from 'styled-components';
+import { useRedirectEtterLagring } from '../../../App/hooks/felles/useRedirectEtterLagring';
+import { v4 as uuidv4 } from 'uuid';
 
 const AlertStripe = styled(Alert)`
     margin-top: 1rem;
@@ -16,9 +17,13 @@ const AlertStripe = styled(Alert)`
 
 export const HenleggModal: FC<{ behandling: Behandling }> = ({ behandling }) => {
     const { visHenleggModal, settVisHenleggModal } = useBehandling();
-
-    const { axiosRequest, settToast } = useApp();
-    const navigate = useNavigate();
+    const { utførRedirect } = useRedirectEtterLagring(`/fagsak/${behandling.fagsakId}`);
+    const {
+        axiosRequest,
+        settToast,
+        nullstillIkkePersisterteKomponenter,
+        settIkkePersistertKomponent,
+    } = useApp();
     const [henlagtårsak, settHenlagtårsak] = useState<EHenlagtårsak>();
     const [låsKnapp, settLåsKnapp] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>();
@@ -32,6 +37,7 @@ export const HenleggModal: FC<{ behandling: Behandling }> = ({ behandling }) => 
             return;
         }
         settLåsKnapp(true);
+        nullstillIkkePersisterteKomponenter();
         axiosRequest<string, { årsak: EHenlagtårsak }>({
             method: 'POST',
             url: `/familie-ef-sak/api/behandling/${behandling.id}/henlegg`,
@@ -42,13 +48,14 @@ export const HenleggModal: FC<{ behandling: Behandling }> = ({ behandling }) => 
             .then((respons: Ressurs<string>) => {
                 switch (respons.status) {
                     case RessursStatus.SUKSESS:
-                        navigate(`/fagsak/${behandling.fagsakId}`);
+                        utførRedirect();
                         settToast(EToast.BEHANDLING_HENLAGT);
                         break;
                     case RessursStatus.HENTER:
                     case RessursStatus.IKKE_HENTET:
                         break;
                     default:
+                        settIkkePersistertKomponent(uuidv4());
                         settFeilmelding(respons.frontendFeilmelding);
                 }
             })
