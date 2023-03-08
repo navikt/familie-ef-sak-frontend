@@ -44,6 +44,7 @@ const PensjonsgivendeInntektTabell: React.FC<{
                             {pensjonsgivendeInntekt.map((inntekt) => {
                                 return (
                                     <Table.Row key={inntekt.inntektsaar}>
+                                        <Table.DataCell>{inntekt.inntektsaar}</Table.DataCell>
                                         <Table.DataCell>{inntekt.verdi}</Table.DataCell>
                                     </Table.Row>
                                 );
