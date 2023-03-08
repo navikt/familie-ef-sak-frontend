@@ -18,6 +18,7 @@ import { useSetValgtFagsakPersonId } from '../../App/hooks/useSetValgtFagsakPers
 import { useSetPersonIdent } from '../../App/hooks/useSetPersonIdent';
 import { useHentFagsakPerson } from '../../App/hooks/useHentFagsakPerson';
 import { Tabs } from '@navikt/ds-react';
+import { InntektForPerson } from './InntektForPerson';
 
 type TabWithRouter = {
     label: string;
@@ -84,6 +85,11 @@ const tabs: TabWithRouter[] = [
                 )
             );
         },
+    },
+    {
+        label: 'Inntekt',
+        path: 'inntekt',
+        komponent: (fagsakPerson) => <InntektForPerson fagsakPerson={fagsakPerson} />,
     },
 ];
 
