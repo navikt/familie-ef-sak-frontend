@@ -25,6 +25,18 @@ const OppdaterGrunnlagKnapp = styled(Button)`
     margin: 0 1rem 0 0.5rem;
 `;
 
+const skalViseDetaljer = (ny: string, tidligere: string) => tidligere != '' || ny != '';
+
+const visEndringsdetaljer = (ny: string, tidligere: string) => (
+    <>
+        {skalViseDetaljer(tidligere, ny) && (
+            <>
+                - <strong>Tidligere:</strong> {tidligere} <strong>Ny:</strong> {ny}
+            </>
+        )}
+    </>
+);
+
 const PersonEndring: React.FC<{ personendringer: Personendring[] }> = ({ personendringer }) => {
     return (
         <>
@@ -34,12 +46,14 @@ const PersonEndring: React.FC<{ personendringer: Personendring[] }> = ({ persone
                     <ul>
                         {person.fjernet && <li>Fjernet</li>}
                         {person.ny && <li>Ny</li>}
-                        {person.endringer.map((endring, index) => (
-                            <li key={endring.felt + index}>
-                                {endring.felt} - <strong>Tidligere:</strong> {endring.tidligere}{' '}
-                                <strong>Ny:</strong> {endring.ny}
-                            </li>
-                        ))}
+                        {person.endringer.map((endring, index) => {
+                            return (
+                                <li key={endring.felt + index}>
+                                    {endring.felt}
+                                    {visEndringsdetaljer(endring.tidligere, endring.ny)}
+                                </li>
+                            );
+                        })}
                     </ul>
                 </ul>
             ))}
