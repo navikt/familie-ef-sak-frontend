@@ -55,10 +55,6 @@ const InputContainer = styled(Container)`
     background-color: ${AGray50};
 `;
 
-const UtregningTabell = styled(UtregningstabellBarnetilsyn)`
-    margin-top: 1rem;
-`;
-
 const HovedKnapp = styled(Button)`
     margin-top: 1rem;
 `;
@@ -334,7 +330,7 @@ export const Vedtaksform: React.FC<{
                         Beregn
                     </Button>
                 )}
-                <UtregningTabell beregningsresultat={beregningsresultat} />
+                <UtregningstabellBarnetilsyn beregningsresultat={beregningsresultat} />
                 {feilmelding && (
                     <AlertStripeFeilPreWrap style={{ marginTop: '2rem' }}>
                         {feilmelding}
