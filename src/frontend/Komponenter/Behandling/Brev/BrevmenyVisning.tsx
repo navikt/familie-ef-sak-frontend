@@ -2,17 +2,21 @@ import React, { useEffect, useState } from 'react';
 import {
     BrevStruktur,
     Delmal,
+    erDelmalBlokk,
+    erFritekstblokk,
     Flettefelter,
     FlettefeltMedVerdi,
     Flettefeltreferanse,
+    Fritekstområder,
     ValgFelt,
     ValgteDelmaler,
     ValgtFelt,
 } from './BrevTyper';
 import { BrevMenyDelmal } from './BrevMenyDelmal';
 import {
+    erDelmalGruppe,
     finnFletteFeltApinavnFraRef,
-    grupperDelmaler,
+    grupperBrevmenyBlokker,
     harValgfeltFeil,
     initFlettefelterMedVerdi,
     initValgteFelt,
@@ -30,6 +34,7 @@ import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { delmalTilUtregningstabellOS } from './UtregningstabellOvergangsstønad';
 import { delmalTilUtregningstabellBT } from './UtregningstabellBarnetilsyn';
 import { useVerdierForBrev } from '../../../App/hooks/useVerdierForBrev';
+import { Fritekstområde } from './Fritekstområde';
 
 const BrevFelter = styled.div`
     display: flex;
@@ -97,6 +102,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
 
     const [valgteFelt, settValgteFelt] = useState<ValgtFelt>({});
     const [valgteDelmaler, settValgteDelmaler] = useState<ValgteDelmaler>({});
+    const [fritekstområder, settFritekstområder] = useState<Fritekstområder>({});
 
     const lagFlettefelterForDelmal = (delmalflettefelter: Flettefelter[]) => {
         return delmalflettefelter.reduce((acc, flettefeltAvsnitt) => {
@@ -160,17 +166,31 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     };
 
     const utledDelmalerForBrev = () => {
-        return brevStruktur.dokument.delmalerSortert.reduce((acc, delmal) => {
-            return valgteDelmaler[delmal.delmalApiNavn]
+        return brevStruktur.dokument.brevmenyBlokker.reduce((acc, blokk) => {
+            return erDelmalBlokk(blokk) && valgteDelmaler[blokk.blokk.delmalApiNavn]
                 ? {
                       ...acc,
-                      [delmal.delmalApiNavn]: [
+                      [blokk.blokk.delmalApiNavn]: [
                           {
-                              flettefelter: lagFlettefelterForDelmal(delmal.delmalFlettefelter),
-                              valgfelter: lagValgfelterForDelmal(delmal.delmalValgfelt),
+                              flettefelter: lagFlettefelterForDelmal(
+                                  blokk.blokk.delmalFlettefelter
+                              ),
+                              valgfelter: lagValgfelterForDelmal(blokk.blokk.delmalValgfelt),
                               htmlfelter: utledHtmlFelterPåStønadstype(stønadstype),
                           },
                       ],
+                  }
+                : acc;
+        }, {});
+    };
+
+    const utledFritekstområderForBrev = () => {
+        if (Object.keys(fritekstområder).length === 0) return {};
+        return brevStruktur.dokument.brevmenyBlokker.reduce((acc, blokk) => {
+            return erFritekstblokk(blokk) && fritekstområder[blokk.blokk.id]
+                ? {
+                      ...acc,
+                      [blokk.blokk.id]: fritekstområder[blokk.blokk.id],
                   }
                 : acc;
         }, {});
@@ -192,6 +212,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                     navn: [personopplysninger.navn.visningsnavn],
                     fodselsnummer: [personopplysninger.personIdent],
                 },
+                fritekstområder: utledFritekstområderForBrev(),
             },
         }).then((respons: Ressurs<string>) => {
             oppdaterBrevRessurs(respons);
@@ -207,59 +228,69 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
         valgteDelmaler,
         behandlingId,
         brevMal,
+        fritekstområder,
     ]);
 
-    const delmalerGruppert = grupperDelmaler(brevStruktur.dokument.delmalerSortert);
+    const brevmenyBlokkerGruppert = grupperBrevmenyBlokker(brevStruktur.dokument.brevmenyBlokker);
     return (
         <BrevFelter>
             {brevmalFeil && <Alert variant={'warning'}>{brevmalFeil}</Alert>}
-            {Object.entries(delmalerGruppert).map(([key, delmaler]: [string, Delmal[]]) => {
-                const alleDelmalerSkjules = delmaler.every((delmal) => {
-                    const automatiskFeltSomSkalSkjules = delmalStore.find(
-                        (mal) => mal.delmal === delmal.delmalApiNavn
-                    )?.skjulIBrevmeny;
-                    return automatiskFeltSomSkalSkjules || false;
-                });
-                if (alleDelmalerSkjules) {
-                    return null;
+            {brevmenyBlokkerGruppert.map((gruppe) => {
+                if (erDelmalGruppe(gruppe)) {
+                    const alleDelmalerSkjules = gruppe.delmaler.every((delmal) => {
+                        const automatiskFeltSomSkalSkjules = delmalStore.find(
+                            (mal) => mal.delmal === delmal.delmalApiNavn
+                        )?.skjulIBrevmeny;
+                        return automatiskFeltSomSkalSkjules || false;
+                    });
+                    if (alleDelmalerSkjules) {
+                        return null;
+                    }
+                    return (
+                        <Panel key={gruppe.gruppeVisningsnavn}>
+                            {gruppe.gruppeVisningsnavn !== 'undefined' && (
+                                <BrevMenyTittel>
+                                    <Heading size={'small'} level={'5'}>
+                                        {gruppe.gruppeVisningsnavn}
+                                    </Heading>
+                                </BrevMenyTittel>
+                            )}
+                            {gruppe.delmaler.map((delmal: Delmal, index: number) => {
+                                const automatiskFeltsomSkalSkjules = delmalStore.find(
+                                    (mal) => mal.delmal === delmal.delmalApiNavn
+                                )?.skjulIBrevmeny;
+                                const skjulDelmal = automatiskFeltsomSkalSkjules || false;
+                                return (
+                                    <BrevMenyDelmalWrapper
+                                        førsteElement={index === 0}
+                                        key={`${delmal.delmalApiNavn}_wrapper`}
+                                    >
+                                        <BrevMenyDelmal
+                                            valgt={!!valgteDelmaler[delmal.delmalApiNavn]}
+                                            delmal={delmal}
+                                            dokument={brevStruktur}
+                                            valgteFelt={valgteFelt}
+                                            settValgteFelt={settValgteFelt}
+                                            flettefelter={alleFlettefelter}
+                                            settFlettefelter={settAlleFlettefelter}
+                                            settValgteDelmaler={settValgteDelmaler}
+                                            key={delmal.delmalApiNavn}
+                                            settKanSendeTilBeslutter={settKanSendesTilBeslutter}
+                                            skjul={skjulDelmal}
+                                        />
+                                    </BrevMenyDelmalWrapper>
+                                );
+                            })}
+                        </Panel>
+                    );
+                } else {
+                    return (
+                        <Fritekstområde
+                            id={gruppe.fritekstområde.blokk.id}
+                            settFritekstområder={settFritekstområder}
+                        />
+                    );
                 }
-                return (
-                    <Panel key={key}>
-                        {key !== 'undefined' && (
-                            <BrevMenyTittel>
-                                <Heading size={'small'} level={'5'}>
-                                    {key}
-                                </Heading>
-                            </BrevMenyTittel>
-                        )}
-                        {delmaler.map((delmal: Delmal, index: number) => {
-                            const automatiskFeltsomSkalSkjules = delmalStore.find(
-                                (mal) => mal.delmal === delmal.delmalApiNavn
-                            )?.skjulIBrevmeny;
-                            const skjulDelmal = automatiskFeltsomSkalSkjules || false;
-                            return (
-                                <BrevMenyDelmalWrapper
-                                    førsteElement={index === 0}
-                                    key={`${delmal.delmalApiNavn}_wrapper`}
-                                >
-                                    <BrevMenyDelmal
-                                        valgt={!!valgteDelmaler[delmal.delmalApiNavn]}
-                                        delmal={delmal}
-                                        dokument={brevStruktur}
-                                        valgteFelt={valgteFelt}
-                                        settValgteFelt={settValgteFelt}
-                                        flettefelter={alleFlettefelter}
-                                        settFlettefelter={settAlleFlettefelter}
-                                        settValgteDelmaler={settValgteDelmaler}
-                                        key={delmal.delmalApiNavn}
-                                        settKanSendeTilBeslutter={settKanSendesTilBeslutter}
-                                        skjul={skjulDelmal}
-                                    />
-                                </BrevMenyDelmalWrapper>
-                            );
-                        })}
-                    </Panel>
-                );
             })}
         </BrevFelter>
     );

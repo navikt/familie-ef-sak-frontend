@@ -1,11 +1,14 @@
 import {
     AvsnittMedId,
+    BrevmenyBlokk,
     BrevStruktur,
     Delmal,
     FlettefeltMedVerdi,
     IFritekstBrev,
     IFrittståendeBrev,
     ValgtFelt,
+    FritekstBlokk,
+    erFritekstblokk,
 } from './BrevTyper';
 import { v4 as uuidv4 } from 'uuid';
 import { Dispatch, SetStateAction } from 'react';
@@ -50,6 +53,39 @@ export const grupperDelmaler = (delmaler: Delmal[]): { [gruppeVisningsnavn: stri
         (acc[delmal.gruppeVisningsnavn] = acc[delmal.gruppeVisningsnavn] || []).push(delmal);
         return acc;
     }, {});
+};
+
+type delmalGruppe = { type: 'DelmalGruppe'; gruppeVisningsnavn: string; delmaler: Delmal[] };
+type d = { type: 'fritekstområde'; fritekstområde: FritekstBlokk } | delmalGruppe;
+export const erDelmalGruppe = (e: d): e is delmalGruppe => e.type === 'DelmalGruppe';
+
+export const grupperBrevmenyBlokker = (blokker: BrevmenyBlokk[]): d[] => {
+    return blokker.reduce((acc: d[], blokk) => {
+        if (erFritekstblokk(blokk)) {
+            return [...acc, { type: 'fritekstområde', fritekstområde: blokk }];
+        }
+
+        const delmalgruppe = acc.findIndex(
+            (område) =>
+                område.type === 'DelmalGruppe' &&
+                område.gruppeVisningsnavn === blokk.blokk.gruppeVisningsnavn
+        );
+
+        if (delmalgruppe < 0) {
+            acc.push({
+                type: 'DelmalGruppe',
+                gruppeVisningsnavn: blokk.blokk.gruppeVisningsnavn,
+                delmaler: [blokk.blokk],
+            });
+        } else {
+            const gruppe = acc[delmalgruppe];
+            if (erDelmalGruppe(gruppe)) {
+                gruppe.delmaler.push(blokk.blokk);
+            }
+        }
+
+        return acc;
+    }, []);
 };
 
 const hentVerdiFraMellomlagerEllerNull = (
