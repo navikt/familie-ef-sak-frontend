@@ -1,6 +1,6 @@
 import React, { SetStateAction } from 'react';
-import { Button, Heading, Panel, Textarea, TextField } from '@navikt/ds-react';
-import { Add, Delete } from '@navikt/ds-icons';
+import { Button, Heading, Panel, Textarea, TextField, Tooltip } from '@navikt/ds-react';
+import { ArrowDownIcon, ArrowUpIcon, PlusIcon, TrashIcon } from '@navikt/aksel-icons';
 import styled from 'styled-components';
 import { FritekstAvsnitt, Fritekstområder } from './BrevTyper';
 
@@ -17,8 +17,10 @@ const FritekstområdePanel = styled(Panel)`
     gap: 1rem;
 `;
 
-const SlettKnapp = styled(Button)`
-    align-self: flex-end;
+const KnappeWrapper = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
 `;
 
 export const Fritekstområde: React.FC<{
@@ -50,6 +52,34 @@ export const Fritekstområde: React.FC<{
             [id]: prevState[id] ? [...prevState[id], { innhold: '' }] : [{ innhold: '' }],
         }));
 
+    const flyttAvsnittOpp = (indeks: number) => {
+        if (indeks === 0) return;
+
+        settFritekstområder((prevState) => ({
+            ...prevState,
+            [id]: [
+                ...prevState[id].slice(0, indeks - 1),
+                prevState[id][indeks],
+                prevState[id][indeks - 1],
+                ...prevState[id].slice(indeks + 1),
+            ],
+        }));
+    };
+
+    const flyttAvsnittNed = (indeks: number) => {
+        if (indeks === fritekstområder[id].length - 1) return;
+
+        settFritekstområder((prevState) => ({
+            ...prevState,
+            [id]: [
+                ...prevState[id].slice(0, indeks),
+                prevState[id][indeks + 1],
+                prevState[id][indeks],
+                ...prevState[id].slice(indeks + 2),
+            ],
+        }));
+    };
+
     return (
         <FritekstområdePanel>
             <Heading size={'small'}>Fritekstområde</Heading>
@@ -57,15 +87,7 @@ export const Fritekstområde: React.FC<{
                 fritekstområder[id].length !== 0 &&
                 fritekstområder[id].map((avsnitt, indeks) => {
                     return (
-                        <FritekstAvsnittContainer>
-                            <SlettKnapp
-                                icon={<Delete />}
-                                variant={'tertiary'}
-                                size={'small'}
-                                onClick={() => fjernAvsnitt(indeks)}
-                            >
-                                Slett avsnitt
-                            </SlettKnapp>
+                        <FritekstAvsnittContainer key={indeks}>
                             <TextField
                                 size={'small'}
                                 value={avsnitt.deloverskrift}
@@ -88,13 +110,39 @@ export const Fritekstområde: React.FC<{
                                     })
                                 }
                             />
+                            <KnappeWrapper>
+                                <Tooltip content="Slett avsnitt">
+                                    <Button
+                                        icon={<TrashIcon />}
+                                        variant={'tertiary'}
+                                        size={'small'}
+                                        onClick={() => fjernAvsnitt(indeks)}
+                                    />
+                                </Tooltip>
+                                <Tooltip content="Flytt avsnitt ned">
+                                    <Button
+                                        size={'small'}
+                                        variant={'tertiary'}
+                                        icon={<ArrowDownIcon />}
+                                        onClick={() => flyttAvsnittNed(indeks)}
+                                    />
+                                </Tooltip>
+                                <Tooltip content="Flytt avsnitt opp">
+                                    <Button
+                                        size={'small'}
+                                        variant={'tertiary'}
+                                        icon={<ArrowUpIcon />}
+                                        onClick={() => flyttAvsnittOpp(indeks)}
+                                    />
+                                </Tooltip>
+                            </KnappeWrapper>
                         </FritekstAvsnittContainer>
                     );
                 })}
             <Button
                 size={'small'}
                 variant={'secondary'}
-                icon={<Add />}
+                icon={<PlusIcon fontSize="1.5rem" />}
                 onClick={leggTilNyttAvsnitt}
             >
                 Legg til fritekst
