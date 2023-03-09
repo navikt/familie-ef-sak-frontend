@@ -49,12 +49,12 @@ export interface IVurdering {
     endretAv: string;
     endretTid: string;
     delvilkårsvurderinger: IDelvilkår[];
-    gjenbrukt?: Gjenbrukt;
+    opphavsvilkår?: Opphavsvilkår;
 }
 
-export interface Gjenbrukt {
+export interface Opphavsvilkår {
     behandlingId: string;
-    endretTid: string;
+    vurderingstidspunkt: string;
 }
 
 export interface IDokumentasjonGrunnlag {

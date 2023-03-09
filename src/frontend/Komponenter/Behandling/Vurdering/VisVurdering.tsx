@@ -73,7 +73,7 @@ const VisVurdering: FC<Props> = ({
 }) => {
     const vilkårsresultat = vurdering.resultat;
     const sistOppdatert = formaterIsoDatoTidMedSekunder(
-        vurdering.gjenbrukt?.endretTid || vurdering.endretTid
+        vurdering.opphavsvilkår?.vurderingstidspunkt || vurdering.endretTid
     );
     const vurderingerBesvartAvSaksbehandler = vurdering.delvilkårsvurderinger.filter(
         (delvilkårsvurdering) =>
@@ -142,7 +142,7 @@ const VisVurdering: FC<Props> = ({
                     vilkårsresultat === Vilkårsresultat.IKKE_OPPFYLT) && (
                     <SistOppdatertTekst>
                         Sist endret dato - {sistOppdatert}
-                        {vurdering.gjenbrukt ? ` (gjenbrukt)` : ``}
+                        {vurdering.opphavsvilkår ? ` (gjenbrukt)` : ``}
                     </SistOppdatertTekst>
                 )}
                 <StyledVilkår>
