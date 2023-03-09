@@ -7,6 +7,13 @@ import DokumentasjonSendtInn from '../../Inngangsvilkår/DokumentasjonSendtInn';
 import { AlertError } from '../../../../Felles/Visningskomponenter/Alerts';
 import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';
 import { VilkårpanelInnhold } from '../../Vilkårpanel/VilkårpanelInnhold';
+import styled from 'styled-components';
+
+const VilkårWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+`;
 
 export const DokumentasjonsTilsynsutgifter: React.FC<VilkårProps> = ({
     vurderinger,
@@ -37,35 +44,37 @@ export const DokumentasjonsTilsynsutgifter: React.FC<VilkårProps> = ({
         >
             <VilkårpanelInnhold>
                 {{
-                    venstre: grunnlag.barnMedSamvær.map((barn, index) => {
-                        const erSisteBarn = index === grunnlag.barnMedSamvær.length - 1;
-                        return (
-                            <React.Fragment key={index}>
-                                <TilsynsutgifterBarnInfo
-                                    gjeldendeBarn={barn}
-                                    skalViseSøknadsdata={skalViseSøknadsdata}
-                                />
-                                {erSisteBarn && skalViseSøknadsdata && (
-                                    <>
-                                        <DokumentasjonSendtInn
-                                            dokumentasjon={
-                                                grunnlag.dokumentasjon?.avtaleBarnepasser
-                                            }
-                                            tittel={'Avtalen du har med barnepasseren'}
-                                        />
-                                        <DokumentasjonSendtInn
-                                            dokumentasjon={
-                                                grunnlag.dokumentasjon?.barnepassordningFaktura
-                                            }
-                                            tittel={
-                                                'Faktura fra barnepassordningen for perioden du søker om nå'
-                                            }
-                                        />
-                                    </>
-                                )}
-                            </React.Fragment>
-                        );
-                    }),
+                    venstre: (
+                        <VilkårWrapper>
+                            {grunnlag.barnMedSamvær.map((barn, index) => {
+                                const erSisteBarn = index === grunnlag.barnMedSamvær.length - 1;
+                                return (
+                                    <React.Fragment key={index}>
+                                        <TilsynsutgifterBarnInfo gjeldendeBarn={barn} />
+                                        {erSisteBarn && skalViseSøknadsdata && (
+                                            <>
+                                                <DokumentasjonSendtInn
+                                                    dokumentasjon={
+                                                        grunnlag.dokumentasjon?.avtaleBarnepasser
+                                                    }
+                                                    tittel={'Avtalen du har med barnepasseren'}
+                                                />
+                                                <DokumentasjonSendtInn
+                                                    dokumentasjon={
+                                                        grunnlag.dokumentasjon
+                                                            ?.barnepassordningFaktura
+                                                    }
+                                                    tittel={
+                                                        'Faktura fra barnepassordningen for perioden du søker om nå'
+                                                    }
+                                                />
+                                            </>
+                                        )}
+                                    </React.Fragment>
+                                );
+                            })}
+                        </VilkårWrapper>
+                    ),
                     høyre: (
                         <VisEllerEndreVurdering
                             key={vurdering.id}
