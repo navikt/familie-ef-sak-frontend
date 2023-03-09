@@ -249,7 +249,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     return (
         <BrevFelter>
             {brevmalFeil && <Alert variant={'warning'}>{brevmalFeil}</Alert>}
-            {brevmenyBlokkerGruppert.map((gruppe) => {
+            {brevmenyBlokkerGruppert.map((gruppe, indeks) => {
                 if (erDelmalGruppe(gruppe)) {
                     const alleDelmalerSkjules = gruppe.delmaler.every((delmal) => {
                         const automatiskFeltSomSkalSkjules = delmalStore.find(
@@ -300,6 +300,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                 } else {
                     return (
                         <Fritekstområde
+                            key={indeks}
                             id={gruppe.fritekstområde.blokk.id}
                             fritekstområder={fritekstområder}
                             settFritekstområder={settFritekstområder}
