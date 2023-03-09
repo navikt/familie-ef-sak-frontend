@@ -25,7 +25,7 @@ import {
 } from '../../App/typer/behandlingstema';
 import { Behandlingsårsak, behandlingsårsakTilTekst } from '../../App/typer/Behandlingsårsak';
 import { Link, Tag } from '@navikt/ds-react';
-import { AlertError } from '../Visningskomponenter/Alerts';
+import { AlertWarning } from '../Visningskomponenter/Alerts';
 import { AFontWeightBold, ABorderStrong } from '@navikt/ds-tokens/dist/tokens';
 import { BodyShortSmall } from '../Visningskomponenter/Tekster';
 
@@ -34,6 +34,11 @@ const Visningsnavn = styled(BodyShortSmall)`
     overflow: hidden;
     white-space: nowrap;
     font-weight: ${AFontWeightBold};
+`;
+
+const BrukerManglerFagsakWarning = styled(AlertWarning)`
+    height: 100%;
+    width: 30rem;
 `;
 
 const ResponsivLenke = styled(Link)`
@@ -173,13 +178,15 @@ const PersonHeaderComponent: FC<{ data: IPersonopplysninger; behandling?: Behand
 
     return (
         <PersonHeaderWrapper>
-            {feilFagsakHenting && <AlertError>Kunne ikke hente fagsak</AlertError>}
             <VisittKort
                 alder={20}
                 ident={personIdent}
                 kjønn={kjønn}
                 navn={
-                    <ResponsivLenke role={'link'} href={`/person/${fagsakPersonId}`}>
+                    <ResponsivLenke
+                        role={'link'}
+                        href={fagsakPersonId ? `/person/${fagsakPersonId}` : '#'}
+                    >
                         <Visningsnavn>{visningsnavn}</Visningsnavn>
                     </ResponsivLenke>
                 }
@@ -281,6 +288,11 @@ const PersonHeaderComponent: FC<{ data: IPersonopplysninger; behandling?: Behand
                         </ElementWrapper>
                     )}
                 </TagsKnyttetTilBehandling>
+                {feilFagsakHenting && (
+                    <BrukerManglerFagsakWarning size={'small'}>
+                        Bruker har ikke fagsak
+                    </BrukerManglerFagsakWarning>
+                )}
             </VisittKort>
 
             {behandling && (
