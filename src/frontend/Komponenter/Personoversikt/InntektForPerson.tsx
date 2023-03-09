@@ -8,6 +8,15 @@ import { Table } from '@navikt/ds-react';
 import styled from 'styled-components';
 import { Ressurs } from '../../App/typer/ressurs';
 
+const StyledTable = styled.table`
+    width: 70%;
+    padding: 2rem;
+    margin-left: 1rem;
+    td {
+        padding: 0.75rem;
+    }
+`;
+
 export const InntektForPerson: React.FC<{
     fagsakPerson: IFagsakPerson;
 }> = ({ fagsakPerson }) => {
@@ -18,34 +27,38 @@ export const InntektForPerson: React.FC<{
         }),
         [fagsakPerson]
     );
-    const pensjonsgivendeInntekt = useDataHenter<PensjonsgivendeInntekt[], null>(inntektConfig);
+    const pensjonsgivendeInntekter = useDataHenter<PensjonsgivendeInntekt[], null>(inntektConfig);
 
-    return <PensjonsgivendeInntektTabell pensjonsgivendeInntekt={pensjonsgivendeInntekt} />;
+    return <PensjonsgivendeInntektTabell pensjonsgivendeInntekter={pensjonsgivendeInntekter} />;
 };
 
 const PensjonsgivendeInntektTabell: React.FC<{
-    pensjonsgivendeInntekt: Ressurs<PensjonsgivendeInntekt[]>;
-}> = ({ pensjonsgivendeInntekt }) => {
+    pensjonsgivendeInntekter: Ressurs<PensjonsgivendeInntekt[]>;
+}> = ({ pensjonsgivendeInntekter }) => {
     return (
-        <DataViewer response={{ pensjonsgivendeInntekt }}>
-            {({ pensjonsgivendeInntekt }) => {
-                if (!pensjonsgivendeInntekt.length) {
+        <DataViewer response={{ pensjonsgivendeInntekter }}>
+            {({ pensjonsgivendeInntekter }) => {
+                if (!pensjonsgivendeInntekter.length) {
                     return null;
                 }
                 return (
                     <StyledTable>
                         <Table.Header>
                             <Table.Row>
-                                <Table.ColumnHeader>Inntektsår</Table.ColumnHeader>
-                                <Table.ColumnHeader>Pensjonsgivende inntekt</Table.ColumnHeader>
+                                <Table.HeaderCell>Inntektsår</Table.HeaderCell>
+                                <Table.HeaderCell>Pensjonsgivende inntekt</Table.HeaderCell>
                             </Table.Row>
                         </Table.Header>
                         <Table.Body>
-                            {pensjonsgivendeInntekt.map((inntekt) => {
+                            {pensjonsgivendeInntekter.map((pensjonsgivendeInntekt) => {
                                 return (
-                                    <Table.Row key={inntekt.inntektsaar}>
-                                        <Table.DataCell>{inntekt.inntektsaar}</Table.DataCell>
-                                        <Table.DataCell>{inntekt.verdi}</Table.DataCell>
+                                    <Table.Row key={pensjonsgivendeInntekt.inntektsaar}>
+                                        <Table.DataCell>
+                                            {pensjonsgivendeInntekt.inntektsaar}
+                                        </Table.DataCell>
+                                        <Table.DataCell>
+                                            {pensjonsgivendeInntekt.verdi}
+                                        </Table.DataCell>
                                     </Table.Row>
                                 );
                             })}
@@ -56,12 +69,3 @@ const PensjonsgivendeInntektTabell: React.FC<{
         </DataViewer>
     );
 };
-
-const StyledTable = styled.table`
-    width: 70%;
-    padding: 2rem;
-    margin-left: 1rem;
-    td {
-        padding: 0.75rem;
-    }
-`;

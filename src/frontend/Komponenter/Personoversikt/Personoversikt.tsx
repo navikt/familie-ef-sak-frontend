@@ -88,13 +88,6 @@ const tabs: TabWithRouter[] = [
             );
         },
     },
-    {
-        label: 'Inntekt',
-        path: 'inntekt',
-        komponent: (fagsakPerson) => {
-            return <InntektForPerson fagsakPerson={fagsakPerson} />;
-        },
-    },
 ];
 
 const PersonoversiktContent: React.FC<{
@@ -108,7 +101,8 @@ const PersonoversiktContent: React.FC<{
     const path = paths.length ? paths[paths.length - 1] : '';
     useSetPersonIdent(personopplysninger.personIdent);
     const skalInntektVises = toggles[ToggleName.visInntektPersonoversikt];
-    if (skalInntektVises) {
+    if (skalInntektVises && tabs.length === 6) {
+        //Flyttes opp når den ikke trengs featuretogglet lenger
         tabs.push({
             label: 'Inntekt',
             path: 'inntekt',
