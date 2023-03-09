@@ -1,14 +1,14 @@
 import {
     AvsnittMedId,
     BrevmenyBlokk,
+    BrevmenyGruppe,
     BrevStruktur,
-    Delmal,
+    erDelmalGruppe,
+    erFritekstblokk,
     FlettefeltMedVerdi,
     IFritekstBrev,
     IFrittståendeBrev,
     ValgtFelt,
-    FritekstBlokk,
-    erFritekstblokk,
 } from './BrevTyper';
 import { v4 as uuidv4 } from 'uuid';
 import { Dispatch, SetStateAction } from 'react';
@@ -48,19 +48,8 @@ export const erFlettefeltFritektsfelt = (dokument: BrevStruktur, ref: string): b
     return flettefeltFraRef?.erFritektsfelt || false;
 };
 
-export const grupperDelmaler = (delmaler: Delmal[]): { [gruppeVisningsnavn: string]: Delmal[] } => {
-    return delmaler.reduce((acc: { [gruppeVisningsnavn: string]: Delmal[] }, delmal: Delmal) => {
-        (acc[delmal.gruppeVisningsnavn] = acc[delmal.gruppeVisningsnavn] || []).push(delmal);
-        return acc;
-    }, {});
-};
-
-type delmalGruppe = { type: 'DelmalGruppe'; gruppeVisningsnavn: string; delmaler: Delmal[] };
-type d = { type: 'fritekstområde'; fritekstområde: FritekstBlokk } | delmalGruppe;
-export const erDelmalGruppe = (e: d): e is delmalGruppe => e.type === 'DelmalGruppe';
-
-export const grupperBrevmenyBlokker = (blokker: BrevmenyBlokk[]): d[] => {
-    return blokker.reduce((acc: d[], blokk) => {
+export const grupperBrevmenyBlokker = (blokker: BrevmenyBlokk[]): BrevmenyGruppe[] => {
+    return blokker.reduce((acc: BrevmenyGruppe[], blokk) => {
         if (erFritekstblokk(blokk)) {
             return [...acc, { type: 'fritekstområde', fritekstområde: blokk }];
         }

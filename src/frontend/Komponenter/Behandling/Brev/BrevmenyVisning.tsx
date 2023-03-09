@@ -3,6 +3,7 @@ import {
     BrevStruktur,
     Delmal,
     erDelmalBlokk,
+    erDelmalGruppe,
     erFritekstblokk,
     Flettefelter,
     FlettefeltMedVerdi,
@@ -14,7 +15,6 @@ import {
 } from './BrevTyper';
 import { BrevMenyDelmal } from './BrevMenyDelmal';
 import {
-    erDelmalGruppe,
     finnFletteFeltApinavnFraRef,
     grupperBrevmenyBlokker,
     harValgfeltFeil,
