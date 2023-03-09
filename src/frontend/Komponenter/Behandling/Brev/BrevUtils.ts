@@ -57,19 +57,19 @@ export const grupperBrevmenyBlokker = (blokker: BrevmenyBlokk[]): BrevmenyGruppe
         const delmalgruppe = acc.findIndex(
             (område) =>
                 område.type === 'DelmalGruppe' &&
-                område.gruppeVisningsnavn === blokk.blokk.gruppeVisningsnavn
+                område.gruppeVisningsnavn === blokk.innhold.gruppeVisningsnavn
         );
 
         if (delmalgruppe < 0) {
             acc.push({
                 type: 'DelmalGruppe',
-                gruppeVisningsnavn: blokk.blokk.gruppeVisningsnavn,
-                delmaler: [blokk.blokk],
+                gruppeVisningsnavn: blokk.innhold.gruppeVisningsnavn,
+                delmaler: [blokk.innhold],
             });
         } else {
             const gruppe = acc[delmalgruppe];
             if (erDelmalGruppe(gruppe)) {
-                gruppe.delmaler.push(blokk.blokk);
+                gruppe.delmaler.push(blokk.innhold);
             }
         }
 

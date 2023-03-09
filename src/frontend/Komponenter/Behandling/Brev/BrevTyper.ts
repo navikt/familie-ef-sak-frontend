@@ -33,11 +33,11 @@ export interface BrevStruktur {
 
 export type FritekstBlokk = {
     _type: 'fritekstområde';
-    blokk: { id: string };
+    innhold: { id: string };
 };
 type DelmalBlokk = {
     _type: 'delmalBlock';
-    blokk: Delmal;
+    innhold: Delmal;
 };
 export type BrevmenyBlokk = FritekstBlokk | DelmalBlokk;
 

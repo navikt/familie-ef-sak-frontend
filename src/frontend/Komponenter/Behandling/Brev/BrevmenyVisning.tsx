@@ -175,15 +175,15 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
 
     const utledDelmalerForBrev = () => {
         return brevStruktur.dokument.brevmenyBlokker.reduce((acc, blokk) => {
-            return erDelmalBlokk(blokk) && valgteDelmaler[blokk.blokk.delmalApiNavn]
+            return erDelmalBlokk(blokk) && valgteDelmaler[blokk.innhold.delmalApiNavn]
                 ? {
                       ...acc,
-                      [blokk.blokk.delmalApiNavn]: [
+                      [blokk.innhold.delmalApiNavn]: [
                           {
                               flettefelter: lagFlettefelterForDelmal(
-                                  blokk.blokk.delmalFlettefelter
+                                  blokk.innhold.delmalFlettefelter
                               ),
-                              valgfelter: lagValgfelterForDelmal(blokk.blokk.delmalValgfelt),
+                              valgfelter: lagValgfelterForDelmal(blokk.innhold.delmalValgfelt),
                               htmlfelter: utledHtmlFelterPåStønadstype(stønadstype),
                           },
                       ],
@@ -195,10 +195,10 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     const utledFritekstområderForBrev = () => {
         if (Object.keys(fritekstområder).length === 0) return {};
         return brevStruktur.dokument.brevmenyBlokker.reduce((acc, blokk) => {
-            return erFritekstblokk(blokk) && fritekstområder[blokk.blokk.id]
+            return erFritekstblokk(blokk) && fritekstområder[blokk.innhold.id]
                 ? {
                       ...acc,
-                      [blokk.blokk.id]: fritekstområder[blokk.blokk.id],
+                      [blokk.innhold.id]: fritekstområder[blokk.innhold.id],
                   }
                 : acc;
         }, {});
@@ -301,7 +301,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                     return (
                         <Fritekstområde
                             key={indeks}
-                            id={gruppe.fritekstområde.blokk.id}
+                            id={gruppe.fritekstområde.innhold.id}
                             fritekstområder={fritekstområder}
                             settFritekstområder={settFritekstområder}
                         />
