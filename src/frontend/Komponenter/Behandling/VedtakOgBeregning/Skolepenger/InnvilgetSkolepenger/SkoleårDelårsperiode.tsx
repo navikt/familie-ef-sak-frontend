@@ -37,10 +37,6 @@ const AntallMåneder = styled(BodyShortSmall)<{ erLesevisning: boolean }>`
     text-align: center;
 `;
 
-const ContainerMedLuftUnder = styled.div`
-    margin-bottom: 1rem;
-`;
-
 const StyledInput = styled(InputUtenSpinner)`
     width: 8rem;
     text-align: left;
@@ -54,6 +50,10 @@ const StyledSelect = styled(EnsligFamilieSelect)`
 
 const IkonKnappWrapper = styled.div`
     display: block;
+`;
+
+const LeggTilPeriodeKnapp = styled(LeggTilKnapp)`
+    width: 12rem;
 `;
 
 const SkoleårDelårsperiode: React.FC<ValideringsPropsMedOppdatering<IPeriodeSkolepenger>> = ({
@@ -183,19 +183,17 @@ const SkoleårDelårsperiode: React.FC<ValideringsPropsMedOppdatering<IPeriodeSk
                     );
                 })}
             </Grid>
-            <ContainerMedLuftUnder>
-                {!erLesevisning && !erOpphør && (
-                    <LeggTilKnapp
-                        onClick={() =>
-                            oppdater([
-                                ...data,
-                                { ...tomSkoleårsperiode, studietype: data[0].studietype },
-                            ])
-                        }
-                        knappetekst="Legg til periode"
-                    />
-                )}
-            </ContainerMedLuftUnder>
+            {!erLesevisning && !erOpphør && (
+                <LeggTilPeriodeKnapp
+                    onClick={() =>
+                        oppdater([
+                            ...data,
+                            { ...tomSkoleårsperiode, studietype: data[0].studietype },
+                        ])
+                    }
+                    knappetekst="Legg til periode"
+                />
+            )}
         </>
     );
 };

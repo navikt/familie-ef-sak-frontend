@@ -10,15 +10,12 @@ import { Behandling } from '../../../../../App/typer/fagsak';
 import React, { useEffect, useState } from 'react';
 import useFormState, { FormState } from '../../../../../App/hooks/felles/useFormState';
 import { ListState } from '../../../../../App/hooks/felles/useListState';
-import AlertStripeFeilPreWrap from '../../../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import { useBehandling } from '../../../../../App/context/BehandlingContext';
 import styled from 'styled-components';
-import { Button, Heading } from '@navikt/ds-react';
+import { Button } from '@navikt/ds-react';
 import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
 import { useApp } from '../../../../../App/context/AppContext';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../../../App/typer/ressurs';
-import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
-import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import { UtregningstabellSkolepenger } from '../UtregnignstabellSkolepenger';
 import {
     validerInnvilgetVedtakForm,
@@ -28,29 +25,28 @@ import { tomSkoleårsperiodeSkolepenger } from '../typer';
 import SkoleårsperioderSkolepenger from './SkoleårsperioderSkolepenger';
 import OpphørSkolepenger from '../OpphørSkolepenger/OpphørSkolepenger';
 import { BodyShortSmall } from '../../../../../Felles/Visningskomponenter/Tekster';
-import { AGray50, ARed500 } from '@navikt/ds-tokens/dist/tokens';
+import { ARed500 } from '@navikt/ds-tokens/dist/tokens';
 import { useRedirectEtterLagring } from '../../../../../App/hooks/felles/useRedirectEtterLagring';
 import { v4 as uuidv4 } from 'uuid';
+import { BegrunnelsesFelt } from './BegrunnelsesFelt';
+import { AlertError } from '../../../../../Felles/Visningskomponenter/Alerts';
 
-const BeregnKnapp = styled(Button)`
-    margin: 2rem 1rem 1rem 1rem;
+const Form = styled.form`
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+`;
+
+const Div = styled.div`
+    margin-left: 1rem;
 `;
 
 export const AdvarselTekst = styled(BodyShortSmall)`
     color: ${ARed500};
 `;
 
-const Container = styled.section`
-    margin-top: 1rem;
-    padding: 1rem;
-`;
-
-const InputContainer = styled(Container)`
-    background-color: ${AGray50};
-`;
-
 const HovedKnapp = styled(Button)`
-    margin-top: 1rem;
+    width: 9rem;
 `;
 
 export const defaultSkoleårsperioder = (
@@ -181,23 +177,8 @@ export const VedtaksformSkolepenger: React.FC<{
     }, [axiosRequest, behandling, behandlingErRedigerbar]);
 
     return (
-        <form onSubmit={formState.onSubmit(handleSubmit)}>
-            <InputContainer>
-                <Heading spacing size="small" level="5">
-                    Utgifter til skolepenger
-                </Heading>
-                <EnsligTextArea
-                    erLesevisning={!behandlingErRedigerbar}
-                    value={begrunnelseState.value}
-                    onChange={(event) => {
-                        settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
-                        begrunnelseState.onChange(event);
-                    }}
-                    label={'Begrunnelse'}
-                    maxLength={0}
-                    feilmelding={formState.errors.begrunnelse}
-                />
-            </InputContainer>
+        <Form onSubmit={formState.onSubmit(handleSubmit)}>
+            <BegrunnelsesFelt begrunnelseState={begrunnelseState} errorState={formState.errors} />
             {erOpphør ? (
                 <OpphørSkolepenger
                     skoleårsperioder={skoleårsPerioderState}
@@ -214,22 +195,18 @@ export const VedtaksformSkolepenger: React.FC<{
                     oppdaterHarUtførtBeregning={settHarUtførtBeregning}
                 />
             )}
-            {feilmelding && (
-                <AlertStripeFeilPreWrap style={{ marginTop: '2rem' }}>
-                    {feilmelding}
-                </AlertStripeFeilPreWrap>
-            )}
+            {feilmelding && <AlertError>{feilmelding}</AlertError>}
             {behandlingErRedigerbar && !erOpphør && (
-                <div>
-                    <BeregnKnapp variant={'secondary'} onClick={beregnSkolepenger} type={'button'}>
+                <Div>
+                    <Button variant={'secondary'} onClick={beregnSkolepenger} type={'button'}>
                         Beregn
-                    </BeregnKnapp>
+                    </Button>
                     {visFeilmelding && (
                         <AdvarselTekst>
                             Kan ikke lagre vedtaket før beregning er utført
                         </AdvarselTekst>
                     )}
-                </div>
+                </Div>
             )}
             <UtregningstabellSkolepenger
                 beregningsresultat={beregningsresultat}
@@ -240,6 +217,6 @@ export const VedtaksformSkolepenger: React.FC<{
                     Lagre vedtak
                 </HovedKnapp>
             )}
-        </form>
+        </Form>
     );
 };

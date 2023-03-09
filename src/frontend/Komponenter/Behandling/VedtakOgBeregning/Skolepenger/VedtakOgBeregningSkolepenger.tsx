@@ -56,32 +56,17 @@ const VedtakOgBeregningSkolepenger: FC<Props> = ({ behandling, vilkår }) => {
                     const vedtakForSkolepenger = vedtak as unknown as IVedtakForSkolepenger;
                     switch (resultatType) {
                         case EBehandlingResultat.INNVILGE:
+                        case EBehandlingResultat.OPPHØRT:
+                            // eslint-disable-next-line no-case-declarations
+                            const erOpphør = resultatType === EBehandlingResultat.OPPHØRT;
                             return (
                                 <VedtaksformSkolepenger
-                                    key={'innvilgelse'}
+                                    key={erOpphør ? 'opphør' : 'innvilgelse'}
                                     behandling={behandling}
-                                    erOpphør={false}
+                                    erOpphør={erOpphør}
                                     lagretInnvilgetVedtak={
                                         vedtakForSkolepenger?._type ===
                                         IVedtakType.InnvilgelseSkolepenger
-                                            ? vedtakForSkolepenger
-                                            : undefined
-                                    }
-                                    forrigeVedtak={
-                                        vedtakForrigeBehandling &&
-                                        (vedtakForrigeBehandling as unknown as IVedtakForSkolepenger)
-                                    }
-                                />
-                            );
-                        case EBehandlingResultat.OPPHØRT:
-                            return (
-                                <VedtaksformSkolepenger
-                                    key={'opphør'}
-                                    behandling={behandling}
-                                    erOpphør={true}
-                                    lagretInnvilgetVedtak={
-                                        vedtakForSkolepenger?._type ===
-                                        IVedtakType.OpphørSkolepenger
                                             ? vedtakForSkolepenger
                                             : undefined
                                     }
