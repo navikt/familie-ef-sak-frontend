@@ -3,22 +3,23 @@ import { IVilkår } from '../../Inngangsvilkår/vilkår';
 import styled from 'styled-components';
 import { Behandling } from '../../../../App/typer/fagsak';
 import { Behandlingsårsak } from '../../../../App/typer/Behandlingsårsak';
-import { useBehandling } from '../../../../App/context/BehandlingContext';
 import { Søknadsinformasjon } from '../Felles/Søknadsinformasjon';
 import {
-    GråBoks,
-    SaksbehanldingsinformasjonUtdanning,
-    SaksbehanldingsinformasjonUtgifter,
     SøknadsinformasjonUtdanning,
     SøknadsinformajsonUtgifter,
 } from './SaksinformasjonSkolepenger';
 import { Vilkårsvurdering } from '../Felles/Vilkårsvurdering';
 
-const OppsummeringContainer = styled.div<{ åpenHøyremeny: boolean }>`
+const Container = styled.div`
     display: flex;
-    margin: 1rem 2rem 1rem 2rem;
+    flex-direction: column;
     gap: 1rem;
+`;
+
+const FlexRow = styled.div`
+    display: flex;
     flex-wrap: wrap;
+    gap: 1rem;
 `;
 
 export const VedtaksoppsummeringSkolepenger: React.FC<{
@@ -26,34 +27,28 @@ export const VedtaksoppsummeringSkolepenger: React.FC<{
     behandling: Behandling;
 }> = ({ vilkår, behandling }) => {
     const skalViseSøknadsdata = behandling.behandlingsårsak === Behandlingsårsak.SØKNAD;
-    const { åpenHøyremeny } = useBehandling();
-
     const utdanning = vilkår.grunnlag.aktivitet?.underUtdanning;
     const skalViseSøknadsinfo =
         !!utdanning && behandling.behandlingsårsak === Behandlingsårsak.SØKNAD;
 
     return (
-        <>
-            <OppsummeringContainer åpenHøyremeny={åpenHøyremeny}>
+        <Container>
+            <FlexRow>
                 <Vilkårsvurdering vilkår={vilkår} />
                 {skalViseSøknadsdata && <Søknadsinformasjon behandlingId={behandling.id} />}
-            </OppsummeringContainer>
-            <OppsummeringContainer åpenHøyremeny={true}>
-                <GråBoks>
-                    <SøknadsinformasjonUtdanning
-                        utdanning={utdanning}
-                        skalViseSøknadsinfo={skalViseSøknadsinfo}
-                    />
-                    <SaksbehanldingsinformasjonUtdanning vilkår={vilkår} />
-                </GråBoks>
-                <GråBoks>
-                    <SøknadsinformajsonUtgifter
-                        utdanning={utdanning}
-                        skalViseSøknadsinfo={skalViseSøknadsinfo}
-                    />
-                    <SaksbehanldingsinformasjonUtgifter vilkår={vilkår} />
-                </GråBoks>
-            </OppsummeringContainer>
-        </>
+            </FlexRow>
+            <FlexRow>
+                <SøknadsinformasjonUtdanning
+                    skalViseSøknadsinfo={skalViseSøknadsinfo}
+                    utdanning={utdanning}
+                    vilkår={vilkår}
+                />
+                <SøknadsinformajsonUtgifter
+                    skalViseSøknadsinfo={skalViseSøknadsinfo}
+                    utdanning={utdanning}
+                    vilkår={vilkår}
+                />
+            </FlexRow>
+        </Container>
     );
 };

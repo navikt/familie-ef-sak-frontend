@@ -17,6 +17,13 @@ import { NullstillVedtakModalContext } from './Felles/NullstillVedtakModalContex
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 import { SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
 
+const Side = styled.main`
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem 2rem;
+`;
+
 const AlertErrorLeft = styled(AlertError)`
     margin-left: 2rem;
     margin-top: 1rem;
@@ -118,13 +125,13 @@ const VedtakOgBeregningSideSkolepenger: React.FC<{
     vilkår: IVilkår;
 }> = ({ behandling, vilkår }) => {
     return (
-        <>
+        <Side>
             <VedtaksoppsummeringSkolepenger vilkår={vilkår} behandling={behandling} />
             {behandling.steg === Steg.VILKÅR ? (
                 <AlertStripeIkkeFerdigBehandletVilkår />
             ) : (
                 <VedtakOgBeregningSkolepenger behandling={behandling} vilkår={vilkår} />
             )}
-        </>
+        </Side>
     );
 };

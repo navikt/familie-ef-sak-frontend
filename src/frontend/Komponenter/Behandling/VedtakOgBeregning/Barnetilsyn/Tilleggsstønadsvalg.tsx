@@ -28,10 +28,6 @@ import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
 const Container = styled.div`
     padding: 1rem;
     background-color: ${AGray50};
-
-    .spacing {
-        margin-bottom: 0.5rem;
-    }
 `;
 
 const Grid = styled.div<{ lesevisning: boolean }>`

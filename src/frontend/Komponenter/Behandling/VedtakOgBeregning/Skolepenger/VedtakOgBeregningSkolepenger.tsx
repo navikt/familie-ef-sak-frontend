@@ -1,7 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Behandling } from '../../../../App/typer/fagsak';
 import { IVilkår } from '../../Inngangsvilkår/vilkår';
-import styled from 'styled-components';
 import {
     EBehandlingResultat,
     IVedtakForSkolepenger,
@@ -14,10 +13,6 @@ import SelectVedtaksresultat from '../Felles/SelectVedtaksresultat';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 import { VedtaksformSkolepenger } from './InnvilgetSkolepenger/VedtaksformSkolepenger';
 import { AvslåVedtak } from '../Overgangsstønad/AvslåVedtak/AvslåVedtak';
-
-const Container = styled.div`
-    padding: 0 2rem 1rem 2rem;
-`;
 
 interface Props {
     behandling: Behandling;
@@ -48,7 +43,7 @@ const VedtakOgBeregningSkolepenger: FC<Props> = ({ behandling, vilkår }) => {
     }, [vedtak]);
 
     return (
-        <Container>
+        <>
             <SelectVedtaksresultat
                 behandling={behandling}
                 resultatType={resultatType}
@@ -111,7 +106,7 @@ const VedtakOgBeregningSkolepenger: FC<Props> = ({ behandling, vilkår }) => {
                     }
                 }}
             </DataViewer>
-        </Container>
+        </>
     );
 };
 
