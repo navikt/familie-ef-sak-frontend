@@ -17,7 +17,7 @@ export const LenkeTilPersonopplysningsside: React.FC<IProps> = ({ personIdent, c
     const redirectTilPersonopplysningsside = (personIdent: string) => {
         axiosRequest<string, { personIdent: string }>({
             method: 'POST',
-            url: `/familie-ef-sak/api/fagsak-person`,
+            url: `/familie-ef-sak/api/fagsak-personx`,
             data: { personIdent: personIdent },
         }).then((res: Ressurs<string>) => {
             if (res.status === RessursStatus.SUKSESS) {

@@ -17,9 +17,9 @@ const ContainerTopMiddle = styled.div`
     z-index: 9999;
     margin: auto;
     position: fixed;
-    width: 16%;
     top: 10%;
-    left: 42%;
+    left: 50%;
+    transform: translate(-50%, 0%);
 `;
 
 export const Toast: React.FC = () => {
@@ -38,9 +38,9 @@ export const Toast: React.FC = () => {
             return null;
         case EToast.REDIRECT_ANNEN_RELASJON_FEILET:
             return (
-                <ContainerTopRight>
+                <ContainerTopMiddle>
                     <AlertError>{toastTilTekst[toast]}</AlertError>
-                </ContainerTopRight>
+                </ContainerTopMiddle>
             );
         case EToast.INNGANGSVILKÅR_GJENBRUKT:
             return (
