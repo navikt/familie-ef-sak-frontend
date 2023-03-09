@@ -15,14 +15,14 @@ interface Props {
     className?: string;
 }
 
-const InnholdContainer = styled.div`
+const InnholdRad = styled.div`
     display: grid;
     grid-template-columns: 8rem 5.5rem 10rem 12rem 10rem;
     grid-gap: 1rem;
     margin-left: 1rem;
 `;
 
-const TittelContainer = styled(InnholdContainer)`
+const TittelRad = styled(InnholdRad)`
     margin-bottom: 0.5rem;
 `;
 
@@ -35,16 +35,16 @@ const Utregningstabell: React.FC<Props> = ({ beregnetStønad, className }) => {
                         <Heading spacing size="small" level="5">
                             Utregning
                         </Heading>
-                        <TittelContainer>
+                        <TittelRad>
                             <SmallTextLabel>Periode</SmallTextLabel>
                             <SmallTextLabel>Inntekt (år)</SmallTextLabel>
                             <SmallTextLabel>Beløp før samordning</SmallTextLabel>
                             <SmallTextLabel>Samordningsfradrag (mnd)</SmallTextLabel>
                             <SmallTextLabel>Stønadsbeløp pr. mnd</SmallTextLabel>
-                        </TittelContainer>
+                        </TittelRad>
                         {beregnetStønad.map((beløpsPeriode) => {
                             return (
-                                <InnholdContainer>
+                                <InnholdRad>
                                     <BodyShortSmall>
                                         {`${formaterNullableMånedÅr(
                                             beløpsPeriode.periode.fradato
@@ -70,7 +70,7 @@ const Utregningstabell: React.FC<Props> = ({ beregnetStønad, className }) => {
                                     <BodyShortSmall>
                                         {formaterTallMedTusenSkille(beløpsPeriode.beløp)}
                                     </BodyShortSmall>
-                                </InnholdContainer>
+                                </InnholdRad>
                             );
                         })}
                     </div>

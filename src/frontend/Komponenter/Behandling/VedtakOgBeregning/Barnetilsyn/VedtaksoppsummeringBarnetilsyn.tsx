@@ -21,9 +21,9 @@ const OppsummeringContainer = styled.div`
     flex-wrap: wrap;
 `;
 
-const BegrunnelseTilsynsutgifter = styled.div`
-    margin: 1rem;
-    padding: 1rem;
+const Container = styled.div`
+    margin: 1rem 1rem 0 1rem;
+    padding: 1rem 1rem 1rem 2rem;
 `;
 
 const lagVilkåresresultatPerBarn = (
@@ -67,29 +67,27 @@ export const VedtaksoppsummeringBarnetilsyn: React.FC<{
             </OppsummeringContainer>
             {finnesBarnPåBehandling && (
                 <OppsummeringContainer>
-                    {barnPåBehandling.map((barn) => {
-                        return (
-                            <OppsummeringAvBarn
-                                key={barn.barnId}
-                                barn={barn}
-                                vilkårsresultatAleneomsorg={
-                                    vilkårsresultatAleneomsorgPerBarn[barn.barnId]
-                                }
-                                vilkårsresultatAlderPåBarn={
-                                    vilkårsresultatAlderPåBarnPerBarn[barn.barnId]
-                                }
-                            />
-                        );
-                    })}
+                    {barnPåBehandling.map((barn) => (
+                        <OppsummeringAvBarn
+                            key={barn.barnId}
+                            barn={barn}
+                            vilkårsresultatAleneomsorg={
+                                vilkårsresultatAleneomsorgPerBarn[barn.barnId]
+                            }
+                            vilkårsresultatAlderPåBarn={
+                                vilkårsresultatAlderPåBarnPerBarn[barn.barnId]
+                            }
+                        />
+                    ))}
                 </OppsummeringContainer>
             )}
             {begrunnelseForTilsynsutgiftVilkår && (
-                <BegrunnelseTilsynsutgifter>
+                <Container>
                     <Heading spacing size="small" level="5">
                         Vurdering tilsynsutgifter
                     </Heading>
                     <BreakWordNormaltekst>{begrunnelseForTilsynsutgiftVilkår}</BreakWordNormaltekst>
-                </BegrunnelseTilsynsutgifter>
+                </Container>
             )}
         </>
     );

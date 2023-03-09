@@ -49,10 +49,8 @@ export const AvslåVedtak: React.FC<{
         _type: IVedtakType.Avslag,
     });
 
-    const skalVelgeÅrsak =
-        behandling.stønadstype === Stønadstype.OVERGANGSSTØNAD &&
-        alleVilkårOppfylt &&
-        !ikkeOppfyltVilkårEksisterer;
+    const erOvergangsstønad = behandling.stønadstype === Stønadstype.OVERGANGSSTØNAD;
+    const skalVelgeÅrsak = erOvergangsstønad && alleVilkårOppfylt && !ikkeOppfyltVilkårEksisterer;
 
     const håndterVedtaksresultat = () => {
         return (res: Ressurs<string>) => {
@@ -113,6 +111,7 @@ export const AvslåVedtak: React.FC<{
             behandlingErRedigerbar={behandlingErRedigerbar}
             feilmeldingÅrsak={feilmeldingÅrsak}
             skalVelgeÅrsak={skalVelgeÅrsak}
+            erOvergangsstønad={erOvergangsstønad}
         />
     );
 };

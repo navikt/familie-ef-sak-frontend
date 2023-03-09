@@ -1,6 +1,5 @@
 import React, { Dispatch, SetStateAction, useEffect } from 'react';
 import styled from 'styled-components';
-import { useBehandling } from '../../../../App/context/BehandlingContext';
 import { VEDTAK_OG_BEREGNING } from '../Felles/konstanter';
 import {
     ERadioValg,
@@ -17,44 +16,50 @@ import { harTallverdi, tilHeltall, tilTallverdi } from '../../../../App/utils/ut
 import LeggTilKnapp from '../../../../Felles/Knapper/LeggTilKnapp';
 import { FieldState } from '../../../../App/hooks/felles/useFieldState';
 import { EnsligTextArea } from '../../../../Felles/Input/TekstInput/EnsligTextArea';
-import { Radio, Tooltip } from '@navikt/ds-react';
-import { EnsligRadioGruppe } from '../../../../Felles/Input/EnsligRadioGruppe';
+import { Heading, Tooltip } from '@navikt/ds-react';
 import FjernKnapp from '../../../../Felles/Knapper/FjernKnapp';
 import { SmallTextLabel } from '../../../../Felles/Visningskomponenter/Tekster';
 import { v4 as uuidv4 } from 'uuid';
+import JaNeiRadioGruppe from '../Felles/JaNeiRadioGruppe';
+import { HorizontalScroll } from '../Felles/HorizontalScroll';
+import { useBehandling } from '../../../../App/context/BehandlingContext';
+import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
 
-const TilleggsstønadPeriodeContainer = styled.div<{ lesevisning?: boolean }>`
+const Container = styled.div`
+    padding: 1rem;
+    background-color: ${AGray50};
+
+    .spacing {
+        margin-bottom: 0.5rem;
+    }
+`;
+
+const Grid = styled.div<{ lesevisning: boolean }>`
     display: grid;
-    grid-template-areas: 'fraOgMedVelger tilOgMedVelger kontantstøtte slettKnapp leggTilKnapp';
     grid-template-columns: ${(props) =>
-        props.lesevisning ? '8rem 10rem 7rem 7rem 7rem' : '13rem 13rem 8rem 4rem 3rem'};
-    grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
+        props.lesevisning
+            ? 'repeat(3, max-content)'
+            : 'repeat(2, max-content) 6rem repeat(2, max-content)'};
+    grid-gap: 0.5rem 1rem;
     margin-bottom: 0.5rem;
+
+    .ny-rad {
+        grid-column: 1;
+    }
 `;
 
-const KolonneHeaderWrapper = styled.div<{ lesevisning?: boolean }>`
-    display: grid;
-    grid-template-areas: 'fraOgMedVelger tilOgMedVelger kontantstøtte';
-    grid-template-columns: ${(props) =>
-        props.lesevisning ? '8rem 10rem 7rem' : '13rem 13rem 8rem'};
-    grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
-    margin-bottom: 0.5rem;
-`;
-
-const StyledInput = styled(InputMedTusenSkille)`
-    text-align: left;
-`;
-const ContainerMedLuftUnder = styled.div`
-    margin-bottom: 1rem;
+const Input = styled(InputMedTusenSkille)`
+    text-align: right;
 `;
 
 interface Props {
+    erLesevisning: boolean;
+    settValideringsfeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>;
+    stønadsreduksjon: FieldState;
     tilleggsstønad: FieldState;
     tilleggsstønadBegrunnelse: FieldState;
-    stønadsreduksjon: FieldState;
     tilleggsstønadPerioder: ListState<IPeriodeMedBeløp>;
     valideringsfeil: FormErrors<InnvilgeVedtakForm>;
-    settValideringsfeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>;
 }
 
 export const tomTilleggsstønadRad = (): IPeriodeMedBeløp => ({
@@ -65,15 +70,16 @@ export const tomTilleggsstønadRad = (): IPeriodeMedBeløp => ({
 });
 
 const TilleggsstønadValg: React.FC<Props> = ({
+    erLesevisning,
+    settValideringsfeil,
+    stønadsreduksjon,
     tilleggsstønad,
     tilleggsstønadBegrunnelse,
-    stønadsreduksjon,
     tilleggsstønadPerioder,
     valideringsfeil,
-    settValideringsfeil,
 }) => {
-    const { behandlingErRedigerbar } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
+    const { åpenHøyremeny } = useBehandling();
 
     useEffect(() => {
         if (tilleggsstønad.value === ERadioValg.NEI) {
@@ -115,68 +121,59 @@ const TilleggsstønadValg: React.FC<Props> = ({
         }
     };
 
+    const søktTilleggsstønad = tilleggsstønad.value === ERadioValg.JA;
+    const stønadSkalReduseres = stønadsreduksjon.value === ERadioValg.JA;
+    const erDetSøktOmTekst =
+        'Er det søkt om, utbetales det eller har det blitt utbetalt stønad for utgifter til tilsyn av barn etter tilleggsstønadsforskriften i perioden(e) det er søkt om?';
+    const skalStønadReduseresTekst =
+        'Skal stønaden reduseres fordi brukeren har fått utbetalt stønad for tilsyn av barn etter tilleggsstønadsforskriften?';
+
     return (
-        <>
-            <EnsligRadioGruppe
-                legend="Er det søkt om, utbetales det eller har det blitt utbetalt stønad for utgifter til tilsyn av barn etter tilleggsstønadsforskriften i perioden(e) det er søkt om?"
-                error={valideringsfeil.harTilleggsstønad}
-                erLesevisning={!behandlingErRedigerbar}
+        <Container>
+            <Heading spacing size="small" level="5">
+                Tilleggsstønadsforskriften
+            </Heading>
+            <JaNeiRadioGruppe
+                className={'spacing'}
+                error={valideringsfeil?.harKontantstøtte}
+                legend={erDetSøktOmTekst}
+                lesevisning={erLesevisning}
+                onChange={(event) => tilleggsstønad.onChange(event)}
                 value={tilleggsstønad.value as ERadioValg}
-            >
-                <Radio
-                    name={'Tilleggsstønad'}
-                    value={ERadioValg.JA}
-                    onChange={(event) => tilleggsstønad.onChange(event)}
-                >
-                    Ja
-                </Radio>
-                <Radio
-                    name={'Tilleggsstønad'}
-                    value={ERadioValg.NEI}
-                    onChange={(event) => tilleggsstønad.onChange(event)}
-                >
-                    Nei
-                </Radio>
-            </EnsligRadioGruppe>
-            {tilleggsstønad.value === ERadioValg.JA && (
-                <EnsligRadioGruppe
-                    legend="Skal stønaden reduseres fordi brukeren har fått utbetalt stønad for tilsyn av barn etter tilleggsstønadsforskriften?"
-                    error={valideringsfeil.skalStønadReduseres}
-                    erLesevisning={!behandlingErRedigerbar}
+            />
+            {søktTilleggsstønad && (
+                <JaNeiRadioGruppe
+                    className={'spacing'}
+                    error={valideringsfeil?.skalStønadReduseres}
+                    legend={skalStønadReduseresTekst}
+                    lesevisning={erLesevisning}
+                    onChange={(event) => stønadsreduksjon.onChange(event)}
                     value={stønadsreduksjon.value as ERadioValg}
-                >
-                    <Radio
-                        name={'Redusere'}
-                        value={ERadioValg.JA}
-                        onChange={(event) => stønadsreduksjon.onChange(event)}
-                    >
-                        Ja
-                    </Radio>
-                    <Radio
-                        name={'Redusere'}
-                        value={ERadioValg.NEI}
-                        onChange={(event) => stønadsreduksjon.onChange(event)}
-                    >
-                        Nei
-                    </Radio>
-                </EnsligRadioGruppe>
+                />
             )}
-            {tilleggsstønad.value === ERadioValg.JA && stønadsreduksjon.value === ERadioValg.JA && (
-                <>
-                    <KolonneHeaderWrapper lesevisning={!behandlingErRedigerbar}>
+            {søktTilleggsstønad && stønadSkalReduseres && (
+                <HorizontalScroll
+                    synligVedÅpenMeny={'1070px'}
+                    synligVedLukketMeny={'770px'}
+                    åpenHøyremeny={åpenHøyremeny}
+                >
+                    <Grid lesevisning={erLesevisning}>
                         <SmallTextLabel>Periode fra og med</SmallTextLabel>
                         <SmallTextLabel>Periode til og med</SmallTextLabel>
                         <SmallTextLabel>Stønadsreduksjon</SmallTextLabel>
-                    </KolonneHeaderWrapper>
-                    {tilleggsstønadPerioder.value.map((periode, index) => {
-                        const { årMånedFra, årMånedTil, beløp } = periode;
-                        const skalViseFjernKnapp = behandlingErRedigerbar && index !== 0;
-                        return (
-                            <React.Fragment key={periode.endretKey}>
-                                <TilleggsstønadPeriodeContainer>
+                        {tilleggsstønadPerioder.value.map((periode, index) => {
+                            const { årMånedFra, årMånedTil, beløp } = periode;
+                            const skalViseFjernKnapp = !erLesevisning && index !== 0;
+                            return (
+                                <React.Fragment key={periode.endretKey}>
                                     <MånedÅrPeriode
-                                        årMånedFraInitiell={årMånedFra}
-                                        årMånedTilInitiell={årMånedTil}
+                                        className={'ny-rad'}
+                                        erLesevisning={erLesevisning}
+                                        feilmelding={
+                                            valideringsfeil.tilleggsstønadsperioder &&
+                                            valideringsfeil.tilleggsstønadsperioder[index]
+                                                ?.årMånedFra
+                                        }
                                         index={index}
                                         onEndre={(verdi, periodeVariant) => {
                                             settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
@@ -188,18 +185,13 @@ const TilleggsstønadValg: React.FC<Props> = ({
                                                 verdi
                                             );
                                         }}
-                                        feilmelding={
-                                            valideringsfeil.tilleggsstønadsperioder &&
-                                            valideringsfeil.tilleggsstønadsperioder[index]
-                                                ?.årMånedFra
-                                        }
-                                        erLesevisning={!behandlingErRedigerbar}
+                                        årMånedFraInitiell={årMånedFra}
+                                        årMånedTilInitiell={årMånedTil}
                                     />
-                                    <StyledInput
-                                        type="number"
-                                        size={'small'}
-                                        onKeyPress={tilHeltall}
-                                        value={harTallverdi(beløp) ? beløp : ''}
+                                    <Input
+                                        erLesevisning={erLesevisning}
+                                        hideLabel
+                                        label={'Stønadsreduksjon'}
                                         onChange={(e) => {
                                             settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
                                             oppdaterTilleggsstønadPeriode(
@@ -208,12 +200,22 @@ const TilleggsstønadValg: React.FC<Props> = ({
                                                 tilTallverdi(e.target.value)
                                             );
                                         }}
-                                        erLesevisning={!behandlingErRedigerbar}
-                                        label={'Stønadsreduksjon'}
-                                        hideLabel
+                                        onKeyPress={tilHeltall}
+                                        size={'small'}
+                                        type="number"
+                                        value={harTallverdi(beløp) ? beløp : ''}
                                     />
+                                    {!erLesevisning && (
+                                        <Tooltip content="Legg til rad under" placement="right">
+                                            <LeggTilKnapp
+                                                ikontekst={'Legg til ny rad'}
+                                                onClick={() => leggTilTomRadUnder(index)}
+                                            />
+                                        </Tooltip>
+                                    )}
                                     {skalViseFjernKnapp ? (
                                         <FjernKnapp
+                                            ikontekst={'Fjern periode for tilleggsstønad'}
                                             onClick={() => {
                                                 tilleggsstønadPerioder.remove(index);
                                                 settValideringsfeil(
@@ -228,47 +230,36 @@ const TilleggsstønadValg: React.FC<Props> = ({
                                                     }
                                                 );
                                             }}
-                                            ikontekst={'Fjern periode for tilleggsstønad'}
                                         />
                                     ) : (
                                         <div />
                                     )}
-                                    {behandlingErRedigerbar && (
-                                        <Tooltip content="Legg til rad under" placement="right">
-                                            <LeggTilKnapp
-                                                onClick={() => leggTilTomRadUnder(index)}
-                                                ikontekst={'Legg til ny rad'}
-                                            />
-                                        </Tooltip>
-                                    )}
-                                </TilleggsstønadPeriodeContainer>
-                            </React.Fragment>
-                        );
-                    })}
-                    <ContainerMedLuftUnder>
-                        {behandlingErRedigerbar && (
+                                </React.Fragment>
+                            );
+                        })}
+                        {!erLesevisning && (
                             <LeggTilKnapp
-                                onClick={() => tilleggsstønadPerioder.push(tomTilleggsstønadRad())}
                                 knappetekst="Legg til periode"
+                                onClick={() => tilleggsstønadPerioder.push(tomTilleggsstønadRad())}
                             />
                         )}
-                    </ContainerMedLuftUnder>
-                </>
+                    </Grid>
+                </HorizontalScroll>
             )}
-            {tilleggsstønad.value === ERadioValg.JA && (
+            {søktTilleggsstønad && (
                 <EnsligTextArea
-                    value={tilleggsstønadBegrunnelse.value}
+                    erLesevisning={erLesevisning}
+                    feilmelding={valideringsfeil.tilleggsstønadBegrunnelse}
+                    label="Begrunnelse"
+                    maxLength={0}
                     onChange={(event) => {
                         settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
                         tilleggsstønadBegrunnelse.onChange(event);
                     }}
-                    label="Begrunnelse"
-                    maxLength={0}
-                    erLesevisning={!behandlingErRedigerbar}
-                    feilmelding={valideringsfeil.tilleggsstønadBegrunnelse}
+                    value={tilleggsstønadBegrunnelse.value}
                 />
             )}
-        </>
+        </Container>
     );
 };
 
