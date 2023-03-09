@@ -27,15 +27,12 @@ const OppdaterGrunnlagKnapp = styled(Button)`
 
 const skalViseDetaljer = (ny: string, tidligere: string) => tidligere != '' || ny != '';
 
-const visEndringsdetaljer = (ny: string, tidligere: string) => (
-    <>
-        {skalViseDetaljer(tidligere, ny) && (
-            <>
-                - <strong>Tidligere:</strong> {tidligere} <strong>Ny:</strong> {ny}
-            </>
-        )}
-    </>
-);
+const visEndringsdetaljer = (ny: string, tidligere: string) =>
+    skalViseDetaljer(tidligere, ny) && (
+        <>
+            - <strong>Tidligere:</strong> {tidligere} <strong>Ny:</strong> {ny}
+        </>
+    );
 
 const PersonEndring: React.FC<{ personendringer: Personendring[] }> = ({ personendringer }) => {
     return (
