@@ -40,7 +40,7 @@ const DokumentWrapper = styled.div`
 `;
 
 const PdfVisning: React.FC<PdfVisningProps> = ({ pdfFilInnhold }) => {
-    const [numPages, setNumPages] = useState<number>(0);
+    const [numPages, setNumPages] = useState<number>(1);
     const [pageNumber, setPageNumber] = useState(1);
 
     function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
