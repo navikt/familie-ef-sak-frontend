@@ -8,6 +8,7 @@ const SortTag = styled(Tag)`
     color: #eee;
     margin-left: 0.5rem;
     border: none;
+    height: 1.5rem;
 `;
 
 const EtikettDød: React.FC<{ dødsdato: string }> = ({ dødsdato }) => (

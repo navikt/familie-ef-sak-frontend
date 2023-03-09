@@ -9,6 +9,7 @@ import { nullableDatoTilAlder } from '../../App/utils/dato';
 import { Table, Tag } from '@navikt/ds-react';
 import BarnBosted from './BarnBosted';
 import PersonopplysningerPanel from './PersonopplysningPanel';
+import { LenkeTilPersonopplysningsside } from '../Lenker/LenkeTilPersonopplysningsside';
 
 const FlexDiv = styled.div`
     display: flex;
@@ -24,7 +25,7 @@ const sorterBarnPåAlderInc = (a: IBarn, b: IBarn) => {
     return alderBarnA - alderBarnB;
 };
 
-const Barn: React.FC<{ barn: IBarn[] }> = ({ barn }) => {
+const Barn: React.FC<{ barn: IBarn[]; harFagsak: boolean }> = ({ barn, harFagsak }) => {
     return (
         <PersonopplysningerPanel Ikon={LiteBarn} tittel={'Barn'}>
             <SmallTable>
@@ -44,7 +45,14 @@ const Barn: React.FC<{ barn: IBarn[] }> = ({ barn }) => {
                                 />
 
                                 <Table.DataCell>
-                                    {barn.annenForelder && barn.annenForelder.navn}
+                                    {barn.annenForelder && harFagsak && (
+                                        <LenkeTilPersonopplysningsside
+                                            personIdent={barn.annenForelder.personIdent}
+                                        >
+                                            {barn.annenForelder.navn}
+                                        </LenkeTilPersonopplysningsside>
+                                    )}
+                                    {barn.annenForelder && !harFagsak && barn.annenForelder.navn}
                                 </Table.DataCell>
                                 <Table.DataCell>
                                     {barn.annenForelder && (

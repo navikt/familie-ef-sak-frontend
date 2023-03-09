@@ -8,6 +8,7 @@ export enum EToast {
     VEDTAK_NULLSTILT = 'VEDTAK_NULLSTILT',
     OPPRETTET_UTESTENGELSE = 'OPPRETTET_UTESTENGELSE',
     BREV_SENDT = 'BREV_SENDT',
+    REDIRECT_ANNEN_RELASJON_FEILET = 'REDIRECT_ANNEN_RELASJON_FEILET',
 }
 
 export const toastTilTekst: Record<EToast, string> = {
@@ -21,4 +22,6 @@ export const toastTilTekst: Record<EToast, string> = {
     VEDTAK_NULLSTILT: 'Lagret vedtak nullstilt',
     OPPRETTET_UTESTENGELSE: 'Utestengelse satt på bruker',
     BREV_SENDT: 'Brevet er nå sendt',
+    REDIRECT_ANNEN_RELASJON_FEILET:
+        'Kan ikke åpne personopplysninger for denne personen. En uventet feil oppstod',
 };

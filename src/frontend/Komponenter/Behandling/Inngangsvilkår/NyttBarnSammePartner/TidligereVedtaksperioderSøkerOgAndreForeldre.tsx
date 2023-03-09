@@ -10,6 +10,7 @@ import { nonNull } from '../../../../App/utils/utils';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 import TabellVisning from '../../Tabell/TabellVisning';
 import { IPersonalia } from '../vilkår';
+import { LenkeTilPersonopplysningsside } from '../../../../Felles/Lenker/LenkeTilPersonopplysningsside';
 
 interface TidligereVedtaksperioderPåPartISak {
     fødselsnummer: string;
@@ -101,7 +102,14 @@ const TidligereVedtaksperioderSøkerOgAndreForeldre: FC<{
             kolonner={[
                 {
                     overskrift: 'Navn',
-                    tekstVerdi: (d) => d.navn,
+                    tekstVerdi: (d) =>
+                        d.fødselsnummer === søker?.fødselsnummer ? (
+                            d.navn
+                        ) : (
+                            <LenkeTilPersonopplysningsside personIdent={d.fødselsnummer}>
+                                {d.navn}
+                            </LenkeTilPersonopplysningsside>
+                        ),
                 },
                 {
                     overskrift: 'EF Sak',

@@ -36,7 +36,7 @@ const tabs: TabWithRouter[] = [
         komponent: (fagsakPerson, personopplysninger) => (
             <Personopplysninger
                 personopplysninger={personopplysninger}
-                fagsakPersonId={fagsakPerson.id}
+                fagsakPerson={fagsakPerson}
             />
         ),
     },
