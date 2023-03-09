@@ -81,14 +81,22 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
         const parsetMellomlagretBrev =
             mellomlagretBrevVerdier && (JSON.parse(mellomlagretBrevVerdier) as IBrevverdier);
 
-        const { flettefeltFraMellomlager, valgteFeltFraMellomlager, valgteDelmalerFraMellomlager } =
-            parsetMellomlagretBrev || {};
+        const {
+            flettefeltFraMellomlager,
+            valgteFeltFraMellomlager,
+            valgteDelmalerFraMellomlager,
+            fritekstområderFraMellomlager,
+        } = parsetMellomlagretBrev || {};
         settAlleFlettefelter(
             initFlettefelterMedVerdi(brevStruktur, flettefeltFraMellomlager, flettefeltStore)
         );
         settValgteFelt(initValgteFelt(valgteFeltFraMellomlager, brevStruktur, valgfeltStore));
         if (valgteDelmalerFraMellomlager) {
             settValgteDelmaler(valgteDelmalerFraMellomlager);
+        }
+
+        if (fritekstområderFraMellomlager) {
+            settFritekstområder(fritekstområderFraMellomlager);
         }
 
         if (delmalStore.length > 0) {
@@ -201,7 +209,13 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
             return;
         }
 
-        mellomlagreSanitybrev(alleFlettefelter, valgteFelt, valgteDelmaler, brevMal);
+        mellomlagreSanitybrev(
+            alleFlettefelter,
+            valgteFelt,
+            valgteDelmaler,
+            fritekstområder,
+            brevMal
+        );
         axiosRequest<string, unknown>({
             method: 'POST',
             url: `/familie-ef-sak/api/brev/${behandlingId}/${brevMal}`,
@@ -287,6 +301,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                     return (
                         <Fritekstområde
                             id={gruppe.fritekstområde.blokk.id}
+                            fritekstområder={fritekstområder}
                             settFritekstområder={settFritekstområder}
                         />
                     );

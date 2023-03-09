@@ -1,4 +1,4 @@
-import React, { SetStateAction, useEffect, useState } from 'react';
+import React, { SetStateAction } from 'react';
 import { Button, Heading, Panel, Textarea, TextField } from '@navikt/ds-react';
 import { Add, Delete } from '@navikt/ds-icons';
 import styled from 'styled-components';
@@ -23,34 +23,39 @@ const SlettKnapp = styled(Button)`
 
 export const Fritekstområde: React.FC<{
     id: string;
+    fritekstområder: Fritekstområder;
     settFritekstområder: React.Dispatch<SetStateAction<Fritekstområder>>;
-}> = ({ id, settFritekstområder }) => {
-    const [fritekstAvsnitt, settFritekstAvsnitt] = useState<FritekstAvsnitt[]>([]);
-
+}> = ({ id, fritekstområder, settFritekstområder }) => {
     const oppdaterAvsnitt = (indeks: number, oppdatertAvsnitt: FritekstAvsnitt) => {
-        settFritekstAvsnitt((prevState) =>
-            prevState.map((avsnitt, i) => {
+        settFritekstområder((prevState) => ({
+            ...prevState,
+            [id]: prevState[id].map((avsnitt, i) => {
                 if (i === indeks) {
                     return oppdatertAvsnitt;
                 }
                 return avsnitt;
-            })
-        );
+            }),
+        }));
     };
 
-    useEffect(() => {
-        settFritekstområder((prevState) => ({ ...prevState, [id]: fritekstAvsnitt }));
-        // eslint-disable-next-line
-    }, [fritekstAvsnitt]);
-
     const fjernAvsnitt = (indeks: number) =>
-        settFritekstAvsnitt((prevState) => prevState.filter((_, i) => indeks !== i));
+        settFritekstområder((prevState) => ({
+            ...prevState,
+            [id]: prevState[id].filter((_, i) => indeks !== i),
+        }));
+
+    const leggTilNyttAvsnitt = () =>
+        settFritekstområder((prevState) => ({
+            ...prevState,
+            [id]: prevState[id] ? [...prevState[id], { innhold: '' }] : [{ innhold: '' }],
+        }));
 
     return (
         <FritekstområdePanel>
             <Heading size={'small'}>Fritekstområde</Heading>
-            {fritekstAvsnitt.length !== 0 &&
-                fritekstAvsnitt.map((avsnitt, indeks) => {
+            {fritekstområder[id] &&
+                fritekstområder[id].length !== 0 &&
+                fritekstområder[id].map((avsnitt, indeks) => {
                     return (
                         <FritekstAvsnittContainer>
                             <SlettKnapp
@@ -90,7 +95,7 @@ export const Fritekstområde: React.FC<{
                 size={'small'}
                 variant={'secondary'}
                 icon={<Add />}
-                onClick={() => settFritekstAvsnitt((prevState) => [...prevState, { innhold: '' }])}
+                onClick={leggTilNyttAvsnitt}
             >
                 Legg til fritekst
             </Button>
