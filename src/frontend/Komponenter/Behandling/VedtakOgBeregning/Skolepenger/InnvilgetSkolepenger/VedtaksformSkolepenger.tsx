@@ -35,10 +35,10 @@ const Form = styled.form`
     display: flex;
     flex-direction: column;
     gap: 1rem;
-`;
 
-const Div = styled.div`
-    margin-left: 1rem;
+    .spacing-left {
+        margin-left: 1rem;
+    }
 `;
 
 export const AdvarselTekst = styled(BodyShortSmall)`
@@ -197,7 +197,7 @@ export const VedtaksformSkolepenger: React.FC<{
             )}
             {feilmelding && <AlertError>{feilmelding}</AlertError>}
             {behandlingErRedigerbar && !erOpphør && (
-                <Div>
+                <div className="spacing-left">
                     <Button variant={'secondary'} onClick={beregnSkolepenger} type={'button'}>
                         Beregn
                     </Button>
@@ -206,14 +206,14 @@ export const VedtaksformSkolepenger: React.FC<{
                             Kan ikke lagre vedtaket før beregning er utført
                         </AdvarselTekst>
                     )}
-                </Div>
+                </div>
             )}
             <UtregningstabellSkolepenger
                 beregningsresultat={beregningsresultat}
-                skjulVisning={behandlingErRedigerbar && !harUtførtBeregning}
+                className="spacing-left"
             />
             {behandlingErRedigerbar && (
-                <HovedKnapp variant="primary" disabled={laster} type={'submit'}>
+                <HovedKnapp disabled={laster} type={'submit'} variant="primary">
                     Lagre vedtak
                 </HovedKnapp>
             )}

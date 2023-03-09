@@ -10,62 +10,49 @@ import {
 } from '../../../../App/utils/formatter';
 import { BodyShortSmall, SmallTextLabel } from '../../../../Felles/Visningskomponenter/Tekster';
 
-const Rad = styled.div<{ erTittelRad?: boolean }>`
+const Grid = styled.div`
     display: grid;
-    grid-template-areas: 'dato utgifter beløp';
-    grid-template-columns: 6rem 4rem 4rem;
-    grid-gap: 1rem;
-    margin-bottom: ${(props) => (props.erTittelRad ? '0.5rem' : '0')};
-    margin-left: 1rem;
+    grid-template-columns: repeat(3, max-content);
+    column-gap: 1rem;
+    padding-left: 1rem;
 `;
 
-const HøyrejustertNormaltekst = styled(BodyShortSmall)`
+const HøyrejustertBodyShort = styled(BodyShortSmall)`
     text-align: right;
-`;
-
-const HøyrejusterElement = styled(SmallTextLabel)`
-    text-align: right;
-`;
-
-const Container = styled.div`
-    margin-left: 1rem;
 `;
 
 export const UtregningstabellSkolepenger: React.FC<{
     beregningsresultat: Ressurs<IBeregningSkolepengerResponse>;
-    skjulVisning: boolean;
-}> = ({ beregningsresultat, skjulVisning }) => {
-    if (skjulVisning) {
-        return null;
-    }
+    className?: string;
+}> = ({ beregningsresultat, className }) => {
     return (
         <DataViewer response={{ beregningsresultat }}>
             {({ beregningsresultat }) => (
-                <Container>
+                <div className={className}>
                     <Heading spacing size={'small'} level={'5'}>
                         Utregning
                     </Heading>
-                    <Rad erTittelRad>
+                    <Grid>
                         <SmallTextLabel>Fra</SmallTextLabel>
-                        <HøyrejusterElement>Utgifter</HøyrejusterElement>
-                        <HøyrejusterElement>Stønadsbeløp</HøyrejusterElement>
-                    </Rad>
-                    {beregningsresultat.perioder.map((periode) => {
-                        return (
-                            <Rad>
-                                <BodyShortSmall>
-                                    {formaterNullableMånedÅr(periode.årMånedFra)}
-                                </BodyShortSmall>
-                                <HøyrejustertNormaltekst>
-                                    {formaterTallMedTusenSkille(periode.utgifter)} kr
-                                </HøyrejustertNormaltekst>
-                                <HøyrejustertNormaltekst>
-                                    {formaterTallMedTusenSkille(periode.beløp)} kr
-                                </HøyrejustertNormaltekst>
-                            </Rad>
-                        );
-                    })}
-                </Container>
+                        <SmallTextLabel>Utgifter</SmallTextLabel>
+                        <SmallTextLabel>Stønadsbeløp</SmallTextLabel>
+                        {beregningsresultat.perioder.map((periode) => {
+                            return (
+                                <>
+                                    <BodyShortSmall>
+                                        {formaterNullableMånedÅr(periode.årMånedFra)}
+                                    </BodyShortSmall>
+                                    <HøyrejustertBodyShort>
+                                        {formaterTallMedTusenSkille(periode.utgifter)}
+                                    </HøyrejustertBodyShort>
+                                    <HøyrejustertBodyShort>
+                                        {formaterTallMedTusenSkille(periode.beløp)}
+                                    </HøyrejustertBodyShort>
+                                </>
+                            );
+                        })}
+                    </Grid>
+                </div>
             )}
         </DataViewer>
     );
