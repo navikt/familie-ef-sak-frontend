@@ -79,7 +79,7 @@ const Environment = (): IEnvironment => {
             modia: 'https://app-q1.adeo.no/modiapersonoversikt',
             historiskPensjon: 'https://historisk-pensjon.intern.dev.nav.no',
             redisUrl: 'familie-ef-sak-frontend-redis',
-            endringsloggProxyUrl: 'https://familie-endringslogg',
+            endringsloggProxyUrl: 'http://familie-endringslogg',
             roller: rollerDev,
         };
     } else if (process.env.ENV === 'lokalt-mot-preprod') {
@@ -107,7 +107,7 @@ const Environment = (): IEnvironment => {
         modia: 'https://app.adeo.no/modiapersonoversikt',
         historiskPensjon: 'https://historisk-pensjon.intern.nav.no',
         redisUrl: 'familie-ef-sak-frontend-redis',
-        endringsloggProxyUrl: 'https://familie-endringslogg.intern.nav.no',
+        endringsloggProxyUrl: 'http://familie-endringslogg',
         roller: rollerProd,
     };
 };
