@@ -1,4 +1,5 @@
 export interface PensjonsgivendeInntekt {
     inntektsaar: string;
-    verdi: string;
+    næring: string;
+    person: string;
 }
