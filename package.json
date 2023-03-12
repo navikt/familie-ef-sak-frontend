@@ -35,7 +35,7 @@
     "@navikt/ds-icons": "2.6.x",
     "@navikt/ds-react": "2.6.x",
     "@navikt/ds-react-internal": "2.6.x",
-    "@navikt/ds-tokens": "2.6.x",
+    "@navikt/ds-tokens": "2.7.x",
     "@navikt/familie-backend": "10.0.3",
     "@navikt/familie-dokumentliste": "^8.1.0",
     "@navikt/familie-endringslogg": "^8.1.0",

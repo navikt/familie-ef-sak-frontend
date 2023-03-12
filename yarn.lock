@@ -3034,10 +3034,10 @@
     react-day-picker "8.3.4"
     react-modal "3.15.1"
 
-"@navikt/ds-tokens@2.6.x":
-  version "2.6.0"
-  resolved "https://npm.pkg.github.com/download/@navikt/ds-tokens/2.6.0/680f42f3c4fee3d7119140daf95053cd626783ab#680f42f3c4fee3d7119140daf95053cd626783ab"
-  integrity sha512-VcSU8GwRrODLtp7/fsqk3NI2q6GPJQDN3j8I9Me4BT2GI6b0NKaNw1Yqt1L7/a+RntUcfSn367NP4qGYwA6EMA==
+"@navikt/ds-tokens@2.7.x":
+  version "2.7.6"
+  resolved "https://npm.pkg.github.com/download/@navikt/ds-tokens/2.7.6/b30479d364f14a14f852c8da74f471f8380d378e#b30479d364f14a14f852c8da74f471f8380d378e"
+  integrity sha512-2FmXzKxK0G4xYjCDoDkIeXNoRMbdOkk5UxDXZfbr+6pTQdo1yuG+FRjXpDRXzoxLZVGrgAtzSSDO3Cqw8hTtmA==
 
 "@navikt/familie-backend@10.0.3":
   version "10.0.3"
