@@ -100,7 +100,7 @@
     "react-dom": "^18.2.0",
     "react-is": "^18.2.0",
     "react-pdf": "5.7.0",
-    "react-router-dom": "^6.8.1",
+    "react-router-dom": "^6.9.0",
     "react-router-prompt": "^0.5.1",
     "react-select": "^5.7.0",
     "request-promise": "^4.2.6",
