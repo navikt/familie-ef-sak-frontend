@@ -109,14 +109,14 @@ const VedtakOgBeregningSideBarnetilsyn: React.FC<{
     vilkår: IVilkår;
 }> = ({ behandling, vilkår }) => {
     return (
-        <>
+        <Side>
             <VedtaksoppsummeringBarnetilsyn vilkår={vilkår} behandling={behandling} />
             {behandling.steg === Steg.VILKÅR ? (
                 <AlertStripeIkkeFerdigBehandletVilkår />
             ) : (
                 <VedtakOgBeregningBarnetilsyn behandling={behandling} vilkår={vilkår} />
             )}
-        </>
+        </Side>
     );
 };
 

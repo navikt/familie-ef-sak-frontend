@@ -21,11 +21,7 @@ interface Props {
 }
 
 const StyledSelect = styled(EnsligFamilieSelect)`
-    width: 200px;
-    .skjemaelement__label {
-        font-size: 1.25rem;
-        line-height: 1.5625rem;
-    }
+    width: 10rem;
 `;
 
 const TekstLinje = styled.div`
@@ -35,10 +31,7 @@ const TekstLinje = styled.div`
 const FlexCenter = styled.div`
     display: flex;
     align-items: center;
-`;
-
-const HjelpeTekst = styled(HelpText)`
-    margin-left: 1rem;
+    gap: 1rem;
 `;
 
 const Container = styled.section`
@@ -107,7 +100,7 @@ const SelectVedtaksresultat = (props: Props): JSX.Element => {
                     </option>
                 </StyledSelect>
                 {behandling.stønadstype === Stønadstype.BARNETILSYN && behandlingErRedigerbar && (
-                    <HjelpeTekst title="Hvor kommer dette fra?" placement={'right'}>
+                    <HelpText title="Hvor kommer dette fra?" placement={'right'}>
                         <div>
                             Hvis kontantstøtten overstiger tilsynsutgiftene skal saksbehandler
                             likevel velge "Innvilge" som vedtaksresultat.
@@ -116,7 +109,7 @@ const SelectVedtaksresultat = (props: Props): JSX.Element => {
                             Utgifter og kontantsstøtte fylles inn som normalt og systemet vil
                             beregne at det blir et avslag.
                         </TekstLinje>
-                    </HjelpeTekst>
+                    </HelpText>
                 )}
                 {props.skalViseNullstillVedtakKnapp && behandlingErRedigerbar && (
                     <Button

@@ -111,7 +111,6 @@ export const AvslåVedtak: React.FC<{
             behandlingErRedigerbar={behandlingErRedigerbar}
             feilmeldingÅrsak={feilmeldingÅrsak}
             skalVelgeÅrsak={skalVelgeÅrsak}
-            erOvergangsstønad={erOvergangsstønad}
         />
     );
 };

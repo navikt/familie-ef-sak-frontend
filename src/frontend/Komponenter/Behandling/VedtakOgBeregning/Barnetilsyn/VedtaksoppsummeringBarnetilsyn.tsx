@@ -13,17 +13,23 @@ import { Søknadsinformasjon } from '../Felles/Søknadsinformasjon';
 import { OppsummeringAvBarn } from './OppsummeringAvBarn';
 import { BreakWordNormaltekst } from '../../../../Felles/Visningskomponenter/BreakWordNormaltekst';
 import { Vilkårsvurdering } from '../Felles/Vilkårsvurdering';
+import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
 
 const OppsummeringContainer = styled.div`
     display: flex;
-    margin: 1rem 2rem 1rem 2rem;
     gap: 1rem;
     flex-wrap: wrap;
 `;
 
+const VurderingTilsynsutgifter = styled.div`
+    padding: 1rem;
+    background-color: ${AGray50};
+`;
+
 const Container = styled.div`
-    margin: 1rem 1rem 0 1rem;
-    padding: 1rem 1rem 1rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 `;
 
 const lagVilkåresresultatPerBarn = (
@@ -60,7 +66,7 @@ export const VedtaksoppsummeringBarnetilsyn: React.FC<{
     )?.delvilkårsvurderinger[0].vurderinger[0].begrunnelse;
 
     return (
-        <>
+        <Container>
             <OppsummeringContainer>
                 <Vilkårsvurdering vilkår={vilkår} />
                 {skalViseSøknadsdata && <Søknadsinformasjon behandlingId={behandling.id} />}
@@ -82,13 +88,13 @@ export const VedtaksoppsummeringBarnetilsyn: React.FC<{
                 </OppsummeringContainer>
             )}
             {begrunnelseForTilsynsutgiftVilkår && (
-                <Container>
+                <VurderingTilsynsutgifter>
                     <Heading spacing size="small" level="5">
                         Vurdering tilsynsutgifter
                     </Heading>
                     <BreakWordNormaltekst>{begrunnelseForTilsynsutgiftVilkår}</BreakWordNormaltekst>
-                </Container>
+                </VurderingTilsynsutgifter>
             )}
-        </>
+        </Container>
     );
 };
