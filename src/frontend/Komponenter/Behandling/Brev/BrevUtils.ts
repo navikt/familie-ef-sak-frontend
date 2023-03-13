@@ -3,6 +3,8 @@ import {
     BrevmenyBlokk,
     BrevmenyGruppe,
     BrevStruktur,
+    Delmal,
+    DelmalGruppe,
     erDelmalGruppe,
     erFritekstblokk,
     FlettefeltMedVerdi,
@@ -12,7 +14,7 @@ import {
 } from './BrevTyper';
 import { v4 as uuidv4 } from 'uuid';
 import { Dispatch, SetStateAction } from 'react';
-import { FlettefeltStore, ValgfeltStore } from '../../../App/hooks/useVerdierForBrev';
+import { DelmalStore, FlettefeltStore, ValgfeltStore } from '../../../App/hooks/useVerdierForBrev';
 
 const lagTomtAvsnitt = (): AvsnittMedId => ({
     deloverskrift: '',
@@ -248,3 +250,16 @@ export const flyttAvsnittNedover = (
         ...eksisterendeAvsnitt.slice(avsnittEtterIndeks + 1),
     ];
 };
+
+export const erAutomatiskFeltSomSkalSkjules = (
+    delmalStore: { delmal: string; skjulIBrevmeny: boolean }[],
+    delmal: Delmal
+): boolean => {
+    const automatiskFeltSomSkalSkjules = delmalStore.find(
+        (mal) => mal.delmal === delmal.delmalApiNavn
+    )?.skjulIBrevmeny;
+    return automatiskFeltSomSkalSkjules || false;
+};
+
+export const skalSkjuleAlleDelmaler = (gruppe: DelmalGruppe, delmalStore: DelmalStore): boolean =>
+    gruppe.delmaler.every((delmal) => erAutomatiskFeltSomSkalSkjules(delmalStore, delmal));

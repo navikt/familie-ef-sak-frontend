@@ -15,11 +15,13 @@ import {
 } from './BrevTyper';
 import { BrevMenyDelmal } from './BrevMenyDelmal';
 import {
+    erAutomatiskFeltSomSkalSkjules,
     finnFletteFeltApinavnFraRef,
     grupperBrevmenyBlokker,
     harValgfeltFeil,
     initFlettefelterMedVerdi,
     initValgteFelt,
+    skalSkjuleAlleDelmaler,
 } from './BrevUtils';
 import { Ressurs } from '../../../App/typer/ressurs';
 import { useApp } from '../../../App/context/AppContext';
@@ -246,20 +248,13 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     ]);
 
     const brevmenyBlokkerGruppert = grupperBrevmenyBlokker(brevStruktur.dokument.brevmenyBlokker);
+
     return (
         <BrevFelter>
             {brevmalFeil && <Alert variant={'warning'}>{brevmalFeil}</Alert>}
             {brevmenyBlokkerGruppert.map((gruppe, indeks) => {
                 if (erDelmalGruppe(gruppe)) {
-                    const alleDelmalerSkjules = gruppe.delmaler.every((delmal) => {
-                        const automatiskFeltSomSkalSkjules = delmalStore.find(
-                            (mal) => mal.delmal === delmal.delmalApiNavn
-                        )?.skjulIBrevmeny;
-                        return automatiskFeltSomSkalSkjules || false;
-                    });
-                    if (alleDelmalerSkjules) {
-                        return null;
-                    }
+                    if (skalSkjuleAlleDelmaler(gruppe, delmalStore)) return null;
                     return (
                         <Panel key={gruppe.gruppeVisningsnavn}>
                             {gruppe.gruppeVisningsnavn !== 'undefined' && (
@@ -269,32 +264,26 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                                     </Heading>
                                 </BrevMenyTittel>
                             )}
-                            {gruppe.delmaler.map((delmal: Delmal, index: number) => {
-                                const automatiskFeltsomSkalSkjules = delmalStore.find(
-                                    (mal) => mal.delmal === delmal.delmalApiNavn
-                                )?.skjulIBrevmeny;
-                                const skjulDelmal = automatiskFeltsomSkalSkjules || false;
-                                return (
-                                    <BrevMenyDelmalWrapper
-                                        førsteElement={index === 0}
-                                        key={`${delmal.delmalApiNavn}_wrapper`}
-                                    >
-                                        <BrevMenyDelmal
-                                            valgt={!!valgteDelmaler[delmal.delmalApiNavn]}
-                                            delmal={delmal}
-                                            dokument={brevStruktur}
-                                            valgteFelt={valgteFelt}
-                                            settValgteFelt={settValgteFelt}
-                                            flettefelter={alleFlettefelter}
-                                            settFlettefelter={settAlleFlettefelter}
-                                            settValgteDelmaler={settValgteDelmaler}
-                                            key={delmal.delmalApiNavn}
-                                            settKanSendeTilBeslutter={settKanSendesTilBeslutter}
-                                            skjul={skjulDelmal}
-                                        />
-                                    </BrevMenyDelmalWrapper>
-                                );
-                            })}
+                            {gruppe.delmaler.map((delmal: Delmal, index: number) => (
+                                <BrevMenyDelmalWrapper
+                                    førsteElement={index === 0}
+                                    key={`${delmal.delmalApiNavn}_wrapper`}
+                                >
+                                    <BrevMenyDelmal
+                                        valgt={!!valgteDelmaler[delmal.delmalApiNavn]}
+                                        delmal={delmal}
+                                        dokument={brevStruktur}
+                                        valgteFelt={valgteFelt}
+                                        settValgteFelt={settValgteFelt}
+                                        flettefelter={alleFlettefelter}
+                                        settFlettefelter={settAlleFlettefelter}
+                                        settValgteDelmaler={settValgteDelmaler}
+                                        key={delmal.delmalApiNavn}
+                                        settKanSendeTilBeslutter={settKanSendesTilBeslutter}
+                                        skjul={erAutomatiskFeltSomSkalSkjules(delmalStore, delmal)}
+                                    />
+                                </BrevMenyDelmalWrapper>
+                            ))}
                         </Panel>
                     );
                 } else {
