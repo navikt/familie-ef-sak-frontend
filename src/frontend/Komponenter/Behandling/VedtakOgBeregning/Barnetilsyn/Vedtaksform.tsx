@@ -30,7 +30,7 @@ import { tomUtgiftsperiodeRad } from './utils';
 import { useRedirectEtterLagring } from '../../../../App/hooks/felles/useRedirectEtterLagring';
 import { v4 as uuidv4 } from 'uuid';
 import { AlertError } from '../../../../Felles/Visningskomponenter/Alerts';
-import DisplayBlockKnapp, { Variant } from '../../../../Felles/Knapper/DisplayBlockKnapp';
+import HovedKnapp from '../../../../Felles/Knapper/HovedKnapp';
 
 export type InnvilgeVedtakForm = {
     utgiftsperioder: IUtgiftsperiode[];
@@ -303,13 +303,7 @@ export const Vedtaksform: React.FC<{
                 beregningsresultat={beregningsresultat}
                 className="spacing-left"
             />
-            {behandlingErRedigerbar && (
-                <DisplayBlockKnapp
-                    disabled={laster}
-                    knappetekst="Lagre vedtak"
-                    variant={Variant.HOVED}
-                />
-            )}
+            {behandlingErRedigerbar && <HovedKnapp disabled={laster} knappetekst="Lagre vedtak" />}
         </Form>
     );
 };

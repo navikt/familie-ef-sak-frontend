@@ -15,7 +15,7 @@ import { Label } from '@navikt/ds-react';
 import { EnsligFamilieSelect } from '../../../../../Felles/Input/EnsligFamilieSelect';
 import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 import { BodyShortSmall } from '../../../../../Felles/Visningskomponenter/Tekster';
-import DisplayBlockKnapp, { Variant } from '../../../../../Felles/Knapper/DisplayBlockKnapp';
+import LeggTilKnapp from '../../../../../Felles/Knapper/LeggTilKnapp';
 
 const Grid = styled.div<{
     skoleårErFjernet?: boolean;
@@ -167,7 +167,7 @@ const SkoleårDelårsperiode: React.FC<ValideringsPropsMedOppdatering<IPeriodeSk
                 })}
             </Grid>
             {!erLesevisning && !erOpphør && (
-                <DisplayBlockKnapp
+                <LeggTilKnapp
                     onClick={() =>
                         oppdater([
                             ...data,
@@ -175,7 +175,6 @@ const SkoleårDelårsperiode: React.FC<ValideringsPropsMedOppdatering<IPeriodeSk
                         ])
                     }
                     knappetekst="Legg til periode"
-                    variant={Variant.LEGG_TIL}
                 />
             )}
         </>

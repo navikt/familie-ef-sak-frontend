@@ -8,7 +8,7 @@ import InputMedTusenSkille from '../../../../../Felles/Visningskomponenter/Input
 import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 import { SmallTextLabel } from '../../../../../Felles/Visningskomponenter/Tekster';
 import { ABlue300, ABorderStrong } from '@navikt/ds-tokens/dist/tokens';
-import DisplayBlockKnapp, { Variant } from '../../../../../Felles/Knapper/DisplayBlockKnapp';
+import LeggTilKnapp from '../../../../../Felles/Knapper/LeggTilKnapp';
 
 const Container = styled.div`
     display: flex;
@@ -136,10 +136,9 @@ const UtgiftsperiodeSkolepenger: React.FC<
                 </Grid>
             </FlexRow>
             {behandlingErRedigerbar && (
-                <DisplayBlockKnapp
+                <LeggTilKnapp
                     onClick={() => oppdater([...data, tomUtgift()])}
                     knappetekst="Legg til utgift"
-                    variant={Variant.LEGG_TIL}
                 />
             )}
         </Container>

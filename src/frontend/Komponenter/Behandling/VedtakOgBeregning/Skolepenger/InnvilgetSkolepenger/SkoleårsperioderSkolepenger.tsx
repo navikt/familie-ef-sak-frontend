@@ -13,7 +13,8 @@ import { tomSkoleårsperiodeSkolepenger } from '../typer';
 import { oppdaterValideringsfeil } from '../utils';
 import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
 import { HorizontalScroll } from '../../Felles/HorizontalScroll';
-import DisplayBlockKnapp, { Variant } from '../../../../../Felles/Knapper/DisplayBlockKnapp';
+import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
+import LeggTilKnapp from '../../../../../Felles/Knapper/LeggTilKnapp';
 
 const Skoleårsperiode = styled(HorizontalScroll)`
     display: flex;
@@ -113,20 +114,18 @@ const SkoleårsperioderSkolepenger: React.FC<Props> = ({
                             låsteUtgiftIder={låsteUtgiftIder}
                         />
                         {skalViseFjernKnapp && (
-                            <DisplayBlockKnapp
+                            <FjernKnapp
                                 onClick={() => fjernSkoleårsperiode(index)}
                                 knappetekst={'Fjern skoleårsperiode'}
-                                variant={Variant.FJERN}
                             />
                         )}
                     </Skoleårsperiode>
                 );
             })}
             {behandlingErRedigerbar && (
-                <DisplayBlockKnapp
+                <LeggTilKnapp
                     onClick={() => skoleårsperioder.push(tomSkoleårsperiodeSkolepenger())}
                     knappetekst="Legg til skoleår"
-                    variant={Variant.LEGG_TIL}
                 />
             )}
         </>

@@ -1,5 +1,10 @@
 import React from 'react';
 import { Button } from '@navikt/ds-react';
+import styled from 'styled-components';
+
+const Knapp = styled(Button)`
+    width: fit-content;
+`;
 
 const HovedKnapp: React.FC<{
     className?: string;
@@ -8,7 +13,7 @@ const HovedKnapp: React.FC<{
     onClick?: () => void;
 }> = ({ className, disabled, knappetekst, onClick }) => {
     return (
-        <Button
+        <Knapp
             className={className}
             disabled={disabled}
             onClick={onClick}
@@ -16,7 +21,7 @@ const HovedKnapp: React.FC<{
             variant="primary"
         >
             {knappetekst && <span>{knappetekst}</span>}
-        </Button>
+        </Knapp>
     );
 };
 

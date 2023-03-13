@@ -30,7 +30,7 @@ import { useRedirectEtterLagring } from '../../../../../App/hooks/felles/useRedi
 import { v4 as uuidv4 } from 'uuid';
 import { BegrunnelsesFelt } from './BegrunnelsesFelt';
 import { AlertError } from '../../../../../Felles/Visningskomponenter/Alerts';
-import DisplayBlockKnapp, { Variant } from '../../../../../Felles/Knapper/DisplayBlockKnapp';
+import HovedKnapp from '../../../../../Felles/Knapper/HovedKnapp';
 
 const Form = styled.form`
     display: flex;
@@ -209,13 +209,7 @@ export const VedtaksformSkolepenger: React.FC<{
                 beregningsresultat={beregningsresultat}
                 className="spacing-left"
             />
-            {behandlingErRedigerbar && (
-                <DisplayBlockKnapp
-                    disabled={laster}
-                    knappetekst="Lagre vedtak"
-                    variant={Variant.HOVED}
-                />
-            )}
+            {behandlingErRedigerbar && <HovedKnapp disabled={laster} knappetekst="Lagre vedtak" />}
         </Form>
     );
 };
