@@ -155,6 +155,7 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
                         brevMal ? (
                             <BrevmenyVisning
                                 {...props}
+                                behandling={behandling}
                                 brevStruktur={brevStruktur}
                                 beløpsperioder={beløpsperioder}
                                 brevMal={brevMal}

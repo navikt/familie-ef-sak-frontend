@@ -50,8 +50,8 @@ const Environment = (): IEnvironment => {
             aInntekt: 'https://arbeid-og-inntekt.dev.adeo.no',
             gosys: 'https://gosys-q1.dev.intern.nav.no/gosys',
             modia: 'https://app-q1.adeo.no/modiapersonoversikt',
-            historiskPensjon: 'https://historisk-pensjon.dev.intern.nav.no',
-            endringsloggProxyUrl: 'https://familie-endringslogg.dev.intern.nav.no',
+            historiskPensjon: 'https://historisk-pensjon.intern.dev.nav.no',
+            endringsloggProxyUrl: 'https://familie-endringslogg.intern.dev.nav.no',
             roller: rollerDev,
         };
     } else if (process.env.ENV === 'e2e') {
@@ -63,8 +63,8 @@ const Environment = (): IEnvironment => {
             aInntekt: 'https://arbeid-og-inntekt.dev.adeo.no',
             gosys: 'https://gosys-q1.dev.intern.nav.no/gosys',
             modia: 'https://app-q1.adeo.no/modiapersonoversikt',
-            historiskPensjon: 'https://historisk-pensjon.dev.intern.nav.no',
-            endringsloggProxyUrl: 'https://familie-endringslogg.dev.intern.nav.no',
+            historiskPensjon: 'https://historisk-pensjon.intern.dev.nav.no',
+            endringsloggProxyUrl: 'https://familie-endringslogg.intern.dev.nav.no',
             roller: rollerDev,
             //Har ikke satt opp redis
         };
@@ -77,22 +77,22 @@ const Environment = (): IEnvironment => {
             aInntekt: 'https://arbeid-og-inntekt.dev.adeo.no',
             gosys: 'https://gosys-q1.dev.intern.nav.no/gosys',
             modia: 'https://app-q1.adeo.no/modiapersonoversikt',
-            historiskPensjon: 'https://historisk-pensjon.dev.intern.nav.no',
+            historiskPensjon: 'https://historisk-pensjon.intern.dev.nav.no',
             redisUrl: 'familie-ef-sak-frontend-redis',
-            endringsloggProxyUrl: 'https://familie-endringslogg.dev.intern.nav.no',
+            endringsloggProxyUrl: 'http://familie-endringslogg',
             roller: rollerDev,
         };
     } else if (process.env.ENV === 'lokalt-mot-preprod') {
         return {
             buildPath: 'frontend_development',
             namespace: 'local',
-            sakProxyUrl: 'https://familie-ef-sak.dev.intern.nav.no',
-            brevProxyUrl: 'https://familie-brev.dev.intern.nav.no',
+            sakProxyUrl: 'https://familie-ef-sak.intern.dev.nav.no',
+            brevProxyUrl: 'https://familie-brev.intern.dev.nav.no',
             aInntekt: 'https://arbeid-og-inntekt.dev.adeo.no',
             gosys: 'https://gosys-q1.dev.intern.nav.no/gosys',
             modia: 'https://app-q1.adeo.no/modiapersonoversikt',
-            historiskPensjon: 'https://historisk-pensjon.dev.intern.nav.no',
-            endringsloggProxyUrl: 'https://familie-endringslogg.dev.intern.nav.no',
+            historiskPensjon: 'https://historisk-pensjon.intern.dev.nav.no',
+            endringsloggProxyUrl: 'https://familie-endringslogg.intern.dev.nav.no',
             roller: rollerDev,
         };
     }
@@ -107,7 +107,7 @@ const Environment = (): IEnvironment => {
         modia: 'https://app.adeo.no/modiapersonoversikt',
         historiskPensjon: 'https://historisk-pensjon.intern.nav.no',
         redisUrl: 'familie-ef-sak-frontend-redis',
-        endringsloggProxyUrl: 'https://familie-endringslogg.intern.nav.no',
+        endringsloggProxyUrl: 'http://familie-endringslogg',
         roller: rollerProd,
     };
 };

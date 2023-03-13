@@ -65,12 +65,16 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     mellomlagretBrevVerdier,
     brevMal,
     stønadstype,
+    behandling,
 }) => {
     const { axiosRequest } = useApp();
     const { mellomlagreSanitybrev } = useMellomlagringBrev(behandlingId);
     const [alleFlettefelter, settAlleFlettefelter] = useState<FlettefeltMedVerdi[]>([]);
     const [brevmalFeil, settBrevmalFeil] = useState('');
-    const { flettefeltStore, valgfeltStore, delmalStore } = useVerdierForBrev(beløpsperioder);
+    const { flettefeltStore, valgfeltStore, delmalStore } = useVerdierForBrev(
+        beløpsperioder,
+        behandling
+    );
 
     useEffect(() => {
         const parsetMellomlagretBrev =
