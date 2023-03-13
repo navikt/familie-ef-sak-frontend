@@ -75,6 +75,7 @@ interface Flettefelt {
     erFritektsfelt?: boolean;
     feltVisningsnavn?: string;
     _id: string;
+    beskrivelse?: string;
 }
 
 export interface Flettefeltreferanse {
@@ -83,6 +84,7 @@ export interface Flettefeltreferanse {
 
 export interface FlettefeltMedVerdi extends Flettefeltreferanse {
     verdi: string | null;
+    automatiskUtfylt?: boolean;
 }
 
 export interface Valgmulighet {
@@ -98,6 +100,7 @@ export interface ValgFelt {
     valgMuligheter: Valgmulighet[];
     valgfeltVisningsnavn: string;
     valgFeltApiNavn: string;
+    valgfeltBeskrivelse?: string;
 }
 
 export interface Delmal {
