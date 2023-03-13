@@ -1,7 +1,12 @@
 import {
     AvsnittMedId,
+    BrevmenyBlokk,
+    BrevmenyGruppe,
     BrevStruktur,
     Delmal,
+    DelmalGruppe,
+    erDelmalGruppe,
+    erFritekstblokk,
     FlettefeltMedVerdi,
     IFritekstBrev,
     IFrittståendeBrev,
@@ -9,7 +14,7 @@ import {
 } from './BrevTyper';
 import { v4 as uuidv4 } from 'uuid';
 import { Dispatch, SetStateAction } from 'react';
-import { FlettefeltStore, ValgfeltStore } from '../../../App/hooks/useVerdierForBrev';
+import { DelmalStore, FlettefeltStore, ValgfeltStore } from '../../../App/hooks/useVerdierForBrev';
 
 const lagTomtAvsnitt = (): AvsnittMedId => ({
     deloverskrift: '',
@@ -51,11 +56,33 @@ export const erFlettefeltFritektsfelt = (dokument: BrevStruktur, ref: string): b
     return flettefeltFraRef?.erFritektsfelt || false;
 };
 
-export const grupperDelmaler = (delmaler: Delmal[]): { [gruppeVisningsnavn: string]: Delmal[] } => {
-    return delmaler.reduce((acc: { [gruppeVisningsnavn: string]: Delmal[] }, delmal: Delmal) => {
-        (acc[delmal.gruppeVisningsnavn] = acc[delmal.gruppeVisningsnavn] || []).push(delmal);
+export const grupperBrevmenyBlokker = (blokker: BrevmenyBlokk[]): BrevmenyGruppe[] => {
+    return blokker.reduce((acc: BrevmenyGruppe[], blokk) => {
+        if (erFritekstblokk(blokk)) {
+            return [...acc, { type: 'fritekstområde', fritekstområde: blokk }];
+        }
+
+        const delmalgruppe = acc.findIndex(
+            (område) =>
+                område.type === 'DelmalGruppe' &&
+                område.gruppeVisningsnavn === blokk.innhold.gruppeVisningsnavn
+        );
+
+        if (delmalgruppe < 0) {
+            acc.push({
+                type: 'DelmalGruppe',
+                gruppeVisningsnavn: blokk.innhold.gruppeVisningsnavn,
+                delmaler: [blokk.innhold],
+            });
+        } else {
+            const gruppe = acc[delmalgruppe];
+            if (erDelmalGruppe(gruppe)) {
+                gruppe.delmaler.push(blokk.innhold);
+            }
+        }
+
         return acc;
-    }, {});
+    }, []);
 };
 
 const hentVerdiFraMellomlagerEllerNull = (
@@ -230,3 +257,16 @@ export const flyttAvsnittNedover = (
         ...eksisterendeAvsnitt.slice(avsnittEtterIndeks + 1),
     ];
 };
+
+export const erAutomatiskFeltSomSkalSkjules = (
+    delmalStore: { delmal: string; skjulIBrevmeny: boolean }[],
+    delmal: Delmal
+): boolean => {
+    const automatiskFeltSomSkalSkjules = delmalStore.find(
+        (mal) => mal.delmal === delmal.delmalApiNavn
+    )?.skjulIBrevmeny;
+    return automatiskFeltSomSkalSkjules || false;
+};
+
+export const skalSkjuleAlleDelmaler = (gruppe: DelmalGruppe, delmalStore: DelmalStore): boolean =>
+    gruppe.delmaler.every((delmal) => erAutomatiskFeltSomSkalSkjules(delmalStore, delmal));
