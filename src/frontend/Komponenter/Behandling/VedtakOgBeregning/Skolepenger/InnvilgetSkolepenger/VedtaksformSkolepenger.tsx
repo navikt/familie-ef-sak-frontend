@@ -36,10 +36,6 @@ const Form = styled.form`
     display: flex;
     flex-direction: column;
     gap: 1rem;
-
-    .spacing-left {
-        margin-left: 1rem;
-    }
 `;
 
 export const AdvarselTekst = styled(BodyShortSmall)`
@@ -194,7 +190,7 @@ export const VedtaksformSkolepenger: React.FC<{
             )}
             {feilmelding && <AlertError>{feilmelding}</AlertError>}
             {behandlingErRedigerbar && !erOpphør && (
-                <div className="spacing-left">
+                <div>
                     <Button variant={'secondary'} onClick={beregnSkolepenger} type={'button'}>
                         Beregn
                     </Button>

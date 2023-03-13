@@ -47,10 +47,6 @@ const Form = styled.form`
     display: flex;
     flex-direction: column;
     gap: 1rem;
-
-    .spacing-left {
-        margin-left: 1rem;
-    }
 `;
 
 const initKontantstøttestate = (vedtak: IInnvilgeVedtakForBarnetilsyn | undefined) =>
@@ -292,7 +288,7 @@ export const Vedtaksform: React.FC<{
                 valideringsfeil={formState.errors}
             />
             {behandlingErRedigerbar && (
-                <div className="spacing-left">
+                <div>
                     <Button variant={'secondary'} onClick={beregnBarnetilsyn} type={'button'}>
                         Beregn
                     </Button>
