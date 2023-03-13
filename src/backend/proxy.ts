@@ -37,8 +37,9 @@ export const doProxy = (
     });
 };
 
-export const addCallId = (): RequestHandler => {
+export const addRequestInfo = (): RequestHandler => {
     return (req: Request, _res: Response, next: NextFunction) => {
+        req.headers['Nav-Consumer-Id'] = 'familie-ef-sak-frontend';
         req.headers['nav-call-id'] = uuidv4();
         next();
     };
