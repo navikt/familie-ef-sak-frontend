@@ -46,18 +46,22 @@ const PensjonsgivendeInntektTabell: React.FC<{
                         <Table.Header>
                             <Table.Row>
                                 <Table.HeaderCell>Inntektsår</Table.HeaderCell>
-                                <Table.HeaderCell>Pensjonsgivende inntekt</Table.HeaderCell>
+                                <Table.HeaderCell>Pensjonsgivende inntekt næring</Table.HeaderCell>
+                                <Table.HeaderCell>Pensjonsgivende inntekt person</Table.HeaderCell>
                             </Table.Row>
                         </Table.Header>
                         <Table.Body>
                             {pensjonsgivendeInntekter.map((pensjonsgivendeInntekt) => {
                                 return (
-                                    <Table.Row key={pensjonsgivendeInntekt.inntektsaar}>
+                                    <Table.Row key={pensjonsgivendeInntekt.inntektsår}>
                                         <Table.DataCell>
-                                            {pensjonsgivendeInntekt.inntektsaar}
+                                            {pensjonsgivendeInntekt.inntektsår}
                                         </Table.DataCell>
                                         <Table.DataCell>
-                                            {pensjonsgivendeInntekt.verdi}
+                                            {pensjonsgivendeInntekt.næring}
+                                        </Table.DataCell>
+                                        <Table.DataCell>
+                                            {pensjonsgivendeInntekt.person}
                                         </Table.DataCell>
                                     </Table.Row>
                                 );
