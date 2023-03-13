@@ -7,6 +7,7 @@ export enum PeriodeVariant {
 }
 
 interface Props {
+    className?: string;
     datoFraTekst?: string;
     datoTilTekst?: string;
     årMånedFraInitiell?: string;
@@ -23,22 +24,24 @@ interface Props {
 }
 
 const MånedÅrPeriode: React.FC<Props> = ({
-    årMånedFraInitiell,
-    årMånedTilInitiell,
+    antallÅrFrem = 4,
+    antallÅrTilbake = 10,
+    className,
     datoFraTekst,
     datoTilTekst,
-    onEndre,
-    antallÅrTilbake = 10,
-    antallÅrFrem = 4,
-    feilmelding,
-    erLesevisning,
     disabledFra,
     disabledTil,
+    erLesevisning,
+    feilmelding,
+    onEndre,
     size,
+    årMånedFraInitiell,
+    årMånedTilInitiell,
 }) => {
     return (
         <>
             <MånedÅrVelger
+                className={className}
                 årMånedInitiell={årMånedFraInitiell}
                 label={datoFraTekst}
                 onEndret={(verdi) => onEndre(verdi, PeriodeVariant.ÅR_MÅNED_FRA)}

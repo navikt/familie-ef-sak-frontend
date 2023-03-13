@@ -49,6 +49,12 @@ export interface IVurdering {
     endretAv: string;
     endretTid: string;
     delvilkårsvurderinger: IDelvilkår[];
+    opphavsvilkår?: Opphavsvilkår;
+}
+
+export interface Opphavsvilkår {
+    behandlingId: string;
+    vurderingstidspunkt: string;
 }
 
 export interface IDokumentasjonGrunnlag {

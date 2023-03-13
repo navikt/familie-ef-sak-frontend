@@ -5,16 +5,9 @@ import {
     utgiftsperiodeAktivitetTilTekst,
 } from '../../../../App/typer/vedtak';
 import React from 'react';
-import styled from 'styled-components';
 import { OrNothing } from '../../../../App/hooks/felles/useSorteringState';
 import { EnsligFamilieSelect } from '../../../../Felles/Input/EnsligFamilieSelect';
 import { erOpphørEllerSanksjon } from './utils';
-
-const StyledSelect = styled(EnsligFamilieSelect)`
-    align-items: start;
-    min-width: 140px;
-    max-width: 200px;
-`;
 
 interface Props {
     periodetype: EUtgiftsperiodetype | undefined;
@@ -48,7 +41,7 @@ const AktivitetSelect: React.FC<Props> = ({
     };
 
     return (
-        <StyledSelect
+        <EnsligFamilieSelect
             label={'Aktivitet'}
             hideLabel
             value={aktivitet}
@@ -61,7 +54,6 @@ const AktivitetSelect: React.FC<Props> = ({
             }}
             erLesevisning={erLesevisning || skalIkkeVelgeAktivitet}
             lesevisningVerdi={utledLesevisningVerdi()}
-            size={'small'}
         >
             <option value="">Velg</option>
             {valgbareAktivitetstyper.map((aktivitet) => (
@@ -69,7 +61,7 @@ const AktivitetSelect: React.FC<Props> = ({
                     {utgiftsperiodeAktivitetTilTekst[aktivitet]}
                 </option>
             ))}
-        </StyledSelect>
+        </EnsligFamilieSelect>
     );
 };
 
