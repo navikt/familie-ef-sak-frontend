@@ -2973,6 +2973,11 @@
     hey-listen "^1.0.8"
     tslib "^2.3.1"
 
+"@navikt/aksel-icons@^2.7.x":
+  version "2.7.6"
+  resolved "https://npm.pkg.github.com/download/@navikt/aksel-icons/2.7.6/bcf77dd6c94e00b4dbe232af187d491efb7dcdfa#bcf77dd6c94e00b4dbe232af187d491efb7dcdfa"
+  integrity sha512-ff7zgBIZE3jmMMX1b+E/RTcB7wlQXTWoONlUKFVF7h7yFqbuRXhMoREsqKfleSeYtCT0m80+ZRx7BOytZVRr8g==
+
 "@navikt/ds-css-internal@^2.0.x":
   version "2.0.11"
   resolved "https://npm.pkg.github.com/download/@navikt/ds-css-internal/2.0.11/906bfdbf2701e1ce58fe405b6a129a032f239147#906bfdbf2701e1ce58fe405b6a129a032f239147"

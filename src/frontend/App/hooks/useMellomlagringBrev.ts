@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import {
     Brevtype,
     FlettefeltMedVerdi,
+    Fritekstområder,
     MellomlagerRespons,
     ValgteDelmaler,
     ValgtFelt,
@@ -19,6 +20,7 @@ export interface IBrevverdier {
     flettefeltFraMellomlager: FlettefeltMedVerdi[];
     valgteFeltFraMellomlager: ValgtFelt;
     valgteDelmalerFraMellomlager: ValgteDelmaler;
+    fritekstområderFraMellomlager: Fritekstområder;
 }
 
 export interface IMellomlagreBrevRequest {
@@ -41,6 +43,7 @@ export const useMellomlagringBrev = (
         flettefelt: FlettefeltMedVerdi[],
         valgteFelt: ValgtFelt,
         valgteDelmaler: ValgteDelmaler,
+        fritekstområder: Fritekstområder,
         brevmal: string
     ) => void;
     mellomlagretBrev: Ressurs<MellomlagerRespons | undefined>;
@@ -56,6 +59,7 @@ export const useMellomlagringBrev = (
         flettefelt: FlettefeltMedVerdi[],
         valgteFelt: ValgtFelt,
         valgteDelmaler: ValgteDelmaler,
+        fritekstområder: Fritekstområder,
         brevmal: string
     ): void => {
         axiosRequest<string, IMellomlagretBrev>({
@@ -66,6 +70,7 @@ export const useMellomlagringBrev = (
                     flettefeltFraMellomlager: flettefelt,
                     valgteFeltFraMellomlager: valgteFelt,
                     valgteDelmalerFraMellomlager: valgteDelmaler,
+                    fritekstområderFraMellomlager: fritekstområder,
                 }),
                 brevmal,
                 versjon: sanityVersjon,
