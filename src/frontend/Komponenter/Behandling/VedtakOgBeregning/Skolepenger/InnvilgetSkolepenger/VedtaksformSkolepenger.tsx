@@ -201,10 +201,7 @@ export const VedtaksformSkolepenger: React.FC<{
                     )}
                 </div>
             )}
-            <UtregningstabellSkolepenger
-                beregningsresultat={beregningsresultat}
-                className="spacing-left"
-            />
+            <UtregningstabellSkolepenger beregningsresultat={beregningsresultat} />
             {behandlingErRedigerbar && <HovedKnapp disabled={laster} knappetekst="Lagre vedtak" />}
         </Form>
     );

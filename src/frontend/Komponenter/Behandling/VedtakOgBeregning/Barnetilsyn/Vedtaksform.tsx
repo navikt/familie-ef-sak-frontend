@@ -295,10 +295,7 @@ export const Vedtaksform: React.FC<{
                     {feilmelding && <AlertError>{feilmelding}</AlertError>}
                 </div>
             )}
-            <UtregningstabellBarnetilsyn
-                beregningsresultat={beregningsresultat}
-                className="spacing-left"
-            />
+            <UtregningstabellBarnetilsyn beregningsresultat={beregningsresultat} />
             {behandlingErRedigerbar && <HovedKnapp disabled={laster} knappetekst="Lagre vedtak" />}
         </Form>
     );

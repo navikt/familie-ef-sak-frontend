@@ -3,6 +3,12 @@ import MånedÅrVelger from '../../../../Felles/Input/MånedÅr/MånedÅrVelger'
 import styled from 'styled-components';
 import { AlertWarning } from '../../../../Felles/Visningskomponenter/Alerts';
 import { EnsligErrorMessage } from '../../../../Felles/ErrorMessage/EnsligErrorMessage';
+import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
+
+const Container = styled.div`
+    padding: 1rem;
+    background-color: ${AGray50};
+`;
 
 const Advarsel = styled(AlertWarning)`
     margin-top: 0.5rem;
@@ -43,7 +49,7 @@ export const RevurderesFraOgMed: React.FC<{
     type,
 }) => {
     return (
-        <div className={className}>
+        <Container className={className}>
             <MånedÅrVelger
                 label={'Revurderes fra og med'}
                 onEndret={(årMåned) => {
@@ -60,6 +66,6 @@ export const RevurderesFraOgMed: React.FC<{
             {revurdererFraPeriodeUtenStønad && (
                 <Advarsel>{revurderesFørFørstePeriodeAdvarsel(type)}</Advarsel>
             )}
-        </div>
+        </Container>
     );
 };

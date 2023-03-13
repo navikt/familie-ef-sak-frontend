@@ -93,14 +93,14 @@ const VedtakOgBeregningSideOvergangsstønad: React.FC<{
     vilkår: IVilkår;
 }> = ({ behandling, vilkår }) => {
     return (
-        <>
+        <Side>
             <VedtaksoppsummeringOvergangsstønad vilkår={vilkår} behandling={behandling} />
             {behandling.steg === Steg.VILKÅR ? (
                 <AlertStripeIkkeFerdigBehandletVilkår />
             ) : (
                 <VedtakOgBeregningOvergangsstønad behandling={behandling} vilkår={vilkår} />
             )}
-        </>
+        </Side>
     );
 };
 
