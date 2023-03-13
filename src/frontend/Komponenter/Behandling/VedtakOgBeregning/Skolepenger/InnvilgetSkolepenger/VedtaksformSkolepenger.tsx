@@ -30,6 +30,7 @@ import { useRedirectEtterLagring } from '../../../../../App/hooks/felles/useRedi
 import { v4 as uuidv4 } from 'uuid';
 import { BegrunnelsesFelt } from './BegrunnelsesFelt';
 import { AlertError } from '../../../../../Felles/Visningskomponenter/Alerts';
+import DisplayBlockKnapp, { Variant } from '../../../../../Felles/Knapper/DisplayBlockKnapp';
 
 const Form = styled.form`
     display: flex;
@@ -43,10 +44,6 @@ const Form = styled.form`
 
 export const AdvarselTekst = styled(BodyShortSmall)`
     color: ${ARed500};
-`;
-
-const HovedKnapp = styled(Button)`
-    width: 9rem;
 `;
 
 export const defaultSkoleårsperioder = (
@@ -213,9 +210,11 @@ export const VedtaksformSkolepenger: React.FC<{
                 className="spacing-left"
             />
             {behandlingErRedigerbar && (
-                <HovedKnapp disabled={laster} type={'submit'} variant="primary">
-                    Lagre vedtak
-                </HovedKnapp>
+                <DisplayBlockKnapp
+                    disabled={laster}
+                    knappetekst="Lagre vedtak"
+                    variant={Variant.HOVED}
+                />
             )}
         </Form>
     );

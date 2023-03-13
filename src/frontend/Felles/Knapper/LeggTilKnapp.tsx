@@ -6,7 +6,7 @@ const LeggTilKnapp: React.FC<{
     className?: string;
     ikontekst?: string;
     knappetekst?: string;
-    onClick: () => void;
+    onClick?: () => void;
 }> = ({ className, ikontekst, knappetekst, onClick }) => {
     return (
         <Button

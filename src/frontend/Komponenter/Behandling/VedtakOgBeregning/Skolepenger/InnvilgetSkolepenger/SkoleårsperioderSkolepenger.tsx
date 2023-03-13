@@ -2,7 +2,6 @@ import { ISkoleårsperiodeSkolepenger } from '../../../../../App/typer/vedtak';
 import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import { useBehandling } from '../../../../../App/context/BehandlingContext';
-import LeggTilKnapp from '../../../../../Felles/Knapper/LeggTilKnapp';
 import { ListState } from '../../../../../App/hooks/felles/useListState';
 import { FormErrors } from '../../../../../App/hooks/felles/useFormState';
 import { InnvilgeVedtakForm } from './VedtaksformSkolepenger';
@@ -12,9 +11,9 @@ import SkoleårDelårsperiode from './SkoleårDelårsperiode';
 import UtgiftsperiodeSkolepenger from './UtgiftsperiodeSkolepenger';
 import { tomSkoleårsperiodeSkolepenger } from '../typer';
 import { oppdaterValideringsfeil } from '../utils';
-import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
 import { HorizontalScroll } from '../../Felles/HorizontalScroll';
+import DisplayBlockKnapp, { Variant } from '../../../../../Felles/Knapper/DisplayBlockKnapp';
 
 const Skoleårsperiode = styled(HorizontalScroll)`
     display: flex;
@@ -22,15 +21,6 @@ const Skoleårsperiode = styled(HorizontalScroll)`
     gap: 1rem;
     padding: 1rem;
     background-color: ${AGray50};
-`;
-
-const LeggTilSkoleår = styled(LeggTilKnapp)`
-    margin-left: 1rem;
-    width: 12.5rem;
-`;
-
-const FjernPeriodeKnapp = styled(FjernKnapp)`
-    width: 15rem;
 `;
 
 interface Props {
@@ -123,18 +113,20 @@ const SkoleårsperioderSkolepenger: React.FC<Props> = ({
                             låsteUtgiftIder={låsteUtgiftIder}
                         />
                         {skalViseFjernKnapp && (
-                            <FjernPeriodeKnapp
+                            <DisplayBlockKnapp
                                 onClick={() => fjernSkoleårsperiode(index)}
                                 knappetekst={'Fjern skoleårsperiode'}
+                                variant={Variant.FJERN}
                             />
                         )}
                     </Skoleårsperiode>
                 );
             })}
             {behandlingErRedigerbar && (
-                <LeggTilSkoleår
+                <DisplayBlockKnapp
                     onClick={() => skoleårsperioder.push(tomSkoleårsperiodeSkolepenger())}
                     knappetekst="Legg til skoleår"
+                    variant={Variant.LEGG_TIL}
                 />
             )}
         </>
