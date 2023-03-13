@@ -46,7 +46,11 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, mapper, settFeilmelding, hentOpp
         oppgave.behandlingstype &&
         oppgaveBehandlingstypeTilTekst[oppgave.behandlingstype as OppgaveBehandlingstype];
 
-    const typeBehandling = behandlingstype ? behandlingstype : behandlingstema;
+    const typeBehandling = behandlingstype
+        ? behandlingstema
+            ? behandlingstype + ' - ' + behandlingstema
+            : behandlingstype
+        : behandlingstema;
 
     return (
         <>
