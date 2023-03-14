@@ -37,7 +37,8 @@ const historikkRad = (andel: AndelHistorikk, index: number) => {
 
     const erSanksjon = andel.periodetypeBarnetilsyn === EUtgiftsperiodetype.SANKSJON_1_MND;
     const erOpphør = andel.erOpphør;
-    const visDetaljer = !erSanksjon && !erOpphør;
+    const visDetaljer =
+        !erSanksjon && !erOpphør && andel.periodetypeBarnetilsyn !== EUtgiftsperiodetype.OPPHØR;
 
     const utledAktivitetskolonneTekst = (): string => {
         if (erSanksjon) return sanksjonsårsakTilTekst[andel.sanksjonsårsak as Sanksjonsårsak];
