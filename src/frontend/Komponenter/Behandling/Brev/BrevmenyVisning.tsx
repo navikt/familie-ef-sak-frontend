@@ -26,7 +26,6 @@ import {
 import { Ressurs } from '../../../App/typer/ressurs';
 import { useApp } from '../../../App/context/AppContext';
 import styled from 'styled-components';
-import { BrevmenyProps } from './Brevmeny';
 import { apiLoggFeil } from '../../../App/api/axios';
 import { IBrevverdier, useMellomlagringBrev } from '../../../App/hooks/useMellomlagringBrev';
 import { useDebouncedCallback } from 'use-debounce';
@@ -37,6 +36,8 @@ import { delmalTilUtregningstabellOS } from './UtregningstabellOvergangsstønad'
 import { delmalTilUtregningstabellBT } from './UtregningstabellBarnetilsyn';
 import { useVerdierForBrev } from '../../../App/hooks/useVerdierForBrev';
 import { Fritekstområde } from './Fritekstområde';
+import { IPersonopplysninger } from '../../../App/typer/personopplysninger';
+import { Behandling } from '../../../App/typer/fagsak';
 
 const BrevFelter = styled.div`
     display: flex;
@@ -54,12 +55,17 @@ const BrevMenyDelmalWrapper = styled.div<{ førsteElement?: boolean }>`
     margin-top: ${(props) => (props.førsteElement ? '0' : '1rem')};
 `;
 
-export interface BrevmenyVisningProps extends BrevmenyProps {
+export interface BrevmenyVisningProps {
     brevStruktur: BrevStruktur;
     beløpsperioder?: IBeløpsperiode[] | IBeregningsperiodeBarnetilsyn[];
     mellomlagretBrevVerdier?: string;
     brevMal: string;
     stønadstype: Stønadstype;
+    personopplysninger: IPersonopplysninger;
+    settKanSendesTilBeslutter: (kanSendesTilBeslutter: boolean) => void;
+    oppdaterBrevRessurs: (brevRessurs: Ressurs<string>) => void;
+    behandlingId: string;
+    behandling: Behandling;
 }
 
 const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
