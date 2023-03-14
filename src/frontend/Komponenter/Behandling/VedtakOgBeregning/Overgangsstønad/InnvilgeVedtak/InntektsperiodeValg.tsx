@@ -166,7 +166,9 @@ const InntektsperiodeValg: React.FC<Props> = ({
                 <>
                     <Grid lesevisning={!behandlingErRedigerbar}>
                         <TextLabel>Fra</TextLabel>
-                        <TextLabel>Forventet inntekt (år)</TextLabel>
+                        {valgteInntektstyper[EInntektstype.ÅRSINNTEKT] && (
+                            <TextLabel>Årsinntekt (faktisk)</TextLabel>
+                        )}
                         {valgteInntektstyper[EInntektstype.SAMORDNINGSFRADRAG] && (
                             <>
                                 <TextLabel>Samordningsfradrag</TextLabel>
@@ -201,26 +203,27 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                         antallÅrFrem={4}
                                         lesevisning={!behandlingErRedigerbar}
                                     />
-
-                                    <StyledInput
-                                        label={'Forventet inntekt'}
-                                        hideLabel
-                                        type="number"
-                                        value={
-                                            harTallverdi(rad.forventetInntekt)
-                                                ? rad.forventetInntekt
-                                                : ''
-                                        }
-                                        onChange={(e) => {
-                                            settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
-                                            oppdaterInntektslisteElement(
-                                                index,
-                                                EInntektsperiodeProperty.forventetInntekt,
-                                                tilTallverdi(e.target.value)
-                                            );
-                                        }}
-                                        erLesevisning={!behandlingErRedigerbar}
-                                    />
+                                    {valgteInntektstyper[EInntektstype.ÅRSINNTEKT] && (
+                                        <StyledInput
+                                            label={'Forventet inntekt'}
+                                            hideLabel
+                                            type="number"
+                                            value={
+                                                harTallverdi(rad.forventetInntekt)
+                                                    ? rad.forventetInntekt
+                                                    : ''
+                                            }
+                                            onChange={(e) => {
+                                                settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+                                                oppdaterInntektslisteElement(
+                                                    index,
+                                                    EInntektsperiodeProperty.forventetInntekt,
+                                                    tilTallverdi(e.target.value)
+                                                );
+                                            }}
+                                            erLesevisning={!behandlingErRedigerbar}
+                                        />
+                                    )}
                                     {valgteInntektstyper[EInntektstype.SAMORDNINGSFRADRAG] && (
                                         <>
                                             <StyledInput
