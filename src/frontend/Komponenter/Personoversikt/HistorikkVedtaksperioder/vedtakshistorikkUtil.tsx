@@ -52,7 +52,7 @@ export const etikettTypeOvergangsstønad = (periodeType?: EPeriodetype): TagProp
     }
 };
 
-export const etikettTypeBarnetilsyn = (periodeType: EUtgiftsperiodetype): TagProps['variant'] => {
+export const etikettTypeBarnetilsyn = (periodeType?: EUtgiftsperiodetype): TagProps['variant'] => {
     switch (periodeType) {
         case EUtgiftsperiodetype.ORDINÆR:
             return 'success';

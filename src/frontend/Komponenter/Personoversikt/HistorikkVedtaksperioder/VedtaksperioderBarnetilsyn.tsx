@@ -36,9 +36,8 @@ const historikkRad = (andel: AndelHistorikk, index: number) => {
     const stønadsbeløpetErRedusert = beløpErRedusertPgaSats || beløpErRedusertPgaTilleggsstønad;
 
     const erSanksjon = andel.periodetypeBarnetilsyn === EUtgiftsperiodetype.SANKSJON_1_MND;
-    const erOpphør = andel.periodetypeBarnetilsyn === EUtgiftsperiodetype.OPPHØR;
+    const erOpphør = andel.erOpphør;
     const visDetaljer = !erSanksjon && !erOpphør;
-    const periodeTypeErSatt = andel.periodetypeBarnetilsyn !== undefined;
 
     const utledAktivitetskolonneTekst = (): string => {
         if (erSanksjon) return sanksjonsårsakTilTekst[andel.sanksjonsårsak as Sanksjonsårsak];
@@ -51,22 +50,25 @@ const historikkRad = (andel: AndelHistorikk, index: number) => {
         <HistorikkRad type={andel.endring?.type} key={index}>
             <td>{datoAndelHistorikk(andel)}</td>
             <td>
-                {periodeTypeErSatt && (
+                {erOpphør ? (
                     <Tag
-                        variant={etikettTypeBarnetilsyn(
-                            andel.periodetypeBarnetilsyn as EUtgiftsperiodetype
-                        )}
+                        variant={etikettTypeBarnetilsyn(EUtgiftsperiodetype.OPPHØR)}
                         size={'small'}
                     >
-                        {
-                            utgiftsperiodetypeTilTekst[
-                                andel.periodetypeBarnetilsyn as EUtgiftsperiodetype
-                            ]
-                        }
+                        Opphør
                     </Tag>
+                ) : (
+                    andel.periodetypeBarnetilsyn && (
+                        <Tag
+                            variant={etikettTypeBarnetilsyn(andel.periodetypeBarnetilsyn)}
+                            size={'small'}
+                        >
+                            {utgiftsperiodetypeTilTekst[andel.periodetypeBarnetilsyn]}
+                        </Tag>
+                    )
                 )}
             </td>
-            <td>{utledAktivitetskolonneTekst()}</td>
+            <td>{visDetaljer && utledAktivitetskolonneTekst()}</td>
             <td>{visDetaljer && andel.andel.antallBarn}</td>
             <td>{visDetaljer && formaterTallMedTusenSkille(andel.andel.utgifter)}</td>
             <td>{visDetaljer && formaterTallMedTusenSkille(andel.andel.kontantstøtte)}</td>
