@@ -167,8 +167,12 @@ const InntektsperiodeValg: React.FC<Props> = ({
                     <Grid lesevisning={!behandlingErRedigerbar}>
                         <TextLabel>Fra</TextLabel>
                         <TextLabel>Forventet inntekt (år)</TextLabel>
-                        <TextLabel>Samordningsfradrag (mnd)</TextLabel>
-                        <TextLabel>Type samordningsfradrag</TextLabel>
+                        {valgteInntektstyper[EInntektstype.SAMORDNINGSFRADRAG] && (
+                            <>
+                                <TextLabel>Samordningsfradrag</TextLabel>
+                                <TextLabel>Type samordningsfradrag</TextLabel>
+                            </>
+                        )}
 
                         {inntektsperiodeListe.value.map((rad, index) => {
                             const skalViseFjernKnapp =
@@ -217,62 +221,76 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                         }}
                                         erLesevisning={!behandlingErRedigerbar}
                                     />
-                                    <StyledInput
-                                        label={'Samordningsfradrag (mnd)'}
-                                        hideLabel
-                                        type="number"
-                                        value={
-                                            harTallverdi(rad.samordningsfradrag)
-                                                ? rad.samordningsfradrag
-                                                : ''
-                                        }
-                                        onChange={(e) => {
-                                            settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
-                                            oppdaterInntektslisteElement(
-                                                index,
-                                                EInntektsperiodeProperty.samordningsfradrag,
-                                                tilTallverdi(e.target.value)
-                                            );
-                                        }}
-                                        erLesevisning={!behandlingErRedigerbar}
-                                    />
-                                    <div>
-                                        <EnsligFamilieSelect
-                                            label={'Type samordninsfradrag'}
-                                            hideLabel
-                                            size={'medium'}
-                                            value={
-                                                skalVelgeSamordningstype
-                                                    ? samordningsfradragstype.value
-                                                    : ''
-                                            }
-                                            onChange={(event) => {
-                                                settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
-                                                samordningsfradragstype.onChange(event);
-                                            }}
-                                            disabled={!skalVelgeSamordningstype || index > 0}
-                                            erLesevisning={!behandlingErRedigerbar}
-                                            lesevisningVerdi={
-                                                samordningsfradragstype.value &&
-                                                samordningsfradagTilTekst[
-                                                    samordningsfradragstype.value as ESamordningsfradragtype
-                                                ]
-                                            }
-                                        >
-                                            <option value="">Velg</option>
-                                            <option
-                                                value={ESamordningsfradragtype.GJENLEVENDEPENSJON}
-                                            >
-                                                Gjenlevendepensjon
-                                            </option>
-                                            <option value={ESamordningsfradragtype.UFØRETRYGD}>
-                                                Uføretrygd
-                                            </option>
-                                        </EnsligFamilieSelect>
-                                        <EnsligErrorMessage>
-                                            {samordningValideringsfeil}
-                                        </EnsligErrorMessage>
-                                    </div>
+                                    {valgteInntektstyper[EInntektstype.SAMORDNINGSFRADRAG] && (
+                                        <>
+                                            <StyledInput
+                                                label={'Samordningsfradrag (mnd)'}
+                                                hideLabel
+                                                type="number"
+                                                value={
+                                                    harTallverdi(rad.samordningsfradrag)
+                                                        ? rad.samordningsfradrag
+                                                        : ''
+                                                }
+                                                onChange={(e) => {
+                                                    settIkkePersistertKomponent(
+                                                        VEDTAK_OG_BEREGNING
+                                                    );
+                                                    oppdaterInntektslisteElement(
+                                                        index,
+                                                        EInntektsperiodeProperty.samordningsfradrag,
+                                                        tilTallverdi(e.target.value)
+                                                    );
+                                                }}
+                                                erLesevisning={!behandlingErRedigerbar}
+                                            />
+                                            <div>
+                                                <EnsligFamilieSelect
+                                                    label={'Type samordninsfradrag'}
+                                                    hideLabel
+                                                    size={'medium'}
+                                                    value={
+                                                        skalVelgeSamordningstype
+                                                            ? samordningsfradragstype.value
+                                                            : ''
+                                                    }
+                                                    onChange={(event) => {
+                                                        settIkkePersistertKomponent(
+                                                            VEDTAK_OG_BEREGNING
+                                                        );
+                                                        samordningsfradragstype.onChange(event);
+                                                    }}
+                                                    disabled={
+                                                        !skalVelgeSamordningstype || index > 0
+                                                    }
+                                                    erLesevisning={!behandlingErRedigerbar}
+                                                    lesevisningVerdi={
+                                                        samordningsfradragstype.value &&
+                                                        samordningsfradagTilTekst[
+                                                            samordningsfradragstype.value as ESamordningsfradragtype
+                                                        ]
+                                                    }
+                                                >
+                                                    <option value="">Velg</option>
+                                                    <option
+                                                        value={
+                                                            ESamordningsfradragtype.GJENLEVENDEPENSJON
+                                                        }
+                                                    >
+                                                        Gjenlevendepensjon
+                                                    </option>
+                                                    <option
+                                                        value={ESamordningsfradragtype.UFØRETRYGD}
+                                                    >
+                                                        Uføretrygd
+                                                    </option>
+                                                </EnsligFamilieSelect>
+                                                <EnsligErrorMessage>
+                                                    {samordningValideringsfeil}
+                                                </EnsligErrorMessage>
+                                            </div>
+                                        </>
+                                    )}
                                     {skalViseLeggTilKnapp && (
                                         <Tooltip content="Legg til rad under" placement="right">
                                             <LeggTilKnapp
