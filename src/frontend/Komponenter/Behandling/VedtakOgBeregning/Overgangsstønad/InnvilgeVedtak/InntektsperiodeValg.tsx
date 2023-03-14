@@ -17,7 +17,7 @@ import { InnvilgeVedtakForm } from './InnvilgeVedtak';
 import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import { useApp } from '../../../../../App/context/AppContext';
 import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
-import { Alert, BodyLong, Checkbox, ReadMore, Tooltip } from '@navikt/ds-react';
+import { Alert, BodyLong, BodyShort, Checkbox, ReadMore, Tooltip } from '@navikt/ds-react';
 import { v4 as uuidv4 } from 'uuid';
 import { EnsligFamilieSelect } from '../../../../../Felles/Input/EnsligFamilieSelect';
 import { EnsligErrorMessage } from '../../../../../Felles/ErrorMessage/EnsligErrorMessage';
@@ -28,7 +28,7 @@ import { HorizontalScroll } from '../../Felles/HorizontalScroll';
 const Grid = styled.div<{ lesevisning?: boolean }>`
     display: grid;
     grid-template-columns: ${(props) =>
-        props.lesevisning ? 'repeat(4, max-content)' : ' repeat(6, max-content)'};
+        props.lesevisning ? 'repeat(4, max-content)' : ' repeat(9, max-content)'};
     grid-gap: 0.5rem 1rem;
 
     .ny-rad {
@@ -44,6 +44,12 @@ const FlexColumn = styled.div`
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+`;
+
+const AvrundetÅrsinntektWrapper = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
 `;
 
 export const tomInntektsperiodeRad = (årMånedFra?: string): IInntektsperiode => ({
@@ -166,9 +172,16 @@ const InntektsperiodeValg: React.FC<Props> = ({
                 <>
                     <Grid lesevisning={!behandlingErRedigerbar}>
                         <TextLabel>Fra</TextLabel>
+                        {valgteInntektstyper[EInntektstype.DAGSATS] && (
+                            <TextLabel>Dagsats</TextLabel>
+                        )}
+                        {valgteInntektstyper[EInntektstype.MÅNEDSINNTEKT] && (
+                            <TextLabel>Månedsinntekt</TextLabel>
+                        )}
                         {valgteInntektstyper[EInntektstype.ÅRSINNTEKT] && (
                             <TextLabel>Årsinntekt (faktisk)</TextLabel>
                         )}
+                        <TextLabel>Årsinntekt etter avrunding</TextLabel>
                         {valgteInntektstyper[EInntektstype.SAMORDNINGSFRADRAG] && (
                             <>
                                 <TextLabel>Samordningsfradrag</TextLabel>
@@ -203,6 +216,22 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                         antallÅrFrem={4}
                                         lesevisning={!behandlingErRedigerbar}
                                     />
+                                    {valgteInntektstyper[EInntektstype.DAGSATS] && (
+                                        <StyledInput
+                                            label={'Forventet månedsinntekt'}
+                                            hideLabel
+                                            erLesevisning={!behandlingErRedigerbar}
+                                            value={1000}
+                                        />
+                                    )}
+                                    {valgteInntektstyper[EInntektstype.MÅNEDSINNTEKT] && (
+                                        <StyledInput
+                                            label={'Forventet månedsinntekt'}
+                                            hideLabel
+                                            erLesevisning={!behandlingErRedigerbar}
+                                            value={2000}
+                                        />
+                                    )}
                                     {valgteInntektstyper[EInntektstype.ÅRSINNTEKT] && (
                                         <StyledInput
                                             label={'Forventet inntekt'}
@@ -224,6 +253,9 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                             erLesevisning={!behandlingErRedigerbar}
                                         />
                                     )}
+                                    <AvrundetÅrsinntektWrapper>
+                                        <BodyShort>Avrundet</BodyShort>
+                                    </AvrundetÅrsinntektWrapper>
                                     {valgteInntektstyper[EInntektstype.SAMORDNINGSFRADRAG] && (
                                         <>
                                             <StyledInput
