@@ -57,6 +57,7 @@ backend(sessionConfig, prometheusTellere).then(({ app, azureAuthClient, router }
         '/dokument',
         addRequestInfo(),
         ensureAuthenticated(azureAuthClient, false),
+        attachToken(azureAuthClient),
         doProxy('/dokument', sakProxyUrl)
     );
 
