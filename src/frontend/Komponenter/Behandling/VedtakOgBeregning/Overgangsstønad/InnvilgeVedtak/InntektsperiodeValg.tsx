@@ -17,13 +17,22 @@ import { InnvilgeVedtakForm } from './InnvilgeVedtak';
 import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import { useApp } from '../../../../../App/context/AppContext';
 import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
-import { Alert, BodyLong, BodyShort, Checkbox, ReadMore, Tooltip } from '@navikt/ds-react';
+import {
+    Alert,
+    BodyLong,
+    BodyShort,
+    Checkbox,
+    CheckboxGroup,
+    ReadMore,
+    Tooltip,
+} from '@navikt/ds-react';
 import { v4 as uuidv4 } from 'uuid';
 import { EnsligFamilieSelect } from '../../../../../Felles/Input/EnsligFamilieSelect';
 import { EnsligErrorMessage } from '../../../../../Felles/ErrorMessage/EnsligErrorMessage';
 import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 import { TextLabel } from '../../../../../Felles/Visningskomponenter/Tekster';
 import { HorizontalScroll } from '../../Felles/HorizontalScroll';
+import { initierValgteInntektstyper } from './utils';
 
 const Grid = styled.div<{ lesevisning?: boolean }>`
     display: grid;
@@ -67,7 +76,7 @@ const AvhukningContainer = styled.div`
     flex-wrap: wrap;
 `;
 
-enum EInntektstype {
+export enum EInntektstype {
     DAGSATS = 'DAGSATS',
     MÅNEDSINNTEKT = 'MÅNEDSINNTEKT',
     ÅRSINNTEKT = 'ÅRSINNTEKT',
@@ -98,12 +107,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
     const skalViseLeggTilKnapp = behandlingErRedigerbar;
 
     const [valgteInntektstyper, settValgteInntektstyper] = useState<Record<EInntektstype, boolean>>(
-        {
-            DAGSATS: false,
-            MÅNEDSINNTEKT: false,
-            ÅRSINNTEKT: false,
-            SAMORDNINGSFRADRAG: false,
-        }
+        initierValgteInntektstyper(inntektsperiodeListe.value)
     );
 
     const oppdaterInntektslisteElement = (
@@ -125,11 +129,13 @@ const InntektsperiodeValg: React.FC<Props> = ({
         ]);
     };
 
-    const oppdaterAvhukningsvalg = (inntektstype: EInntektstype) => {
-        settValgteInntektstyper((prevState) => ({
-            ...prevState,
-            [inntektstype]: !prevState[inntektstype],
-        }));
+    const oppdaterAvhukningsvalg = (inntektstyper: EInntektstype[]) => {
+        settValgteInntektstyper({
+            DAGSATS: inntektstyper.includes(EInntektstype.DAGSATS),
+            MÅNEDSINNTEKT: inntektstyper.includes(EInntektstype.MÅNEDSINNTEKT),
+            ÅRSINNTEKT: inntektstyper.includes(EInntektstype.ÅRSINNTEKT),
+            SAMORDNINGSFRADRAG: inntektstyper.includes(EInntektstype.SAMORDNINGSFRADRAG),
+        });
     };
 
     return (
@@ -140,30 +146,21 @@ const InntektsperiodeValg: React.FC<Props> = ({
             åpenHøyremeny={åpenHøyremeny}
         >
             <AvhukningContainer>
-                <Checkbox
-                    value={valgteInntektstyper[EInntektstype.DAGSATS]}
-                    onChange={() => oppdaterAvhukningsvalg(EInntektstype.DAGSATS)}
+                <CheckboxGroup
+                    legend="Velg inntektsperiodetype"
+                    hideLegend
+                    onChange={(values) => oppdaterAvhukningsvalg(values)}
+                    value={Object.entries(valgteInntektstyper)
+                        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                        .filter(([_, value]) => value)
+                        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                        .map(([key, _]) => key)}
                 >
-                    Dagsats
-                </Checkbox>
-                <Checkbox
-                    value={valgteInntektstyper[EInntektstype.MÅNEDSINNTEKT]}
-                    onChange={() => oppdaterAvhukningsvalg(EInntektstype.MÅNEDSINNTEKT)}
-                >
-                    Månedsinntekt
-                </Checkbox>
-                <Checkbox
-                    value={valgteInntektstyper[EInntektstype.ÅRSINNTEKT]}
-                    onChange={() => oppdaterAvhukningsvalg(EInntektstype.ÅRSINNTEKT)}
-                >
-                    Årsinntekt
-                </Checkbox>
-                <Checkbox
-                    value={valgteInntektstyper[EInntektstype.SAMORDNINGSFRADRAG]}
-                    onChange={() => oppdaterAvhukningsvalg(EInntektstype.SAMORDNINGSFRADRAG)}
-                >
-                    Samordningsfradrag
-                </Checkbox>
+                    <Checkbox value={EInntektstype.DAGSATS}>Dagsats</Checkbox>
+                    <Checkbox value={EInntektstype.MÅNEDSINNTEKT}>Månedsinntekt</Checkbox>
+                    <Checkbox value={EInntektstype.ÅRSINNTEKT}>Årsinntekt</Checkbox>
+                    <Checkbox value={EInntektstype.SAMORDNINGSFRADRAG}>Samordningsfradrag</Checkbox>
+                </CheckboxGroup>
             </AvhukningContainer>
             <ReadMore header="Inntektsforklaring" size="small">
                 {InntektsforklaringBody}
