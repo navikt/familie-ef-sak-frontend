@@ -17,15 +17,7 @@ import { InnvilgeVedtakForm } from './InnvilgeVedtak';
 import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import { useApp } from '../../../../../App/context/AppContext';
 import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
-import {
-    Alert,
-    BodyLong,
-    BodyShort,
-    Checkbox,
-    CheckboxGroup,
-    ReadMore,
-    Tooltip,
-} from '@navikt/ds-react';
+import { Alert, BodyLong, Checkbox, CheckboxGroup, ReadMore, Tooltip } from '@navikt/ds-react';
 import { v4 as uuidv4 } from 'uuid';
 import { EnsligFamilieSelect } from '../../../../../Felles/Input/EnsligFamilieSelect';
 import { EnsligErrorMessage } from '../../../../../Felles/ErrorMessage/EnsligErrorMessage';
@@ -53,12 +45,6 @@ const FlexColumn = styled.div`
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-`;
-
-const AvrundetÅrsinntektWrapper = styled.div`
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
 `;
 
 export const tomInntektsperiodeRad = (årMånedFra?: string): IInntektsperiode => ({
@@ -176,7 +162,6 @@ const InntektsperiodeValg: React.FC<Props> = ({
                         {valgteInntektstyper[EInntektstype.ÅRSINNTEKT] && (
                             <TextLabel>Årsinntekt (faktisk)</TextLabel>
                         )}
-                        <TextLabel>Årsinntekt etter avrunding</TextLabel>
                         {valgteInntektstyper[EInntektstype.SAMORDNINGSFRADRAG] && (
                             <>
                                 <TextLabel>Samordningsfradrag</TextLabel>
@@ -268,9 +253,6 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                             erLesevisning={!behandlingErRedigerbar}
                                         />
                                     )}
-                                    <AvrundetÅrsinntektWrapper>
-                                        <BodyShort>Avrundet</BodyShort>
-                                    </AvrundetÅrsinntektWrapper>
                                     {valgteInntektstyper[EInntektstype.SAMORDNINGSFRADRAG] && (
                                         <>
                                             <StyledInput
