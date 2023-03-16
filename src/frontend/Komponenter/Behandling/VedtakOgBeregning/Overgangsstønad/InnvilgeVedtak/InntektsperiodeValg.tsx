@@ -29,7 +29,7 @@ import { initierValgteInntektstyper } from './utils';
 const Grid = styled.div<{ lesevisning?: boolean }>`
     display: grid;
     grid-template-columns: ${(props) =>
-        props.lesevisning ? 'repeat(4, max-content)' : ' repeat(9, max-content)'};
+        props.lesevisning ? 'repeat(4, max-content)' : ' repeat(8, max-content)'};
     grid-gap: 0.5rem 1rem;
 
     .ny-rad {
