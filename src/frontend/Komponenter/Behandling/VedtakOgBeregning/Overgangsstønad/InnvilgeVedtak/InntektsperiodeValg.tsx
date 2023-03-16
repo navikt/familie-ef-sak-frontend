@@ -151,10 +151,8 @@ const InntektsperiodeValg: React.FC<Props> = ({
                     hideLegend
                     onChange={(values) => oppdaterAvhukningsvalg(values)}
                     value={Object.entries(valgteInntektstyper)
-                        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                        .filter(([_, value]) => value)
-                        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                        .map(([key, _]) => key)}
+                        .filter(([, value]) => value)
+                        .map(([key]) => key)}
                 >
                     <Checkbox value={EInntektstype.DAGSATS}>Dagsats</Checkbox>
                     <Checkbox value={EInntektstype.MÅNEDSINNTEKT}>Månedsinntekt</Checkbox>
