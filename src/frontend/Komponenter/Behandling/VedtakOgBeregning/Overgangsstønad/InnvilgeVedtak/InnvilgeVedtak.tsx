@@ -208,6 +208,8 @@ export const InnvilgeVedtak: React.FC<{
                     vedtaksperioder: vedtaksperioder,
                     inntekt: inntektsperioder.map((v) => ({
                         ...v,
+                        dagsats: v.dagsats ?? 0,
+                        månedsinntekt: v.månedsinntekt ?? 0,
                         forventetInntekt: v.forventetInntekt ?? 0,
                         samordningsfradrag: v.samordningsfradrag ?? 0,
                     })),

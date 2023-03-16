@@ -185,6 +185,8 @@ export type IvedtakForSkolepenger = IVedtakForSkolepenger;
 
 export interface IInntektsperiode {
     årMånedFra?: string;
+    dagsats?: number;
+    månedsinntekt?: number;
     forventetInntekt?: number;
     samordningsfradrag?: number;
     endretKey?: string; // intern for re-rendring
@@ -218,10 +220,10 @@ export interface IBeregningsrequestSkolepenger {
 
 export enum EInntektsperiodeProperty {
     årMånedFra = 'årMånedFra',
+    dagsats = 'dagsats',
+    månedsinntekt = 'månedsinntekt',
     forventetInntekt = 'forventetInntekt',
-    stønadsbeløp = 'stønadsbeløp',
     samordningsfradrag = 'samordningsfradrag',
-    beløpFørSamordning = 'beløpFørSamordning',
 }
 
 export enum EBehandlingResultat {

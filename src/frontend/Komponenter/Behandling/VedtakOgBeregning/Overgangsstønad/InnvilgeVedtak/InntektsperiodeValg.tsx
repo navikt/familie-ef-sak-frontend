@@ -213,18 +213,38 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                     />
                                     {valgteInntektstyper[EInntektstype.DAGSATS] && (
                                         <StyledInput
-                                            label={'Forventet månedsinntekt'}
+                                            label={'Dagsats'}
                                             hideLabel
                                             erLesevisning={!behandlingErRedigerbar}
-                                            value={1000}
+                                            value={harTallverdi(rad.dagsats) ? rad.dagsats : ''}
+                                            onChange={(e) => {
+                                                settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+                                                oppdaterInntektslisteElement(
+                                                    index,
+                                                    EInntektsperiodeProperty.dagsats,
+                                                    tilTallverdi(e.target.value)
+                                                );
+                                            }}
                                         />
                                     )}
                                     {valgteInntektstyper[EInntektstype.MÅNEDSINNTEKT] && (
                                         <StyledInput
-                                            label={'Forventet månedsinntekt'}
+                                            label={'Månedsinntekt'}
                                             hideLabel
                                             erLesevisning={!behandlingErRedigerbar}
-                                            value={2000}
+                                            value={
+                                                harTallverdi(rad.månedsinntekt)
+                                                    ? rad.månedsinntekt
+                                                    : ''
+                                            }
+                                            onChange={(e) => {
+                                                settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+                                                oppdaterInntektslisteElement(
+                                                    index,
+                                                    EInntektsperiodeProperty.månedsinntekt,
+                                                    tilTallverdi(e.target.value)
+                                                );
+                                            }}
                                         />
                                     )}
                                     {valgteInntektstyper[EInntektstype.ÅRSINNTEKT] && (
