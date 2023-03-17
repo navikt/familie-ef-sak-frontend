@@ -56,10 +56,12 @@ const LeggTilRadKnapp = styled(LeggTilKnapp)`
     margin-top: 0.5rem;
 `;
 
-const AvhukningContainer = styled.div`
-    display: flex;
-    gap: 1.5rem;
-    flex-wrap: wrap;
+const CheckboxGroupRow = styled(CheckboxGroup)`
+    .navds-checkboxes {
+        display: flex;
+        gap: 1.5rem;
+        flex-wrap: wrap;
+    }
 `;
 
 export enum EInntektstype {
@@ -131,21 +133,19 @@ const InntektsperiodeValg: React.FC<Props> = ({
             synligVedÅpenMeny={'1320px'}
             åpenHøyremeny={åpenHøyremeny}
         >
-            <AvhukningContainer>
-                <CheckboxGroup
-                    legend="Velg inntektsperiodetype"
-                    hideLegend
-                    onChange={(values) => oppdaterAvhukningsvalg(values)}
-                    value={Object.entries(valgteInntektstyper)
-                        .filter(([, value]) => value)
-                        .map(([key]) => key)}
-                >
-                    <Checkbox value={EInntektstype.DAGSATS}>Dagsats</Checkbox>
-                    <Checkbox value={EInntektstype.MÅNEDSINNTEKT}>Månedsinntekt</Checkbox>
-                    <Checkbox value={EInntektstype.ÅRSINNTEKT}>Årsinntekt</Checkbox>
-                    <Checkbox value={EInntektstype.SAMORDNINGSFRADRAG}>Samordningsfradrag</Checkbox>
-                </CheckboxGroup>
-            </AvhukningContainer>
+            <CheckboxGroupRow
+                legend="Velg inntektsperiodetype"
+                hideLegend
+                onChange={(values) => oppdaterAvhukningsvalg(values)}
+                value={Object.entries(valgteInntektstyper)
+                    .filter(([, value]) => value)
+                    .map(([key]) => key)}
+            >
+                <Checkbox value={EInntektstype.DAGSATS}>Dagsats</Checkbox>
+                <Checkbox value={EInntektstype.MÅNEDSINNTEKT}>Månedsinntekt</Checkbox>
+                <Checkbox value={EInntektstype.ÅRSINNTEKT}>Årsinntekt</Checkbox>
+                <Checkbox value={EInntektstype.SAMORDNINGSFRADRAG}>Samordningsfradrag</Checkbox>
+            </CheckboxGroupRow>
             <ReadMore header="Inntektsforklaring" size="small">
                 {InntektsforklaringBody}
             </ReadMore>
@@ -234,7 +234,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                     )}
                                     {valgteInntektstyper[EInntektstype.ÅRSINNTEKT] && (
                                         <StyledInput
-                                            label={'Forventet inntekt'}
+                                            label={'Årsinntekt (faktisk)'}
                                             hideLabel
                                             type="number"
                                             value={
