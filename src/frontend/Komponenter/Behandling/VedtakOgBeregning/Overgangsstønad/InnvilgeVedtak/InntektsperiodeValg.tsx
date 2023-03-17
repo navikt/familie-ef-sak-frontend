@@ -25,6 +25,7 @@ import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 import { TextLabel } from '../../../../../Felles/Visningskomponenter/Tekster';
 import { HorizontalScroll } from '../../Felles/HorizontalScroll';
 import { initierValgteInntektstyper } from './utils';
+import { AlertError } from '../../../../../Felles/Visningskomponenter/Alerts';
 
 const Grid = styled.div<{ lesevisning?: boolean }>`
     display: grid;
@@ -93,6 +94,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
     const { behandlingErRedigerbar, åpenHøyremeny } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
     const skalViseLeggTilKnapp = behandlingErRedigerbar;
+    const [feilmeldingAvhuking, settFeilmeldingAvhuking] = useState<string>();
 
     const [valgteInntektstyper, settValgteInntektstyper] = useState<Record<EInntektstype, boolean>>(
         initierValgteInntektstyper(inntektsperiodeListe.value)
@@ -118,12 +120,24 @@ const InntektsperiodeValg: React.FC<Props> = ({
     };
 
     const oppdaterAvhukningsvalg = (inntektstyper: EInntektstype[]) => {
-        settValgteInntektstyper({
+        const nyeValgteInntektstyper = {
             DAGSATS: inntektstyper.includes(EInntektstype.DAGSATS),
             MÅNEDSINNTEKT: inntektstyper.includes(EInntektstype.MÅNEDSINNTEKT),
             ÅRSINNTEKT: inntektstyper.includes(EInntektstype.ÅRSINNTEKT),
             SAMORDNINGSFRADRAG: inntektstyper.includes(EInntektstype.SAMORDNINGSFRADRAG),
-        });
+        };
+        if (
+            !nyeValgteInntektstyper[EInntektstype.DAGSATS] &&
+            valgteInntektstyper[EInntektstype.DAGSATS] &&
+            inntektsperiodeListe.value.some((periode) => periode.dagsats)
+        ) {
+            settFeilmeldingAvhuking(
+                'En eller flere inntektsperioder på "Dagsats" ligger inne med et beløp. Skal feltet avhukes må beløp fjernes først.'
+            );
+        } else {
+            settFeilmeldingAvhuking(undefined);
+            settValgteInntektstyper(nyeValgteInntektstyper);
+        }
     };
 
     return (
@@ -146,6 +160,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                 <Checkbox value={EInntektstype.ÅRSINNTEKT}>Årsinntekt</Checkbox>
                 <Checkbox value={EInntektstype.SAMORDNINGSFRADRAG}>Samordningsfradrag</Checkbox>
             </CheckboxGroupRow>
+            {feilmeldingAvhuking && <AlertError inline>{feilmeldingAvhuking}</AlertError>}
             <ReadMore header="Inntektsforklaring" size="small">
                 {InntektsforklaringBody}
             </ReadMore>
