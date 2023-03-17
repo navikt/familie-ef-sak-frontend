@@ -155,8 +155,8 @@ const TilleggsstønadValg: React.FC<Props> = ({
             )}
             {søktTilleggsstønad && stønadSkalReduseres && (
                 <HorizontalScroll
-                    synligVedÅpenMeny={'1070px'}
-                    synligVedLukketMeny={'770px'}
+                    synligVedLukketMeny={'785px'}
+                    synligVedÅpenMeny={'1115px'}
                     åpenHøyremeny={åpenHøyremeny}
                 >
                     {visGrid && (

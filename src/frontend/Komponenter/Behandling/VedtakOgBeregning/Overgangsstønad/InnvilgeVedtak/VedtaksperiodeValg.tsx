@@ -176,8 +176,8 @@ const VedtaksperiodeValg: React.FC<Props> = ({
             )}
             <HorizontalScroll
                 className={className}
-                synligVedLukketMeny={'1145px'}
-                synligVedÅpenMeny={'1440px'}
+                synligVedLukketMeny={'1160px'}
+                synligVedÅpenMeny={'1455px'}
                 åpenHøyremeny={åpenHøyremeny}
             >
                 <Grid lesevisning={!behandlingErRedigerbar}>

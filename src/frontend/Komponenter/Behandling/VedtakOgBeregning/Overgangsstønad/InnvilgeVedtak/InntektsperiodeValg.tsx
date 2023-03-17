@@ -125,8 +125,8 @@ const InntektsperiodeValg: React.FC<Props> = ({
             )}
             <HorizontalScroll
                 className={className}
-                synligVedLukketMeny={'1080px'}
-                synligVedÅpenMeny={'1320px'}
+                synligVedLukketMeny={'1100px'}
+                synligVedÅpenMeny={'1335px'}
                 åpenHøyremeny={åpenHøyremeny}
             >
                 <Grid lesevisning={!behandlingErRedigerbar}>

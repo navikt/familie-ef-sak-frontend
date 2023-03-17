@@ -178,8 +178,8 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
     return (
         <Container>
             <HorizontalScroll
-                synligVedLukketMeny={'1445px'}
-                synligVedÅpenMeny={'1745px'}
+                synligVedLukketMeny={'1460px'}
+                synligVedÅpenMeny={'1765px'}
                 åpenHøyremeny={åpenHøyremeny}
             >
                 <Heading spacing size="small" level="5">

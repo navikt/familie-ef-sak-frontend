@@ -124,8 +124,8 @@ const KontantstøtteValg: React.FC<Props> = ({
             />
             {kontantstøtte.value === ERadioValg.JA && (
                 <HorizontalScroll
-                    synligVedLukketMeny={'780px'}
-                    synligVedÅpenMeny={'1075px'}
+                    synligVedLukketMeny={'795px'}
+                    synligVedÅpenMeny={'1115'}
                     åpenHøyremeny={åpenHøyremeny}
                 >
                     {visGrid && (
