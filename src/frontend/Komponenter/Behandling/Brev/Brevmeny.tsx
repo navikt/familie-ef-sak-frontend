@@ -3,7 +3,6 @@ import { BrevStruktur, Brevtype, DokumentNavn, IMellomlagretBrevFritekst } from 
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { useApp } from '../../../App/context/AppContext';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
-import { IPersonopplysninger } from '../../../App/typer/personopplysninger';
 import BrevmenyVisning from './BrevmenyVisning';
 import styled from 'styled-components';
 import {
@@ -18,6 +17,7 @@ import { useHentBeløpsperioder } from '../../../App/hooks/useHentBeløpsperiode
 import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { Select } from '@navikt/ds-react';
 import { EBehandlingResultat } from '../../../App/typer/vedtak';
+import { IPersonopplysninger } from '../../../App/typer/personopplysninger';
 
 export interface BrevmenyProps {
     oppdaterBrevRessurs: (brevRessurs: Ressurs<string>) => void;
@@ -39,7 +39,14 @@ const datasett = 'ef-brev';
 const fritekstmal = 'Fritekstbrev';
 
 const Brevmeny: React.FC<BrevmenyProps> = (props) => {
-    const { behandling, vedtaksresultat, behandlingId } = props;
+    const {
+        oppdaterBrevRessurs,
+        behandling,
+        vedtaksresultat,
+        behandlingId,
+        personopplysninger,
+        settKanSendesTilBeslutter,
+    } = props;
     const { axiosRequest } = useApp();
     const { hentBeløpsperioder, beløpsperioder } = useHentBeløpsperioder(
         behandling.id,
@@ -138,7 +145,7 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
                     {({ mellomlagretBrev }) => (
                         <FritekstBrev
                             behandlingId={behandlingId}
-                            oppdaterBrevressurs={props.oppdaterBrevRessurs}
+                            oppdaterBrevressurs={oppdaterBrevRessurs}
                             mellomlagretFritekstbrev={mellomlagretBrev as IMellomlagretBrevFritekst}
                         />
                     )}
@@ -154,7 +161,8 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
                     {({ brevStruktur, mellomlagretBrev, beløpsperioder }) =>
                         brevMal ? (
                             <BrevmenyVisning
-                                {...props}
+                                behandlingId={behandlingId}
+                                oppdaterBrevRessurs={oppdaterBrevRessurs}
                                 behandling={behandling}
                                 brevStruktur={brevStruktur}
                                 beløpsperioder={beløpsperioder}
@@ -163,6 +171,8 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
                                     (mellomlagretBrev as IMellomlagretBrevResponse)?.brevverdier
                                 }
                                 stønadstype={behandling.stønadstype}
+                                personopplysninger={personopplysninger}
+                                settKanSendesTilBeslutter={settKanSendesTilBeslutter}
                             />
                         ) : null
                     }
