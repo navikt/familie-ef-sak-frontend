@@ -158,9 +158,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                 legend="Velg inntektsperiodetype"
                 hideLegend
                 onChange={(values) => oppdaterAvhukningsvalg(values)}
-                value={Object.entries(valgteInntektstyper)
-                    .filter(([, value]) => value)
-                    .map(([key]) => key)}
+                value={valgteInntektstyper}
             >
                 <Checkbox value={EInntektstype.DAGSATS}>Dagsats</Checkbox>
                 <Checkbox value={EInntektstype.MÅNEDSINNTEKT}>Månedsinntekt</Checkbox>
