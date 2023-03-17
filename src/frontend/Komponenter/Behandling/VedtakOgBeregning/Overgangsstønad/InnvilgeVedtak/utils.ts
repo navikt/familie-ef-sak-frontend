@@ -21,12 +21,15 @@ export const oppdaterVedtakMedEndretKey = (
 export const initierValgteInntektstyper = (
     inntektsperioder: IInntektsperiode[]
 ): EInntektstype[] => {
-    const hvis = (type: EInntektstype, key: keyof IInntektsperiode): EInntektstype[] =>
-        inntektsperioder.some((periode) => periode[key]) ? [type] : [];
+    const innteksttypeHvisVerdiFinnes = (
+        type: EInntektstype,
+        key: keyof IInntektsperiode
+    ): EInntektstype[] => (inntektsperioder.some((periode) => periode[key]) ? [type] : []);
+
     return [
-        hvis(EInntektstype.DAGSATS, 'dagsats'),
-        hvis(EInntektstype.MÅNEDSINNTEKT, 'månedsinntekt'),
-        hvis(EInntektstype.ÅRSINNTEKT, 'forventetInntekt'),
-        hvis(EInntektstype.SAMORDNINGSFRADRAG, 'samordningsfradrag'),
+        innteksttypeHvisVerdiFinnes(EInntektstype.DAGSATS, 'dagsats'),
+        innteksttypeHvisVerdiFinnes(EInntektstype.MÅNEDSINNTEKT, 'månedsinntekt'),
+        innteksttypeHvisVerdiFinnes(EInntektstype.ÅRSINNTEKT, 'forventetInntekt'),
+        innteksttypeHvisVerdiFinnes(EInntektstype.SAMORDNINGSFRADRAG, 'samordningsfradrag'),
     ].flatMap((e) => e);
 };
