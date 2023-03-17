@@ -21,13 +21,15 @@ export const oppdaterVedtakMedEndretKey = (
 export const initierValgteInntektstyper = (
     inntektsperioder: IInntektsperiode[]
 ): Record<EInntektstype, boolean> => {
-    const finnesÅrsinntekt =
-        inntektsperioder.filter((periode) => periode.forventetInntekt).length > 0;
+    const finnesDagsats = inntektsperioder.some((periode) => periode.dagsats);
+    const finnesMånedsinntekt = inntektsperioder.some((periode) => periode.månedsinntekt);
+    const finnesÅrsinntekt = inntektsperioder.some((periode) => periode.forventetInntekt);
+    const finnesSamordningsfradrag = inntektsperioder.some((periode) => periode.samordningsfradrag);
 
     return {
-        DAGSATS: false,
-        MÅNEDSINNTEKT: false,
+        DAGSATS: finnesDagsats,
+        MÅNEDSINNTEKT: finnesMånedsinntekt,
         ÅRSINNTEKT: finnesÅrsinntekt,
-        SAMORDNINGSFRADRAG: false,
+        SAMORDNINGSFRADRAG: finnesSamordningsfradrag,
     };
 };
