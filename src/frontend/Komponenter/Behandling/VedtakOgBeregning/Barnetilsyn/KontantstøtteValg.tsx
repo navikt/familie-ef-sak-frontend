@@ -36,6 +36,7 @@ const Grid = styled.div<{ lesevisning: boolean }>`
             : 'repeat(2, max-content) 6rem repeat(2, max-content)'};
     grid-gap: 0.5rem 1rem;
     margin-bottom: 0.5rem;
+    align-items: start;
 
     .ny-rad {
         grid-column: 1;

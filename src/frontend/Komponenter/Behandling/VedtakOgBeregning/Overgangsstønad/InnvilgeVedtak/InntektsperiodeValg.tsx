@@ -41,6 +41,7 @@ const Grid = styled.div<{ lesevisning?: boolean }>`
     grid-template-columns: ${(props) =>
         props.lesevisning ? 'repeat(4, max-content)' : ' repeat(6, max-content)'};
     grid-gap: 0.5rem 1rem;
+    align-items: start;
 
     .ny-rad {
         grid-column: 1;
