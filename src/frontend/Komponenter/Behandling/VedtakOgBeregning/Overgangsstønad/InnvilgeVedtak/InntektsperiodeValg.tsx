@@ -105,6 +105,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
         property: EInntektsperiodeProperty,
         value: string | number | undefined
     ) => {
+        settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
         inntektsperiodeListe.update(
             { ...inntektsperiodeListe.value[index], [property]: value },
             index
@@ -224,7 +225,6 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                             erLesevisning={!behandlingErRedigerbar}
                                             value={harTallverdi(rad.dagsats) ? rad.dagsats : ''}
                                             onChange={(e) => {
-                                                settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
                                                 oppdaterInntektslisteElement(
                                                     index,
                                                     EInntektsperiodeProperty.dagsats,
@@ -244,7 +244,6 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                                     : ''
                                             }
                                             onChange={(e) => {
-                                                settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
                                                 oppdaterInntektslisteElement(
                                                     index,
                                                     EInntektsperiodeProperty.månedsinntekt,
@@ -264,7 +263,6 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                                     : ''
                                             }
                                             onChange={(e) => {
-                                                settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
                                                 oppdaterInntektslisteElement(
                                                     index,
                                                     EInntektsperiodeProperty.forventetInntekt,
@@ -288,9 +286,6 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                                         : ''
                                                 }
                                                 onChange={(e) => {
-                                                    settIkkePersistertKomponent(
-                                                        VEDTAK_OG_BEREGNING
-                                                    );
                                                     oppdaterInntektslisteElement(
                                                         index,
                                                         EInntektsperiodeProperty.samordningsfradrag,
