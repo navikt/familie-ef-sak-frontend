@@ -96,7 +96,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
     const skalViseLeggTilKnapp = behandlingErRedigerbar;
     const [feilmeldingAvhuking, settFeilmeldingAvhuking] = useState<string>();
 
-    const [valgteInntektstyper, settValgteInntektstyper] = useState<Record<EInntektstype, boolean>>(
+    const [valgteInntektstyper, settValgteInntektstyper] = useState<EInntektstype[]>(
         initierValgteInntektstyper(inntektsperiodeListe.value)
     );
 
@@ -120,23 +120,29 @@ const InntektsperiodeValg: React.FC<Props> = ({
     };
 
     const oppdaterAvhukningsvalg = (inntektstyper: EInntektstype[]) => {
-        const nyeValgteInntektstyper = {
-            DAGSATS: inntektstyper.includes(EInntektstype.DAGSATS),
-            MÅNEDSINNTEKT: inntektstyper.includes(EInntektstype.MÅNEDSINNTEKT),
-            ÅRSINNTEKT: inntektstyper.includes(EInntektstype.ÅRSINNTEKT),
-            SAMORDNINGSFRADRAG: inntektstyper.includes(EInntektstype.SAMORDNINGSFRADRAG),
-        };
-        if (
-            !nyeValgteInntektstyper[EInntektstype.DAGSATS] &&
-            valgteInntektstyper[EInntektstype.DAGSATS] &&
-            inntektsperiodeListe.value.some((periode) => periode.dagsats)
-        ) {
+        const avhukerKolonneMedVerdi = (
+            type: EInntektstype,
+            key: keyof IInntektsperiode
+        ): boolean =>
+            !inntektstyper.includes(type) &&
+            valgteInntektstyper.includes(type) &&
+            inntektsperiodeListe.value.some((periode) => periode[key]);
+        const settFeilmeldingAvhukingMedType = (type: string) =>
             settFeilmeldingAvhuking(
-                'En eller flere inntektsperioder på "Dagsats" ligger inne med et beløp. Skal feltet avhukes må beløp fjernes først.'
+                `En eller flere inntektsperioder på "${type}" ligger inne med et beløp. Skal feltet avhukes må beløp fjernes først.`
             );
+
+        if (avhukerKolonneMedVerdi(EInntektstype.DAGSATS, 'dagsats')) {
+            settFeilmeldingAvhukingMedType('Dagsats');
+        } else if (avhukerKolonneMedVerdi(EInntektstype.MÅNEDSINNTEKT, 'månedsinntekt')) {
+            settFeilmeldingAvhukingMedType('Månedsinntekt');
+        } else if (avhukerKolonneMedVerdi(EInntektstype.ÅRSINNTEKT, 'forventetInntekt')) {
+            settFeilmeldingAvhukingMedType('Årsinntekt');
+        } else if (avhukerKolonneMedVerdi(EInntektstype.SAMORDNINGSFRADRAG, 'samordningsfradrag')) {
+            settFeilmeldingAvhukingMedType('Samordningsfradrag');
         } else {
             settFeilmeldingAvhuking(undefined);
-            settValgteInntektstyper(nyeValgteInntektstyper);
+            settValgteInntektstyper(inntektstyper);
         }
     };
 
@@ -168,16 +174,16 @@ const InntektsperiodeValg: React.FC<Props> = ({
                 <>
                     <Grid lesevisning={!behandlingErRedigerbar}>
                         <TextLabel>Fra</TextLabel>
-                        {valgteInntektstyper[EInntektstype.DAGSATS] && (
+                        {valgteInntektstyper.includes(EInntektstype.DAGSATS) && (
                             <TextLabel>Dagsats</TextLabel>
                         )}
-                        {valgteInntektstyper[EInntektstype.MÅNEDSINNTEKT] && (
+                        {valgteInntektstyper.includes(EInntektstype.MÅNEDSINNTEKT) && (
                             <TextLabel>Månedsinntekt</TextLabel>
                         )}
-                        {valgteInntektstyper[EInntektstype.ÅRSINNTEKT] && (
+                        {valgteInntektstyper.includes(EInntektstype.ÅRSINNTEKT) && (
                             <TextLabel>Årsinntekt (faktisk)</TextLabel>
                         )}
-                        {valgteInntektstyper[EInntektstype.SAMORDNINGSFRADRAG] && (
+                        {valgteInntektstyper.includes(EInntektstype.SAMORDNINGSFRADRAG) && (
                             <>
                                 <TextLabel>Samordningsfradrag</TextLabel>
                                 <TextLabel>Type samordningsfradrag</TextLabel>
@@ -211,7 +217,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                         antallÅrFrem={4}
                                         lesevisning={!behandlingErRedigerbar}
                                     />
-                                    {valgteInntektstyper[EInntektstype.DAGSATS] && (
+                                    {valgteInntektstyper.includes(EInntektstype.DAGSATS) && (
                                         <StyledInput
                                             label={'Dagsats'}
                                             hideLabel
@@ -227,7 +233,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                             }}
                                         />
                                     )}
-                                    {valgteInntektstyper[EInntektstype.MÅNEDSINNTEKT] && (
+                                    {valgteInntektstyper.includes(EInntektstype.MÅNEDSINNTEKT) && (
                                         <StyledInput
                                             label={'Månedsinntekt'}
                                             hideLabel
@@ -247,7 +253,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                             }}
                                         />
                                     )}
-                                    {valgteInntektstyper[EInntektstype.ÅRSINNTEKT] && (
+                                    {valgteInntektstyper.includes(EInntektstype.ÅRSINNTEKT) && (
                                         <StyledInput
                                             label={'Årsinntekt (faktisk)'}
                                             hideLabel
@@ -268,7 +274,9 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                             erLesevisning={!behandlingErRedigerbar}
                                         />
                                     )}
-                                    {valgteInntektstyper[EInntektstype.SAMORDNINGSFRADRAG] && (
+                                    {valgteInntektstyper.includes(
+                                        EInntektstype.SAMORDNINGSFRADRAG
+                                    ) && (
                                         <>
                                             <StyledInput
                                                 label={'Samordningsfradrag (mnd)'}

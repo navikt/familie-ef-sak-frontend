@@ -20,16 +20,13 @@ export const oppdaterVedtakMedEndretKey = (
 
 export const initierValgteInntektstyper = (
     inntektsperioder: IInntektsperiode[]
-): Record<EInntektstype, boolean> => {
-    const finnesDagsats = inntektsperioder.some((periode) => periode.dagsats);
-    const finnesMånedsinntekt = inntektsperioder.some((periode) => periode.månedsinntekt);
-    const finnesÅrsinntekt = inntektsperioder.some((periode) => periode.forventetInntekt);
-    const finnesSamordningsfradrag = inntektsperioder.some((periode) => periode.samordningsfradrag);
-
-    return {
-        DAGSATS: finnesDagsats,
-        MÅNEDSINNTEKT: finnesMånedsinntekt,
-        ÅRSINNTEKT: finnesÅrsinntekt,
-        SAMORDNINGSFRADRAG: finnesSamordningsfradrag,
-    };
+): EInntektstype[] => {
+    const hvis = (type: EInntektstype, key: keyof IInntektsperiode): EInntektstype[] =>
+        inntektsperioder.some((periode) => periode[key]) ? [type] : [];
+    return [
+        hvis(EInntektstype.DAGSATS, 'dagsats'),
+        hvis(EInntektstype.MÅNEDSINNTEKT, 'månedsinntekt'),
+        hvis(EInntektstype.ÅRSINNTEKT, 'forventetInntekt'),
+        hvis(EInntektstype.SAMORDNINGSFRADRAG, 'samordningsfradrag'),
+    ].flatMap((e) => e);
 };
