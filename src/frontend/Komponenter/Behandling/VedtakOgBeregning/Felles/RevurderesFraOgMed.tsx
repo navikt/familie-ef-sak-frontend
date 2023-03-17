@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { AlertWarning } from '../../../../Felles/Visningskomponenter/Alerts';
 import { EnsligErrorMessage } from '../../../../Felles/ErrorMessage/EnsligErrorMessage';
 import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
+import { Stønadstype } from '../../../../App/typer/behandlingstema';
 
 const Container = styled.div`
     padding: 1rem;
@@ -18,16 +19,16 @@ const Advarsel = styled(AlertWarning)`
     }
 `;
 
-type Type = 'OVERGANGSSTØNAD' | 'BARNETILSYN';
-
-const revurderesFørFørstePeriodeAdvarsel = (type: Type) => {
+const revurderesFørFørstePeriodeAdvarsel = (stønadstype: Stønadstype) => {
     const prefix =
         'Du har valgt å revurdere stønaden fra en måned det tidligere ikke er innvilget stønad for.';
-    switch (type) {
-        case 'OVERGANGSSTØNAD':
+    switch (stønadstype) {
+        case Stønadstype.OVERGANGSSTØNAD:
             return `${prefix} Husk å fylle ut vedtaksperiode og inntekt for den nye perioden.`;
-        case 'BARNETILSYN':
+        case Stønadstype.BARNETILSYN:
             return `${prefix} Husk å fylle ut vedtaksperiode for den nye perioden.`;
+        default:
+            return '';
     }
 };
 
@@ -38,7 +39,7 @@ export const RevurderesFraOgMed: React.FC<{
     revurderesFra: string | undefined;
     revurdererFraPeriodeUtenStønad: boolean;
     settRevurderesFra: Dispatch<SetStateAction<string | undefined>>;
-    type: Type;
+    stønadstype: Stønadstype;
 }> = ({
     className,
     feilmelding,
@@ -46,7 +47,7 @@ export const RevurderesFraOgMed: React.FC<{
     revurderesFra,
     revurdererFraPeriodeUtenStønad,
     settRevurderesFra,
-    type,
+    stønadstype,
 }) => {
     return (
         <Container className={className}>
@@ -64,7 +65,7 @@ export const RevurderesFraOgMed: React.FC<{
             />
             <EnsligErrorMessage>{feilmelding}</EnsligErrorMessage>
             {revurdererFraPeriodeUtenStønad && (
-                <Advarsel>{revurderesFørFørstePeriodeAdvarsel(type)}</Advarsel>
+                <Advarsel>{revurderesFørFørstePeriodeAdvarsel(stønadstype)}</Advarsel>
             )}
         </Container>
     );

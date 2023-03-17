@@ -274,7 +274,7 @@ export const InnvilgeVedtak: React.FC<{
                         vedtakshistorikk,
                         revurderesFra
                     )}
-                    type={'OVERGANGSSTØNAD'}
+                    stønadstype={behandling.stønadstype}
                 />
             ) : null}
             {skalViseVedtaksperiodeOgInntekt && (
