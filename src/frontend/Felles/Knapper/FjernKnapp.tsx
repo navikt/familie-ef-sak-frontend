@@ -1,21 +1,28 @@
 import { Delete } from '@navikt/ds-icons';
 import React from 'react';
 import { Button } from '@navikt/ds-react';
+import styled from 'styled-components';
+
+const Knapp = styled(Button)`
+    width: fit-content;
+`;
 
 const FjernKnapp: React.FC<{
-    onClick: () => void;
-    knappetekst?: string;
+    className?: string;
     ikontekst?: string;
-}> = ({ onClick, knappetekst, ikontekst }) => {
+    knappetekst?: string;
+    onClick: () => void;
+}> = ({ className, ikontekst, knappetekst, onClick }) => {
     return (
-        <Button
+        <Knapp
+            className={className}
+            icon={<Delete title={knappetekst ? knappetekst : ikontekst} />}
             onClick={onClick}
             type="button"
             variant={knappetekst ? 'secondary' : 'tertiary'}
-            icon={<Delete title={knappetekst ? knappetekst : ikontekst} />}
         >
             {knappetekst && <span>{knappetekst}</span>}
-        </Button>
+        </Knapp>
     );
 };
 

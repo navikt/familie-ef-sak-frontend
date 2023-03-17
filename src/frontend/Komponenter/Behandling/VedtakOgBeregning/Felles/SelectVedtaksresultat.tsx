@@ -32,7 +32,7 @@ const TekstLinje = styled.div`
     margin-top: 0.5rem;
 `;
 
-const FlexDiv = styled.div`
+const FlexCenter = styled.div`
     display: flex;
     align-items: center;
 `;
@@ -62,7 +62,7 @@ const SelectVedtaksresultat = (props: Props): JSX.Element => {
             <Heading spacing size="small">
                 Vedtaksresultat
             </Heading>
-            <FlexDiv>
+            <FlexCenter>
                 <StyledSelect
                     label={'Vedtaksresultat'}
                     hideLabel
@@ -127,7 +127,7 @@ const SelectVedtaksresultat = (props: Props): JSX.Element => {
                         Nullstill vedtaksside
                     </Button>
                 )}
-            </FlexDiv>
+            </FlexCenter>
         </Container>
     );
 };

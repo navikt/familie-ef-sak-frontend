@@ -30,6 +30,7 @@ import { tomUtgiftsperiodeRad } from './utils';
 import { useRedirectEtterLagring } from '../../../../App/hooks/felles/useRedirectEtterLagring';
 import { v4 as uuidv4 } from 'uuid';
 import { AlertError } from '../../../../Felles/Visningskomponenter/Alerts';
+import HovedKnapp from '../../../../Felles/Knapper/HovedKnapp';
 
 export type InnvilgeVedtakForm = {
     utgiftsperioder: IUtgiftsperiode[];
@@ -46,23 +47,10 @@ const Form = styled.form`
     display: flex;
     flex-direction: column;
     gap: 1rem;
-`;
 
-const Utregningstabell = styled(UtregningstabellBarnetilsyn)`
-    margin-left: 1rem;
-`;
-
-const AlertStripe = styled(AlertError)`
-    max-width: 47rem;
-`;
-
-const BeregnKnapp = styled(Button)`
-    margin-left: 1rem;
-    width: 6rem;
-`;
-
-const HovedKnapp = styled(Button)`
-    width: 9rem;
+    .spacing-left {
+        margin-left: 1rem;
+    }
 `;
 
 const initKontantstøttestate = (vedtak: IInnvilgeVedtakForBarnetilsyn | undefined) =>
@@ -304,17 +292,18 @@ export const Vedtaksform: React.FC<{
                 valideringsfeil={formState.errors}
             />
             {behandlingErRedigerbar && (
-                <BeregnKnapp variant={'secondary'} onClick={beregnBarnetilsyn} type={'button'}>
-                    Beregn
-                </BeregnKnapp>
+                <div className="spacing-left">
+                    <Button variant={'secondary'} onClick={beregnBarnetilsyn} type={'button'}>
+                        Beregn
+                    </Button>
+                    {feilmelding && <AlertError>{feilmelding}</AlertError>}
+                </div>
             )}
-            <Utregningstabell beregningsresultat={beregningsresultat} />
-            {feilmelding && <AlertStripe>{feilmelding}</AlertStripe>}
-            {behandlingErRedigerbar && (
-                <HovedKnapp variant="primary" disabled={laster} type={'submit'}>
-                    Lagre vedtak
-                </HovedKnapp>
-            )}
+            <UtregningstabellBarnetilsyn
+                beregningsresultat={beregningsresultat}
+                className="spacing-left"
+            />
+            {behandlingErRedigerbar && <HovedKnapp disabled={laster} knappetekst="Lagre vedtak" />}
         </Form>
     );
 };
