@@ -49,6 +49,10 @@ const Form = styled.form`
     gap: 1rem;
 `;
 
+const Utregningstabell = styled(UtregningstabellBarnetilsyn)`
+    margin-left: 1rem;
+`;
+
 const initKontantstøttestate = (vedtak: IInnvilgeVedtakForBarnetilsyn | undefined) =>
     vedtak
         ? vedtak.perioderKontantstøtte && vedtak.perioderKontantstøtte.length > 0
@@ -295,7 +299,7 @@ export const Vedtaksform: React.FC<{
                     {feilmelding && <AlertError>{feilmelding}</AlertError>}
                 </div>
             )}
-            <UtregningstabellBarnetilsyn beregningsresultat={beregningsresultat} />
+            <Utregningstabell beregningsresultat={beregningsresultat} />
             {behandlingErRedigerbar && <HovedKnapp disabled={laster} knappetekst="Lagre vedtak" />}
         </Form>
     );

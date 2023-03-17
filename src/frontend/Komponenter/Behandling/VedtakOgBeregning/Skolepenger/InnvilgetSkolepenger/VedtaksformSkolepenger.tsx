@@ -38,8 +38,12 @@ const Form = styled.form`
     gap: 1rem;
 `;
 
-export const AdvarselTekst = styled(BodyShortSmall)`
+const AdvarselTekst = styled(BodyShortSmall)`
     color: ${ARed500};
+`;
+
+const Utregningstabell = styled(UtregningstabellSkolepenger)`
+    margin-left: 1rem;
 `;
 
 export const defaultSkoleårsperioder = (
@@ -201,7 +205,7 @@ export const VedtaksformSkolepenger: React.FC<{
                     )}
                 </div>
             )}
-            <UtregningstabellSkolepenger beregningsresultat={beregningsresultat} />
+            <Utregningstabell beregningsresultat={beregningsresultat} />
             {behandlingErRedigerbar && <HovedKnapp disabled={laster} knappetekst="Lagre vedtak" />}
         </Form>
     );

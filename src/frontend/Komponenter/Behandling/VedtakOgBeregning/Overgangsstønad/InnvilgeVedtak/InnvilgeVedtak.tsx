@@ -56,6 +56,9 @@ const Form = styled.form`
     gap: 1rem;
 `;
 
+const Beregningstabell = styled(Utregningstabell)`
+    margin-left: 1rem;
+`;
 export const InnvilgeVedtak: React.FC<{
     behandling: Behandling;
     lagretVedtak?: IVedtakForOvergangsstønad;
@@ -304,7 +307,7 @@ export const InnvilgeVedtak: React.FC<{
                             )}
                         </div>
                     )}
-                    <Utregningstabell beregnetStønad={beregnetStønad} />
+                    <Beregningstabell beregnetStønad={beregnetStønad} />
                     {behandlingErRedigerbar && (
                         <HovedKnapp
                             disabled={laster || !!revurderesFraOgMedFeilmelding}
