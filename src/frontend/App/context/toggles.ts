@@ -14,4 +14,5 @@ export enum ToggleName {
     visEndringerPersonopplysninger = 'familie.ef.sak.frontend.personopplysninger-endringer',
     visInntektPersonoversikt = 'familie.ef.sak.frontend.vis-inntekt-personoversikt',
     angreSendTilBeslutter = 'familie.ef.sak.frontend-angre-send-til-beslutter',
+    ulikeInntekter = 'familie.ef.sak-ulike-inntekter',
 }

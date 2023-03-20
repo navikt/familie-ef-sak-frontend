@@ -46,6 +46,9 @@ import { utledYngsteBarnFødselsdato } from './fødselsdatoUtils';
 import { oppdaterVedtakMedEndretKey } from './utils';
 import { useRedirectEtterLagring } from '../../../../../App/hooks/felles/useRedirectEtterLagring';
 import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
+import InntektsperiodeValgGammel from './InntektsperiodeValgGammel';
+import { ToggleName } from '../../../../../App/context/toggles';
+import { useToggles } from '../../../../../App/context/TogglesContext';
 
 export type InnvilgeVedtakForm = Omit<
     Omit<IInnvilgeVedtakForOvergangsstønad, 'resultatType'>,
@@ -77,11 +80,16 @@ const InntektsperiodeVelger = styled(InntektsperiodeValg)`
     margin-top: 1rem;
 `;
 
+const InntektsperiodeVelgerGammel = styled(InntektsperiodeValgGammel)`
+    margin-top: 1rem;
+`;
+
 export const InnvilgeVedtak: React.FC<{
     behandling: Behandling;
     lagretVedtak?: IVedtakForOvergangsstønad;
     vilkår: IVilkår;
 }> = ({ behandling, lagretVedtak, vilkår }) => {
+    const { toggles } = useToggles();
     const lagretInnvilgetVedtak = useMemo(
         () =>
             lagretVedtak?._type === IVedtakType.InnvilgelseOvergangsstønad
@@ -351,14 +359,25 @@ export const InnvilgeVedtak: React.FC<{
                                 feilmelding={formState.errors.inntektBegrunnelse}
                             />
                         )}
-                        <InntektsperiodeVelger
-                            inntektsperiodeListe={inntektsperiodeState}
-                            valideringsfeil={formState.errors.inntekter}
-                            setValideringsFeil={formState.setErrors}
-                            samordningsfradragstype={typeSamordningsfradag}
-                            skalVelgeSamordningstype={skalVelgeSamordningstype}
-                            samordningValideringsfeil={formState.errors.samordningsfradragType}
-                        />
+                        {toggles[ToggleName.ulikeInntekter] ? (
+                            <InntektsperiodeVelger
+                                inntektsperiodeListe={inntektsperiodeState}
+                                valideringsfeil={formState.errors.inntekter}
+                                setValideringsFeil={formState.setErrors}
+                                samordningsfradragstype={typeSamordningsfradag}
+                                skalVelgeSamordningstype={skalVelgeSamordningstype}
+                                samordningValideringsfeil={formState.errors.samordningsfradragType}
+                            />
+                        ) : (
+                            <InntektsperiodeVelgerGammel
+                                inntektsperiodeListe={inntektsperiodeState}
+                                valideringsfeil={formState.errors.inntekter}
+                                setValideringsFeil={formState.setErrors}
+                                samordningsfradragstype={typeSamordningsfradag}
+                                skalVelgeSamordningstype={skalVelgeSamordningstype}
+                                samordningValideringsfeil={formState.errors.samordningsfradragType}
+                            />
+                        )}
                     </InputContainer>
                     <Container>
                         {behandlingErRedigerbar && (
