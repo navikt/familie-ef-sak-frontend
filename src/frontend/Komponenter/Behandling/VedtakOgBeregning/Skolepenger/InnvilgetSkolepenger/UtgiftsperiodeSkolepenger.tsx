@@ -26,6 +26,7 @@ const Grid = styled.div`
     display: grid;
     grid-template-columns: repeat(4, max-content);
     grid-gap: 0.25rem 1rem;
+    align-items: start;
 
     .ny-rad {
         grid-column: 1;

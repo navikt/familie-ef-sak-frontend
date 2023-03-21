@@ -24,6 +24,7 @@ const Grid = styled.div<{
     grid-template-columns: repeat(6, max-content);
     gap: 0.25rem 1rem;
     text-decoration: ${(props) => (props.skoleårErFjernet ? 'line-through' : 'inherit')};
+    align-items: start;
 
     .ny-rad {
         grid-column: 1;
@@ -34,6 +35,7 @@ const AntallMåneder = styled(BodyShortSmall)`
     display: flex;
     justify-content: center;
     align-items: center;
+    padding-top: 0.75rem;
 `;
 
 const Input = styled(InputUtenSpinner)`

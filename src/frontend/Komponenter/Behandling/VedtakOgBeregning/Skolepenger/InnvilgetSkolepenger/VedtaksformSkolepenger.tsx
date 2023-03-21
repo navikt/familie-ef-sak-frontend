@@ -36,14 +36,14 @@ const Form = styled.form`
     display: flex;
     flex-direction: column;
     gap: 1rem;
-
-    .spacing-left {
-        margin-left: 1rem;
-    }
 `;
 
-export const AdvarselTekst = styled(BodyShortSmall)`
+const AdvarselTekst = styled(BodyShortSmall)`
     color: ${ARed500};
+`;
+
+const Utregningstabell = styled(UtregningstabellSkolepenger)`
+    margin-left: 1rem;
 `;
 
 export const defaultSkoleårsperioder = (
@@ -194,7 +194,7 @@ export const VedtaksformSkolepenger: React.FC<{
             )}
             {feilmelding && <AlertError>{feilmelding}</AlertError>}
             {behandlingErRedigerbar && !erOpphør && (
-                <div className="spacing-left">
+                <div>
                     <Button variant={'secondary'} onClick={beregnSkolepenger} type={'button'}>
                         Beregn
                     </Button>
@@ -205,10 +205,7 @@ export const VedtaksformSkolepenger: React.FC<{
                     )}
                 </div>
             )}
-            <UtregningstabellSkolepenger
-                beregningsresultat={beregningsresultat}
-                className="spacing-left"
-            />
+            <Utregningstabell beregningsresultat={beregningsresultat} />
             {behandlingErRedigerbar && <HovedKnapp disabled={laster} knappetekst="Lagre vedtak" />}
         </Form>
     );

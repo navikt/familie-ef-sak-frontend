@@ -15,15 +15,22 @@ interface Props {
     className?: string;
 }
 
-const InnholdRad = styled.div`
+const Grid = styled.div`
     display: grid;
-    grid-template-columns: 8rem 5.5rem 10rem 12rem 10rem;
-    grid-gap: 1rem;
-    margin-left: 1rem;
+    grid-template-columns: repeat(5, max-content);
+    column-gap: 1rem;
+
+    .tittel-rad {
+        display: contents;
+    }
+
+    .tittel-rad > p {
+        margin-bottom: 0.5rem;
+    }
 `;
 
-const TittelRad = styled(InnholdRad)`
-    margin-bottom: 0.5rem;
+const HøyrejustertTekst = styled(BodyShortSmall)`
+    text-align: right;
 `;
 
 const Utregningstabell: React.FC<Props> = ({ beregnetStønad, className }) => {
@@ -35,44 +42,46 @@ const Utregningstabell: React.FC<Props> = ({ beregnetStønad, className }) => {
                         <Heading spacing size="small" level="5">
                             Utregning
                         </Heading>
-                        <TittelRad>
-                            <SmallTextLabel>Periode</SmallTextLabel>
-                            <SmallTextLabel>Inntekt (år)</SmallTextLabel>
-                            <SmallTextLabel>Beløp før samordning</SmallTextLabel>
-                            <SmallTextLabel>Samordningsfradrag (mnd)</SmallTextLabel>
-                            <SmallTextLabel>Stønadsbeløp pr. mnd</SmallTextLabel>
-                        </TittelRad>
-                        {beregnetStønad.map((beløpsPeriode) => {
-                            return (
-                                <InnholdRad>
-                                    <BodyShortSmall>
-                                        {`${formaterNullableMånedÅr(
-                                            beløpsPeriode.periode.fradato
-                                        )} - ${formaterNullableMånedÅr(
-                                            beløpsPeriode.periode.tildato
-                                        )}`}
-                                    </BodyShortSmall>
-                                    <BodyShortSmall>
-                                        {formaterTallMedTusenSkille(
-                                            beløpsPeriode.beregningsgrunnlag.inntekt
-                                        )}
-                                    </BodyShortSmall>
-                                    <BodyShortSmall>
-                                        {formaterTallMedTusenSkille(
-                                            beløpsPeriode.beløpFørSamordning
-                                        )}
-                                    </BodyShortSmall>
-                                    <BodyShortSmall>
-                                        {formaterTallMedTusenSkille(
-                                            beløpsPeriode.beregningsgrunnlag.samordningsfradrag
-                                        )}
-                                    </BodyShortSmall>
-                                    <BodyShortSmall>
-                                        {formaterTallMedTusenSkille(beløpsPeriode.beløp)}
-                                    </BodyShortSmall>
-                                </InnholdRad>
-                            );
-                        })}
+                        <Grid>
+                            <div className="tittel-rad">
+                                <SmallTextLabel>Periode</SmallTextLabel>
+                                <SmallTextLabel>Inntekt (år)</SmallTextLabel>
+                                <SmallTextLabel>Beløp før samordning</SmallTextLabel>
+                                <SmallTextLabel>Samordningsfradrag (mnd)</SmallTextLabel>
+                                <SmallTextLabel>Stønadsbeløp pr. mnd</SmallTextLabel>
+                            </div>
+                            {beregnetStønad.map((beløpsPeriode) => {
+                                return (
+                                    <React.Fragment key={beløpsPeriode.periode.fradato}>
+                                        <BodyShortSmall>
+                                            {`${formaterNullableMånedÅr(
+                                                beløpsPeriode.periode.fradato
+                                            )} - ${formaterNullableMånedÅr(
+                                                beløpsPeriode.periode.tildato
+                                            )}`}
+                                        </BodyShortSmall>
+                                        <HøyrejustertTekst>
+                                            {formaterTallMedTusenSkille(
+                                                beløpsPeriode.beregningsgrunnlag.inntekt
+                                            )}
+                                        </HøyrejustertTekst>
+                                        <HøyrejustertTekst>
+                                            {formaterTallMedTusenSkille(
+                                                beløpsPeriode.beløpFørSamordning
+                                            )}
+                                        </HøyrejustertTekst>
+                                        <HøyrejustertTekst>
+                                            {formaterTallMedTusenSkille(
+                                                beløpsPeriode.beregningsgrunnlag.samordningsfradrag
+                                            )}
+                                        </HøyrejustertTekst>
+                                        <HøyrejustertTekst>
+                                            {formaterTallMedTusenSkille(beløpsPeriode.beløp)}
+                                        </HøyrejustertTekst>
+                                    </React.Fragment>
+                                );
+                            })}
+                        </Grid>
                     </div>
                 );
             }}

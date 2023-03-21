@@ -36,6 +36,7 @@ const Grid = styled.div<{ lesevisning: boolean }>`
             : 'repeat(2, max-content) 6rem repeat(2, max-content)'};
     grid-gap: 0.5rem 1rem;
     margin-bottom: 0.5rem;
+    align-items: start;
 
     .ny-rad {
         grid-column: 1;
@@ -107,6 +108,7 @@ const KontantstøtteValg: React.FC<Props> = ({
 
     const radioGruppeTekst =
         'Er det søkt om, utbetales det eller har det blitt utbetalt kontantstøtte til brukeren eller en brukeren bor med i perioden(e) det er søkt om?';
+    const visGrid = kontantstøttePerioder.value.length > 0;
 
     return (
         <Container>
@@ -122,90 +124,96 @@ const KontantstøtteValg: React.FC<Props> = ({
             />
             {kontantstøtte.value === ERadioValg.JA && (
                 <HorizontalScroll
-                    synligVedLukketMeny={'780px'}
-                    synligVedÅpenMeny={'1075px'}
+                    synligVedLukketMeny={'795px'}
+                    synligVedÅpenMeny={'1115'}
                     åpenHøyremeny={åpenHøyremeny}
                 >
-                    <Grid lesevisning={erLesevisning}>
-                        <Label>Periode fra og med</Label>
-                        <Label>Periode til og med</Label>
-                        <Label>Kontantstøtte</Label>
-                        {kontantstøttePerioder.value.map((periode, index) => {
-                            const { årMånedFra, årMånedTil, beløp } = periode;
-                            const skalViseFjernKnapp = !erLesevisning && index !== 0;
-                            return (
-                                <React.Fragment key={periode.endretKey}>
-                                    <MånedÅrPeriode
-                                        className={'ny-rad'}
-                                        erLesevisning={erLesevisning}
-                                        feilmelding={
-                                            valideringsfeil?.kontantstøtteperioder &&
-                                            valideringsfeil.kontantstøtteperioder[index]?.årMånedFra
-                                        }
-                                        index={index}
-                                        onEndre={(verdi, periodeVariant) => {
-                                            settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
-                                            oppdaterKontantstøttePeriode(
-                                                index,
-                                                periodeVariantTilKontantstøtteperiodeProperty(
-                                                    periodeVariant
-                                                ),
-                                                verdi
-                                            );
-                                        }}
-                                        årMånedFraInitiell={årMånedFra}
-                                        årMånedTilInitiell={årMånedTil}
-                                    />
-                                    <Input
-                                        type="number"
-                                        size={'small'}
-                                        onKeyPress={tilHeltall}
-                                        value={harTallverdi(beløp) ? beløp : ''}
-                                        onChange={(e) => {
-                                            settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
-                                            oppdaterKontantstøttePeriode(
-                                                index,
-                                                EKontantstøttePeriodeProperty.beløp,
-                                                tilTallverdi(e.target.value)
-                                            );
-                                        }}
-                                        erLesevisning={erLesevisning}
-                                        label={'Utgifter kontantstøtte'}
-                                        hideLabel
-                                    />
-                                    {!erLesevisning && (
-                                        <Tooltip content="Legg til rad under" placement="right">
-                                            <LeggTilKnapp
-                                                onClick={() => leggTilTomRadUnder(index)}
-                                                ikontekst={'Legg til ny rad'}
-                                            />
-                                        </Tooltip>
-                                    )}
-                                    {skalViseFjernKnapp ? (
-                                        <FjernKnapp
-                                            onClick={() => {
-                                                kontantstøttePerioder.remove(index);
-                                                settValideringsFeil(
-                                                    (prevState: FormErrors<InnvilgeVedtakForm>) => {
-                                                        const kontantstøtteperioder = (
-                                                            prevState.kontantstøtteperioder ?? []
-                                                        ).filter((_, i) => i !== index);
-                                                        return {
-                                                            ...prevState,
-                                                            kontantstøtteperioder,
-                                                        };
-                                                    }
+                    {visGrid && (
+                        <Grid lesevisning={erLesevisning}>
+                            <Label>Periode fra og med</Label>
+                            <Label>Periode til og med</Label>
+                            <Label>Kontantstøtte</Label>
+                            {kontantstøttePerioder.value.map((periode, index) => {
+                                const { årMånedFra, årMånedTil, beløp } = periode;
+                                const skalViseFjernKnapp = !erLesevisning && index !== 0;
+                                return (
+                                    <React.Fragment key={periode.endretKey}>
+                                        <MånedÅrPeriode
+                                            className={'ny-rad'}
+                                            erLesevisning={erLesevisning}
+                                            feilmelding={
+                                                valideringsfeil?.kontantstøtteperioder &&
+                                                valideringsfeil.kontantstøtteperioder[index]
+                                                    ?.årMånedFra
+                                            }
+                                            index={index}
+                                            onEndre={(verdi, periodeVariant) => {
+                                                settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+                                                oppdaterKontantstøttePeriode(
+                                                    index,
+                                                    periodeVariantTilKontantstøtteperiodeProperty(
+                                                        periodeVariant
+                                                    ),
+                                                    verdi
                                                 );
                                             }}
-                                            ikontekst={'Fjern kontantstøtteperiode'}
+                                            årMånedFraInitiell={årMånedFra}
+                                            årMånedTilInitiell={årMånedTil}
                                         />
-                                    ) : (
-                                        <div />
-                                    )}
-                                </React.Fragment>
-                            );
-                        })}
-                    </Grid>
+                                        <Input
+                                            type="number"
+                                            size={'small'}
+                                            onKeyPress={tilHeltall}
+                                            value={harTallverdi(beløp) ? beløp : ''}
+                                            onChange={(e) => {
+                                                settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+                                                oppdaterKontantstøttePeriode(
+                                                    index,
+                                                    EKontantstøttePeriodeProperty.beløp,
+                                                    tilTallverdi(e.target.value)
+                                                );
+                                            }}
+                                            erLesevisning={erLesevisning}
+                                            label={'Utgifter kontantstøtte'}
+                                            hideLabel
+                                        />
+                                        {!erLesevisning && (
+                                            <Tooltip content="Legg til rad under" placement="right">
+                                                <LeggTilKnapp
+                                                    onClick={() => leggTilTomRadUnder(index)}
+                                                    ikontekst={'Legg til ny rad'}
+                                                />
+                                            </Tooltip>
+                                        )}
+                                        {skalViseFjernKnapp ? (
+                                            <FjernKnapp
+                                                onClick={() => {
+                                                    kontantstøttePerioder.remove(index);
+                                                    settValideringsFeil(
+                                                        (
+                                                            prevState: FormErrors<InnvilgeVedtakForm>
+                                                        ) => {
+                                                            const kontantstøtteperioder = (
+                                                                prevState.kontantstøtteperioder ??
+                                                                []
+                                                            ).filter((_, i) => i !== index);
+                                                            return {
+                                                                ...prevState,
+                                                                kontantstøtteperioder,
+                                                            };
+                                                        }
+                                                    );
+                                                }}
+                                                ikontekst={'Fjern kontantstøtteperiode'}
+                                            />
+                                        ) : (
+                                            <div />
+                                        )}
+                                    </React.Fragment>
+                                );
+                            })}
+                        </Grid>
+                    )}
                     {!erLesevisning && (
                         <LeggTilKnapp
                             onClick={() => kontantstøttePerioder.push(tomKontantstøtteRad())}

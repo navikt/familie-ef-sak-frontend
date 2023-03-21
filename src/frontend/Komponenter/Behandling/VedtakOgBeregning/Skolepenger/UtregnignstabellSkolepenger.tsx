@@ -14,7 +14,6 @@ const Grid = styled.div`
     display: grid;
     grid-template-columns: repeat(3, max-content);
     column-gap: 1rem;
-    padding-left: 1rem;
 `;
 
 const HøyrejustertBodyShort = styled(BodyShortSmall)`
