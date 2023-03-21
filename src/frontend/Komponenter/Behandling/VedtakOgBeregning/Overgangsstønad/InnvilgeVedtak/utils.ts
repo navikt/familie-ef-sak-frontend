@@ -3,7 +3,7 @@ import {
     IInnvilgeVedtakForOvergangsstønad,
 } from '../../../../../App/typer/vedtak';
 import { v4 as uuidv4 } from 'uuid';
-import { EInntektstype } from './InntektsperiodeValg';
+import { EInntektstype, inntektsTypeTilKey } from './typer';
 
 export const oppdaterVedtakMedEndretKey = (
     vedtak: IInnvilgeVedtakForOvergangsstønad | undefined
@@ -18,18 +18,13 @@ export const oppdaterVedtakMedEndretKey = (
     };
 };
 
-export const initierValgteInntektstyper = (
+const innteksttypeHvisVerdiFinnes = (
+    type: EInntektstype,
+    key: keyof IInntektsperiode,
     inntektsperioder: IInntektsperiode[]
-): EInntektstype[] => {
-    const innteksttypeHvisVerdiFinnes = (
-        type: EInntektstype,
-        key: keyof IInntektsperiode
-    ): EInntektstype[] => (inntektsperioder.some((periode) => periode[key]) ? [type] : []);
+): EInntektstype[] => (inntektsperioder.some((periode) => periode[key]) ? [type] : []);
 
-    return [
-        innteksttypeHvisVerdiFinnes(EInntektstype.DAGSATS, 'dagsats'),
-        innteksttypeHvisVerdiFinnes(EInntektstype.MÅNEDSINNTEKT, 'månedsinntekt'),
-        innteksttypeHvisVerdiFinnes(EInntektstype.ÅRSINNTEKT, 'forventetInntekt'),
-        innteksttypeHvisVerdiFinnes(EInntektstype.SAMORDNINGSFRADRAG, 'samordningsfradrag'),
-    ].flatMap((e) => e);
-};
+export const initierValgteInntektstyper = (inntektsperioder: IInntektsperiode[]): EInntektstype[] =>
+    Object.entries(inntektsTypeTilKey).flatMap(([type, key]) =>
+        innteksttypeHvisVerdiFinnes(type as EInntektstype, key, inntektsperioder)
+    );

@@ -26,6 +26,7 @@ import { TextLabel } from '../../../../../Felles/Visningskomponenter/Tekster';
 import { HorizontalScroll } from '../../Felles/HorizontalScroll';
 import { initierValgteInntektstyper } from './utils';
 import { AlertError } from '../../../../../Felles/Visningskomponenter/Alerts';
+import { EInntektstype } from './typer';
 
 const Grid = styled.div<{ lesevisning?: boolean }>`
     display: grid;
@@ -64,13 +65,6 @@ const CheckboxGroupRow = styled(CheckboxGroup)`
         flex-wrap: wrap;
     }
 `;
-
-export enum EInntektstype {
-    DAGSATS = 'DAGSATS',
-    MÅNEDSINNTEKT = 'MÅNEDSINNTEKT',
-    ÅRSINNTEKT = 'ÅRSINNTEKT',
-    SAMORDNINGSFRADRAG = 'SAMORDNINGSFRADRAG',
-}
 
 interface Props {
     className?: string;
