@@ -29,7 +29,8 @@ const lenketekst = (andel: AndelHistorikk) => {
 const historikkRad = (andel: AndelHistorikk, index: number) => {
     const erSanksjon = andel.periodeType === EPeriodetype.SANKSJON;
     const erOpphør = andel.erOpphør;
-    const visDetaljer = !erSanksjon && !erOpphør;
+    const visDetaljer =
+        !erSanksjon && !erOpphør && andel.periodeType !== EPeriodetype.MIDLERTIDIG_OPPHØR;
     return (
         <HistorikkRad type={andel.endring?.type} key={index}>
             <td>{datoAndelHistorikk(andel)}</td>

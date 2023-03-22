@@ -1,4 +1,3 @@
-import { AddCircle } from '@navikt/ds-icons';
 import React from 'react';
 import { Button } from '@navikt/ds-react';
 import styled from 'styled-components';
@@ -7,23 +6,23 @@ const Knapp = styled(Button)`
     width: fit-content;
 `;
 
-const LeggTilKnapp: React.FC<{
+const HovedKnapp: React.FC<{
     className?: string;
-    ikontekst?: string;
+    disabled?: boolean;
     knappetekst?: string;
-    onClick: () => void;
-}> = ({ className, ikontekst, knappetekst, onClick }) => {
+    onClick?: () => void;
+}> = ({ className, disabled, knappetekst, onClick }) => {
     return (
         <Knapp
             className={className}
-            icon={<AddCircle title={knappetekst ? knappetekst : ikontekst} />}
+            disabled={disabled}
             onClick={onClick}
-            type="button"
-            variant={knappetekst ? 'secondary' : 'tertiary'}
+            type="submit"
+            variant="primary"
         >
             {knappetekst && <span>{knappetekst}</span>}
         </Knapp>
     );
 };
 
-export default LeggTilKnapp;
+export default HovedKnapp;

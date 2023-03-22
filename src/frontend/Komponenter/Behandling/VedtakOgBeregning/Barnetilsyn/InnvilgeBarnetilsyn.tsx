@@ -69,7 +69,7 @@ export const InnvilgeBarnetilsyn: FC<{
                     hentVedtakshistorikk={hentVedtakshistorikk}
                     feilmelding={revurderesFraOgMedFeilmelding}
                     revurdererFraPeriodeUtenStønad={revurderesFraPeriodeUtenStønad}
-                    type={'BARNETILSYN'}
+                    stønadstype={behandling.stønadstype}
                 />
             )}
             {(!behandling.forrigeBehandlingId || vedtak) && (

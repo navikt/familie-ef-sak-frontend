@@ -2,7 +2,6 @@ import { ISkoleårsperiodeSkolepenger } from '../../../../../App/typer/vedtak';
 import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import { useBehandling } from '../../../../../App/context/BehandlingContext';
-import LeggTilKnapp from '../../../../../Felles/Knapper/LeggTilKnapp';
 import { ListState } from '../../../../../App/hooks/felles/useListState';
 import { FormErrors } from '../../../../../App/hooks/felles/useFormState';
 import { InnvilgeVedtakForm } from './VedtaksformSkolepenger';
@@ -12,18 +11,20 @@ import SkoleårDelårsperiode from './SkoleårDelårsperiode';
 import UtgiftsperiodeSkolepenger from './UtgiftsperiodeSkolepenger';
 import { tomSkoleårsperiodeSkolepenger } from '../typer';
 import { oppdaterValideringsfeil } from '../utils';
+import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
+import { HorizontalScroll } from '../../Felles/HorizontalScroll';
 import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
-import { ABgSubtle } from '@navikt/ds-tokens/dist/tokens';
+import LeggTilKnapp from '../../../../../Felles/Knapper/LeggTilKnapp';
 
-const Skoleårsperiode = styled.div`
-    margin: 1rem;
-    margin-right: 0.5rem;
-    margin-left: 0rem;
+const Container = styled.div`
     padding: 1rem;
-    background-color: ${ABgSubtle};
+    background-color: ${AGray50};
 `;
-const ContainerMedLuftUnder = styled.div`
-    margin-bottom: 1rem;
+
+const Skoleårsperiode = styled(HorizontalScroll)`
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 `;
 
 interface Props {
@@ -41,7 +42,7 @@ const SkoleårsperioderSkolepenger: React.FC<Props> = ({
     settValideringsFeil,
     oppdaterHarUtførtBeregning,
 }) => {
-    const { behandlingErRedigerbar } = useBehandling();
+    const { behandlingErRedigerbar, åpenHøyremeny } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
 
     const fjernSkoleårsperiode = (index: number) => {
@@ -74,8 +75,13 @@ const SkoleårsperioderSkolepenger: React.FC<Props> = ({
                 const skalViseFjernKnapp =
                     behandlingErRedigerbar && index !== 0 && !inneholderLåsteUtgifter;
                 return (
-                    <>
-                        <Skoleårsperiode key={index}>
+                    <Container>
+                        <Skoleårsperiode
+                            key={index}
+                            synligVedLukketMeny={'1035px'}
+                            synligVedÅpenMeny={'1330px'}
+                            åpenHøyremeny={åpenHøyremeny}
+                        >
                             <SkoleårDelårsperiode
                                 data={skoleårsperiode.perioder}
                                 oppdater={(perioder) =>
@@ -124,17 +130,15 @@ const SkoleårsperioderSkolepenger: React.FC<Props> = ({
                                 />
                             )}
                         </Skoleårsperiode>
-                    </>
+                    </Container>
                 );
             })}
-            <ContainerMedLuftUnder>
-                {behandlingErRedigerbar && (
-                    <LeggTilKnapp
-                        onClick={() => skoleårsperioder.push(tomSkoleårsperiodeSkolepenger())}
-                        knappetekst="Legg til skoleår"
-                    />
-                )}
-            </ContainerMedLuftUnder>
+            {behandlingErRedigerbar && (
+                <LeggTilKnapp
+                    onClick={() => skoleårsperioder.push(tomSkoleårsperiodeSkolepenger())}
+                    knappetekst="Legg til skoleår"
+                />
+            )}
         </>
     );
 };

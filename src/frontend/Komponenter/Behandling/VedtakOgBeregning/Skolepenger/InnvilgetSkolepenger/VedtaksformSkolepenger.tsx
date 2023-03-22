@@ -10,15 +10,12 @@ import { Behandling } from '../../../../../App/typer/fagsak';
 import React, { useEffect, useState } from 'react';
 import useFormState, { FormState } from '../../../../../App/hooks/felles/useFormState';
 import { ListState } from '../../../../../App/hooks/felles/useListState';
-import AlertStripeFeilPreWrap from '../../../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import { useBehandling } from '../../../../../App/context/BehandlingContext';
 import styled from 'styled-components';
-import { Button, Heading } from '@navikt/ds-react';
+import { Button } from '@navikt/ds-react';
 import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
 import { useApp } from '../../../../../App/context/AppContext';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../../../App/typer/ressurs';
-import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
-import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import { UtregningstabellSkolepenger } from '../UtregnignstabellSkolepenger';
 import {
     validerInnvilgetVedtakForm,
@@ -31,18 +28,22 @@ import { BodyShortSmall } from '../../../../../Felles/Visningskomponenter/Tekste
 import { ARed500 } from '@navikt/ds-tokens/dist/tokens';
 import { useRedirectEtterLagring } from '../../../../../App/hooks/felles/useRedirectEtterLagring';
 import { v4 as uuidv4 } from 'uuid';
+import { BegrunnelsesFelt } from './BegrunnelsesFelt';
+import { AlertError } from '../../../../../Felles/Visningskomponenter/Alerts';
+import HovedKnapp from '../../../../../Felles/Knapper/HovedKnapp';
 
-export type InnvilgeVedtakForm = {
-    skoleårsperioder: ISkoleårsperiodeSkolepenger[];
-    begrunnelse?: string;
-};
-
-const WrapperDobbelMarginTop = styled.div`
-    margin-top: 2rem;
+const Form = styled.form`
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 `;
 
-export const AdvarselTekst = styled(BodyShortSmall)`
+const AdvarselTekst = styled(BodyShortSmall)`
     color: ${ARed500};
+`;
+
+const Utregningstabell = styled(UtregningstabellSkolepenger)`
+    margin-left: 1rem;
 `;
 
 export const defaultSkoleårsperioder = (
@@ -54,6 +55,11 @@ export const defaultSkoleårsperioder = (
     } else {
         return [tomSkoleårsperiodeSkolepenger()];
     }
+};
+
+export type InnvilgeVedtakForm = {
+    skoleårsperioder: ISkoleårsperiodeSkolepenger[];
+    begrunnelse?: string;
 };
 
 export const VedtaksformSkolepenger: React.FC<{
@@ -168,22 +174,16 @@ export const VedtaksformSkolepenger: React.FC<{
     }, [axiosRequest, behandling, behandlingErRedigerbar]);
 
     return (
-        <form onSubmit={formState.onSubmit(handleSubmit)}>
-            <Heading spacing size="small" level="5">
-                Utgifter til skolepenger
-            </Heading>
-            <EnsligTextArea
-                erLesevisning={!behandlingErRedigerbar}
-                value={begrunnelseState.value}
-                onChange={(event) => {
-                    settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
-                    begrunnelseState.onChange(event);
-                }}
-                label={'Begrunnelse'}
-                maxLength={0}
-                feilmelding={formState.errors.begrunnelse}
-            />
-            {!erOpphør ? (
+        <Form onSubmit={formState.onSubmit(handleSubmit)}>
+            <BegrunnelsesFelt begrunnelseState={begrunnelseState} errorState={formState.errors} />
+            {erOpphør ? (
+                <OpphørSkolepenger
+                    skoleårsperioder={skoleårsPerioderState}
+                    forrigeSkoleårsperioder={forrigeVedtak?.skoleårsperioder || []}
+                    valideringsfeil={formState.errors.skoleårsperioder}
+                    settValideringsFeil={formState.setErrors}
+                />
+            ) : (
                 <SkoleårsperioderSkolepenger
                     skoleårsperioder={skoleårsPerioderState}
                     låsteUtgiftIder={utgiftsIderForrigeBehandling}
@@ -191,21 +191,10 @@ export const VedtaksformSkolepenger: React.FC<{
                     settValideringsFeil={formState.setErrors}
                     oppdaterHarUtførtBeregning={settHarUtførtBeregning}
                 />
-            ) : (
-                <OpphørSkolepenger
-                    skoleårsperioder={skoleårsPerioderState}
-                    forrigeSkoleårsperioder={forrigeVedtak?.skoleårsperioder || []}
-                    valideringsfeil={formState.errors.skoleårsperioder}
-                    settValideringsFeil={formState.setErrors}
-                />
             )}
-            {feilmelding && (
-                <AlertStripeFeilPreWrap style={{ marginTop: '2rem' }}>
-                    {feilmelding}
-                </AlertStripeFeilPreWrap>
-            )}
+            {feilmelding && <AlertError>{feilmelding}</AlertError>}
             {behandlingErRedigerbar && !erOpphør && (
-                <WrapperDobbelMarginTop>
+                <div>
                     <Button variant={'secondary'} onClick={beregnSkolepenger} type={'button'}>
                         Beregn
                     </Button>
@@ -214,21 +203,10 @@ export const VedtaksformSkolepenger: React.FC<{
                             Kan ikke lagre vedtaket før beregning er utført
                         </AdvarselTekst>
                     )}
-                </WrapperDobbelMarginTop>
+                </div>
             )}
-            <WrapperDobbelMarginTop>
-                <UtregningstabellSkolepenger
-                    beregningsresultat={beregningsresultat}
-                    skjulVisning={behandlingErRedigerbar && !harUtførtBeregning}
-                />
-            </WrapperDobbelMarginTop>
-            {behandlingErRedigerbar && (
-                <WrapperDobbelMarginTop>
-                    <Button variant="primary" disabled={laster} type={'submit'}>
-                        Lagre vedtak
-                    </Button>
-                </WrapperDobbelMarginTop>
-            )}
-        </form>
+            <Utregningstabell beregningsresultat={beregningsresultat} />
+            {behandlingErRedigerbar && <HovedKnapp disabled={laster} knappetekst="Lagre vedtak" />}
+        </Form>
     );
 };

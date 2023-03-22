@@ -1,7 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Behandling } from '../../../../App/typer/fagsak';
 import { IVilkår } from '../../Inngangsvilkår/vilkår';
-import styled from 'styled-components';
 import { EBehandlingResultat, IInnvilgeVedtakForBarnetilsyn } from '../../../../App/typer/vedtak';
 import { useHentVedtak } from '../../../../App/hooks/useHentVedtak';
 import { erAlleVilkårOppfylt, skalViseNullstillVedtakKnapp } from '../Felles/utils';
@@ -17,14 +16,6 @@ interface Props {
     behandling: Behandling;
     vilkår: IVilkår;
 }
-
-const Wrapper = styled.div`
-    padding: 1rem 2rem;
-`;
-
-const WrapperMarginTop = styled.div`
-    margin-top: 1rem;
-`;
 
 const VedtakOgBeregningBarnetilsyn: FC<Props> = ({ behandling, vilkår }) => {
     const behandlingId = behandling.id;
@@ -44,7 +35,7 @@ const VedtakOgBeregningBarnetilsyn: FC<Props> = ({ behandling, vilkår }) => {
     }, [vedtak]);
 
     return (
-        <Wrapper>
+        <>
             <SelectVedtaksresultat
                 behandling={behandling}
                 resultatType={resultatType}
@@ -52,41 +43,39 @@ const VedtakOgBeregningBarnetilsyn: FC<Props> = ({ behandling, vilkår }) => {
                 alleVilkårOppfylt={alleVilkårOppfylt}
                 skalViseNullstillVedtakKnapp={skalViseNullstillVedtakKnapp(vedtak)}
             />
-            <WrapperMarginTop>
-                <DataViewer response={{ vedtak }}>
-                    {({ vedtak }) => {
-                        switch (resultatType) {
-                            case EBehandlingResultat.INNVILGE:
-                            case EBehandlingResultat.INNVILGE_UTEN_UTBETALING:
-                                return (
-                                    <InnvilgeBarnetilsyn
-                                        behandling={behandling}
-                                        lagretVedtak={
-                                            vedtak as IInnvilgeVedtakForBarnetilsyn | undefined
-                                        }
-                                        barn={barnSomOppfyllerAlleVilkår(vilkår)}
-                                        settResultatType={settResultatType}
-                                    />
-                                );
-                            case EBehandlingResultat.AVSLÅ:
-                                return (
-                                    <AvslåVedtak
-                                        behandling={behandling}
-                                        alleVilkårOppfylt={alleVilkårOppfylt}
-                                        ikkeOppfyltVilkårEksisterer={true}
-                                        lagretVedtak={vedtak}
-                                    />
-                                );
-                            case EBehandlingResultat.OPPHØRT:
-                                return <Opphør behandlingId={behandlingId} lagretVedtak={vedtak} />;
-                            case undefined:
-                            default:
-                                return null;
-                        }
-                    }}
-                </DataViewer>
-            </WrapperMarginTop>
-        </Wrapper>
+            <DataViewer response={{ vedtak }}>
+                {({ vedtak }) => {
+                    switch (resultatType) {
+                        case EBehandlingResultat.INNVILGE:
+                        case EBehandlingResultat.INNVILGE_UTEN_UTBETALING:
+                            return (
+                                <InnvilgeBarnetilsyn
+                                    behandling={behandling}
+                                    lagretVedtak={
+                                        vedtak as IInnvilgeVedtakForBarnetilsyn | undefined
+                                    }
+                                    barn={barnSomOppfyllerAlleVilkår(vilkår)}
+                                    settResultatType={settResultatType}
+                                />
+                            );
+                        case EBehandlingResultat.AVSLÅ:
+                            return (
+                                <AvslåVedtak
+                                    behandling={behandling}
+                                    alleVilkårOppfylt={alleVilkårOppfylt}
+                                    ikkeOppfyltVilkårEksisterer={true}
+                                    lagretVedtak={vedtak}
+                                />
+                            );
+                        case EBehandlingResultat.OPPHØRT:
+                            return <Opphør behandlingId={behandlingId} lagretVedtak={vedtak} />;
+                        case undefined:
+                        default:
+                            return null;
+                    }
+                }}
+            </DataViewer>
+        </>
     );
 };
 
