@@ -33,7 +33,7 @@ const Alertstripe = styled(Alert)`
     white-space: nowrap;
 `;
 
-export interface IFremleggsOppgave {
+export interface IFremleggsoppgave {
     opprettFremleggsoppgave: boolean;
 }
 const SendTilBeslutterFooter: React.FC<{
