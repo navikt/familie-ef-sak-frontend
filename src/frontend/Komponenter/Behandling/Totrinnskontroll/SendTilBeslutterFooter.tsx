@@ -60,7 +60,7 @@ const SendTilBeslutterFooter: React.FC<{
     const opprettFremleggsoppgaveOgSendTilBeslutter = () => {
         axiosRequest<void, undefined>({
             method: 'POST',
-            url: `/familie-ef-sak/api/fremleggsoppgave/${behandlingId}/skalopprettefremleggsoppgave/${skalOppretteFremleggsoppgave}`,
+            url: `/familie-ef-sak/api/fremleggsoppgave/${behandlingId}/inntekt/${skalOppretteFremleggsoppgave}`,
         }).then((res: RessursSuksess<void> | RessursFeilet) => {
             if (res.status === RessursStatus.SUKSESS) {
                 sendTilBeslutter();
@@ -107,7 +107,7 @@ const SendTilBeslutterFooter: React.FC<{
         });
         axiosRequest<boolean, undefined>({
             method: 'GET',
-            url: `/familie-ef-sak/api/fremleggsoppgave/kanopprettes/${behandlingId}`,
+            url: `/familie-ef-sak/api/fremleggsoppgave/${behandlingId}/kan-opprettes`,
         }).then((res: RessursSuksess<boolean> | RessursFeilet) => {
             if (res.status === RessursStatus.SUKSESS) {
                 setKanOppretteFremleggsoppgave(res.data);
@@ -135,14 +135,13 @@ const SendTilBeslutterFooter: React.FC<{
                 <Footer>
                     {kanOppretteFremleggsoppgave && (
                         <Alertstripe variant={'info'} fullWidth={true}>
-                            Det blir automatisk opprettet oppgave for kontroll av
-                            inntektsopplysninger 1 år frem i tid når denne behandlingen blir
-                            godkjent av beslutter{' '}
                             <Checkbox
                                 onChange={checkBoxEndring}
                                 checked={skalOppretteFremleggsoppgave}
                             >
-                                {' '}
+                                Det blir automatisk opprettet oppgave for kontroll av
+                                inntektsopplysninger 1 år frem i tid når denne behandlingen blir
+                                godkjent av beslutter{' '}
                             </Checkbox>
                         </Alertstripe>
                     )}
