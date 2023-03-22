@@ -9,6 +9,26 @@ export const initielleAvsnittTom: AvsnittMedId[] = [
     },
 ];
 
+const duHarRettTilÅKlage: AvsnittMedId = {
+    deloverskrift: 'Du har rett til å klage',
+    innhold:
+        'Hvis du vil klage, må du gjøre dette innen 6 uker fra den datoen du fikk dette vedtaket. Du finner skjema og informasjon på klage.nav.no/nb/familie/enslig-mor-eller-far.',
+    id: uuidv4(),
+};
+
+const rettTilInsyn: AvsnittMedId = {
+    deloverskrift: 'Du har rett til innsyn',
+    innhold: 'På nav.no/minside kan du se dokumentene i saken din.',
+    id: uuidv4(),
+};
+
+const harDuSpørsmålKontaktOss: AvsnittMedId = {
+    deloverskrift: 'Har du spørsmål?',
+    innhold:
+        'Du finner informasjon som kan være nyttig for deg på nav.no/alene-med-barn. Du kan også kontakte oss på nav.no/kontakt.',
+    id: uuidv4(),
+};
+
 export const initielleAvsnittVedtakInvilgelse: AvsnittMedId[] = [
     {
         deloverskrift: 'Du må si ifra om endringer',
@@ -22,83 +42,27 @@ export const initielleAvsnittVedtakInvilgelse: AvsnittMedId[] = [
             'Du kan lese mer om hvordan vi beregner inntekten din på nav.no/overgangsstonad-enslig#hvor-mye.',
         id: uuidv4(),
     },
-    {
-        deloverskrift: 'Du har rett til å klage',
-        innhold:
-            'Hvis du vil klage, må du gjøre dette innen 6 uker fra den datoen du fikk dette vedtaket. Du finner skjema og informasjon på klage.nav.no/nb/familie/enslig-mor-eller-far.',
-        id: uuidv4(),
-    },
-    {
-        deloverskrift: 'Du har rett til innsyn',
-        innhold: 'På nav.no/minside kan du se dokumentene i saken din.',
-        id: uuidv4(),
-    },
-    {
-        deloverskrift: 'Har du spørsmål?',
-        innhold:
-            'Du finner informasjon som kan være nyttig for deg på nav.no/alene-med-barn. Du kan også kontakte oss på nav.no/kontakt.',
-        id: uuidv4(),
-    },
+    duHarRettTilÅKlage,
+    rettTilInsyn,
+    harDuSpørsmålKontaktOss,
 ];
 
 export const initielleAvsnittVedtakAvslagOvergangsstønad: AvsnittMedId[] = [
-    {
-        deloverskrift: 'Du har rett til å klage',
-        innhold:
-            'Hvis du vil klage, må du gjøre dette innen 6 uker fra den datoen du fikk dette vedtaket. Du finner skjema og informasjon på klage.nav.no/nb/familie/enslig-mor-eller-far.',
-        id: uuidv4(),
-    },
-    {
-        deloverskrift: 'Du har rett til innsyn',
-        innhold: 'På nav.no/minside kan du se dokumentene i saken din.',
-        id: uuidv4(),
-    },
-    {
-        deloverskrift: 'Har du spørsmål?',
-        innhold:
-            'Du finner informasjon som kan være nyttig for deg på nav.no/alene-med-barn. Du kan også kontakte oss på nav.no/kontakt.',
-        id: uuidv4(),
-    },
+    duHarRettTilÅKlage,
+    rettTilInsyn,
+    harDuSpørsmålKontaktOss,
 ];
 
 export const initielleAvsnittVedtakOpphørBarnetilsyn: AvsnittMedId[] = [
-    {
-        deloverskrift: 'Du har rett til å klage',
-        innhold:
-            'Hvis du vil klage, må du gjøre dette innen 6 uker fra den datoen du fikk dette vedtaket. Du finner skjema og informasjon på klage.nav.no/nb/familie/enslig-mor-eller-far.',
-        id: uuidv4(),
-    },
-    {
-        deloverskrift: 'Du har rett til innsyn',
-        innhold: 'På nav.no/minside kan du se dokumentene i saken din.',
-        id: uuidv4(),
-    },
-    {
-        deloverskrift: 'Har du spørsmål?',
-        innhold:
-            'Du finner informasjon som kan være nyttig for deg på nav.no/alene-med-barn. Du kan også kontakte oss på nav.no/kontakt.',
-        id: uuidv4(),
-    },
+    duHarRettTilÅKlage,
+    rettTilInsyn,
+    harDuSpørsmålKontaktOss,
 ];
 
 export const initielleAvsnittVedtakOpphørSkolepenger: AvsnittMedId[] = [
-    {
-        deloverskrift: 'Du har rett til å klage',
-        innhold:
-            'Hvis du vil klage, må du gjøre dette innen 6 uker fra den datoen du fikk dette vedtaket. Du finner skjema og informasjon på klage.nav.no/nb/familie/enslig-mor-eller-far.',
-        id: uuidv4(),
-    },
-    {
-        deloverskrift: 'Du har rett til innsyn',
-        innhold: 'På nav.no/minside kan du se dokumentene i saken din.',
-        id: uuidv4(),
-    },
-    {
-        deloverskrift: 'Har du spørsmål?',
-        innhold:
-            'Du finner informasjon som kan være nyttig for deg på nav.no/alene-med-barn. Du kan også kontakte oss på nav.no/kontakt.',
-        id: uuidv4(),
-    },
+    duHarRettTilÅKlage,
+    rettTilInsyn,
+    harDuSpørsmålKontaktOss,
 ];
 
 export const initielleAvsnittVedtakInvilgelseBarnetilsyn: AvsnittMedId[] = [
@@ -108,43 +72,15 @@ export const initielleAvsnittVedtakInvilgelseBarnetilsyn: AvsnittMedId[] = [
             'Hvis det skjer endringer som kan ha betydning for stønaden din, må du si ifra til oss. Du finner oversikten over endringer du må si ifra om på nav.no/barnetilsyn-enslig#melde. Du sier ifra om endringer ved å skrive en beskjed til oss på nav.no/skriv-til-oss.',
         id: uuidv4(),
     },
-    {
-        deloverskrift: 'Du har rett til å klage',
-        innhold:
-            'Hvis du vil klage, må du gjøre dette innen 6 uker fra den datoen du fikk dette vedtaket. Du finner skjema og informasjon på klage.nav.no/nb/familie/enslig-mor-eller-far.',
-        id: uuidv4(),
-    },
-    {
-        deloverskrift: 'Du har rett til innsyn',
-        innhold: 'På nav.no/minside kan du se dokumentene i saken din.',
-        id: uuidv4(),
-    },
-    {
-        deloverskrift: 'Har du spørsmål?',
-        innhold:
-            'Du finner informasjon som kan være nyttig for deg på nav.no/alene-med-barn. Du kan også kontakte oss på nav.no/kontakt.',
-        id: uuidv4(),
-    },
+    duHarRettTilÅKlage,
+    rettTilInsyn,
+    harDuSpørsmålKontaktOss,
 ];
 
 export const initielleAvsnittVedtakAvslagBarnetilsyn: AvsnittMedId[] = [
-    {
-        deloverskrift: 'Du har rett til å klage',
-        innhold:
-            'Hvis du vil klage, må du gjøre dette innen 6 uker fra den datoen du fikk dette vedtaket. Du finner skjema og informasjon på klage.nav.no/nb/familie/enslig-mor-eller-far.',
-        id: uuidv4(),
-    },
-    {
-        deloverskrift: 'Du har rett til innsyn',
-        innhold: 'På nav.no/minside kan du se dokumentene i saken din.',
-        id: uuidv4(),
-    },
-    {
-        deloverskrift: 'Har du spørsmål?',
-        innhold:
-            'Du finner informasjon som kan være nyttig for deg på nav.no/alene-med-barn. Du kan også kontakte oss på nav.no/kontakt.',
-        id: uuidv4(),
-    },
+    duHarRettTilÅKlage,
+    rettTilInsyn,
+    harDuSpørsmålKontaktOss,
 ];
 
 export const initielleAvsnittVarselOmAktivitetsplikt: AvsnittMedId[] = [
@@ -232,12 +168,7 @@ export const initielleAvsnittInnhentingAvKarakterutskriftHovedperiode: AvsnittMe
             '\n\nVi minner om at du har plikt til å gi de opplysningene og levere de dokumentene som er nødvendige for at vi skal kunne vurdere om du har rett til stønaden. Hvis vi ikke får opplysningene innen fristen, vil vi behandle saken din ut fra de opplysningene vi har. Dette går frem av folketrygdloven § 21-3.',
         id: uuidv4(),
     },
-    {
-        deloverskrift: 'Har du spørsmål?',
-        innhold:
-            'Du finner informasjon som kan være nyttig for deg på nav.no/alene-med-barn. Du kan også kontakte oss på nav.no/kontakt.',
-        id: uuidv4(),
-    },
+    harDuSpørsmålKontaktOss,
 ];
 
 export const initielleAvsnittInnhentingAvKarakterutskriftUtvidetPeriode: AvsnittMedId[] = [
@@ -266,12 +197,7 @@ export const initielleAvsnittInnhentingAvKarakterutskriftUtvidetPeriode: Avsnitt
             '\n\nVi minner om at du har plikt til å gi de opplysningene og levere de dokumentene som er nødvendige for at vi skal kunne vurdere om du har rett til stønaden. Hvis vi ikke får opplysningene innen fristen, vil vi behandle saken din ut fra de opplysningene vi har. Dette går fram av folketrygdloven § 21-3.',
         id: uuidv4(),
     },
-    {
-        deloverskrift: 'Har du spørsmål?',
-        innhold:
-            'Du finner informasjon som kan være nyttig for deg på nav.no/alene-med-barn. Du kan også kontakte oss på nav.no/kontakt.',
-        id: uuidv4(),
-    },
+    harDuSpørsmålKontaktOss,
 ];
 
 export const initielleAvsnittVedtakInvilgelseSkolepenger: AvsnittMedId[] = [
@@ -281,43 +207,15 @@ export const initielleAvsnittVedtakInvilgelseSkolepenger: AvsnittMedId[] = [
             'Hvis det skjer endringer som kan ha betydning for stønaden din, må du si ifra til oss. Du finner oversikten over endringer du må si ifra om på nav.no/skolepenger-enslig#melde. Du sier ifra om endringer ved å skrive en beskjed til oss på nav.no/skriv-til-oss.',
         id: uuidv4(),
     },
-    {
-        deloverskrift: 'Du har rett til å klage',
-        innhold:
-            'Hvis du vil klage, må du gjøre dette innen 6 uker fra den datoen du fikk dette vedtaket. Du finner skjema og informasjon på klage.nav.no/nb/familie/enslig-mor-eller-far.',
-        id: uuidv4(),
-    },
-    {
-        deloverskrift: 'Du har rett til innsyn',
-        innhold: 'På nav.no/minside kan du se dokumentene i saken din.',
-        id: uuidv4(),
-    },
-    {
-        deloverskrift: 'Har du spørsmål?',
-        innhold:
-            'Du finner informasjon som kan være nyttig for deg på nav.no/alene-med-barn. Du kan også kontakte oss på nav.no/kontakt.',
-        id: uuidv4(),
-    },
+    duHarRettTilÅKlage,
+    rettTilInsyn,
+    harDuSpørsmålKontaktOss,
 ];
 
 export const initielleAvsnittVedtakAvslagSkolepenger: AvsnittMedId[] = [
-    {
-        deloverskrift: 'Du har rett til å klage',
-        innhold:
-            'Hvis du vil klage, må du gjøre dette innen 6 uker fra den datoen du fikk dette vedtaket. Du finner skjema og informasjon på klage.nav.no/nb/familie/enslig-mor-eller-far.',
-        id: uuidv4(),
-    },
-    {
-        deloverskrift: 'Du har rett til innsyn',
-        innhold: 'På nav.no/minside kan du se dokumentene i saken din.',
-        id: uuidv4(),
-    },
-    {
-        deloverskrift: 'Har du spørsmål?',
-        innhold:
-            'Du finner informasjon som kan være nyttig for deg på nav.no/alene-med-barn. Du kan også kontakte oss på nav.no/kontakt.',
-        id: uuidv4(),
-    },
+    duHarRettTilÅKlage,
+    rettTilInsyn,
+    harDuSpørsmålKontaktOss,
 ];
 
 export const initielleAvsnittInnhentingAvOpplysninger: AvsnittMedId[] = [
@@ -332,12 +230,7 @@ export const initielleAvsnittInnhentingAvOpplysninger: AvsnittMedId[] = [
         innhold: 'Saksbehandlingstidene finner du på nav.no/saksbehandlingstider.',
         id: uuidv4(),
     },
-    {
-        deloverskrift: 'Har du spørsmål?',
-        innhold:
-            'Du finner informasjon som kan være nyttig for deg på nav.no/alene-med-barn. Du kan også kontakte oss på nav.no/kontakt.',
-        id: uuidv4(),
-    },
+    harDuSpørsmålKontaktOss,
 ];
 
 export const initielleAvsnittSvartidKlage: AvsnittMedId[] = [
@@ -348,12 +241,7 @@ export const initielleAvsnittSvartidKlage: AvsnittMedId[] = [
             'Du kan lese mer om saksbehandlingstider for saker som gjelder stønad til enslig mor eller far på nav.no/saksbehandlingstid.',
         id: uuidv4(),
     },
-    {
-        deloverskrift: 'Har du spørsmål?',
-        innhold:
-            'Du finner informasjon som kan være nyttig for deg på nav.no/alene-med-barn. Du kan også kontakte oss på nav.no/kontakt.',
-        id: uuidv4(),
-    },
+    harDuSpørsmålKontaktOss,
 ];
 
 export const initielleAvsnittForlengetSvartidKlage: AvsnittMedId[] = [
@@ -365,12 +253,7 @@ export const initielleAvsnittForlengetSvartidKlage: AvsnittMedId[] = [
         id: uuidv4(),
         skalSkjulesIBrevbygger: false,
     },
-    {
-        deloverskrift: 'Har du spørsmål?',
-        innhold:
-            'Du finner informasjon som kan være nyttig for deg på nav.no/alene-med-barn. Du kan også kontakte oss på nav.no/kontakt.',
-        id: uuidv4(),
-    },
+    harDuSpørsmålKontaktOss,
 ];
 
 export const initielleAvsnittForlengetSvartid: AvsnittMedId[] = [
@@ -382,12 +265,7 @@ export const initielleAvsnittForlengetSvartid: AvsnittMedId[] = [
         id: uuidv4(),
         skalSkjulesIBrevbygger: false,
     },
-    {
-        deloverskrift: 'Har du spørsmål?',
-        innhold:
-            'Du finner informasjon som kan være nyttig for deg på nav.no/alene-med-barn. Du kan også kontakte oss på nav.no/kontakt.',
-        id: uuidv4(),
-    },
+    harDuSpørsmålKontaktOss,
 ];
 
 export const initielleAvsnittTrukketSøknad: AvsnittMedId[] = [
@@ -398,32 +276,13 @@ export const initielleAvsnittTrukketSøknad: AvsnittMedId[] = [
         id: uuidv4(),
         skalSkjulesIBrevbygger: false,
     },
-    {
-        deloverskrift: 'Har du spørsmål?',
-        innhold:
-            'Du finner informasjon som kan være nyttig for deg på nav.no/alene-med-barn. Du kan også kontakte oss på nav.no/kontakt.',
-        id: uuidv4(),
-    },
+    harDuSpørsmålKontaktOss,
 ];
 
 export const initielleAvsnittVedtaklUtestengelse: AvsnittMedId[] = [
-    {
-        deloverskrift: 'Du har rett til å klage',
-        innhold:
-            'Hvis du vil klage, må du gjøre dette innen 6 uker fra den datoen du fikk dette vedtaket. Du finner skjema og informasjon på klage.nav.no/nb/familie/enslig-mor-eller-far.',
-        id: uuidv4(),
-    },
-    {
-        deloverskrift: 'Du har rett til innsyn',
-        innhold: 'På nav.no/minside kan du se dokumentene i saken din.',
-        id: uuidv4(),
-    },
-    {
-        deloverskrift: 'Har du spørsmål?',
-        innhold:
-            'Du finner informasjon som kan være nyttig for deg på nav.no/alene-med-barn. Du kan også kontakte oss på nav.no/kontakt.',
-        id: uuidv4(),
-    },
+    duHarRettTilÅKlage,
+    rettTilInsyn,
+    harDuSpørsmålKontaktOss,
 ];
 
 export const initielleAvsnittVarselUtestengelse: AvsnittMedId[] = [
@@ -438,10 +297,5 @@ export const initielleAvsnittVarselUtestengelse: AvsnittMedId[] = [
         innhold: 'Saksbehandlingstidene finner du på nav.no/saksbehandlingstider.',
         id: uuidv4(),
     },
-    {
-        deloverskrift: 'Har du spørsmål?',
-        innhold:
-            'Du finner informasjon som kan være nyttig for deg på nav.no/alene-med-barn. Du kan også kontakte oss på nav.no/kontakt.',
-        id: uuidv4(),
-    },
+    harDuSpørsmålKontaktOss,
 ];
