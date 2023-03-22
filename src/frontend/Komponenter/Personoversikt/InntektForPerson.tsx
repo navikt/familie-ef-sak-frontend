@@ -10,7 +10,7 @@ import { Ressurs } from '../../App/typer/ressurs';
 import { formaterTallMedTusenSkille } from '../../App/utils/formatter';
 
 const Container = styled.div`
-    max-width: 25rem;
+    width: max-content;
     text-align: end;
     margin: 2rem 0 0 3rem;
 `;
@@ -53,6 +53,9 @@ const PensjonsgivendeInntektTabell: React.FC<{
                             <Table.Header>
                                 <Table.Row>
                                     <Table.HeaderCell>Inntektsår</Table.HeaderCell>
+                                    <Table.HeaderCell>
+                                        Total pensjonsgivende inntekt
+                                    </Table.HeaderCell>
                                     <HøyrestiltHeaderCell>Arbeidstaker</HøyrestiltHeaderCell>
                                     <HøyrestiltHeaderCell>Næring</HøyrestiltHeaderCell>
                                 </Table.Row>
@@ -64,6 +67,12 @@ const PensjonsgivendeInntektTabell: React.FC<{
                                             <Table.DataCell>
                                                 {pensjonsgivendeInntekt.inntektsår}
                                             </Table.DataCell>
+                                            <HøyrestiltDataCell>
+                                                {formaterTallMedTusenSkille(
+                                                    pensjonsgivendeInntekt.næring +
+                                                        pensjonsgivendeInntekt.person
+                                                )}
+                                            </HøyrestiltDataCell>
                                             <HøyrestiltDataCell>
                                                 {formaterTallMedTusenSkille(
                                                     pensjonsgivendeInntekt.næring
