@@ -33,8 +33,9 @@ const Alertstripe = styled(Alert)`
     white-space: nowrap;
 `;
 
-export interface IFremleggsoppgave {
-    opprettFremleggsoppgave: boolean;
+export interface IFremleggsOppgave {
+    kanOppretteFremleggsoppgave: boolean;
+    skalOpprettFremleggsoppgave: boolean;
 }
 const SendTilBeslutterFooter: React.FC<{
     behandlingId: string;
@@ -53,8 +54,8 @@ const SendTilBeslutterFooter: React.FC<{
     const [laster, settLaster] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>();
     const [visModal, settVisModal] = useState<boolean>(false);
-    const [kanOppretteFremleggsoppgave, settKanOppretteFremleggsoppgave] = useState<boolean>(false);
-    const [skalOppretteFremleggsoppgave, settSkalOppretteFremleggsoppgave] =
+    const [kanOppretteFremleggsoppgave, setKanOppretteFremleggsoppgave] = useState<boolean>(false);
+    const [skalOppretteFremleggsoppgave, setSkalOppretteFremleggsoppgave] =
         useState<boolean>(false);
 
     const opprettFremleggsoppgaveOgSendTilBeslutter = () => {
@@ -98,19 +99,10 @@ const SendTilBeslutterFooter: React.FC<{
             url: `/familie-ef-sak/api/fremleggsoppgave/${behandlingId}`,
         }).then((res: RessursSuksess<IFremleggsOppgave> | RessursFeilet) => {
             if (res.status === RessursStatus.SUKSESS) {
-                if (res.data != null) {
-                    setSkalOppretteFremleggsoppgave(res.data.opprettFremleggsoppgave);
+                if (res.data.skalOpprettFremleggsoppgave != null) {
+                    setSkalOppretteFremleggsoppgave(res.data.skalOpprettFremleggsoppgave);
                 }
-            } else {
-                settFeilmelding(res.frontendFeilmelding);
-            }
-        });
-        axiosRequest<boolean, undefined>({
-            method: 'GET',
-            url: `/familie-ef-sak/api/fremleggsoppgave/${behandlingId}/kan-opprettes`,
-        }).then((res: RessursSuksess<boolean> | RessursFeilet) => {
-            if (res.status === RessursStatus.SUKSESS) {
-                setKanOppretteFremleggsoppgave(res.data);
+                setKanOppretteFremleggsoppgave(res.data.kanOppretteFremleggsoppgave);
             } else {
                 settFeilmelding(res.frontendFeilmelding);
             }
@@ -135,13 +127,15 @@ const SendTilBeslutterFooter: React.FC<{
                 <Footer>
                     {kanOppretteFremleggsoppgave && (
                         <Alertstripe variant={'info'} fullWidth={true}>
+                            <b>
+                                Følgende oppgaver skal opprettes automatisk ved godkjenning av dette
+                                vedtaket:
+                            </b>
                             <Checkbox
                                 onChange={checkBoxEndring}
                                 checked={skalOppretteFremleggsoppgave}
                             >
-                                Det blir automatisk opprettet oppgave for kontroll av
-                                inntektsopplysninger 1 år frem i tid når denne behandlingen blir
-                                godkjent av beslutter{' '}
+                                Oppgave for kontroll av inntekt 1 år frem i tid
                             </Checkbox>
                         </Alertstripe>
                     )}
@@ -162,13 +156,21 @@ const SendTilBeslutterFooter: React.FC<{
             )}
             {!behandlingErRedigerbar && skalOppretteFremleggsoppgave && (
                 <Alertstripe variant={'info'} fullWidth={true}>
-                    Det blir automatisk opprettet oppgave for kontroll av inntektsopplysninger 1 år
-                    frem i tid når denne behandlingen blir godkjent av beslutter{' '}
+                    <b>
+                        Følgende oppgaver skal opprettes automatisk ved godkjenning av dette
+                        vedtaket:
+                    </b>
+                    <li>Oppgave for kontroll av inntekt 1 år frem i tid</li>
                 </Alertstripe>
             )}
             {!behandlingErRedigerbar && !skalOppretteFremleggsoppgave && (
                 <Alertstripe variant={'info'} fullWidth={true}>
-                    Ingen oppgave opprettes automatisk{' '}
+                    <b>
+                        Følgende oppgaver skal opprettes automatisk ved godkjenning av dette
+                        vedtaket:
+                    </b>
+                    <br />
+                    <i>Ingen oppgave opprettes automatisk</i>
                 </Alertstripe>
             )}
             <ModalWrapper
