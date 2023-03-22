@@ -35,7 +35,7 @@ const Alertstripe = styled(Alert)`
 
 export interface IFremleggsOppgave {
     kanOppretteFremleggsoppgave: boolean;
-    skalOpprettFremleggsoppgave: boolean;
+    skalOppretteFremleggsoppgave?: boolean;
 }
 const SendTilBeslutterFooter: React.FC<{
     behandlingId: string;
@@ -99,8 +99,8 @@ const SendTilBeslutterFooter: React.FC<{
             url: `/familie-ef-sak/api/fremleggsoppgave/${behandlingId}`,
         }).then((res: RessursSuksess<IFremleggsOppgave> | RessursFeilet) => {
             if (res.status === RessursStatus.SUKSESS) {
-                if (res.data.skalOpprettFremleggsoppgave != null) {
-                    setSkalOppretteFremleggsoppgave(res.data.skalOpprettFremleggsoppgave);
+                if (res.data.skalOppretteFremleggsoppgave != null) {
+                    setSkalOppretteFremleggsoppgave(res.data.skalOppretteFremleggsoppgave);
                 }
                 setKanOppretteFremleggsoppgave(res.data.kanOppretteFremleggsoppgave);
             } else {
