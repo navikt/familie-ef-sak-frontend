@@ -59,7 +59,7 @@ interface Props {
     valideringsfeil?: FormErrors<InnvilgeVedtakForm>['inntekter'];
 }
 
-const InntektsperiodeValgGammel: React.FC<Props> = ({
+const InntektsperiodeValgDeprecated: React.FC<Props> = ({
     className,
     inntektsperiodeListe,
     samordningsfradragstype,
@@ -240,4 +240,4 @@ const InntektsperiodeValgGammel: React.FC<Props> = ({
     );
 };
 
-export default InntektsperiodeValgGammel;
+export default InntektsperiodeValgDeprecated;

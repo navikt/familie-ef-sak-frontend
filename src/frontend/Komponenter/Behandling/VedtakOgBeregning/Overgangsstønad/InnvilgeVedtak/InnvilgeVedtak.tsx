@@ -46,7 +46,7 @@ import { utledYngsteBarnFødselsdato } from './fødselsdatoUtils';
 import { oppdaterVedtakMedEndretKey } from './utils';
 import { useRedirectEtterLagring } from '../../../../../App/hooks/felles/useRedirectEtterLagring';
 import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
-import InntektsperiodeValgGammel from './InntektsperiodeValgGammel';
+import InntektsperiodeValgDeprecated from './InntektsperiodeValgDeprecated';
 import { ToggleName } from '../../../../../App/context/toggles';
 import { useToggles } from '../../../../../App/context/TogglesContext';
 
@@ -80,7 +80,7 @@ const InntektsperiodeVelger = styled(InntektsperiodeValg)`
     margin-top: 1rem;
 `;
 
-const InntektsperiodeVelgerGammel = styled(InntektsperiodeValgGammel)`
+const InntektsperiodeVelgerGammel = styled(InntektsperiodeValgDeprecated)`
     margin-top: 1rem;
 `;
 
