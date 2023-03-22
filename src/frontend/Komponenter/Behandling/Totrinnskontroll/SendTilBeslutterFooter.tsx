@@ -54,7 +54,7 @@ const SendTilBeslutterFooter: React.FC<{
     const [feilmelding, settFeilmelding] = useState<string>();
     const [visModal, settVisModal] = useState<boolean>(false);
     const [kanOppretteFremleggsoppgave, settKanOppretteFremleggsoppgave] = useState<boolean>(false);
-    const [skalOppretteFremleggsoppgave, setSkalOppretteFremleggsoppgave] =
+    const [skalOppretteFremleggsoppgave, settSkalOppretteFremleggsoppgave] =
         useState<boolean>(false);
 
     const opprettFremleggsoppgaveOgSendTilBeslutter = () => {
