@@ -197,17 +197,21 @@ const InntektsperiodeValg: React.FC<Props> = ({
                 synligVedÅpenMeny={'1320px'}
                 åpenHøyremeny={åpenHøyremeny}
             >
-                <CheckboxGroupRow
-                    legend="Velg inntektsperiodetype"
-                    hideLegend
-                    onChange={(values) => oppdaterValgteInntektstyper(values)}
-                    value={valgteInntektstyper}
-                >
-                    <Checkbox value={EInntektstype.DAGSATS}>Dagsats</Checkbox>
-                    <Checkbox value={EInntektstype.MÅNEDSINNTEKT}>Månedsinntekt</Checkbox>
-                    <Checkbox value={EInntektstype.ÅRSINNTEKT}>Årsinntekt</Checkbox>
-                    <Checkbox value={EInntektstype.SAMORDNINGSFRADRAG}>Samordningsfradrag</Checkbox>
-                </CheckboxGroupRow>
+                {behandlingErRedigerbar && (
+                    <CheckboxGroupRow
+                        legend="Velg inntektsperiodetype"
+                        hideLegend
+                        onChange={(values) => oppdaterValgteInntektstyper(values)}
+                        value={valgteInntektstyper}
+                    >
+                        <Checkbox value={EInntektstype.DAGSATS}>Dagsats</Checkbox>
+                        <Checkbox value={EInntektstype.MÅNEDSINNTEKT}>Månedsinntekt</Checkbox>
+                        <Checkbox value={EInntektstype.ÅRSINNTEKT}>Årsinntekt</Checkbox>
+                        <Checkbox value={EInntektstype.SAMORDNINGSFRADRAG}>
+                            Samordningsfradrag
+                        </Checkbox>
+                    </CheckboxGroupRow>
+                )}
                 {feilmeldingCheckbox && <AlertError inline>{feilmeldingCheckbox}</AlertError>}
                 <ReadMore header="Inntektsforklaring" size="small">
                     {InntektsforklaringBody}
