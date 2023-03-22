@@ -34,7 +34,7 @@ import { TextLabel } from '../../../../../Felles/Visningskomponenter/Tekster';
 import { HorizontalScroll } from '../../Felles/HorizontalScroll';
 import { initierValgteInntektstyper } from './utils';
 import { AlertError } from '../../../../../Felles/Visningskomponenter/Alerts';
-import { EInntektstype } from './typer';
+import { EInntektstype, inntektsTypeTilKey, inntektsTypeTilTekst } from './typer';
 import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
 import { IngenBegrunnelseOppgitt } from './IngenBegrunnelseOppgitt';
 import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
@@ -96,6 +96,9 @@ interface Props {
     skalVelgeSamordningstype: boolean;
 }
 
+const lagFeilmeldingCheckbox = (type: string) =>
+    `En eller flere inntektsperioder på "${type}" ligger inne med et beløp. Skal feltet avhukes må beløp fjernes først.`;
+
 const InntektsperiodeValg: React.FC<Props> = ({
     className,
     errorState,
@@ -108,7 +111,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
     const { behandlingErRedigerbar, åpenHøyremeny } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
     const skalViseLeggTilKnapp = behandlingErRedigerbar;
-    const [feilmeldingAvhuking, settFeilmeldingAvhuking] = useState<string>();
+    const [feilmeldingCheckbox, settFeilmeldingCheckbox] = useState<string>();
 
     const [valgteInntektstyper, settValgteInntektstyper] = useState<EInntektstype[]>(
         initierValgteInntektstyper(inntektsperiodeListe.value)
@@ -134,29 +137,36 @@ const InntektsperiodeValg: React.FC<Props> = ({
         ]);
     };
 
-    const oppdaterAvhukningsvalg = (inntektstyper: EInntektstype[]) => {
-        const avhukerKolonneMedVerdi = (
-            type: EInntektstype,
-            key: keyof IInntektsperiode
-        ): boolean =>
-            !inntektstyper.includes(type) &&
-            valgteInntektstyper.includes(type) &&
-            inntektsperiodeListe.value.some((periode) => periode[key]);
-        const settFeilmeldingAvhukingMedType = (type: string) =>
-            settFeilmeldingAvhuking(
-                `En eller flere inntektsperioder på "${type}" ligger inne med et beløp. Skal feltet avhukes må beløp fjernes først.`
-            );
+    const avkryssetInntektMedVerdi = (
+        nyeInntektstyper: EInntektstype[],
+        type: EInntektstype,
+        key: keyof IInntektsperiode
+    ): boolean => {
+        const erCheckboxAvhuket =
+            !nyeInntektstyper.includes(type) && valgteInntektstyper.includes(type);
+        return erCheckboxAvhuket && inntektsperiodeListe.value.some((periode) => periode[key]);
+    };
 
-        if (avhukerKolonneMedVerdi(EInntektstype.DAGSATS, 'dagsats')) {
-            settFeilmeldingAvhukingMedType('Dagsats');
-        } else if (avhukerKolonneMedVerdi(EInntektstype.MÅNEDSINNTEKT, 'månedsinntekt')) {
-            settFeilmeldingAvhukingMedType('Månedsinntekt');
-        } else if (avhukerKolonneMedVerdi(EInntektstype.ÅRSINNTEKT, 'forventetInntekt')) {
-            settFeilmeldingAvhukingMedType('Årsinntekt');
-        } else if (avhukerKolonneMedVerdi(EInntektstype.SAMORDNINGSFRADRAG, 'samordningsfradrag')) {
-            settFeilmeldingAvhukingMedType('Samordningsfradrag');
+    const finnAvkryssetCheckboxMedVerdi = (
+        inntektstyper: EInntektstype[]
+    ): EInntektstype | undefined =>
+        Object.keys(inntektsTypeTilKey).find((type) =>
+            avkryssetInntektMedVerdi(
+                inntektstyper,
+                type as EInntektstype,
+                inntektsTypeTilKey[type as EInntektstype]
+            )
+        ) as EInntektstype | undefined;
+
+    const oppdaterValgteInntektstyper = (inntektstyper: EInntektstype[]) => {
+        const avkryssetMedVerdi = finnAvkryssetCheckboxMedVerdi(inntektstyper);
+
+        if (avkryssetMedVerdi) {
+            settFeilmeldingCheckbox(
+                lagFeilmeldingCheckbox(inntektsTypeTilTekst[avkryssetMedVerdi])
+            );
         } else {
-            settFeilmeldingAvhuking(undefined);
+            settFeilmeldingCheckbox(undefined);
             settValgteInntektstyper(inntektstyper);
         }
     };
@@ -190,7 +200,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                 <CheckboxGroupRow
                     legend="Velg inntektsperiodetype"
                     hideLegend
-                    onChange={(values) => oppdaterAvhukningsvalg(values)}
+                    onChange={(values) => oppdaterValgteInntektstyper(values)}
                     value={valgteInntektstyper}
                 >
                     <Checkbox value={EInntektstype.DAGSATS}>Dagsats</Checkbox>
@@ -198,7 +208,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                     <Checkbox value={EInntektstype.ÅRSINNTEKT}>Årsinntekt</Checkbox>
                     <Checkbox value={EInntektstype.SAMORDNINGSFRADRAG}>Samordningsfradrag</Checkbox>
                 </CheckboxGroupRow>
-                {feilmeldingAvhuking && <AlertError inline>{feilmeldingAvhuking}</AlertError>}
+                {feilmeldingCheckbox && <AlertError inline>{feilmeldingCheckbox}</AlertError>}
                 <ReadMore header="Inntektsforklaring" size="small">
                     {InntektsforklaringBody}
                 </ReadMore>

@@ -13,3 +13,10 @@ export const inntektsTypeTilKey: Record<EInntektstype, keyof IInntektsperiode> =
     ÅRSINNTEKT: 'forventetInntekt',
     SAMORDNINGSFRADRAG: 'samordningsfradrag',
 };
+
+export const inntektsTypeTilTekst: Record<EInntektstype, string> = {
+    DAGSATS: 'Dagsats',
+    MÅNEDSINNTEKT: 'Månedsinntekt',
+    ÅRSINNTEKT: 'Årsinntekt',
+    SAMORDNINGSFRADRAG: 'Samordningsfradrag',
+};
