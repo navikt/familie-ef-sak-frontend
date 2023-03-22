@@ -8,6 +8,9 @@ import { IDokumentasjonGrunnlag } from '../vilkår';
 import { InformasjonContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
 import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
 import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
+import { LenkeTilPersonopplysningsside } from '../../../../Felles/Lenker/LenkeTilPersonopplysningsside';
+import { BodyShort } from '@navikt/ds-react';
+import styled from 'styled-components';
 
 interface Props {
     sivilstand: ISivilstandInngangsvilkår;
@@ -15,10 +18,14 @@ interface Props {
     dokumentasjon?: IDokumentasjonGrunnlag;
 }
 
+const VerdiWrapper = styled.div`
+    display: flex;
+    gap: 0.5rem;
+`;
+
 const SivilstandInfo: FC<Props> = ({ sivilstand, skalViseSøknadsdata, dokumentasjon }) => {
     const { registergrunnlag, søknadsgrunnlag } = sivilstand;
 
-    const partnerNavnTekst = registergrunnlag.navn ? ` - ${registergrunnlag.navn}` : '';
     const gyldigFraOgMedTekst = registergrunnlag.gyldigFraOgMed
         ? ` (${formaterIsoDato(registergrunnlag.gyldigFraOgMed)})`
         : '';
@@ -28,10 +35,17 @@ const SivilstandInfo: FC<Props> = ({ sivilstand, skalViseSøknadsdata, dokumenta
             <Informasjonsrad
                 ikon={VilkårInfoIkon.REGISTER}
                 label="Sivilstatus"
+                verdiSomString={false}
                 verdi={
-                    sivilstandTilTekst[registergrunnlag.type] +
-                    partnerNavnTekst +
-                    gyldigFraOgMedTekst
+                    <VerdiWrapper>
+                        <BodyShort size={'small'}>
+                            {sivilstandTilTekst[registergrunnlag.type]}
+                        </BodyShort>
+                        <LenkeTilPersonopplysningsside personIdent={registergrunnlag.fødselsnummer}>
+                            {registergrunnlag.navn}
+                        </LenkeTilPersonopplysningsside>
+                        <BodyShort size={'small'}>{gyldigFraOgMedTekst}</BodyShort>
+                    </VerdiWrapper>
                 }
             />
             {skalViseSøknadsdata && søknadsgrunnlag && (
