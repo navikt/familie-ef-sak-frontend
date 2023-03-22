@@ -53,7 +53,7 @@ const SendTilBeslutterFooter: React.FC<{
     const [laster, settLaster] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>();
     const [visModal, settVisModal] = useState<boolean>(false);
-    const [kanOppretteFremleggsoppgave, setKanOppretteFremleggsoppgave] = useState<boolean>(false);
+    const [kanOppretteFremleggsoppgave, settKanOppretteFremleggsoppgave] = useState<boolean>(false);
     const [skalOppretteFremleggsoppgave, setSkalOppretteFremleggsoppgave] =
         useState<boolean>(false);
 
