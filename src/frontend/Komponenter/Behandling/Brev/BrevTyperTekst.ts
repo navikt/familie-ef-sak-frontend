@@ -25,7 +25,9 @@ const rettTilInsyn: AvsnittMedId = {
 const harDuSpørsmålKontaktOss: AvsnittMedId = {
     deloverskrift: 'Har du spørsmål?',
     innhold:
-        'Du finner informasjon som kan være nyttig for deg på nav.no/alene-med-barn. Du kan også kontakte oss på nav.no/kontakt.',
+        'Du finner mer informasjon på nav.no/alene-med-barn.' +
+        '\n\nPå nav.no/kontakt kan du chatte eller skrive til oss.' +
+        '\n\nHvis du ikke finner svar på nav.no kan du ringe oss på telefon 55 55 33 33, hverdager 09.00-15.00.',
     id: uuidv4(),
 };
 
