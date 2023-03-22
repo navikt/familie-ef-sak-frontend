@@ -12,7 +12,7 @@ import { formaterTallMedTusenSkille } from '../../App/utils/formatter';
 const Container = styled.div`
     width: max-content;
     text-align: end;
-    margin: 2rem 0 0 3rem;
+    padding: 2rem 0 0 3rem;
 `;
 
 const HøyrestiltDataCell = styled(Table.DataCell)`
