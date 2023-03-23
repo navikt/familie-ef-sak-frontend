@@ -137,7 +137,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
         ]);
     };
 
-    const avkryssetInntektMedVerdi = (
+    const harFjernetInntektstypeMedVerdi = (
         nyeInntektstyper: EInntektstype[],
         type: EInntektstype,
         key: keyof IInntektsperiode
@@ -147,11 +147,11 @@ const InntektsperiodeValg: React.FC<Props> = ({
         return erCheckboxAvhuket && inntektsperiodeListe.value.some((periode) => periode[key]);
     };
 
-    const finnAvkryssetCheckboxMedVerdi = (
+    const finnFjernetInntektstypeMedVerdi = (
         inntektstyper: EInntektstype[]
     ): EInntektstype | undefined =>
         Object.keys(inntektsTypeTilKey).find((type) =>
-            avkryssetInntektMedVerdi(
+            harFjernetInntektstypeMedVerdi(
                 inntektstyper,
                 type as EInntektstype,
                 inntektsTypeTilKey[type as EInntektstype]
@@ -159,11 +159,11 @@ const InntektsperiodeValg: React.FC<Props> = ({
         ) as EInntektstype | undefined;
 
     const oppdaterValgteInntektstyper = (inntektstyper: EInntektstype[]) => {
-        const avkryssetMedVerdi = finnAvkryssetCheckboxMedVerdi(inntektstyper);
+        const fjernetInntektstypeMedVerdi = finnFjernetInntektstypeMedVerdi(inntektstyper);
 
-        if (avkryssetMedVerdi) {
+        if (fjernetInntektstypeMedVerdi) {
             settFeilmeldingCheckbox(
-                lagFeilmeldingCheckbox(inntektsTypeTilTekst[avkryssetMedVerdi])
+                lagFeilmeldingCheckbox(inntektsTypeTilTekst[fjernetInntektstypeMedVerdi])
             );
         } else {
             settFeilmeldingCheckbox(undefined);
