@@ -41,7 +41,7 @@ const SivilstandInfo: FC<Props> = ({ sivilstand, skalViseSøknadsdata, dokumenta
                         <BodyShort size={'small'}>
                             {sivilstandTilTekst[registergrunnlag.type]}
                         </BodyShort>
-                        <LenkeTilPersonopplysningsside personIdent={registergrunnlag.fødselsnummer}>
+                        <LenkeTilPersonopplysningsside personIdent={registergrunnlag.personIdent}>
                             {registergrunnlag.navn}
                         </LenkeTilPersonopplysningsside>
                         <BodyShort size={'small'}>{gyldigFraOgMedTekst}</BodyShort>
