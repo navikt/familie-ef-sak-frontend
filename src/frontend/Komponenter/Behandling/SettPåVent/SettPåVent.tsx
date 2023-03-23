@@ -8,13 +8,19 @@ import {
     RessursSuksess,
 } from '../../../App/typer/ressurs';
 import { useApp } from '../../../App/context/AppContext';
-import { Alert, BodyLong, Button, Heading, Select } from '@navikt/ds-react';
+import { Alert, Button, Heading, Label, Textarea } from '@navikt/ds-react';
 import styled from 'styled-components';
 import { ABgSubtle } from '@navikt/ds-tokens/dist/tokens';
 import { ToggleName } from '../../../App/context/toggles';
 import { useToggles } from '../../../App/context/TogglesContext';
 import { IOppgave } from '../../Oppgavebenk/typer/oppgave';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
+import { Prioritet } from '../../Oppgavebenk/typer/oppgavetema';
+import { FristVelger } from './FristVelger';
+import { MappeVelger } from './MappeVelger';
+import { SaksbehandlerVelger } from './SaksbehandlerVelger';
+import { PrioritetVelger } from './PrioritetVelger';
+import { BreakWordBodyLongSmall } from '../../../Felles/Visningskomponenter/BreakWordBodyLongSmall';
 
 const AlertStripe = styled(Alert)`
     margin-top: 1rem;
@@ -22,6 +28,7 @@ const AlertStripe = styled(Alert)`
 
 const OppgaveValg = styled.div`
     display: flex;
+    gap: 1rem;
 `;
 
 const SettPåVentWrapper = styled.div`
@@ -40,20 +47,39 @@ const KnappeWrapper = styled.div`
     margin-right: 15%;
 `;
 
+const FlexDiv = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+`;
+
+const Beskrivelse = styled(Textarea)`
+    max-width: 60rem;
+`;
+
+type SettPåVentRequest = {
+    saksbehandler: string;
+    prioritet: Prioritet;
+    frist: string;
+    mappe: string | undefined;
+    beskrivelse: string | undefined;
+};
+
 export const SettPåVent: FC<{ behandlingId: string }> = ({ behandlingId }) => {
     const { visSettPåVent, settVisSettPåVent, hentBehandling } = useBehandling();
     const [oppgave, settOppgave] = useState<Ressurs<IOppgave>>(byggTomRessurs());
     const { toggles } = useToggles();
-    const { axiosRequest, innloggetSaksbehandler } = useApp();
+    const { axiosRequest } = useApp();
 
     const [låsKnapp, settLåsKnapp] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>();
     // Oppgavefelter
     const [saksbehandler, settSaksbehandler] = useState<string>('');
-    // const [frist, settFrist] = useState<string | undefined>();
-    // const [mappe, settMappe] = useState<string | undefined>();
-    // const [prioritet, settPrioritet] = useState<string | undefined>();
-    // const [beskrivelse, settBeskrivelse] = useState<string | undefined>();
+    const [prioritet, settPrioritet] = useState<Prioritet | undefined>();
+    const [frist, settFrist] = useState<string | undefined>();
+    const [mappe, settMappe] = useState<number | undefined>();
+
+    const [beskrivelse, settBeskrivelse] = useState('');
 
     const lukkModal = () => {
         settFeilmelding('');
@@ -70,8 +96,12 @@ export const SettPåVent: FC<{ behandlingId: string }> = ({ behandlingId }) => {
     useEffect(() => {
         if (oppgave.status === RessursStatus.SUKSESS) {
             settSaksbehandler(oppgave.data.tilordnetRessurs || '');
+            settPrioritet(oppgave.data.prioritet || 'NORM');
+            settFrist(oppgave.data.fristFerdigstillelse);
+            settMappe(oppgave.data.mappeId);
         }
     }, [oppgave]);
+
     useEffect(() => {
         if (visSettPåVent) {
             hentOppgaveForBehandling();
@@ -79,15 +109,24 @@ export const SettPåVent: FC<{ behandlingId: string }> = ({ behandlingId }) => {
     }, [visSettPåVent, hentOppgaveForBehandling]);
 
     const settPåVent = () => {
-        if (låsKnapp) {
+        const kanSettePåVent = saksbehandler && prioritet && frist;
+
+        if (låsKnapp || !kanSettePåVent) {
             return;
         }
 
         settLåsKnapp(true);
 
-        axiosRequest<string, null>({
+        axiosRequest<string, SettPåVentRequest>({
             method: 'POST',
             url: `/familie-ef-sak/api/behandling/${behandlingId}/vent`,
+            data: {
+                saksbehandler,
+                prioritet,
+                frist,
+                mappe: mappe?.toString(),
+                beskrivelse,
+            },
         })
             .then((respons: RessursFeilet | RessursSuksess<string>) => {
                 if (respons.status == RessursStatus.SUKSESS) {
@@ -105,37 +144,32 @@ export const SettPåVent: FC<{ behandlingId: string }> = ({ behandlingId }) => {
             {({ oppgave }) => (
                 <SettPåVentWrapper>
                     <Heading size={'medium'}>Sett behandling på vent</Heading>
-                    <OppgaveValg>
-                        <div>
-                            <Select
-                                label={'Saksbehandler'}
-                                size={'small'}
-                                value={saksbehandler}
-                                onChange={(e) => {
-                                    settSaksbehandler(e.target.value);
-                                }}
-                            >
-                                {oppgave.tilordnetRessurs &&
-                                    innloggetSaksbehandler.navIdent !==
-                                        oppgave.tilordnetRessurs && (
-                                        <option value={oppgave.tilordnetRessurs}>
-                                            {oppgave.tilordnetRessurs}
-                                        </option>
-                                    )}
-                                <option value={innloggetSaksbehandler.navIdent}>
-                                    {innloggetSaksbehandler.displayName}
-                                </option>
-                                <option value={''}>Ingen</option>
-                            </Select>
-                        </div>
-                        {/*<Prioritet></Prioritet>*/}
-                        {/*<Frist></Frist>*/}
-                        {/*<Enhetsmappe></Enhetsmappe>*/}
-                    </OppgaveValg>
-                    <BodyLong>
-                        Behandlingen settes på vent, men du må inntil videre huske å oppdatere
-                        oppgaven i Gosys i henhold til gjeldende rutiner.
-                    </BodyLong>
+                    <FlexDiv>
+                        <OppgaveValg>
+                            <SaksbehandlerVelger
+                                oppgave={oppgave}
+                                saksbehandler={saksbehandler}
+                                settSaksbehandler={settSaksbehandler}
+                            />
+                            <PrioritetVelger prioritet={prioritet} settPrioritet={settPrioritet} />
+                            <FristVelger oppgave={oppgave} settFrist={settFrist} />
+                            <MappeVelger
+                                oppgaveEnhet={oppgave.tildeltEnhetsnr}
+                                settMappe={settMappe}
+                                valgtMappe={mappe}
+                            />
+                        </OppgaveValg>
+                        <section>
+                            <Label size={'small'}>Beskrivelseshistorikk</Label>
+                            <BreakWordBodyLongSmall>{oppgave.beskrivelse}</BreakWordBodyLongSmall>
+                        </section>
+                        <Beskrivelse
+                            label={'Beskrivelse'}
+                            size={'small'}
+                            value={beskrivelse}
+                            onChange={(e) => settBeskrivelse(e.target.value)}
+                        />
+                    </FlexDiv>
                     <KnappeWrapper>
                         <Button
                             onClick={() => settVisSettPåVent(false)}

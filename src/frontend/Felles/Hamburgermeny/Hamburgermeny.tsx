@@ -121,7 +121,14 @@ export const Hamburgermeny: FC<Props> = ({ type = 'hamburger', items }) => {
                 <ul>
                     {items.map((p) => (
                         <li key={p.tekst}>
-                            <Knapp onClick={p.onClick}>{p.tekst}</Knapp>
+                            <Knapp
+                                onClick={() => {
+                                    settÅpenHamburgerMeny(false);
+                                    p.onClick();
+                                }}
+                            >
+                                {p.tekst}
+                            </Knapp>
                         </li>
                     ))}
                 </ul>
