@@ -3,52 +3,42 @@ import React from 'react';
 import { SkolepengerUtgift } from '../../../../../App/typer/vedtak';
 import MånedÅrVelger from '../../../../../Felles/Input/MånedÅr/MånedÅrVelger';
 import { harTallverdi, tilHeltall, tilTallverdi } from '../../../../../App/utils/utils';
-import LeggTilKnapp from '../../../../../Felles/Knapper/LeggTilKnapp';
 import { tomUtgift, ValideringsPropsMedOppdatering } from '../typer';
 import InputMedTusenSkille from '../../../../../Felles/Visningskomponenter/InputMedTusenskille';
 import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 import { SmallTextLabel } from '../../../../../Felles/Visningskomponenter/Tekster';
 import { ABlue300, ABorderStrong } from '@navikt/ds-tokens/dist/tokens';
+import LeggTilKnapp from '../../../../../Felles/Knapper/LeggTilKnapp';
 
-const Utgiftsrad = styled.div<{
-    lesevisning?: boolean;
-    erHeader?: boolean;
-}>`
-    display: grid;
-    grid-template-areas: 'fraOgMedVelger utgifter stønad';
-    grid-template-columns: ${(props) => {
-        if (props.lesevisning) {
-            return '9rem 4rem 4rem';
-        }
-        return '12rem 6rem 6rem 4rem';
-    }};
-    grid-gap: ${(props) => (props.lesevisning ? '0.5rem' : '1rem')};
-    margin-bottom: ${(props) => (props.erHeader ? '0rem' : '0.5rem')};
-`;
-
-const ContainerMedLuftUnder = styled.div`
-    margin-bottom: 1rem;
-`;
-
-const StyledInputMedTusenSkille = styled(InputMedTusenSkille)`
-    text-align: left;
-`;
-
-const FlexRow = styled.div<{ lesevisning?: boolean }>`
-    display: flex;
-    margin-top: ${(props) => (props.lesevisning ? '0.75rem' : '0rem')};
-`;
-
-const FlexColumn = styled.div`
+const Container = styled.div`
     display: flex;
     flex-direction: column;
+    gap: 2rem;
 `;
 
-const FargetStrek = styled.span<{ lesevisning?: boolean }>`
+const FlexRow = styled.div`
+    display: flex;
+    gap: 1rem;
+    padding: 0 1rem;
+`;
+
+const Grid = styled.div`
+    display: grid;
+    grid-template-columns: repeat(4, max-content);
+    grid-gap: 0.25rem 1rem;
+    align-items: start;
+
+    .ny-rad {
+        grid-column: 1;
+    }
+`;
+
+const VertikalDivider = styled.span<{ lesevisning?: boolean }>`
     border-left: 3px solid ${(props) => (props.lesevisning ? ABorderStrong : ABlue300)};
-    margin-right: 0.5rem;
-    margin-left: 0.5rem;
-    margin-bottom: 0.75rem;
+`;
+
+const InputRightAligned = styled(InputMedTusenSkille)`
+    text-align: right;
 `;
 
 const UtgiftsperiodeSkolepenger: React.FC<
@@ -80,29 +70,28 @@ const UtgiftsperiodeSkolepenger: React.FC<
     };
 
     return (
-        <FlexRow lesevisning={erLesevisning}>
-            <FargetStrek lesevisning={erLesevisning} />
-            <div style={{ marginLeft: '1rem' }}>
-                <FlexColumn>
-                    <Utgiftsrad erHeader={true} lesevisning={erLesevisning}>
-                        <SmallTextLabel>Utbetalingsmåned</SmallTextLabel>
-                        <SmallTextLabel>Utgifter</SmallTextLabel>
-                        <SmallTextLabel>Stønadsbeløp</SmallTextLabel>
-                    </Utgiftsrad>
+        <Container>
+            <FlexRow>
+                <VertikalDivider lesevisning={erLesevisning} />
+                <Grid>
+                    <SmallTextLabel>Utbetalingsmåned</SmallTextLabel>
+                    <SmallTextLabel>Utgifter</SmallTextLabel>
+                    <SmallTextLabel>Stønadsbeløp</SmallTextLabel>
                     {data.map((utgift, index) => {
                         const erLåstFraForrigeBehandling = låsteUtgiftIder.indexOf(utgift.id) > -1;
                         const skalViseFjernKnapp =
                             behandlingErRedigerbar && index !== 0 && !erLåstFraForrigeBehandling;
                         return (
-                            <Utgiftsrad erHeader={false} lesevisning={erLesevisning} key={index}>
+                            <React.Fragment key={index}>
                                 <MånedÅrVelger
+                                    className="ny-rad"
                                     årMånedInitiell={utgift.årMånedFra}
                                     antallÅrTilbake={0}
                                     antallÅrFrem={0}
                                     lesevisning={true}
                                     onEndret={() => null}
                                 />
-                                <StyledInputMedTusenSkille
+                                <InputRightAligned
                                     label={'Utgifter'}
                                     hideLabel
                                     onKeyPress={tilHeltall}
@@ -119,7 +108,7 @@ const UtgiftsperiodeSkolepenger: React.FC<
                                     erLesevisning={erLesevisning}
                                     disabled={erLåstFraForrigeBehandling}
                                 />
-                                <StyledInputMedTusenSkille
+                                <InputRightAligned
                                     label={'Stønadsbeløp'}
                                     hideLabel
                                     onKeyPress={tilHeltall}
@@ -137,27 +126,23 @@ const UtgiftsperiodeSkolepenger: React.FC<
                                     disabled={erLåstFraForrigeBehandling}
                                 />
                                 {skalViseFjernKnapp && (
-                                    <div style={{ alignItems: 'baseline' }}>
-                                        <FjernKnapp
-                                            onClick={() => fjernUtgift(utgift.id)}
-                                            ikontekst={'Fjern utgiftsperiode'}
-                                        />
-                                    </div>
+                                    <FjernKnapp
+                                        onClick={() => fjernUtgift(utgift.id)}
+                                        ikontekst={'Fjern utgiftsperiode'}
+                                    />
                                 )}
-                            </Utgiftsrad>
+                            </React.Fragment>
                         );
                     })}
-                </FlexColumn>
-                <ContainerMedLuftUnder>
-                    {behandlingErRedigerbar && (
-                        <LeggTilKnapp
-                            onClick={() => oppdater([...data, tomUtgift()])}
-                            knappetekst="Legg til utgift"
-                        />
-                    )}
-                </ContainerMedLuftUnder>
-            </div>
-        </FlexRow>
+                </Grid>
+            </FlexRow>
+            {behandlingErRedigerbar && (
+                <LeggTilKnapp
+                    onClick={() => oppdater([...data, tomUtgift()])}
+                    knappetekst="Legg til utgift"
+                />
+            )}
+        </Container>
     );
 };
 

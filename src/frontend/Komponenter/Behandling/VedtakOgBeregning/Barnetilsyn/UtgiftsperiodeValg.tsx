@@ -44,6 +44,7 @@ const Grid = styled.div<{ lesevisning?: boolean }>`
             : '9rem 9rem repeat(2, max-content) 20rem 2rem 4rem repeat(2, max-content)'};
     grid-gap: 0.5rem 1rem;
     margin-bottom: 0.5rem;
+    align-items: start;
 
     .ny-rad {
         grid-column: 1;
@@ -54,6 +55,7 @@ const SentrertBodySort = styled(BodyShortSmall)`
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 0.75rem;
 `;
 
 const BarnVelger = styled(FamilieReactSelect)`
@@ -176,8 +178,8 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
     return (
         <Container>
             <HorizontalScroll
-                synligVedLukketMeny={'1445px'}
-                synligVedÅpenMeny={'1745px'}
+                synligVedLukketMeny={'1460px'}
+                synligVedÅpenMeny={'1765px'}
                 åpenHøyremeny={åpenHøyremeny}
             >
                 <Heading spacing size="small" level="5">

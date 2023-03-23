@@ -18,6 +18,9 @@ import { useSetValgtFagsakPersonId } from '../../App/hooks/useSetValgtFagsakPers
 import { useSetPersonIdent } from '../../App/hooks/useSetPersonIdent';
 import { useHentFagsakPerson } from '../../App/hooks/useHentFagsakPerson';
 import { Tabs } from '@navikt/ds-react';
+import { InntektForPerson } from './InntektForPerson';
+import { ToggleName } from '../../App/context/toggles';
+import { useToggles } from '../../App/context/TogglesContext';
 
 type TabWithRouter = {
     label: string;
@@ -93,9 +96,21 @@ const PersonoversiktContent: React.FC<{
 }> = ({ fagsakPerson, personopplysninger }) => {
     const navigate = useNavigate();
     const { erSaksbehandler } = useApp();
+    const { toggles } = useToggles();
     const paths = useLocation().pathname.split('/').slice(-1);
     const path = paths.length ? paths[paths.length - 1] : '';
     useSetPersonIdent(personopplysninger.personIdent);
+    const skalInntektVises = toggles[ToggleName.visInntektPersonoversikt];
+    if (skalInntektVises && tabs.length === 6) {
+        //Flyttes opp når den ikke trengs featuretogglet lenger
+        tabs.push({
+            label: 'Inntekt',
+            path: 'inntekt',
+            komponent: (fagsakPerson) => {
+                return <InntektForPerson fagsakPerson={fagsakPerson} />;
+            },
+        });
+    }
 
     return (
         <>

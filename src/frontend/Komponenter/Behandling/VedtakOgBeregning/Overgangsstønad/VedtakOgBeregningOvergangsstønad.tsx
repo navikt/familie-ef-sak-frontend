@@ -1,5 +1,4 @@
 import React, { FC, useEffect, useState } from 'react';
-import styled from 'styled-components';
 import { RessursStatus } from '../../../../App/typer/ressurs';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 import { EBehandlingResultat } from '../../../../App/typer/vedtak';
@@ -17,10 +16,6 @@ interface Props {
     behandling: Behandling;
     vilkår: IVilkår;
 }
-
-const Container = styled.div`
-    padding: 0 2rem 1rem 2rem;
-`;
 
 const VedtakOgBeregningOvergangsstønad: FC<Props> = ({ behandling, vilkår }) => {
     const [resultatType, settResultatType] = useState<EBehandlingResultat>();
@@ -43,7 +38,7 @@ const VedtakOgBeregningOvergangsstønad: FC<Props> = ({ behandling, vilkår }) =
         <DataViewer response={{ vedtak }}>
             {({ vedtak }) => {
                 return (
-                    <Container>
+                    <>
                         <SelectVedtaksresultat
                             behandling={behandling}
                             resultatType={resultatType}
@@ -59,7 +54,7 @@ const VedtakOgBeregningOvergangsstønad: FC<Props> = ({ behandling, vilkår }) =
                             ikkeOppfyltVilkårEksisterer={ikkeOppfyltVilkårEksisterer}
                             vilkår={vilkår}
                         />
-                    </Container>
+                    </>
                 );
             }}
         </DataViewer>

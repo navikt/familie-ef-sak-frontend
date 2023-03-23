@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { oppgaveTypeTilTekst } from './typer/oppgavetema';
-import { behandlingstemaTilTekst } from '../../App/typer/behandlingstema';
+import { behandlingstemaStønadstypeTilTekst } from '../../App/typer/behandlingstema';
 import { useApp } from '../../App/context/AppContext';
 import CustomSelect from './CustomSelect';
 import { enhetTilTekst, FortroligEnhet, IkkeFortroligEnhet } from './typer/enhet';
@@ -176,7 +176,7 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({
                 <CustomSelect
                     onChange={settOppgave('behandlingstema')}
                     label="Gjelder"
-                    options={behandlingstemaTilTekst}
+                    options={behandlingstemaStønadstypeTilTekst}
                     value={oppgaveRequest.behandlingstema}
                 />
                 <DatoPeriode

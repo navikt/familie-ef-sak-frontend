@@ -6,24 +6,21 @@ import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import { useApp } from '../../../../../App/context/AppContext';
 import SelectAvslagÅrsak from './SelectAvslagÅrsak';
 import { EAvslagÅrsak } from '../../../../../App/typer/vedtak';
-import { Button } from '@navikt/ds-react';
 import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
+import HovedKnapp from '../../../../../Felles/Knapper/HovedKnapp';
 
-const HovedKnapp = styled(Button)`
-    margin-top: 1rem;
-`;
-
-const Container = styled.div<{ erOvergangsstønad: boolean }>`
-    margin-top: 1rem;
-    padding: ${(props) => (props.erOvergangsstønad ? '0.4rem 1rem 1rem 1rem' : '1rem')};
+const Form = styled.form`
     background-color: ${AGray50};
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 `;
 
 interface Props {
     avslagBegrunnelse: string;
     avslagÅrsak?: EAvslagÅrsak;
     behandlingErRedigerbar: boolean;
-    erOvergangsstønad: boolean;
     feilmelding?: string;
     feilmeldingÅrsak: string;
     lagreVedtak: (e: FormEvent<HTMLFormElement>) => void;
@@ -37,7 +34,6 @@ const AvslåVedtakForm: React.FC<Props> = ({
     avslagBegrunnelse,
     avslagÅrsak,
     behandlingErRedigerbar,
-    erOvergangsstønad,
     feilmelding,
     feilmeldingÅrsak,
     lagreVedtak,
@@ -53,39 +49,27 @@ const AvslåVedtakForm: React.FC<Props> = ({
     }, [skalVelgeÅrsak, settAvslagÅrsak]);
 
     return (
-        <>
-            <form onSubmit={lagreVedtak}>
-                <Container erOvergangsstønad={erOvergangsstønad}>
-                    {skalVelgeÅrsak && (
-                        <SelectAvslagÅrsak
-                            avslagÅrsak={avslagÅrsak}
-                            settAvslagÅrsak={settAvslagÅrsak}
-                            feilmelding={feilmeldingÅrsak}
-                        />
-                    )}
-                    <EnsligTextArea
-                        value={avslagBegrunnelse}
-                        onChange={(e) => {
-                            settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
-                            settAvslagBegrunnelse(e.target.value);
-                        }}
-                        label="Begrunnelse"
-                        maxLength={0}
-                        erLesevisning={!behandlingErRedigerbar}
-                    />
-                </Container>
-                {behandlingErRedigerbar && (
-                    <HovedKnapp type="submit" disabled={laster}>
-                        Lagre vedtak
-                    </HovedKnapp>
-                )}
-            </form>
-            {feilmelding && (
-                <AlertStripeFeilPreWrap style={{ marginTop: '2rem' }}>
-                    {feilmelding}
-                </AlertStripeFeilPreWrap>
+        <Form onSubmit={lagreVedtak}>
+            {skalVelgeÅrsak && (
+                <SelectAvslagÅrsak
+                    avslagÅrsak={avslagÅrsak}
+                    settAvslagÅrsak={settAvslagÅrsak}
+                    feilmelding={feilmeldingÅrsak}
+                />
             )}
-        </>
+            <EnsligTextArea
+                value={avslagBegrunnelse}
+                onChange={(e) => {
+                    settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+                    settAvslagBegrunnelse(e.target.value);
+                }}
+                label="Begrunnelse"
+                maxLength={0}
+                erLesevisning={!behandlingErRedigerbar}
+            />
+            {feilmelding && <AlertStripeFeilPreWrap>{feilmelding}</AlertStripeFeilPreWrap>}
+            {behandlingErRedigerbar && <HovedKnapp disabled={laster} knappetekst="Lagre vedtak" />}
+        </Form>
     );
 };
 

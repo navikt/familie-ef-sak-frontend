@@ -25,7 +25,6 @@ import {
 } from '../../App/typer/behandlingstema';
 import { Behandlingsårsak, behandlingsårsakTilTekst } from '../../App/typer/Behandlingsårsak';
 import { Link, Tag } from '@navikt/ds-react';
-import { AlertWarning } from '../Visningskomponenter/Alerts';
 import { AFontWeightBold, ABorderStrong } from '@navikt/ds-tokens/dist/tokens';
 import { BodyShortSmall } from '../Visningskomponenter/Tekster';
 
@@ -34,11 +33,6 @@ const Visningsnavn = styled(BodyShortSmall)`
     overflow: hidden;
     white-space: nowrap;
     font-weight: ${AFontWeightBold};
-`;
-
-const BrukerManglerFagsakWarning = styled(AlertWarning)`
-    height: 100%;
-    width: 30rem;
 `;
 
 const ResponsivLenke = styled(Link)`
@@ -135,7 +129,6 @@ const PersonHeaderComponent: FC<{ data: IPersonopplysninger; behandling?: Behand
     const { axiosRequest, erSaksbehandler } = useApp();
     const [fagsakPersonId, settFagsakPersonId] = useState<string>('');
     const [erMigrert, settErMigrert] = useState(false);
-    const [feilFagsakHenting, settFeilFagsakHenting] = useState<string>();
     const alder = nullableDatoTilAlder(fødselsdato);
     const visningsnavn = alder ? `${navn.visningsnavn} (${alder})` : navn.visningsnavn;
 
@@ -165,8 +158,6 @@ const PersonHeaderComponent: FC<{ data: IPersonopplysninger; behandling?: Behand
                         settFagsakPersonId(respons.data.fagsakPersonId);
                         settErMigrert(respons.data.fagsaker.some(utledOmFagsakErMigrert));
                     }
-                } else {
-                    settFeilFagsakHenting(respons.frontendFeilmelding);
                 }
             });
         };
@@ -288,11 +279,6 @@ const PersonHeaderComponent: FC<{ data: IPersonopplysninger; behandling?: Behand
                         </ElementWrapper>
                     )}
                 </TagsKnyttetTilBehandling>
-                {feilFagsakHenting && (
-                    <BrukerManglerFagsakWarning size={'small'}>
-                        Bruker har ikke fagsak
-                    </BrukerManglerFagsakWarning>
-                )}
             </VisittKort>
 
             {behandling && (

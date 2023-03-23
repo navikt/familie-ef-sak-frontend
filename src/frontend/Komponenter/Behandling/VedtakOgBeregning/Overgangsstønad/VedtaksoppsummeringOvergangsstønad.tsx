@@ -10,7 +10,6 @@ import { Vilkårsvurdering } from '../Felles/Vilkårsvurdering';
 
 const OppsummeringContainer = styled.div`
     display: flex;
-    margin: 1rem 2rem 1rem 2rem;
     gap: 1rem;
     flex-wrap: wrap;
 `;

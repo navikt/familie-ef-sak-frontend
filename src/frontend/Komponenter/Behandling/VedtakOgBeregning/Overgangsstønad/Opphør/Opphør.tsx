@@ -13,23 +13,17 @@ import styled from 'styled-components';
 import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
 import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import { AlertError } from '../../../../../Felles/Visningskomponenter/Alerts';
-import { Button } from '@navikt/ds-react';
 import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
 import { useRedirectEtterLagring } from '../../../../../App/hooks/felles/useRedirectEtterLagring';
 import { v4 as uuidv4 } from 'uuid';
+import HovedKnapp from '../../../../../Felles/Knapper/HovedKnapp';
 
-const Container = styled.div`
-    margin-top: 1rem;
+const Form = styled.form`
     padding: 1rem;
     background-color: ${AGray50};
-`;
-
-const HovedKnapp = styled(Button)`
-    margin-top: 1rem;
-`;
-
-const TextArea = styled(EnsligTextArea)`
-    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 `;
 
 export const Opphør: React.FC<{
@@ -85,38 +79,30 @@ export const Opphør: React.FC<{
     };
 
     return (
-        <>
-            <form onSubmit={lagreVedtak}>
-                <Container>
-                    <MånedÅrVelger
-                        label={'Opphør fra og med'}
-                        onEndret={(årMåned) => {
-                            settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
-                            årMåned && settOpphørtFra(årMåned);
-                        }}
-                        antallÅrTilbake={4}
-                        antallÅrFrem={3}
-                        disabled={!behandlingErRedigerbar}
-                        årMånedInitiell={opphørtFra}
-                    />
-                    <TextArea
-                        label={'Begrunnelse for opphør'}
-                        maxLength={0}
-                        erLesevisning={!behandlingErRedigerbar}
-                        value={opphørtBegrunnelse}
-                        onChange={(begrunnelse) => {
-                            settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
-                            settOpphørtBegrunnelse(begrunnelse.target.value);
-                        }}
-                    />
-                </Container>
-                {behandlingErRedigerbar && (
-                    <HovedKnapp type="submit" disabled={laster}>
-                        Lagre vedtak
-                    </HovedKnapp>
-                )}
-            </form>
+        <Form onSubmit={lagreVedtak}>
+            <MånedÅrVelger
+                label={'Opphør fra og med'}
+                onEndret={(årMåned) => {
+                    settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+                    årMåned && settOpphørtFra(årMåned);
+                }}
+                antallÅrTilbake={4}
+                antallÅrFrem={3}
+                disabled={!behandlingErRedigerbar}
+                årMånedInitiell={opphørtFra}
+            />
+            <EnsligTextArea
+                label={'Begrunnelse for opphør'}
+                maxLength={0}
+                erLesevisning={!behandlingErRedigerbar}
+                value={opphørtBegrunnelse}
+                onChange={(begrunnelse) => {
+                    settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+                    settOpphørtBegrunnelse(begrunnelse.target.value);
+                }}
+            />
             {feilmelding && <AlertError>{feilmelding}</AlertError>}
-        </>
+            {behandlingErRedigerbar && <HovedKnapp disabled={laster} knappetekst="Lagre vedtak" />}
+        </Form>
     );
 };

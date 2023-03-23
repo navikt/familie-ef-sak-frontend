@@ -15,7 +15,7 @@ import {
     sessionConfig,
 } from './config.js';
 import { prometheusTellere } from './metrikker.js';
-import { addCallId, attachToken, doProxy } from './proxy.js';
+import { addRequestInfo, attachToken, doProxy } from './proxy.js';
 import setupRouter from './router.js';
 import expressStaticGzip from 'express-static-gzip';
 import { logError, logInfo } from '@navikt/familie-logging';
@@ -47,7 +47,7 @@ backend(sessionConfig, prometheusTellere).then(({ app, azureAuthClient, router }
 
     app.use(
         '/familie-ef-sak/api',
-        addCallId(),
+        addRequestInfo(),
         ensureAuthenticated(azureAuthClient, true),
         attachToken(azureAuthClient),
         doProxy('/familie-ef-sak/api', sakProxyUrl)
@@ -55,7 +55,7 @@ backend(sessionConfig, prometheusTellere).then(({ app, azureAuthClient, router }
 
     app.use(
         '/dokument',
-        addCallId(),
+        addRequestInfo(),
         ensureAuthenticated(azureAuthClient, false),
         attachToken(azureAuthClient),
         doProxy('/dokument', sakProxyUrl)
@@ -63,17 +63,15 @@ backend(sessionConfig, prometheusTellere).then(({ app, azureAuthClient, router }
 
     app.use(
         '/familie-brev/api',
-        addCallId(),
+        addRequestInfo(),
         ensureAuthenticated(azureAuthClient, true),
-        attachToken(azureAuthClient),
         doProxy('/familie-brev/api', brevProxyUrl)
     );
 
     app.use(
         '/endringslogg',
-        addCallId(),
+        addRequestInfo(),
         ensureAuthenticated(azureAuthClient, true),
-        attachToken(azureAuthClient),
         doProxy('/endringslogg', endringsloggProxyUrl, '')
     );
 
