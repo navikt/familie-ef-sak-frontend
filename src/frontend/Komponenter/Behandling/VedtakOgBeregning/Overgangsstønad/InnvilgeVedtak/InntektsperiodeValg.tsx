@@ -216,7 +216,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                 <ReadMore header="Inntektsforklaring" size="small">
                     {InntektsforklaringBody}
                 </ReadMore>
-                {Object.values(valgteInntektstyper).filter((valgt) => valgt).length > 0 ? (
+                {valgteInntektstyper.length ? (
                     <>
                         <Grid lesevisning={!behandlingErRedigerbar}>
                             <TextLabel>Fra</TextLabel>
