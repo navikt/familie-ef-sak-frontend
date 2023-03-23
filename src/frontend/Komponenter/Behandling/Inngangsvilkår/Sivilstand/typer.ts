@@ -24,6 +24,7 @@ export interface IPersonDetaljer {
 }
 export interface ISivilstandRegistergrunnlag {
     type: SivilstandType;
+    personIdent?: string;
     navn?: string;
     gyldigFraOgMed: string;
 }
