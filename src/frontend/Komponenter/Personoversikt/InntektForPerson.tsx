@@ -75,12 +75,12 @@ const PensjonsgivendeInntektTabell: React.FC<{
                                             </HøyrestiltDataCell>
                                             <HøyrestiltDataCell>
                                                 {formaterTallMedTusenSkille(
-                                                    pensjonsgivendeInntekt.næring
+                                                    pensjonsgivendeInntekt.person
                                                 )}
                                             </HøyrestiltDataCell>
                                             <HøyrestiltDataCell>
                                                 {formaterTallMedTusenSkille(
-                                                    pensjonsgivendeInntekt.person
+                                                    pensjonsgivendeInntekt.næring
                                                 )}
                                             </HøyrestiltDataCell>
                                         </Table.Row>
