@@ -47,6 +47,11 @@ const PensjonsgivendeInntektTabell: React.FC<{
                 if (!pensjonsgivendeInntekter.length) {
                     return null;
                 }
+
+                const harInntektFraSvalbard = pensjonsgivendeInntekter.some(
+                    (pensjonsgivendeInntekt) => pensjonsgivendeInntekt.svalbard
+                );
+
                 return (
                     <Container>
                         <Table size="small">
@@ -58,6 +63,16 @@ const PensjonsgivendeInntektTabell: React.FC<{
                                     </Table.HeaderCell>
                                     <HøyrestiltHeaderCell>Arbeidstaker</HøyrestiltHeaderCell>
                                     <HøyrestiltHeaderCell>Næring</HøyrestiltHeaderCell>
+                                    {harInntektFraSvalbard && (
+                                        <>
+                                            <HøyrestiltHeaderCell>
+                                                Svalbard arbeidstaker
+                                            </HøyrestiltHeaderCell>
+                                            <HøyrestiltHeaderCell>
+                                                Svalbard næring
+                                            </HøyrestiltHeaderCell>
+                                        </>
+                                    )}
                                 </Table.Row>
                             </Table.Header>
                             <Table.Body>
@@ -83,6 +98,20 @@ const PensjonsgivendeInntektTabell: React.FC<{
                                                     pensjonsgivendeInntekt.næring
                                                 )}
                                             </HøyrestiltDataCell>
+                                            {harInntektFraSvalbard && (
+                                                <>
+                                                    <HøyrestiltDataCell>
+                                                        {formaterTallMedTusenSkille(
+                                                            pensjonsgivendeInntekt.svalbard?.person
+                                                        )}
+                                                    </HøyrestiltDataCell>
+                                                    <HøyrestiltDataCell>
+                                                        {formaterTallMedTusenSkille(
+                                                            pensjonsgivendeInntekt.svalbard?.næring
+                                                        )}
+                                                    </HøyrestiltDataCell>
+                                                </>
+                                            )}
                                         </Table.Row>
                                     );
                                 })}
