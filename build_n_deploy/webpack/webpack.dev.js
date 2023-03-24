@@ -52,7 +52,6 @@ const config = mergeWithCustomize({
             },
         ],
     },
-    // devtool: 'inline-source-map',
     devtool: 'eval-cheap-module-source-map',
     experiments: {
         backCompat: false,
