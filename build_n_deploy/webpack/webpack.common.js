@@ -1,7 +1,6 @@
 import path from 'path';
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-import TypeScriptTypeChecker from 'fork-ts-checker-webpack-plugin';
-import ESLintPlugin from 'eslint-webpack-plugin';
+import ForkTsCheckerWebpackPlugin from 'fork-ts-checker-webpack-plugin';
 
 const common = {
     entry: {
@@ -17,14 +16,6 @@ const common = {
             {
                 test: /\.(png|svg|jpg|jpeg|gif|ico)$/,
                 use: [`file-loader`],
-            },
-            {
-                test: /\.(jsx|tsx|ts|js)?$/,
-                exclude: /node_modules/,
-                loader: 'babel-loader',
-                options: {
-                    presets: ['react-app'],
-                },
             },
             {
                 test: /\.m?js/,
@@ -57,9 +48,14 @@ const common = {
             inject: 'body',
             alwaysWriteToDisk: true,
         }),
-        new TypeScriptTypeChecker(),
-        new ESLintPlugin({
-            extensions: [`ts`, `tsx`],
+        new ForkTsCheckerWebpackPlugin({
+            async: true,
+            typescript: {
+                diagnosticOptions: {
+                    semantic: true,
+                    syntactic: true,
+                },
+            },
         }),
     ],
 };
