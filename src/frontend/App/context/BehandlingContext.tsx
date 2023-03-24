@@ -14,12 +14,14 @@ import { useApp } from './AppContext';
 import { useHentUtestengelser } from '../hooks/useHentUtestengelser';
 import { useHentEndringerPersonopplysninger } from '../hooks/useHentEndringerPersonopplysninger';
 import { useVilkår } from '../hooks/useVilkår';
+import { Behandlingstype } from '../typer/behandlingstype';
 
 const [BehandlingProvider, useBehandling] = constate(() => {
     const { axiosRequest } = useApp();
     const behandlingId = useParams<IBehandlingParams>().behandlingId as string;
 
     const [behandlingErRedigerbar, settBehandlingErRedigerbar] = useState<boolean>(true);
+    const [behandlingstype, settBehandlingstype] = useState<Behandlingstype | null>(null);
     const { hentPersonopplysninger, personopplysningerResponse } =
         useHentPersonopplysninger(behandlingId);
     const { hentBehandlingCallback, behandling } = useHentBehandling(behandlingId);
@@ -45,14 +47,14 @@ const [BehandlingProvider, useBehandling] = constate(() => {
     const hentTotrinnskontroll = useRerunnableEffect(hentTotrinnskontrollCallback, [behandlingId]);
     // eslint-disable-next-line
     useEffect(() => hentPersonopplysninger(behandlingId), [behandlingId]);
-    useEffect(
-        () =>
-            settBehandlingErRedigerbar(
-                behandling.status === RessursStatus.SUKSESS &&
-                    erBehandlingRedigerbar(behandling.data)
-            ),
-        [behandling]
-    );
+    useEffect(() => {
+        settBehandlingErRedigerbar(
+            behandling.status === RessursStatus.SUKSESS && erBehandlingRedigerbar(behandling.data)
+        );
+        if (behandling.status === RessursStatus.SUKSESS) {
+            settBehandlingstype(behandling.data.type);
+        }
+    }, [behandling]);
     useEffect(() => {
         if (behandlingErRedigerbar) {
             axiosRequest<string | null, string>({
@@ -89,6 +91,7 @@ const [BehandlingProvider, useBehandling] = constate(() => {
     return {
         behandling,
         behandlingErRedigerbar,
+        behandlingstype,
         totrinnskontroll,
         personopplysningerResponse,
         behandlingHistorikk,

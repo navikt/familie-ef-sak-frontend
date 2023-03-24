@@ -1,18 +1,20 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useApp } from '../../../App/context/AppContext';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
-import { Alert, Button, Checkbox } from '@navikt/ds-react';
+import { Button } from '@navikt/ds-react';
 import { AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
 import { ABorderStrong } from '@navikt/ds-tokens/dist/tokens';
 import { useNavigate } from 'react-router-dom';
+import { Behandlingstype } from '../../../App/typer/behandlingstype';
+import Fremleggsoppgave from './Fremleggsoppgave';
 
 const Footer = styled.footer`
-    width: calc(100%);
+    width: 100%;
     position: fixed;
     bottom: 0;
     background-color: ${ABorderStrong};
@@ -27,10 +29,6 @@ const MidtstiltInnhold = styled.div`
 const HovedKnapp = styled(Button)`
     margin-left: 1rem;
     margin-right: 1rem;
-`;
-
-const Alertstripe = styled(Alert)`
-    white-space: nowrap;
 `;
 
 export interface IFremleggsOppgave {
@@ -50,18 +48,19 @@ const SendTilBeslutterFooter: React.FC<{
 }) => {
     const { axiosRequest } = useApp();
     const navigate = useNavigate();
-    const { hentTotrinnskontroll, hentBehandling, hentBehandlingshistorikk } = useBehandling();
+    const { behandlingstype, hentTotrinnskontroll, hentBehandling, hentBehandlingshistorikk } =
+        useBehandling();
     const [laster, settLaster] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>();
     const [visModal, settVisModal] = useState<boolean>(false);
-    const [kanOppretteFremleggsoppgave, setKanOppretteFremleggsoppgave] = useState<boolean>(false);
-    const [skalOppretteFremleggsoppgave, setSkalOppretteFremleggsoppgave] =
-        useState<boolean>(false);
+    const [kanOppretteFremlegg, settKanOppretteFremlegg] = useState<boolean>(false);
+    const [skalOppretteFremlegg, settSkalOppretteFremlegg] = useState<boolean>(false);
+    const erFørstegangsbehandling = behandlingstype === Behandlingstype.FØRSTEGANGSBEHANDLING;
 
     const opprettFremleggsoppgaveOgSendTilBeslutter = () => {
         axiosRequest<void, undefined>({
             method: 'POST',
-            url: `/familie-ef-sak/api/fremleggsoppgave/${behandlingId}/inntekt/${skalOppretteFremleggsoppgave}`,
+            url: `/familie-ef-sak/api/fremleggsoppgave/${behandlingId}/inntekt/${skalOppretteFremlegg}`,
         }).then((res: RessursSuksess<void> | RessursFeilet) => {
             if (res.status === RessursStatus.SUKSESS) {
                 sendTilBeslutter();
@@ -70,6 +69,25 @@ const SendTilBeslutterFooter: React.FC<{
             }
         });
     };
+
+    const sjekkOmFremleggKanOpprettes = useCallback(() => {
+        if (erFørstegangsbehandling) {
+            axiosRequest<IFremleggsOppgave, undefined>({
+                method: 'GET',
+                url: `/familie-ef-sak/api/fremleggsoppgave/${behandlingId}`,
+            }).then((res: RessursSuksess<IFremleggsOppgave> | RessursFeilet) => {
+                if (res.status === RessursStatus.SUKSESS) {
+                    if (res.data.inntekt != null) {
+                        settSkalOppretteFremlegg(res.data.inntekt);
+                    }
+                    settKanOppretteFremlegg(res.data.kanOppretteFremleggsoppgave);
+                } else {
+                    settFeilmelding(res.frontendFeilmelding);
+                }
+            });
+        }
+    }, [axiosRequest, behandlingId, erFørstegangsbehandling]);
+
     const sendTilBeslutter = () => {
         settLaster(true);
         settFeilmelding(undefined);
@@ -89,25 +107,14 @@ const SendTilBeslutterFooter: React.FC<{
             .finally(() => settLaster(false));
     };
 
-    const checkBoxEndring = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSkalOppretteFremleggsoppgave(event.target.checked);
+    useEffect(() => {
+        sjekkOmFremleggKanOpprettes();
+    }, [sjekkOmFremleggKanOpprettes]);
+
+    const håndterCheckboxEndring = () => {
+        settSkalOppretteFremlegg((prevState) => !prevState);
     };
 
-    useEffect(() => {
-        axiosRequest<IFremleggsOppgave, undefined>({
-            method: 'GET',
-            url: `/familie-ef-sak/api/fremleggsoppgave/${behandlingId}`,
-        }).then((res: RessursSuksess<IFremleggsOppgave> | RessursFeilet) => {
-            if (res.status === RessursStatus.SUKSESS) {
-                if (res.data.inntekt != null) {
-                    setSkalOppretteFremleggsoppgave(res.data.inntekt);
-                }
-                setKanOppretteFremleggsoppgave(res.data.kanOppretteFremleggsoppgave);
-            } else {
-                settFeilmelding(res.frontendFeilmelding);
-            }
-        });
-    }, [axiosRequest, behandlingId]);
     const lukkModal = () => {
         settVisModal(false);
         hentBehandling.rerun();
@@ -125,53 +132,30 @@ const SendTilBeslutterFooter: React.FC<{
         <>
             {behandlingErRedigerbar && (
                 <Footer>
-                    {kanOppretteFremleggsoppgave && (
-                        <Alertstripe variant={'info'} fullWidth={true}>
-                            <b>
-                                Følgende oppgaver skal opprettes automatisk ved godkjenning av dette
-                                vedtaket:
-                            </b>
-                            <Checkbox
-                                onChange={checkBoxEndring}
-                                checked={skalOppretteFremleggsoppgave}
-                            >
-                                Oppgave for kontroll av inntekt 1 år frem i tid
-                            </Checkbox>
-                        </Alertstripe>
-                    )}
                     {feilmelding && <AlertStripeFeilPreWrap>{feilmelding}</AlertStripeFeilPreWrap>}
                     {ferdigstillUtenBeslutter && (
                         <AlertInfo>Vedtaket vil ikke bli sendt til totrinnskontroll</AlertInfo>
                     )}
-                    <MidtstiltInnhold>
-                        <HovedKnapp
-                            onClick={opprettFremleggsoppgaveOgSendTilBeslutter}
-                            disabled={laster || !kanSendesTilBeslutter}
-                            type={'button'}
-                        >
-                            {ferdigstillTittel}
-                        </HovedKnapp>
-                    </MidtstiltInnhold>
+                    {erFørstegangsbehandling && (
+                        <Fremleggsoppgave
+                            behandlingErRedigerbar={behandlingErRedigerbar}
+                            håndterCheckboxEndring={håndterCheckboxEndring}
+                            kanOppretteFremlegg={kanOppretteFremlegg}
+                            skalOppretteFremlegg={skalOppretteFremlegg}
+                        />
+                    )}
+                    {behandlingErRedigerbar && (
+                        <MidtstiltInnhold>
+                            <HovedKnapp
+                                onClick={opprettFremleggsoppgaveOgSendTilBeslutter}
+                                disabled={laster || !kanSendesTilBeslutter}
+                                type={'button'}
+                            >
+                                {ferdigstillTittel}
+                            </HovedKnapp>
+                        </MidtstiltInnhold>
+                    )}
                 </Footer>
-            )}
-            {!behandlingErRedigerbar && skalOppretteFremleggsoppgave && (
-                <Alertstripe variant={'info'} fullWidth={true}>
-                    <b>
-                        Følgende oppgaver skal opprettes automatisk ved godkjenning av dette
-                        vedtaket:
-                    </b>
-                    <li>Oppgave for kontroll av inntekt 1 år frem i tid</li>
-                </Alertstripe>
-            )}
-            {!behandlingErRedigerbar && !skalOppretteFremleggsoppgave && (
-                <Alertstripe variant={'info'} fullWidth={true}>
-                    <b>
-                        Følgende oppgaver skal opprettes automatisk ved godkjenning av dette
-                        vedtaket:
-                    </b>
-                    <br />
-                    <i>Ingen oppgave opprettes automatisk</i>
-                </Alertstripe>
             )}
             <ModalWrapper
                 tittel={modalTittel}

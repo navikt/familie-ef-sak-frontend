@@ -21,7 +21,6 @@ import Personopplysningsendringer from './Endring/EndringPersonopplysninger';
 
 const Container = styled.div`
     display: flex;
-
     flex-shrink: 2;
 `;
 
