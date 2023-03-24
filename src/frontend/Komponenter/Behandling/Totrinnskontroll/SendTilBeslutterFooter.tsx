@@ -33,7 +33,7 @@ const HovedKnapp = styled(Button)`
 
 export interface IFremleggsOppgave {
     kanOppretteFremleggsoppgave: boolean;
-    inntekt?: boolean;
+    inntekt: boolean;
 }
 const SendTilBeslutterFooter: React.FC<{
     behandlingId: string;
@@ -54,21 +54,9 @@ const SendTilBeslutterFooter: React.FC<{
     const [feilmelding, settFeilmelding] = useState<string>();
     const [visModal, settVisModal] = useState<boolean>(false);
     const [kanOppretteFremlegg, settKanOppretteFremlegg] = useState<boolean>(false);
-    const [skalOppretteFremlegg, settSkalOppretteFremlegg] = useState<boolean>(false);
+    const [skalOppretteFremleggForInntekt, settSkalOppretteFremleggForInntekt] =
+        useState<boolean>(false);
     const erFørstegangsbehandling = behandlingstype === Behandlingstype.FØRSTEGANGSBEHANDLING;
-
-    const opprettFremleggsoppgaveOgSendTilBeslutter = () => {
-        axiosRequest<void, undefined>({
-            method: 'POST',
-            url: `/familie-ef-sak/api/fremleggsoppgave/${behandlingId}/inntekt/${skalOppretteFremlegg}`,
-        }).then((res: RessursSuksess<void> | RessursFeilet) => {
-            if (res.status === RessursStatus.SUKSESS) {
-                sendTilBeslutter();
-            } else {
-                settFeilmelding(res.frontendFeilmelding);
-            }
-        });
-    };
 
     const sjekkOmFremleggKanOpprettes = useCallback(() => {
         if (erFørstegangsbehandling) {
@@ -77,9 +65,7 @@ const SendTilBeslutterFooter: React.FC<{
                 url: `/familie-ef-sak/api/fremleggsoppgave/${behandlingId}`,
             }).then((res: RessursSuksess<IFremleggsOppgave> | RessursFeilet) => {
                 if (res.status === RessursStatus.SUKSESS) {
-                    if (res.data.inntekt != null) {
-                        settSkalOppretteFremlegg(res.data.inntekt);
-                    }
+                    settSkalOppretteFremleggForInntekt(res.data.inntekt);
                     settKanOppretteFremlegg(res.data.kanOppretteFremleggsoppgave);
                 } else {
                     settFeilmelding(res.frontendFeilmelding);
@@ -89,11 +75,16 @@ const SendTilBeslutterFooter: React.FC<{
     }, [axiosRequest, behandlingId, erFørstegangsbehandling]);
 
     const sendTilBeslutter = () => {
+        const fremleggsOppgave: IFremleggsOppgave = {
+            kanOppretteFremleggsoppgave: kanOppretteFremlegg,
+            inntekt: skalOppretteFremleggForInntekt,
+        };
         settLaster(true);
         settFeilmelding(undefined);
-        axiosRequest<string, undefined>({
+        axiosRequest<string, IFremleggsOppgave>({
             method: 'POST',
             url: `/familie-ef-sak/api/vedtak/${behandlingId}/send-til-beslutter`,
+            data: fremleggsOppgave,
         })
             .then((res: RessursSuksess<string> | RessursFeilet) => {
                 if (res.status === RessursStatus.SUKSESS) {
@@ -112,7 +103,7 @@ const SendTilBeslutterFooter: React.FC<{
     }, [sjekkOmFremleggKanOpprettes]);
 
     const håndterCheckboxEndring = () => {
-        settSkalOppretteFremlegg((prevState) => !prevState);
+        settSkalOppretteFremleggForInntekt((prevState) => !prevState);
     };
 
     const lukkModal = () => {
@@ -141,13 +132,13 @@ const SendTilBeslutterFooter: React.FC<{
                             behandlingErRedigerbar={behandlingErRedigerbar}
                             håndterCheckboxEndring={håndterCheckboxEndring}
                             kanOppretteFremlegg={kanOppretteFremlegg}
-                            skalOppretteFremlegg={skalOppretteFremlegg}
+                            skalOppretteFremlegg={skalOppretteFremleggForInntekt}
                         />
                     )}
                     {behandlingErRedigerbar && (
                         <MidtstiltInnhold>
                             <HovedKnapp
-                                onClick={opprettFremleggsoppgaveOgSendTilBeslutter}
+                                onClick={sendTilBeslutter}
                                 disabled={laster || !kanSendesTilBeslutter}
                                 type={'button'}
                             >
