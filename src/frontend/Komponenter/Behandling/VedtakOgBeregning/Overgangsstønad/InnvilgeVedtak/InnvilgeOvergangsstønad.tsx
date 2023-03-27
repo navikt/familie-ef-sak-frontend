@@ -8,7 +8,7 @@ import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import { revurdererFraPeriodeUtenStønad } from './revurderFraUtils';
 import { RevurderesFraOgMed } from '../../Felles/RevurderesFraOgMed';
 import { IVilkår } from '../../../Inngangsvilkår/vilkår';
-import { InnvilgeVedtak } from './InnvilgeVedtak';
+import { Vedtaksform } from './Vedtaksform';
 import { oppdaterVedtakMedEndretKey } from './utils';
 
 export const InnvilgeOvergangsstønad: React.FC<{
@@ -65,7 +65,7 @@ export const InnvilgeOvergangsstønad: React.FC<{
                 />
             ) : null}
             {(vedtak || !behandling.forrigeBehandlingId) && (
-                <InnvilgeVedtak behandling={behandling} lagretVedtak={vedtak} vilkår={vilkår} />
+                <Vedtaksform behandling={behandling} lagretVedtak={vedtak} vilkår={vilkår} />
             )}
         </>
     );

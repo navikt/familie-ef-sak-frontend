@@ -44,7 +44,7 @@ const Form = styled.form`
 const Beregningstabell = styled(Utregningstabell)`
     margin-left: 1rem;
 `;
-export const InnvilgeVedtak: React.FC<{
+export const Vedtaksform: React.FC<{
     behandling: Behandling;
     lagretVedtak?: IInnvilgeVedtakForOvergangsstønad;
     revurderesFra?: string;
