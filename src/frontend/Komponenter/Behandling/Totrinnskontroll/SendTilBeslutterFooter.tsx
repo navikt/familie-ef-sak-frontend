@@ -11,7 +11,7 @@ import { AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
 import { ABorderStrong } from '@navikt/ds-tokens/dist/tokens';
 import { useNavigate } from 'react-router-dom';
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
-import Fremleggsoppgave from './Fremleggsoppgave';
+import FremleggsoppgaveInntekt from './Fremleggsoppgave';
 
 const Footer = styled.footer`
     width: 100%;
@@ -31,10 +31,15 @@ const HovedKnapp = styled(Button)`
     margin-right: 1rem;
 `;
 
+export enum FremleggsoppgaveType {
+    INNTEKT = 'INNTEKT',
+}
+
 export interface IFremleggsOppgave {
     kanOppretteFremleggsoppgave: boolean;
-    inntekt: boolean;
+    fremleggsoppgaveTyper: FremleggsoppgaveType[];
 }
+
 const SendTilBeslutterFooter: React.FC<{
     behandlingId: string;
     kanSendesTilBeslutter?: boolean;
@@ -54,8 +59,9 @@ const SendTilBeslutterFooter: React.FC<{
     const [feilmelding, settFeilmelding] = useState<string>();
     const [visModal, settVisModal] = useState<boolean>(false);
     const [kanOppretteFremlegg, settKanOppretteFremlegg] = useState<boolean>(false);
-    const [skalOppretteFremleggForInntekt, settSkalOppretteFremleggForInntekt] =
-        useState<boolean>(false);
+    const [skalOppretteFremleggsoppgave, settSkalOppretteFremleggsoppgave] = useState<
+        FremleggsoppgaveType[]
+    >(Object.values(FremleggsoppgaveType));
     const erFørstegangsbehandling = behandlingstype === Behandlingstype.FØRSTEGANGSBEHANDLING;
 
     const sjekkOmFremleggKanOpprettes = useCallback(() => {
@@ -65,7 +71,9 @@ const SendTilBeslutterFooter: React.FC<{
                 url: `/familie-ef-sak/api/fremleggsoppgave/${behandlingId}`,
             }).then((res: RessursSuksess<IFremleggsOppgave> | RessursFeilet) => {
                 if (res.status === RessursStatus.SUKSESS) {
-                    settSkalOppretteFremleggForInntekt(res.data.inntekt);
+                    if (res.data.fremleggsoppgaveTyper !== null) {
+                        settSkalOppretteFremleggsoppgave(res.data.fremleggsoppgaveTyper);
+                    }
                     settKanOppretteFremlegg(res.data.kanOppretteFremleggsoppgave);
                 } else {
                     settFeilmelding(res.frontendFeilmelding);
@@ -77,7 +85,7 @@ const SendTilBeslutterFooter: React.FC<{
     const sendTilBeslutter = () => {
         const fremleggsOppgave: IFremleggsOppgave = {
             kanOppretteFremleggsoppgave: kanOppretteFremlegg,
-            inntekt: skalOppretteFremleggForInntekt,
+            fremleggsoppgaveTyper: skalOppretteFremleggsoppgave,
         };
         settLaster(true);
         settFeilmelding(undefined);
@@ -102,8 +110,18 @@ const SendTilBeslutterFooter: React.FC<{
         sjekkOmFremleggKanOpprettes();
     }, [sjekkOmFremleggKanOpprettes]);
 
-    const håndterCheckboxEndring = () => {
-        settSkalOppretteFremleggForInntekt((prevState) => !prevState);
+    const håndterCheckboxEndring = (oppgavetype: FremleggsoppgaveType) => {
+        if (skalOppretteFremleggsoppgave.includes(oppgavetype)) {
+            settSkalOppretteFremleggsoppgave(
+                skalOppretteFremleggsoppgave.filter((str) => str !== oppgavetype)
+            );
+        } else {
+            const updatedArray = [...skalOppretteFremleggsoppgave, oppgavetype];
+            settSkalOppretteFremleggsoppgave(updatedArray);
+        }
+    };
+    const håndterCheckboxEndringInntekt = () => {
+        håndterCheckboxEndring(FremleggsoppgaveType.INNTEKT);
     };
 
     const lukkModal = () => {
@@ -128,11 +146,13 @@ const SendTilBeslutterFooter: React.FC<{
                         <AlertInfo>Vedtaket vil ikke bli sendt til totrinnskontroll</AlertInfo>
                     )}
                     {erFørstegangsbehandling && (
-                        <Fremleggsoppgave
+                        <FremleggsoppgaveInntekt
                             behandlingErRedigerbar={behandlingErRedigerbar}
-                            håndterCheckboxEndring={håndterCheckboxEndring}
+                            håndterCheckboxEndring={håndterCheckboxEndringInntekt}
                             kanOppretteFremlegg={kanOppretteFremlegg}
-                            skalOppretteFremlegg={skalOppretteFremleggForInntekt}
+                            skalOppretteFremlegg={skalOppretteFremleggsoppgave.includes(
+                                FremleggsoppgaveType.INNTEKT
+                            )}
                         />
                     )}
                     {behandlingErRedigerbar && (
