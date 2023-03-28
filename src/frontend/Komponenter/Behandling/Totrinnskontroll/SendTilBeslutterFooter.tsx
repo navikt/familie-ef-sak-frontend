@@ -32,7 +32,7 @@ const HovedKnapp = styled(Button)`
 `;
 
 export enum FremleggsoppgaveType {
-    INNTEKT = 'INNTEKT',
+    INNTEKTSKONTROLL_1_ÅR_FREM_I_TID = 'INNTEKTSKONTROLL_1_ÅR_FREM_I_TID',
 }
 
 export interface IFremleggsOppgave {
