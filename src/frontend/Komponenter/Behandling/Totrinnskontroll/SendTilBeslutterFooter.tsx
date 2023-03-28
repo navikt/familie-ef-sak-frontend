@@ -66,10 +66,10 @@ const SendTilBeslutterFooter: React.FC<{
 
     const sjekkOmFremleggKanOpprettes = useCallback(() => {
         if (erFørstegangsbehandling) {
-            axiosRequest<IFremleggsOppgave, undefined>({
+            axiosRequest<IFremleggsoppgave, undefined>({
                 method: 'GET',
                 url: `/familie-ef-sak/api/fremleggsoppgave/${behandlingId}`,
-            }).then((res: RessursSuksess<IFremleggsOppgave> | RessursFeilet) => {
+            }).then((res: RessursSuksess<IFremleggsoppgave> | RessursFeilet) => {
                 if (res.status === RessursStatus.SUKSESS) {
                     if (res.data.oppgavetyper !== null) {
                         settSkalOppretteFremleggsoppgave(res.data.oppgavetyper);
@@ -83,13 +83,13 @@ const SendTilBeslutterFooter: React.FC<{
     }, [axiosRequest, behandlingId, erFørstegangsbehandling]);
 
     const sendTilBeslutter = () => {
-        const fremleggsOppgave: IFremleggsOppgave = {
+        const fremleggsOppgave: IFremleggsoppgave = {
             kanOppretteFremleggsoppgave: kanOppretteFremlegg,
             oppgavetyper: skalOppretteFremleggsoppgave,
         };
         settLaster(true);
         settFeilmelding(undefined);
-        axiosRequest<string, IFremleggsOppgave>({
+        axiosRequest<string, IFremleggsoppgave>({
             method: 'POST',
             url: `/familie-ef-sak/api/vedtak/${behandlingId}/send-til-beslutter`,
             data: fremleggsOppgave,
