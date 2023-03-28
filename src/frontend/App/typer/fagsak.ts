@@ -38,6 +38,7 @@ export interface Behandling {
     type: Behandlingstype;
     steg: Steg;
     status: BehandlingStatus;
+    kategori: BehandlingKategori;
     sistEndret: string;
     opprettet: string;
     resultat: BehandlingResultat;
@@ -75,4 +76,14 @@ export const behandlingResultatTilTekst: Record<
     MEDHOLD: 'Medhold',
     IKKE_MEDHOLD: 'Oversendt til KA',
     IKKE_MEDHOLD_FORMKRAV_AVVIST: 'Ikke medhold, formkrav avvist',
+};
+
+export enum BehandlingKategori {
+    EØS = 'EØS',
+    NASJONAL = 'NASJONAL',
+}
+
+export const kategoriTilTekst: Record<BehandlingKategori, string> = {
+    EØS: 'EØS',
+    NASJONAL: 'Nasjonal',
 };
