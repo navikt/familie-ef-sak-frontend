@@ -35,7 +35,7 @@ export enum FremleggsoppgaveType {
     INNTEKT = 'INNTEKT',
 }
 
-export interface IFremleggsOppgave {
+export interface IFremleggsoppgave {
     kanOppretteFremleggsoppgave: boolean;
     fremleggsoppgaveTyper: FremleggsoppgaveType[];
 }
