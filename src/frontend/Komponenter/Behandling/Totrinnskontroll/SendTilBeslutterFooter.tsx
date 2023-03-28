@@ -37,7 +37,7 @@ export enum FremleggsoppgaveType {
 
 export interface IFremleggsOppgave {
     kanOppretteFremleggsoppgave: boolean;
-    fremleggsoppgaveTyper: FremleggsoppgaveType[];
+    oppgavetyper: FremleggsoppgaveType[];
 }
 
 const SendTilBeslutterFooter: React.FC<{
@@ -71,8 +71,8 @@ const SendTilBeslutterFooter: React.FC<{
                 url: `/familie-ef-sak/api/fremleggsoppgave/${behandlingId}`,
             }).then((res: RessursSuksess<IFremleggsOppgave> | RessursFeilet) => {
                 if (res.status === RessursStatus.SUKSESS) {
-                    if (res.data.fremleggsoppgaveTyper !== null) {
-                        settSkalOppretteFremleggsoppgave(res.data.fremleggsoppgaveTyper);
+                    if (res.data.oppgavetyper !== null) {
+                        settSkalOppretteFremleggsoppgave(res.data.oppgavetyper);
                     }
                     settKanOppretteFremlegg(res.data.kanOppretteFremleggsoppgave);
                 } else {
@@ -85,7 +85,7 @@ const SendTilBeslutterFooter: React.FC<{
     const sendTilBeslutter = () => {
         const fremleggsOppgave: IFremleggsOppgave = {
             kanOppretteFremleggsoppgave: kanOppretteFremlegg,
-            fremleggsoppgaveTyper: skalOppretteFremleggsoppgave,
+            oppgavetyper: skalOppretteFremleggsoppgave,
         };
         settLaster(true);
         settFeilmelding(undefined);
