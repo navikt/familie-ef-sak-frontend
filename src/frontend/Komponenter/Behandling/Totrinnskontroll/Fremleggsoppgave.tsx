@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Alert, Checkbox } from '@navikt/ds-react';
+import { Alert, Checkbox, Label } from '@navikt/ds-react';
 import styled from 'styled-components';
 
 const Alertstripe = styled(Alert)`
@@ -20,9 +20,9 @@ const Fremleggsoppgave: React.FC<{
     if (behandlingErRedigerbar && kanOppretteFremlegg) {
         return (
             <Alertstripe variant={'info'}>
-                <b>
+                <Label>
                     Følgende oppgaver skal opprettes automatisk ved godkjenning av dette vedtaket:
-                </b>
+                </Label>
                 <Checkbox onChange={håndterCheckboxEndring} checked={skalOppretteFremlegg}>
                     Oppgave for kontroll av inntekt 1 år frem i tid
                 </Checkbox>
@@ -31,9 +31,9 @@ const Fremleggsoppgave: React.FC<{
     } else if (!behandlingErRedigerbar && skalOppretteFremlegg) {
         return (
             <Alertstripe variant={'info'}>
-                <b>
+                <Label>
                     Følgende oppgaver skal opprettes automatisk ved godkjenning av dette vedtaket:
-                </b>
+                </Label>
                 <Checkbox onChange={håndterCheckboxEndring} checked={skalOppretteFremlegg}>
                     Oppgave for kontroll av inntekt 1 år frem i tid
                 </Checkbox>
@@ -42,9 +42,9 @@ const Fremleggsoppgave: React.FC<{
     } else if (!behandlingErRedigerbar && !skalOppretteFremlegg) {
         return (
             <Alertstripe variant={'info'}>
-                <b>
+                <Label>
                     Følgende oppgaver skal opprettes automatisk ved godkjenning av dette vedtaket:
-                </b>
+                </Label>
                 <br />
                 <i>Ingen oppgave opprettes automatisk</i>
             </Alertstripe>
