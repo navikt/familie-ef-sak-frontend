@@ -121,7 +121,7 @@ const SendTilBeslutterFooter: React.FC<{
         }
     };
     const håndterCheckboxEndringInntekt = () => {
-        håndterCheckboxEndring(FremleggsoppgaveType.INNTEKT);
+        håndterCheckboxEndring(FremleggsoppgaveType.INNTEKTSKONTROLL_1_ÅR_FREM_I_TID);
     };
 
     const lukkModal = () => {
@@ -151,7 +151,7 @@ const SendTilBeslutterFooter: React.FC<{
                             håndterCheckboxEndring={håndterCheckboxEndringInntekt}
                             kanOppretteFremlegg={kanOppretteFremlegg}
                             skalOppretteFremlegg={skalOppretteFremleggsoppgave.includes(
-                                FremleggsoppgaveType.INNTEKT
+                                FremleggsoppgaveType.INNTEKTSKONTROLL_1_ÅR_FREM_I_TID
                             )}
                         />
                     )}
