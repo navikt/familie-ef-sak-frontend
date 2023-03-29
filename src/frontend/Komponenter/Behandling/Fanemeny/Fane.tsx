@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 import { ISide, SideNavn } from './sider';
 import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 import { ABlue400, ABlue500, AGray100, AGray300, ATextAction } from '@navikt/ds-tokens/dist/tokens';
-import { loggBesøkEvent } from '../../../App/utils/amplitude/amplitude';
+import { loggBesøkEvent } from '../../../App/utils/amplitude/amplitudeLoggEvents';
 
 const StyledNavLink = styled(NavLink)`
     border-bottom: 5px solid white;

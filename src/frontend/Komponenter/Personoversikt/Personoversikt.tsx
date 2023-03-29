@@ -21,7 +21,7 @@ import { Tabs } from '@navikt/ds-react';
 import { InntektForPerson } from './InntektForPerson';
 import { ToggleName } from '../../App/context/toggles';
 import { useToggles } from '../../App/context/TogglesContext';
-import { loggBesøkEvent } from '../../App/utils/amplitude/amplitude';
+import { loggBesøkEvent } from '../../App/utils/amplitude/amplitudeLoggEvents';
 
 type TabWithRouter = {
     label: string;

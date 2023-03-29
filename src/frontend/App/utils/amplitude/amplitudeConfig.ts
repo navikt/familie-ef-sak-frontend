@@ -8,7 +8,7 @@ const getApiKey = () => {
     return '84389e45c7a84638cbd753b471db5fb7'; // dev
 };
 
-const amplitudeInstance = amplitude.getInstance();
+export const amplitudeInstance = amplitude.getInstance();
 
 amplitudeInstance.init(getApiKey(), '', {
     apiEndpoint: 'amplitude.nav.no/collect',
@@ -17,11 +17,3 @@ amplitudeInstance.init(getApiKey(), '', {
     batchEvents: false,
     includeReferrer: true,
 });
-
-export function loggEvent(eventName: string, eventProperties: unknown) {
-    amplitudeInstance.logEvent(eventName, eventProperties);
-}
-
-export const loggBesøkEvent = (side: string, path: string) => {
-    loggEvent('besøk', { side, path });
-};
