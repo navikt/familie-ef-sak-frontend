@@ -67,6 +67,7 @@ const FlexColumn = styled.div`
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    max-width: 55rem;
 `;
 
 export const tomInntektsperiodeRad = (årMånedFra?: string): IInntektsperiode => ({
@@ -84,6 +85,10 @@ const CheckboxGroupRow = styled(CheckboxGroup)`
         gap: 1.5rem;
         flex-wrap: wrap;
     }
+`;
+
+const ReadMoreMedMarginBottom = styled(ReadMore)`
+    margin-bottom: 1rem;
 `;
 
 interface Props {
@@ -213,9 +218,9 @@ const InntektsperiodeValg: React.FC<Props> = ({
                     </CheckboxGroupRow>
                 )}
                 {feilmeldingCheckbox && <AlertError inline>{feilmeldingCheckbox}</AlertError>}
-                <ReadMore header="Inntektsforklaring" size="small">
+                <ReadMoreMedMarginBottom header="Slik bruker du inntektsfeltene" size="small">
                     {InntektsforklaringBody}
-                </ReadMore>
+                </ReadMoreMedMarginBottom>
                 {valgteInntektstyper.length ? (
                     <>
                         <Grid lesevisning={!behandlingErRedigerbar}>
@@ -443,16 +448,27 @@ const InntektsperiodeValg: React.FC<Props> = ({
 const InntektsforklaringBody = (
     <FlexColumn>
         <BodyLong size="small">
-            <strong>Datsats:</strong> blablabla
+            <strong>Datsats:</strong> Hvis bruker kun får stønad med dagsats fra NAV, legges
+            dagsatsen inn i denne kolonnen. EF Sak vil automatisk regne om dagsatsen til årsinntekt
+            ved å gange dagsatsen med 260 (virkedager per år).
         </BodyLong>
         <BodyLong size="small">
-            <strong>Månedsinntekt:</strong> blablabla
+            <strong>Månedsinntekt:</strong> Hvis bruker har inntekt som blir innrapportert per
+            måned, legges månedsinntekten inn i denne kolonnen. EF Sak vil automatisk regne om
+            månedsinntekten til årsinntekt ved å gange månedsinntekten med 12.
         </BodyLong>
         <BodyLong size="small">
-            <strong>Årsinntekt:</strong> blablabla
+            <strong>Årsinntekt:</strong> Hvis bruker er selvstendig næringsdrivende eller vi av
+            andre grunner ikke har månedsinntekt, legges årsinntekten inn i denne kolonnen.
         </BodyLong>
         <BodyLong size="small">
-            <strong>Samordningsfradrag:</strong> blablabla
+            <strong>Samordningsfradrag:</strong> Hvis bruker får uføretrygd eller gjenlevendepensjon
+            som skal samordnes krone for krone med overgangsstønaden, legges månedsbeløpet (uten
+            barnetillegg) inn i denne kolonnen.
+        </BodyLong>
+        <BodyLong size="small">
+            <strong>Merk:</strong> Det er <strong>faktisk inntekt</strong> som skal legges inn i
+            feltene. EF Sak vil automatisk runde total inntekt ned til nærmeste tusen kroner.
         </BodyLong>
     </FlexColumn>
 );
