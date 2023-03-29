@@ -19,7 +19,6 @@ import { IMappe } from './typer/mappe';
 import { harEgenAnsattRolle, harStrengtFortroligRolle } from '../../App/utils/roller';
 import { ModalWrapper } from '../../Felles/Modal/ModalWrapper';
 import { Alert, Button, Select, TextField } from '@navikt/ds-react';
-import { loggTestEvent } from '../../App/utils/amplitude/amplitude';
 
 export const FlexDiv = styled.div<{ flexDirection?: 'row' | 'column' }>`
     display: flex;
@@ -156,11 +155,6 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({
         hentOppgaver(tomOppgaveRequest);
     };
 
-    const loggOgHentOppgaver = () => {
-        loggTestEvent('/oppgavebenk', 'Hent oppgaver');
-        sjekkFeilOgHentOppgaver();
-    };
-
     return (
         <>
             <FlexDiv>
@@ -284,7 +278,7 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({
             </FlexDiv>
 
             <KnappWrapper>
-                <FiltreringKnapp onClick={loggOgHentOppgaver} type={'submit'}>
+                <FiltreringKnapp onClick={sjekkFeilOgHentOppgaver} type={'submit'}>
                     Hent oppgaver
                 </FiltreringKnapp>
                 <FiltreringKnapp
