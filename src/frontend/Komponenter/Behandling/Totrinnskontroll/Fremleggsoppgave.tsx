@@ -10,14 +10,18 @@ const Fremleggsoppgave: React.FC<{
     behandlingErRedigerbar: boolean;
     håndterCheckboxEndring: () => void;
     kanOppretteFremlegg: boolean;
+    erFørstegangsbehandling: boolean;
     skalOppretteFremlegg: boolean;
 }> = ({
     behandlingErRedigerbar,
     håndterCheckboxEndring,
     kanOppretteFremlegg,
+    erFørstegangsbehandling,
     skalOppretteFremlegg,
 }) => {
-    if (behandlingErRedigerbar && kanOppretteFremlegg) {
+    if (!erFørstegangsbehandling) {
+        return <></>;
+    } else if (behandlingErRedigerbar && kanOppretteFremlegg) {
         return (
             <Alertstripe variant={'info'}>
                 <Label>
