@@ -155,17 +155,15 @@ const SendTilBeslutterFooter: React.FC<{
                             )}
                         />
                     )}
-                    {behandlingErRedigerbar && (
-                        <MidtstiltInnhold>
-                            <HovedKnapp
-                                onClick={sendTilBeslutter}
-                                disabled={laster || !kanSendesTilBeslutter}
-                                type={'button'}
-                            >
-                                {ferdigstillTittel}
-                            </HovedKnapp>
-                        </MidtstiltInnhold>
-                    )}
+                    <MidtstiltInnhold>
+                        <HovedKnapp
+                            onClick={sendTilBeslutter}
+                            disabled={laster || !kanSendesTilBeslutter}
+                            type={'button'}
+                        >
+                            {ferdigstillTittel}
+                        </HovedKnapp>
+                    </MidtstiltInnhold>
                 </Footer>
             )}
             <ModalWrapper
