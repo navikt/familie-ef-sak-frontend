@@ -88,7 +88,7 @@ const CheckboxGroupRow = styled(CheckboxGroup)`
 `;
 
 const ReadMoreMedMarginBottom = styled(ReadMore)`
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
 `;
 
 interface Props {
