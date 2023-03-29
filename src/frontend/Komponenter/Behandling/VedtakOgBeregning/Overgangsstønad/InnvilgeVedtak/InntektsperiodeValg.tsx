@@ -232,7 +232,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                 <TextLabel>Månedsinntekt</TextLabel>
                             )}
                             {valgteInntektstyper.includes(EInntektstype.ÅRSINNTEKT) && (
-                                <TextLabel>Årsinntekt (faktisk)</TextLabel>
+                                <TextLabel>Årsinntekt</TextLabel>
                             )}
                             {valgteInntektstyper.includes(EInntektstype.SAMORDNINGSFRADRAG) && (
                                 <>
@@ -307,7 +307,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                         )}
                                         {valgteInntektstyper.includes(EInntektstype.ÅRSINNTEKT) && (
                                             <StyledInput
-                                                label={'Årsinntekt (faktisk)'}
+                                                label={'Årsinntekt'}
                                                 hideLabel
                                                 type="number"
                                                 value={
