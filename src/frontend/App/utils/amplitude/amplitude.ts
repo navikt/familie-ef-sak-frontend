@@ -22,6 +22,6 @@ export function loggEvent(eventName: string, eventProperties: unknown) {
     amplitudeInstance.logEvent(eventName, eventProperties);
 }
 
-export const loggTestEvent = (side: string, beskrivelse: string) => {
-    loggEvent('test', { side, beskrivelse });
+export const loggBesøkEvent = (side: string, path: string) => {
+    loggEvent('besøk', { side, path });
 };

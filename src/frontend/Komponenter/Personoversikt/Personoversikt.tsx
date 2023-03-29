@@ -21,6 +21,7 @@ import { Tabs } from '@navikt/ds-react';
 import { InntektForPerson } from './InntektForPerson';
 import { ToggleName } from '../../App/context/toggles';
 import { useToggles } from '../../App/context/TogglesContext';
+import { loggBesøkEvent } from '../../App/utils/amplitude/amplitude';
 
 type TabWithRouter = {
     label: string;
@@ -120,6 +121,7 @@ const PersonoversiktContent: React.FC<{
                     value={path}
                     onChange={(tabPath) => {
                         navigate(tabPath);
+                        loggBesøkEvent('person', tabPath);
                     }}
                 >
                     <Tabs.List>
