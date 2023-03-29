@@ -69,7 +69,7 @@ const SendTilBeslutterFooter: React.FC<{
         if (erFørstegangsbehandling) {
             axiosRequest<IOppgaveForOpprettelse, undefined>({
                 method: 'GET',
-                url: `/familie-ef-sak/api/fremleggsoppgave/${behandlingId}`,
+                url: `/familie-ef-sak/api/oppgaveforopprettelse/${behandlingId}`,
             }).then((res: RessursSuksess<IOppgaveForOpprettelse> | RessursFeilet) => {
                 if (res.status === RessursStatus.SUKSESS) {
                     if (res.data.oppgavetyper) {
