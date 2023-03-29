@@ -31,13 +31,13 @@ const HovedKnapp = styled(Button)`
     margin-right: 1rem;
 `;
 
-export enum FremleggsoppgaveType {
+export enum OppgaveForOpprettelseType {
     INNTEKTSKONTROLL_1_ÅR_FREM_I_TID = 'INNTEKTSKONTROLL_1_ÅR_FREM_I_TID',
 }
 
 export interface IOppgaveForOpprettelse {
-    kanOppretteOppgaveForInntektAutomatisk: boolean;
-    oppgavetyper?: FremleggsoppgaveType[];
+    oppgaverSomKanOpprettes: OppgaveForOpprettelseType[];
+    oppgavetyper?: OppgaveForOpprettelseType[];
 }
 
 const SendTilBeslutterFooter: React.FC<{
@@ -51,7 +51,7 @@ const SendTilBeslutterFooter: React.FC<{
     behandlingErRedigerbar,
     ferdigstillUtenBeslutter,
 }) => {
-    const oppgaveSomSkalAutomatiskOpprettes = Object.values(FremleggsoppgaveType);
+    const oppgaveSomSkalAutomatiskOpprettes = Object.values(OppgaveForOpprettelseType);
     const { axiosRequest } = useApp();
     const navigate = useNavigate();
     const { behandlingstype, hentTotrinnskontroll, hentBehandling, hentBehandlingshistorikk } =
@@ -59,13 +59,15 @@ const SendTilBeslutterFooter: React.FC<{
     const [laster, settLaster] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>();
     const [visModal, settVisModal] = useState<boolean>(false);
-    const [kanOppretteFremlegg, settKanOppretteFremlegg] = useState<boolean>(false);
+    const [kanOppretteOppgaver, settKanOppretteOppgaver] = useState<OppgaveForOpprettelseType[]>(
+        []
+    );
     const [oppgaverAutomatiskOpprettelse, settOppgaverAutomatiskOpprettelse] = useState<
-        FremleggsoppgaveType[]
+        OppgaveForOpprettelseType[]
     >(oppgaveSomSkalAutomatiskOpprettes);
     const erFørstegangsbehandling = behandlingstype === Behandlingstype.FØRSTEGANGSBEHANDLING;
 
-    const sjekkOmFremleggKanOpprettes = useCallback(() => {
+    const hentOppgaverSomKanOpprettes = useCallback(() => {
         if (erFørstegangsbehandling) {
             axiosRequest<IOppgaveForOpprettelse, undefined>({
                 method: 'GET',
@@ -75,7 +77,7 @@ const SendTilBeslutterFooter: React.FC<{
                     if (res.data.oppgavetyper) {
                         settOppgaverAutomatiskOpprettelse(res.data.oppgavetyper);
                     }
-                    settKanOppretteFremlegg(res.data.kanOppretteOppgaveForInntektAutomatisk);
+                    settKanOppretteOppgaver(res.data.oppgaverSomKanOpprettes);
                 } else {
                     settFeilmelding(res.frontendFeilmelding);
                 }
@@ -85,7 +87,7 @@ const SendTilBeslutterFooter: React.FC<{
 
     const sendTilBeslutter = () => {
         const fremleggsOppgave: IOppgaveForOpprettelse = {
-            kanOppretteOppgaveForInntektAutomatisk: kanOppretteFremlegg,
+            oppgaverSomKanOpprettes: kanOppretteOppgaver,
             oppgavetyper: oppgaverAutomatiskOpprettelse,
         };
         settLaster(true);
@@ -108,10 +110,10 @@ const SendTilBeslutterFooter: React.FC<{
     };
 
     useEffect(() => {
-        sjekkOmFremleggKanOpprettes();
-    }, [sjekkOmFremleggKanOpprettes]);
+        hentOppgaverSomKanOpprettes();
+    }, [hentOppgaverSomKanOpprettes]);
 
-    const håndterCheckboxEndring = (oppgavetype: FremleggsoppgaveType) => {
+    const håndterCheckboxEndring = (oppgavetype: OppgaveForOpprettelseType) => {
         if (oppgaverAutomatiskOpprettelse.includes(oppgavetype)) {
             settOppgaverAutomatiskOpprettelse((prevState) =>
                 prevState.filter((prevOppgavetype) => prevOppgavetype !== oppgavetype)
@@ -121,7 +123,7 @@ const SendTilBeslutterFooter: React.FC<{
         }
     };
     const håndterCheckboxEndringInntekt = () => {
-        håndterCheckboxEndring(FremleggsoppgaveType.INNTEKTSKONTROLL_1_ÅR_FREM_I_TID);
+        håndterCheckboxEndring(OppgaveForOpprettelseType.INNTEKTSKONTROLL_1_ÅR_FREM_I_TID);
     };
 
     const lukkModal = () => {
@@ -149,10 +151,12 @@ const SendTilBeslutterFooter: React.FC<{
                     <FremleggsoppgaveInntekt
                         behandlingErRedigerbar={behandlingErRedigerbar}
                         håndterCheckboxEndring={håndterCheckboxEndringInntekt}
-                        kanOppretteFremlegg={kanOppretteFremlegg}
+                        kanOppretteFremlegg={kanOppretteOppgaver.includes(
+                            OppgaveForOpprettelseType.INNTEKTSKONTROLL_1_ÅR_FREM_I_TID
+                        )}
                         erFørstegangsbehandling={erFørstegangsbehandling}
                         skalOppretteFremlegg={oppgaverAutomatiskOpprettelse.includes(
-                            FremleggsoppgaveType.INNTEKTSKONTROLL_1_ÅR_FREM_I_TID
+                            OppgaveForOpprettelseType.INNTEKTSKONTROLL_1_ÅR_FREM_I_TID
                         )}
                     />
 
