@@ -21,24 +21,17 @@ const Fremleggsoppgave: React.FC<{
 }) => {
     if (!erFørstegangsbehandling) {
         return <></>;
-    } else if (behandlingErRedigerbar && kanOppretteFremlegg) {
+    } else if (kanOppretteFremlegg) {
         return (
             <Alertstripe variant={'info'}>
                 <Label>
                     Følgende oppgaver skal opprettes automatisk ved godkjenning av dette vedtaket:
                 </Label>
-                <Checkbox onChange={håndterCheckboxEndring} checked={skalOppretteFremlegg}>
-                    Oppgave for kontroll av inntekt 1 år frem i tid
-                </Checkbox>
-            </Alertstripe>
-        );
-    } else if (!behandlingErRedigerbar && skalOppretteFremlegg) {
-        return (
-            <Alertstripe variant={'info'}>
-                <Label>
-                    Følgende oppgaver skal opprettes automatisk ved godkjenning av dette vedtaket:
-                </Label>
-                <Checkbox onChange={håndterCheckboxEndring} checked={skalOppretteFremlegg}>
+                <Checkbox
+                    onChange={håndterCheckboxEndring}
+                    checked={skalOppretteFremlegg}
+                    disabled={!behandlingErRedigerbar}
+                >
                     Oppgave for kontroll av inntekt 1 år frem i tid
                 </Checkbox>
             </Alertstripe>

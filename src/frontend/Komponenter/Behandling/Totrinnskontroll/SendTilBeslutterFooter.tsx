@@ -141,25 +141,25 @@ const SendTilBeslutterFooter: React.FC<{
 
     return (
         <>
+            {behandlingErRedigerbar != null && (
+                <FremleggsoppgaveInntekt
+                    behandlingErRedigerbar={behandlingErRedigerbar}
+                    håndterCheckboxEndring={håndterCheckboxEndringInntekt}
+                    kanOppretteFremlegg={kanOppretteOppgaver.includes(
+                        OppgaveForOpprettelseType.INNTEKTSKONTROLL_1_ÅR_FREM_I_TID
+                    )}
+                    erFørstegangsbehandling={erFørstegangsbehandling}
+                    skalOppretteFremlegg={oppgaverAutomatiskOpprettelse.includes(
+                        OppgaveForOpprettelseType.INNTEKTSKONTROLL_1_ÅR_FREM_I_TID
+                    )}
+                />
+            )}
             {behandlingErRedigerbar && (
                 <Footer>
                     {feilmelding && <AlertStripeFeilPreWrap>{feilmelding}</AlertStripeFeilPreWrap>}
                     {ferdigstillUtenBeslutter && (
                         <AlertInfo>Vedtaket vil ikke bli sendt til totrinnskontroll</AlertInfo>
                     )}
-
-                    <FremleggsoppgaveInntekt
-                        behandlingErRedigerbar={behandlingErRedigerbar}
-                        håndterCheckboxEndring={håndterCheckboxEndringInntekt}
-                        kanOppretteFremlegg={kanOppretteOppgaver.includes(
-                            OppgaveForOpprettelseType.INNTEKTSKONTROLL_1_ÅR_FREM_I_TID
-                        )}
-                        erFørstegangsbehandling={erFørstegangsbehandling}
-                        skalOppretteFremlegg={oppgaverAutomatiskOpprettelse.includes(
-                            OppgaveForOpprettelseType.INNTEKTSKONTROLL_1_ÅR_FREM_I_TID
-                        )}
-                    />
-
                     <MidtstiltInnhold>
                         <HovedKnapp
                             onClick={sendTilBeslutter}
