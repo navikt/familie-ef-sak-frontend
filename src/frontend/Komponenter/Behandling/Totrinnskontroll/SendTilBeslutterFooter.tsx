@@ -36,7 +36,7 @@ export enum FremleggsoppgaveType {
 }
 
 export interface IAutomatiskOppgave {
-    kanOppretteFremleggsoppgave: boolean;
+    kanOppretteOppgaveForInntektAutomatisk: boolean;
     oppgavetyper?: FremleggsoppgaveType[];
 }
 
@@ -75,7 +75,7 @@ const SendTilBeslutterFooter: React.FC<{
                     if (res.data.oppgavetyper) {
                         settOppgaverAutomatiskOpprettelse(res.data.oppgavetyper);
                     }
-                    settKanOppretteFremlegg(res.data.kanOppretteFremleggsoppgave);
+                    settKanOppretteFremlegg(res.data.kanOppretteOppgaveForInntektAutomatisk);
                 } else {
                     settFeilmelding(res.frontendFeilmelding);
                 }
@@ -85,7 +85,7 @@ const SendTilBeslutterFooter: React.FC<{
 
     const sendTilBeslutter = () => {
         const fremleggsOppgave: IAutomatiskOppgave = {
-            kanOppretteFremleggsoppgave: kanOppretteFremlegg,
+            kanOppretteOppgaveForInntektAutomatisk: kanOppretteFremlegg,
             oppgavetyper: oppgaverAutomatiskOpprettelse,
         };
         settLaster(true);
