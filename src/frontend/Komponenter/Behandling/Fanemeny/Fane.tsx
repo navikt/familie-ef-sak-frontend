@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom';
 import { ISide, SideNavn } from './sider';
 import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 import { ABlue400, ABlue500, AGray100, AGray300, ATextAction } from '@navikt/ds-tokens/dist/tokens';
+import { loggBesøkEvent } from '../../../App/utils/amplitude/amplitude';
 
 const StyledNavLink = styled(NavLink)`
     border-bottom: 5px solid white;
@@ -78,7 +79,11 @@ const Fane: React.FC<Props> = ({ side, behandlingId, index, deaktivert }) => {
                 </StyledTekst>
             )}
             {!deaktivert && (
-                <StyledNavLink key={side.navn} to={`/behandling/${behandlingId}/${side.href}`}>
+                <StyledNavLink
+                    key={side.navn}
+                    to={`/behandling/${behandlingId}/${side.href}`}
+                    onClick={() => loggBesøkEvent('behandling', side.href)}
+                >
                     <StyledLenketekst>
                         {index + 1}. {fanenavn}
                     </StyledLenketekst>
