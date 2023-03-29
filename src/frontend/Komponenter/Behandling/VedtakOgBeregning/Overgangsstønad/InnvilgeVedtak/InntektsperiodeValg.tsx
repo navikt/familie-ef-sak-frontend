@@ -448,7 +448,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
 const InntektsforklaringBody = (
     <FlexColumn>
         <BodyLong size="small">
-            <strong>Datsats:</strong> Hvis bruker kun får stønad med dagsats fra NAV, legges
+            <strong>Dagsats:</strong> Hvis bruker kun får stønad med dagsats fra NAV, legges
             dagsatsen inn i denne kolonnen. EF Sak vil automatisk regne om dagsatsen til årsinntekt
             ved å gange dagsatsen med 260 (virkedager per år).
         </BodyLong>
