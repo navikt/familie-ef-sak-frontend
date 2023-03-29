@@ -35,9 +35,9 @@ export enum FremleggsoppgaveType {
     INNTEKTSKONTROLL_1_ÅR_FREM_I_TID = 'INNTEKTSKONTROLL_1_ÅR_FREM_I_TID',
 }
 
-export interface IFremleggsoppgave {
+export interface IAutomatiskOppgave {
     kanOppretteFremleggsoppgave: boolean;
-    oppgavetyper: FremleggsoppgaveType[];
+    oppgavetyper?: FremleggsoppgaveType[];
 }
 
 const SendTilBeslutterFooter: React.FC<{
@@ -51,6 +51,7 @@ const SendTilBeslutterFooter: React.FC<{
     behandlingErRedigerbar,
     ferdigstillUtenBeslutter,
 }) => {
+    const oppgaveSomSkalAutomatiskOpprettes = Object.values(FremleggsoppgaveType);
     const { axiosRequest } = useApp();
     const navigate = useNavigate();
     const { behandlingstype, hentTotrinnskontroll, hentBehandling, hentBehandlingshistorikk } =
@@ -59,20 +60,20 @@ const SendTilBeslutterFooter: React.FC<{
     const [feilmelding, settFeilmelding] = useState<string>();
     const [visModal, settVisModal] = useState<boolean>(false);
     const [kanOppretteFremlegg, settKanOppretteFremlegg] = useState<boolean>(false);
-    const [skalOppretteFremleggsoppgave, settSkalOppretteFremleggsoppgave] = useState<
+    const [oppgaverAutomatiskOpprettelse, settOppgaverAutomatiskOpprettelse] = useState<
         FremleggsoppgaveType[]
-    >(Object.values(FremleggsoppgaveType));
+    >(oppgaveSomSkalAutomatiskOpprettes);
     const erFørstegangsbehandling = behandlingstype === Behandlingstype.FØRSTEGANGSBEHANDLING;
 
     const sjekkOmFremleggKanOpprettes = useCallback(() => {
         if (erFørstegangsbehandling) {
-            axiosRequest<IFremleggsoppgave, undefined>({
+            axiosRequest<IAutomatiskOppgave, undefined>({
                 method: 'GET',
                 url: `/familie-ef-sak/api/fremleggsoppgave/${behandlingId}`,
-            }).then((res: RessursSuksess<IFremleggsoppgave> | RessursFeilet) => {
+            }).then((res: RessursSuksess<IAutomatiskOppgave> | RessursFeilet) => {
                 if (res.status === RessursStatus.SUKSESS) {
-                    if (res.data.oppgavetyper !== null) {
-                        settSkalOppretteFremleggsoppgave(res.data.oppgavetyper);
+                    if (res.data.oppgavetyper) {
+                        settOppgaverAutomatiskOpprettelse(res.data.oppgavetyper);
                     }
                     settKanOppretteFremlegg(res.data.kanOppretteFremleggsoppgave);
                 } else {
@@ -83,13 +84,13 @@ const SendTilBeslutterFooter: React.FC<{
     }, [axiosRequest, behandlingId, erFørstegangsbehandling]);
 
     const sendTilBeslutter = () => {
-        const fremleggsOppgave: IFremleggsoppgave = {
+        const fremleggsOppgave: IAutomatiskOppgave = {
             kanOppretteFremleggsoppgave: kanOppretteFremlegg,
-            oppgavetyper: skalOppretteFremleggsoppgave,
+            oppgavetyper: oppgaverAutomatiskOpprettelse,
         };
         settLaster(true);
         settFeilmelding(undefined);
-        axiosRequest<string, IFremleggsoppgave>({
+        axiosRequest<string, IAutomatiskOppgave>({
             method: 'POST',
             url: `/familie-ef-sak/api/vedtak/${behandlingId}/send-til-beslutter`,
             data: fremleggsOppgave,
@@ -111,13 +112,12 @@ const SendTilBeslutterFooter: React.FC<{
     }, [sjekkOmFremleggKanOpprettes]);
 
     const håndterCheckboxEndring = (oppgavetype: FremleggsoppgaveType) => {
-        if (skalOppretteFremleggsoppgave.includes(oppgavetype)) {
-            settSkalOppretteFremleggsoppgave(
-                skalOppretteFremleggsoppgave.filter((str) => str !== oppgavetype)
+        if (oppgaverAutomatiskOpprettelse.includes(oppgavetype)) {
+            settOppgaverAutomatiskOpprettelse((prevState) =>
+                prevState.filter((prevOppgavetype) => prevOppgavetype !== oppgavetype)
             );
         } else {
-            const updatedArray = [...skalOppretteFremleggsoppgave, oppgavetype];
-            settSkalOppretteFremleggsoppgave(updatedArray);
+            settOppgaverAutomatiskOpprettelse((prevState) => [...prevState, oppgavetype]);
         }
     };
     const håndterCheckboxEndringInntekt = () => {
@@ -150,7 +150,7 @@ const SendTilBeslutterFooter: React.FC<{
                             behandlingErRedigerbar={behandlingErRedigerbar}
                             håndterCheckboxEndring={håndterCheckboxEndringInntekt}
                             kanOppretteFremlegg={kanOppretteFremlegg}
-                            skalOppretteFremlegg={skalOppretteFremleggsoppgave.includes(
+                            skalOppretteFremlegg={oppgaverAutomatiskOpprettelse.includes(
                                 FremleggsoppgaveType.INNTEKTSKONTROLL_1_ÅR_FREM_I_TID
                             )}
                         />
