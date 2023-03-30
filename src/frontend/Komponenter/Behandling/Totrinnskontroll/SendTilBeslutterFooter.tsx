@@ -36,9 +36,20 @@ export enum OppgaveForOpprettelseType {
 }
 
 export interface IOppgaveForOpprettelse {
-    oppgaverSomKanOpprettes: OppgaveForOpprettelseType[];
-    oppgavetyper?: OppgaveForOpprettelseType[];
+    oppgavetyperSomKanOpprettes: OppgaveForOpprettelseType[];
+    oppgavetyperSomSkalOpprettes: OppgaveForOpprettelseType[];
+    opprettelseTattStillingTil: boolean;
 }
+
+export const fremleggOppgaveTilTekst: Record<OppgaveForOpprettelseType, string> = {
+    INNTEKTSKONTROLL_1_ÅR_FREM_I_TID: 'Oppgave for inntektskontroll, 1 år frem i tid',
+};
+
+const tomOppgaveForOpprettelse: IOppgaveForOpprettelse = {
+    oppgavetyperSomSkalOpprettes: [],
+    oppgavetyperSomKanOpprettes: [],
+    opprettelseTattStillingTil: false,
+};
 
 const SendTilBeslutterFooter: React.FC<{
     behandlingId: string;
@@ -51,7 +62,6 @@ const SendTilBeslutterFooter: React.FC<{
     behandlingErRedigerbar,
     ferdigstillUtenBeslutter,
 }) => {
-    const oppgaveSomSkalAutomatiskOpprettes = Object.values(OppgaveForOpprettelseType);
     const { axiosRequest } = useApp();
     const navigate = useNavigate();
     const { behandlingstype, hentTotrinnskontroll, hentBehandling, hentBehandlingshistorikk } =
@@ -59,43 +69,42 @@ const SendTilBeslutterFooter: React.FC<{
     const [laster, settLaster] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>();
     const [visModal, settVisModal] = useState<boolean>(false);
-    const [kanOppretteOppgaver, settKanOppretteOppgaver] = useState<OppgaveForOpprettelseType[]>(
-        []
-    );
-    const [oppgaverAutomatiskOpprettelse, settOppgaverAutomatiskOpprettelse] = useState<
-        OppgaveForOpprettelseType[]
-    >(oppgaveSomSkalAutomatiskOpprettes);
-    const erFørstegangsbehandling = behandlingstype === Behandlingstype.FØRSTEGANGSBEHANDLING;
+    const [oppgaveForOpprettelse, settOppgaveForOpprettelse] =
+        useState<IOppgaveForOpprettelse>(tomOppgaveForOpprettelse);
 
-    const hentOppgaverSomKanOpprettes = useCallback(() => {
-        if (erFørstegangsbehandling) {
+    const initierOpprettOppgave = (oppgaveForOpprettelse: IOppgaveForOpprettelse) => {
+        if (oppgaveForOpprettelse.opprettelseTattStillingTil) {
+            settOppgaveForOpprettelse(oppgaveForOpprettelse);
+        } else {
+            settOppgaveForOpprettelse({
+                ...oppgaveForOpprettelse,
+                oppgavetyperSomSkalOpprettes: oppgaveForOpprettelse.oppgavetyperSomKanOpprettes,
+            });
+        }
+    };
+
+    const sjekkOmFremleggKanOpprettes = useCallback(() => {
+        if (behandlingstype === Behandlingstype.FØRSTEGANGSBEHANDLING) {
             axiosRequest<IOppgaveForOpprettelse, undefined>({
                 method: 'GET',
                 url: `/familie-ef-sak/api/oppgaverforopprettelse/${behandlingId}`,
             }).then((res: RessursSuksess<IOppgaveForOpprettelse> | RessursFeilet) => {
                 if (res.status === RessursStatus.SUKSESS) {
-                    if (res.data.oppgavetyper) {
-                        settOppgaverAutomatiskOpprettelse(res.data.oppgavetyper);
-                    }
-                    settKanOppretteOppgaver(res.data.oppgaverSomKanOpprettes);
+                    initierOpprettOppgave(res.data);
                 } else {
                     settFeilmelding(res.frontendFeilmelding);
                 }
             });
         }
-    }, [axiosRequest, behandlingId, erFørstegangsbehandling]);
+    }, [axiosRequest, behandlingId, behandlingstype]);
 
     const sendTilBeslutter = () => {
-        const fremleggsOppgave: IOppgaveForOpprettelse = {
-            oppgaverSomKanOpprettes: kanOppretteOppgaver,
-            oppgavetyper: oppgaverAutomatiskOpprettelse,
-        };
         settLaster(true);
         settFeilmelding(undefined);
         axiosRequest<string, IOppgaveForOpprettelse>({
             method: 'POST',
             url: `/familie-ef-sak/api/vedtak/${behandlingId}/send-til-beslutter`,
-            data: fremleggsOppgave,
+            data: { ...oppgaveForOpprettelse, opprettelseTattStillingTil: true },
         })
             .then((res: RessursSuksess<string> | RessursFeilet) => {
                 if (res.status === RessursStatus.SUKSESS) {
@@ -110,20 +119,26 @@ const SendTilBeslutterFooter: React.FC<{
     };
 
     useEffect(() => {
-        hentOppgaverSomKanOpprettes();
-    }, [hentOppgaverSomKanOpprettes]);
+        sjekkOmFremleggKanOpprettes();
+    }, [sjekkOmFremleggKanOpprettes]);
 
     const håndterCheckboxEndring = (oppgavetype: OppgaveForOpprettelseType) => {
-        if (oppgaverAutomatiskOpprettelse.includes(oppgavetype)) {
-            settOppgaverAutomatiskOpprettelse((prevState) =>
-                prevState.filter((prevOppgavetype) => prevOppgavetype !== oppgavetype)
-            );
+        if (oppgaveForOpprettelse.oppgavetyperSomSkalOpprettes.includes(oppgavetype)) {
+            settOppgaveForOpprettelse((prevState) => ({
+                ...prevState,
+                oppgavetyperSomSkalOpprettes: prevState.oppgavetyperSomSkalOpprettes.filter(
+                    (prevOppgavetype) => prevOppgavetype != oppgavetype
+                ),
+            }));
         } else {
-            settOppgaverAutomatiskOpprettelse((prevState) => [...prevState, oppgavetype]);
+            settOppgaveForOpprettelse((prevState) => ({
+                ...prevState,
+                oppgavetyperSomSkalOpprettes: [
+                    ...prevState.oppgavetyperSomSkalOpprettes,
+                    oppgavetype,
+                ],
+            }));
         }
-    };
-    const håndterCheckboxEndringInntekt = () => {
-        håndterCheckboxEndring(OppgaveForOpprettelseType.INNTEKTSKONTROLL_1_ÅR_FREM_I_TID);
     };
 
     const lukkModal = () => {
@@ -141,34 +156,29 @@ const SendTilBeslutterFooter: React.FC<{
 
     return (
         <>
-            {behandlingErRedigerbar != null && (
-                <FremleggsoppgaveInntekt
-                    behandlingErRedigerbar={behandlingErRedigerbar}
-                    håndterCheckboxEndring={håndterCheckboxEndringInntekt}
-                    kanOppretteFremlegg={kanOppretteOppgaver.includes(
-                        OppgaveForOpprettelseType.INNTEKTSKONTROLL_1_ÅR_FREM_I_TID
-                    )}
-                    erFørstegangsbehandling={erFørstegangsbehandling}
-                    skalOppretteFremlegg={oppgaverAutomatiskOpprettelse.includes(
-                        OppgaveForOpprettelseType.INNTEKTSKONTROLL_1_ÅR_FREM_I_TID
-                    )}
-                />
-            )}
-            {behandlingErRedigerbar && (
+            {(behandlingErRedigerbar ||
+                oppgaveForOpprettelse.oppgavetyperSomKanOpprettes.length > 0) && (
                 <Footer>
                     {feilmelding && <AlertStripeFeilPreWrap>{feilmelding}</AlertStripeFeilPreWrap>}
                     {ferdigstillUtenBeslutter && (
                         <AlertInfo>Vedtaket vil ikke bli sendt til totrinnskontroll</AlertInfo>
                     )}
-                    <MidtstiltInnhold>
-                        <HovedKnapp
-                            onClick={sendTilBeslutter}
-                            disabled={laster || !kanSendesTilBeslutter}
-                            type={'button'}
-                        >
-                            {ferdigstillTittel}
-                        </HovedKnapp>
-                    </MidtstiltInnhold>
+                    <FremleggsoppgaveInntekt
+                        behandlingErRedigerbar={behandlingErRedigerbar}
+                        oppgaveForOpprettelse={oppgaveForOpprettelse}
+                        håndterCheckboxEndring={håndterCheckboxEndring}
+                    />
+                    {behandlingErRedigerbar && (
+                        <MidtstiltInnhold>
+                            <HovedKnapp
+                                onClick={sendTilBeslutter}
+                                disabled={laster || !kanSendesTilBeslutter}
+                                type={'button'}
+                            >
+                                {ferdigstillTittel}
+                            </HovedKnapp>
+                        </MidtstiltInnhold>
+                    )}
                 </Footer>
             )}
             <ModalWrapper
