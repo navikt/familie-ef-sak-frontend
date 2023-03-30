@@ -4,6 +4,7 @@ import { mergeWithCustomize } from 'webpack-merge';
 import common from './webpack.common';
 import CopyPlugin from 'copy-webpack-plugin';
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
+import ESLintPlugin from 'eslint-webpack-plugin';
 
 const config = mergeWithCustomize({
     'entry.familie-ef-sak': 'prepend',
@@ -51,7 +52,10 @@ const config = mergeWithCustomize({
             },
         ],
     },
-    devtool: 'inline-source-map',
+    devtool: 'eval-cheap-module-source-map',
+    experiments: {
+        backCompat: false,
+    },
     plugins: [
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify('development'),
@@ -65,6 +69,10 @@ const config = mergeWithCustomize({
                     to: path.join(process.cwd(), 'frontend_development'),
                 },
             ],
+        }),
+        new ESLintPlugin({
+            cache: true,
+            extensions: [`ts`, `tsx`],
         }),
     ],
 });

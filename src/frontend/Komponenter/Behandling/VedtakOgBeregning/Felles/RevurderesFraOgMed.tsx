@@ -59,7 +59,7 @@ export const RevurderesFraOgMed: React.FC<{
                     settRevurderesFra(årMåned);
                     hentVedtakshistorikk(årMåned);
                 }}
-                antallÅrTilbake={5}
+                antallÅrTilbake={10}
                 antallÅrFrem={3}
                 årMånedInitiell={revurderesFra}
             />
