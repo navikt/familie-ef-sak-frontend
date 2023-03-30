@@ -36,8 +36,6 @@ const SettPåVentWrapper = styled.div`
     grid-template-rows: auto 1fr;
     background-color: ${ABgSubtle};
     padding: 2rem;
-    min-height: 30vh;
-    max-height: 70vh;
 `;
 
 const KnappeWrapper = styled.div`
