@@ -6,6 +6,7 @@ import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import TerserPlugin from 'terser-webpack-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
 import CompressionPlugin from 'compression-webpack-plugin';
+import ESLintPlugin from 'eslint-webpack-plugin';
 
 const config = mergeWithCustomize({
     'entry.familie-ef-sak': 'prepend',
@@ -23,6 +24,14 @@ const config = mergeWithCustomize({
     devtool: 'source-map',
     module: {
         rules: [
+            {
+                test: /\.(jsx|tsx|ts|js)?$/,
+                exclude: /node_modules/,
+                loader: 'babel-loader',
+                options: {
+                    presets: ['react-app'],
+                },
+            },
             {
                 test: /\.(css|less)$/,
                 use: [
@@ -56,6 +65,9 @@ const config = mergeWithCustomize({
             'process.env.NODE_ENV': JSON.stringify('production'),
         }),
         new MiniCssExtractPlugin(),
+        new ESLintPlugin({
+            extensions: [`ts`, `tsx`],
+        }),
         new CopyPlugin({
             patterns: [
                 {
