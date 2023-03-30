@@ -28,6 +28,7 @@ import {
 } from '../../../App/typer/behandlingstatus';
 import { Behandling } from '../../../App/typer/fagsak';
 import { TaAvVentModal } from './TaAvVentModal';
+import { EToast } from '../../../App/typer/toast';
 
 const AlertStripe = styled(Alert)`
     margin-top: 1rem;
@@ -74,7 +75,7 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
     const erBehandlingPåVent = behandling.status === BehandlingStatus.SATT_PÅ_VENT;
     const { visSettPåVent, settVisSettPåVent, hentBehandling } = useBehandling();
     const { toggles } = useToggles();
-    const { axiosRequest } = useApp();
+    const { axiosRequest, settToast } = useApp();
 
     const [oppgave, settOppgave] = useState<Ressurs<IOppgave>>(byggTomRessurs());
     const [taAvVentStatus, settTaAvVentStatus] = useState<ETaAvVentStatus>();
@@ -166,6 +167,7 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
                 if (respons.status == RessursStatus.SUKSESS) {
                     hentBehandling.rerun();
                     lukkModal();
+                    settToast(EToast.BEHANDLING_SATT_PÅ_VENT);
                 } else {
                     settFeilmelding(respons.frontendFeilmelding);
                 }
