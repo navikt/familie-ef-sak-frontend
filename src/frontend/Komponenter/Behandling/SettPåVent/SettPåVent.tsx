@@ -21,6 +21,13 @@ import { MappeVelger } from './MappeVelger';
 import { SaksbehandlerVelger } from './SaksbehandlerVelger';
 import { PrioritetVelger } from './PrioritetVelger';
 import { BreakWordBodyLongSmall } from '../../../Felles/Visningskomponenter/BreakWordBodyLongSmall';
+import {
+    BehandlingStatus,
+    ETaAvVentStatus,
+    TaAvVentStatus,
+} from '../../../App/typer/behandlingstatus';
+import { Behandling } from '../../../App/typer/fagsak';
+import { TaAvVentModal } from './TaAvVentModal';
 
 const AlertStripe = styled(Alert)`
     margin-top: 1rem;
@@ -63,20 +70,22 @@ type SettPåVentRequest = {
     beskrivelse: string | undefined;
 };
 
-export const SettPåVent: FC<{ behandlingId: string }> = ({ behandlingId }) => {
+export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
+    const erBehandlingPåVent = behandling.status === BehandlingStatus.SATT_PÅ_VENT;
     const { visSettPåVent, settVisSettPåVent, hentBehandling } = useBehandling();
-    const [oppgave, settOppgave] = useState<Ressurs<IOppgave>>(byggTomRessurs());
     const { toggles } = useToggles();
     const { axiosRequest } = useApp();
 
+    const [oppgave, settOppgave] = useState<Ressurs<IOppgave>>(byggTomRessurs());
+    const [taAvVentStatus, settTaAvVentStatus] = useState<ETaAvVentStatus>();
     const [låsKnapp, settLåsKnapp] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>();
+
     // Oppgavefelter
     const [saksbehandler, settSaksbehandler] = useState<string>('');
     const [prioritet, settPrioritet] = useState<Prioritet | undefined>();
     const [frist, settFrist] = useState<string | undefined>();
     const [mappe, settMappe] = useState<number | undefined>();
-
     const [beskrivelse, settBeskrivelse] = useState('');
 
     const lukkModal = () => {
@@ -87,9 +96,9 @@ export const SettPåVent: FC<{ behandlingId: string }> = ({ behandlingId }) => {
     const hentOppgaveForBehandling = useCallback(() => {
         axiosRequest<IOppgave, null>({
             method: 'GET',
-            url: `/familie-ef-sak/api/oppgave/behandling/${behandlingId}`,
+            url: `/familie-ef-sak/api/oppgave/behandling/${behandling.id}`,
         }).then(settOppgave);
-    }, [behandlingId, axiosRequest]);
+    }, [behandling.id, axiosRequest]);
 
     useEffect(() => {
         if (oppgave.status === RessursStatus.SUKSESS) {
@@ -106,6 +115,33 @@ export const SettPåVent: FC<{ behandlingId: string }> = ({ behandlingId }) => {
         }
     }, [visSettPåVent, hentOppgaveForBehandling]);
 
+    const taAvVent = () => {
+        axiosRequest<string, null>({
+            method: 'POST',
+            url: `/familie-ef-sak/api/behandling/${behandling.id}/aktiver`,
+        }).then((respons: RessursFeilet | RessursSuksess<string>) => {
+            if (respons.status === RessursStatus.SUKSESS) {
+                hentBehandling.rerun();
+            } else {
+                settFeilmelding(respons.frontendFeilmelding);
+            }
+        });
+    };
+
+    const håndterFortsettBehandling = () => {
+        axiosRequest<TaAvVentStatus, null>({
+            method: 'GET',
+            url: `/familie-ef-sak/api/behandling/${behandling.id}/kan-ta-av-vent`,
+        }).then((respons: RessursFeilet | RessursSuksess<TaAvVentStatus>) => {
+            if (respons.status === RessursStatus.SUKSESS) {
+                respons.data.status === ETaAvVentStatus.OK
+                    ? taAvVent()
+                    : settTaAvVentStatus(respons.data.status);
+            } else {
+                settFeilmelding(respons.frontendFeilmelding);
+            }
+        });
+    };
     const settPåVent = () => {
         const kanSettePåVent = saksbehandler && prioritet && frist;
 
@@ -117,7 +153,7 @@ export const SettPåVent: FC<{ behandlingId: string }> = ({ behandlingId }) => {
 
         axiosRequest<string, SettPåVentRequest>({
             method: 'POST',
-            url: `/familie-ef-sak/api/behandling/${behandlingId}/vent`,
+            url: `/familie-ef-sak/api/behandling/${behandling.id}/vent`,
             data: {
                 saksbehandler,
                 prioritet,
@@ -139,50 +175,84 @@ export const SettPåVent: FC<{ behandlingId: string }> = ({ behandlingId }) => {
 
     return visSettPåVent && toggles[ToggleName.settPåVentMedOppgavestyring] ? (
         <DataViewer response={{ oppgave }}>
-            {({ oppgave }) => (
-                <SettPåVentWrapper>
-                    <Heading size={'medium'}>Sett behandling på vent</Heading>
-                    <FlexDiv>
-                        <OppgaveValg>
-                            <SaksbehandlerVelger
-                                oppgave={oppgave}
-                                saksbehandler={saksbehandler}
-                                settSaksbehandler={settSaksbehandler}
-                            />
-                            <PrioritetVelger prioritet={prioritet} settPrioritet={settPrioritet} />
-                            <FristVelger oppgave={oppgave} settFrist={settFrist} />
-                            <MappeVelger
-                                oppgaveEnhet={oppgave.tildeltEnhetsnr}
-                                settMappe={settMappe}
-                                valgtMappe={mappe}
-                            />
-                        </OppgaveValg>
-                        <section>
-                            <Label size={'small'}>Beskrivelseshistorikk</Label>
-                            <BreakWordBodyLongSmall>{oppgave.beskrivelse}</BreakWordBodyLongSmall>
-                        </section>
-                        <Beskrivelse
-                            label={'Beskrivelse'}
-                            size={'small'}
-                            value={beskrivelse}
-                            onChange={(e) => settBeskrivelse(e.target.value)}
+            {({ oppgave }) => {
+                return (
+                    <SettPåVentWrapper>
+                        {erBehandlingPåVent ? (
+                            <Heading size={'medium'}>Behandling på vent</Heading>
+                        ) : (
+                            <Heading size={'medium'}>Sett behandling på vent</Heading>
+                        )}
+                        <FlexDiv>
+                            <OppgaveValg>
+                                <SaksbehandlerVelger
+                                    oppgave={oppgave}
+                                    saksbehandler={saksbehandler}
+                                    settSaksbehandler={settSaksbehandler}
+                                    erLesevisning={erBehandlingPåVent}
+                                />
+                                <PrioritetVelger
+                                    prioritet={prioritet}
+                                    settPrioritet={settPrioritet}
+                                    erLesevisning={erBehandlingPåVent}
+                                />
+                                <FristVelger
+                                    oppgave={oppgave}
+                                    settFrist={settFrist}
+                                    erLesevisning={erBehandlingPåVent}
+                                />
+                                <MappeVelger
+                                    oppgaveEnhet={oppgave.tildeltEnhetsnr}
+                                    settMappe={settMappe}
+                                    valgtMappe={mappe}
+                                    erLesevisning={erBehandlingPåVent}
+                                />
+                            </OppgaveValg>
+                            <section>
+                                <Label size={'small'}>Beskrivelseshistorikk</Label>
+                                <BreakWordBodyLongSmall>
+                                    {oppgave.beskrivelse}
+                                </BreakWordBodyLongSmall>
+                            </section>
+                            {!erBehandlingPåVent && (
+                                <Beskrivelse
+                                    label={'Beskrivelse'}
+                                    size={'small'}
+                                    value={beskrivelse}
+                                    onChange={(e) => settBeskrivelse(e.target.value)}
+                                />
+                            )}
+                        </FlexDiv>
+                        <KnappeWrapper>
+                            {!erBehandlingPåVent && (
+                                <Button
+                                    onClick={() => settVisSettPåVent(false)}
+                                    type={'button'}
+                                    variant={'tertiary'}
+                                >
+                                    Avbryt
+                                </Button>
+                            )}
+                            {!erBehandlingPåVent && (
+                                <Button onClick={settPåVent} type={'button'} disabled={låsKnapp}>
+                                    Sett på vent
+                                </Button>
+                            )}
+                            {erBehandlingPåVent && (
+                                <Button onClick={håndterFortsettBehandling} type={'button'}>
+                                    Ta av vent
+                                </Button>
+                            )}
+                        </KnappeWrapper>
+                        {feilmelding && <AlertStripe variant={'error'}>{feilmelding}</AlertStripe>}
+                        <TaAvVentModal
+                            behandlingId={behandling.id}
+                            taAvVentStatus={taAvVentStatus}
+                            nullstillTaAvVentStatus={() => settTaAvVentStatus(undefined)}
                         />
-                    </FlexDiv>
-                    <KnappeWrapper>
-                        <Button
-                            onClick={() => settVisSettPåVent(false)}
-                            type={'button'}
-                            variant={'tertiary'}
-                        >
-                            Avbryt
-                        </Button>
-                        <Button onClick={settPåVent} type={'button'} disabled={låsKnapp}>
-                            Sett på vent
-                        </Button>
-                    </KnappeWrapper>
-                    {feilmelding && <AlertStripe variant={'error'}>{feilmelding}</AlertStripe>}
-                </SettPåVentWrapper>
-            )}
+                    </SettPåVentWrapper>
+                );
+            }}
         </DataViewer>
     ) : null;
 };

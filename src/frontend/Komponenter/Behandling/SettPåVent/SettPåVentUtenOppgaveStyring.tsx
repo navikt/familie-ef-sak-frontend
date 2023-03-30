@@ -28,6 +28,9 @@ const KnappeWrapper = styled.div`
     margin-right: 15%;
 `;
 
+/**
+ * Kan slettes når ToggleName.settPåVentMedOppgavestyring er skrudd på
+ */
 export const SettPåVentUtenOppgaveStyring: FC<{ behandlingId: string }> = ({ behandlingId }) => {
     const { visSettPåVent, settVisSettPåVent, hentBehandling } = useBehandling();
 

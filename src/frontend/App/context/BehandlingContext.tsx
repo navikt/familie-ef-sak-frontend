@@ -9,14 +9,22 @@ import { useHentBehandlingHistorikk } from '../hooks/useHentBehandlingHistorikk'
 import { useHentTotrinnskontroll } from '../hooks/useHentTotrinnStatus';
 import { useHentRegler } from '../hooks/useHentRegler';
 import { RessursStatus } from '../typer/ressurs';
-import { erBehandlingRedigerbar, utredesEllerFatterVedtak } from '../typer/behandlingstatus';
+import {
+    BehandlingStatus,
+    erBehandlingRedigerbar,
+    utredesEllerFatterVedtak,
+} from '../typer/behandlingstatus';
 import { useApp } from './AppContext';
 import { useHentUtestengelser } from '../hooks/useHentUtestengelser';
 import { useHentEndringerPersonopplysninger } from '../hooks/useHentEndringerPersonopplysninger';
 import { useVilkår } from '../hooks/useVilkår';
+import { ToggleName } from './toggles';
+import { useToggles } from './TogglesContext';
 
 const [BehandlingProvider, useBehandling] = constate(() => {
     const { axiosRequest } = useApp();
+    const { toggles } = useToggles();
+
     const behandlingId = useParams<IBehandlingParams>().behandlingId as string;
 
     const [behandlingErRedigerbar, settBehandlingErRedigerbar] = useState<boolean>(true);
@@ -45,14 +53,18 @@ const [BehandlingProvider, useBehandling] = constate(() => {
     const hentTotrinnskontroll = useRerunnableEffect(hentTotrinnskontrollCallback, [behandlingId]);
     // eslint-disable-next-line
     useEffect(() => hentPersonopplysninger(behandlingId), [behandlingId]);
-    useEffect(
-        () =>
-            settBehandlingErRedigerbar(
+    useEffect(() => {
+        settBehandlingErRedigerbar(
+            behandling.status === RessursStatus.SUKSESS && erBehandlingRedigerbar(behandling.data)
+        );
+        if (toggles[ToggleName.settPåVentMedOppgavestyring]) {
+            settVisSettPåVent(
                 behandling.status === RessursStatus.SUKSESS &&
-                    erBehandlingRedigerbar(behandling.data)
-            ),
-        [behandling]
-    );
+                    behandling.data.status === BehandlingStatus.SATT_PÅ_VENT
+            );
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [behandling]);
     useEffect(() => {
         if (behandlingErRedigerbar) {
             axiosRequest<string | null, string>({

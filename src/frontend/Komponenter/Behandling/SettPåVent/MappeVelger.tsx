@@ -1,16 +1,17 @@
 import React, { FC, useEffect, useState } from 'react';
-import { Select } from '@navikt/ds-react';
 import { IMappe } from '../../Oppgavebenk/typer/mappe';
 import { byggTomRessurs, Ressurs } from '../../../App/typer/ressurs';
 import { useApp } from '../../../App/context/AppContext';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { sorterMapperPåNavn } from '../../Oppgavebenk/utils';
+import { FamilieSelect } from '@navikt/familie-form-elements';
 
 export const MappeVelger: FC<{
     oppgaveEnhet: string | undefined;
     valgtMappe: number | undefined;
     settMappe: (mappe: number | undefined) => void;
-}> = ({ valgtMappe, settMappe, oppgaveEnhet }) => {
+    erLesevisning: boolean;
+}> = ({ valgtMappe, settMappe, oppgaveEnhet, erLesevisning }) => {
     const [mapper, settMapper] = useState<Ressurs<IMappe[]>>(byggTomRessurs());
     const { axiosRequest } = useApp();
 
@@ -33,11 +34,16 @@ export const MappeVelger: FC<{
                         .filter((mappe) => mappe.enhetsnr === oppgaveEnhet)
                         .sort(sorterMapperPåNavn);
 
+                    const lesevisningVerdi = valgtMappe
+                        ? aktuelleMapper.find((m) => m.id === valgtMappe)?.navn || 'Ukjent'
+                        : 'Uplassert';
                     return (
-                        <Select
+                        <FamilieSelect
                             disabled={oppgaveEnhet === undefined}
                             label={'Mappe'}
                             size={'small'}
+                            erLesevisning={erLesevisning}
+                            lesevisningVerdi={lesevisningVerdi}
                             value={valgtMappe}
                             onChange={(e) => {
                                 const verdi = e.target.value;
@@ -50,7 +56,7 @@ export const MappeVelger: FC<{
                                     {mappe.navn}
                                 </option>
                             ))}
-                        </Select>
+                        </FamilieSelect>
                     );
                 }}
             </DataViewer>

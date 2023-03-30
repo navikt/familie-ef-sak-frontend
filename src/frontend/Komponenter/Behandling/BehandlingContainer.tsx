@@ -82,7 +82,7 @@ const BehandlingContent: FC<{
                 <InnholdWrapper åpenHøyremeny={åpenHøyremeny}>
                     <Fanemeny behandlingId={behandling.id} />
                     <SettPåVentUtenOppgaveStyring behandlingId={behandling.id} />
-                    <SettPåVent behandlingId={behandling.id} />
+                    <SettPåVent behandling={behandling} />
                     <InfostripeUtestengelse utestengelser={utestengelser} />
                     <InfostripeSattPåVent behandling={behandling} />
                     <Personopplysningsendringer behandlingId={behandling.id} />

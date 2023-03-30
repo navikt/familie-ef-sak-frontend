@@ -1,24 +1,26 @@
 import React, { FC } from 'react';
-import { Select } from '@navikt/ds-react';
 import { useApp } from '../../../App/context/AppContext';
 import { IOppgave } from '../../Oppgavebenk/typer/oppgave';
+import { FamilieSelect } from '@navikt/familie-form-elements';
 
 export const SaksbehandlerVelger: FC<{
     oppgave: IOppgave;
     saksbehandler: string | undefined;
     settSaksbehandler: (saksbehandler: string) => void;
-}> = ({ oppgave, saksbehandler, settSaksbehandler }) => {
+    erLesevisning: boolean;
+}> = ({ oppgave, saksbehandler, settSaksbehandler, erLesevisning }) => {
     const { innloggetSaksbehandler } = useApp();
 
     return (
         <div>
-            <Select
+            <FamilieSelect
                 label={'Saksbehandler'}
                 size={'small'}
                 value={saksbehandler}
                 onChange={(e) => {
                     settSaksbehandler(e.target.value);
                 }}
+                erLesevisning={erLesevisning}
             >
                 {oppgave.tilordnetRessurs &&
                     innloggetSaksbehandler.navIdent !== oppgave.tilordnetRessurs && (
@@ -28,7 +30,7 @@ export const SaksbehandlerVelger: FC<{
                     {innloggetSaksbehandler.displayName}
                 </option>
                 <option value={''}>Ingen</option>
-            </Select>
+            </FamilieSelect>
         </div>
     );
 };

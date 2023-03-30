@@ -1,16 +1,19 @@
 import React, { FC } from 'react';
-import { Select } from '@navikt/ds-react';
 import { Prioritet, prioritetTilTekst } from '../../Oppgavebenk/typer/oppgavetema';
+import { FamilieSelect } from '@navikt/familie-form-elements';
 
 export const PrioritetVelger: FC<{
     prioritet: Prioritet | undefined;
     settPrioritet: (prioritet: Prioritet) => void;
-}> = ({ prioritet, settPrioritet }) => (
+    erLesevisning: boolean;
+}> = ({ prioritet, settPrioritet, erLesevisning }) => (
     <div>
-        <Select
+        <FamilieSelect
             label={'Prioritet'}
             size={'small'}
             value={prioritet}
+            erLesevisning={erLesevisning}
+            lesevisningVerdi={prioritet ? prioritetTilTekst[prioritet] : 'Ikke satt'}
             onChange={(e) => {
                 settPrioritet(e.target.value as Prioritet);
             }}
@@ -22,6 +25,6 @@ export const PrioritetVelger: FC<{
                     </option>
                 );
             })}
-        </Select>
+        </FamilieSelect>
     </div>
 );
