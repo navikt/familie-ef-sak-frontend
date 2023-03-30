@@ -35,10 +35,21 @@ export enum FremleggsoppgaveType {
     INNTEKTSKONTROLL_1_ÅR_FREM_I_TID = 'INNTEKTSKONTROLL_1_ÅR_FREM_I_TID',
 }
 
-export interface IAutomatiskOppgave {
-    kanOppretteFremleggsoppgave: boolean;
-    oppgavetyper?: FremleggsoppgaveType[];
+export interface FremleggWrapper {
+    oppgavetyperSomKanOpprettes: FremleggsoppgaveType[];
+    oppgavetyperSomSkalOpprettes: FremleggsoppgaveType[];
+    opprettelseTattStillingTil: boolean;
 }
+
+export const fremleggOppgaveTilTekst: Record<FremleggsoppgaveType, string> = {
+    INNTEKTSKONTROLL_1_ÅR_FREM_I_TID: 'Oppgave for inntektskontroll, 1 år frem i tid',
+};
+
+const tomFremleggWrapper: FremleggWrapper = {
+    oppgavetyperSomSkalOpprettes: [],
+    oppgavetyperSomKanOpprettes: [],
+    opprettelseTattStillingTil: false,
+};
 
 const SendTilBeslutterFooter: React.FC<{
     behandlingId: string;
@@ -51,7 +62,6 @@ const SendTilBeslutterFooter: React.FC<{
     behandlingErRedigerbar,
     ferdigstillUtenBeslutter,
 }) => {
-    const oppgaveSomSkalAutomatiskOpprettes = Object.values(FremleggsoppgaveType);
     const { axiosRequest } = useApp();
     const navigate = useNavigate();
     const { behandlingstype, hentTotrinnskontroll, hentBehandling, hentBehandlingshistorikk } =
@@ -59,41 +69,41 @@ const SendTilBeslutterFooter: React.FC<{
     const [laster, settLaster] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>();
     const [visModal, settVisModal] = useState<boolean>(false);
-    const [kanOppretteFremlegg, settKanOppretteFremlegg] = useState<boolean>(false);
-    const [oppgaverAutomatiskOpprettelse, settOppgaverAutomatiskOpprettelse] = useState<
-        FremleggsoppgaveType[]
-    >(oppgaveSomSkalAutomatiskOpprettes);
-    const erFørstegangsbehandling = behandlingstype === Behandlingstype.FØRSTEGANGSBEHANDLING;
+    const [fremleggWrapper, settFremleggWrapper] = useState<FremleggWrapper>(tomFremleggWrapper);
+
+    const initierFremlegWrapper = (fremleggWrapper: FremleggWrapper) => {
+        if (fremleggWrapper.opprettelseTattStillingTil) {
+            settFremleggWrapper(fremleggWrapper);
+        } else {
+            settFremleggWrapper({
+                ...fremleggWrapper,
+                oppgavetyperSomSkalOpprettes: fremleggWrapper.oppgavetyperSomKanOpprettes,
+            });
+        }
+    };
 
     const sjekkOmFremleggKanOpprettes = useCallback(() => {
-        if (erFørstegangsbehandling) {
-            axiosRequest<IAutomatiskOppgave, undefined>({
+        if (behandlingstype === Behandlingstype.FØRSTEGANGSBEHANDLING) {
+            axiosRequest<FremleggWrapper, undefined>({
                 method: 'GET',
                 url: `/familie-ef-sak/api/fremleggsoppgave/${behandlingId}`,
-            }).then((res: RessursSuksess<IAutomatiskOppgave> | RessursFeilet) => {
+            }).then((res: RessursSuksess<FremleggWrapper> | RessursFeilet) => {
                 if (res.status === RessursStatus.SUKSESS) {
-                    if (res.data.oppgavetyper) {
-                        settOppgaverAutomatiskOpprettelse(res.data.oppgavetyper);
-                    }
-                    settKanOppretteFremlegg(res.data.kanOppretteFremleggsoppgave);
+                    initierFremlegWrapper(res.data);
                 } else {
                     settFeilmelding(res.frontendFeilmelding);
                 }
             });
         }
-    }, [axiosRequest, behandlingId, erFørstegangsbehandling]);
+    }, [axiosRequest, behandlingId, behandlingstype]);
 
     const sendTilBeslutter = () => {
-        const fremleggsOppgave: IAutomatiskOppgave = {
-            kanOppretteFremleggsoppgave: kanOppretteFremlegg,
-            oppgavetyper: oppgaverAutomatiskOpprettelse,
-        };
         settLaster(true);
         settFeilmelding(undefined);
-        axiosRequest<string, IAutomatiskOppgave>({
+        axiosRequest<string, FremleggWrapper>({
             method: 'POST',
             url: `/familie-ef-sak/api/vedtak/${behandlingId}/send-til-beslutter`,
-            data: fremleggsOppgave,
+            data: { ...fremleggWrapper, opprettelseTattStillingTil: true },
         })
             .then((res: RessursSuksess<string> | RessursFeilet) => {
                 if (res.status === RessursStatus.SUKSESS) {
@@ -112,16 +122,22 @@ const SendTilBeslutterFooter: React.FC<{
     }, [sjekkOmFremleggKanOpprettes]);
 
     const håndterCheckboxEndring = (oppgavetype: FremleggsoppgaveType) => {
-        if (oppgaverAutomatiskOpprettelse.includes(oppgavetype)) {
-            settOppgaverAutomatiskOpprettelse((prevState) =>
-                prevState.filter((prevOppgavetype) => prevOppgavetype !== oppgavetype)
-            );
+        if (fremleggWrapper.oppgavetyperSomSkalOpprettes.includes(oppgavetype)) {
+            settFremleggWrapper((prevState) => ({
+                ...prevState,
+                oppgavetyperSomSkalOpprettes: prevState.oppgavetyperSomSkalOpprettes.filter(
+                    (prevOppgavetype) => prevOppgavetype != oppgavetype
+                ),
+            }));
         } else {
-            settOppgaverAutomatiskOpprettelse((prevState) => [...prevState, oppgavetype]);
+            settFremleggWrapper((prevState) => ({
+                ...prevState,
+                oppgavetyperSomSkalOpprettes: [
+                    ...prevState.oppgavetyperSomSkalOpprettes,
+                    oppgavetype,
+                ],
+            }));
         }
-    };
-    const håndterCheckboxEndringInntekt = () => {
-        håndterCheckboxEndring(FremleggsoppgaveType.INNTEKTSKONTROLL_1_ÅR_FREM_I_TID);
     };
 
     const lukkModal = () => {
@@ -139,22 +155,17 @@ const SendTilBeslutterFooter: React.FC<{
 
     return (
         <>
-            {behandlingErRedigerbar && (
+            {(behandlingErRedigerbar || fremleggWrapper.oppgavetyperSomKanOpprettes.length > 0) && (
                 <Footer>
                     {feilmelding && <AlertStripeFeilPreWrap>{feilmelding}</AlertStripeFeilPreWrap>}
                     {ferdigstillUtenBeslutter && (
                         <AlertInfo>Vedtaket vil ikke bli sendt til totrinnskontroll</AlertInfo>
                     )}
-                    {erFørstegangsbehandling && (
-                        <FremleggsoppgaveInntekt
-                            behandlingErRedigerbar={behandlingErRedigerbar}
-                            håndterCheckboxEndring={håndterCheckboxEndringInntekt}
-                            kanOppretteFremlegg={kanOppretteFremlegg}
-                            skalOppretteFremlegg={oppgaverAutomatiskOpprettelse.includes(
-                                FremleggsoppgaveType.INNTEKTSKONTROLL_1_ÅR_FREM_I_TID
-                            )}
-                        />
-                    )}
+                    <FremleggsoppgaveInntekt
+                        behandlingErRedigerbar={behandlingErRedigerbar}
+                        fremleggWrapper={fremleggWrapper}
+                        håndterCheckboxEndring={håndterCheckboxEndring}
+                    />
                     {behandlingErRedigerbar && (
                         <MidtstiltInnhold>
                             <HovedKnapp
