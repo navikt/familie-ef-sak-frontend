@@ -121,7 +121,11 @@ const PersonoversiktContent: React.FC<{
                     value={path}
                     onChange={(tabPath) => {
                         navigate(tabPath);
-                        loggNavigereTabEvent({ side: 'person', fane: tabPath });
+                        loggNavigereTabEvent({
+                            side: 'person',
+                            forrigeFane: path,
+                            nesteFane: tabPath,
+                        });
                     }}
                 >
                     <Tabs.List>

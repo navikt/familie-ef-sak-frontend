@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { ISide, SideNavn } from './sider';
 import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 import { ABlue400, ABlue500, AGray100, AGray300, ATextAction } from '@navikt/ds-tokens/dist/tokens';
@@ -72,6 +72,8 @@ interface Props {
 
 const Fane: React.FC<Props> = ({ side, behandling, index, deaktivert }) => {
     const fanenavn = side.navn === SideNavn.KORRIGERING_UTEN_BREV ? SideNavn.BREV : side.navn;
+    const location = useLocation();
+    const nåværendeFane = location.pathname.split('/')[3];
     return (
         <>
             {deaktivert && (
@@ -86,7 +88,8 @@ const Fane: React.FC<Props> = ({ side, behandling, index, deaktivert }) => {
                     onClick={() =>
                         loggNavigereTabEvent({
                             side: 'behandling',
-                            fane: side.href,
+                            forrigeFane: nåværendeFane,
+                            nesteFane: side.href,
                             behandlingStatus: behandling.status,
                             behandlingSteg: behandling.steg,
                         })
