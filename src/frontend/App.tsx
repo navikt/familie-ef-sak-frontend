@@ -134,15 +134,15 @@ const AppInnhold: React.FC<{ innloggetSaksbehandler: ISaksbehandler }> = ({
 }) => {
     const location = useLocation();
 
-    const utledBesøktSide = (url: string): BesøkEvent => {
-        const paths = url.split('/');
+    const utledBesøktSide = (path: string): BesøkEvent => {
+        const paths = path.split('/');
         const side = paths[1];
 
         if (side === 'person' || side === 'behandling') {
             return { side: side, fane: paths.slice(3).join('/') };
         }
 
-        return { side: url };
+        return { side: path };
     };
 
     React.useEffect(() => {
