@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useEffect } from 'react';
-import { Checkbox } from '@navikt/ds-react';
+import { BodyShort, Checkbox } from '@navikt/ds-react';
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
 import { Behandling } from '../../../App/typer/fagsak';
 import { HentOppgaverForOpprettelseState } from '../../../App/hooks/useHentOppgaverForOpprettelse';
@@ -75,6 +75,9 @@ const OppgaverForOpprettelse: React.FC<{
                     );
                 })}
             </FamilieCheckboxGroup>
+            {!behandlingErRedigerbar && !checkboxverdier.length && (
+                <BodyShort>Ingen oppgave opprettes automatisk</BodyShort>
+            )}
         </AlertInfo>
     );
 };
