@@ -4,7 +4,8 @@ import { NavLink } from 'react-router-dom';
 import { ISide, SideNavn } from './sider';
 import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 import { ABlue400, ABlue500, AGray100, AGray300, ATextAction } from '@navikt/ds-tokens/dist/tokens';
-import { loggBesøkEvent } from '../../../App/utils/amplitude/amplitudeLoggEvents';
+import { loggNavigereTabEvent } from '../../../App/utils/amplitude/amplitudeLoggEvents';
+import { Behandling } from '../../../App/typer/fagsak';
 
 const StyledNavLink = styled(NavLink)`
     border-bottom: 5px solid white;
@@ -64,12 +65,12 @@ const StyledTekst = styled(BodyShortSmall)`
 
 interface Props {
     side: ISide;
-    behandlingId: string;
+    behandling: Behandling;
     index: number;
     deaktivert: boolean;
 }
 
-const Fane: React.FC<Props> = ({ side, behandlingId, index, deaktivert }) => {
+const Fane: React.FC<Props> = ({ side, behandling, index, deaktivert }) => {
     const fanenavn = side.navn === SideNavn.KORRIGERING_UTEN_BREV ? SideNavn.BREV : side.navn;
     return (
         <>
@@ -81,8 +82,15 @@ const Fane: React.FC<Props> = ({ side, behandlingId, index, deaktivert }) => {
             {!deaktivert && (
                 <StyledNavLink
                     key={side.navn}
-                    to={`/behandling/${behandlingId}/${side.href}`}
-                    onClick={() => loggBesøkEvent('behandling', side.href)}
+                    to={`/behandling/${behandling.id}/${side.href}`}
+                    onClick={() =>
+                        loggNavigereTabEvent({
+                            side: 'behandling',
+                            path: side.href,
+                            behandlingStatus: behandling.status,
+                            behandlingSteg: behandling.steg,
+                        })
+                    }
                 >
                     <StyledLenketekst>
                         {index + 1}. {fanenavn}
