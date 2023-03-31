@@ -4,3 +4,8 @@ export type NavigereTabEvent = {
     behandlingStatus?: string;
     behandlingSteg?: string;
 };
+
+export type BesøkEvent = {
+    side: string;
+    fane?: string;
+};

@@ -30,8 +30,10 @@ import {
     Outlet,
     Navigate,
     Route,
+    useLocation,
 } from 'react-router-dom';
 import UlagretDataModal from './Felles/Visningskomponenter/UlagretDataModal';
+import { loggBesøkEvent } from './App/utils/amplitude/amplitudeLoggEvents';
 
 // @ts-ignore
 Modal.setAppElement(document.getElementById('modal-a11y-wrapper'));
@@ -129,6 +131,13 @@ const AppRoutes: React.FC<{ innloggetSaksbehandler: ISaksbehandler }> = ({
 const AppInnhold: React.FC<{ innloggetSaksbehandler: ISaksbehandler }> = ({
     innloggetSaksbehandler,
 }) => {
+    const location = useLocation();
+
+    React.useEffect(() => {
+        const path = location.pathname.split('/');
+        loggBesøkEvent({ side: path[1], fane: path[3] });
+    }, [location]);
+
     return (
         <>
             <HeaderMedSøk innloggetSaksbehandler={innloggetSaksbehandler} />
