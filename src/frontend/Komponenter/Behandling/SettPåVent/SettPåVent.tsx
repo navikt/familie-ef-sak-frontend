@@ -69,6 +69,7 @@ type SettPåVentRequest = {
     frist: string;
     mappe: string | undefined;
     beskrivelse: string | undefined;
+    oppgaveVersjon: number;
 };
 
 export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
@@ -152,6 +153,13 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
 
         settLåsKnapp(true);
 
+        if (oppgave.status !== RessursStatus.SUKSESS || !oppgave.data.versjon) {
+            settFeilmelding(
+                'Teknisk feil. Mangler versjonsnumer for oppgave. Kontakt brukerstøtte'
+            );
+            return;
+        }
+
         axiosRequest<string, SettPåVentRequest>({
             method: 'POST',
             url: `/familie-ef-sak/api/behandling/${behandling.id}/vent`,
@@ -161,6 +169,7 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
                 frist,
                 mappe: mappe?.toString(),
                 beskrivelse,
+                oppgaveVersjon: oppgave.data.versjon,
             },
         })
             .then((respons: RessursFeilet | RessursSuksess<string>) => {
