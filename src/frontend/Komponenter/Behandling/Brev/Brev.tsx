@@ -110,7 +110,7 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
                         </HøyreKolonne>
                     </StyledBrev>
                     <SendTilBeslutterFooter
-                        behandlingId={behandlingId}
+                        behandling={behandling}
                         kanSendesTilBeslutter={kanSendesTilBeslutter}
                         ferdigstillUtenBeslutter={skalFerdigstilleUtenBeslutter(vedtak)}
                         behandlingErRedigerbar={behandlingErRedigerbar}

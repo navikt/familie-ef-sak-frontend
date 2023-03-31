@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useCallback, useEffect, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { useApp } from '../../../App/context/AppContext';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
@@ -10,8 +10,9 @@ import { Button } from '@navikt/ds-react';
 import { AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
 import { ABorderStrong } from '@navikt/ds-tokens/dist/tokens';
 import { useNavigate } from 'react-router-dom';
-import { Behandlingstype } from '../../../App/typer/behandlingstype';
-import FremleggsoppgaveInntekt from './Fremleggsoppgave';
+import OppgaverForOpprettelse, { OppgaveForOpprettelseType } from './OppgaverForOpprettelse';
+import { Behandling } from '../../../App/typer/fagsak';
+import { useHentOppgaverForOpprettelse } from '../../../App/hooks/useHentOppgaverForOpprettelse';
 
 const Footer = styled.footer`
     width: 100%;
@@ -31,80 +32,35 @@ const HovedKnapp = styled(Button)`
     margin-right: 1rem;
 `;
 
-export enum OppgaveForOpprettelseType {
-    INNTEKTSKONTROLL_1_ÅR_FREM_I_TID = 'INNTEKTSKONTROLL_1_ÅR_FREM_I_TID',
-}
-
-export interface IOppgaveForOpprettelse {
-    oppgavetyperSomKanOpprettes: OppgaveForOpprettelseType[];
+export interface SendTilBeslutterRequest {
     oppgavetyperSomSkalOpprettes: OppgaveForOpprettelseType[];
-    opprettelseTattStillingTil: boolean;
 }
-
-export const fremleggOppgaveTilTekst: Record<OppgaveForOpprettelseType, string> = {
-    INNTEKTSKONTROLL_1_ÅR_FREM_I_TID: 'Oppgave for inntektskontroll, 1 år frem i tid',
-};
-
-const tomOppgaveForOpprettelse: IOppgaveForOpprettelse = {
-    oppgavetyperSomSkalOpprettes: [],
-    oppgavetyperSomKanOpprettes: [],
-    opprettelseTattStillingTil: false,
-};
 
 const SendTilBeslutterFooter: React.FC<{
-    behandlingId: string;
+    behandling: Behandling;
     kanSendesTilBeslutter?: boolean;
-    behandlingErRedigerbar?: boolean;
+    behandlingErRedigerbar: boolean;
     ferdigstillUtenBeslutter: boolean;
-}> = ({
-    behandlingId,
-    kanSendesTilBeslutter,
-    behandlingErRedigerbar,
-    ferdigstillUtenBeslutter,
-}) => {
+}> = ({ behandling, kanSendesTilBeslutter, behandlingErRedigerbar, ferdigstillUtenBeslutter }) => {
     const { axiosRequest } = useApp();
     const navigate = useNavigate();
-    const { behandlingstype, hentTotrinnskontroll, hentBehandling, hentBehandlingshistorikk } =
-        useBehandling();
+    const { hentTotrinnskontroll, hentBehandling, hentBehandlingshistorikk } = useBehandling();
     const [laster, settLaster] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>();
     const [visModal, settVisModal] = useState<boolean>(false);
-    const [oppgaveForOpprettelse, settOppgaveForOpprettelse] =
-        useState<IOppgaveForOpprettelse>(tomOppgaveForOpprettelse);
-
-    const initierOpprettOppgave = (oppgaveForOpprettelse: IOppgaveForOpprettelse) => {
-        if (oppgaveForOpprettelse.opprettelseTattStillingTil) {
-            settOppgaveForOpprettelse(oppgaveForOpprettelse);
-        } else {
-            settOppgaveForOpprettelse({
-                ...oppgaveForOpprettelse,
-                oppgavetyperSomSkalOpprettes: oppgaveForOpprettelse.oppgavetyperSomKanOpprettes,
-            });
-        }
-    };
-
-    const sjekkOmFremleggKanOpprettes = useCallback(() => {
-        if (behandlingstype === Behandlingstype.FØRSTEGANGSBEHANDLING) {
-            axiosRequest<IOppgaveForOpprettelse, undefined>({
-                method: 'GET',
-                url: `/familie-ef-sak/api/oppgaverforopprettelse/${behandlingId}`,
-            }).then((res: RessursSuksess<IOppgaveForOpprettelse> | RessursFeilet) => {
-                if (res.status === RessursStatus.SUKSESS) {
-                    initierOpprettOppgave(res.data);
-                } else {
-                    settFeilmelding(res.frontendFeilmelding);
-                }
-            });
-        }
-    }, [axiosRequest, behandlingId, behandlingstype]);
+    const oppgaverForOpprettelseState = useHentOppgaverForOpprettelse();
+    const behandlingId = behandling.id;
 
     const sendTilBeslutter = () => {
         settLaster(true);
         settFeilmelding(undefined);
-        axiosRequest<string, IOppgaveForOpprettelse>({
+        axiosRequest<string, SendTilBeslutterRequest>({
             method: 'POST',
             url: `/familie-ef-sak/api/vedtak/${behandlingId}/send-til-beslutter`,
-            data: { ...oppgaveForOpprettelse, opprettelseTattStillingTil: true },
+            data: {
+                oppgavetyperSomSkalOpprettes:
+                    oppgaverForOpprettelseState.oppgaverForOpprettelse.oppgavetyperSomSkalOpprettes,
+            },
         })
             .then((res: RessursSuksess<string> | RessursFeilet) => {
                 if (res.status === RessursStatus.SUKSESS) {
@@ -116,29 +72,6 @@ const SendTilBeslutterFooter: React.FC<{
                 }
             })
             .finally(() => settLaster(false));
-    };
-
-    useEffect(() => {
-        sjekkOmFremleggKanOpprettes();
-    }, [sjekkOmFremleggKanOpprettes]);
-
-    const håndterCheckboxEndring = (oppgavetype: OppgaveForOpprettelseType) => {
-        if (oppgaveForOpprettelse.oppgavetyperSomSkalOpprettes.includes(oppgavetype)) {
-            settOppgaveForOpprettelse((prevState) => ({
-                ...prevState,
-                oppgavetyperSomSkalOpprettes: prevState.oppgavetyperSomSkalOpprettes.filter(
-                    (prevOppgavetype) => prevOppgavetype != oppgavetype
-                ),
-            }));
-        } else {
-            settOppgaveForOpprettelse((prevState) => ({
-                ...prevState,
-                oppgavetyperSomSkalOpprettes: [
-                    ...prevState.oppgavetyperSomSkalOpprettes,
-                    oppgavetype,
-                ],
-            }));
-        }
     };
 
     const lukkModal = () => {
@@ -156,31 +89,32 @@ const SendTilBeslutterFooter: React.FC<{
 
     return (
         <>
-            {(behandlingErRedigerbar ||
-                oppgaveForOpprettelse.oppgavetyperSomKanOpprettes.length > 0) && (
-                <Footer>
-                    {feilmelding && <AlertStripeFeilPreWrap>{feilmelding}</AlertStripeFeilPreWrap>}
-                    {ferdigstillUtenBeslutter && (
-                        <AlertInfo>Vedtaket vil ikke bli sendt til totrinnskontroll</AlertInfo>
-                    )}
-                    <FremleggsoppgaveInntekt
-                        behandlingErRedigerbar={behandlingErRedigerbar}
-                        oppgaveForOpprettelse={oppgaveForOpprettelse}
-                        håndterCheckboxEndring={håndterCheckboxEndring}
-                    />
-                    {behandlingErRedigerbar && (
-                        <MidtstiltInnhold>
-                            <HovedKnapp
-                                onClick={sendTilBeslutter}
-                                disabled={laster || !kanSendesTilBeslutter}
-                                type={'button'}
-                            >
-                                {ferdigstillTittel}
-                            </HovedKnapp>
-                        </MidtstiltInnhold>
-                    )}
-                </Footer>
-            )}
+            <Footer>
+                {feilmelding && <AlertStripeFeilPreWrap>{feilmelding}</AlertStripeFeilPreWrap>}
+                {ferdigstillUtenBeslutter && (
+                    <AlertInfo>Vedtaket vil ikke bli sendt til totrinnskontroll</AlertInfo>
+                )}
+                <OppgaverForOpprettelse
+                    behandling={behandling}
+                    behandlingErRedigerbar={behandlingErRedigerbar}
+                    oppgaverForOpprettelseState={oppgaverForOpprettelseState}
+                />
+                {behandlingErRedigerbar && (
+                    <MidtstiltInnhold>
+                        <HovedKnapp
+                            onClick={sendTilBeslutter}
+                            disabled={
+                                laster ||
+                                !kanSendesTilBeslutter ||
+                                oppgaverForOpprettelseState.feilmelding
+                            }
+                            type={'button'}
+                        >
+                            {ferdigstillTittel}
+                        </HovedKnapp>
+                    </MidtstiltInnhold>
+                )}
+            </Footer>
             <ModalWrapper
                 tittel={modalTittel}
                 visModal={visModal}
