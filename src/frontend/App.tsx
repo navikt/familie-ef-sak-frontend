@@ -34,6 +34,7 @@ import {
 } from 'react-router-dom';
 import UlagretDataModal from './Felles/Visningskomponenter/UlagretDataModal';
 import { loggBesøkEvent } from './App/utils/amplitude/amplitudeLoggEvents';
+import { BesøkEvent } from './App/utils/amplitude/typer';
 
 // @ts-ignore
 Modal.setAppElement(document.getElementById('modal-a11y-wrapper'));
@@ -133,9 +134,19 @@ const AppInnhold: React.FC<{ innloggetSaksbehandler: ISaksbehandler }> = ({
 }) => {
     const location = useLocation();
 
+    const utledBesøktSide = (url: string): BesøkEvent => {
+        const paths = url.split('/');
+        const side = paths[1];
+
+        if (side === 'person' || side === 'behandling') {
+            return { side: side, fane: paths.slice(3).join('/') };
+        }
+
+        return { side: url };
+    };
+
     React.useEffect(() => {
-        const path = location.pathname.split('/');
-        loggBesøkEvent({ side: path[1], fane: path[3] });
+        loggBesøkEvent(utledBesøktSide(location.pathname));
     }, [location]);
 
     return (
