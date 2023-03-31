@@ -53,12 +53,17 @@ const Utregningstabell = styled(UtregningstabellBarnetilsyn)`
     margin-left: 1rem;
 `;
 
-const initKontantstøttestate = (vedtak: IInnvilgeVedtakForBarnetilsyn | undefined) =>
+const initKontantstøttestate = (
+    vedtak: IInnvilgeVedtakForBarnetilsyn | undefined,
+    harKontantstøtteUtbetalinger?: boolean
+) =>
     vedtak
         ? vedtak.perioderKontantstøtte && vedtak.perioderKontantstøtte.length > 0
             ? ERadioValg.JA
             : ERadioValg.NEI
-        : ERadioValg.IKKE_SATT;
+        : harKontantstøtteUtbetalinger
+        ? ERadioValg.IKKE_SATT
+        : ERadioValg.NEI;
 
 const initKontantstøtteperioder = (vedtak: IInnvilgeVedtakForBarnetilsyn | undefined) =>
     vedtak ? vedtak.perioderKontantstøtte : [tomKontantstøtteRad()];
@@ -83,9 +88,12 @@ const initTillegsstønadsperioder = (vedtak: IInnvilgeVedtakForBarnetilsyn | und
 const initUtgiftsperioder = (vedtak: IInnvilgeVedtakForBarnetilsyn | undefined) =>
     vedtak ? vedtak.perioder : [tomUtgiftsperiodeRad()];
 
-const initFormState = (vedtak: IInnvilgeVedtakForBarnetilsyn | undefined) => ({
+const initFormState = (
+    vedtak: IInnvilgeVedtakForBarnetilsyn | undefined,
+    harKontantstøtteUtbetalinger?: boolean
+) => ({
     utgiftsperioder: initUtgiftsperioder(vedtak),
-    harKontantstøtte: initKontantstøttestate(vedtak),
+    harKontantstøtte: initKontantstøttestate(vedtak, harKontantstøtteUtbetalinger),
     kontantstøtteperioder: initKontantstøtteperioder(vedtak),
     harTilleggsstønad: initHarTilleggsstønad(vedtak),
     tilleggsstønadBegrunnelse: vedtak?.tilleggsstønad.begrunnelse || '',
@@ -104,7 +112,15 @@ export const Vedtaksform: React.FC<{
     barn: IBarnMedSamvær[];
     settResultatType: (val: EBehandlingResultat | undefined) => void;
     låsFraDatoFørsteRad: boolean;
-}> = ({ lagretVedtak, behandling, barn, settResultatType, låsFraDatoFørsteRad }) => {
+    harKontantstøtteUtbetalinger: boolean;
+}> = ({
+    lagretVedtak,
+    behandling,
+    barn,
+    settResultatType,
+    låsFraDatoFørsteRad,
+    harKontantstøtteUtbetalinger,
+}) => {
     const lagretInnvilgetVedtak =
         lagretVedtak?._type === IVedtakType.InnvilgelseBarnetilsyn ||
         lagretVedtak?._type === IVedtakType.InnvilgelseBarnetilsynUtenUtbetaling
@@ -124,7 +140,7 @@ export const Vedtaksform: React.FC<{
     const { utførRedirect } = useRedirectEtterLagring(`/behandling/${behandling.id}/simulering`);
 
     const formState = useFormState<InnvilgeVedtakForm>(
-        initFormState(lagretInnvilgetVedtak),
+        initFormState(lagretInnvilgetVedtak, harKontantstøtteUtbetalinger),
         validerInnvilgetVedtakForm
     );
 
@@ -148,7 +164,9 @@ export const Vedtaksform: React.FC<{
             return;
         }
         utgiftsperiodeState.setValue(initUtgiftsperioder(lagretInnvilgetVedtak));
-        kontantstøtteState.setValue(initKontantstøttestate(lagretInnvilgetVedtak));
+        kontantstøtteState.setValue(
+            initKontantstøttestate(lagretInnvilgetVedtak, harKontantstøtteUtbetalinger)
+        );
         kontantstøttePeriodeState.setValue(initKontantstøtteperioder(lagretInnvilgetVedtak));
         tilleggsstønadState.setValue(initHarTilleggsstønad(lagretInnvilgetVedtak));
         stønadsreduksjonState.setValue(initSkalStønadReduseres(lagretInnvilgetVedtak));
@@ -281,6 +299,7 @@ export const Vedtaksform: React.FC<{
                 kontantstøttePerioder={kontantstøttePeriodeState}
                 settValideringsFeil={formState.setErrors}
                 valideringsfeil={formState.errors}
+                harKontantstøtteUtbetalinger={harKontantstøtteUtbetalinger}
             />
             <TilleggsstønadValg
                 erLesevisning={!behandlingErRedigerbar}
