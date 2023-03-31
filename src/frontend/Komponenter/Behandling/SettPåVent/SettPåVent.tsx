@@ -64,6 +64,7 @@ const Beskrivelse = styled(Textarea)`
 `;
 
 type SettPåVentRequest = {
+    oppgaveId: number;
     saksbehandler: string;
     prioritet: Prioritet;
     frist: string;
@@ -153,7 +154,7 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
 
         settLåsKnapp(true);
 
-        if (oppgave.status !== RessursStatus.SUKSESS || !oppgave.data.versjon) {
+        if (oppgave.status !== RessursStatus.SUKSESS || !oppgave.data.versjon || !oppgave.data.id) {
             settFeilmelding(
                 'Teknisk feil. Mangler versjonsnumer for oppgave. Kontakt brukerstøtte'
             );
@@ -170,6 +171,7 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
                 mappe: mappe?.toString(),
                 beskrivelse,
                 oppgaveVersjon: oppgave.data.versjon,
+                oppgaveId: oppgave.data.id,
             },
         })
             .then((respons: RessursFeilet | RessursSuksess<string>) => {
