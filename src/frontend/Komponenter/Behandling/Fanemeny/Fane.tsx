@@ -86,7 +86,7 @@ const Fane: React.FC<Props> = ({ side, behandling, index, deaktivert }) => {
                     onClick={() =>
                         loggNavigereTabEvent({
                             side: 'behandling',
-                            path: side.href,
+                            fane: side.href,
                             behandlingStatus: behandling.status,
                             behandlingSteg: behandling.steg,
                         })

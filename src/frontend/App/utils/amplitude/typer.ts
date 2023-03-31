@@ -1,6 +1,6 @@
 export type NavigereTabEvent = {
     side: string;
-    path: string;
+    fane: string;
     behandlingStatus?: string;
     behandlingSteg?: string;
 };
