@@ -8,7 +8,7 @@ import {
     RessursSuksess,
 } from '../../../App/typer/ressurs';
 import { useApp } from '../../../App/context/AppContext';
-import { Alert, Button, Heading, Label, Textarea } from '@navikt/ds-react';
+import { Alert, Button, Heading, Textarea } from '@navikt/ds-react';
 import styled from 'styled-components';
 import { ABgSubtle } from '@navikt/ds-tokens/dist/tokens';
 import { ToggleName } from '../../../App/context/toggles';
@@ -20,7 +20,6 @@ import { FristVelger } from './FristVelger';
 import { MappeVelger } from './MappeVelger';
 import { SaksbehandlerVelger } from './SaksbehandlerVelger';
 import { PrioritetVelger } from './PrioritetVelger';
-import { BreakWordBodyLongSmall } from '../../../Felles/Visningskomponenter/BreakWordBodyLongSmall';
 import {
     BehandlingStatus,
     ETaAvVentStatus,
@@ -29,6 +28,7 @@ import {
 import { Behandling } from '../../../App/typer/fagsak';
 import { TaAvVentModal } from './TaAvVentModal';
 import { EToast } from '../../../App/typer/toast';
+import { EksisterendeBeskrivelse } from './EksisterendeBeskrivelse';
 
 const AlertStripe = styled(Alert)`
     margin-top: 1rem;
@@ -221,12 +221,7 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
                                     erLesevisning={erBehandlingPåVent}
                                 />
                             </OppgaveValg>
-                            <section>
-                                <Label size={'small'}>Beskrivelseshistorikk</Label>
-                                <BreakWordBodyLongSmall>
-                                    {oppgave.beskrivelse}
-                                </BreakWordBodyLongSmall>
-                            </section>
+                            <EksisterendeBeskrivelse beskrivelse={oppgave.beskrivelse} />
                             {!erBehandlingPåVent && (
                                 <Beskrivelse
                                     label={'Beskrivelse'}
