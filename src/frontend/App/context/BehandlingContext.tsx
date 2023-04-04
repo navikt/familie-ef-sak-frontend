@@ -63,8 +63,7 @@ const [BehandlingProvider, useBehandling] = constate(() => {
                     behandling.data.status === BehandlingStatus.SATT_PÅ_VENT
             );
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [behandling]);
+    }, [behandling, toggles]);
     useEffect(() => {
         if (behandlingErRedigerbar) {
             axiosRequest<string | null, string>({
