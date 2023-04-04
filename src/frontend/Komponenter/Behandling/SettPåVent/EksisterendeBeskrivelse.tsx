@@ -5,7 +5,7 @@ import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons';
 import { BreakWordBodyLongSmall } from '../../../Felles/Visningskomponenter/BreakWordBodyLongSmall';
 
 const EkspanderbarContainer = styled(BreakWordBodyLongSmall)<{ ekspandert: boolean }>`
-    max-height: ${(props) => (props.ekspandert ? 'none' : '14rem')};
+    max-height: ${(props) => (props.ekspandert ? 'none' : '15rem')};
     overflow: hidden;
 `;
 
