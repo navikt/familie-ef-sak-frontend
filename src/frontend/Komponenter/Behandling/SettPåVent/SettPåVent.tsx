@@ -53,7 +53,7 @@ const KnappeWrapper = styled.div`
     margin-right: 15%;
 `;
 
-const FlexDiv = styled.div`
+const FlexColumnDiv = styled.div`
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -91,7 +91,7 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
     const [mappe, settMappe] = useState<number | undefined>();
     const [beskrivelse, settBeskrivelse] = useState('');
 
-    const lukkModal = () => {
+    const lukkSettPåVent = () => {
         settFeilmelding('');
         settVisSettPåVent(false);
     };
@@ -178,7 +178,7 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
             .then((respons: RessursFeilet | RessursSuksess<string>) => {
                 if (respons.status == RessursStatus.SUKSESS) {
                     hentBehandling.rerun();
-                    lukkModal();
+                    lukkSettPåVent();
                     settToast(EToast.BEHANDLING_SATT_PÅ_VENT);
                 } else {
                     settFeilmelding(respons.frontendFeilmelding);
@@ -197,7 +197,7 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
                         ) : (
                             <Heading size={'medium'}>Sett behandling på vent</Heading>
                         )}
-                        <FlexDiv>
+                        <FlexColumnDiv>
                             <OppgaveValg>
                                 <SaksbehandlerVelger
                                     oppgave={oppgave}
@@ -231,7 +231,7 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
                                     onChange={(e) => settBeskrivelse(e.target.value)}
                                 />
                             )}
-                        </FlexDiv>
+                        </FlexColumnDiv>
                         <KnappeWrapper>
                             {!erBehandlingPåVent && (
                                 <Button
