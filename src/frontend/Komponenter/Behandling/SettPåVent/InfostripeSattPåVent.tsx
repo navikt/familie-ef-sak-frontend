@@ -12,6 +12,8 @@ import { useApp } from '../../../App/context/AppContext';
 import { RessursStatus } from '@navikt/familie-typer';
 import { RessursFeilet, RessursSuksess } from '../../../App/typer/ressurs';
 import { TaAvVentModal } from './TaAvVentModal';
+import { useToggles } from '../../../App/context/TogglesContext';
+import { ToggleName } from '../../../App/context/toggles';
 
 const InformasjonVisning = styled(Alert)`
     margin: 0.5rem 0.5rem 0 0.5rem;
@@ -21,10 +23,14 @@ const StyledButton = styled(Button)`
     margin-left: 1rem;
 `;
 
+/**
+ * Kan slettes når ToggleName.settPåVentMedOppgavestyring er skrudd på
+ */
 export const InfostripeSattPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
     const { hentBehandling } = useBehandling();
     const { axiosRequest } = useApp();
     const [taAvVentStatus, settTaAvVentStatus] = useState<ETaAvVentStatus>();
+    const { toggles } = useToggles();
 
     const [feilmelding, settFeilmelding] = useState('');
 
@@ -58,14 +64,16 @@ export const InfostripeSattPåVent: FC<{ behandling: Behandling }> = ({ behandli
 
     return (
         <>
-            {behandling.status === BehandlingStatus.SATT_PÅ_VENT && (
-                <InformasjonVisning variant={'info'} size={'medium'}>
-                    Behandlingen er satt på vent
-                    <StyledButton size={'small'} onClick={håndterFortsettBehandling}>
-                        Fortsett behandling
-                    </StyledButton>
-                </InformasjonVisning>
-            )}
+            {!toggles[ToggleName.settPåVentMedOppgavestyring] &&
+                behandling.status === BehandlingStatus.SATT_PÅ_VENT && (
+                    <InformasjonVisning variant={'info'} size={'medium'}>
+                        Behandlingen er satt på vent
+                        <StyledButton size={'small'} onClick={håndterFortsettBehandling}>
+                            Fortsett behandling
+                        </StyledButton>
+                    </InformasjonVisning>
+                )}
+
             {feilmelding && (
                 <Alert variant="error">Kunne ikke ta behandling av vent: {feilmelding} </Alert>
             )}

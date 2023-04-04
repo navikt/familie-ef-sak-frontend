@@ -2,6 +2,7 @@ import React, { ReactElement } from 'react';
 import { IMappe } from './typer/mappe';
 import { enhetTilTekstPåString } from './typer/enhet';
 import { Select } from '@navikt/ds-react';
+import { sorterMapperPåNavn } from './utils';
 
 interface Props {
     value?: string | number;
@@ -19,12 +20,6 @@ function MappeVelger(props: Props): ReactElement {
     const sorterMappeListerPåEnhetsnummer = (a: [string, IMappe[]], b: [string, IMappe[]]) => {
         if (a[0] > b[0]) return -1;
         else if (a[0] < b[0]) return 1;
-        return 0;
-    };
-
-    const sorterMapperPåNavn = (a: IMappe, b: IMappe) => {
-        if (a.navn > b.navn) return 1;
-        else if (a.navn < b.navn) return -1;
         return 0;
     };
 

@@ -84,6 +84,9 @@ export const erGyldigDato = (dato: string | Date): boolean =>
 export const tilDato = (dato: string | Date): Date =>
     typeof dato === 'string' ? parseISO(dato) : dato;
 
+export const nullableTilDato = (dato: string | Date | undefined): Date | undefined =>
+    typeof dato === 'string' ? parseISO(dato) : dato;
+
 export const nullableDatoTilAlder = (dato?: string | Date | null): number | undefined => {
     return dato ? datoTilAlder(dato) : undefined;
 };
