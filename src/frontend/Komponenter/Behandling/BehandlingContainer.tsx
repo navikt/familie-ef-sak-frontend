@@ -80,7 +80,7 @@ const BehandlingContent: FC<{
             <PersonHeaderComponent data={personopplysninger} behandling={behandling} />
             <Container>
                 <InnholdWrapper åpenHøyremeny={åpenHøyremeny}>
-                    <Fanemeny behandlingId={behandling.id} />
+                    <Fanemeny />
                     <SettPåVentUtenOppgaveStyring behandlingId={behandling.id} />
                     <SettPåVent behandling={behandling} />
                     <InfostripeUtestengelse utestengelser={utestengelser} />
