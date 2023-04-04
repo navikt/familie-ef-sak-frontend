@@ -125,6 +125,7 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
         }).then((respons: RessursFeilet | RessursSuksess<string>) => {
             if (respons.status === RessursStatus.SUKSESS) {
                 hentBehandling.rerun();
+                settToast(EToast.BEHANDLING_TATT_AV_VENT);
             } else {
                 settFeilmelding(respons.frontendFeilmelding);
             }
