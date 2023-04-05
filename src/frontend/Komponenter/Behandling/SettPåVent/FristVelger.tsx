@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { IOppgave } from '../../Oppgavebenk/typer/oppgave';
 import { UNSAFE_useDatepicker, UNSAFE_DatePicker } from '@navikt/ds-react';
-import { nullableTilDato } from '../../../App/utils/dato';
+import { nullableTilDato, tilLocaleDateString } from '../../../App/utils/dato';
 import { FamilieLesefelt } from '@navikt/familie-form-elements';
 
 export const FristVelger: FC<{
@@ -11,7 +11,7 @@ export const FristVelger: FC<{
 }> = ({ oppgave, settFrist, erLesevisning }) => {
     const { datepickerProps, inputProps } = UNSAFE_useDatepicker({
         defaultSelected: nullableTilDato(oppgave.fristFerdigstillelse),
-        onDateChange: (dato) => settFrist(dato?.toISOString()),
+        onDateChange: (dato) => settFrist(dato && tilLocaleDateString(dato)),
     });
 
     return (
