@@ -8,7 +8,7 @@ import { EToast } from '../../App/typer/toast';
 import { LagRevurdering } from './Revurdering/LagRevurdering';
 import { RevurderingInnhold } from '../../App/typer/revurderingstype';
 import { Fagsak } from '../../App/typer/fagsak';
-import OpprettKlage from './Klage/OpprettKlage';
+import OpprettKlage, { OpprettKlageRequest } from './Klage/OpprettKlage';
 import { ModalWrapper } from '../../Felles/Modal/ModalWrapper';
 import { Alert, Button, Select } from '@navikt/ds-react';
 import { AlertError } from '../../Felles/Visningskomponenter/Alerts';
@@ -108,15 +108,15 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
         }
     };
 
-    const opprettKlage = (mottattDato: string) => {
+    const opprettKlage = (data: OpprettKlageRequest) => {
         settFeilmeldingModal('');
 
         if (!senderInnBehandling) {
             settSenderInnBehandling(true);
-            axiosRequest<Ressurs<void>, { mottattDato: string }>({
+            axiosRequest<Ressurs<void>, OpprettKlageRequest>({
                 method: 'POST',
                 url: `/familie-ef-sak/api/klage/fagsak/${fagsak.id}`,
-                data: { mottattDato },
+                data: data,
             })
                 .then((response) => {
                     if (response.status === RessursStatus.SUKSESS) {
