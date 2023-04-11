@@ -147,7 +147,7 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
         });
     };
     const settPåVent = () => {
-        const kanSettePåVent = saksbehandler && prioritet && frist;
+        const kanSettePåVent = prioritet && frist;
 
         if (låsKnapp || !kanSettePåVent) {
             return;
