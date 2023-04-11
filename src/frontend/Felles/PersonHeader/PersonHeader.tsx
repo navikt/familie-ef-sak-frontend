@@ -4,7 +4,7 @@ import VisittKort from '@navikt/familie-visittkort';
 import styled from 'styled-components';
 import PersonStatusVarsel from '../Varsel/PersonStatusVarsel';
 import AdressebeskyttelseVarsel from '../Varsel/AdressebeskyttelseVarsel';
-import { Behandling } from '../../App/typer/fagsak';
+import { Behandling, BehandlingKategori, kategoriTilTekst } from '../../App/typer/fagsak';
 import { Sticky } from '../Visningskomponenter/Sticky';
 import { erEtterDagensDato, nullableDatoTilAlder } from '../../App/utils/dato';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../App/typer/ressurs';
@@ -243,6 +243,13 @@ const PersonHeaderComponent: FC<{ data: IPersonopplysninger; behandling?: Behand
                     )}
                 </TagsKnyttetTilPerson>
                 <TagsKnyttetTilBehandling>
+                    {behandling && behandling.kategori === BehandlingKategori.EØS && (
+                        <ElementWrapper>
+                            <Tag variant={'warning-filled'} size={'small'}>
+                                {kategoriTilTekst[behandling.kategori]}
+                            </Tag>
+                        </ElementWrapper>
+                    )}
                     {behandling && (
                         <ElementWrapper>
                             <TagsLitenSkjerm>
