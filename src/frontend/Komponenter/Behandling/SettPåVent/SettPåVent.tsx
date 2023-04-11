@@ -44,13 +44,14 @@ const SettPåVentWrapper = styled.div`
     grid-template-rows: auto 1fr;
     background-color: ${ABgSubtle};
     padding: 2rem;
+    gap: 1rem;
 `;
 
 const KnappeWrapper = styled.div`
     display: flex;
     gap: 2rem;
     justify-content: flex-end;
-    margin-right: 15%;
+    margin-right: 0.5rem;
 `;
 
 const FlexColumnDiv = styled.div`
