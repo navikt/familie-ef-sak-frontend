@@ -133,10 +133,12 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
                                     {navn.visningsnavn}
                                 </option>
                             ))}
-                        <option value={fritekstmal} key={fritekstmal}>
-                            {' '}
-                            Fritekstbrev
-                        </option>
+                        {brevMal === fritekstmal && (
+                            <option value={fritekstmal} key={fritekstmal}>
+                                {' '}
+                                Fritekstbrev
+                            </option>
+                        )}
                     </Select>
                 )}
             </DataViewer>
