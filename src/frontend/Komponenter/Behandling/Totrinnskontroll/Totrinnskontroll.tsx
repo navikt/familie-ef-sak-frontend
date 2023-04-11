@@ -13,7 +13,7 @@ import styled from 'styled-components';
 import Advarsel from '../../../Felles/Ikoner/Advarsel';
 import { formaterIsoDatoTid } from '../../../App/utils/formatter';
 import Info from '../../../Felles/Ikoner/Info';
-import { BreakWordNormaltekst } from '../../../Felles/Visningskomponenter/BreakWordNormaltekst';
+import { BreakWordBodyLongSmall } from '../../../Felles/Visningskomponenter/BreakWordBodyLongSmall';
 import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
 import { useApp } from '../../../App/context/AppContext';
 import { Alert, BodyShort, Button, Detail, Heading, Label } from '@navikt/ds-react';
@@ -213,7 +213,7 @@ const TotrinnskontrollUnderkjent: React.FC<{
             )}
             <div>
                 <Label>Begrunnelse</Label>
-                <BreakWordNormaltekst>{totrinnskontroll.begrunnelse}</BreakWordNormaltekst>
+                <BreakWordBodyLongSmall>{totrinnskontroll.begrunnelse}</BreakWordBodyLongSmall>
             </div>
         </BorderBox>
     );

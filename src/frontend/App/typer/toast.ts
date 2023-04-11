@@ -9,6 +9,8 @@ export enum EToast {
     OPPRETTET_UTESTENGELSE = 'OPPRETTET_UTESTENGELSE',
     BREV_SENDT = 'BREV_SENDT',
     REDIRECT_ANNEN_RELASJON_FEILET = 'REDIRECT_ANNEN_RELASJON_FEILET',
+    BEHANDLING_SATT_PÅ_VENT = 'BEHANDLING_SATT_PÅ_VENT',
+    BEHANDLING_TATT_AV_VENT = 'BEHANDLING_TATT_AV_VENT',
 }
 
 export const toastTilTekst: Record<EToast, string> = {
@@ -24,4 +26,6 @@ export const toastTilTekst: Record<EToast, string> = {
     BREV_SENDT: 'Brevet er nå sendt',
     REDIRECT_ANNEN_RELASJON_FEILET:
         'Kan ikke åpne personopplysninger for denne personen. En uventet feil oppstod',
+    BEHANDLING_SATT_PÅ_VENT: 'Oppgaven er oppdatert og behandlingen er satt på vent',
+    BEHANDLING_TATT_AV_VENT: 'Behandlingen er tatt av vent',
 };

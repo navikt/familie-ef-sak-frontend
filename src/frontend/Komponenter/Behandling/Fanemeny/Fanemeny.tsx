@@ -24,11 +24,8 @@ const StyledFanemeny = styled.div`
     border-bottom: ${ABorderDefault} solid 2px;
     background-color: ${AWhite};
 `;
-interface Props {
-    behandlingId: string;
-}
 
-const Fanemeny: FC<Props> = ({ behandlingId }) => {
+const Fanemeny: FC = () => {
     const { behandling, behandlingErRedigerbar } = useBehandling();
     const { erSaksbehandler } = useApp();
     const låsendeSteg = [Steg.VILKÅR, Steg.BEREGNE_YTELSE];
@@ -55,7 +52,7 @@ const Fanemeny: FC<Props> = ({ behandlingId }) => {
                             {filtrerSiderEtterBehandlingstype(behandling).map((side, index) => (
                                 <Fane
                                     side={side}
-                                    behandlingId={behandlingId}
+                                    behandling={behandling}
                                     index={index}
                                     deaktivert={faneErLåst(side, behandling.steg)}
                                     key={index}
