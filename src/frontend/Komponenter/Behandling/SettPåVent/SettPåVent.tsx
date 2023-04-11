@@ -179,12 +179,21 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
                 if (respons.status == RessursStatus.SUKSESS) {
                     hentBehandling.rerun();
                     lukkSettPåVent();
+                    nullstillOppgaveFelter();
                     settToast(EToast.BEHANDLING_SATT_PÅ_VENT);
                 } else {
                     settFeilmelding(respons.frontendFeilmelding);
                 }
             })
             .finally(() => settLåsKnapp(false));
+    };
+
+    const nullstillOppgaveFelter = () => {
+        settSaksbehandler('');
+        settBeskrivelse('');
+        settPrioritet(undefined);
+        settFrist(undefined);
+        settMappe(undefined);
     };
 
     return visSettPåVent && toggles[ToggleName.settPåVentMedOppgavestyring] ? (
