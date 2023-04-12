@@ -11,7 +11,7 @@ import { Heading } from '@navikt/ds-react';
 import { Behandlingsårsak } from '../../../../App/typer/Behandlingsårsak';
 import { Søknadsinformasjon } from '../Felles/Søknadsinformasjon';
 import { OppsummeringAvBarn } from './OppsummeringAvBarn';
-import { BreakWordNormaltekst } from '../../../../Felles/Visningskomponenter/BreakWordNormaltekst';
+import { BreakWordBodyLongSmall } from '../../../../Felles/Visningskomponenter/BreakWordBodyLongSmall';
 import { Vilkårsvurdering } from '../Felles/Vilkårsvurdering';
 import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
 
@@ -92,7 +92,9 @@ export const VedtaksoppsummeringBarnetilsyn: React.FC<{
                     <Heading spacing size="small" level="5">
                         Vurdering tilsynsutgifter
                     </Heading>
-                    <BreakWordNormaltekst>{begrunnelseForTilsynsutgiftVilkår}</BreakWordNormaltekst>
+                    <BreakWordBodyLongSmall>
+                        {begrunnelseForTilsynsutgiftVilkår}
+                    </BreakWordBodyLongSmall>
                 </VurderingTilsynsutgifter>
             )}
         </Container>
