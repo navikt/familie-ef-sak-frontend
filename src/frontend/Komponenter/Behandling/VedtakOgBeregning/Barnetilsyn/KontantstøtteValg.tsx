@@ -130,12 +130,12 @@ const KontantstøtteValg: React.FC<Props> = ({
                 Kontantstøtte
             </Heading>
             <AlertOgRadioknappWrapper>
-                {harKontantstøtteUtbetalinger && (
+                {!erLesevisning && harKontantstøtteUtbetalinger && (
                     <AlertStripe variant={'warning'} size={'small'}>
                         Bruker har eller har fått kontantstøtte.
                     </AlertStripe>
                 )}
-                {!harKontantstøtteUtbetalinger && (
+                {!erLesevisning && !harKontantstøtteUtbetalinger && (
                     <AlertStripe variant={'info'} size={'small'}>
                         Bruker verken mottar eller har mottatt kontantstøtte.
                     </AlertStripe>
