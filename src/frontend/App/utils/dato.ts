@@ -84,7 +84,7 @@ export const erGyldigDato = (dato: string | Date): boolean =>
 export const tilDato = (dato: string | Date): Date =>
     typeof dato === 'string' ? parseISO(dato) : dato;
 
-export const tilLocaleDateString = (dato: Date) => dato.toISOString().slice(0, 10);
+export const tilLocaleDateString = (dato: Date) => formatISO(dato, { representation: 'date' });
 
 export const nullableTilDato = (dato: string | Date | undefined): Date | undefined =>
     typeof dato === 'string' ? parseISO(dato) : dato;

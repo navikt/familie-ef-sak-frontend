@@ -44,13 +44,14 @@ const SettPåVentWrapper = styled.div`
     grid-template-rows: auto 1fr;
     background-color: ${ABgSubtle};
     padding: 2rem;
+    gap: 1rem;
 `;
 
 const KnappeWrapper = styled.div`
     display: flex;
     gap: 2rem;
     justify-content: flex-end;
-    margin-right: 15%;
+    margin-right: 0.5rem;
 `;
 
 const FlexColumnDiv = styled.div`
@@ -147,7 +148,7 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
         });
     };
     const settPåVent = () => {
-        const kanSettePåVent = saksbehandler && prioritet && frist;
+        const kanSettePåVent = prioritet && frist;
 
         if (låsKnapp || !kanSettePåVent) {
             return;
@@ -179,12 +180,21 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
                 if (respons.status == RessursStatus.SUKSESS) {
                     hentBehandling.rerun();
                     lukkSettPåVent();
+                    nullstillOppgaveFelter();
                     settToast(EToast.BEHANDLING_SATT_PÅ_VENT);
                 } else {
                     settFeilmelding(respons.frontendFeilmelding);
                 }
             })
             .finally(() => settLåsKnapp(false));
+    };
+
+    const nullstillOppgaveFelter = () => {
+        settSaksbehandler('');
+        settBeskrivelse('');
+        settPrioritet(undefined);
+        settFrist(undefined);
+        settMappe(undefined);
     };
 
     return visSettPåVent && toggles[ToggleName.settPåVentMedOppgavestyring] ? (

@@ -21,6 +21,7 @@ export const SaksbehandlerVelger: FC<{
                     settSaksbehandler(e.target.value);
                 }}
                 erLesevisning={erLesevisning}
+                lesevisningVerdi={saksbehandler || 'Ingen'}
             >
                 {oppgave.tilordnetRessurs &&
                     innloggetSaksbehandler.navIdent !== oppgave.tilordnetRessurs && (
