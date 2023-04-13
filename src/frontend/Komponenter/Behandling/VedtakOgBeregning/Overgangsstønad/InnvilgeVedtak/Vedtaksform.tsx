@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import VedtaksperiodeValg, { tomVedtaksperiodeRad } from './VedtaksperiodeValg';
 import InntektsperiodeValg, { tomInntektsperiodeRad } from './InntektsperiodeValg';
 import { Behandlingstype } from '../../../../../App/typer/behandlingstype';
@@ -9,17 +9,10 @@ import {
     IBeregningsrequest,
     IInntektsperiode,
     IInnvilgeVedtakForOvergangsstønad,
-    IVedtakForOvergangsstønad,
     IVedtaksperiode,
     IVedtakType,
 } from '../../../../../App/typer/vedtak';
-import {
-    byggTomRessurs,
-    Ressurs,
-    RessursFeilet,
-    RessursStatus,
-    RessursSuksess,
-} from '../../../../../App/typer/ressurs';
+import { byggTomRessurs, Ressurs, RessursStatus } from '../../../../../App/typer/ressurs';
 import { useBehandling } from '../../../../../App/context/BehandlingContext';
 import { useApp } from '../../../../../App/context/AppContext';
 import { Behandling } from '../../../../../App/typer/fagsak';
@@ -30,18 +23,10 @@ import Utregningstabell from './Utregningstabell';
 import useFormState, { FormState } from '../../../../../App/hooks/felles/useFormState';
 import { validerInnvilgetVedtakForm, validerVedtaksperioder } from '../vedtaksvalidering';
 import AlertStripeFeilPreWrap from '../../../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
-import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import styled from 'styled-components';
 import { Button } from '@navikt/ds-react';
-import {
-    fyllHullMedOpphør,
-    revurdererFraPeriodeUtenStønad,
-    revurderFraInitPeriode,
-} from './revurderFraUtils';
-import { RevurderesFraOgMed } from '../../Felles/RevurderesFraOgMed';
 import { IVilkår } from '../../../Inngangsvilkår/vilkår';
 import { utledYngsteBarnFødselsdato } from './fødselsdatoUtils';
-import { oppdaterVedtakMedEndretKey } from './utils';
 import { useRedirectEtterLagring } from '../../../../../App/hooks/felles/useRedirectEtterLagring';
 import InntektsperiodeValgDeprecated from './InntektsperiodeValgDeprecated';
 import { ToggleName } from '../../../../../App/context/toggles';
@@ -62,21 +47,13 @@ const Form = styled.form`
 const Beregningstabell = styled(Utregningstabell)`
     margin-left: 1rem;
 `;
-
-export const InnvilgeVedtak: React.FC<{
+export const Vedtaksform: React.FC<{
     behandling: Behandling;
-    lagretVedtak?: IVedtakForOvergangsstønad;
+    lagretVedtak?: IInnvilgeVedtakForOvergangsstønad;
+    revurderesFra?: string;
     vilkår: IVilkår;
-}> = ({ behandling, lagretVedtak, vilkår }) => {
+}> = ({ behandling, lagretVedtak, revurderesFra, vilkår }) => {
     const { toggles } = useToggles();
-    const lagretInnvilgetVedtak = useMemo(
-        () =>
-            lagretVedtak?._type === IVedtakType.InnvilgelseOvergangsstønad
-                ? oppdaterVedtakMedEndretKey(lagretVedtak as IInnvilgeVedtakForOvergangsstønad)
-                : undefined,
-        [lagretVedtak]
-    );
-
     const { hentBehandling, behandlingErRedigerbar } = useBehandling();
     const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
         useApp();
@@ -85,29 +62,18 @@ export const InnvilgeVedtak: React.FC<{
     const [beregnetStønad, settBeregnetStønad] = useState<Ressurs<IBeløpsperiode[]>>(
         byggTomRessurs()
     );
-    const [vedtakshistorikk, settVedtakshistorikk] = useState<IInnvilgeVedtakForOvergangsstønad>();
-    const [revurderesFra, settRevurderesFra] = useState(
-        behandling.forrigeBehandlingId && lagretInnvilgetVedtak?.perioder.length
-            ? lagretInnvilgetVedtak.perioder[0].årMånedFra
-            : undefined
-    );
-    const [revurderesFraOgMedFeilmelding, settRevurderesFraOgMedFeilmelding] = useState<
-        string | null
-    >(null);
 
     const [feilmelding, settFeilmelding] = useState<string>();
 
     const formState = useFormState<InnvilgeVedtakForm>(
         {
-            periodeBegrunnelse: lagretInnvilgetVedtak?.periodeBegrunnelse || '',
-            inntektBegrunnelse: lagretInnvilgetVedtak?.inntektBegrunnelse || '',
-            perioder: lagretInnvilgetVedtak
-                ? lagretInnvilgetVedtak.perioder
-                : [tomVedtaksperiodeRad()],
-            inntekter: lagretInnvilgetVedtak?.inntekter
-                ? lagretInnvilgetVedtak?.inntekter
+            periodeBegrunnelse: lagretVedtak?.periodeBegrunnelse || '',
+            inntektBegrunnelse: lagretVedtak?.inntektBegrunnelse || '',
+            perioder: lagretVedtak ? lagretVedtak.perioder : [tomVedtaksperiodeRad()],
+            inntekter: lagretVedtak?.inntekter
+                ? lagretVedtak?.inntekter
                 : [tomInntektsperiodeRad()],
-            samordningsfradragType: lagretInnvilgetVedtak?.samordningsfradragType || '',
+            samordningsfradragType: lagretVedtak?.samordningsfradragType || '',
             yngsteBarnFødselsdato: utledYngsteBarnFødselsdato(vilkår) || '',
         },
         validerInnvilgetVedtakForm
@@ -122,26 +88,6 @@ export const InnvilgeVedtak: React.FC<{
     const vedtaksperioder = vedtaksperiodeState.value;
 
     const låsVedtaksperiodeRad = !!revurderesFra;
-
-    useEffect(() => {
-        if (!revurderesFra || !vedtakshistorikk) {
-            return;
-        }
-
-        vedtaksperiodeState.setValue([
-            ...revurderFraInitPeriode(vedtakshistorikk, revurderesFra, tomVedtaksperiodeRad),
-            ...vedtakshistorikk.perioder.reduce(fyllHullMedOpphør, [] as IVedtaksperiode[]),
-        ]);
-
-        inntektsperiodeState.setValue([
-            ...revurderFraInitPeriode(vedtakshistorikk, revurderesFra, tomInntektsperiodeRad),
-            ...vedtakshistorikk.inntekter,
-        ]);
-
-        formState.setErrors((prevState) => ({ ...prevState, perioder: [], inntekter: [] }));
-
-        // eslint-disable-next-line
-    }, [vedtakshistorikk]);
 
     useEffect(() => {
         const førsteInnvilgedeVedtaksperiode =
@@ -170,9 +116,6 @@ export const InnvilgeVedtak: React.FC<{
         (rad) => rad.samordningsfradrag
     );
 
-    const skalViseVedtaksperiodeOgInntekt =
-        !behandling.forrigeBehandlingId || revurderesFra || !behandlingErRedigerbar;
-
     const hentLagretBeløpForYtelse = useCallback(() => {
         axiosRequest<IBeløpsperiode[], void>({
             method: 'GET',
@@ -181,10 +124,10 @@ export const InnvilgeVedtak: React.FC<{
     }, [axiosRequest, behandling]);
 
     useEffect(() => {
-        if (!behandlingErRedigerbar && lagretInnvilgetVedtak) {
+        if (!behandlingErRedigerbar && lagretVedtak) {
             hentLagretBeløpForYtelse();
         }
-    }, [behandlingErRedigerbar, lagretInnvilgetVedtak, hentLagretBeløpForYtelse, behandling]);
+    }, [behandlingErRedigerbar, lagretVedtak, hentLagretBeløpForYtelse]);
 
     const beregnPerioder = () => {
         if (formState.customValidate(validerVedtaksperioder)) {
@@ -202,24 +145,6 @@ export const InnvilgeVedtak: React.FC<{
             }).then((res: Ressurs<IBeløpsperiode[]>) => settBeregnetStønad(res));
         }
     };
-
-    const hentVedtakshistorikk = useCallback(
-        (revurderesFra: string) => {
-            axiosRequest<IInnvilgeVedtakForOvergangsstønad, void>({
-                method: 'GET',
-                url: `/familie-ef-sak/api/vedtak/fagsak/${behandling.fagsakId}/historikk/${revurderesFra}`,
-            }).then((res: RessursSuksess<IInnvilgeVedtakForOvergangsstønad> | RessursFeilet) => {
-                if (res.status === RessursStatus.SUKSESS) {
-                    settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
-                    settVedtakshistorikk(oppdaterVedtakMedEndretKey(res.data));
-                } else {
-                    settRevurderesFraOgMedFeilmelding(res.frontendFeilmelding);
-                }
-            });
-        },
-        // eslint-disable-next-line
-        [axiosRequest, behandling]
-    );
 
     const håndterVedtaksresultat = () => {
         return (res: Ressurs<string>) => {
@@ -272,66 +197,42 @@ export const InnvilgeVedtak: React.FC<{
 
     return (
         <Form onSubmit={formState.onSubmit(handleSubmit)}>
-            {behandling.forrigeBehandlingId && behandlingErRedigerbar ? (
-                <RevurderesFraOgMed
-                    settRevurderesFra={settRevurderesFra}
-                    hentVedtakshistorikk={hentVedtakshistorikk}
-                    revurderesFra={revurderesFra}
-                    feilmelding={revurderesFraOgMedFeilmelding}
-                    revurdererFraPeriodeUtenStønad={revurdererFraPeriodeUtenStønad(
-                        vedtakshistorikk,
-                        revurderesFra
-                    )}
-                    stønadstype={behandling.stønadstype}
+            <VedtaksperiodeValg
+                errorState={formState.errors}
+                periodeBegrunnelseState={periodeBegrunnelse}
+                låsVedtaksperiodeRad={låsVedtaksperiodeRad}
+                setValideringsFeil={formState.setErrors}
+                vedtaksperiodeListe={vedtaksperiodeState}
+            />
+            {toggles[ToggleName.ulikeInntekter] ? (
+                <InntektsperiodeValg
+                    errorState={formState.errors}
+                    inntektBegrunnelseState={inntektBegrunnelse}
+                    inntektsperiodeListe={inntektsperiodeState}
+                    samordningsfradragstype={typeSamordningsfradag}
+                    setValideringsFeil={formState.setErrors}
+                    skalVelgeSamordningstype={skalVelgeSamordningstype}
                 />
-            ) : null}
-            {skalViseVedtaksperiodeOgInntekt && (
-                <>
-                    <VedtaksperiodeValg
-                        errorState={formState.errors}
-                        periodeBegrunnelseState={periodeBegrunnelse}
-                        låsVedtaksperiodeRad={låsVedtaksperiodeRad}
-                        setValideringsFeil={formState.setErrors}
-                        vedtaksperiodeListe={vedtaksperiodeState}
-                    />
-                    {toggles[ToggleName.ulikeInntekter] ? (
-                        <InntektsperiodeValg
-                            errorState={formState.errors}
-                            inntektBegrunnelseState={inntektBegrunnelse}
-                            inntektsperiodeListe={inntektsperiodeState}
-                            samordningsfradragstype={typeSamordningsfradag}
-                            setValideringsFeil={formState.setErrors}
-                            skalVelgeSamordningstype={skalVelgeSamordningstype}
-                        />
-                    ) : (
-                        <InntektsperiodeValgDeprecated
-                            errorState={formState.errors}
-                            inntektBegrunnelseState={inntektBegrunnelse}
-                            inntektsperiodeListe={inntektsperiodeState}
-                            samordningsfradragstype={typeSamordningsfradag}
-                            setValideringsFeil={formState.setErrors}
-                            skalVelgeSamordningstype={skalVelgeSamordningstype}
-                        />
-                    )}
-                    {behandlingErRedigerbar && (
-                        <div>
-                            <Button onClick={beregnPerioder} variant={'secondary'} type={'button'}>
-                                Beregn
-                            </Button>
-                            {feilmelding && (
-                                <AlertStripeFeilPreWrap>{feilmelding}</AlertStripeFeilPreWrap>
-                            )}
-                        </div>
-                    )}
-                    <Beregningstabell beregnetStønad={beregnetStønad} />
-                    {behandlingErRedigerbar && (
-                        <HovedKnapp
-                            disabled={laster || !!revurderesFraOgMedFeilmelding}
-                            knappetekst="Lagre vedtak"
-                        />
-                    )}
-                </>
+            ) : (
+                <InntektsperiodeValgDeprecated
+                    errorState={formState.errors}
+                    inntektBegrunnelseState={inntektBegrunnelse}
+                    inntektsperiodeListe={inntektsperiodeState}
+                    samordningsfradragstype={typeSamordningsfradag}
+                    setValideringsFeil={formState.setErrors}
+                    skalVelgeSamordningstype={skalVelgeSamordningstype}
+                />
             )}
+            {behandlingErRedigerbar && (
+                <div>
+                    <Button onClick={beregnPerioder} variant={'secondary'} type={'button'}>
+                        Beregn
+                    </Button>
+                    {feilmelding && <AlertStripeFeilPreWrap>{feilmelding}</AlertStripeFeilPreWrap>}
+                </div>
+            )}
+            <Beregningstabell beregnetStønad={beregnetStønad} />
+            {behandlingErRedigerbar && <HovedKnapp disabled={laster} knappetekst="Lagre vedtak" />}
         </Form>
     );
 };
