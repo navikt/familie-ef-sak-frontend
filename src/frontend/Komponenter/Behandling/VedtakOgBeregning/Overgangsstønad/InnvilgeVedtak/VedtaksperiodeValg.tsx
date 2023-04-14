@@ -13,7 +13,7 @@ import VedtakperiodeSelect from './VedtakperiodeSelect';
 import LeggTilKnapp from '../../../../../Felles/Knapper/LeggTilKnapp';
 import { ListState } from '../../../../../App/hooks/felles/useListState';
 import { FormErrors } from '../../../../../App/hooks/felles/useFormState';
-import { InnvilgeVedtakForm } from './InnvilgeVedtak';
+import { InnvilgeVedtakForm } from './Vedtaksform';
 import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import { useApp } from '../../../../../App/context/AppContext';
 import { kalkulerAntallMåneder } from '../../../../../App/utils/dato';

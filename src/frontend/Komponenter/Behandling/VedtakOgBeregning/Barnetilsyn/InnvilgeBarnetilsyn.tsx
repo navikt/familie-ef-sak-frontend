@@ -38,6 +38,7 @@ export const InnvilgeBarnetilsyn: FC<{
 
     const hentVedtakshistorikk = useCallback(
         (revurderesFra: string) => {
+            settVedtakshistorikk(undefined);
             axiosRequest<IvedtakForBarnetilsyn, void>({
                 method: 'GET',
                 url: `/familie-ef-sak/api/vedtak/${behandling.id}/historikk/${revurderesFra}`,

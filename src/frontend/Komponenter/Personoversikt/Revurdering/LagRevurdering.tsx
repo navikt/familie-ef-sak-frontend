@@ -94,15 +94,13 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
     const erGOmregning = valgtBehandlingsårsak === Behandlingsårsak.G_OMREGNING;
 
     useEffect(() => {
-        if (
+        if (erGOmregning) {
+            settVilkårsbehandleNyeBarn(EVilkårsbehandleBarnValg.IKKE_VILKÅRSBEHANDLE);
+        } else if (
             nyeBarnSidenForrigeBehandling.status === RessursStatus.SUKSESS &&
             nyeBarnSidenForrigeBehandling.data.harBarnISisteIverksatteBehandling
         ) {
-            if (erGOmregning) {
-                settVilkårsbehandleNyeBarn(EVilkårsbehandleBarnValg.IKKE_VILKÅRSBEHANDLE);
-            } else {
-                settVilkårsbehandleNyeBarn(EVilkårsbehandleBarnValg.VILKÅRSBEHANDLE);
-            }
+            settVilkårsbehandleNyeBarn(EVilkårsbehandleBarnValg.VILKÅRSBEHANDLE);
         } else {
             settVilkårsbehandleNyeBarn(EVilkårsbehandleBarnValg.IKKE_VALGT);
         }
