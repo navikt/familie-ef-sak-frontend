@@ -10,7 +10,7 @@ import {
 import { useApp } from '../../../App/context/AppContext';
 import { Alert, Button, Heading, Textarea } from '@navikt/ds-react';
 import styled from 'styled-components';
-import { ABgSubtle } from '@navikt/ds-tokens/dist/tokens';
+import { ADeepblue50 } from '@navikt/ds-tokens/dist/tokens';
 import { ToggleName } from '../../../App/context/toggles';
 import { useToggles } from '../../../App/context/TogglesContext';
 import { IOppgave } from '../../Oppgavebenk/typer/oppgave';
@@ -36,13 +36,13 @@ const AlertStripe = styled(Alert)`
 
 const OppgaveValg = styled.div`
     display: flex;
-    gap: 1rem;
+    gap: 3rem;
 `;
 
 const SettPåVentWrapper = styled.div`
     display: grid;
     grid-template-rows: auto 1fr;
-    background-color: ${ABgSubtle};
+    background-color: ${ADeepblue50};
     padding: 2rem;
     gap: 1rem;
 `;
