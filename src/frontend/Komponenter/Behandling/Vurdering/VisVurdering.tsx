@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { delvilkårTypeTilTekst, svarTypeTilTekst } from './tekster';
 import { BrukerMedBlyantIkon, CogIkon } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { IVurdering, resultatTilTekst, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
-import { BreakWordNormaltekst } from '../../../Felles/Visningskomponenter/BreakWordNormaltekst';
+import { BreakWordBodyLongSmall } from '../../../Felles/Visningskomponenter/BreakWordBodyLongSmall';
 import { formaterIsoDatoTidMedSekunder } from '../../../App/utils/formatter';
 import { Button, ErrorMessage, Heading } from '@navikt/ds-react';
 import { Delete, Edit } from '@navikt/ds-icons';
@@ -31,7 +31,7 @@ const TekstMedSpacing = styled(BodyShortSmall)`
     margin-bottom: 1rem;
 `;
 
-const BreakWordTekstMedSpacing = styled(BreakWordNormaltekst)`
+const BreakWordTekstMedSpacing = styled(BreakWordBodyLongSmall)`
     margin-top: 0.25rem;
     margin-bottom: 1.5rem;
 `;

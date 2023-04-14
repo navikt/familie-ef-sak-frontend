@@ -1,5 +1,11 @@
 import React from 'react';
-import { Behandling, BehandlingResultat, behandlingResultatTilTekst } from '../../App/typer/fagsak';
+import {
+    Behandling,
+    BehandlingKategori,
+    BehandlingResultat,
+    behandlingResultatTilTekst,
+    kategoriTilTekst,
+} from '../../App/typer/fagsak';
 import {
     TilbakekrevingBehandling,
     TilbakekrevingBehandlingsresultatstype,
@@ -29,7 +35,7 @@ import {
     KlageÅrsak,
 } from '../../App/typer/klage';
 import { WarningColored } from '@navikt/ds-icons';
-import { Tooltip } from '@navikt/ds-react';
+import { Tag, Tooltip } from '@navikt/ds-react';
 import { sorterBehandlinger } from '../../App/utils/behandlingutil';
 
 const StyledTable = styled.table`
@@ -40,6 +46,11 @@ const StyledTable = styled.table`
 
 const AdvarselIkon = styled(WarningColored)`
     margin-left: 1rem;
+`;
+
+const FlexBox = styled.div`
+    display: flex;
+    gap: 0.75rem;
 `;
 
 const TabellData: PartialRecord<keyof Behandling | 'vedtaksdato', string> = {
@@ -57,6 +68,7 @@ interface BehandlingsoversiktTabellBehandling {
     årsak?: Behandlingsårsak | KlageÅrsak;
     henlagtÅrsak?: EHenlagtårsak | KlageHenlagtÅrsak;
     status: string;
+    kategori?: BehandlingKategori;
     vedtaksdato?: string;
     resultat?:
         | BehandlingResultat
@@ -82,6 +94,7 @@ export const BehandlingsoversiktTabell: React.FC<{
                 henlagtÅrsak: behandling.henlagtÅrsak,
                 status: behandling.status,
                 resultat: behandling.resultat,
+                kategori: behandling.kategori,
                 opprettet: behandling.opprettet,
                 vedtaksdato: behandling.vedtaksdato,
                 applikasjon: BehandlingApplikasjon.EF_SAK,
@@ -195,7 +208,12 @@ export const BehandlingsoversiktTabell: React.FC<{
                     return (
                         <tr key={behandling.id}>
                             <td>{formaterIsoDatoTid(behandling.opprettet)}</td>
-                            <td>{formatterEnumVerdi(behandling.type)}</td>
+                            <td>
+                                <BehandlingType
+                                    behandlingType={behandling.type}
+                                    kategori={behandling.kategori}
+                                />
+                            </td>
                             <td>{finnÅrsak(behandling)}</td>
                             <td>{formatterEnumVerdi(behandling.status)}</td>
                             <td>
@@ -239,5 +257,23 @@ export const BehandlingsoversiktTabell: React.FC<{
                 })}
             </tbody>
         </StyledTable>
+    );
+};
+
+const BehandlingType: React.FC<{ behandlingType: string; kategori?: BehandlingKategori }> = ({
+    behandlingType,
+    kategori,
+}) => {
+    if (!kategori || kategori === BehandlingKategori.NASJONAL) {
+        return <>{formatterEnumVerdi(behandlingType)}</>;
+    }
+
+    return (
+        <FlexBox>
+            <span>{formatterEnumVerdi(behandlingType)}</span>
+            <Tag variant={'warning-filled'} size={'small'}>
+                {kategoriTilTekst[kategori]}
+            </Tag>
+        </FlexBox>
     );
 };

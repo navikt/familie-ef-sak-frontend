@@ -14,10 +14,11 @@ import { useSetValgtFagsakId } from '../../App/hooks/useSetValgtFagsakId';
 import { useSetPersonIdent } from '../../App/hooks/useSetPersonIdent';
 import { InfostripeUtestengelse } from './InfostripeUtestengelse';
 import { ABorderDefault } from '@navikt/ds-tokens/dist/tokens';
-import { SettPåVentModal } from './SettPåVent/SettPåVentModal';
 import { InfostripeSattPåVent } from './SettPåVent/InfostripeSattPåVent';
 import { EkspanderbareVilkårpanelProvider } from '../../App/context/EkspanderbareVilkårpanelContext';
 import Personopplysningsendringer from './Endring/EndringPersonopplysninger';
+import { SettPåVentUtenOppgaveStyring } from './SettPåVent/SettPåVentUtenOppgaveStyring';
+import { SettPåVent } from './SettPåVent/SettPåVent';
 
 const Container = styled.div`
     display: flex;
@@ -78,7 +79,9 @@ const BehandlingContent: FC<{
             <PersonHeaderComponent data={personopplysninger} behandling={behandling} />
             <Container>
                 <InnholdWrapper åpenHøyremeny={åpenHøyremeny}>
-                    <Fanemeny behandlingId={behandling.id} />
+                    <Fanemeny />
+                    <SettPåVentUtenOppgaveStyring behandlingId={behandling.id} />
+                    <SettPåVent behandling={behandling} />
                     <InfostripeUtestengelse utestengelser={utestengelser} />
                     <InfostripeSattPåVent behandling={behandling} />
                     <Personopplysningsendringer behandlingId={behandling.id} />
@@ -86,7 +89,6 @@ const BehandlingContent: FC<{
                         <BehandlingRoutes />
                     </EkspanderbareVilkårpanelProvider>
                     <HenleggModal behandling={behandling} />
-                    <SettPåVentModal behandlingId={behandling.id} />
                 </InnholdWrapper>
                 <HøyreMenyWrapper åpenHøyremeny={åpenHøyremeny}>
                     <Høyremeny åpenHøyremeny={åpenHøyremeny} behandlingId={behandling.id} />

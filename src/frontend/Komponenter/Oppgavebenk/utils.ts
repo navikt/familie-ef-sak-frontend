@@ -1,5 +1,6 @@
 import { IOppgave } from './typer/oppgave';
 import { IdentGruppe } from '@navikt/familie-typer/dist/oppgave';
+import { IMappe } from './typer/mappe';
 
 export const oppgaveErSaksbehandling = (oppgave: IOppgave) => {
     const { behandlesAvApplikasjon, oppgavetype } = oppgave;
@@ -32,3 +33,9 @@ export const oppgaveErVurderKonsekvensForYtelse = (oppgave: IOppgave) => {
 };
 
 export const oppgaveKanJournalføres = (oppgave: IOppgave) => oppgave.oppgavetype === 'JFR';
+
+export const sorterMapperPåNavn = (a: IMappe, b: IMappe) => {
+    if (a.navn > b.navn) return 1;
+    else if (a.navn < b.navn) return -1;
+    return 0;
+};

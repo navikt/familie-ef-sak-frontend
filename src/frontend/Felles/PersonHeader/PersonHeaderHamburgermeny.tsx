@@ -3,7 +3,7 @@ import { useBehandling } from '../../App/context/BehandlingContext';
 import { Hamburgermeny } from '../Hamburgermeny/Hamburgermeny';
 
 export const PersonHeaderHamburgermeny = () => {
-    const { settVisHenleggModal, settVisSettPåVentModal } = useBehandling();
+    const { settVisHenleggModal, settVisSettPåVent } = useBehandling();
 
     const menyvalg = [
         {
@@ -12,7 +12,7 @@ export const PersonHeaderHamburgermeny = () => {
         },
         {
             tekst: 'Sett på vent',
-            onClick: () => settVisSettPåVentModal(true),
+            onClick: () => settVisSettPåVent(true),
         },
     ];
 
