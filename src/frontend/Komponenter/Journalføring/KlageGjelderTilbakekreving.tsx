@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { Checkbox } from '@navikt/ds-react';
 
-interface KlageGjelderTilbakekrevingProps {
+interface Props {
     klageGjelderTilbakekreving: boolean;
     settKlageGjelderTilbakekreving: Dispatch<SetStateAction<boolean>>;
 }
