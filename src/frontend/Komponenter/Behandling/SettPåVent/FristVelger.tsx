@@ -3,6 +3,7 @@ import { IOppgave } from '../../Oppgavebenk/typer/oppgave';
 import { UNSAFE_useDatepicker, UNSAFE_DatePicker } from '@navikt/ds-react';
 import { nullableTilDato, tilLocaleDateString } from '../../../App/utils/dato';
 import { FamilieLesefelt } from '@navikt/familie-form-elements';
+import { formaterNullableIsoDato } from '../../../App/utils/formatter';
 
 export const FristVelger: FC<{
     oppgave: IOppgave;
@@ -20,7 +21,7 @@ export const FristVelger: FC<{
                 <FamilieLesefelt
                     size={'small'}
                     label={'Frist'}
-                    verdi={oppgave.fristFerdigstillelse}
+                    verdi={formaterNullableIsoDato(oppgave.fristFerdigstillelse)}
                 />
             ) : (
                 <UNSAFE_DatePicker {...datepickerProps}>
