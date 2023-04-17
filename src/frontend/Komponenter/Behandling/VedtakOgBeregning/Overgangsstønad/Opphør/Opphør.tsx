@@ -2,12 +2,7 @@ import MånedÅrVelger from '../../../../../Felles/Input/MånedÅr/MånedÅrVelg
 import React, { FormEvent, useState } from 'react';
 import { useBehandling } from '../../../../../App/context/BehandlingContext';
 import { useApp } from '../../../../../App/context/AppContext';
-import {
-    EBehandlingResultat,
-    IOpphørtVedtak,
-    IVedtakForOvergangsstønad,
-    IVedtakType,
-} from '../../../../../App/typer/vedtak';
+import { EBehandlingResultat, IOpphørtVedtak, IVedtakType } from '../../../../../App/typer/vedtak';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../../../App/typer/ressurs';
 import styled from 'styled-components';
 import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
@@ -28,7 +23,7 @@ const Form = styled.form`
 
 export const Opphør: React.FC<{
     behandlingId: string;
-    lagretVedtak?: IVedtakForOvergangsstønad;
+    lagretVedtak?: IOpphørtVedtak;
 }> = ({ behandlingId, lagretVedtak }) => {
     const { utførRedirect } = useRedirectEtterLagring(`/behandling/${behandlingId}/simulering`);
     const [laster, settLaster] = useState(false);

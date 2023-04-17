@@ -13,6 +13,7 @@ import {
     EAvslagÅrsak,
     EBehandlingResultat,
     IBeregningsperiodeBarnetilsyn,
+    IVedtak,
     IVedtakForOvergangsstønad,
 } from '../../../../App/typer/vedtak';
 import { Ressurs, RessursStatus } from '../../../../App/typer/ressurs';
@@ -171,9 +172,8 @@ export const blirNullUtbetalingPgaOverstigendeKontantstøtte = (
             periode.beregningsgrunnlag.kontantstøttebeløp >= periode.beregningsgrunnlag.utgifter
     );
 
-export const skalViseNullstillVedtakKnapp = (
-    vedtak: Ressurs<IVedtakForOvergangsstønad | undefined>
-): boolean => vedtak.status === RessursStatus.SUKSESS && vedtak.data !== undefined;
+export const skalViseNullstillVedtakKnapp = (vedtak: Ressurs<IVedtak | undefined>): boolean =>
+    vedtak.status === RessursStatus.SUKSESS && vedtak.data !== undefined;
 
 export const skalFerdigstilleUtenBeslutter = (
     vedtak?: IVedtakForOvergangsstønad | undefined
