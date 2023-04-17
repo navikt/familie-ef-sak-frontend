@@ -299,7 +299,7 @@ export const Vedtaksform: React.FC<{
                 kontantstøttePerioder={kontantstøttePeriodeState}
                 settValideringsFeil={formState.setErrors}
                 valideringsfeil={formState.errors}
-                harKontantstøtteUtbetalinger={harKontantstøtteUtbetalinger}
+                finnesKontantstøtteUtbetaling={finnesKontantstøtteUtbetaling}
             />
             <TilleggsstønadValg
                 erLesevisning={!behandlingErRedigerbar}

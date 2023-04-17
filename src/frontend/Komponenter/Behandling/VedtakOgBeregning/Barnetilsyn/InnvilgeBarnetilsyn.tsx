@@ -10,10 +10,6 @@ import { VEDTAK_OG_BEREGNING } from '../Felles/konstanter';
 import { RevurderesFraOgMed } from '../Felles/RevurderesFraOgMed';
 import { Vedtaksform } from './Vedtaksform';
 import { oppdaterVedtakMedEndretKey, oppdaterVedtakMedInitPeriodeOgOpphørshulll } from './utils';
-import { IKontantstøtteUtbetalinger } from './KontantstøtteValg';
-import { AxiosRequestConfig } from 'axios';
-import { useDataHenter } from '../../../../App/hooks/felles/useDataHenter';
-import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 
 // TODO backend må returnere InnvilgelseBarnetilsynUtenUtbetaling ?
 export const InnvilgeBarnetilsyn: FC<{
@@ -60,17 +56,6 @@ export const InnvilgeBarnetilsyn: FC<{
         [axiosRequest, behandling]
     );
 
-    const hentKsUtbetalinger: AxiosRequestConfig = useMemo(
-        () => ({
-            method: 'GET',
-            url: `/familie-ef-sak/api/behandling/kontantstotte/${behandling.id}/finnesUtbetalinger`,
-        }),
-        [behandling]
-    );
-    const kontantstøtteUtbetalinger = useDataHenter<IKontantstøtteUtbetalinger, null>(
-        hentKsUtbetalinger
-    );
-
     const vedtak = useMemo(
         () => oppdaterVedtakMedEndretKey(vedtakshistorikk || lagretVedtak),
         [vedtakshistorikk, lagretVedtak]
@@ -89,20 +74,13 @@ export const InnvilgeBarnetilsyn: FC<{
                 />
             )}
             {(!behandling.forrigeBehandlingId || vedtak) && (
-                <DataViewer response={{ kontantstøtteUtbetalinger }}>
-                    {({ kontantstøtteUtbetalinger }) => (
-                        <Vedtaksform
-                            behandling={behandling}
-                            lagretVedtak={vedtak}
-                            barn={barn}
-                            settResultatType={settResultatType}
-                            låsFraDatoFørsteRad={!!revurderesFra}
-                            harKontantstøtteUtbetalinger={
-                                kontantstøtteUtbetalinger.finnesUtbetaling
-                            }
-                        />
-                    )}
-                </DataViewer>
+                <Vedtaksform
+                    behandling={behandling}
+                    lagretVedtak={vedtak}
+                    barn={barn}
+                    settResultatType={settResultatType}
+                    låsFraDatoFørsteRad={!!revurderesFra}
+                />
             )}
         </>
     );

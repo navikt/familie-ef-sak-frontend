@@ -22,6 +22,7 @@ import JaNeiRadioGruppe from '../Felles/JaNeiRadioGruppe';
 import { HorizontalScroll } from '../Felles/HorizontalScroll';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
 import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
+import { EFinnesKontantstøtteUtbetaling } from '../../../../App/hooks/useHentKontantstøtteUtbetalinger';
 
 const Container = styled.div`
     padding: 1rem;
@@ -62,11 +63,8 @@ interface Props {
     kontantstøttePerioder: ListState<IPeriodeMedBeløp>;
     settValideringsFeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>;
     valideringsfeil?: FormErrors<InnvilgeVedtakForm>;
-    harKontantstøtteUtbetalinger?: boolean;
+    finnesKontantstøtteUtbetaling: EFinnesKontantstøtteUtbetaling;
 }
-export type IKontantstøtteUtbetalinger = {
-    finnesUtbetaling: boolean;
-};
 
 export const tomKontantstøtteRad = (): IPeriodeMedBeløp => ({
     årMånedFra: '',
@@ -81,7 +79,7 @@ const KontantstøtteValg: React.FC<Props> = ({
     kontantstøttePerioder,
     settValideringsFeil,
     valideringsfeil,
-    harKontantstøtteUtbetalinger,
+    finnesKontantstøtteUtbetaling,
 }) => {
     const { settIkkePersistertKomponent } = useApp();
     const { åpenHøyremeny } = useBehandling();
@@ -130,16 +128,18 @@ const KontantstøtteValg: React.FC<Props> = ({
                 Kontantstøtte
             </Heading>
             <AlertOgRadioknappWrapper>
-                {!erLesevisning && harKontantstøtteUtbetalinger && (
-                    <AlertStripe variant={'warning'} size={'small'}>
-                        Bruker har eller har fått kontantstøtte.
-                    </AlertStripe>
-                )}
-                {!erLesevisning && !harKontantstøtteUtbetalinger && (
-                    <AlertStripe variant={'info'} size={'small'}>
-                        Bruker verken mottar eller har mottatt kontantstøtte.
-                    </AlertStripe>
-                )}
+                {!erLesevisning &&
+                    finnesKontantstøtteUtbetaling === EFinnesKontantstøtteUtbetaling.JA && (
+                        <AlertStripe variant={'warning'} size={'small'}>
+                            Bruker har eller har fått kontantstøtte.
+                        </AlertStripe>
+                    )}
+                {!erLesevisning &&
+                    finnesKontantstøtteUtbetaling === EFinnesKontantstøtteUtbetaling.NEI && (
+                        <AlertStripe variant={'info'} size={'small'}>
+                            Bruker verken mottar eller har mottatt kontantstøtte.
+                        </AlertStripe>
+                    )}
 
                 <JaNeiRadioGruppe
                     error={valideringsfeil?.harKontantstøtte}
