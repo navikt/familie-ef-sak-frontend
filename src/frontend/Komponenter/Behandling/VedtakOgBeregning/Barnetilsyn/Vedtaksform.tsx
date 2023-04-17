@@ -31,6 +31,7 @@ import { useRedirectEtterLagring } from '../../../../App/hooks/felles/useRedirec
 import { v4 as uuidv4 } from 'uuid';
 import { AlertError } from '../../../../Felles/Visningskomponenter/Alerts';
 import HovedKnapp from '../../../../Felles/Knapper/HovedKnapp';
+import { useHentKontantstøtteUtbetaling } from '../../../../App/hooks/useHentKontantstøtteUtbetalinger';
 
 export type InnvilgeVedtakForm = {
     utgiftsperioder: IUtgiftsperiode[];
@@ -53,17 +54,12 @@ const Utregningstabell = styled(UtregningstabellBarnetilsyn)`
     margin-left: 1rem;
 `;
 
-const initKontantstøttestate = (
-    vedtak: IInnvilgeVedtakForBarnetilsyn | undefined,
-    harKontantstøtteUtbetalinger?: boolean
-) =>
+const initKontantstøttestate = (vedtak: IInnvilgeVedtakForBarnetilsyn | undefined) =>
     vedtak
         ? vedtak.perioderKontantstøtte && vedtak.perioderKontantstøtte.length > 0
             ? ERadioValg.JA
             : ERadioValg.NEI
-        : harKontantstøtteUtbetalinger
-        ? ERadioValg.IKKE_SATT
-        : ERadioValg.NEI;
+        : ERadioValg.IKKE_SATT;
 
 const initKontantstøtteperioder = (vedtak: IInnvilgeVedtakForBarnetilsyn | undefined) =>
     vedtak ? vedtak.perioderKontantstøtte : [tomKontantstøtteRad()];
@@ -88,12 +84,9 @@ const initTillegsstønadsperioder = (vedtak: IInnvilgeVedtakForBarnetilsyn | und
 const initUtgiftsperioder = (vedtak: IInnvilgeVedtakForBarnetilsyn | undefined) =>
     vedtak ? vedtak.perioder : [tomUtgiftsperiodeRad()];
 
-const initFormState = (
-    vedtak: IInnvilgeVedtakForBarnetilsyn | undefined,
-    harKontantstøtteUtbetalinger?: boolean
-) => ({
+const initFormState = (vedtak: IInnvilgeVedtakForBarnetilsyn | undefined) => ({
     utgiftsperioder: initUtgiftsperioder(vedtak),
-    harKontantstøtte: initKontantstøttestate(vedtak, harKontantstøtteUtbetalinger),
+    harKontantstøtte: initKontantstøttestate(vedtak),
     kontantstøtteperioder: initKontantstøtteperioder(vedtak),
     harTilleggsstønad: initHarTilleggsstønad(vedtak),
     tilleggsstønadBegrunnelse: vedtak?.tilleggsstønad.begrunnelse || '',
@@ -112,21 +105,15 @@ export const Vedtaksform: React.FC<{
     barn: IBarnMedSamvær[];
     settResultatType: (val: EBehandlingResultat | undefined) => void;
     låsFraDatoFørsteRad: boolean;
-    harKontantstøtteUtbetalinger: boolean;
-}> = ({
-    lagretVedtak,
-    behandling,
-    barn,
-    settResultatType,
-    låsFraDatoFørsteRad,
-    harKontantstøtteUtbetalinger,
-}) => {
+}> = ({ lagretVedtak, behandling, barn, settResultatType, låsFraDatoFørsteRad }) => {
     const lagretInnvilgetVedtak =
         lagretVedtak?._type === IVedtakType.InnvilgelseBarnetilsyn ||
         lagretVedtak?._type === IVedtakType.InnvilgelseBarnetilsynUtenUtbetaling
             ? (lagretVedtak as IInnvilgeVedtakForBarnetilsyn)
             : undefined;
     const { behandlingErRedigerbar, hentBehandling } = useBehandling();
+    const { finnesKontantstøtteUtbetaling, hentKontantstøtteUtbetaling } =
+        useHentKontantstøtteUtbetaling();
     const [laster, settLaster] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState('');
     const [nullUtbetalingPgaKontantstøtte, settNullUtbetalingPgaKontantstøtte] = useState(
@@ -140,7 +127,7 @@ export const Vedtaksform: React.FC<{
     const { utførRedirect } = useRedirectEtterLagring(`/behandling/${behandling.id}/simulering`);
 
     const formState = useFormState<InnvilgeVedtakForm>(
-        initFormState(lagretInnvilgetVedtak, harKontantstøtteUtbetalinger),
+        initFormState(lagretInnvilgetVedtak),
         validerInnvilgetVedtakForm
     );
 
@@ -161,12 +148,11 @@ export const Vedtaksform: React.FC<{
 
     useEffect(() => {
         if (!lagretInnvilgetVedtak) {
+            hentKontantstøtteUtbetaling(behandling.id);
             return;
         }
         utgiftsperiodeState.setValue(initUtgiftsperioder(lagretInnvilgetVedtak));
-        kontantstøtteState.setValue(
-            initKontantstøttestate(lagretInnvilgetVedtak, harKontantstøtteUtbetalinger)
-        );
+        kontantstøtteState.setValue(initKontantstøttestate(lagretInnvilgetVedtak));
         kontantstøttePeriodeState.setValue(initKontantstøtteperioder(lagretInnvilgetVedtak));
         tilleggsstønadState.setValue(initHarTilleggsstønad(lagretInnvilgetVedtak));
         stønadsreduksjonState.setValue(initSkalStønadReduseres(lagretInnvilgetVedtak));
