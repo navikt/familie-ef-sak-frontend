@@ -6,7 +6,6 @@ import {
     IInnvilgeVedtakForBarnetilsyn,
     IPeriodeMedBeløp,
     IUtgiftsperiode,
-    IvedtakForBarnetilsyn,
     IVedtakType,
 } from '../../../../App/typer/vedtak';
 import { Behandling } from '../../../../App/typer/fagsak';
@@ -101,7 +100,7 @@ const initNullUtbetalingPgaKontantstøtte = (
 
 export const Vedtaksform: React.FC<{
     behandling: Behandling;
-    lagretVedtak?: IvedtakForBarnetilsyn;
+    lagretVedtak?: IInnvilgeVedtakForBarnetilsyn;
     barn: IBarnMedSamvær[];
     settResultatType: (val: EBehandlingResultat | undefined) => void;
     låsFraDatoFørsteRad: boolean;
@@ -219,6 +218,7 @@ export const Vedtaksform: React.FC<{
             _type: nullUtbetalingPgaKontantstøtte
                 ? IVedtakType.InnvilgelseBarnetilsynUtenUtbetaling
                 : IVedtakType.InnvilgelseBarnetilsyn,
+            resultatType: EBehandlingResultat.INNVILGE,
         };
         lagreVedtak(vedtaksRequest);
     };

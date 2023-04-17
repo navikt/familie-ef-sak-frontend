@@ -1,4 +1,5 @@
 import {
+    EBehandlingResultat,
     IBeregningSkolepengerResponse,
     IBeregningsrequestSkolepenger,
     ISkoleårsperiodeSkolepenger,
@@ -138,6 +139,7 @@ export const VedtaksformSkolepenger: React.FC<{
                 _type: erOpphør
                     ? IVedtakType.OpphørSkolepenger
                     : IVedtakType.InnvilgelseSkolepenger,
+                resultatType: erOpphør ? EBehandlingResultat.OPPHØRT : EBehandlingResultat.INNVILGE, // Er dette riktig?
             };
             lagreVedtak(vedtaksRequest);
         } else {
