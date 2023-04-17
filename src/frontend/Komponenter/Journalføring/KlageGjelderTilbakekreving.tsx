@@ -6,7 +6,7 @@ interface Props {
     settKlageGjelderTilbakekreving: Dispatch<SetStateAction<boolean>>;
 }
 
-const KlageGjelderTilbakekreving: React.FC<KlageGjelderTilbakekrevingProps> = ({
+const KlageGjelderTilbakekreving: React.FC<Props> = ({
     klageGjelderTilbakekreving,
     settKlageGjelderTilbakekreving,
 }) => {
