@@ -3,6 +3,7 @@ import { Behandling } from '../../../../App/typer/fagsak';
 import { IVilkår } from '../../Inngangsvilkår/vilkår';
 import {
     EBehandlingResultat,
+    IAvslagVedtak,
     IVedtakForSkolepenger,
     IVedtakType,
 } from '../../../../App/typer/vedtak';
@@ -82,7 +83,11 @@ const VedtakOgBeregningSkolepenger: FC<Props> = ({ behandling, vilkår }) => {
                                     behandling={behandling}
                                     alleVilkårOppfylt={alleVilkårOppfylt}
                                     ikkeOppfyltVilkårEksisterer={true}
-                                    lagretVedtak={vedtak}
+                                    lagretVedtak={
+                                        vedtak?._type === IVedtakType.Avslag
+                                            ? (vedtak as IAvslagVedtak)
+                                            : undefined
+                                    }
                                 />
                             );
                         case undefined:

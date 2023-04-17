@@ -17,7 +17,7 @@ import {
     EPeriodetype,
     ISanksjonereVedtakDto,
     ISanksjonereVedtakForOvergangsstønad,
-    IVedtakForOvergangsstønad,
+    IVedtak,
     IVedtakType,
 } from '../../../App/typer/vedtak';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
@@ -107,7 +107,7 @@ const Sanksjonsfastsettelse: FC<Props> = ({ behandlingId }) => {
 
 const SanksjonsvedtakVisning: FC<{
     behandling: Behandling;
-    lagretVedtak?: IVedtakForOvergangsstønad;
+    lagretVedtak?: IVedtak;
 }> = ({ behandling, lagretVedtak }) => {
     const lagretSanksjonertVedtak =
         lagretVedtak?._type === IVedtakType.Sanksjonering
