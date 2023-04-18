@@ -76,6 +76,7 @@ export type IInnvilgeVedtakForOvergangsstønad = {
 };
 
 export type IInnvilgeVedtakForBarnetilsyn = {
+    resultatType: EBehandlingResultat.INNVILGE;
     begrunnelse?: string;
     perioder: IUtgiftsperiode[];
     perioderKontantstøtte: IPeriodeMedBeløp[];
@@ -132,6 +133,7 @@ export type IVedtakForSkolepenger = {
     begrunnelse?: string;
     skoleårsperioder: ISkoleårsperiodeSkolepenger[];
     _type?: IVedtakType.InnvilgelseSkolepenger | IVedtakType.OpphørSkolepenger;
+    resultatType: EBehandlingResultat.INNVILGE | EBehandlingResultat.OPPHØRT;
 };
 
 export interface ISkoleårsperiodeSkolepenger {
@@ -172,6 +174,8 @@ export interface IOpphørtVedtak {
     opphørFom: string;
     begrunnelse: string;
 }
+
+export type IVedtak = IVedtakForOvergangsstønad | IvedtakForBarnetilsyn | IvedtakForSkolepenger;
 
 export type IVedtakForOvergangsstønad =
     | IAvslagVedtak

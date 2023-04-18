@@ -82,7 +82,9 @@ const VedtakOgBeregningSkolepenger: FC<Props> = ({ behandling, vilkår }) => {
                                     behandling={behandling}
                                     alleVilkårOppfylt={alleVilkårOppfylt}
                                     ikkeOppfyltVilkårEksisterer={true}
-                                    lagretVedtak={vedtak}
+                                    lagretVedtak={
+                                        vedtak?._type === IVedtakType.Avslag ? vedtak : undefined
+                                    }
                                 />
                             );
                         case undefined:
