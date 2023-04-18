@@ -12,7 +12,7 @@ import { ABorderStrong } from '@navikt/ds-tokens/dist/tokens';
 import { useNavigate } from 'react-router-dom';
 import OppgaverForOpprettelse, { OppgaveForOpprettelseType } from './OppgaverForOpprettelse';
 import { Behandling } from '../../../App/typer/fagsak';
-import { useHentOppgaverForOpprettelse } from '../../../App/hooks/useHentOppgaverForOpprettelse';
+import { HentOppgaverForOpprettelseState } from '../../../App/hooks/useHentOppgaverForOpprettelse';
 
 const Footer = styled.footer`
     width: 100%;
@@ -22,14 +22,20 @@ const Footer = styled.footer`
 `;
 
 const MidtstiltInnhold = styled.div`
-    width: 30%;
-    margin: 0 auto;
     display: flex;
+    align-items: center;
+    margin-left: auto;
+    margin-right: 50%;
 `;
 
 const HovedKnapp = styled(Button)`
     margin-left: 1rem;
     margin-right: 1rem;
+`;
+
+const FlexBox = styled.div`
+    display: flex;
+    flex-wrap: wrap;
 `;
 
 export interface SendTilBeslutterRequest {
@@ -41,14 +47,20 @@ const SendTilBeslutterFooter: React.FC<{
     kanSendesTilBeslutter?: boolean;
     behandlingErRedigerbar: boolean;
     ferdigstillUtenBeslutter: boolean;
-}> = ({ behandling, kanSendesTilBeslutter, behandlingErRedigerbar, ferdigstillUtenBeslutter }) => {
+    oppgaverForOpprettelseState?: HentOppgaverForOpprettelseState;
+}> = ({
+    behandling,
+    kanSendesTilBeslutter,
+    behandlingErRedigerbar,
+    ferdigstillUtenBeslutter,
+    oppgaverForOpprettelseState,
+}) => {
     const { axiosRequest } = useApp();
     const navigate = useNavigate();
     const { hentTotrinnskontroll, hentBehandling, hentBehandlingshistorikk } = useBehandling();
     const [laster, settLaster] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>();
     const [visModal, settVisModal] = useState<boolean>(false);
-    const oppgaverForOpprettelseState = useHentOppgaverForOpprettelse();
     const behandlingId = behandling.id;
 
     const sendTilBeslutter = () => {
@@ -58,8 +70,10 @@ const SendTilBeslutterFooter: React.FC<{
             method: 'POST',
             url: `/familie-ef-sak/api/vedtak/${behandlingId}/send-til-beslutter`,
             data: {
-                oppgavetyperSomSkalOpprettes:
-                    oppgaverForOpprettelseState.oppgaverForOpprettelse.oppgavetyperSomSkalOpprettes,
+                oppgavetyperSomSkalOpprettes: oppgaverForOpprettelseState
+                    ? oppgaverForOpprettelseState.oppgaverForOpprettelse
+                          .oppgavetyperSomSkalOpprettes
+                    : [],
             },
         })
             .then((res: RessursSuksess<string> | RessursFeilet) => {
@@ -94,25 +108,28 @@ const SendTilBeslutterFooter: React.FC<{
                 {ferdigstillUtenBeslutter && (
                     <AlertInfo>Vedtaket vil ikke bli sendt til totrinnskontroll</AlertInfo>
                 )}
-                <OppgaverForOpprettelse
-                    behandling={behandling}
-                    behandlingErRedigerbar={behandlingErRedigerbar}
-                    oppgaverForOpprettelseState={oppgaverForOpprettelseState}
-                />
                 {behandlingErRedigerbar && (
-                    <MidtstiltInnhold>
-                        <HovedKnapp
-                            onClick={sendTilBeslutter}
-                            disabled={
-                                laster ||
-                                !kanSendesTilBeslutter ||
-                                oppgaverForOpprettelseState.feilmelding
-                            }
-                            type={'button'}
-                        >
-                            {ferdigstillTittel}
-                        </HovedKnapp>
-                    </MidtstiltInnhold>
+                    <FlexBox>
+                        {oppgaverForOpprettelseState && (
+                            <OppgaverForOpprettelse
+                                behandling={behandling}
+                                oppgaverForOpprettelseState={oppgaverForOpprettelseState}
+                            />
+                        )}
+                        <MidtstiltInnhold>
+                            <HovedKnapp
+                                onClick={sendTilBeslutter}
+                                disabled={
+                                    laster ||
+                                    !kanSendesTilBeslutter ||
+                                    oppgaverForOpprettelseState?.feilmelding
+                                }
+                                type={'button'}
+                            >
+                                {ferdigstillTittel}
+                            </HovedKnapp>
+                        </MidtstiltInnhold>
+                    </FlexBox>
                 )}
             </Footer>
             <ModalWrapper

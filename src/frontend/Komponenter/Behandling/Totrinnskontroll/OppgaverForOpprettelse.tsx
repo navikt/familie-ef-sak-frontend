@@ -1,11 +1,24 @@
 import * as React from 'react';
 import { useEffect } from 'react';
-import { BodyShort, Checkbox } from '@navikt/ds-react';
+import { Checkbox } from '@navikt/ds-react';
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
 import { Behandling } from '../../../App/typer/fagsak';
 import { HentOppgaverForOpprettelseState } from '../../../App/hooks/useHentOppgaverForOpprettelse';
-import { AlertError, AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
+import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 import { FamilieCheckboxGroup } from '@navikt/familie-form-elements';
+import styled from 'styled-components';
+import { AGrayalpha300 } from '@navikt/ds-tokens/dist/tokens';
+export const HvitTekst = styled.div`
+    color: white;
+`;
+
+const CheckboxGruppe = styled(FamilieCheckboxGroup)`
+    width: 30rem;
+    margin: 0.5rem 1rem 0.5rem 1rem;
+    padding: 0 0.25rem 0 0.25rem;
+    background-color: ${AGrayalpha300};
+    border-radius: 5px;
+`;
 
 export enum OppgaveForOpprettelseType {
     INNTEKTSKONTROLL_1_ÅR_FREM_I_TID = 'INNTEKTSKONTROLL_1_ÅR_FREM_I_TID',
@@ -17,14 +30,14 @@ export interface IOppgaverForOpprettelse {
 }
 
 export const oppgaveForOpprettelseTilTekst: Record<OppgaveForOpprettelseType, string> = {
-    INNTEKTSKONTROLL_1_ÅR_FREM_I_TID: 'Oppgave for inntektskontroll, 1 år frem i tid',
+    INNTEKTSKONTROLL_1_ÅR_FREM_I_TID:
+        'Når vedtaket er godkjent skal det automatisk opprettes en oppgave for kontroll av inntekt 1 år frem i tid',
 };
 
 const OppgaverForOpprettelse: React.FC<{
     behandling: Behandling;
-    behandlingErRedigerbar: boolean;
     oppgaverForOpprettelseState: HentOppgaverForOpprettelseState;
-}> = ({ behandling, behandlingErRedigerbar, oppgaverForOpprettelseState }) => {
+}> = ({ behandling, oppgaverForOpprettelseState }) => {
     const {
         feilmelding,
         oppgaverForOpprettelse,
@@ -43,42 +56,30 @@ const OppgaverForOpprettelse: React.FC<{
         return <AlertError>{feilmelding}</AlertError>;
     }
 
-    if (behandlingErRedigerbar && oppgavetyperSomKanOpprettes.length === 0) {
+    if (oppgavetyperSomKanOpprettes.length === 0) {
         return null;
     }
 
     // FamilieCheckboxGroup bruker verdiene direkt hvis det er lesevisning
-    const checkboxverdier = behandlingErRedigerbar
-        ? oppgavetyperSomSkalOpprettes
-        : oppgavetyperSomSkalOpprettes.map(
-              (oppgavetype) => oppgaveForOpprettelseTilTekst[oppgavetype]
-          );
+    const checkboxverdier = oppgavetyperSomSkalOpprettes;
+
     return (
-        <AlertInfo>
-            <FamilieCheckboxGroup
-                legend={
-                    'Følgende oppgaver skal opprettes automatisk ved godkjenning av dette vedtaket:'
-                }
-                erLesevisning={!behandlingErRedigerbar}
-                value={checkboxverdier}
-                onChange={(oppgavetyper: string[]) =>
-                    oppdaterOppgavetyperSomSkalOpprettes(
-                        oppgavetyper as OppgaveForOpprettelseType[]
-                    )
-                }
-            >
-                {oppgavetyperSomKanOpprettes.map((oppgavetype) => {
-                    return (
-                        <Checkbox key={oppgavetype} value={oppgavetype}>
-                            {oppgaveForOpprettelseTilTekst[oppgavetype]}
-                        </Checkbox>
-                    );
-                })}
-            </FamilieCheckboxGroup>
-            {!behandlingErRedigerbar && !checkboxverdier.length && (
-                <BodyShort>Ingen oppgave opprettes automatisk</BodyShort>
-            )}
-        </AlertInfo>
+        <CheckboxGruppe
+            legend={''}
+            erLesevisning={false}
+            value={checkboxverdier}
+            onChange={(oppgavetyper: string[]) =>
+                oppdaterOppgavetyperSomSkalOpprettes(oppgavetyper as OppgaveForOpprettelseType[])
+            }
+        >
+            {oppgavetyperSomKanOpprettes.map((oppgavetype) => {
+                return (
+                    <Checkbox key={oppgavetype} value={oppgavetype}>
+                        <HvitTekst>{oppgaveForOpprettelseTilTekst[oppgavetype]}</HvitTekst>
+                    </Checkbox>
+                );
+            })}
+        </CheckboxGruppe>
     );
 };
 

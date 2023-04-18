@@ -11,6 +11,9 @@ import { TotrinnskontrollStatus } from '../../../App/typer/totrinnskontroll';
 import { BrevmottakereForBehandling } from '../Brevmottakere/BrevmottakereForBehandling';
 import { useHentVedtak } from '../../../App/hooks/useHentVedtak';
 import { skalFerdigstilleUtenBeslutter } from '../VedtakOgBeregning/Felles/utils';
+import { useHentOppgaverForOpprettelse } from '../../../App/hooks/useHentOppgaverForOpprettelse';
+import { AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
+import { oppgaveForOpprettelseTilTekst } from '../Totrinnskontroll/OppgaverForOpprettelse';
 
 const StyledBrev = styled.div`
     background-color: #f2f2f2;
@@ -32,6 +35,14 @@ const HøyreKolonne = styled.div`
     flex-grow: 1;
 `;
 
+const InfostripeGruppe = styled.div`
+    padding-top: 1rem;
+`;
+
+const StyledInfostripe = styled(AlertInfo)`
+    width: 40rem;
+`;
+
 interface Props {
     behandlingId: string;
 }
@@ -43,10 +54,13 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
         useBehandling();
     const [kanSendesTilBeslutter, settKanSendesTilBeslutter] = useState<boolean>(false);
     const { hentVedtak, vedtak } = useHentVedtak(behandlingId);
+    const oppgaverForOpprettelseState = useHentOppgaverForOpprettelse();
+    const { hentOppgaverForOpprettelse } = oppgaverForOpprettelseState;
 
     useEffect(() => {
         hentVedtak();
-    }, [hentVedtak]);
+        hentOppgaverForOpprettelse(behandlingId);
+    }, [hentVedtak, hentOppgaverForOpprettelse, behandlingId]);
 
     const lagBeslutterBrev = () => {
         axiosRequest<string, null>({
@@ -94,6 +108,18 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
                                 behandlingId={behandling.id}
                                 personopplysninger={personopplysningerResponse}
                             />
+                            {!behandlingErRedigerbar &&
+                                oppgaverForOpprettelseState.oppgaverForOpprettelse.oppgavetyperSomSkalOpprettes.map(
+                                    (oppgaveType) => {
+                                        return (
+                                            <InfostripeGruppe>
+                                                <StyledInfostripe>
+                                                    {oppgaveForOpprettelseTilTekst[oppgaveType]}
+                                                </StyledInfostripe>
+                                            </InfostripeGruppe>
+                                        );
+                                    }
+                                )}
                             {behandlingErRedigerbar && (
                                 <Brevmeny
                                     behandlingId={behandlingId}
@@ -114,6 +140,7 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
                         kanSendesTilBeslutter={kanSendesTilBeslutter}
                         ferdigstillUtenBeslutter={skalFerdigstilleUtenBeslutter(vedtak)}
                         behandlingErRedigerbar={behandlingErRedigerbar}
+                        oppgaverForOpprettelseState={oppgaverForOpprettelseState}
                     />
                 </>
             )}
