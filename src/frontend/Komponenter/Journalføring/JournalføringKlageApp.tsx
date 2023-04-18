@@ -40,6 +40,7 @@ import styled from 'styled-components';
 import JournalpostTittelOgLenke from './JournalpostTittelOgLenke';
 import { Button, Fieldset, Heading } from '@navikt/ds-react';
 import { ÅpneKlager } from '../Personoversikt/Klage/ÅpneKlager';
+import KlageGjelderTilbakekreving from './KlageGjelderTilbakekreving';
 
 const KlageMottatt = styled.div`
     margin-top: 1rem;
@@ -163,6 +164,12 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
                     <VelgFagsakForIkkeSøknad
                         journalResponse={journalResponse}
                         hentFagsak={hentFagsak}
+                    />
+                    <KlageGjelderTilbakekreving
+                        klageGjelderTilbakekreving={journalpostState.klageGjelderTilbakekreving}
+                        settKlageGjelderTilbakekreving={
+                            journalpostState.settKlageGjelderTilbakekreving
+                        }
                     />
                     <Brukerinfo
                         navn={journalResponse.navn}

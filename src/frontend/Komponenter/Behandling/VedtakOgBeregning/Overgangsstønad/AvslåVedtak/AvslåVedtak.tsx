@@ -6,7 +6,6 @@ import {
     EAvslagÅrsak,
     EBehandlingResultat,
     IAvslagVedtak,
-    IVedtakForOvergangsstønad,
     IVedtakType,
 } from '../../../../../App/typer/vedtak';
 import { Behandling } from '../../../../../App/typer/fagsak';
@@ -18,7 +17,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 export const AvslåVedtak: React.FC<{
     behandling: Behandling;
-    lagretVedtak?: IVedtakForOvergangsstønad;
+    lagretVedtak?: IAvslagVedtak;
     alleVilkårOppfylt: boolean;
     ikkeOppfyltVilkårEksisterer: boolean;
 }> = ({ behandling, lagretVedtak, alleVilkårOppfylt, ikkeOppfyltVilkårEksisterer }) => {
