@@ -75,11 +75,12 @@ export interface MenyItem {
 }
 
 export interface Props {
-    type?: 'hamburger' | 'ellipsisV';
+    className?: string;
     items: MenyItem[];
+    type?: 'hamburger' | 'ellipsisV';
 }
 
-export const Hamburgermeny: FC<Props> = ({ type = 'hamburger', items }) => {
+export const Hamburgermeny: FC<Props> = ({ className, items, type = 'hamburger' }) => {
     const ref = useRef(null);
     const [åpenHamburgerMeny, settÅpenHamburgerMeny] = useState<boolean>(false);
 
@@ -101,7 +102,7 @@ export const Hamburgermeny: FC<Props> = ({ type = 'hamburger', items }) => {
     }, [åpenHamburgerMeny]);
 
     return (
-        <HamburgerWrapper ref={ref}>
+        <HamburgerWrapper className={className} ref={ref}>
             {type === 'hamburger' ? (
                 <HamburgerMenyIkon
                     onClick={() => {
