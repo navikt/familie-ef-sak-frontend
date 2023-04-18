@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { Behandling } from '../../../../App/typer/fagsak';
 import { IVilkår } from '../../Inngangsvilkår/vilkår';
-import { EBehandlingResultat, IInnvilgeVedtakForBarnetilsyn } from '../../../../App/typer/vedtak';
+import { EBehandlingResultat, IVedtakType } from '../../../../App/typer/vedtak';
 import { useHentVedtak } from '../../../../App/hooks/useHentVedtak';
 import { erAlleVilkårOppfylt, skalViseNullstillVedtakKnapp } from '../Felles/utils';
 import { RessursStatus } from '../../../../App/typer/ressurs';
@@ -52,7 +52,9 @@ const VedtakOgBeregningBarnetilsyn: FC<Props> = ({ behandling, vilkår }) => {
                                 <InnvilgeBarnetilsyn
                                     behandling={behandling}
                                     lagretVedtak={
-                                        vedtak as IInnvilgeVedtakForBarnetilsyn | undefined
+                                        vedtak?._type === IVedtakType.InnvilgelseBarnetilsyn
+                                            ? vedtak
+                                            : undefined
                                     }
                                     barn={barnSomOppfyllerAlleVilkår(vilkår)}
                                     settResultatType={settResultatType}
@@ -64,11 +66,20 @@ const VedtakOgBeregningBarnetilsyn: FC<Props> = ({ behandling, vilkår }) => {
                                     behandling={behandling}
                                     alleVilkårOppfylt={alleVilkårOppfylt}
                                     ikkeOppfyltVilkårEksisterer={true}
-                                    lagretVedtak={vedtak}
+                                    lagretVedtak={
+                                        vedtak?._type === IVedtakType.Avslag ? vedtak : undefined
+                                    }
                                 />
                             );
                         case EBehandlingResultat.OPPHØRT:
-                            return <Opphør behandlingId={behandlingId} lagretVedtak={vedtak} />;
+                            return (
+                                <Opphør
+                                    behandlingId={behandlingId}
+                                    lagretVedtak={
+                                        vedtak?._type === IVedtakType.Opphør ? vedtak : undefined
+                                    }
+                                />
+                            );
                         case undefined:
                         default:
                             return null;
