@@ -23,10 +23,15 @@ import { useBehandling } from '../../../../App/context/BehandlingContext';
 import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
 import { EFinnesKontantstøtteUtbetaling } from '../../../../App/hooks/useHentKontantstøtteUtbetalinger';
 import { KontantstøtteAlert } from './KontantstøtteAlert';
+import JaNeiRadioGruppe from '../Felles/JaNeiRadioGruppe';
 
 const Container = styled.div`
     padding: 1rem;
     background-color: ${AGray50};
+`;
+
+const AlertOgRadioknappWrapper = styled.div`
+    width: max-content;
 `;
 
 const Grid = styled.div<{ lesevisning: boolean }>`
@@ -110,18 +115,27 @@ const KontantstøtteValg: React.FC<Props> = ({
     };
 
     const visGrid = kontantstøttePerioder.value.length > 0;
-
+    const radioGruppeTekst =
+        'Er det søkt om, utbetales det eller har det blitt utbetalt kontantstøtte til brukeren eller en brukeren bor med i perioden(e) det er søkt om?';
     return (
         <Container>
             <Heading spacing size="small" level="5">
                 Kontantstøtte
             </Heading>
-            <KontantstøtteAlert
-                erLesevisning={erLesevisning}
-                kontantstøtte={kontantstøtte}
-                valideringsfeil={valideringsfeil}
-                finnesKontantstøtteUtbetaling={finnesKontantstøtteUtbetaling}
-            />
+            <AlertOgRadioknappWrapper>
+                {!erLesevisning && (
+                    <KontantstøtteAlert
+                        finnesKontantstøtteUtbetaling={finnesKontantstøtteUtbetaling}
+                    />
+                )}
+                <JaNeiRadioGruppe
+                    error={valideringsfeil?.harKontantstøtte}
+                    legend={radioGruppeTekst}
+                    lesevisning={erLesevisning}
+                    onChange={(event) => kontantstøtte.onChange(event)}
+                    value={kontantstøtte.value as ERadioValg}
+                />
+            </AlertOgRadioknappWrapper>
             {kontantstøtte.value === ERadioValg.JA && (
                 <HorizontalScroll
                     synligVedLukketMeny={'795px'}

@@ -31,7 +31,10 @@ import { useRedirectEtterLagring } from '../../../../App/hooks/felles/useRedirec
 import { v4 as uuidv4 } from 'uuid';
 import { AlertError } from '../../../../Felles/Visningskomponenter/Alerts';
 import HovedKnapp from '../../../../Felles/Knapper/HovedKnapp';
-import { useHentKontantstøtteUtbetaling } from '../../../../App/hooks/useHentKontantstøtteUtbetalinger';
+import {
+    EFinnesKontantstøtteUtbetaling,
+    useHentKontantstøtteUtbetaling,
+} from '../../../../App/hooks/useHentKontantstøtteUtbetalinger';
 
 export type InnvilgeVedtakForm = {
     utgiftsperioder: IUtgiftsperiode[];
@@ -112,8 +115,7 @@ export const Vedtaksform: React.FC<{
             ? (lagretVedtak as IInnvilgeVedtakForBarnetilsyn)
             : undefined;
     const { behandlingErRedigerbar, hentBehandling } = useBehandling();
-    const { finnesKontantstøtteUtbetaling, hentKontantstøtteUtbetaling } =
-        useHentKontantstøtteUtbetaling();
+    const { finnesKontantstøtteUtbetaling } = useHentKontantstøtteUtbetaling(behandling.id);
     const [laster, settLaster] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState('');
     const [nullUtbetalingPgaKontantstøtte, settNullUtbetalingPgaKontantstøtte] = useState(
@@ -148,7 +150,6 @@ export const Vedtaksform: React.FC<{
 
     useEffect(() => {
         if (!lagretInnvilgetVedtak) {
-            hentKontantstøtteUtbetaling(behandling.id);
             return;
         }
         utgiftsperiodeState.setValue(initUtgiftsperioder(lagretInnvilgetVedtak));
@@ -166,6 +167,12 @@ export const Vedtaksform: React.FC<{
 
         // eslint-disable-next-line
     }, [lagretInnvilgetVedtak]);
+
+    useEffect(() => {
+        if (finnesKontantstøtteUtbetaling === EFinnesKontantstøtteUtbetaling.NEI) {
+            kontantstøtteState.setValue(ERadioValg.NEI);
+        }
+    }, [finnesKontantstøtteUtbetaling, kontantstøtteState]);
 
     const lagreVedtak = (vedtaksRequest: IInnvilgeVedtakForBarnetilsyn) => {
         settLaster(true);
