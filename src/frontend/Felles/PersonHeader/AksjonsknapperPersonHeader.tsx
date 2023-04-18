@@ -4,7 +4,7 @@ import { Hamburgermeny } from '../Hamburgermeny/Hamburgermeny';
 import styled from 'styled-components';
 import { Button } from '@navikt/ds-react';
 import { Behandling } from '../../App/typer/fagsak';
-import { erBehandlingRedigerbar } from '../../App/typer/behandlingstatus';
+import { BehandlingStatus, erBehandlingRedigerbar } from '../../App/typer/behandlingstatus';
 
 const StyledHamburgermeny = styled(Hamburgermeny)`
     margin-right: -1rem;
@@ -43,14 +43,24 @@ export const AksjonsknapperPersonHeader: React.FC<Props> = ({ saksbehandler, beh
         },
     ];
 
-    if (saksbehandler && behandling && erBehandlingRedigerbar(behandling))
+    const sattPåVent = behandling?.status === BehandlingStatus.SATT_PÅ_VENT;
+
+    if (saksbehandler && behandling && (erBehandlingRedigerbar(behandling) || sattPåVent))
         return (
             <>
-                <StyledHamburgermeny items={menyvalg} />
-                <ButtonSmall onClick={() => settVisHenleggModal(true)} size="xsmall">
+                {!sattPåVent && <StyledHamburgermeny items={menyvalg} />}
+                <ButtonSmall
+                    disabled={sattPåVent}
+                    onClick={() => settVisHenleggModal(true)}
+                    size="xsmall"
+                >
                     Henlegg
                 </ButtonSmall>
-                <ButtonSmall onClick={() => settVisSettPåVent(true)} size="xsmall">
+                <ButtonSmall
+                    disabled={sattPåVent}
+                    onClick={() => settVisSettPåVent(true)}
+                    size="xsmall"
+                >
                     Sett på vent
                 </ButtonSmall>
             </>
