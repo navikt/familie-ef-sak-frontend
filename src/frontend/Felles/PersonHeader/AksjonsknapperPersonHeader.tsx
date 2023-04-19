@@ -25,11 +25,11 @@ const ButtonSmall = styled(Button)`
 `;
 
 interface Props {
-    behandling?: Behandling;
-    saksbehandler: boolean;
+    behandling: Behandling;
+    erSaksbehandler: boolean;
 }
 
-export const AksjonsknapperPersonHeader: React.FC<Props> = ({ saksbehandler, behandling }) => {
+export const AksjonsknapperPersonHeader: React.FC<Props> = ({ erSaksbehandler, behandling }) => {
     const { settVisHenleggModal, settVisSettPåVent } = useBehandling();
 
     const menyvalg = [
@@ -43,9 +43,9 @@ export const AksjonsknapperPersonHeader: React.FC<Props> = ({ saksbehandler, beh
         },
     ];
 
-    const sattPåVent = behandling?.status === BehandlingStatus.SATT_PÅ_VENT;
+    const sattPåVent = behandling.status === BehandlingStatus.SATT_PÅ_VENT;
 
-    if (saksbehandler && behandling && (erBehandlingRedigerbar(behandling) || sattPåVent))
+    if (erSaksbehandler && (erBehandlingRedigerbar(behandling) || sattPåVent))
         return (
             <>
                 {!sattPåVent && <StyledHamburgermeny items={menyvalg} />}
@@ -65,4 +65,6 @@ export const AksjonsknapperPersonHeader: React.FC<Props> = ({ saksbehandler, beh
                 </ButtonSmall>
             </>
         );
+
+    return <></>;
 };

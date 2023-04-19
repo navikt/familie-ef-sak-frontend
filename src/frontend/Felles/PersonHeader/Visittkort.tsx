@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { kjønnType } from '@navikt/familie-typer';
 import { Link } from '@navikt/ds-react';
 import { BodyShortSmall } from '../Visningskomponenter/Tekster';
-import { AFontWeightBold } from '@navikt/ds-tokens';
+import { AFontWeightBold } from '@navikt/ds-tokens/dist/tokens';
 
 const ResponsivLenke = styled(Link)`
     text-overflow: ellipsis;

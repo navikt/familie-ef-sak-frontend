@@ -57,7 +57,7 @@ const PersonHeaderComponent: FC<{ data: IPersonopplysninger; behandling?: Behand
 
     const { axiosRequest, erSaksbehandler } = useApp();
     const [fagsakPersonId, settFagsakPersonId] = useState<string>('');
-    const [migrert, settMigrert] = useState(false);
+    const [erMigrert, settErMigrert] = useState(false);
     const alder = nullableDatoTilAlder(fødselsdato);
     const visningsnavn = alder ? `${navn.visningsnavn} (${alder})` : navn.visningsnavn;
 
@@ -85,7 +85,7 @@ const PersonHeaderComponent: FC<{ data: IPersonopplysninger; behandling?: Behand
                 if (respons.status === RessursStatus.SUKSESS) {
                     if (respons.data?.fagsakPersonId) {
                         settFagsakPersonId(respons.data.fagsakPersonId);
-                        settMigrert(respons.data.fagsaker.some(utledOmFagsakErMigrert));
+                        settErMigrert(respons.data.fagsaker.some(utledOmFagsakErMigrert));
                     }
                 }
             });
@@ -111,18 +111,20 @@ const PersonHeaderComponent: FC<{ data: IPersonopplysninger; behandling?: Behand
                     egenAnsatt={egenAnsatt}
                     fullmakt={fullmakt}
                     folkeregisterPersonStatus={folkeregisterpersonstatus}
-                    migrert={migrert}
+                    migrert={erMigrert}
                     vergemål={vergemål}
                 />
             </FlexContainer>
-            <FlexContainer>
-                <BehandlingTags behandling={behandling} />
-                <BehandlingStatus behandling={behandling} />
-                <AksjonsknapperPersonHeader
-                    behandling={behandling}
-                    saksbehandler={erSaksbehandler}
-                />
-            </FlexContainer>
+            {behandling && (
+                <FlexContainer>
+                    <BehandlingTags behandling={behandling} />
+                    <BehandlingStatus behandling={behandling} />
+                    <AksjonsknapperPersonHeader
+                        behandling={behandling}
+                        erSaksbehandler={erSaksbehandler}
+                    />
+                </FlexContainer>
+            )}
         </Container>
     );
 };

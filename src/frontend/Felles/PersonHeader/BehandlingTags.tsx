@@ -26,44 +26,37 @@ const TagStorSkjerm = styled(Tag)`
 `;
 
 interface Props {
-    behandling?: Behandling;
+    behandling: Behandling;
 }
 
 const BehandlingTags: React.FC<Props> = ({ behandling }) => {
+    const { behandlingsårsak, kategori, stønadstype, type } = behandling;
     return (
         <>
-            {behandling && behandling.kategori === BehandlingKategori.EØS && (
+            {kategori === BehandlingKategori.EØS && (
                 <Tag variant={'warning-filled'} size={'small'}>
-                    {kategoriTilTekst[behandling.kategori]}
+                    {kategoriTilTekst[kategori]}
                 </Tag>
             )}
-            {behandling && (
-                <>
-                    <TagLitenSkjerm variant={'success'} size={'small'}>
-                        {stønadstypeTilTekstKort[behandling.stønadstype]}
-                    </TagLitenSkjerm>
-                    <TagStorSkjerm variant={'success'} size={'small'}>
-                        {stønadstypeTilTekst[behandling.stønadstype]}
-                    </TagStorSkjerm>
-                </>
-            )}
-            {behandling && (
-                <>
-                    <TagLitenSkjerm variant={'info'} size={'small'}>
-                        {behandlingstypeTilTekstKort[behandling.type]}
-                    </TagLitenSkjerm>
-                    <TagStorSkjerm variant={'info'} size={'small'}>
-                        {behandlingstypeTilTekst[behandling.type]}
-                    </TagStorSkjerm>
-                </>
-            )}
-            {behandling && behandling.behandlingsårsak === Behandlingsårsak.PAPIRSØKNAD && (
+            <TagLitenSkjerm variant={'success'} size={'small'}>
+                {stønadstypeTilTekstKort[stønadstype]}
+            </TagLitenSkjerm>
+            <TagStorSkjerm variant={'success'} size={'small'}>
+                {stønadstypeTilTekst[stønadstype]}
+            </TagStorSkjerm>
+            <TagLitenSkjerm variant={'info'} size={'small'}>
+                {behandlingstypeTilTekstKort[type]}
+            </TagLitenSkjerm>
+            <TagStorSkjerm variant={'info'} size={'small'}>
+                {behandlingstypeTilTekst[type]}
+            </TagStorSkjerm>
+            {behandlingsårsak === Behandlingsårsak.PAPIRSØKNAD && (
                 <>
                     <TagLitenSkjerm variant={'warning'} size={'small'}>
                         P..
                     </TagLitenSkjerm>
                     <TagStorSkjerm variant={'warning'} size={'small'}>
-                        {behandlingsårsakTilTekst[behandling.behandlingsårsak]}
+                        {behandlingsårsakTilTekst[behandlingsårsak]}
                     </TagStorSkjerm>
                 </>
             )}

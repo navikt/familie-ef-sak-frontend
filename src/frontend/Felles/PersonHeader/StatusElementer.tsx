@@ -90,14 +90,10 @@ export const Status = styled.div`
 `;
 
 interface Props {
-    behandling?: Behandling;
+    behandling: Behandling;
 }
 
 const BehandlingStatus: FC<Props> = ({ behandling }) => {
-    if (!behandling) {
-        return <></>;
-    }
-
     return (
         <>
             <AlleStatuser behandling={behandling} />
