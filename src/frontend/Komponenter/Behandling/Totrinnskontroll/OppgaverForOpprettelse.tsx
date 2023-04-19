@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { Checkbox } from '@navikt/ds-react';
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
 import { Behandling } from '../../../App/typer/fagsak';
-import { HentOppgaverForOpprettelseState } from '../../../App/hooks/useHentOppgaverForOpprettelse';
+import { OppgaverForOpprettelseState } from '../../../App/hooks/useHentOppgaverForOpprettelse';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 import { FamilieCheckboxGroup } from '@navikt/familie-form-elements';
 import styled from 'styled-components';
@@ -33,10 +33,13 @@ export const oppgaveForOpprettelseTilTekst: Record<OppgaveForOpprettelseType, st
     INNTEKTSKONTROLL_1_ÅR_FREM_I_TID:
         'Når vedtaket er godkjent skal det automatisk opprettes en oppgave for kontroll av inntekt 1 år frem i tid',
 };
-
+export const oppgaveSomSkalOpprettesTilTekst: Record<OppgaveForOpprettelseType, string> = {
+    INNTEKTSKONTROLL_1_ÅR_FREM_I_TID:
+        'Det vil automatisk opprettes en oppgave for kontroll av inntekt 1 år frem i tid når vedtaket godkjennes',
+};
 const OppgaverForOpprettelse: React.FC<{
     behandling: Behandling;
-    oppgaverForOpprettelseState: HentOppgaverForOpprettelseState;
+    oppgaverForOpprettelseState: OppgaverForOpprettelseState;
 }> = ({ behandling, oppgaverForOpprettelseState }) => {
     const {
         feilmelding,

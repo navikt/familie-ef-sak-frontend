@@ -13,7 +13,7 @@ import { useHentVedtak } from '../../../App/hooks/useHentVedtak';
 import { skalFerdigstilleUtenBeslutter } from '../VedtakOgBeregning/Felles/utils';
 import { useHentOppgaverForOpprettelse } from '../../../App/hooks/useHentOppgaverForOpprettelse';
 import { AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
-import { oppgaveForOpprettelseTilTekst } from '../Totrinnskontroll/OppgaverForOpprettelse';
+import { oppgaveSomSkalOpprettesTilTekst } from '../Totrinnskontroll/OppgaverForOpprettelse';
 
 const StyledBrev = styled.div`
     background-color: #f2f2f2;
@@ -36,10 +36,14 @@ const HøyreKolonne = styled.div`
 `;
 
 const InfostripeGruppe = styled.div`
-    padding-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1rem;
 `;
 
 const StyledInfostripe = styled(AlertInfo)`
+    padding-top: 1rem;
     width: 40rem;
 `;
 
@@ -108,18 +112,19 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
                                 behandlingId={behandling.id}
                                 personopplysninger={personopplysningerResponse}
                             />
-                            {!behandlingErRedigerbar &&
-                                oppgaverForOpprettelseState.oppgaverForOpprettelse.oppgavetyperSomSkalOpprettes.map(
-                                    (oppgaveType) => {
-                                        return (
-                                            <InfostripeGruppe>
+                            {!behandlingErRedigerbar && (
+                                <InfostripeGruppe>
+                                    {oppgaverForOpprettelseState.oppgaverForOpprettelse.oppgavetyperSomSkalOpprettes.map(
+                                        (oppgaveType) => (
+                                            <>
                                                 <StyledInfostripe>
-                                                    {oppgaveForOpprettelseTilTekst[oppgaveType]}
+                                                    {oppgaveSomSkalOpprettesTilTekst[oppgaveType]}
                                                 </StyledInfostripe>
-                                            </InfostripeGruppe>
-                                        );
-                                    }
-                                )}
+                                            </>
+                                        )
+                                    )}
+                                </InfostripeGruppe>
+                            )}
                             {behandlingErRedigerbar && (
                                 <Brevmeny
                                     behandlingId={behandlingId}

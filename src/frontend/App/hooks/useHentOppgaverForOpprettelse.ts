@@ -6,7 +6,7 @@ import {
     OppgaveForOpprettelseType,
 } from '../../Komponenter/Behandling/Totrinnskontroll/OppgaverForOpprettelse';
 
-export interface HentOppgaverForOpprettelseState {
+export interface OppgaverForOpprettelseState {
     feilmelding: string | undefined;
     hentOppgaverForOpprettelse: (behandlingId: string) => void;
     oppgaverForOpprettelse: IOppgaverForOpprettelse;
@@ -18,7 +18,7 @@ const initialState: IOppgaverForOpprettelse = {
     oppgavetyperSomKanOpprettes: [],
 };
 
-export const useHentOppgaverForOpprettelse = (): HentOppgaverForOpprettelseState => {
+export const useHentOppgaverForOpprettelse = (): OppgaverForOpprettelseState => {
     const { axiosRequest } = useApp();
     const [oppgaverForOpprettelse, settOppgaverForOpprettelse] =
         useState<IOppgaverForOpprettelse>(initialState);

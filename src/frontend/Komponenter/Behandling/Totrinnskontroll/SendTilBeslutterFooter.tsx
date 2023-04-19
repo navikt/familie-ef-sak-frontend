@@ -12,7 +12,7 @@ import { ABorderStrong } from '@navikt/ds-tokens/dist/tokens';
 import { useNavigate } from 'react-router-dom';
 import OppgaverForOpprettelse, { OppgaveForOpprettelseType } from './OppgaverForOpprettelse';
 import { Behandling } from '../../../App/typer/fagsak';
-import { HentOppgaverForOpprettelseState } from '../../../App/hooks/useHentOppgaverForOpprettelse';
+import { OppgaverForOpprettelseState } from '../../../App/hooks/useHentOppgaverForOpprettelse';
 
 const Footer = styled.footer`
     width: 100%;
@@ -47,7 +47,7 @@ const SendTilBeslutterFooter: React.FC<{
     kanSendesTilBeslutter?: boolean;
     behandlingErRedigerbar: boolean;
     ferdigstillUtenBeslutter: boolean;
-    oppgaverForOpprettelseState?: HentOppgaverForOpprettelseState;
+    oppgaverForOpprettelseState?: OppgaverForOpprettelseState;
 }> = ({
     behandling,
     kanSendesTilBeslutter,
@@ -103,12 +103,12 @@ const SendTilBeslutterFooter: React.FC<{
 
     return (
         <>
-            <Footer>
-                {feilmelding && <AlertStripeFeilPreWrap>{feilmelding}</AlertStripeFeilPreWrap>}
-                {ferdigstillUtenBeslutter && (
-                    <AlertInfo>Vedtaket vil ikke bli sendt til totrinnskontroll</AlertInfo>
-                )}
-                {behandlingErRedigerbar && (
+            {behandlingErRedigerbar && (
+                <Footer>
+                    {feilmelding && <AlertStripeFeilPreWrap>{feilmelding}</AlertStripeFeilPreWrap>}
+                    {ferdigstillUtenBeslutter && (
+                        <AlertInfo>Vedtaket vil ikke bli sendt til totrinnskontroll</AlertInfo>
+                    )}
                     <FlexBox>
                         {oppgaverForOpprettelseState && (
                             <OppgaverForOpprettelse
@@ -130,8 +130,8 @@ const SendTilBeslutterFooter: React.FC<{
                             </HovedKnapp>
                         </MidtstiltInnhold>
                     </FlexBox>
-                )}
-            </Footer>
+                </Footer>
+            )}
             <ModalWrapper
                 tittel={modalTittel}
                 visModal={visModal}
