@@ -8,7 +8,7 @@ import SimuleringOversikt from './SimuleringOversikt';
 import { Tilbakekreving } from './Tilbakekreving';
 import {
     ISanksjonereVedtakForOvergangsstønad,
-    IVedtakForOvergangsstønad,
+    IVedtak,
     IVedtakType,
 } from '../../../App/typer/vedtak';
 import { nåværendeÅrOgMånedFormatert } from '../Sanksjon/utils';
@@ -49,7 +49,7 @@ const mapSimuleringstabellRader = (
 const SimuleringTabellWrapper: React.FC<{
     simuleringsresultat: ISimulering;
     behandlingId: string;
-    lagretVedtak?: IVedtakForOvergangsstønad;
+    lagretVedtak?: IVedtak;
 }> = ({ simuleringsresultat, behandlingId, lagretVedtak }) => {
     const muligeÅr = [...new Set(simuleringsresultat.perioder.map((p) => formaterIsoÅr(p.fom)))];
 

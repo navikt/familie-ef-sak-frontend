@@ -14,6 +14,7 @@ interface JournalføringRequest {
     oppgaveId: string;
     behandling: BehandlingKlageRequest;
     journalførendeEnhet: string;
+    klageGjelderTilbakekreving: boolean;
 }
 
 export interface JournalføringKlageStateRequest {
@@ -26,6 +27,8 @@ export interface JournalføringKlageStateRequest {
     innsending: Ressurs<string>;
     settInnsending: Dispatch<SetStateAction<Ressurs<string>>>;
     fullførJournalføring: () => void;
+    klageGjelderTilbakekreving: boolean;
+    settKlageGjelderTilbakekreving: Dispatch<SetStateAction<boolean>>;
 }
 
 export const useJournalføringKlageState = (
@@ -37,6 +40,7 @@ export const useJournalføringKlageState = (
     const [behandling, settBehandling] = useState<BehandlingKlageRequest>();
     const [dokumentTitler, settDokumentTitler] = useState<DokumentTitler>();
     const [innsending, settInnsending] = useState<Ressurs<string>>(byggTomRessurs());
+    const [klageGjelderTilbakekreving, settKlageGjelderTilbakekreving] = useState<boolean>(false);
 
     useEffect(() => {
         settBehandling(undefined);
@@ -53,7 +57,9 @@ export const useJournalføringKlageState = (
             behandling,
             dokumentTitler,
             journalførendeEnhet: innloggetSaksbehandler.enhet || '9999',
+            klageGjelderTilbakekreving: klageGjelderTilbakekreving,
         };
+
         settInnsending(byggHenterRessurs());
         axiosRequest<string, JournalføringRequest>({
             method: 'POST',
@@ -72,5 +78,7 @@ export const useJournalføringKlageState = (
         innsending,
         settInnsending,
         fullførJournalføring,
+        klageGjelderTilbakekreving,
+        settKlageGjelderTilbakekreving,
     };
 };

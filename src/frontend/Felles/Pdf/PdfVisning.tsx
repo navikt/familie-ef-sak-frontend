@@ -58,6 +58,7 @@ const PdfVisning: React.FC<PdfVisningProps> = ({ pdfFilInnhold }) => {
                         page={pageNumber}
                         count={numPages}
                         onPageChange={setPageNumber}
+                        size="xsmall"
                     />
                     <StyledDokument
                         file={`data:application/pdf;base64,${pdfFilInnhold}`}

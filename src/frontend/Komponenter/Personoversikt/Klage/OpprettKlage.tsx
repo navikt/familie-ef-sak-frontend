@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { FamilieDatovelger } from '@navikt/familie-form-elements';
 import { erFørEllerLikDagensDato, erGyldigDato } from '../../../App/utils/dato';
 import { Alert, Button } from '@navikt/ds-react';
+import KlageGjelderTilbakekreving from '../../Journalføring/KlageGjelderTilbakekreving';
 
 const AlertStripe = styled(Alert)`
     margin-top: 1rem;
@@ -26,19 +27,28 @@ const ModalKnapp = styled(Button)`
     margin-left: 1rem;
 `;
 
+export interface OpprettKlageRequest {
+    mottattDato: string;
+    klageGjelderTilbakekreving: boolean;
+}
+
 interface IProps {
     settVisModal: (bool: boolean) => void;
-    opprettKlage: (mottattDato: string) => void;
+    opprettKlage: (data: OpprettKlageRequest) => void;
 }
 
 export const OpprettKlage: React.FunctionComponent<IProps> = ({ settVisModal, opprettKlage }) => {
     const [feilmelding, settFeilmelding] = useState<string>('');
     const [valgtDato, settValgtDato] = useState<string>();
+    const [klageGjelderTilbakekreving, settKlageGjelderTilbakekreving] = useState<boolean>(false);
 
     const validerValgtDato = (valgtDato: string | undefined) => {
         settFeilmelding('');
         if (valgtDato && erGyldigDato(valgtDato) && erFørEllerLikDagensDato(valgtDato)) {
-            opprettKlage(valgtDato);
+            opprettKlage({
+                mottattDato: valgtDato,
+                klageGjelderTilbakekreving: klageGjelderTilbakekreving,
+            });
         } else if (!valgtDato) {
             settFeilmelding('Vennligst velg en dato fra datovelgeren');
         } else {
@@ -48,6 +58,10 @@ export const OpprettKlage: React.FunctionComponent<IProps> = ({ settVisModal, op
 
     return (
         <>
+            <KlageGjelderTilbakekreving
+                klageGjelderTilbakekreving={klageGjelderTilbakekreving}
+                settKlageGjelderTilbakekreving={settKlageGjelderTilbakekreving}
+            />
             <DatoContainer>
                 <FamilieDatovelger
                     id={'krav-mottatt'}
