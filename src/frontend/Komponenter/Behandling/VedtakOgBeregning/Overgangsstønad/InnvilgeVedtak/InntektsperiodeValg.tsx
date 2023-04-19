@@ -35,7 +35,7 @@ import { HorizontalScroll } from '../../Felles/HorizontalScroll';
 import { initierValgteInntektstyper } from './utils';
 import { AlertError } from '../../../../../Felles/Visningskomponenter/Alerts';
 import { EInntektstype, inntektsTypeTilKey, inntektsTypeTilTekst } from './typer';
-import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
+import { ABorderDivider, AGray50 } from '@navikt/ds-tokens/dist/tokens';
 import { IngenBegrunnelseOppgitt } from './IngenBegrunnelseOppgitt';
 import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
 
@@ -89,6 +89,17 @@ const CheckboxGroupRow = styled(CheckboxGroup)`
 
 const ReadMoreMedMarginBottom = styled(ReadMore)`
     margin-bottom: 2rem;
+`;
+
+const SamordningsfradragTypeContainer = styled.div`
+    margin: 1.5rem 0;
+    border-top: 1px solid ${ABorderDivider};
+    width: 100%;
+`;
+
+const EnsligFamilieSelectBegrensetWidth = styled(EnsligFamilieSelect)`
+    width: max-content;
+    margin-top: 1rem;
 `;
 
 interface Props {
@@ -235,10 +246,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                 <TextLabel>Årsinntekt</TextLabel>
                             )}
                             {valgteInntektstyper.includes(EInntektstype.SAMORDNINGSFRADRAG) && (
-                                <>
-                                    <TextLabel>Samordningsfradrag</TextLabel>
-                                    <TextLabel>Type samordningsfradrag</TextLabel>
-                                </>
+                                <TextLabel>Samordningsfradrag</TextLabel>
                             )}
 
                             {inntektsperiodeListe.value.map((rad, index) => {
@@ -347,53 +355,6 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                                     }}
                                                     erLesevisning={!behandlingErRedigerbar}
                                                 />
-                                                <div>
-                                                    <EnsligFamilieSelect
-                                                        label={'Type samordninsfradrag'}
-                                                        hideLabel
-                                                        size={'medium'}
-                                                        value={
-                                                            skalVelgeSamordningstype
-                                                                ? samordningsfradragstype.value
-                                                                : ''
-                                                        }
-                                                        onChange={(event) => {
-                                                            settIkkePersistertKomponent(
-                                                                VEDTAK_OG_BEREGNING
-                                                            );
-                                                            samordningsfradragstype.onChange(event);
-                                                        }}
-                                                        disabled={
-                                                            !skalVelgeSamordningstype || index > 0
-                                                        }
-                                                        erLesevisning={!behandlingErRedigerbar}
-                                                        lesevisningVerdi={
-                                                            samordningsfradragstype.value &&
-                                                            samordningsfradagTilTekst[
-                                                                samordningsfradragstype.value as ESamordningsfradragtype
-                                                            ]
-                                                        }
-                                                    >
-                                                        <option value="">Velg</option>
-                                                        <option
-                                                            value={
-                                                                ESamordningsfradragtype.GJENLEVENDEPENSJON
-                                                            }
-                                                        >
-                                                            Gjenlevendepensjon
-                                                        </option>
-                                                        <option
-                                                            value={
-                                                                ESamordningsfradragtype.UFØRETRYGD
-                                                            }
-                                                        >
-                                                            Uføretrygd
-                                                        </option>
-                                                    </EnsligFamilieSelect>
-                                                    <EnsligErrorMessage>
-                                                        {errorState?.samordningsfradragType}
-                                                    </EnsligErrorMessage>
-                                                </div>
                                             </>
                                         )}
                                         {skalViseLeggTilKnapp && (
@@ -430,6 +391,42 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                 );
                             })}
                         </Grid>
+                        {skalVelgeSamordningstype && (
+                            <SamordningsfradragTypeContainer>
+                                <EnsligFamilieSelectBegrensetWidth
+                                    label={'Type samordninsfradrag'}
+                                    size={'medium'}
+                                    value={
+                                        skalVelgeSamordningstype
+                                            ? samordningsfradragstype.value
+                                            : ''
+                                    }
+                                    onChange={(event) => {
+                                        settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+                                        samordningsfradragstype.onChange(event);
+                                    }}
+                                    disabled={!skalVelgeSamordningstype}
+                                    erLesevisning={!behandlingErRedigerbar}
+                                    lesevisningVerdi={
+                                        samordningsfradragstype.value &&
+                                        samordningsfradagTilTekst[
+                                            samordningsfradragstype.value as ESamordningsfradragtype
+                                        ]
+                                    }
+                                >
+                                    <option value="">Velg</option>
+                                    <option value={ESamordningsfradragtype.GJENLEVENDEPENSJON}>
+                                        Gjenlevendepensjon
+                                    </option>
+                                    <option value={ESamordningsfradragtype.UFØRETRYGD}>
+                                        Uføretrygd
+                                    </option>
+                                </EnsligFamilieSelectBegrensetWidth>
+                                <EnsligErrorMessage>
+                                    {errorState?.samordningsfradragType}
+                                </EnsligErrorMessage>
+                            </SamordningsfradragTypeContainer>
+                        )}
                         {behandlingErRedigerbar && (
                             <LeggTilRadKnapp
                                 onClick={() => inntektsperiodeListe.push(tomInntektsperiodeRad())}
