@@ -394,7 +394,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                         {skalVelgeSamordningstype && (
                             <SamordningsfradragTypeContainer>
                                 <EnsligFamilieSelectBegrensetWidth
-                                    label={'Type samordninsfradrag'}
+                                    label={'Type samordningsfradrag'}
                                     size={'medium'}
                                     value={
                                         skalVelgeSamordningstype
