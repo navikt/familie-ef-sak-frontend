@@ -1,11 +1,6 @@
 import { Delete } from '@navikt/ds-icons';
 import React from 'react';
-import { Button } from '@navikt/ds-react';
-import styled from 'styled-components';
-
-const Knapp = styled(Button)`
-    width: fit-content;
-`;
+import { Knapp } from './HovedKnapp';
 
 const FjernKnapp: React.FC<{
     className?: string;

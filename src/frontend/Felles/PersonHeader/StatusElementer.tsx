@@ -1,21 +1,17 @@
 import React from 'react';
 import { FC, useState } from 'react';
-import { Behandling, behandlingResultatTilTekst } from '../../../App/typer/fagsak';
+import { Behandling, behandlingResultatTilTekst } from '../../App/typer/fagsak';
 import { Expand } from '@navikt/ds-icons';
 import { BodyShort, Button } from '@navikt/ds-react';
-import { behandlingStatusTilTekst } from '../../../App/typer/behandlingstatus';
-import { behandlingstypeTilTekst } from '../../../App/typer/behandlingstype';
-import { formaterIsoDatoTid } from '../../../App/utils/formatter';
+import { behandlingStatusTilTekst } from '../../App/typer/behandlingstatus';
+import { behandlingstypeTilTekst } from '../../App/typer/behandlingstype';
+import { formaterIsoDatoTid } from '../../App/utils/formatter';
 import styled from 'styled-components';
-import { stønadstypeTilTekst } from '../../../App/typer/behandlingstema';
+import { stønadstypeTilTekst } from '../../App/typer/behandlingstema';
 import { ATextSubtle } from '@navikt/ds-tokens/dist/tokens';
 
 interface StatusMenyInnholdProps {
     åpen: boolean;
-}
-
-interface StatusProps {
-    kunEttElement?: boolean;
 }
 
 export const GråTekst = styled(BodyShort)`
@@ -29,7 +25,8 @@ const StatusMenyInnhold = styled.div`
 
     background-color: white;
 
-    right: 1rem;
+    right: 5rem;
+    top: 3rem;
 
     border: 1px solid grey;
 
@@ -62,55 +59,63 @@ const VisStønadOgBehandlingstypePåLitenSkjerm = styled.div`
     }
 `;
 
-export const Statuser = styled.div`
-    margin-left: 1rem;
+const Statuser = styled.div`
     display: flex;
     align-items: center;
+    gap: 1rem;
 
     white-space: nowrap;
 
-    @media screen and (max-width: 1750px) {
-        display: none;
+    .stor-skjerm {
+        @media screen and (max-width: 1905px) {
+            display: none;
+        }
+    }
+
+    .liten-skjerm {
+        @media screen and (min-width: 1905px) {
+            display: none;
+        }
     }
 `;
 
-export const StatuserLitenSkjerm = styled.div`
-    margin-left: 1rem;
-    display: flex;
-    align-items: center;
-
-    white-space: nowrap;
-
-    @media screen and (min-width: 1750px) {
-        display: none;
-    }
-`;
-
-export const Status = styled.div<StatusProps>`
+export const Status = styled.div`
     display: flex;
     width: 100%;
-    margin-right: ${(props) => (props.kunEttElement ? '0' : '1.3rem')};
 
-    flex-gap: 0.5rem;
     > p {
         font-size: 14px;
         margin: 0.2rem;
     }
 `;
 
-export const StatusMeny: FC<{ behandling: Behandling }> = ({ behandling }) => {
+interface Props {
+    behandling: Behandling;
+}
+
+const BehandlingStatus: FC<Props> = ({ behandling }) => {
+    return (
+        <>
+            <AlleStatuser behandling={behandling} />
+            <StatusMeny behandling={behandling} />
+        </>
+    );
+};
+
+const StatusMeny: FC<{ behandling: Behandling }> = ({ behandling }) => {
     const [åpenStatusMeny, settÅpenStatusMeny] = useState<boolean>(false);
 
     return (
-        <div>
+        <Statuser>
             <VisStatuserKnapp
+                className="liten-skjerm"
                 variant="tertiary"
                 onClick={() => {
                     settÅpenStatusMeny(!åpenStatusMeny);
                 }}
                 icon={<Expand />}
             />
-            <StatusMenyInnhold åpen={åpenStatusMeny}>
+            <StatusMenyInnhold className="liten-skjerm" åpen={åpenStatusMeny}>
                 <ul>
                     <VisStønadOgBehandlingstypePåLitenSkjerm>
                         <li>
@@ -152,29 +157,31 @@ export const StatusMeny: FC<{ behandling: Behandling }> = ({ behandling }) => {
                     </li>
                 </ul>
             </StatusMenyInnhold>
-        </div>
+        </Statuser>
     );
 };
 
-export const AlleStatuser: FC<{ behandling: Behandling }> = ({ behandling }) => {
+const AlleStatuser: FC<{ behandling: Behandling }> = ({ behandling }) => {
     return (
         <Statuser>
-            <Status>
+            <Status className="stor-skjerm">
                 <GråTekst>Behandlingsstatus</GråTekst>
                 <BodyShort>{behandlingStatusTilTekst[behandling.status]}</BodyShort>
             </Status>
-            <Status>
+            <Status className="stor-skjerm">
                 <GråTekst>Behandlingsresultat</GråTekst>
                 <BodyShort>{behandlingResultatTilTekst[behandling.resultat]}</BodyShort>
             </Status>
-            <Status>
+            <Status className="stor-skjerm">
                 <GråTekst>Opprettet</GråTekst>
                 <BodyShort>{formaterIsoDatoTid(behandling.opprettet)}</BodyShort>
             </Status>
-            <Status>
+            <Status className="stor-skjerm">
                 <GråTekst>Sist endret</GråTekst>
                 <BodyShort>{formaterIsoDatoTid(behandling.sistEndret)}</BodyShort>
             </Status>
         </Statuser>
     );
 };
+
+export default BehandlingStatus;

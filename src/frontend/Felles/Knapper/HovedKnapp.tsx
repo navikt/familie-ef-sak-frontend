@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from '@navikt/ds-react';
 import styled from 'styled-components';
 
-const Knapp = styled(Button)`
+export const Knapp = styled(Button)`
     width: fit-content;
 `;
 
