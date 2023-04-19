@@ -171,7 +171,8 @@ export const Vedtaksform: React.FC<{
         if (finnesKontantstøtteUtbetaling === EFinnesKontantstøtteUtbetaling.NEI) {
             kontantstøtteState.setValue(ERadioValg.NEI);
         }
-    }, [finnesKontantstøtteUtbetaling, kontantstøtteState]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [finnesKontantstøtteUtbetaling]);
 
     const lagreVedtak = (vedtaksRequest: IInnvilgeVedtakForBarnetilsyn) => {
         settLaster(true);
