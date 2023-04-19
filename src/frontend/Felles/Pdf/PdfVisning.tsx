@@ -75,6 +75,7 @@ const PdfVisning: React.FC<PdfVisningProps> = ({ pdfFilInnhold }) => {
                         page={pageNumber}
                         count={numPages}
                         onPageChange={setPageNumber}
+                        size="xsmall"
                     />
                 </DokumentWrapper>
             )}
