@@ -13,7 +13,7 @@ const ResponsivLenke = styled(Link)`
 `;
 
 const VisittKortContainer = styled.div`
-    width: 26.5rem;
+    width: max-content;
 `;
 
 const Visningsnavn = styled(BodyShortSmall)`
