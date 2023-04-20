@@ -65,7 +65,12 @@ export const InnvilgeOvergangsstønad: React.FC<{
                 />
             ) : null}
             {(vedtak || !behandling.forrigeBehandlingId) && (
-                <Vedtaksform behandling={behandling} lagretVedtak={vedtak} vilkår={vilkår} />
+                <Vedtaksform
+                    behandling={behandling}
+                    lagretVedtak={vedtak}
+                    vilkår={vilkår}
+                    revurderesFra={revurderesFra}
+                />
             )}
         </>
     );
