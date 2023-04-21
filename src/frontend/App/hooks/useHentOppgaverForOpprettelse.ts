@@ -18,7 +18,8 @@ const initialState: IOppgaverForOpprettelse = {
     oppgavetyperSomKanOpprettes: [],
 };
 
-const feilmeldingPrefiks = 'Noe gikk galt under henting av oppgaver som kan opprettes: ';
+const feilmeldingPrefiks =
+    'Noe gikk galt under henting av oppgaver som kan opprettes. Forsøk å last siden på nytt. ';
 export const useHentOppgaverForOpprettelse = (): OppgaverForOpprettelseState => {
     const { axiosRequest } = useApp();
     const [oppgaverForOpprettelse, settOppgaverForOpprettelse] =
