@@ -18,6 +18,7 @@ const initialState: IOppgaverForOpprettelse = {
     oppgavetyperSomKanOpprettes: [],
 };
 
+const feilmeldingPrefiks = 'Noe gikk galt under henting av oppgaver som kan opprettes: ';
 export const useHentOppgaverForOpprettelse = (): OppgaverForOpprettelseState => {
     const { axiosRequest } = useApp();
     const [oppgaverForOpprettelse, settOppgaverForOpprettelse] =
@@ -34,7 +35,7 @@ export const useHentOppgaverForOpprettelse = (): OppgaverForOpprettelseState => 
                 if (res.status === RessursStatus.SUKSESS) {
                     settOppgaverForOpprettelse(res.data);
                 } else {
-                    settFeilmelding(res.frontendFeilmelding);
+                    settFeilmelding(feilmeldingPrefiks + res.frontendFeilmelding);
                 }
             });
         },
