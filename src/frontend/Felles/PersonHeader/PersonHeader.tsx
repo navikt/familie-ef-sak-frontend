@@ -1,113 +1,42 @@
 import React, { FC, useEffect, useState } from 'react';
 import { IPersonopplysninger } from '../../App/typer/personopplysninger';
-import VisittKort from '@navikt/familie-visittkort';
 import styled from 'styled-components';
-import PersonStatusVarsel from '../Varsel/PersonStatusVarsel';
-import AdressebeskyttelseVarsel from '../Varsel/AdressebeskyttelseVarsel';
-import { Behandling, BehandlingKategori, kategoriTilTekst } from '../../App/typer/fagsak';
+import { Behandling } from '../../App/typer/fagsak';
 import { Sticky } from '../Visningskomponenter/Sticky';
-import { erEtterDagensDato, nullableDatoTilAlder } from '../../App/utils/dato';
+import { nullableDatoTilAlder } from '../../App/utils/dato';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../App/typer/ressurs';
 import { useApp } from '../../App/context/AppContext';
 import { ISøkPerson } from '../../App/typer/personsøk';
 import { IPersonIdent } from '../../App/typer/felles';
-import { PersonHeaderHamburgermeny } from './PersonHeaderHamburgermeny';
-import { erBehandlingRedigerbar } from '../../App/typer/behandlingstatus';
-import {
-    behandlingstypeTilTekst,
-    behandlingstypeTilTekstKort,
-} from '../../App/typer/behandlingstype';
-import { AlleStatuser, StatuserLitenSkjerm, StatusMeny } from './Status/StatusElementer';
-import {
-    Stønadstype,
-    stønadstypeTilTekst,
-    stønadstypeTilTekstKort,
-} from '../../App/typer/behandlingstema';
-import { Behandlingsårsak, behandlingsårsakTilTekst } from '../../App/typer/Behandlingsårsak';
-import { Link, Tag } from '@navikt/ds-react';
-import { AFontWeightBold, ABorderStrong } from '@navikt/ds-tokens/dist/tokens';
-import { BodyShortSmall } from '../Visningskomponenter/Tekster';
+import { AksjonsknapperPersonHeader } from './AksjonsknapperPersonHeader';
+import BehandlingStatus from './StatusElementer';
+import { Stønadstype } from '../../App/typer/behandlingstema';
+import { ABorderStrong } from '@navikt/ds-tokens/dist/tokens';
+import Visittkort from './Visittkort';
+import PersonTags from './PersonTags';
+import BehandlingTags from './BehandlingTags';
 
-const Visningsnavn = styled(BodyShortSmall)`
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    font-weight: ${AFontWeightBold};
-`;
-
-const ResponsivLenke = styled(Link)`
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-`;
-
-const TagsKnyttetTilBehandling = styled.div`
+export const Container = styled(Sticky)`
     display: flex;
-    justify-content: flex-end;
-    flex-grow: 1;
-`;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
 
-const TagsLitenSkjerm = styled.div`
-    @media screen and (min-width: 990px) {
-        display: none;
-    }
-
-    @media screen and (max-width: 815px) {
-        display: none;
-    }
-`;
-
-const TagsStorSkjerm = styled.div`
-    @media screen and (max-width: 990px) {
-        display: none;
-    }
-`;
-
-export const PersonHeaderWrapper = styled(Sticky)`
-    display: flex;
+    padding: 0 1rem 0 1rem;
 
     border-bottom: 1px solid ${ABorderStrong};
     z-index: 23;
     top: 55px;
 
     .visittkort {
-        padding-left: 1.5rem;
         border-bottom: none;
     }
 `;
 
-const StyledHamburgermeny = styled(PersonHeaderHamburgermeny)`
-    margin-left: auto;
-    display: block;
-    position: sticky;
-
-    z-index: 9999;
-`;
-
-const ElementWrapper = styled.div`
-    margin-left: 1rem;
-`;
-
-const TagsKnyttetTilPerson = styled.div`
+const FlexContainer = styled.div`
     display: flex;
+    align-items: center;
     gap: 1rem;
-    margin-left: 1rem;
-
-    @media screen and (max-width: 690px) {
-        display: none;
-    }
-`;
-
-const PersonTagsLitenSkjerm = styled(Tag)`
-    @media screen and (min-width: 760px) {
-        display: none;
-    }
-`;
-
-const PersonTagsStorSkjerm = styled(Tag)`
-    @media screen and (max-width: 760px) {
-        display: none;
-    }
 `;
 
 const PersonHeaderComponent: FC<{ data: IPersonopplysninger; behandling?: Behandling }> = ({
@@ -168,138 +97,35 @@ const PersonHeaderComponent: FC<{ data: IPersonopplysninger; behandling?: Behand
     }, []);
 
     return (
-        <PersonHeaderWrapper>
-            <VisittKort
-                alder={20}
-                ident={personIdent}
-                kjønn={kjønn}
-                navn={
-                    <ResponsivLenke
-                        role={'link'}
-                        href={fagsakPersonId ? `/person/${fagsakPersonId}` : '#'}
-                    >
-                        <Visningsnavn>{visningsnavn}</Visningsnavn>
-                    </ResponsivLenke>
-                }
-            >
-                <TagsKnyttetTilPerson>
-                    {folkeregisterpersonstatus && (
-                        <PersonStatusVarsel folkeregisterpersonstatus={folkeregisterpersonstatus} />
-                    )}
-                    {adressebeskyttelse && (
-                        <AdressebeskyttelseVarsel adressebeskyttelse={adressebeskyttelse} />
-                    )}
-                    {alder && alder < 18 && (
-                        <>
-                            <PersonTagsStorSkjerm variant={'warning'} size={'small'}>
-                                Under 18 år
-                            </PersonTagsStorSkjerm>
-                            <PersonTagsLitenSkjerm variant={'warning'} size={'small'}>
-                                U18
-                            </PersonTagsLitenSkjerm>
-                        </>
-                    )}
-                    {egenAnsatt && (
-                        <>
-                            <PersonTagsStorSkjerm variant={'warning'} size={'small'}>
-                                Egen ansatt
-                            </PersonTagsStorSkjerm>
-                            <PersonTagsLitenSkjerm variant={'warning'} size={'small'}>
-                                E..
-                            </PersonTagsLitenSkjerm>
-                        </>
-                    )}
-                    {fullmakt.some((f) => erEtterDagensDato(f.gyldigTilOgMed)) && (
-                        <>
-                            <PersonTagsStorSkjerm variant={'warning'} size={'small'}>
-                                Fullmakt
-                            </PersonTagsStorSkjerm>
-                            <PersonTagsLitenSkjerm variant={'warning'} size={'small'}>
-                                F..
-                            </PersonTagsLitenSkjerm>
-                        </>
-                    )}
-
-                    {vergemål.length > 0 && (
-                        <>
-                            <PersonTagsStorSkjerm variant={'warning'} size={'small'}>
-                                Verge
-                            </PersonTagsStorSkjerm>
-                            <PersonTagsLitenSkjerm variant={'warning'} size={'small'}>
-                                V..
-                            </PersonTagsLitenSkjerm>
-                        </>
-                    )}
-
-                    {erMigrert && (
-                        <>
-                            <PersonTagsStorSkjerm variant={'warning'} size={'small'}>
-                                Migrert
-                            </PersonTagsStorSkjerm>
-                            <PersonTagsLitenSkjerm variant={'warning'} size={'small'}>
-                                M..
-                            </PersonTagsLitenSkjerm>
-                        </>
-                    )}
-                </TagsKnyttetTilPerson>
-                <TagsKnyttetTilBehandling>
-                    {behandling && behandling.kategori === BehandlingKategori.EØS && (
-                        <ElementWrapper>
-                            <Tag variant={'warning-filled'} size={'small'}>
-                                {kategoriTilTekst[behandling.kategori]}
-                            </Tag>
-                        </ElementWrapper>
-                    )}
-                    {behandling && (
-                        <ElementWrapper>
-                            <TagsLitenSkjerm>
-                                <Tag variant={'success'} size={'small'}>
-                                    {stønadstypeTilTekstKort[behandling.stønadstype]}
-                                </Tag>
-                            </TagsLitenSkjerm>
-                            <TagsStorSkjerm>
-                                <Tag variant={'success'} size={'small'}>
-                                    {stønadstypeTilTekst[behandling.stønadstype]}
-                                </Tag>
-                            </TagsStorSkjerm>
-                        </ElementWrapper>
-                    )}
-                    {behandling && (
-                        <ElementWrapper>
-                            <TagsLitenSkjerm>
-                                <Tag variant={'info'} size={'small'}>
-                                    {behandlingstypeTilTekstKort[behandling.type]}
-                                </Tag>
-                            </TagsLitenSkjerm>
-                            <TagsStorSkjerm>
-                                <Tag variant={'info'} size={'small'}>
-                                    {behandlingstypeTilTekst[behandling.type]}
-                                </Tag>
-                            </TagsStorSkjerm>
-                        </ElementWrapper>
-                    )}
-                    {behandling && behandling.behandlingsårsak === Behandlingsårsak.PAPIRSØKNAD && (
-                        <ElementWrapper>
-                            <Tag variant={'warning'} size={'small'}>
-                                {behandlingsårsakTilTekst[behandling.behandlingsårsak]}
-                            </Tag>
-                        </ElementWrapper>
-                    )}
-                </TagsKnyttetTilBehandling>
-            </VisittKort>
-
+        <Container>
+            <FlexContainer>
+                <Visittkort
+                    fagsakPersonId={fagsakPersonId}
+                    kjønn={kjønn}
+                    ident={personIdent}
+                    visningsnavn={visningsnavn}
+                />
+                <PersonTags
+                    adressebeskyttelse={adressebeskyttelse}
+                    alder={alder}
+                    egenAnsatt={egenAnsatt}
+                    fullmakt={fullmakt}
+                    folkeregisterPersonStatus={folkeregisterpersonstatus}
+                    migrert={erMigrert}
+                    vergemål={vergemål}
+                />
+            </FlexContainer>
             {behandling && (
-                <>
-                    <AlleStatuser behandling={behandling} />
-                    <StatuserLitenSkjerm>
-                        <StatusMeny behandling={behandling} />
-                    </StatuserLitenSkjerm>
-                </>
+                <FlexContainer>
+                    <BehandlingTags behandling={behandling} />
+                    <BehandlingStatus behandling={behandling} />
+                    <AksjonsknapperPersonHeader
+                        behandling={behandling}
+                        erSaksbehandler={erSaksbehandler}
+                    />
+                </FlexContainer>
             )}
-            {erSaksbehandler && behandling && erBehandlingRedigerbar(behandling) && (
-                <StyledHamburgermeny />
-            )}
-        </PersonHeaderWrapper>
+        </Container>
     );
 };
 
