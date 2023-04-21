@@ -31,7 +31,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { AlertError } from '../../../../Felles/Visningskomponenter/Alerts';
 import HovedKnapp from '../../../../Felles/Knapper/HovedKnapp';
 import {
-    EFinnesKontantstøtteUtbetaling,
+    FinnesKontantstøtteUtbetaling,
     useHentKontantstøtteUtbetaling,
 } from '../../../../App/hooks/useHentKontantstøtteUtbetalinger';
 
@@ -168,7 +168,10 @@ export const Vedtaksform: React.FC<{
     }, [lagretInnvilgetVedtak]);
 
     useEffect(() => {
-        if (finnesKontantstøtteUtbetaling === EFinnesKontantstøtteUtbetaling.NEI) {
+        if (
+            behandlingErRedigerbar &&
+            finnesKontantstøtteUtbetaling === FinnesKontantstøtteUtbetaling.NEI
+        ) {
             kontantstøtteState.setValue(ERadioValg.NEI);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

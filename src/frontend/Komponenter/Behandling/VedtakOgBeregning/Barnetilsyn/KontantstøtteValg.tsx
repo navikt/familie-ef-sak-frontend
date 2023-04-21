@@ -21,7 +21,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { HorizontalScroll } from '../Felles/HorizontalScroll';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
 import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
-import { EFinnesKontantstøtteUtbetaling } from '../../../../App/hooks/useHentKontantstøtteUtbetalinger';
+import { FinnesKontantstøtteUtbetaling } from '../../../../App/hooks/useHentKontantstøtteUtbetalinger';
 import { KontantstøtteAlert } from './KontantstøtteAlert';
 import JaNeiRadioGruppe from '../Felles/JaNeiRadioGruppe';
 
@@ -59,7 +59,7 @@ interface Props {
     kontantstøttePerioder: ListState<IPeriodeMedBeløp>;
     settValideringsFeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>;
     valideringsfeil?: FormErrors<InnvilgeVedtakForm>;
-    finnesKontantstøtteUtbetaling: EFinnesKontantstøtteUtbetaling;
+    finnesKontantstøtteUtbetaling: FinnesKontantstøtteUtbetaling;
 }
 
 export const tomKontantstøtteRad = (): IPeriodeMedBeløp => ({

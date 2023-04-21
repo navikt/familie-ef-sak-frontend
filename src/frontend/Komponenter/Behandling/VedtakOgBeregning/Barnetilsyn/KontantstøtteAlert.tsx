@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { EFinnesKontantstøtteUtbetaling } from '../../../../App/hooks/useHentKontantstøtteUtbetalinger';
+import { FinnesKontantstøtteUtbetaling } from '../../../../App/hooks/useHentKontantstøtteUtbetalinger';
 import { Alert } from '@navikt/ds-react';
 
 const AlertStripe = styled(Alert)`
@@ -9,17 +9,17 @@ const AlertStripe = styled(Alert)`
 `;
 
 interface Props {
-    finnesKontantstøtteUtbetaling: EFinnesKontantstøtteUtbetaling;
+    finnesKontantstøtteUtbetaling: FinnesKontantstøtteUtbetaling;
 }
 export const KontantstøtteAlert: React.FC<Props> = ({ finnesKontantstøtteUtbetaling }) => {
     return (
         <>
-            {finnesKontantstøtteUtbetaling === EFinnesKontantstøtteUtbetaling.JA && (
+            {finnesKontantstøtteUtbetaling === FinnesKontantstøtteUtbetaling.JA && (
                 <AlertStripe variant={'warning'} size={'small'}>
                     Bruker har eller har fått kontantstøtte.
                 </AlertStripe>
             )}
-            {finnesKontantstøtteUtbetaling === EFinnesKontantstøtteUtbetaling.NEI && (
+            {finnesKontantstøtteUtbetaling === FinnesKontantstøtteUtbetaling.NEI && (
                 <AlertStripe variant={'info'} size={'small'}>
                     Bruker verken mottar eller har mottatt kontantstøtte.
                 </AlertStripe>

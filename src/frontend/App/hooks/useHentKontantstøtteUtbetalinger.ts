@@ -3,35 +3,35 @@ import { useApp } from '../context/AppContext';
 import { useEffect, useState } from 'react';
 import { AxiosRequestConfig } from 'axios';
 
-export enum EFinnesKontantstøtteUtbetaling {
+export enum FinnesKontantstøtteUtbetaling {
     JA = 'JA',
     NEI = 'NEI',
     UKJENT = 'UKJENT',
 }
 
-type IKontantstøtteUtbetaling = {
+type KontantstøtteUtbetaling = {
     finnesUtbetaling: boolean;
 };
 
 export const useHentKontantstøtteUtbetaling = (
     behandlingId: string
 ): {
-    finnesKontantstøtteUtbetaling: EFinnesKontantstøtteUtbetaling;
+    finnesKontantstøtteUtbetaling: FinnesKontantstøtteUtbetaling;
 } => {
     const { axiosRequest } = useApp();
     const [finnesKontantstøtteUtbetaling, settFinnesKontantstøtteUtbetaling] =
-        useState<EFinnesKontantstøtteUtbetaling>(EFinnesKontantstøtteUtbetaling.UKJENT);
+        useState<FinnesKontantstøtteUtbetaling>(FinnesKontantstøtteUtbetaling.UKJENT);
 
     useEffect(() => {
         const kontantstøtteUtbetalingConfig: AxiosRequestConfig = {
             method: 'GET',
             url: `/familie-ef-sak/api/behandling/kontantstotte/${behandlingId}/finnesUtbetalinger`,
         };
-        axiosRequest<IKontantstøtteUtbetaling, null>(kontantstøtteUtbetalingConfig).then(
-            (res: Ressurs<IKontantstøtteUtbetaling>) =>
+        axiosRequest<KontantstøtteUtbetaling, null>(kontantstøtteUtbetalingConfig).then(
+            (res: Ressurs<KontantstøtteUtbetaling>) =>
                 res.status === RessursStatus.SUKSESS && res.data.finnesUtbetaling
-                    ? settFinnesKontantstøtteUtbetaling(EFinnesKontantstøtteUtbetaling.JA)
-                    : settFinnesKontantstøtteUtbetaling(EFinnesKontantstøtteUtbetaling.NEI)
+                    ? settFinnesKontantstøtteUtbetaling(FinnesKontantstøtteUtbetaling.JA)
+                    : settFinnesKontantstøtteUtbetaling(FinnesKontantstøtteUtbetaling.NEI)
         );
     }, [axiosRequest, behandlingId]);
 
