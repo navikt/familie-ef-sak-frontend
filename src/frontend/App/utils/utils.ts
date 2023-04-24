@@ -79,6 +79,9 @@ export const tilTallverdi = (verdi: number | string | undefined): number | strin
     if (verdi === '' || verdi === undefined || verdi === null) {
         return verdi;
     }
+    if (typeof verdi === 'string') {
+        return Number(verdi.replace(/\s/g, ''));
+    }
     return Number(verdi);
 };
 
