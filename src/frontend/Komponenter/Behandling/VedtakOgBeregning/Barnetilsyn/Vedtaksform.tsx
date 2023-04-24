@@ -30,6 +30,10 @@ import { useRedirectEtterLagring } from '../../../../App/hooks/felles/useRedirec
 import { v4 as uuidv4 } from 'uuid';
 import { AlertError } from '../../../../Felles/Visningskomponenter/Alerts';
 import HovedKnapp from '../../../../Felles/Knapper/HovedKnapp';
+import {
+    FinnesKontantstøtteUtbetaling,
+    useHentKontantstøtteUtbetaling,
+} from '../../../../App/hooks/useHentKontantstøtteUtbetalinger';
 
 export type InnvilgeVedtakForm = {
     utgiftsperioder: IUtgiftsperiode[];
@@ -110,6 +114,7 @@ export const Vedtaksform: React.FC<{
             ? (lagretVedtak as IInnvilgeVedtakForBarnetilsyn)
             : undefined;
     const { behandlingErRedigerbar, hentBehandling } = useBehandling();
+    const { finnesKontantstøtteUtbetaling } = useHentKontantstøtteUtbetaling(behandling.id);
     const [laster, settLaster] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState('');
     const [nullUtbetalingPgaKontantstøtte, settNullUtbetalingPgaKontantstøtte] = useState(
@@ -161,6 +166,16 @@ export const Vedtaksform: React.FC<{
 
         // eslint-disable-next-line
     }, [lagretInnvilgetVedtak]);
+
+    useEffect(() => {
+        if (
+            behandlingErRedigerbar &&
+            finnesKontantstøtteUtbetaling === FinnesKontantstøtteUtbetaling.NEI
+        ) {
+            kontantstøtteState.setValue(ERadioValg.NEI);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [finnesKontantstøtteUtbetaling]);
 
     const lagreVedtak = (vedtaksRequest: IInnvilgeVedtakForBarnetilsyn) => {
         settLaster(true);
@@ -281,6 +296,7 @@ export const Vedtaksform: React.FC<{
                 kontantstøttePerioder={kontantstøttePeriodeState}
                 settValideringsFeil={formState.setErrors}
                 valideringsfeil={formState.errors}
+                finnesKontantstøtteUtbetaling={finnesKontantstøtteUtbetaling}
             />
             <TilleggsstønadValg
                 erLesevisning={!behandlingErRedigerbar}
