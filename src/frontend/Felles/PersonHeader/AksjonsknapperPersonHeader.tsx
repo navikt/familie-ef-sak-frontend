@@ -51,17 +51,19 @@ export const AksjonsknapperPersonHeader: React.FC<Props> = ({ erSaksbehandler, b
                 {!sattPåVent && <StyledHamburgermeny items={menyvalg} />}
                 <ButtonSmall
                     disabled={sattPåVent}
-                    onClick={() => settVisHenleggModal(true)}
+                    onClick={() => settVisSettPåVent(true)}
                     size="xsmall"
+                    variant="secondary"
                 >
-                    Henlegg
+                    Sett på vent
                 </ButtonSmall>
                 <ButtonSmall
                     disabled={sattPåVent}
-                    onClick={() => settVisSettPåVent(true)}
+                    onClick={() => settVisHenleggModal(true)}
                     size="xsmall"
+                    variant="secondary"
                 >
-                    Sett på vent
+                    Henlegg
                 </ButtonSmall>
             </>
         );

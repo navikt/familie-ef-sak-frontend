@@ -45,7 +45,7 @@ const Utregningstabell: React.FC<Props> = ({ beregnetStønad, className }) => {
                         <Grid>
                             <div className="tittel-rad">
                                 <SmallTextLabel>Periode</SmallTextLabel>
-                                <SmallTextLabel>Inntekt (år)</SmallTextLabel>
+                                <SmallTextLabel>Årsinntekt etter avrunding</SmallTextLabel>
                                 <SmallTextLabel>Beløp før samordning</SmallTextLabel>
                                 <SmallTextLabel>Samordningsfradrag (mnd)</SmallTextLabel>
                                 <SmallTextLabel>Stønadsbeløp pr. mnd</SmallTextLabel>

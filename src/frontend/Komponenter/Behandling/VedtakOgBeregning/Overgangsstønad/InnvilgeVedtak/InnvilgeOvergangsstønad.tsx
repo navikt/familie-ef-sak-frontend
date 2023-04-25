@@ -9,7 +9,7 @@ import { revurdererFraPeriodeUtenStønad } from './revurderFraUtils';
 import { RevurderesFraOgMed } from '../../Felles/RevurderesFraOgMed';
 import { IVilkår } from '../../../Inngangsvilkår/vilkår';
 import { Vedtaksform } from './Vedtaksform';
-import { oppdaterVedtakMedEndretKey } from './utils';
+import { oppdaterVedtakMedEndretKey, oppdaterVedtakMedInitPeriodeOgOpphørshull } from './utils';
 
 export const InnvilgeOvergangsstønad: React.FC<{
     behandling: Behandling;
@@ -39,7 +39,13 @@ export const InnvilgeOvergangsstønad: React.FC<{
             }).then((res: RessursSuksess<IInnvilgeVedtakForOvergangsstønad> | RessursFeilet) => {
                 if (res.status === RessursStatus.SUKSESS) {
                     settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
-                    settVedtak(oppdaterVedtakMedEndretKey(res.data));
+                    const oppdatertVedtakMedEndretKey = oppdaterVedtakMedEndretKey(res.data);
+                    settVedtak(
+                        oppdaterVedtakMedInitPeriodeOgOpphørshull(
+                            oppdatertVedtakMedEndretKey,
+                            revurderesFra
+                        )
+                    );
                 } else {
                     settRevurderesFraOgMedFeilmelding(res.frontendFeilmelding);
                 }
@@ -65,7 +71,12 @@ export const InnvilgeOvergangsstønad: React.FC<{
                 />
             ) : null}
             {(vedtak || !behandling.forrigeBehandlingId) && (
-                <Vedtaksform behandling={behandling} lagretVedtak={vedtak} vilkår={vilkår} />
+                <Vedtaksform
+                    behandling={behandling}
+                    lagretVedtak={vedtak}
+                    vilkår={vilkår}
+                    revurderesFra={revurderesFra}
+                />
             )}
         </>
     );

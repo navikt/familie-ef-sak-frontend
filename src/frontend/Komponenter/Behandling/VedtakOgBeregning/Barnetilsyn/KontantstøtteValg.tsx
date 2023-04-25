@@ -18,14 +18,20 @@ import { Heading, Label, Tooltip } from '@navikt/ds-react';
 import InputMedTusenSkille from '../../../../Felles/Visningskomponenter/InputMedTusenskille';
 import FjernKnapp from '../../../../Felles/Knapper/FjernKnapp';
 import { v4 as uuidv4 } from 'uuid';
-import JaNeiRadioGruppe from '../Felles/JaNeiRadioGruppe';
 import { HorizontalScroll } from '../Felles/HorizontalScroll';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
 import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
+import { FinnesKontantstøtteUtbetaling } from '../../../../App/hooks/useHentKontantstøtteUtbetalinger';
+import { KontantstøtteAlert } from './KontantstøtteAlert';
+import JaNeiRadioGruppe from '../Felles/JaNeiRadioGruppe';
 
 const Container = styled.div`
     padding: 1rem;
     background-color: ${AGray50};
+`;
+
+const AlertOgRadioknappWrapper = styled.div`
+    width: max-content;
 `;
 
 const Grid = styled.div<{ lesevisning: boolean }>`
@@ -53,6 +59,7 @@ interface Props {
     kontantstøttePerioder: ListState<IPeriodeMedBeløp>;
     settValideringsFeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>;
     valideringsfeil?: FormErrors<InnvilgeVedtakForm>;
+    finnesKontantstøtteUtbetaling: FinnesKontantstøtteUtbetaling;
 }
 
 export const tomKontantstøtteRad = (): IPeriodeMedBeløp => ({
@@ -68,6 +75,7 @@ const KontantstøtteValg: React.FC<Props> = ({
     kontantstøttePerioder,
     settValideringsFeil,
     valideringsfeil,
+    finnesKontantstøtteUtbetaling,
 }) => {
     const { settIkkePersistertKomponent } = useApp();
     const { åpenHøyremeny } = useBehandling();
@@ -106,22 +114,28 @@ const KontantstøtteValg: React.FC<Props> = ({
         }
     };
 
+    const visGrid = kontantstøttePerioder.value.length > 0;
     const radioGruppeTekst =
         'Er det søkt om, utbetales det eller har det blitt utbetalt kontantstøtte til brukeren eller en brukeren bor med i perioden(e) det er søkt om?';
-    const visGrid = kontantstøttePerioder.value.length > 0;
-
     return (
         <Container>
             <Heading spacing size="small" level="5">
                 Kontantstøtte
             </Heading>
-            <JaNeiRadioGruppe
-                error={valideringsfeil?.harKontantstøtte}
-                legend={radioGruppeTekst}
-                lesevisning={erLesevisning}
-                onChange={(event) => kontantstøtte.onChange(event)}
-                value={kontantstøtte.value as ERadioValg}
-            />
+            <AlertOgRadioknappWrapper>
+                {!erLesevisning && (
+                    <KontantstøtteAlert
+                        finnesKontantstøtteUtbetaling={finnesKontantstøtteUtbetaling}
+                    />
+                )}
+                <JaNeiRadioGruppe
+                    error={valideringsfeil?.harKontantstøtte}
+                    legend={radioGruppeTekst}
+                    lesevisning={erLesevisning}
+                    onChange={(event) => kontantstøtte.onChange(event)}
+                    value={kontantstøtte.value as ERadioValg}
+                />
+            </AlertOgRadioknappWrapper>
             {kontantstøtte.value === ERadioValg.JA && (
                 <HorizontalScroll
                     synligVedLukketMeny={'795px'}
