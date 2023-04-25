@@ -13,7 +13,7 @@ import { useHentVedtak } from '../../../App/hooks/useHentVedtak';
 import { skalFerdigstilleUtenBeslutter } from '../VedtakOgBeregning/Felles/utils';
 import { useHentOppgaverForOpprettelse } from '../../../App/hooks/useHentOppgaverForOpprettelse';
 import { AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
-import { oppgaveSomSkalOpprettesTilTekst } from '../Totrinnskontroll/OppgaverForOpprettelse';
+import { oppgaveSomSkalOpprettesTilTekst } from '../Totrinnskontroll/oppgaveForOpprettelseTyper';
 
 const StyledBrev = styled.div`
     background-color: #f2f2f2;
@@ -58,13 +58,11 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
         useBehandling();
     const [kanSendesTilBeslutter, settKanSendesTilBeslutter] = useState<boolean>(false);
     const { hentVedtak, vedtak } = useHentVedtak(behandlingId);
-    const oppgaverForOpprettelseState = useHentOppgaverForOpprettelse();
-    const { hentOppgaverForOpprettelse } = oppgaverForOpprettelseState;
+    const oppgaverForOpprettelse = useHentOppgaverForOpprettelse(behandlingId);
 
     useEffect(() => {
         hentVedtak();
-        hentOppgaverForOpprettelse(behandlingId);
-    }, [hentVedtak, hentOppgaverForOpprettelse, behandlingId]);
+    }, [hentVedtak]);
 
     const lagBeslutterBrev = () => {
         axiosRequest<string, null>({
@@ -114,13 +112,11 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
                             />
                             {!behandlingErRedigerbar && (
                                 <InfostripeGruppe>
-                                    {oppgaverForOpprettelseState.oppgaverForOpprettelse.oppgavetyperSomSkalOpprettes.map(
+                                    {oppgaverForOpprettelse.oppgavetyperSomSkalOpprettes.map(
                                         (oppgaveType) => (
-                                            <>
-                                                <StyledInfostripe>
-                                                    {oppgaveSomSkalOpprettesTilTekst[oppgaveType]}
-                                                </StyledInfostripe>
-                                            </>
+                                            <StyledInfostripe>
+                                                {oppgaveSomSkalOpprettesTilTekst[oppgaveType]}
+                                            </StyledInfostripe>
                                         )
                                     )}
                                 </InfostripeGruppe>
@@ -145,7 +141,7 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
                         kanSendesTilBeslutter={kanSendesTilBeslutter}
                         ferdigstillUtenBeslutter={skalFerdigstilleUtenBeslutter(vedtak)}
                         behandlingErRedigerbar={behandlingErRedigerbar}
-                        oppgaverForOpprettelseState={oppgaverForOpprettelseState}
+                        oppgaverForOpprettelse={oppgaverForOpprettelse}
                     />
                 </>
             )}

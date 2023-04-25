@@ -10,9 +10,10 @@ import { Button } from '@navikt/ds-react';
 import { AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
 import { ABorderStrong } from '@navikt/ds-tokens/dist/tokens';
 import { useNavigate } from 'react-router-dom';
-import OppgaverForOpprettelse, { OppgaveForOpprettelseType } from './OppgaverForOpprettelse';
+import OppgaverForOpprettelse from './OppgaverForOpprettelse';
 import { Behandling } from '../../../App/typer/fagsak';
-import { OppgaverForOpprettelseState } from '../../../App/hooks/useHentOppgaverForOpprettelse';
+import { IOppgaverForOpprettelse } from '../../../App/hooks/useHentOppgaverForOpprettelse';
+import { OppgaveTypeForOpprettelse } from './oppgaveForOpprettelseTyper';
 
 const Footer = styled.footer`
     width: 100%;
@@ -39,7 +40,7 @@ const FlexBox = styled.div`
 `;
 
 export interface SendTilBeslutterRequest {
-    oppgavetyperSomSkalOpprettes: OppgaveForOpprettelseType[];
+    oppgavetyperSomSkalOpprettes: OppgaveTypeForOpprettelse[];
 }
 
 const SendTilBeslutterFooter: React.FC<{
@@ -47,13 +48,13 @@ const SendTilBeslutterFooter: React.FC<{
     kanSendesTilBeslutter?: boolean;
     behandlingErRedigerbar: boolean;
     ferdigstillUtenBeslutter: boolean;
-    oppgaverForOpprettelseState?: OppgaverForOpprettelseState;
+    oppgaverForOpprettelse?: IOppgaverForOpprettelse;
 }> = ({
     behandling,
     kanSendesTilBeslutter,
     behandlingErRedigerbar,
     ferdigstillUtenBeslutter,
-    oppgaverForOpprettelseState,
+    oppgaverForOpprettelse,
 }) => {
     const { axiosRequest } = useApp();
     const navigate = useNavigate();
@@ -70,9 +71,8 @@ const SendTilBeslutterFooter: React.FC<{
             method: 'POST',
             url: `/familie-ef-sak/api/vedtak/${behandlingId}/send-til-beslutter`,
             data: {
-                oppgavetyperSomSkalOpprettes: oppgaverForOpprettelseState
-                    ? oppgaverForOpprettelseState.oppgaverForOpprettelse
-                          .oppgavetyperSomSkalOpprettes
+                oppgavetyperSomSkalOpprettes: oppgaverForOpprettelse
+                    ? oppgaverForOpprettelse.oppgavetyperSomSkalOpprettes
                     : [],
             },
         })
@@ -110,10 +110,10 @@ const SendTilBeslutterFooter: React.FC<{
                         <AlertInfo>Vedtaket vil ikke bli sendt til totrinnskontroll</AlertInfo>
                     )}
                     <FlexBox>
-                        {oppgaverForOpprettelseState && (
+                        {oppgaverForOpprettelse && (
                             <OppgaverForOpprettelse
                                 behandling={behandling}
-                                oppgaverForOpprettelseState={oppgaverForOpprettelseState}
+                                oppgaverForOpprettelse={oppgaverForOpprettelse}
                             />
                         )}
                         <MidtstiltInnhold>
@@ -122,7 +122,7 @@ const SendTilBeslutterFooter: React.FC<{
                                 disabled={
                                     laster ||
                                     !kanSendesTilBeslutter ||
-                                    oppgaverForOpprettelseState?.feilmelding
+                                    oppgaverForOpprettelse?.feilmelding
                                 }
                                 type={'button'}
                             >

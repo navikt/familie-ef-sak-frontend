@@ -1,61 +1,63 @@
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../typer/ressurs';
 import { useApp } from '../context/AppContext';
-import { useCallback, useState } from 'react';
-import {
-    IOppgaverForOpprettelse,
-    OppgaveForOpprettelseType,
-} from '../../Komponenter/Behandling/Totrinnskontroll/OppgaverForOpprettelse';
+import { useCallback, useState, useEffect } from 'react';
+import { OppgaveTypeForOpprettelse } from '../../Komponenter/Behandling/Totrinnskontroll/oppgaveForOpprettelseTyper';
 
-export interface OppgaverForOpprettelseState {
+export interface IOppgaverForOpprettelse {
     feilmelding: string | undefined;
     hentOppgaverForOpprettelse: (behandlingId: string) => void;
-    oppgaverForOpprettelse: IOppgaverForOpprettelse;
-    oppdaterOppgavetyperSomSkalOpprettes: (typer: OppgaveForOpprettelseType[]) => void;
+    oppgavetyperSomKanOpprettes: OppgaveTypeForOpprettelse[];
+    oppgavetyperSomSkalOpprettes: OppgaveTypeForOpprettelse[];
+    settOppgavetyperSomSkalOpprettes: React.Dispatch<
+        React.SetStateAction<OppgaveTypeForOpprettelse[]>
+    >;
 }
 
-const initialState: IOppgaverForOpprettelse = {
-    oppgavetyperSomSkalOpprettes: [],
-    oppgavetyperSomKanOpprettes: [],
-};
+interface OppgaverForOpprettelseRequest {
+    oppgavetyperSomKanOpprettes: OppgaveTypeForOpprettelse[];
+    oppgavetyperSomSkalOpprettes: OppgaveTypeForOpprettelse[];
+}
 
-const feilmeldingPrefiks =
-    'Noe gikk galt under henting av oppgaver som kan opprettes. Forsøk å last siden på nytt. ';
-export const useHentOppgaverForOpprettelse = (): OppgaverForOpprettelseState => {
+export const useHentOppgaverForOpprettelse = (behandlingId: string): IOppgaverForOpprettelse => {
     const { axiosRequest } = useApp();
-    const [oppgaverForOpprettelse, settOppgaverForOpprettelse] =
-        useState<IOppgaverForOpprettelse>(initialState);
+    const [oppgavetyperSomKanOpprettes, settOppgavetyperSomKanOpprettes] = useState<
+        OppgaveTypeForOpprettelse[]
+    >([]);
+    const [oppgavetyperSomSkalOpprettes, settOppgavetyperSomSkalOpprettes] = useState<
+        OppgaveTypeForOpprettelse[]
+    >([]);
     const [feilmelding, settFeilmelding] = useState<string>();
 
     const hentOppgaverForOpprettelse = useCallback(
         (behandlingId: string) => {
             settFeilmelding(undefined);
-            axiosRequest<IOppgaverForOpprettelse, undefined>({
+            axiosRequest<OppgaverForOpprettelseRequest, undefined>({
                 method: 'GET',
                 url: `/familie-ef-sak/api/oppgaverforopprettelse/${behandlingId}`,
-            }).then((res: RessursSuksess<IOppgaverForOpprettelse> | RessursFeilet) => {
+            }).then((res: RessursSuksess<OppgaverForOpprettelseRequest> | RessursFeilet) => {
                 if (res.status === RessursStatus.SUKSESS) {
-                    settOppgaverForOpprettelse(res.data);
+                    settOppgavetyperSomSkalOpprettes(res.data.oppgavetyperSomSkalOpprettes);
+                    settOppgavetyperSomKanOpprettes(res.data.oppgavetyperSomKanOpprettes);
                 } else {
-                    settFeilmelding(feilmeldingPrefiks + res.frontendFeilmelding);
+                    settFeilmelding(
+                        'Noe gikk galt under henting av oppgaver som kan opprettes. Forsøk å last siden på nytt. ' +
+                            res.frontendFeilmelding
+                    );
                 }
             });
         },
         [axiosRequest]
     );
 
-    const oppdaterOppgavetyperSomSkalOpprettes = (
-        oppgavetyperSomSkalOpprettes: OppgaveForOpprettelseType[]
-    ) => {
-        settOppgaverForOpprettelse((prevState) => ({
-            ...prevState,
-            oppgavetyperSomSkalOpprettes,
-        }));
-    };
+    useEffect(() => {
+        hentOppgaverForOpprettelse(behandlingId);
+    }, [behandlingId, hentOppgaverForOpprettelse]);
 
     return {
         feilmelding,
         hentOppgaverForOpprettelse,
-        oppgaverForOpprettelse,
-        oppdaterOppgavetyperSomSkalOpprettes,
+        oppgavetyperSomKanOpprettes,
+        oppgavetyperSomSkalOpprettes,
+        settOppgavetyperSomSkalOpprettes,
     };
 };
