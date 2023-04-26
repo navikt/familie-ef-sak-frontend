@@ -280,8 +280,15 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
                                         size="small"
                                     >
                                         {aktuelleOppgaver.map((oppgave) => (
-                                            <Checkbox key={oppgave} value={oppgave}>
-                                                {vurderHenvendelseOppgaveTilTekst[oppgave]}
+                                            <Checkbox
+                                                key={oppgave}
+                                                value={oppgave as VurderHenvendelseOppgavetype}
+                                            >
+                                                {
+                                                    vurderHenvendelseOppgaveTilTekst[
+                                                        oppgave as VurderHenvendelseOppgavetype
+                                                    ]
+                                                }
                                             </Checkbox>
                                         ))}
                                     </CheckboxGroup>
