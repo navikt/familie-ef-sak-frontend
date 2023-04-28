@@ -217,18 +217,20 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
         settOppgaverMotLokalkontor([]);
     };
 
-    const aktuelleOppgaver = Object.keys(VurderHenvendelseOppgavetype)
-        .filter(() => !erBehandlingPåVent)
-        .filter((oppgavetype) =>
-            oppgavetype === VurderHenvendelseOppgavetype.INFORMERE_OM_SØKT_OVERGANGSSTØNAD
-                ? erOvergangsstønad
-                : true
-        )
-        .filter((oppgavetype) =>
-            oppgavetype === VurderHenvendelseOppgavetype.INNSTILLING_VEDRØRENDE_UTDANNING
-                ? erOvergangsstønadEllerSkolepenger
-                : true
-        );
+    const filtrerOppgavetyper = (oppgavetype: string) => {
+        switch (oppgavetype) {
+            case VurderHenvendelseOppgavetype.INFORMERE_OM_SØKT_OVERGANGSSTØNAD:
+                return erOvergangsstønad;
+            case VurderHenvendelseOppgavetype.INNSTILLING_VEDRØRENDE_UTDANNING:
+                return erOvergangsstønadEllerSkolepenger;
+            default:
+                return true;
+        }
+    };
+
+    const aktuelleOppgaver = Object.keys(VurderHenvendelseOppgavetype).filter((oppgavetype) =>
+        filtrerOppgavetyper(oppgavetype)
+    );
 
     return visSettPåVent && toggles[ToggleName.settPåVentMedOppgavestyring] ? (
         <DataViewer response={{ oppgave }}>
@@ -272,7 +274,7 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
                                     onChange={(e) => settBeskrivelse(e.target.value)}
                                 />
                             )}
-                            {toggles[ToggleName.automatiskeOppgaverMotLokalkontor] &&
+                            {toggles[ToggleName.visVurderHenvendelseOppgaver] &&
                                 !erBehandlingPåVent && (
                                     <CheckboxGroup
                                         legend="Alternative aksjoner"

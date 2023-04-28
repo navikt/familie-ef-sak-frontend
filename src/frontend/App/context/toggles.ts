@@ -16,5 +16,5 @@ export enum ToggleName {
     angreSendTilBeslutter = 'familie.ef.sak.frontend-angre-send-til-beslutter',
     ulikeInntekter = 'familie.ef.sak-ulike-inntekter',
     settPåVentMedOppgavestyring = 'familie.ef.sak.sett-paa-vent-med-oppgavestyring',
-    automatiskeOppgaverMotLokalkontor = 'familie.ef.sak.automatiske-oppgaver-lokalkontor',
+    visVurderHenvendelseOppgaver = 'familie.ef.sak.automatiske-oppgaver-lokalkontor',
 }
