@@ -31,7 +31,7 @@
     "react-collapse": "Trengs for datovelgeren, overrider versjonen som ligger der"
   },
   "dependencies": {
-    "@navikt/aksel-icons": "^2.8.x",
+    "@navikt/aksel-icons": "^2.9.x",
     "@navikt/ds-css": "2.8.x",
     "@navikt/ds-icons": "2.8.x",
     "@navikt/ds-react": "2.8.x",
