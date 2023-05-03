@@ -70,7 +70,7 @@ enum VurderHenvendelseOppgavetype {
 }
 
 const vurderHenvendelseOppgaveTilTekst: Record<VurderHenvendelseOppgavetype, string> = {
-    INFORMERE_OM_SØKT_OVERGANGSSTØNAD: 'Beskjed om at vi har mottatt søknad',
+    INFORMERE_OM_SØKT_OVERGANGSSTØNAD: 'Beskjed om at vi har fått søknad',
     INNSTILLING_VEDRØRENDE_UTDANNING: 'Forespørsel om innstilling - utdanning',
 };
 
