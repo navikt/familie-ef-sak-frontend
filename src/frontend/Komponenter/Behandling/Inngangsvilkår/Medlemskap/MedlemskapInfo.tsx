@@ -28,20 +28,11 @@ const MedlemskapInfo: FC<Props> = ({ medlemskap, skalViseSøknadsdata }) => {
     return (
         <InformasjonContainer>
             {skalViseSøknadsdata && søknadsgrunnlag && (
-                <>
-                    <Informasjonsrad
-                        ikon={VilkårInfoIkon.SØKNAD}
-                        label="Har bodd i Norge siste 5 år"
-                        verdi={mapTrueFalse(søknadsgrunnlag.bosattNorgeSisteÅrene)}
-                    />
-                    {søknadsgrunnlag.oppholdsland && (
-                        <Informasjonsrad
-                            ikon={VilkårInfoIkon.SØKNAD}
-                            label="Oppholdsland"
-                            verdi={søknadsgrunnlag.oppholdsland}
-                        />
-                    )}
-                </>
+                <Informasjonsrad
+                    ikon={VilkårInfoIkon.SØKNAD}
+                    label="Har bodd i Norge siste 5 år"
+                    verdi={mapTrueFalse(søknadsgrunnlag.bosattNorgeSisteÅrene)}
+                />
             )}
             {finnesUnntakIMedl && (
                 <Informasjonsrad
