@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons';
 import { BreakWordBodyLongSmall } from '../../../Felles/Visningskomponenter/BreakWordBodyLongSmall';
 import { ABlue300 } from '@navikt/ds-tokens/dist/tokens';
+import { BodyLongSmall } from '../../../Felles/Visningskomponenter/Tekster';
 
 const EkspanderbarContainer = styled(BreakWordBodyLongSmall)<{ ekspandert: boolean }>`
     max-height: ${(props) => (props.ekspandert ? 'none' : '15rem')};
@@ -37,7 +38,7 @@ export const EksisterendeBeskrivelse: React.FC<{ beskrivelse?: string }> = ({ be
                 <Label size={'small'}>Beskrivelseshistorikk</Label>
                 <LeftBorder>
                     <EkspanderbarContainer ref={refCallback} ekspandert={ekspandert}>
-                        {beskrivelse}
+                        <BodyLongSmall>{beskrivelse}</BodyLongSmall>
                     </EkspanderbarContainer>
                     {(harOverflow || ekspandert) && (
                         <Button
