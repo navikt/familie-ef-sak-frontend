@@ -70,10 +70,8 @@ enum VurderHenvendelseOppgavetype {
 }
 
 const vurderHenvendelseOppgaveTilTekst: Record<VurderHenvendelseOppgavetype, string> = {
-    INFORMERE_OM_SØKT_OVERGANGSSTØNAD:
-        'Automatisk oppgave til lokalkontor med beskjed om mottatt søknad',
-    INNSTILLING_VEDRØRENDE_UTDANNING:
-        'Automatisk oppgave om innstilling av utdanning til lokalkontor',
+    INFORMERE_OM_SØKT_OVERGANGSSTØNAD: 'Beskjed om at vi har fått søknad',
+    INNSTILLING_VEDRØRENDE_UTDANNING: 'Forespørsel om innstilling - utdanning',
 };
 
 type SettPåVentRequest = {
@@ -275,9 +273,10 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
                                 />
                             )}
                             {toggles[ToggleName.visVurderHenvendelseOppgaver] &&
+                                erOvergangsstønadEllerSkolepenger &&
                                 !erBehandlingPåVent && (
                                     <CheckboxGroup
-                                        legend="Alternative aksjoner"
+                                        legend="Send oppgave til lokalkontoret"
                                         onChange={settOppgaverMotLokalkontor}
                                         size="small"
                                     >
