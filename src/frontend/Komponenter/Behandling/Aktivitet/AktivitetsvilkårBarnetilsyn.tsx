@@ -21,7 +21,6 @@ const AktivitetsVilkårBarnetilsyn: FC<{
         ikkeVurderVilkår,
     } = vilkårState;
     const skalViseSøknadsdata = behandling.behandlingsårsak === Behandlingsårsak.SØKNAD;
-
     const behandlingId = behandling.id;
 
     useEffect(() => {
@@ -43,7 +42,6 @@ const AktivitetsVilkårBarnetilsyn: FC<{
                             vurderinger={vilkår.vurderinger}
                             skalViseSøknadsdata={skalViseSøknadsdata}
                         />
-
                         <Inntekt
                             ikkeVurderVilkår={ikkeVurderVilkår}
                             nullstillVurdering={nullstillVurdering}
@@ -53,7 +51,6 @@ const AktivitetsVilkårBarnetilsyn: FC<{
                             vurderinger={vilkår.vurderinger}
                             skalViseSøknadsdata={skalViseSøknadsdata}
                         />
-
                         <AlderPåBarn
                             ikkeVurderVilkår={ikkeVurderVilkår}
                             nullstillVurdering={nullstillVurdering}
@@ -63,7 +60,6 @@ const AktivitetsVilkårBarnetilsyn: FC<{
                             vurderinger={vilkår.vurderinger}
                             skalViseSøknadsdata={skalViseSøknadsdata}
                         />
-
                         <DokumentasjonsTilsynsutgifter
                             ikkeVurderVilkår={ikkeVurderVilkår}
                             nullstillVurdering={nullstillVurdering}

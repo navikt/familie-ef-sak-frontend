@@ -33,7 +33,7 @@ export const delvilkårTypeTilTekst: Record<string, string> = {
         'Har søker tidligere mottatt andre stønader som har betydning for stønadstiden i §15-8 første og andre ledd?',
     ER_I_ARBEID_ELLER_FORBIGÅENDE_SYKDOM: 'Er brukeren i arbeid eller har forbigående sykdom?',
     INNTEKT_LAVERE_ENN_INNTEKTSGRENSE:
-        'Har brukeren inntekt under 6 ganger grunnbeløpet (668 862 kr / 55 738 kr)?',
+        'Har brukeren inntekt under 6 ganger grunnbeløpet (pr 01.05.22: 668 862 kr / 55 738 kr)?',
     INNTEKT_SAMSVARER_MED_OS:
         'Er inntekten i samsvar med den inntekten som er lagt til grunn ved beregning av overgangsstønad?',
     HAR_ALDER_LAVERE_ENN_GRENSEVERDI: 'Har barnet fullført 4.skoleår?',
