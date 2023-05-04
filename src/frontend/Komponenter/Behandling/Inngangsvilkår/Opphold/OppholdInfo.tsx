@@ -31,11 +31,20 @@ const OppholdInfo: FC<Props> = ({ medlemskap, skalViseSøknadsdata }) => {
                 ikon={VilkårInfoIkon.REGISTER}
             />
             {skalViseSøknadsdata && søknadsgrunnlag && (
-                <Informasjonsrad
-                    label="Søker og barn oppholder seg i Norge"
-                    verdi={mapTrueFalse(søknadsgrunnlag.oppholderDuDegINorge)}
-                    ikon={VilkårInfoIkon.SØKNAD}
-                />
+                <>
+                    <Informasjonsrad
+                        label="Søker og barn oppholder seg i Norge"
+                        verdi={mapTrueFalse(søknadsgrunnlag.oppholderDuDegINorge)}
+                        ikon={VilkårInfoIkon.SØKNAD}
+                    />
+                    {søknadsgrunnlag.oppholdsland && (
+                        <Informasjonsrad
+                            ikon={VilkårInfoIkon.SØKNAD}
+                            label="Oppholdsland"
+                            verdi={søknadsgrunnlag.oppholdsland}
+                        />
+                    )}
+                </>
             )}
 
             <FolkeregisterPersonstatus status={registergrunnlag.folkeregisterpersonstatus} />

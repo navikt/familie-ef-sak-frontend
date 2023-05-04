@@ -13,6 +13,7 @@ export interface IMedlemskap {
 export interface IMedlemskapSøknadsgrunnlag {
     bosattNorgeSisteÅrene: boolean;
     oppholderDuDegINorge: boolean;
+    oppholdsland?: string;
     utenlandsopphold: IUtenlandsopphold[];
 }
 
@@ -37,6 +38,7 @@ export interface IGyldigVedtakPeriode {
 export interface IUtenlandsopphold {
     fraDato: string;
     tilDato: string;
+    land?: string;
     årsak: string;
 }
 

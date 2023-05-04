@@ -24,6 +24,10 @@ const Utenlandsopphold: FC<Props> = ({ utenlandsopphold }) => (
                 tekstVerdi: (d) => formaterNullableIsoDato(d.tilDato),
             },
             {
+                overskrift: 'Land',
+                tekstVerdi: (d) => d.land,
+            },
+            {
                 overskrift: 'Årsak',
                 tekstVerdi: (d) => d.årsak,
             },
