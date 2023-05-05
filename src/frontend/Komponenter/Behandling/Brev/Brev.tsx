@@ -14,6 +14,8 @@ import { skalFerdigstilleUtenBeslutter } from '../VedtakOgBeregning/Felles/utils
 import { useHentOppgaverForOpprettelse } from '../../../App/hooks/useHentOppgaverForOpprettelse';
 import { AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
 import { oppgaveSomSkalOpprettesTilTekst } from '../Totrinnskontroll/oppgaveForOpprettelseTyper';
+import { ToggleName } from '../../../App/context/toggles';
+import { useToggles } from '../../../App/context/TogglesContext';
 
 const StyledBrev = styled.div`
     background-color: #f2f2f2;
@@ -59,6 +61,8 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
     const [kanSendesTilBeslutter, settKanSendesTilBeslutter] = useState<boolean>(false);
     const { hentVedtak, vedtak } = useHentVedtak(behandlingId);
     const oppgaverForOpprettelse = useHentOppgaverForOpprettelse(behandlingId);
+
+    const { toggles } = useToggles();
 
     useEffect(() => {
         hentVedtak();
@@ -110,7 +114,7 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
                                 behandlingId={behandling.id}
                                 personopplysninger={personopplysningerResponse}
                             />
-                            {!behandlingErRedigerbar && (
+                            {!behandlingErRedigerbar && toggles[ToggleName.fremleggsoppgave] && (
                                 <InfostripeGruppe>
                                     {oppgaverForOpprettelse.oppgavetyperSomSkalOpprettes.map(
                                         (oppgaveType) => (

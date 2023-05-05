@@ -14,6 +14,8 @@ import OppgaverForOpprettelse from './OppgaverForOpprettelse';
 import { Behandling } from '../../../App/typer/fagsak';
 import { IOppgaverForOpprettelse } from '../../../App/hooks/useHentOppgaverForOpprettelse';
 import { OppgaveTypeForOpprettelse } from './oppgaveForOpprettelseTyper';
+import { useToggles } from '../../../App/context/TogglesContext';
+import { ToggleName } from '../../../App/context/toggles';
 
 const Footer = styled.footer`
     width: 100%;
@@ -63,7 +65,7 @@ const SendTilBeslutterFooter: React.FC<{
     const [feilmelding, settFeilmelding] = useState<string>();
     const [visModal, settVisModal] = useState<boolean>(false);
     const behandlingId = behandling.id;
-
+    const { toggles } = useToggles();
     const sendTilBeslutter = () => {
         settLaster(true);
         settFeilmelding(undefined);
@@ -71,9 +73,10 @@ const SendTilBeslutterFooter: React.FC<{
             method: 'POST',
             url: `/familie-ef-sak/api/vedtak/${behandlingId}/send-til-beslutter`,
             data: {
-                oppgavetyperSomSkalOpprettes: oppgaverForOpprettelse
-                    ? oppgaverForOpprettelse.oppgavetyperSomSkalOpprettes
-                    : [],
+                oppgavetyperSomSkalOpprettes:
+                    oppgaverForOpprettelse && toggles[ToggleName.fremleggsoppgave]
+                        ? oppgaverForOpprettelse.oppgavetyperSomSkalOpprettes
+                        : [],
             },
         })
             .then((res: RessursSuksess<string> | RessursFeilet) => {
@@ -110,7 +113,7 @@ const SendTilBeslutterFooter: React.FC<{
                         <AlertInfo>Vedtaket vil ikke bli sendt til totrinnskontroll</AlertInfo>
                     )}
                     <FlexBox>
-                        {oppgaverForOpprettelse && (
+                        {oppgaverForOpprettelse && toggles[ToggleName.fremleggsoppgave] && (
                             <OppgaverForOpprettelse
                                 behandling={behandling}
                                 oppgaverForOpprettelse={oppgaverForOpprettelse}

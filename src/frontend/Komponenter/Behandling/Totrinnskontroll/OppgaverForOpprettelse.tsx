@@ -10,6 +10,7 @@ import {
     oppgaveForOpprettelseTilTekst,
     OppgaveTypeForOpprettelse,
 } from './oppgaveForOpprettelseTyper';
+
 export const HvitTekst = styled.div`
     color: white;
 `;
