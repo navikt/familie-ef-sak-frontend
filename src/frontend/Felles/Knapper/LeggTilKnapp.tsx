@@ -7,14 +7,15 @@ const LeggTilKnapp: React.FC<{
     ikontekst?: string;
     knappetekst?: string;
     onClick: () => void;
-}> = ({ className, ikontekst, knappetekst, onClick }) => {
+    variant?: string;
+}> = ({ className, ikontekst, knappetekst, onClick, variant }) => {
     return (
         <Knapp
             className={className}
             icon={<AddCircle title={knappetekst ? knappetekst : ikontekst} />}
             onClick={onClick}
             type="button"
-            variant={knappetekst ? 'secondary' : 'tertiary'}
+            variant={variant ? variant : 'secondary'}
         >
             {knappetekst && <span>{knappetekst}</span>}
         </Knapp>
