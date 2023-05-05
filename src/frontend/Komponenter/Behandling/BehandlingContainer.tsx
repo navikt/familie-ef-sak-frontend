@@ -22,6 +22,7 @@ import { SettPåVent } from './SettPåVent/SettPåVent';
 
 const Container = styled.div`
     display: flex;
+
     flex-shrink: 2;
 `;
 

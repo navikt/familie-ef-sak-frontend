@@ -11,19 +11,19 @@ interface Props {
 }
 
 const KorrigeringUtenBrev: React.FC<Props> = ({ behandlingId }) => {
-    const { behandling, behandlingErRedigerbar } = useBehandling();
+    const { behandlingErRedigerbar } = useBehandling();
     const { hentVedtak, vedtak } = useHentVedtak(behandlingId);
 
     useEffect(() => {
         hentVedtak();
     }, [hentVedtak]);
     return (
-        <DataViewer response={{ behandling, vedtak }}>
-            {({ behandling, vedtak }) => (
+        <DataViewer response={{ vedtak }}>
+            {({ vedtak }) => (
                 <>
                     <AlertInfo>Korrigering av vedtak uten brevutsendelse</AlertInfo>
                     <SendTilBeslutterFooter
-                        behandling={behandling}
+                        behandlingId={behandlingId}
                         kanSendesTilBeslutter={behandlingErRedigerbar}
                         behandlingErRedigerbar={behandlingErRedigerbar}
                         ferdigstillUtenBeslutter={skalFerdigstilleUtenBeslutter(vedtak)}
