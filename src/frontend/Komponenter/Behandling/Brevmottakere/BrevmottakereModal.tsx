@@ -65,6 +65,11 @@ export const BrevmottakereModal: FC<{
     const [innsendingSuksess, settInnsendingSukksess] = useState(false);
     const { settToast } = useApp();
 
+    const initiellePersonIdenter = mottakere.personer.map((mottaker) => mottaker.personIdent);
+    const valgtePersonIdenter = valgtePersonMottakere.map((mottaker) => mottaker.personIdent);
+    const initelleOrgNumre = mottakere.organisasjoner.map((org) => org.organisasjonsnummer);
+    const valgteOrgNumre = valgteOrganisasjonMottakere.map((org) => org.organisasjonsnummer);
+
     const settBrevmottakere = () => {
         settFeilmelding('');
         settInnsendingSukksess(false);
@@ -81,8 +86,17 @@ export const BrevmottakereModal: FC<{
         });
     };
 
-    const harValgtMottakere =
+    const harNyeMottakere = (initelleIdenter: string[], valgteIdenter: string[]) =>
+        valgteIdenter.some((identNummer) => !initelleIdenter.includes(identNummer));
+
+    const harBrevmottakere =
         valgtePersonMottakere.length > 0 || valgteOrganisasjonMottakere.length > 0;
+
+    const mottakerListeHarEndringer =
+        harNyeMottakere(initiellePersonIdenter, valgtePersonIdenter) ||
+        harNyeMottakere(initelleOrgNumre, valgteOrgNumre);
+
+    const deaktiverSettMottakere = !harBrevmottakere || !mottakerListeHarEndringer;
 
     return (
         <ModalWrapper
@@ -129,7 +143,11 @@ export const BrevmottakereModal: FC<{
                 <Button variant="tertiary" onClick={() => settVisBrevmottakereModal(false)}>
                     Avbryt
                 </Button>
-                <Button variant="primary" onClick={settBrevmottakere} disabled={!harValgtMottakere}>
+                <Button
+                    variant="primary"
+                    onClick={settBrevmottakere}
+                    disabled={deaktiverSettMottakere}
+                >
                     Sett mottakere
                 </Button>
             </SentrerKnapper>
