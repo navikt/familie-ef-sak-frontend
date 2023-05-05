@@ -112,6 +112,17 @@ export const Vedtaksform: React.FC<{
         // eslint-disable-next-line
     }, [vedtaksperioder, inntektsperioder]);
 
+    useEffect(() => {
+        if (lagretVedtak?.inntekter) {
+            inntektsperiodeState.setValue(lagretVedtak?.inntekter);
+        }
+
+        if (lagretVedtak?.perioder) {
+            vedtaksperiodeState.setValue(lagretVedtak?.perioder);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [lagretVedtak]);
+
     const skalVelgeSamordningstype = inntektsperiodeState.value.some(
         (rad) => rad.samordningsfradrag
     );

@@ -32,7 +32,6 @@ export const InnvilgeOvergangsstønad: React.FC<{
 
     const hentVedtakshistorikk = useCallback(
         (revurderesFra: string) => {
-            settVedtak(undefined);
             axiosRequest<IInnvilgeVedtakForOvergangsstønad, void>({
                 method: 'GET',
                 url: `/familie-ef-sak/api/vedtak/fagsak/${behandling.fagsakId}/historikk/${revurderesFra}`,
