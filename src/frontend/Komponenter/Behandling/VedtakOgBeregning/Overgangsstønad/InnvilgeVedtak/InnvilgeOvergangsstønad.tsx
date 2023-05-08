@@ -29,10 +29,11 @@ export const InnvilgeOvergangsstønad: React.FC<{
     const [revurderesFraOgMedFeilmelding, settRevurderesFraOgMedFeilmelding] = useState<
         string | null
     >(null);
+    const [revurderersFraPeriodeUtenStønad, settRevurderersFraPeriodeUtenStønad] =
+        useState<boolean>(revurdererFraPeriodeUtenStønad(lagretVedtak, revurderesFra));
 
     const hentVedtakshistorikk = useCallback(
         (revurderesFra: string) => {
-            settVedtak(undefined);
             axiosRequest<IInnvilgeVedtakForOvergangsstønad, void>({
                 method: 'GET',
                 url: `/familie-ef-sak/api/vedtak/fagsak/${behandling.fagsakId}/historikk/${revurderesFra}`,
@@ -40,6 +41,9 @@ export const InnvilgeOvergangsstønad: React.FC<{
                 if (res.status === RessursStatus.SUKSESS) {
                     settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
                     const oppdatertVedtakMedEndretKey = oppdaterVedtakMedEndretKey(res.data);
+                    settRevurderersFraPeriodeUtenStønad(
+                        revurdererFraPeriodeUtenStønad(oppdatertVedtakMedEndretKey, revurderesFra)
+                    );
                     settVedtak(
                         oppdaterVedtakMedInitPeriodeOgOpphørshull(
                             oppdatertVedtakMedEndretKey,
@@ -63,10 +67,7 @@ export const InnvilgeOvergangsstønad: React.FC<{
                     hentVedtakshistorikk={hentVedtakshistorikk}
                     revurderesFra={revurderesFra}
                     feilmelding={revurderesFraOgMedFeilmelding}
-                    revurdererFraPeriodeUtenStønad={revurdererFraPeriodeUtenStønad(
-                        vedtak,
-                        revurderesFra
-                    )}
+                    revurdererFraPeriodeUtenStønad={revurderersFraPeriodeUtenStønad}
                     stønadstype={behandling.stønadstype}
                 />
             ) : null}

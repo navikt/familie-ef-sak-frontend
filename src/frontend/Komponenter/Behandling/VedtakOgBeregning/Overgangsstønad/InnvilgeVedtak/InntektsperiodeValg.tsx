@@ -4,7 +4,7 @@ import {
     IInntektsperiode,
     samordningsfradagTilTekst,
 } from '../../../../../App/typer/vedtak';
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import InputMedTusenSkille from '../../../../../Felles/Visningskomponenter/InputMedTusenskille';
 import { harTallverdi, tilTallverdi } from '../../../../../App/utils/utils';
@@ -132,6 +132,12 @@ const InntektsperiodeValg: React.FC<Props> = ({
     const [valgteInntektstyper, settValgteInntektstyper] = useState<EInntektstype[]>(
         initierValgteInntektstyper(inntektsperiodeListe.value)
     );
+
+    useEffect(() => {
+        settValgteInntektstyper(initierValgteInntektstyper(inntektsperiodeListe.value));
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [inntektsperiodeListe.value[0].endretKey]);
 
     const oppdaterInntektslisteElement = (
         index: number,
