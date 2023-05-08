@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import 'nav-frontend-tabell-style';
 import styled from 'styled-components';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
-import { formaterNullableIsoDato } from '../../App/utils/formatter';
+import { formaterIsoDatoTid, formaterNullableIsoDato } from '../../App/utils/formatter';
 import { Ressurs, RessursStatus } from '../../App/typer/ressurs';
 import { KlageBehandling, Klagebehandlinger } from '../../App/typer/klage';
 import { BehandlingKlageRequest } from '../../App/hooks/useJournalføringKlageState';
@@ -83,6 +83,7 @@ const BehandlingKlageInnold: React.FC<Props> = ({
                     <tr>
                         <th></th>
                         <th>Behandlingstype</th>
+                        <th>Opprettet</th>
                         <th>Status</th>
                         <th>Sist endret</th>
                     </tr>
@@ -108,6 +109,9 @@ const BehandlingKlageInnold: React.FC<Props> = ({
                                                     </Checkbox>
                                                 </td>
                                                 <td>Klage</td>
+                                                <td>
+                                                    {formaterIsoDatoTid(behandlingsEl.opprettet)}
+                                                </td>
                                                 <td>{behandlingsEl.status}</td>
                                                 <td>
                                                     {formaterNullableIsoDato(
