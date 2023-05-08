@@ -17,4 +17,5 @@ export enum ToggleName {
     ulikeInntekter = 'familie.ef.sak-ulike-inntekter',
     settPåVentMedOppgavestyring = 'familie.ef.sak.sett-paa-vent-med-oppgavestyring',
     visVurderHenvendelseOppgaver = 'familie.ef.sak.automatiske-oppgaver-lokalkontor',
+    fremleggsoppgave = 'familie.ef.sak.automatiske-oppgaver.fremleggsoppgave',
 }
