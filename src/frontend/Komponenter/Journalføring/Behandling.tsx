@@ -98,6 +98,7 @@ const BehandlingInnold: React.FC<Props> = ({
                     <tr>
                         <th></th>
                         <th>Behandlingstype</th>
+                        <th>Opprettet</th>
                         <th>Status</th>
                         <th>Sist endret</th>
                     </tr>
@@ -125,6 +126,7 @@ const BehandlingInnold: React.FC<Props> = ({
                                                 ? Behandlingsårsak.MIGRERING
                                                 : behandlingsEl.type}
                                         </td>
+                                        <td>{formaterIsoDatoTid(behandlingsEl.opprettet)}</td>
                                         <td>{behandlingsEl.status}</td>
                                         <td>{formaterIsoDatoTid(behandlingsEl.sistEndret)}</td>
                                     </tr>
