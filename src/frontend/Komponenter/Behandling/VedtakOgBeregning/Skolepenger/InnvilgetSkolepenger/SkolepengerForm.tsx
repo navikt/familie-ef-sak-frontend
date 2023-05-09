@@ -9,18 +9,19 @@ import {
 } from '../../../../../App/typer/vedtak';
 import { Behandling } from '../../../../../App/typer/fagsak';
 import React, { useEffect, useState } from 'react';
-import useFormState, { FormState } from '../../../../../App/hooks/felles/useFormState';
+import useFormState, {
+    FormState,
+    Valideringsfunksjon,
+} from '../../../../../App/hooks/felles/useFormState';
 import { ListState } from '../../../../../App/hooks/felles/useListState';
 import { useBehandling } from '../../../../../App/context/BehandlingContext';
 import styled from 'styled-components';
-import { Button } from '@navikt/ds-react';
+import { BodyShort, Button } from '@navikt/ds-react';
 import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
 import { useApp } from '../../../../../App/context/AppContext';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../../../App/typer/ressurs';
 import { UtregningstabellSkolepenger } from '../UtregnignstabellSkolepenger';
 import { validerInnvilgetVedtakForm, validerSkoleårsperioder } from './vedtaksvalidering';
-import { tomSkoleårsperiodeSkolepenger } from '../typer';
-import SkoleårsperioderSkolepenger from './SkoleårsperioderSkolepenger';
 import OpphørSkolepenger from '../OpphørSkolepenger/OpphørSkolepenger';
 import { BodyShortSmall } from '../../../../../Felles/Visningskomponenter/Tekster';
 import { ARed500 } from '@navikt/ds-tokens/dist/tokens';
@@ -29,6 +30,9 @@ import { v4 as uuidv4 } from 'uuid';
 import { BegrunnelsesFelt } from './BegrunnelsesFelt';
 import { AlertError } from '../../../../../Felles/Visningskomponenter/Alerts';
 import HovedKnapp from '../../../../../Felles/Knapper/HovedKnapp';
+import LeggTilKnapp from '../../../../../Felles/Knapper/LeggTilKnapp';
+import VisEllerEndreSkoleårsperioder from './VisEllerEndreSkoleårsperioder';
+import { tomSkoleårsperiodeSkolepenger } from '../typer';
 
 const Form = styled.form`
     display: flex;
@@ -44,6 +48,10 @@ const Utregningstabell = styled(UtregningstabellSkolepenger)`
     margin-left: 1rem;
 `;
 
+const Container = styled.div`
+    padding: 1rem;
+`;
+
 export const defaultSkoleårsperioder = (
     forrigeVedtak?: IvedtakForSkolepenger
 ): ISkoleårsperiodeSkolepenger[] => {
@@ -51,7 +59,7 @@ export const defaultSkoleårsperioder = (
     if (forrigeSkoleårsperioder && forrigeSkoleårsperioder.length > 0) {
         return forrigeSkoleårsperioder;
     } else {
-        return [tomSkoleårsperiodeSkolepenger()];
+        return [];
     }
 };
 
@@ -60,7 +68,7 @@ export type InnvilgeVedtakForm = {
     begrunnelse?: string;
 };
 
-export const VedtaksformSkolepenger: React.FC<{
+export const SkolepengerForm: React.FC<{
     behandling: Behandling;
     erOpphør: boolean;
     lagretInnvilgetVedtak?: IvedtakForSkolepenger;
@@ -92,7 +100,7 @@ export const VedtaksformSkolepenger: React.FC<{
     ) as ListState<ISkoleårsperiodeSkolepenger>;
     const begrunnelseState = formState.getProps('begrunnelse') as FieldState;
 
-    const utgiftsIderForrigeBehandling = forrigeVedtak
+    const utgiftIderForrigeBehandling = forrigeVedtak
         ? forrigeVedtak.skoleårsperioder.flatMap((p) => p.utgiftsperioder.map((u) => u.id))
         : [];
 
@@ -163,6 +171,9 @@ export const VedtaksformSkolepenger: React.FC<{
         }
     };
 
+    const customValidate = (fn: Valideringsfunksjon<InnvilgeVedtakForm>) =>
+        formState.customValidate(fn);
+
     useEffect(() => {
         if (!behandlingErRedigerbar) {
             axiosRequest<IBeregningSkolepengerResponse, null>({
@@ -174,21 +185,21 @@ export const VedtaksformSkolepenger: React.FC<{
 
     return (
         <Form onSubmit={formState.onSubmit(handleSubmit)}>
-            <BegrunnelsesFelt begrunnelseState={begrunnelseState} errorState={formState.errors} />
             {erOpphør ? (
                 <OpphørSkolepenger
-                    skoleårsperioder={skoleårsPerioderState}
                     forrigeSkoleårsperioder={forrigeVedtak?.skoleårsperioder || []}
-                    valideringsfeil={formState.errors.skoleårsperioder}
                     settValideringsFeil={formState.setErrors}
+                    skoleårsperioder={skoleårsPerioderState}
+                    valideringsfeil={formState.errors.skoleårsperioder}
                 />
             ) : (
-                <SkoleårsperioderSkolepenger
-                    skoleårsperioder={skoleårsPerioderState}
-                    låsteUtgiftIder={utgiftsIderForrigeBehandling}
-                    valideringsfeil={formState.errors.skoleårsperioder}
-                    settValideringsFeil={formState.setErrors}
+                <VisEllerEndreSkoleårsperioder
+                    customValidate={customValidate}
+                    låsteUtgiftIder={utgiftIderForrigeBehandling}
                     oppdaterHarUtførtBeregning={settHarUtførtBeregning}
+                    settValideringsFeil={formState.setErrors}
+                    skoleårsperioder={skoleårsPerioderState}
+                    valideringsfeil={formState.errors.skoleårsperioder}
                 />
             )}
             {feilmelding && <AlertError>{feilmelding}</AlertError>}

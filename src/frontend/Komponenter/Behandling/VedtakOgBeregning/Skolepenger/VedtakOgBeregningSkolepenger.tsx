@@ -15,7 +15,7 @@ import { VedtaksformSkolepenger } from './InnvilgetSkolepenger/VedtaksformSkolep
 import { AvslåVedtak } from '../Overgangsstønad/AvslåVedtak/AvslåVedtak';
 import { useToggles } from '../../../../App/context/TogglesContext';
 import { ToggleName } from '../../../../App/context/toggles';
-import { UtbedretForm } from './InnvilgetSkolepenger/UtbedretForm';
+import { SkolepengerForm } from './InnvilgetSkolepenger/SkolepengerForm';
 
 interface Props {
     behandling: Behandling;
@@ -65,7 +65,7 @@ const VedtakOgBeregningSkolepenger: FC<Props> = ({ behandling, vilkår }) => {
                             const erOpphør = resultatType === EBehandlingResultat.OPPHØRT;
                             {
                                 return toggles[ToggleName.visUtbedretGuiSkolepenger] ? (
-                                    <UtbedretForm
+                                    <SkolepengerForm
                                         key={erOpphør ? 'opphør' : 'innvilgelse'}
                                         behandling={behandling}
                                         erOpphør={erOpphør}

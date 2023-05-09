@@ -37,7 +37,7 @@ export const validerInnvilgetVedtakForm = ({
     };
 };
 
-export const validerInnvilgetVedtakFormBeregning = ({
+export const validerSkoleårsperioder = ({
     skoleårsperioder,
 }: InnvilgeVedtakForm): FormErrors<InnvilgeVedtakForm> => {
     return {
@@ -46,13 +46,34 @@ export const validerInnvilgetVedtakFormBeregning = ({
     };
 };
 
-const validerSkoleårsperioderSkolepenger = (
+export const validerKunSkoleårsperioder = ({
+    skoleårsperioder,
+}: InnvilgeVedtakForm): FormErrors<InnvilgeVedtakForm> => {
+    return {
+        skoleårsperioder: validerSkoleårsperioderUtenUtgiftsperioder(skoleårsperioder),
+        begrunnelse: undefined,
+    };
+};
+
+export const validerSkoleårsperioderSkolepenger = (
     perioder: ISkoleårsperiodeSkolepenger[]
 ): FormErrors<ISkoleårsperiodeSkolepenger[]> => {
     return perioder.map((periode) => {
         const utgiftsperiodeFeil: FormErrors<ISkoleårsperiodeSkolepenger> = {
             perioder: validerDelperiodeSkoleår(periode.perioder),
             utgiftsperioder: validerUtgifter(periode.utgiftsperioder),
+        };
+        return utgiftsperiodeFeil;
+    });
+};
+
+export const validerSkoleårsperioderUtenUtgiftsperioder = (
+    perioder: ISkoleårsperiodeSkolepenger[]
+): FormErrors<ISkoleårsperiodeSkolepenger[]> => {
+    return perioder.map((periode) => {
+        const utgiftsperiodeFeil: FormErrors<ISkoleårsperiodeSkolepenger> = {
+            perioder: validerDelperiodeSkoleår(periode.perioder),
+            utgiftsperioder: [],
         };
         return utgiftsperiodeFeil;
     });
