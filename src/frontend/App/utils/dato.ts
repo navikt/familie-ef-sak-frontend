@@ -22,6 +22,9 @@ export const tilÅrMåned = (date: Date): string => {
     return formatISO(date).substring(0, 7);
 };
 
+export const tilForkortetÅr = (date: Date): string => formatISO(date).substring(2, 4);
+export const sorterDatoDesc = (a: Date, b: Date) => (a > b ? 1 : -1);
+
 export const månedÅrTilDate = (årMåned: string): Date => {
     return parse(årMåned, 'yyyy-MM', new Date());
 };

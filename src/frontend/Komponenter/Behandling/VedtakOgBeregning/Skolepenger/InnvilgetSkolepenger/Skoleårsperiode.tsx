@@ -6,14 +6,14 @@ import {
 import React, { useState } from 'react';
 import { useBehandling } from '../../../../../App/context/BehandlingContext';
 import { FormErrors, Valideringsfunksjon } from '../../../../../App/hooks/felles/useFormState';
-import UtgiftsperiodeSkolepenger from './UtgiftsperiodeSkolepenger';
 import { InnvilgeVedtakForm } from './VedtaksformSkolepenger';
-import { validerKunSkoleårsperioder } from './vedtaksvalidering';
-import SkoleårsperiodeInitiell from './SkoleårsperiodeInitiell';
+import InitiellSkoleårsperiode from './InitiellSkoleårsperiode';
+import RedigerSkoleårsperiode from './RedigerSkoleårsperiode';
 
-enum Visningsmodus {
+export enum Visningsmodus {
     INITIELL = 'INITIELL',
-    SEMI_VISNING = 'SEMI_VISNING',
+    REDIGER_SKOLEÅRSPERIODE = 'REDIGER_SKOLEÅRSPERIODE',
+    REDIGER_UTGIFTSPERIODE = 'REDIGER_UTGIFTSPERIODE',
     VISNING = 'VISNING',
 }
 
@@ -51,52 +51,40 @@ const Skoleårsperiode: React.FC<Props> = ({
 }) => {
     const { behandlingErRedigerbar } = useBehandling();
 
-    const [visningsmodus, settVisninsmodus] = useState<Visningsmodus>(
+    const [visningsmodus, settVisningsmodus] = useState<Visningsmodus>(
         utledVisningmodus(behandlingErRedigerbar)
     );
-
-    const variabel = false;
-
-    const oppdaterVisningsmodus = () => {
-        if (customValidate(validerKunSkoleårsperioder)) {
-            settVisninsmodus(Visningsmodus.SEMI_VISNING);
-        }
-    };
 
     switch (visningsmodus) {
         case Visningsmodus.INITIELL:
             return (
-                <SkoleårsperiodeInitiell
+                <InitiellSkoleårsperiode
+                    customValidate={customValidate}
                     fjernSkoleårsperiode={fjernSkoleårsperiode}
                     oppdaterSkoleårsperiode={oppdaterSkoleårsperiode}
                     oppdaterValideringsfeil={oppdaterValideringsfeil}
-                    oppdaterVisningsmodus={oppdaterVisningsmodus}
+                    settVisningsmodus={settVisningsmodus}
                     skoleårsperiode={skoleårsperiode}
                     valideringsfeil={valideringsfeil}
+                    visningsmodus={visningsmodus}
                 />
             );
-        case Visningsmodus.SEMI_VISNING:
-            return (
-                <>
-                    <p>meow</p>
-                    {variabel && (
-                        <UtgiftsperiodeSkolepenger
-                            data={skoleårsperiode.utgiftsperioder}
-                            oppdater={(utgiftsperioder) =>
-                                oppdaterSkoleårsperiode('utgiftsperioder', utgiftsperioder)
-                            }
-                            behandlingErRedigerbar={behandlingErRedigerbar}
-                            valideringsfeil={valideringsfeil && valideringsfeil.utgiftsperioder}
-                            settValideringsFeil={(oppdaterteFeil) =>
-                                oppdaterValideringsfeil('utgiftsperioder', oppdaterteFeil)
-                            }
-                            låsteUtgiftIder={låsteUtgiftIder}
-                        />
-                    )}
-                </>
-            );
+        case Visningsmodus.REDIGER_SKOLEÅRSPERIODE:
+        case Visningsmodus.REDIGER_UTGIFTSPERIODE:
         case Visningsmodus.VISNING:
-            return <p>meow meow</p>;
+            return (
+                <RedigerSkoleårsperiode
+                    customValidate={customValidate}
+                    fjernSkoleårsperiode={fjernSkoleårsperiode}
+                    låsteUtgiftIder={låsteUtgiftIder}
+                    oppdaterSkoleårsperiode={oppdaterSkoleårsperiode}
+                    oppdaterValideringsfeil={oppdaterValideringsfeil}
+                    settVisningsmodus={settVisningsmodus}
+                    skoleårsperiode={skoleårsperiode}
+                    valideringsfeil={valideringsfeil}
+                    visningsmodus={visningsmodus}
+                />
+            );
     }
 };
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import {
     ESkolepengerStudietype,
     IPeriodeSkolepenger,
@@ -16,14 +16,15 @@ import { EnsligFamilieSelect } from '../../../../../Felles/Input/EnsligFamilieSe
 import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 import { BodyShortSmall } from '../../../../../Felles/Visningskomponenter/Tekster';
 import LeggTilKnapp from '../../../../../Felles/Knapper/LeggTilKnapp';
+import { Visningsmodus } from './Skoleårsperiode';
 
 const Grid = styled.div<{
-    skoleårErFjernet?: boolean;
+    erskoleårfjernet?: boolean;
 }>`
     display: grid;
     grid-template-columns: repeat(7, max-content);
     gap: 0.25rem 1.5rem;
-    text-decoration: ${(props) => (props.skoleårErFjernet ? 'line-through' : 'inherit')};
+    text-decoration: ${(props) => (props.erskoleårfjernet === true ? 'line-through' : 'inherit')};
     align-items: start;
 
     .ny-rad {
@@ -31,11 +32,11 @@ const Grid = styled.div<{
     }
 `;
 
-const AntallMåneder = styled(BodyShortSmall)`
+const AntallMåneder = styled(BodyShortSmall)<{ lesevisning: boolean }>`
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-top: 0.75rem;
+    padding-top: ${(props) => (props.lesevisning ? '0rem' : '0.75rem')};
 `;
 
 const Input = styled(InputUtenSpinner)`
@@ -43,32 +44,50 @@ const Input = styled(InputUtenSpinner)`
     text-align: right;
 `;
 
-const Delårsperioder: React.FC<ValideringsPropsMedOppdatering<IPeriodeSkolepenger>> = ({
-    data,
-    oppdater,
-    erOpphør,
-    skoleårErFjernet,
+type Props = ValideringsPropsMedOppdatering<IPeriodeSkolepenger> & {
+    delårsperioder: IPeriodeSkolepenger[];
+    settDelårsperioder: Dispatch<SetStateAction<IPeriodeSkolepenger[]>>;
+    visningsmodus: Visningsmodus;
+};
+
+const Delårsperioder: React.FC<Props> = ({
     behandlingErRedigerbar,
-    valideringsfeil,
+    delårsperioder,
+    erOpphør,
+    settDelårsperioder,
     settValideringsFeil,
+    skoleårErFjernet,
+    valideringsfeil,
+    visningsmodus,
 }) => {
-    const oppdaterUtgiftsPeriode = (
+    const oppdaterDelårsperiode = (
         index: number,
         property: keyof IPeriodeSkolepenger,
         value: string | number | undefined
     ) => {
-        oppdater(
-            data.map((periode, i) => (index === i ? { ...periode, [property]: value } : periode))
+        settDelårsperioder((prevState) =>
+            prevState.map((periode, i) =>
+                index === i ? { ...periode, [property]: value } : periode
+            )
         );
     };
 
     const fjernDelårsperiode = (index: number) => {
-        oppdater([...data.slice(0, index), ...data.slice(index + 1)]);
-        settValideringsFeil((valideringsfeil || []).filter((_, i) => i !== index));
+        settDelårsperioder((prevState) => [
+            ...prevState.slice(0, index),
+            ...prevState.slice(index + 1),
+        ]);
     };
 
     const oppdaterStudietype = (studietype: ESkolepengerStudietype) => {
-        oppdater(data.map((periode) => ({ ...periode, studietype })));
+        settDelårsperioder((prevState) => prevState.map((periode) => ({ ...periode, studietype })));
+    };
+
+    const leggTilDelårsPeriode = () => {
+        settDelårsperioder((prevState) => [
+            ...prevState,
+            { ...tomSkoleårsperiode, studietype: prevState[0].studietype },
+        ]);
     };
 
     const periodeVariantTilUtgiftsperiodeProperty = (
@@ -82,23 +101,29 @@ const Delårsperioder: React.FC<ValideringsPropsMedOppdatering<IPeriodeSkolepeng
         }
     };
 
-    const erLesevisning: boolean = !behandlingErRedigerbar || skoleårErFjernet === true;
+    const lesevisning: boolean =
+        visningsmodus === Visningsmodus.REDIGER_UTGIFTSPERIODE ||
+        visningsmodus === Visningsmodus.VISNING ||
+        !behandlingErRedigerbar ||
+        skoleårErFjernet === true;
 
     return (
         <>
-            <Grid skoleårErFjernet={skoleårErFjernet}>
+            <Grid erskoleårfjernet={skoleårErFjernet}>
                 <Label>Studietype</Label>
                 <Label>Studiebelastning</Label>
                 <Label>Periode fra og med</Label>
                 <Label>Periode til og med</Label>
                 <Label>Antall måneder</Label>
-                {data.map((periode, index) => {
+                {delårsperioder.map((periode, index) => {
                     const { studietype, årMånedFra, årMånedTil, studiebelastning } = periode;
                     const skalViseFjernKnapp =
                         behandlingErRedigerbar &&
-                        index === data.length - 1 &&
+                        index === delårsperioder.length - 1 &&
                         index !== 0 &&
-                        !skoleårErFjernet;
+                        !skoleårErFjernet &&
+                        (visningsmodus === Visningsmodus.REDIGER_SKOLEÅRSPERIODE ||
+                            visningsmodus === Visningsmodus.INITIELL);
                     return (
                         <React.Fragment key={index}>
                             <EnsligFamilieSelect
@@ -110,10 +135,10 @@ const Delårsperioder: React.FC<ValideringsPropsMedOppdatering<IPeriodeSkolepeng
                                 onChange={(e) => {
                                     oppdaterStudietype(e.target.value as ESkolepengerStudietype);
                                 }}
-                                erLesevisning={erLesevisning || erOpphør || index !== 0}
+                                erLesevisning={lesevisning || erOpphør || index !== 0}
                                 lesevisningVerdi={
-                                    index === 0
-                                        ? studietype && skolepengerStudietypeTilTekst[studietype]
+                                    index === 0 && studietype
+                                        ? skolepengerStudietypeTilTekst[studietype]
                                         : ''
                                 }
                             >
@@ -133,44 +158,33 @@ const Delårsperioder: React.FC<ValideringsPropsMedOppdatering<IPeriodeSkolepeng
                                 value={harTallverdi(studiebelastning) ? studiebelastning : ''}
                                 formatValue={(k) => k + ' %'}
                                 onChange={(e) =>
-                                    oppdaterUtgiftsPeriode(
+                                    oppdaterDelårsperiode(
                                         index,
                                         'studiebelastning',
                                         tilTallverdi(e.target.value)
                                     )
                                 }
-                                erLesevisning={erLesevisning}
+                                erLesevisning={lesevisning}
                             />
                             <MånedÅrPeriode
                                 årMånedFraInitiell={årMånedFra}
                                 årMånedTilInitiell={årMånedTil}
                                 index={index}
                                 onEndre={(verdi, periodeVariant) =>
-                                    oppdaterUtgiftsPeriode(
+                                    oppdaterDelårsperiode(
                                         index,
                                         periodeVariantTilUtgiftsperiodeProperty(periodeVariant),
                                         verdi
                                     )
                                 }
                                 feilmelding={valideringsfeil && valideringsfeil[index]?.årMånedFra}
-                                erLesevisning={erLesevisning}
+                                erLesevisning={lesevisning}
                             />
-                            <AntallMåneder>
+                            <AntallMåneder lesevisning={lesevisning}>
                                 {kalkulerAntallMåneder(årMånedFra, årMånedTil)}
                             </AntallMåneder>
-                            {!erLesevisning && !erOpphør && (
-                                <LeggTilKnapp
-                                    onClick={() =>
-                                        oppdater([
-                                            ...data,
-                                            {
-                                                ...tomSkoleårsperiode,
-                                                studietype: data[0].studietype,
-                                            },
-                                        ])
-                                    }
-                                    variant="tertiary"
-                                />
+                            {!lesevisning && !erOpphør && (
+                                <LeggTilKnapp onClick={leggTilDelårsPeriode} variant="tertiary" />
                             )}
                             {skalViseFjernKnapp && (
                                 <FjernKnapp

@@ -3,16 +3,22 @@ import {
     ISkoleårsperiodeSkolepenger,
     SkolepengerUtgift,
 } from '../../../../../App/typer/vedtak';
-import React from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import styled from 'styled-components';
 import { useBehandling } from '../../../../../App/context/BehandlingContext';
-import { FormErrors } from '../../../../../App/hooks/felles/useFormState';
+import { FormErrors, Valideringsfunksjon } from '../../../../../App/hooks/felles/useFormState';
 import { ABlue200 } from '@navikt/ds-tokens/dist/tokens';
 import { HorizontalScroll } from '../../Felles/HorizontalScroll';
 import Delårsperioder from './Delårsperioder';
 import { BodyLongSmall } from '../../../../../Felles/Visningskomponenter/Tekster';
 import { Knapp } from '../../../../../Felles/Knapper/HovedKnapp';
-import { Alert } from '@navikt/ds-react';
+import { Alert, Heading } from '@navikt/ds-react';
+import { Visningsmodus } from './Skoleårsperiode';
+import { InnvilgeVedtakForm } from './VedtaksformSkolepenger';
+import {
+    validerKunSkoleårsperioder,
+    validerSkoleårsperioderUtenUtgiftsperioder,
+} from './vedtaksvalidering';
 
 const DashedBorder = styled.div`
     border: 4px dashed ${ABlue200};
@@ -45,6 +51,7 @@ const FlexRow = styled.div`
 `;
 
 interface Props {
+    customValidate: (fn: Valideringsfunksjon<InnvilgeVedtakForm>) => boolean;
     fjernSkoleårsperiode: () => void;
     oppdaterSkoleårsperiode: (
         property: keyof ISkoleårsperiodeSkolepenger,
@@ -55,20 +62,58 @@ interface Props {
         oppdaterteFeil: FormErrors<SkolepengerUtgift>[] | FormErrors<IPeriodeSkolepenger>[]
     ) => void;
 
-    oppdaterVisningsmodus: () => void;
+    settVisningsmodus: Dispatch<SetStateAction<Visningsmodus>>;
     skoleårsperiode: ISkoleårsperiodeSkolepenger;
     valideringsfeil: FormErrors<ISkoleårsperiodeSkolepenger> | undefined;
+    visningsmodus: Visningsmodus;
 }
 
-const SkoleårsperiodeInitiell: React.FC<Props> = ({
+const InitiellSkoleårsperiode: React.FC<Props> = ({
+    customValidate,
     fjernSkoleårsperiode,
     oppdaterSkoleårsperiode,
     oppdaterValideringsfeil,
-    oppdaterVisningsmodus,
+    settVisningsmodus,
     skoleårsperiode,
     valideringsfeil,
+    visningsmodus,
 }) => {
+    console.log('initiellSkolersperiode rendrer');
     const { behandlingErRedigerbar, åpenHøyremeny } = useBehandling();
+    const [delårsperioder, settDelårsperioder] = useState<IPeriodeSkolepenger[]>(
+        skoleårsperiode.perioder
+    );
+    console.log('delårsperioder', delårsperioder);
+    const oppdaterVisningsmodus = () => {
+        console.log('kjører oppdaterer visningsmodus metoden');
+
+        const errors = validerSkoleårsperioderUtenUtgiftsperioder([
+            { perioder: delårsperioder, utgiftsperioder: [] },
+        ]);
+
+        console.log('utledede errors', errors);
+
+        const good = errors.every((error) =>
+            error.perioder.every((periode) =>
+                Object.keys(periode).every((key) => periode[key] === undefined)
+            )
+        );
+
+        console.log('ingen errors', good);
+
+        errors.forEach((error) =>
+            error.perioder.forEach((periode) =>
+                Object.keys(periode).forEach((key) => console.log('iererer', key, periode[key]))
+            )
+        );
+
+        if (good) {
+            oppdaterSkoleårsperiode('perioder', delårsperioder);
+            settVisningsmodus(Visningsmodus.REDIGER_UTGIFTSPERIODE);
+        } else {
+            console.log('validering feilet');
+        }
+    };
 
     return (
         <DashedBorder>
@@ -77,15 +122,19 @@ const SkoleårsperiodeInitiell: React.FC<Props> = ({
                 synligVedÅpenMeny={'1330px'}
                 åpenHøyremeny={åpenHøyremeny}
             >
+                <Heading size="medium">Legg til skoleår</Heading>
                 <Delårsperioder
                     behandlingErRedigerbar={behandlingErRedigerbar}
+                    delårsperioder={delårsperioder}
                     data={skoleårsperiode.perioder}
                     fjernSkoleårsperiode={fjernSkoleårsperiode}
                     oppdater={(perioder) => oppdaterSkoleårsperiode('perioder', perioder)}
+                    settDelårsperioder={settDelårsperioder}
                     settValideringsFeil={(oppdaterteFeil) =>
                         oppdaterValideringsfeil('perioder', oppdaterteFeil)
                     }
                     valideringsfeil={valideringsfeil && valideringsfeil.perioder}
+                    visningsmodus={visningsmodus}
                 />
                 <InfoStripe variant="info">
                     <FlexColumn>
@@ -114,4 +163,4 @@ const SkoleårsperiodeInitiell: React.FC<Props> = ({
     );
 };
 
-export default SkoleårsperiodeInitiell;
+export default InitiellSkoleårsperiode;
