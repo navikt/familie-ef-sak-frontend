@@ -87,7 +87,8 @@ export const BrevmottakereModal: FC<{
     };
 
     const harNyeMottakere = (initelleIdenter: string[], valgteIdenter: string[]) =>
-        valgteIdenter.some((identNummer) => !initelleIdenter.includes(identNummer));
+        valgteIdenter.some((identNummer) => !initelleIdenter.includes(identNummer)) ||
+        valgteIdenter.length !== initelleIdenter.length;
 
     const harBrevmottakere =
         valgtePersonMottakere.length > 0 || valgteOrganisasjonMottakere.length > 0;
