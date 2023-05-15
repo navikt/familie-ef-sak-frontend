@@ -40,6 +40,13 @@ Appen krever en del environment variabler og legges til i .env fila i root på p
     
 ```
 
+## Installere  @navikt-pakker lokalt
+For å installere @navikt-scopede pakker må du autentisere deg med et PAT.
+
+1. Opprett et Personal Access Token. Token genererer du under developer settings på Github. Den trenger kun read:packages. Husk å enable SSO for navikt-orgen.
+2. Skriv `npm login --scope=@navikt --registry=https://npm.pkg.github.com` i terminalen (obs, windows-syntaksen er litt annerledes - mellomrom heller enn =)
+3. Skriv inn eposten din og brukernavnet ditt. Passordet er tokenet fra github
+
 ### Kjøre lokalt mot preprod
 
 ```
