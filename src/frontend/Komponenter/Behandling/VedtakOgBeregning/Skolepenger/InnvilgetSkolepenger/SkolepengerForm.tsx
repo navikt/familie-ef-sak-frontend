@@ -32,7 +32,7 @@ import { AlertError } from '../../../../../Felles/Visningskomponenter/Alerts';
 import HovedKnapp from '../../../../../Felles/Knapper/HovedKnapp';
 import LeggTilKnapp from '../../../../../Felles/Knapper/LeggTilKnapp';
 import VisEllerEndreSkoleårsperioder from './VisEllerEndreSkoleårsperioder';
-import { tomSkoleårsperiodeSkolepenger } from '../typer';
+import { tomSkoleårsperiode } from '../typer';
 
 const Form = styled.form`
     display: flex;

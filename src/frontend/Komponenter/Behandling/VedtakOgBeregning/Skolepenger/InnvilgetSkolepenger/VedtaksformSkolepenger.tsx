@@ -19,7 +19,7 @@ import { useApp } from '../../../../../App/context/AppContext';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../../../App/typer/ressurs';
 import { UtregningstabellSkolepenger } from '../UtregnignstabellSkolepenger';
 import { validerInnvilgetVedtakForm, validerSkoleårsperioder } from './vedtaksvalidering';
-import { tomSkoleårsperiodeSkolepenger } from '../typer';
+import { tomSkoleårsperiode } from '../typer';
 import SkoleårsperioderSkolepenger from './SkoleårsperioderSkolepenger';
 import OpphørSkolepenger from '../OpphørSkolepenger/OpphørSkolepenger';
 import { BodyShortSmall } from '../../../../../Felles/Visningskomponenter/Tekster';
@@ -51,7 +51,7 @@ export const defaultSkoleårsperioder = (
     if (forrigeSkoleårsperioder && forrigeSkoleårsperioder.length > 0) {
         return forrigeSkoleårsperioder;
     } else {
-        return [tomSkoleårsperiodeSkolepenger()];
+        return [tomSkoleårsperiode()];
     }
 };
 

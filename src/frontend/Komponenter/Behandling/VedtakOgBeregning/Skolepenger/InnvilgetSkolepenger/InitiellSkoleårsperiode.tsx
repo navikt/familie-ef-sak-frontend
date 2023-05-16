@@ -51,7 +51,6 @@ const FlexRow = styled.div`
 `;
 
 interface Props {
-    customValidate: (fn: Valideringsfunksjon<InnvilgeVedtakForm>) => boolean;
     fjernSkoleårsperiode: () => void;
     oppdaterSkoleårsperiode: (
         property: keyof ISkoleårsperiodeSkolepenger,
@@ -69,7 +68,6 @@ interface Props {
 }
 
 const InitiellSkoleårsperiode: React.FC<Props> = ({
-    customValidate,
     fjernSkoleårsperiode,
     oppdaterSkoleårsperiode,
     oppdaterValideringsfeil,
@@ -78,20 +76,15 @@ const InitiellSkoleårsperiode: React.FC<Props> = ({
     valideringsfeil,
     visningsmodus,
 }) => {
-    console.log('initiellSkolersperiode rendrer');
     const { behandlingErRedigerbar, åpenHøyremeny } = useBehandling();
     const [delårsperioder, settDelårsperioder] = useState<IPeriodeSkolepenger[]>(
         skoleårsperiode.perioder
     );
-    console.log('delårsperioder', delårsperioder);
-    const oppdaterVisningsmodus = () => {
-        console.log('kjører oppdaterer visningsmodus metoden');
 
+    const oppdaterVisningsmodus = () => {
         const errors = validerSkoleårsperioderUtenUtgiftsperioder([
             { perioder: delårsperioder, utgiftsperioder: [] },
         ]);
-
-        console.log('utledede errors', errors);
 
         const good = errors.every((error) =>
             error.perioder.every((periode) =>
@@ -99,19 +92,11 @@ const InitiellSkoleårsperiode: React.FC<Props> = ({
             )
         );
 
-        console.log('ingen errors', good);
-
-        errors.forEach((error) =>
-            error.perioder.forEach((periode) =>
-                Object.keys(periode).forEach((key) => console.log('iererer', key, periode[key]))
-            )
-        );
-
         if (good) {
             oppdaterSkoleårsperiode('perioder', delårsperioder);
             settVisningsmodus(Visningsmodus.REDIGER_UTGIFTSPERIODE);
         } else {
-            console.log('validering feilet');
+            console.log('Implementer visning av feilmeldinger');
         }
     };
 

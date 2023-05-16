@@ -9,6 +9,7 @@ import { FormErrors, Valideringsfunksjon } from '../../../../../App/hooks/felles
 import { InnvilgeVedtakForm } from './VedtaksformSkolepenger';
 import InitiellSkoleårsperiode from './InitiellSkoleårsperiode';
 import RedigerSkoleårsperiode from './RedigerSkoleårsperiode';
+import { utledTittel } from './utils';
 
 export enum Visningsmodus {
     INITIELL = 'INITIELL',
@@ -55,11 +56,12 @@ const Skoleårsperiode: React.FC<Props> = ({
         utledVisningmodus(behandlingErRedigerbar)
     );
 
+    const tittel = utledTittel(skoleårsperiode.perioder);
+
     switch (visningsmodus) {
         case Visningsmodus.INITIELL:
             return (
                 <InitiellSkoleårsperiode
-                    customValidate={customValidate}
                     fjernSkoleårsperiode={fjernSkoleårsperiode}
                     oppdaterSkoleårsperiode={oppdaterSkoleårsperiode}
                     oppdaterValideringsfeil={oppdaterValideringsfeil}
@@ -74,12 +76,12 @@ const Skoleårsperiode: React.FC<Props> = ({
         case Visningsmodus.VISNING:
             return (
                 <RedigerSkoleårsperiode
-                    customValidate={customValidate}
                     fjernSkoleårsperiode={fjernSkoleårsperiode}
                     låsteUtgiftIder={låsteUtgiftIder}
                     oppdaterSkoleårsperiode={oppdaterSkoleårsperiode}
                     oppdaterValideringsfeil={oppdaterValideringsfeil}
                     settVisningsmodus={settVisningsmodus}
+                    tittel={tittel}
                     skoleårsperiode={skoleårsperiode}
                     valideringsfeil={valideringsfeil}
                     visningsmodus={visningsmodus}

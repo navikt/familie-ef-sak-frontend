@@ -8,7 +8,7 @@ import {
 import MånedÅrPeriode, { PeriodeVariant } from '../../../../../Felles/Input/MånedÅr/MånedÅrPeriode';
 import { harTallverdi, tilHeltall, tilTallverdi } from '../../../../../App/utils/utils';
 import styled from 'styled-components';
-import { tomSkoleårsperiode, ValideringsPropsMedOppdatering } from '../typer';
+import { tomPeriode, ValideringsPropsMedOppdatering } from '../typer';
 import InputUtenSpinner from '../../../../../Felles/Visningskomponenter/InputUtenSpinner';
 import { kalkulerAntallMåneder } from '../../../../../App/utils/dato';
 import { Label } from '@navikt/ds-react';
@@ -171,10 +171,7 @@ const SkoleårDelårsperiode: React.FC<ValideringsPropsMedOppdatering<IPeriodeSk
             {!erLesevisning && !erOpphør && (
                 <LeggTilKnapp
                     onClick={() =>
-                        oppdater([
-                            ...data,
-                            { ...tomSkoleårsperiode, studietype: data[0].studietype },
-                        ])
+                        oppdater([...data, { ...tomPeriode, studietype: data[0].studietype }])
                     }
                     knappetekst="Legg til periode"
                 />

@@ -6,21 +6,16 @@ import {
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import styled from 'styled-components';
 import { useBehandling } from '../../../../../App/context/BehandlingContext';
-import { FormErrors, Valideringsfunksjon } from '../../../../../App/hooks/felles/useFormState';
+import { FormErrors } from '../../../../../App/hooks/felles/useFormState';
 import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
 import { HorizontalScroll } from '../../Felles/HorizontalScroll';
 import Delårsperioder from './Delårsperioder';
 import { Heading } from '@navikt/ds-react';
-import { månedÅrTilDate, sorterDatoDesc, tilForkortetÅr } from '../../../../../App/utils/dato';
 import { Knapp } from '../../../../../Felles/Knapper/HovedKnapp';
 import { PadlockLockedIcon, PencilWritingIcon } from '@navikt/aksel-icons';
 import { Visningsmodus } from './Skoleårsperiode';
 import Utgiftsperioder from './Utgiftsperioder';
-import { InnvilgeVedtakForm } from './VedtaksformSkolepenger';
-import {
-    validerKunSkoleårsperioder,
-    validerSkoleårsperioderUtenUtgiftsperioder,
-} from './vedtaksvalidering';
+import { validerSkoleårsperioderUtenUtgiftsperioder } from './vedtaksvalidering';
 
 const Container = styled(HorizontalScroll)`
     display: flex;
@@ -36,7 +31,6 @@ const TittelRad = styled.div`
 `;
 
 interface Props {
-    customValidate: (fn: Valideringsfunksjon<InnvilgeVedtakForm>) => boolean;
     fjernSkoleårsperiode: () => void;
     låsteUtgiftIder: string[];
     oppdaterSkoleårsperiode: (
@@ -48,47 +42,31 @@ interface Props {
         oppdaterteFeil: FormErrors<SkolepengerUtgift>[] | FormErrors<IPeriodeSkolepenger>[]
     ) => void;
     settVisningsmodus: Dispatch<SetStateAction<Visningsmodus>>;
+    tittel: string;
     skoleårsperiode: ISkoleårsperiodeSkolepenger;
     valideringsfeil: FormErrors<ISkoleårsperiodeSkolepenger> | undefined;
     visningsmodus: Visningsmodus;
 }
 
-const utledStartårForSkoleår = (dato: Date) => {
-    const erFørAugust = dato.getMonth() < 7;
-    const startÅr = parseInt(tilForkortetÅr(dato), 10);
-
-    return erFørAugust ? startÅr - 1 : startÅr;
-};
-
-const utledSkoleårTittel = (delårsperioder: IPeriodeSkolepenger[]) => {
-    console.log('utleding av tittel');
-    const sortertePerioderDesc = [...delårsperioder]
-        .map((periode) => månedÅrTilDate(periode.årMånedFra))
-        .sort(sorterDatoDesc);
-
-    const startÅr = utledStartårForSkoleår(sortertePerioderDesc[0]);
-    const sluttÅr = startÅr + 1;
-
-    return `Skoleår ${startÅr}/${sluttÅr}`;
-};
-
 const RedigerSkoleårsperiode: React.FC<Props> = ({
-    customValidate,
     fjernSkoleårsperiode,
     låsteUtgiftIder,
     oppdaterSkoleårsperiode,
     oppdaterValideringsfeil,
     settVisningsmodus,
+    tittel,
     skoleårsperiode,
     valideringsfeil,
     visningsmodus,
 }) => {
-    console.log('redigerSkoleårsperiode rendrer');
     const { behandlingErRedigerbar, åpenHøyremeny } = useBehandling();
     const [delårsperioder, settDelårsperioder] = useState<IPeriodeSkolepenger[]>(
         skoleårsperiode.perioder
     );
-    const tittel = utledSkoleårTittel(skoleårsperiode.perioder);
+    const [utgiftsperioder, settUtgiftsperioder] = useState<SkolepengerUtgift[]>(
+        skoleårsperiode.utgiftsperioder
+    );
+
     const knappTekst =
         visningsmodus === Visningsmodus.REDIGER_UTGIFTSPERIODE ? 'Endre skoleår' : 'Lås skoleår';
     const knappIkon =
@@ -116,6 +94,9 @@ const RedigerSkoleårsperiode: React.FC<Props> = ({
                     ? Visningsmodus.REDIGER_SKOLEÅRSPERIODE
                     : Visningsmodus.REDIGER_UTGIFTSPERIODE
             );
+        } else {
+            // TODO: Implementer visning av feilmeldinger
+            console.log('Implementer visning av feilmeldinger');
         }
     };
 
@@ -139,7 +120,7 @@ const RedigerSkoleårsperiode: React.FC<Props> = ({
             </TittelRad>
             <Delårsperioder
                 behandlingErRedigerbar={behandlingErRedigerbar}
-                data={skoleårsperiode.perioder}
+                data={delårsperioder}
                 delårsperioder={delårsperioder}
                 fjernSkoleårsperiode={fjernSkoleårsperiode}
                 oppdater={(perioder) => oppdaterSkoleårsperiode('perioder', perioder)}
@@ -151,7 +132,7 @@ const RedigerSkoleårsperiode: React.FC<Props> = ({
                 visningsmodus={visningsmodus}
             />
             <Utgiftsperioder
-                data={skoleårsperiode.utgiftsperioder}
+                data={utgiftsperioder}
                 oppdater={(utgiftsperioder) =>
                     oppdaterSkoleårsperiode('utgiftsperioder', utgiftsperioder)
                 }

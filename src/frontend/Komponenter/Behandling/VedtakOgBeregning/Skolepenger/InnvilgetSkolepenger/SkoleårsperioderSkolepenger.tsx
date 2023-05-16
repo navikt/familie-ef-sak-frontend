@@ -9,7 +9,7 @@ import { useApp } from '../../../../../App/context/AppContext';
 import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import SkoleårDelårsperiode from './SkoleårDelårsperiode';
 import UtgiftsperiodeSkolepenger from './UtgiftsperiodeSkolepenger';
-import { tomSkoleårsperiodeSkolepenger } from '../typer';
+import { tomSkoleårsperiode } from '../typer';
 import { oppdaterValideringsfeil } from '../utils';
 import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
 import { HorizontalScroll } from '../../Felles/HorizontalScroll';
@@ -135,7 +135,7 @@ const SkoleårsperioderSkolepenger: React.FC<Props> = ({
             })}
             {behandlingErRedigerbar && (
                 <LeggTilKnapp
-                    onClick={() => skoleårsperioder.push(tomSkoleårsperiodeSkolepenger())}
+                    onClick={() => skoleårsperioder.push(tomSkoleårsperiode())}
                     knappetekst="Legg til skoleår"
                 />
             )}

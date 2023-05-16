@@ -5,7 +5,7 @@ import { useBehandling } from '../../../../../App/context/BehandlingContext';
 import { ListState } from '../../../../../App/hooks/felles/useListState';
 import { FormErrors, Valideringsfunksjon } from '../../../../../App/hooks/felles/useFormState';
 import { InnvilgeVedtakForm } from './VedtaksformSkolepenger';
-import { tomSkoleårsperiodeSkolepenger } from '../typer';
+import { tomSkoleårsperiode } from '../typer';
 import LeggTilKnapp from '../../../../../Felles/Knapper/LeggTilKnapp';
 import { BodyShort } from '@navikt/ds-react';
 import Skoleårsperioder from './Skoleårsperioder';
@@ -62,7 +62,7 @@ const VisEllerEndreSkoleårsperioder: React.FC<Props> = ({
                     <LeggTilKnapp
                         iconPosition="right"
                         knappetekst="Legg til nytt skoleår"
-                        onClick={() => skoleårsperioder.push(tomSkoleårsperiodeSkolepenger())}
+                        onClick={() => skoleårsperioder.push(tomSkoleårsperiode())}
                         variant="tertiary"
                     />
                 </Container>

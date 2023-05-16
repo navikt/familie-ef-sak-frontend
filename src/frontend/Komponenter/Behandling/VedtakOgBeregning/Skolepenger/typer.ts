@@ -26,7 +26,7 @@ export interface SkolepengerOpphørProps<T> extends SkolepengerProps<T> {
     forrigeData: T[];
 }
 
-export const tomSkoleårsperiode: IPeriodeSkolepenger = {
+export const tomPeriode: IPeriodeSkolepenger = {
     studietype: undefined,
     årMånedFra: '',
     årMånedTil: '',
@@ -40,7 +40,7 @@ export const tomUtgift = (): SkolepengerUtgift => ({
     stønad: undefined,
 });
 
-export const tomSkoleårsperiodeSkolepenger = (): ISkoleårsperiodeSkolepenger => ({
-    perioder: [tomSkoleårsperiode],
+export const tomSkoleårsperiode = (): ISkoleårsperiodeSkolepenger => ({
+    perioder: [tomPeriode],
     utgiftsperioder: [tomUtgift()],
 });

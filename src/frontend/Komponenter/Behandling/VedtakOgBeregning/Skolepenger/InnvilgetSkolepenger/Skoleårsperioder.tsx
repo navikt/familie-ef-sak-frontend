@@ -10,7 +10,7 @@ import { FormErrors, Valideringsfunksjon } from '../../../../../App/hooks/felles
 import { InnvilgeVedtakForm } from './VedtaksformSkolepenger';
 import { useApp } from '../../../../../App/context/AppContext';
 import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
-import { tomSkoleårsperiodeSkolepenger } from '../typer';
+import { tomSkoleårsperiode } from '../typer';
 import { oppdaterValideringsfeil } from '../utils';
 import LeggTilKnapp from '../../../../../Felles/Knapper/LeggTilKnapp';
 import Skoleårsperiode from './Skoleårsperiode';
@@ -62,6 +62,7 @@ const Skoleårsperioder: React.FC<Props> = ({
                 const inneholderLåsteUtgifter = skoleårsperiode.utgiftsperioder.some(
                     (utgift) => låsteUtgiftIder.indexOf(utgift.id) > -1
                 );
+                //TODO: Implementer visning av fjernknapp i rediger-modus etter klikk på endre skoleår
                 const skalViseFjernKnapp =
                     behandlingErRedigerbar && index !== 0 && !inneholderLåsteUtgifter;
                 return (
@@ -93,7 +94,7 @@ const Skoleårsperioder: React.FC<Props> = ({
             })}
             {behandlingErRedigerbar && (
                 <LeggTilKnapp
-                    onClick={() => skoleårsperioder.push(tomSkoleårsperiodeSkolepenger())}
+                    onClick={() => skoleårsperioder.push(tomSkoleårsperiode())}
                     knappetekst="Legg til nytt skoleår"
                     variant="tertiary"
                 />
