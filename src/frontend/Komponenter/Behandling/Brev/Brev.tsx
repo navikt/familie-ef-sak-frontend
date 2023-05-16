@@ -19,7 +19,7 @@ import { useToggles } from '../../../App/context/TogglesContext';
 
 const StyledBrev = styled.div`
     background-color: #f2f2f2;
-    padding: 2rem 2rem;
+    padding: 2rem 2rem 20rem 2rem;
     display: flex;
     flex-flow: wrap;
     gap: 3rem;
