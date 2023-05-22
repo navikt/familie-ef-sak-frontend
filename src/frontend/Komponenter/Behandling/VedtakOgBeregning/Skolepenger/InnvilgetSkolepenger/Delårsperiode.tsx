@@ -16,6 +16,7 @@ import { BodyShortSmall } from '../../../../../Felles/Visningskomponenter/Tekste
 import LeggTilKnapp from '../../../../../Felles/Knapper/LeggTilKnapp';
 import { Visningsmodus } from './Skoleårsperiode';
 import { FormErrors } from '../../../../../App/hooks/felles/useFormState';
+import { useBehandling } from '../../../../../App/context/BehandlingContext';
 
 const AntallMåneder = styled(BodyShortSmall)<{ lesevisning: boolean }>`
     display: flex;
@@ -31,7 +32,6 @@ const Input = styled(InputUtenSpinner)`
 
 interface Props {
     antallDelårsperioder: number;
-    behandlingErRedigerbar: boolean;
     delårsperiode: IPeriodeSkolepenger;
     erOpphør: boolean | undefined;
     index: number;
@@ -43,7 +43,6 @@ interface Props {
 
 const Delårsperiode: React.FC<Props> = ({
     antallDelårsperioder,
-    behandlingErRedigerbar,
     delårsperiode,
     erOpphør,
     index,
@@ -52,6 +51,7 @@ const Delårsperiode: React.FC<Props> = ({
     valideringsfeil,
     visningsmodus,
 }) => {
+    const { behandlingErRedigerbar } = useBehandling();
     const { studietype, årMånedFra, årMånedTil, studiebelastning } = delårsperiode;
 
     const oppdaterDelårsperiode = (

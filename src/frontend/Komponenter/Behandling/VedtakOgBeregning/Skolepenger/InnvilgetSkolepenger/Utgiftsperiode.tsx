@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import React, { Dispatch, SetStateAction } from 'react';
-import { IPeriodeSkolepenger, SkolepengerUtgift } from '../../../../../App/typer/vedtak';
+import { SkolepengerUtgift } from '../../../../../App/typer/vedtak';
 import MånedÅrVelger from '../../../../../Felles/Input/MånedÅr/MånedÅrVelger';
 import { harTallverdi, tilHeltall, tilTallverdi } from '../../../../../App/utils/utils';
 import { tomUtgift, ValideringsPropsMedOppdatering } from '../typer';
@@ -41,7 +41,7 @@ const InputRightAligned = styled(InputMedTusenSkille)`
     text-align: right;
 `;
 
-const Utgiftsperioder: React.FC<
+const Utgiftsperiode: React.FC<
     ValideringsPropsMedOppdatering<SkolepengerUtgift> & {
         låsteUtgiftIder: string[];
         settUtgiftsperioder: Dispatch<SetStateAction<SkolepengerUtgift[]>>;
@@ -124,4 +124,4 @@ const Utgiftsperioder: React.FC<
     );
 };
 
-export default Utgiftsperioder;
+export default Utgiftsperiode;
