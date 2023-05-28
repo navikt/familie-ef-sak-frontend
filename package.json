@@ -116,7 +116,7 @@
     "@axe-core/react": "4.6.1",
     "@babel/core": "^7.21.4",
     "@babel/preset-env": "^7.21.4",
-    "@babel/preset-react": "^7.18.6",
+    "@babel/preset-react": "^7.22.3",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.5",
     "@types/axe-core": "^2.0.7",
     "@types/webpack": "^5.28.0",
