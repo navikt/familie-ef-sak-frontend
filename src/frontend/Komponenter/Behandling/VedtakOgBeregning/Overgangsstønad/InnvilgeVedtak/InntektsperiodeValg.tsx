@@ -147,18 +147,6 @@ const InntektsperiodeValg: React.FC<Props> = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [inntektsperiodeListe.value[0].endretKey]);
 
-    // const oppdaterInntektslisteElement = (
-    //     index: number,
-    //     property: EInntektsperiodeProperty,
-    //     value: string | number | undefined
-    // ) => {
-    //     settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
-    //     inntektsperiodeListe.update(
-    //         { ...inntektsperiodeListe.value[index], [property]: value },
-    //         index
-    //     );
-    // };
-
     const oppdaterInntektslisteVerdier = (index: number, verdier: Partial<IInntektsperiode>) => {
         settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
 
