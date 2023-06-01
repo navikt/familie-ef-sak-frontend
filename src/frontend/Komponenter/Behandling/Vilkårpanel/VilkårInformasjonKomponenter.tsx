@@ -7,6 +7,7 @@ import LiteBarn from '../../../Felles/Ikoner/LiteBarn';
 import styled from 'styled-components';
 import { Registergrunnlag, Søknadsgrunnlag } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { Calculator } from '@navikt/ds-icons';
+import { SackKronerIcon } from '@navikt/aksel-icons';
 
 interface UnderseksjonWrapperProps {
     underoverskrift: string;
@@ -83,6 +84,7 @@ export enum VilkårInfoIkon {
     REGISTER = 'REGISTER',
     SØKNAD = 'SØKNAD',
     KALKULATOR = 'KALKULATOR',
+    PENGESEKK = 'PENGESEKK',
 }
 
 export const mapIkon = (ikon: VilkårInfoIkon) => {
@@ -93,5 +95,7 @@ export const mapIkon = (ikon: VilkårInfoIkon) => {
             return <Søknadsgrunnlag />;
         case VilkårInfoIkon.KALKULATOR:
             return <Calculator />;
+        case VilkårInfoIkon.PENGESEKK:
+            return <SackKronerIcon />;
     }
 };
