@@ -9,6 +9,7 @@ export interface Kolonnedata<T> {
     verdier: T[];
     kolonner: Kolonner<T>[];
     ikonVisning?: boolean;
+    minimerKolonnebredde?: boolean;
 }
 
 export interface Kolonner<T> {
@@ -30,12 +31,17 @@ const breddeKolonner = (antallKolonner: number) => {
 const GridTabell = styled.div<{
     kolonner: number;
     ikonVisning: boolean;
+    minimerKolonnebredde: boolean;
 }>`
     display: grid;
-    grid-template-columns: ${(props) => props.ikonVisning && '21px'} min(200px, 250px) repeat(
-            ${(props) => props.kolonner - 2},
-            ${(props) => breddeKolonner(props.kolonner)}
-        );
+    grid-template-columns:
+        ${(props) => props.ikonVisning && '21px'}
+        ${(props) =>
+            props.minimerKolonnebredde
+                ? `repeat(${props.kolonner - 1}, minmax(max-content, 7rem))`
+                : `min(200px, 250px) repeat(${props.kolonner - 1}, ${breddeKolonner(
+                      props.kolonner
+                  )})`};
     grid-gap: 0.5rem;
 
     .tittel {
@@ -57,9 +63,20 @@ const FlexDiv = styled.div`
 `;
 
 function TabellVisning<T>(props: Kolonnedata<T>): React.ReactElement<Kolonnedata<T>> {
-    const { ikon, tittel, verdier, kolonner, ikonVisning = true } = props;
+    const {
+        ikon,
+        tittel,
+        verdier,
+        kolonner,
+        ikonVisning = true,
+        minimerKolonnebredde = false,
+    } = props;
     return (
-        <GridTabell kolonner={kolonner.length + 1} ikonVisning={ikonVisning}>
+        <GridTabell
+            kolonner={kolonner.length + 1}
+            ikonVisning={ikonVisning}
+            minimerKolonnebredde={minimerKolonnebredde}
+        >
             {ikon && mapIkon(ikon)}
             {tittel && (
                 <Label size="small" className="tittel" as="h3">
