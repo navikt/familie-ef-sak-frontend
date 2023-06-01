@@ -33,7 +33,7 @@ import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 import { TextLabel } from '../../../../../Felles/Visningskomponenter/Tekster';
 import { HorizontalScroll } from '../../Felles/HorizontalScroll';
 import { initierValgteInntektstyper } from './utils';
-import { AlertError } from '../../../../../Felles/Visningskomponenter/Alerts';
+import { AlertError, AlertWarning } from '../../../../../Felles/Visningskomponenter/Alerts';
 import { EInntektstype, inntektsTypeTilKey, inntektsTypeTilTekst } from './typer';
 import { ABorderDivider, AGray50 } from '@navikt/ds-tokens/dist/tokens';
 import { IngenBegrunnelseOppgitt } from './IngenBegrunnelseOppgitt';
@@ -47,6 +47,10 @@ const Container = styled.div`
     gap: 1rem;
 `;
 
+const AdvarselVisning = styled(AlertWarning)`
+    max-width: 50rem;
+`;
+
 const Grid = styled.div<{ lesevisning?: boolean }>`
     display: grid;
     grid-template-columns: ${(props) =>
@@ -56,6 +60,10 @@ const Grid = styled.div<{ lesevisning?: boolean }>`
 
     .ny-rad {
         grid-column: 1;
+    }
+    .ny-rad-full-bredde {
+        grid-column: 1;
+        grid-column-end: none;
     }
 `;
 
@@ -139,16 +147,22 @@ const InntektsperiodeValg: React.FC<Props> = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [inntektsperiodeListe.value[0].endretKey]);
 
-    const oppdaterInntektslisteElement = (
-        index: number,
-        property: EInntektsperiodeProperty,
-        value: string | number | undefined
-    ) => {
+    // const oppdaterInntektslisteElement = (
+    //     index: number,
+    //     property: EInntektsperiodeProperty,
+    //     value: string | number | undefined
+    // ) => {
+    //     settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+    //     inntektsperiodeListe.update(
+    //         { ...inntektsperiodeListe.value[index], [property]: value },
+    //         index
+    //     );
+    // };
+
+    const oppdaterInntektslisteVerdier = (index: number, verdier: Partial<IInntektsperiode>) => {
         settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
-        inntektsperiodeListe.update(
-            { ...inntektsperiodeListe.value[index], [property]: value },
-            index
-        );
+
+        inntektsperiodeListe.update({ ...inntektsperiodeListe.value[index], ...verdier }, index);
     };
 
     const leggTilTomRadUnder = (index: number) => {
@@ -261,6 +275,10 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                     index !== 0 &&
                                     (skalViseLeggTilKnapp ||
                                         index === inntektsperiodeListe.value.length - 1);
+                                const årsinntektErAvrundetTilNærmesteHundreOgManglerMånedÅrSats =
+                                    rad.harSaksbehandlerManueltTastetHundreBeløp &&
+                                    !rad.månedsinntekt &&
+                                    !rad.dagsats;
                                 return (
                                     <React.Fragment key={rad.endretKey}>
                                         <MånedÅrVelger
@@ -272,11 +290,9 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                             }
                                             aria-label={'Inntekt fra'}
                                             onEndret={(e) => {
-                                                oppdaterInntektslisteElement(
-                                                    index,
-                                                    EInntektsperiodeProperty.årMånedFra,
-                                                    e
-                                                );
+                                                oppdaterInntektslisteVerdier(index, {
+                                                    [EInntektsperiodeProperty.årMånedFra]: e,
+                                                });
                                             }}
                                             årMånedInitiell={rad.årMånedFra}
                                             antallÅrTilbake={10}
@@ -290,11 +306,10 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                                 erLesevisning={!behandlingErRedigerbar}
                                                 value={harTallverdi(rad.dagsats) ? rad.dagsats : ''}
                                                 onChange={(e) => {
-                                                    oppdaterInntektslisteElement(
-                                                        index,
-                                                        EInntektsperiodeProperty.dagsats,
-                                                        tilTallverdi(e.target.value)
-                                                    );
+                                                    oppdaterInntektslisteVerdier(index, {
+                                                        [EInntektsperiodeProperty.dagsats]:
+                                                            tilTallverdi(e.target.value),
+                                                    });
                                                 }}
                                             />
                                         )}
@@ -311,11 +326,10 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                                         : ''
                                                 }
                                                 onChange={(e) => {
-                                                    oppdaterInntektslisteElement(
-                                                        index,
-                                                        EInntektsperiodeProperty.månedsinntekt,
-                                                        tilTallverdi(e.target.value)
-                                                    );
+                                                    oppdaterInntektslisteVerdier(index, {
+                                                        [EInntektsperiodeProperty.månedsinntekt]:
+                                                            tilTallverdi(e.target.value),
+                                                    });
                                                 }}
                                             />
                                         )}
@@ -330,11 +344,18 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                                         : ''
                                                 }
                                                 onChange={(e) => {
-                                                    oppdaterInntektslisteElement(
-                                                        index,
-                                                        EInntektsperiodeProperty.forventetInntekt,
-                                                        tilTallverdi(e.target.value)
-                                                    );
+                                                    const verdi = tilTallverdi(e.target.value);
+                                                    const saksbehandlerHarAvrundetÅrsinntektTilNærmesteHundre =
+                                                        verdi !== undefined &&
+                                                        verdi % 100 === 0 &&
+                                                        verdi % 1000 !== 0;
+
+                                                    oppdaterInntektslisteVerdier(index, {
+                                                        [EInntektsperiodeProperty.harSaksbehandlerManueltTastetHundreBeløp]:
+                                                            saksbehandlerHarAvrundetÅrsinntektTilNærmesteHundre,
+                                                        [EInntektsperiodeProperty.forventetInntekt]:
+                                                            verdi,
+                                                    });
                                                 }}
                                                 erLesevisning={!behandlingErRedigerbar}
                                             />
@@ -353,11 +374,10 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                                             : ''
                                                     }
                                                     onChange={(e) => {
-                                                        oppdaterInntektslisteElement(
-                                                            index,
-                                                            EInntektsperiodeProperty.samordningsfradrag,
-                                                            tilTallverdi(e.target.value)
-                                                        );
+                                                        oppdaterInntektslisteVerdier(index, {
+                                                            [EInntektsperiodeProperty.samordningsfradrag]:
+                                                                tilTallverdi(e.target.value),
+                                                        });
                                                     }}
                                                     erLesevisning={!behandlingErRedigerbar}
                                                 />
@@ -392,6 +412,13 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                             />
                                         ) : (
                                             <div />
+                                        )}
+                                        {årsinntektErAvrundetTilNærmesteHundreOgManglerMånedÅrSats && (
+                                            <AdvarselVisning className={'ny-rad-full-bredde'}>
+                                                Årsinntekt som slutter på hundre vil ikke bli
+                                                avrundet ned til nærmeste tusen i beregningen.
+                                                Vennligst utfør manuell avrunding til nærmeste 1000.
+                                            </AdvarselVisning>
                                         )}
                                     </React.Fragment>
                                 );

@@ -194,6 +194,7 @@ export interface IInntektsperiode {
     forventetInntekt?: number;
     samordningsfradrag?: number;
     endretKey?: string; // intern for re-rendring
+    harSaksbehandlerManueltTastetHundreBeløp?: boolean;
 }
 
 export interface IVedtaksperiode {
@@ -228,6 +229,7 @@ export enum EInntektsperiodeProperty {
     månedsinntekt = 'månedsinntekt',
     forventetInntekt = 'forventetInntekt',
     samordningsfradrag = 'samordningsfradrag',
+    harSaksbehandlerManueltTastetHundreBeløp = 'harSaksbehandlerManueltTastetHundreBeløp',
 }
 
 export enum EBehandlingResultat {

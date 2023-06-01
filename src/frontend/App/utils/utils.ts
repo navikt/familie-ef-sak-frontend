@@ -75,9 +75,9 @@ export const harVerdi = (str: string | undefined | null): boolean =>
 export const harTallverdi = (verdi: number | undefined | null): boolean =>
     verdi !== undefined && verdi !== null;
 
-export const tilTallverdi = (verdi: number | string | undefined): number | string | undefined => {
+export const tilTallverdi = (verdi: number | string | undefined): number | undefined => {
     if (verdi === '' || verdi === undefined || verdi === null) {
-        return verdi;
+        return undefined;
     }
     if (typeof verdi === 'string') {
         return Number(verdi.replace(/\s/g, ''));
