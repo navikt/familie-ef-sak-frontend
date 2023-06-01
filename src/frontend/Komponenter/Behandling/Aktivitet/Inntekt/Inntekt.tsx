@@ -5,6 +5,7 @@ import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import { AlertError } from '../../../../Felles/Visningskomponenter/Alerts';
 import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';
 import { VilkårpanelInnhold } from '../../Vilkårpanel/VilkårpanelInnhold';
+import { GrunnbeløpInfo } from './GrunnbeløpInfo';
 
 export const Inntekt: React.FC<VilkårProps> = ({
     vurderinger,
@@ -32,6 +33,7 @@ export const Inntekt: React.FC<VilkårProps> = ({
         >
             <VilkårpanelInnhold>
                 {{
+                    venstre: <GrunnbeløpInfo />,
                     høyre: (
                         <VisEllerEndreVurdering
                             ikkeVurderVilkår={ikkeVurderVilkår}
