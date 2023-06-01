@@ -81,7 +81,7 @@ export const Opphør: React.FC<{
                     settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
                     årMåned && settOpphørtFra(årMåned);
                 }}
-                antallÅrTilbake={4}
+                antallÅrTilbake={6}
                 antallÅrFrem={3}
                 disabled={!behandlingErRedigerbar}
                 årMånedInitiell={opphørtFra}
