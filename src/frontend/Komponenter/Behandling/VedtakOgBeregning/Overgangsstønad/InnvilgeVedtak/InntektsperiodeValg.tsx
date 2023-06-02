@@ -403,9 +403,11 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                         )}
                                         {årsinntektErAvrundetTilNærmesteHundreOgManglerMånedÅrSats && (
                                             <AdvarselVisning className={'ny-rad-full-bredde'}>
-                                                Årsinntekt som slutter på hundre vil ikke bli
-                                                avrundet ned til nærmeste tusen i beregningen.
-                                                Vennligst utfør manuell avrunding til nærmeste 1000.
+                                                Årsinntekt som slutter på hundre kroner blir ikke
+                                                avrundet ned til nærmeste tusen kroner. Hvis
+                                                årsinntekten skal avrundes ned til nærmeste tusen
+                                                kroner, så må du legge inn avrundet årsinntekt
+                                                manuelt.
                                             </AdvarselVisning>
                                         )}
                                     </React.Fragment>
