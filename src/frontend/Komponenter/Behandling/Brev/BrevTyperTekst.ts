@@ -177,7 +177,7 @@ export const initielleAvsnittInnhentingAvKarakterutskriftUtvidetPeriode: Avsnitt
     {
         deloverskrift: '',
         innhold:
-            'Du får utvidet tid med overgangsstønad fordi du er i utdanning.' +
+            'Du får overgangsstønad og er i utdanning.' +
             '\n\nVi følger opp saken din, og ber deg om å sende oss:' +
             '\n\n•\tKarakterutskrift for skoleåret 2022/2023' +
             '\n\nDu må sende oss dokumentasjonen innen 26.07.23.',
