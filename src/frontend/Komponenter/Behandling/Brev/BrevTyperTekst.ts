@@ -128,12 +128,12 @@ export const initielleAvsnittInnhentingAvKarakterutskriftHovedperiode: AvsnittMe
         deloverskrift: '',
         innhold:
             'Du får overgangsstønad og er i utdanning.' +
-            '\n\t\nVi følger opp saken din, og ber deg om å sende oss:' +
-            '\n\n\t•\tkarakterutskrift for skoleåret 2021/2022' +
+            '\n\nVi følger opp saken din, og ber deg om å sende oss:' +
+            '\n\n\t•\tkarakterutskrift for skoleåret 2022/2023' +
             '\n\t•\tdokumentasjon som viser at du fortsetter i samme utdanning, eller' +
             '\n\t•\tdokumentasjon som viser at du starter i ny utdanning, eller\n' +
-            '\t•\tdokumentasjon som viser ny aktivitet fra 01.07.2022\n' +
-            '\nDu må sende oss dokumentasjonen innen 21.07.2022.',
+            '\t•\tdokumentasjon som viser ny aktivitet fra 01.07.2023\n' +
+            '\nDu må sende oss dokumentasjonen innen 26.07.2023.',
         id: uuidv4(),
     },
     {
@@ -149,7 +149,7 @@ export const initielleAvsnittInnhentingAvKarakterutskriftHovedperiode: AvsnittMe
         innhold:
             'Har du avsluttet utdanningen i løpet av skoleåret, må du sende oss dokumentasjon fra skolen som viser hvilken dato du sluttet. \n' +
             '\t\n' +
-            'Du må sende oss sykemelding eller uttalelse fra lege hvis du avbrøt utdanningen av helsemessige årsaker. Hvis du ikke fikk godkjent eksamen eller fullført skoleåret av andre grunner, kan du forklare dette i en melding til oss på nav.no/beskjedtilnav. Dette gjelder også hvis koronapandemien har vært grunnen til at du avsluttet eller ikke fikk fullført utdanningen.\n' +
+            'Du må sende oss sykemelding eller uttalelse fra lege hvis du avbrøt utdanningen av helsemessige årsaker. Hvis du ikke fikk godkjent eksamen eller fullført skoleåret av andre grunner, kan du forklare dette i en melding til oss på nav.no/skriv-til-oss.\n' +
             '\n' +
             'Hvis du ikke sender oss karakterutskrift eller annen dokumentasjon innen fristen, kan vi kreve tilbake penger du har fått utbetalt dette skoleåret.',
         id: uuidv4(),
@@ -157,8 +157,8 @@ export const initielleAvsnittInnhentingAvKarakterutskriftHovedperiode: AvsnittMe
     {
         deloverskrift: 'Videre aktivitet',
         innhold:
-            'Hvis du fortsetter i utdanning skoleåret 2022/2023, må du dokumentere dette. Fortsetter du i samme utdanning, må du dokumentere at du fortsatt skal studere minst 50 prosent. Starter du i ny utdanning, må du sende oss dokumentasjon som viser hvilken utdanning du skal ta. Da kan vi vurdere om utdanningen er nødvendig og hensiktsmessig for å få eller beholde arbeid. Dokumentasjonen må inneholde navnet ditt, hvilken periode du skal studere og hvor mye du skal studere.' +
-            '\n\nHvis du ikke fortsetter i utdanning, må du dokumentere hvordan du fyller aktivitetsplikten fra 01.07.2022. Du må enten jobbe minst 50 prosent eller være registrert som arbeidssøker hos oss til minst 50 prosent stilling for fortsatt å ha rett til overgangsstønad.' +
+            'Hvis du fortsetter i utdanning skoleåret 2023/2024, må du dokumentere dette. Fortsetter du i samme utdanning, må du dokumentere at du fortsatt skal studere minst 50 prosent. Starter du i ny utdanning, må du sende oss dokumentasjon som viser hvilken utdanning du skal ta. Da kan vi vurdere om utdanningen er nødvendig og hensiktsmessig for å få eller beholde arbeid. Dokumentasjonen må inneholde navnet ditt, hvilken periode du skal studere og hvor mye du skal studere.' +
+            '\n\nHvis du ikke fortsetter i utdanning, må du dokumentere hvordan du fyller aktivitetsplikten fra 01.07.2023. Du må enten jobbe minst 50 prosent eller være registrert som arbeidssøker hos oss til minst 50 prosent stilling for fortsatt å ha rett til overgangsstønad.' +
             '\n\nAktivitetsplikten gjelder ikke for deg hvis' +
             '\n\n\t•\tdu har barn med behov for særlig tilsyn, og dette hindrer deg i å jobbe, søke arbeid eller' +
             '\n\t\t studere fulltid. Du må dokumentere dette med legeerklæring.' +
@@ -179,14 +179,14 @@ export const initielleAvsnittInnhentingAvKarakterutskriftUtvidetPeriode: Avsnitt
         innhold:
             'Du får utvidet tid med overgangsstønad fordi du er i utdanning.' +
             '\n\nVi følger opp saken din, og ber deg om å sende oss:' +
-            '\n\n•\tKarakterutskrift for skoleåret 2021/2022' +
-            '\n\nDu må sende oss dokumentasjonen innen 21.07.22.',
+            '\n\n•\tKarakterutskrift for skoleåret 2022/2023' +
+            '\n\nDu må sende oss dokumentasjonen innen 26.07.23.',
         id: uuidv4(),
     },
     {
         deloverskrift: 'Dokumentere at du har gjennomført skoleåret',
         innhold:
-            'Du må sende inn karakterutskrift for skoleåret 2021/2022, både høst- og vårsemesteret. Det må gå frem av dokumentasjonen at du har gjennomført skoleåret, og at du har studert minst 50 prosent.' +
+            'Du må sende inn karakterutskrift for skoleåret 2022/2023, både høst- og vårsemesteret. Det må gå frem av dokumentasjonen at du har gjennomført skoleåret, og at du har studert minst 50 prosent.' +
             '\n\nHvis du ikke kan sende inn karakterutskrift, må du sende inn annen dokumentasjon som viser at du har gjennomført skoleåret, og at du har studert minst 50 prosent. Dette kan for eksempel være en bekreftelse fra skolen. På dokumentasjonen må det stå tydelig at det gjelder deg.',
         id: uuidv4(),
     },
@@ -194,7 +194,7 @@ export const initielleAvsnittInnhentingAvKarakterutskriftUtvidetPeriode: Avsnitt
         deloverskrift: 'Hvis du har avsluttet utdanningen underveis',
         innhold:
             'Har du avsluttet utdanningen i løpet av skoleåret, må du sende oss dokumentasjon fra skolen som viser hvilken dato du sluttet.' +
-            '\n\nDu må sende oss sykemelding eller uttalelse fra lege hvis du avbrøt utdanningen av helsemessige årsaker. Hvis du ikke fikk godkjent eksamen eller fullført skoleåret av andre grunner, kan du forklare dette i en melding til oss på nav.no/beskjedtilnav. Dette gjelder også hvis koronapandemien har vært grunnen til at du avsluttet eller ikke fikk fullført utdanningen.' +
+            '\n\nDu må sende oss sykemelding eller uttalelse fra lege hvis du avbrøt utdanningen av helsemessige årsaker. Hvis du ikke fikk godkjent eksamen eller fullført skoleåret av andre grunner, kan du forklare dette i en melding til oss på nav.no/skriv-til-oss.' +
             '\n\nHvis du ikke sender oss karakterutskrift eller annen dokumentasjon innen fristen, kan vi kreve tilbake penger du har fått utbetalt dette skoleåret.' +
             '\n\nVi minner om at du har plikt til å gi de opplysningene og levere de dokumentene som er nødvendige for at vi skal kunne vurdere om du har rett til stønaden. Hvis vi ikke får opplysningene innen fristen, vil vi behandle saken din ut fra de opplysningene vi har. Dette går fram av folketrygdloven § 21-3.',
         id: uuidv4(),
