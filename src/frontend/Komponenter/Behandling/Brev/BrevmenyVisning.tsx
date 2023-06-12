@@ -27,17 +27,12 @@ import { Ressurs } from '../../../App/typer/ressurs';
 import { useApp } from '../../../App/context/AppContext';
 import styled from 'styled-components';
 import { apiLoggFeil } from '../../../App/api/axios';
-import { IBrevverdier, useMellomlagringBrev } from '../../../App/hooks/useMellomlagringBrev';
+import { IBrevverdier, MellomlagreSanitybrev } from '../../../App/hooks/useMellomlagringBrev';
 import { useDebouncedCallback } from 'use-debounce';
-import { IBeløpsperiode, IBeregningsperiodeBarnetilsyn } from '../../../App/typer/vedtak';
 import { Alert, Heading, Panel } from '@navikt/ds-react';
-import { Stønadstype } from '../../../App/typer/behandlingstema';
-import { delmalTilUtregningstabellOS } from './UtregningstabellOvergangsstønad';
-import { delmalTilUtregningstabellBT } from './UtregningstabellBarnetilsyn';
-import { useVerdierForBrev } from '../../../App/hooks/useVerdierForBrev';
+import { Brevverdier } from '../../../App/hooks/useVerdierForBrev';
 import { Fritekstområde } from './Fritekstområde';
 import { IPersonopplysninger } from '../../../App/typer/personopplysninger';
-import { Behandling } from '../../../App/typer/fagsak';
 
 const BrevFelter = styled.div`
     display: flex;
@@ -55,39 +50,35 @@ const BrevMenyDelmalWrapper = styled.div<{ førsteElement?: boolean }>`
     margin-top: ${(props) => (props.førsteElement ? '0' : '1rem')};
 `;
 
-export interface BrevmenyVisningProps {
+export type BrevmenyVisningProps = {
     brevStruktur: BrevStruktur;
-    beløpsperioder?: IBeløpsperiode[] | IBeregningsperiodeBarnetilsyn[];
     mellomlagretBrevVerdier?: string;
+    mellomlagreSanityBrev: MellomlagreSanitybrev;
     brevMal: string;
-    stønadstype: Stønadstype;
     personopplysninger: IPersonopplysninger;
     settBrevOppdatert: (brevOppdatert: boolean) => void;
     oppdaterBrevRessurs: (brevRessurs: Ressurs<string>) => void;
-    behandlingId: string;
-    behandling: Behandling;
-}
+    htmlFelter?: { [htmlfeltNavn: string]: string } | undefined | null;
+    brevverdier: Brevverdier;
+} & ({ fagsakId: string; behandlingId?: never } | { behandlingId: string; fagsakId?: never });
 
 const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     oppdaterBrevRessurs,
-    behandlingId,
     personopplysninger,
     settBrevOppdatert,
     brevStruktur,
-    beløpsperioder,
     mellomlagretBrevVerdier,
     brevMal,
-    stønadstype,
-    behandling,
+    mellomlagreSanityBrev,
+    htmlFelter,
+    brevverdier,
+    fagsakId,
+    behandlingId,
 }) => {
     const { axiosRequest } = useApp();
-    const { mellomlagreSanitybrev } = useMellomlagringBrev(behandlingId);
     const [alleFlettefelter, settAlleFlettefelter] = useState<FlettefeltMedVerdi[]>([]);
     const [brevmalFeil, settBrevmalFeil] = useState('');
-    const { flettefeltStore, valgfeltStore, delmalStore } = useVerdierForBrev(
-        beløpsperioder,
-        behandling
-    );
+    const { flettefeltStore, delmalStore, valgfeltStore } = brevverdier;
 
     useEffect(() => {
         const parsetMellomlagretBrev =
@@ -172,19 +163,6 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
         }, {});
     };
 
-    const utledHtmlFelterPåStønadstype = (stønadstype: Stønadstype) => {
-        switch (stønadstype) {
-            case Stønadstype.OVERGANGSSTØNAD:
-                return delmalTilUtregningstabellOS(beløpsperioder as IBeløpsperiode[]);
-            case Stønadstype.BARNETILSYN:
-                return delmalTilUtregningstabellBT(
-                    beløpsperioder as IBeregningsperiodeBarnetilsyn[]
-                );
-            case Stønadstype.SKOLEPENGER:
-                return null;
-        }
-    };
-
     const utledDelmalerForBrev = () => {
         return brevStruktur.dokument.brevmenyBlokker.reduce((acc, blokk) => {
             return erDelmalBlokk(blokk) && valgteDelmaler[blokk.innhold.delmalApiNavn]
@@ -196,7 +174,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                                   blokk.innhold.delmalFlettefelter
                               ),
                               valgfelter: lagValgfelterForDelmal(blokk.innhold.delmalValgfelt),
-                              htmlfelter: utledHtmlFelterPåStønadstype(stønadstype),
+                              htmlfelter: htmlFelter,
                           },
                       ],
                   }
@@ -221,16 +199,21 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
             return;
         }
 
-        mellomlagreSanitybrev(
+        mellomlagreSanityBrev(
             alleFlettefelter,
             valgteFelt,
             valgteDelmaler,
             fritekstområder,
             brevMal
         );
+
+        const url = behandlingId
+            ? `/familie-ef-sak/api/brev/${behandlingId}/${brevMal}`
+            : `/familie-ef-sak/api/frittstaende-brev/fagsak/${fagsakId}/${brevMal}`;
+
         axiosRequest<string, unknown>({
             method: 'POST',
-            url: `/familie-ef-sak/api/brev/${behandlingId}/${brevMal}`,
+            url: url,
             data: {
                 valgfelter: {},
                 delmaler: utledDelmalerForBrev(),

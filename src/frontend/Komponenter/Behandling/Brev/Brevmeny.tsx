@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { BrevStruktur, Brevtype, DokumentNavn, IMellomlagretBrevFritekst } from './BrevTyper';
-import { byggTomRessurs, Ressurs, RessursStatus } from '../../../App/typer/ressurs';
-import { useApp } from '../../../App/context/AppContext';
+import { Brevtype, fritekstmal, IMellomlagretBrevFritekst } from './BrevTyper';
+import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import BrevmenyVisning from './BrevmenyVisning';
 import styled from 'styled-components';
@@ -10,14 +9,15 @@ import {
     useMellomlagringBrev,
 } from '../../../App/hooks/useMellomlagringBrev';
 import FritekstBrev from './FritekstBrev';
-import { useToggles } from '../../../App/context/TogglesContext';
-import { ToggleName } from '../../../App/context/toggles';
 import { Behandling } from '../../../App/typer/fagsak';
 import { useHentBeløpsperioder } from '../../../App/hooks/useHentBeløpsperioder';
-import { Stønadstype } from '../../../App/typer/behandlingstema';
-import { Select } from '@navikt/ds-react';
 import { EBehandlingResultat } from '../../../App/typer/vedtak';
 import { IPersonopplysninger } from '../../../App/typer/personopplysninger';
+import { BrevmalSelect } from './BrevmalSelect';
+import { useHentBrevStruktur } from '../../../App/hooks/useHentBrevStruktur';
+import { useHentBrevmaler } from '../../../App/hooks/useHentBrevmaler';
+import { useVerdierForBrev } from '../../../App/hooks/useVerdierForBrev';
+import { utledHtmlFelterPåStønadstype } from './BrevUtils';
 
 export interface BrevmenyProps {
     oppdaterBrevRessurs: (brevRessurs: Ressurs<string>) => void;
@@ -35,9 +35,6 @@ const StyledBrevMeny = styled.div`
     margin-top: 2rem;
 `;
 
-const datasett = 'ef-brev';
-const fritekstmal = 'Fritekstbrev';
-
 const Brevmeny: React.FC<BrevmenyProps> = (props) => {
     const {
         oppdaterBrevRessurs,
@@ -47,7 +44,6 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
         personopplysninger,
         settKanSendesTilBeslutter,
     } = props;
-    const { axiosRequest } = useApp();
     const { hentBeløpsperioder, beløpsperioder } = useHentBeløpsperioder(
         behandling.id,
         behandling.stønadstype
@@ -100,21 +96,24 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
                         beløpsperioder,
                     }}
                 >
-                    {({ brevStruktur, mellomlagretBrev, beløpsperioder }) =>
+                    {({ brevStruktur, mellomlagretBrev }) =>
                         brevMal ? (
                             <BrevmenyVisning
                                 behandlingId={behandlingId}
                                 oppdaterBrevRessurs={oppdaterBrevRessurs}
-                                behandling={behandling}
                                 brevStruktur={brevStruktur}
-                                beløpsperioder={beløpsperioder}
                                 brevMal={brevMal}
                                 mellomlagretBrevVerdier={
                                     (mellomlagretBrev as IMellomlagretBrevResponse)?.brevverdier
                                 }
-                                stønadstype={behandling.stønadstype}
                                 personopplysninger={personopplysninger}
-                                settKanSendesTilBeslutter={settKanSendesTilBeslutter}
+                                mellomlagreSanityBrev={mellomlagreSanitybrev}
+                                htmlFelter={utledHtmlFelterPåStønadstype(
+                                    behandling.stønadstype,
+                                    beløpsperioder
+                                )}
+                                brevverdier={brevverdier}
+                                settBrevOppdatert={settKanSendesTilBeslutter}
                             />
                         ) : null
                     }
