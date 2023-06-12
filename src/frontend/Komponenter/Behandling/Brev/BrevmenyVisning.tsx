@@ -62,7 +62,7 @@ export interface BrevmenyVisningProps {
     brevMal: string;
     stønadstype: Stønadstype;
     personopplysninger: IPersonopplysninger;
-    settKanSendesTilBeslutter: (kanSendesTilBeslutter: boolean) => void;
+    settBrevOppdatert: (brevOppdatert: boolean) => void;
     oppdaterBrevRessurs: (brevRessurs: Ressurs<string>) => void;
     behandlingId: string;
     behandling: Behandling;
@@ -72,7 +72,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     oppdaterBrevRessurs,
     behandlingId,
     personopplysninger,
-    settKanSendesTilBeslutter,
+    settBrevOppdatert,
     brevStruktur,
     beløpsperioder,
     mellomlagretBrevVerdier,
@@ -289,7 +289,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                                         settFlettefelter={settAlleFlettefelter}
                                         settValgteDelmaler={settValgteDelmaler}
                                         key={delmal.delmalApiNavn}
-                                        settKanSendeTilBeslutter={settKanSendesTilBeslutter}
+                                        settBrevOppdatert={settBrevOppdatert}
                                         skjul={erAutomatiskFeltSomSkalSkjules(delmalStore, delmal)}
                                     />
                                 </BrevMenyDelmalWrapper>
