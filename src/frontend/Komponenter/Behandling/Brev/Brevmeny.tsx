@@ -53,41 +53,15 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
         behandling.stønadstype
     );
     const [brevMal, settBrevmal] = useState<string>();
-    const [brevStruktur, settBrevStruktur] = useState<Ressurs<BrevStruktur>>(byggTomRessurs());
-    const [dokumentnavn, settDokumentnavn] = useState<Ressurs<DokumentNavn[] | undefined>>(
-        byggTomRessurs()
-    );
-    const { mellomlagretBrev } = useMellomlagringBrev(behandlingId);
-    const { toggles } = useToggles();
 
-    useEffect(() => {
-        if (brevMal && brevMal !== fritekstmal) {
-            axiosRequest<BrevStruktur, null>({
-                method: 'GET',
-                url: `/familie-brev/api/${datasett}/avansert-dokument/bokmaal/${brevMal}/felter`,
-            }).then((respons: Ressurs<BrevStruktur>) => {
-                settBrevStruktur(respons);
-            });
-        }
-        // eslint-disable-next-line
-    }, [brevMal]);
-
-    useEffect(() => {
-        const skalViseUpubliserteMaler = toggles[ToggleName.visIkkePubliserteBrevmaler] || false;
-
-        axiosRequest<DokumentNavn[], null>({
-            method: 'GET',
-            url: `/familie-brev/api/${datasett}/avansert-dokument/navn/${skalViseUpubliserteMaler}`,
-        }).then((respons: Ressurs<DokumentNavn[]>) => {
-            settDokumentnavn(respons);
-        });
-        // eslint-disable-next-line
-    }, []);
+    const { brevmaler } = useHentBrevmaler();
+    const { brevStruktur } = useHentBrevStruktur(brevMal);
 
     useEffect(() => {
         hentBeløpsperioder(vedtaksresultat);
     }, [vedtaksresultat, hentBeløpsperioder]);
 
+    const { mellomlagreSanitybrev, mellomlagretBrev } = useMellomlagringBrev(behandlingId);
     useEffect(() => {
         if (mellomlagretBrev.status === RessursStatus.SUKSESS) {
             if (mellomlagretBrev.data?.brevtype === Brevtype.SANITYBREV) {
@@ -98,50 +72,16 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
         }
     }, [mellomlagretBrev]);
 
-    function visBrevmal(mal: DokumentNavn): boolean {
-        if (mal.overgangsstonad == null && mal.barnetilsyn == null && mal.skolepenger == null) {
-            return true; // bakoverkompatibilitet ( valg er kanskje ikke utført på eksisterende maler, vises intil videre)
-        }
-
-        switch (behandling.stønadstype) {
-            case Stønadstype.OVERGANGSSTØNAD:
-                return !!mal.overgangsstonad;
-            case Stønadstype.BARNETILSYN:
-                return !!mal.barnetilsyn;
-            case Stønadstype.SKOLEPENGER:
-                return !!mal.skolepenger;
-        }
-    }
+    const brevverdier = useVerdierForBrev(beløpsperioder, behandling);
 
     return (
         <StyledBrevMeny>
-            <DataViewer response={{ dokumentnavn }}>
-                {({ dokumentnavn }) => (
-                    <Select
-                        label="Velg dokument"
-                        onChange={(e) => {
-                            settBrevmal(e.target.value);
-                        }}
-                        value={brevMal}
-                    >
-                        <option value="">Ikke valgt</option>
-
-                        {dokumentnavn
-                            ?.filter((mal) => visBrevmal(mal))
-                            .map((navn: DokumentNavn) => (
-                                <option value={navn.apiNavn} key={navn.apiNavn}>
-                                    {navn.visningsnavn}
-                                </option>
-                            ))}
-                        {brevMal === fritekstmal && (
-                            <option value={fritekstmal} key={fritekstmal}>
-                                {' '}
-                                Fritekstbrev
-                            </option>
-                        )}
-                    </Select>
-                )}
-            </DataViewer>
+            <BrevmalSelect
+                brevmal={brevMal}
+                settBrevmal={settBrevmal}
+                dokumentnavn={brevmaler}
+                stønanadstype={behandling.stønadstype}
+            />
             {brevMal === fritekstmal ? (
                 <DataViewer response={{ mellomlagretBrev }}>
                     {({ mellomlagretBrev }) => (

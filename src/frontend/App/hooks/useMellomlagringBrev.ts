@@ -36,16 +36,18 @@ export interface IMellomlagretBrevResponse {
     brevtype: Brevtype.SANITYBREV;
 }
 
+export type MellomlagreSanitybrev = (
+    flettefelt: FlettefeltMedVerdi[],
+    valgteFelt: ValgtFelt,
+    valgteDelmaler: ValgteDelmaler,
+    fritekstområder: Fritekstområder,
+    brevmal: string
+) => void;
+
 export const useMellomlagringBrev = (
     behandlingId: string
 ): {
-    mellomlagreSanitybrev: (
-        flettefelt: FlettefeltMedVerdi[],
-        valgteFelt: ValgtFelt,
-        valgteDelmaler: ValgteDelmaler,
-        fritekstområder: Fritekstområder,
-        brevmal: string
-    ) => void;
+    mellomlagreSanitybrev: MellomlagreSanitybrev;
     mellomlagretBrev: Ressurs<MellomlagerRespons | undefined>;
 } => {
     const { axiosRequest } = useApp();
