@@ -378,6 +378,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                                         leggTilTomRadUnder(index);
                                                     }}
                                                     ikontekst={'Legg til ny rad'}
+                                                    variant="tertiary"
                                                 />
                                             </Tooltip>
                                         )}
