@@ -213,6 +213,7 @@ const TilleggsstønadValg: React.FC<Props> = ({
                                                 <LeggTilKnapp
                                                     ikontekst={'Legg til ny rad'}
                                                     onClick={() => leggTilTomRadUnder(index)}
+                                                    variant="tertiary"
                                                 />
                                             </Tooltip>
                                         )}
