@@ -35,7 +35,7 @@ interface Props {
     settFlettefelter: Dispatch<SetStateAction<FlettefeltMedVerdi[]>>;
     flettefelter: FlettefeltMedVerdi[];
     settValgteDelmaler: Dispatch<SetStateAction<Record<string, boolean>>>;
-    settKanSendeTilBeslutter: (kanSendeTilBeslutter: boolean) => void;
+    settBrevOppdatert: (kanSendeTilBeslutter: boolean) => void;
     valgt: boolean;
     skjul: boolean;
 }
@@ -48,7 +48,7 @@ export const BrevMenyDelmal: React.FC<Props> = ({
     settFlettefelter,
     flettefelter,
     settValgteDelmaler,
-    settKanSendeTilBeslutter,
+    settBrevOppdatert,
     valgt,
     skjul,
 }) => {
@@ -59,7 +59,7 @@ export const BrevMenyDelmal: React.FC<Props> = ({
         settFlettefelter((prevState) =>
             prevState.map((felt) => (felt._ref === flettefelt._ref ? { ...felt, verdi } : felt))
         );
-        settKanSendeTilBeslutter(false);
+        settBrevOppdatert(false);
     };
 
     const håndterToggleDelmal = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -72,7 +72,7 @@ export const BrevMenyDelmal: React.FC<Props> = ({
             settEkspanderbartPanelÅpen(true);
         }
 
-        settKanSendeTilBeslutter(false);
+        settBrevOppdatert(false);
     };
 
     if (skjul) {
@@ -115,7 +115,7 @@ export const BrevMenyDelmal: React.FC<Props> = ({
                                         handleFlettefeltInput={handleFlettefeltInput}
                                         delmal={delmal}
                                         key={`${valgteFelt.valgFeltKategori}${index}`}
-                                        settKanSendeTilBeslutter={settKanSendeTilBeslutter}
+                                        settKanSendeTilBeslutter={settBrevOppdatert}
                                     />
                                 ))}
                             {delmalFlettefelter

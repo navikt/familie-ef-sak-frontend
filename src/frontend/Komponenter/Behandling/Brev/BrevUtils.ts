@@ -5,6 +5,7 @@ import {
     BrevStruktur,
     Delmal,
     DelmalGruppe,
+    DokumentNavn,
     erDelmalGruppe,
     erFritekstblokk,
     FlettefeltMedVerdi,
@@ -15,6 +16,11 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 import { Dispatch, SetStateAction } from 'react';
 import { DelmalStore, FlettefeltStore, ValgfeltStore } from '../../../App/hooks/useVerdierForBrev';
+import { Stønadstype } from '../../../App/typer/behandlingstema';
+import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
+import { IBeløpsperiode, IBeregningsperiodeBarnetilsyn } from '../../../App/typer/vedtak';
+import { delmalTilUtregningstabellOS } from './UtregningstabellOvergangsstønad';
+import { delmalTilUtregningstabellBT } from './UtregningstabellBarnetilsyn';
 
 const lagTomtAvsnitt = (): AvsnittMedId => ({
     deloverskrift: '',
@@ -270,3 +276,40 @@ export const erAutomatiskFeltSomSkalSkjules = (
 
 export const skalSkjuleAlleDelmaler = (gruppe: DelmalGruppe, delmalStore: DelmalStore): boolean =>
     gruppe.delmaler.every((delmal) => erAutomatiskFeltSomSkalSkjules(delmalStore, delmal));
+
+export function visBrevmal(mal: DokumentNavn, stønadstype: Stønadstype | undefined): boolean {
+    if (mal.overgangsstonad == null && mal.barnetilsyn == null && mal.skolepenger == null) {
+        return true; // bakoverkompatibilitet ( valg er kanskje ikke utført på eksisterende maler, vises intil videre)
+    }
+
+    switch (stønadstype) {
+        case Stønadstype.OVERGANGSSTØNAD:
+            return !!mal.overgangsstonad;
+        case Stønadstype.BARNETILSYN:
+            return !!mal.barnetilsyn;
+        case Stønadstype.SKOLEPENGER:
+            return !!mal.skolepenger;
+        case undefined:
+            return true;
+    }
+}
+
+export const utledHtmlFelterPåStønadstype = (
+    stønadstype: Stønadstype,
+    beløpsperioder: Ressurs<IBeløpsperiode[] | IBeregningsperiodeBarnetilsyn[] | undefined>
+) => {
+    if (beløpsperioder.status === RessursStatus.SUKSESS) {
+        switch (stønadstype) {
+            case Stønadstype.OVERGANGSSTØNAD:
+                return delmalTilUtregningstabellOS(beløpsperioder.data as IBeløpsperiode[]);
+            case Stønadstype.BARNETILSYN:
+                return delmalTilUtregningstabellBT(
+                    beløpsperioder.data as IBeregningsperiodeBarnetilsyn[]
+                );
+            case Stønadstype.SKOLEPENGER:
+                return null;
+        }
+    } else {
+        return null;
+    }
+};
