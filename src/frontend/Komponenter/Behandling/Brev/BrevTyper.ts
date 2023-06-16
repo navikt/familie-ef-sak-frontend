@@ -299,3 +299,6 @@ export enum Brevtype {
     SANITYBREV = 'SANITYBREV',
     FRITEKSTBREV = 'FRITEKSTBREV',
 }
+
+export const datasett = 'ef-brev';
+export const fritekstmal = 'Fritekstbrev';

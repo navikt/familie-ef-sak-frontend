@@ -3,6 +3,7 @@ import { formaterIsoDato, formaterTallMedTusenSkille } from '../utils/formatter'
 import { IBeløpsperiode, IBeregningsperiodeBarnetilsyn } from '../typer/vedtak';
 import { Behandling } from '../typer/fagsak';
 import { useInntektsendringAvslagFlettefelt } from './useInntektsendringAvslagFlettefelt';
+import { Ressurs, RessursStatus } from '../typer/ressurs';
 
 export enum EBehandlingFlettefelt {
     fomdatoInnvilgelseForstegangsbehandling = 'fomdatoInnvilgelseForstegangsbehandling',
@@ -40,14 +41,22 @@ export type ValgfeltStore = {
     [valgfelt: string]: string;
 };
 
-export const useVerdierForBrev = (
-    beløpsperioder: IBeløpsperiode[] | IBeregningsperiodeBarnetilsyn[] | undefined,
-    behandling: Behandling
-): {
+export type Brevverdier = {
     flettefeltStore: FlettefeltStore;
     valgfeltStore: ValgfeltStore;
     delmalStore: DelmalStore;
-} => {
+};
+
+export const lagTomBrevverdier = (): Brevverdier => ({
+    flettefeltStore: {},
+    valgfeltStore: {},
+    delmalStore: [],
+});
+
+export const useVerdierForBrev = (
+    beløpsperioder: Ressurs<IBeløpsperiode[] | IBeregningsperiodeBarnetilsyn[] | undefined>,
+    behandling: Behandling
+): Brevverdier => {
     const [flettefeltStore, settFlettefeltStore] = useState<FlettefeltStore>({});
     const [valgfeltStore, settValgfeltStore] = useState<ValgfeltStore>({});
     const [delmalStore, settDelmalStore] = useState<DelmalStore>([]);
@@ -66,15 +75,20 @@ export const useVerdierForBrev = (
     );
 
     useEffect(() => {
-        if (beløpsperioder && beløpsperioder.length > 0) {
+        if (
+            beløpsperioder &&
+            beløpsperioder.status === RessursStatus.SUKSESS &&
+            beløpsperioder.data &&
+            beløpsperioder.data.length > 0
+        ) {
             const tilDato = formaterIsoDato(
-                beløpsperioder[beløpsperioder.length - 1].periode.tildato
+                beløpsperioder.data[beløpsperioder.data.length - 1].periode.tildato
             );
-            const fraDato = formaterIsoDato(beløpsperioder[0].periode.fradato);
+            const fraDato = formaterIsoDato(beløpsperioder.data[0].periode.fradato);
 
-            if (innholderBeløpsperioderForOvergangsstønad(beløpsperioder)) {
+            if (innholderBeløpsperioderForOvergangsstønad(beløpsperioder.data)) {
                 const inntektsgrunnlag =
-                    beløpsperioder[beløpsperioder.length - 1].beregningsgrunnlag.inntekt;
+                    beløpsperioder.data[beløpsperioder.data.length - 1].beregningsgrunnlag.inntekt;
 
                 const tiProsentØkning = beregnTiProsentØkningIMånedsinntekt(inntektsgrunnlag);
                 const tiProsentReduksjon = beregnTiProsentReduksjonIMånedsinntekt(inntektsgrunnlag);
@@ -86,7 +100,9 @@ export const useVerdierForBrev = (
 
                 settValgfeltStore((prevState) => ({
                     ...prevState,
-                    [EBehandlingValgfelt.avslutningHjemmel]: harSamordningsfradrag(beløpsperioder)
+                    [EBehandlingValgfelt.avslutningHjemmel]: harSamordningsfradrag(
+                        beløpsperioder.data as IBeløpsperiode[]
+                    )
                         ? EValg.hjemlerMedSamordning
                         : EValg.hjemlerUtenSamordning,
                 }));

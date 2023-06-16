@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { BrevStruktur, Brevtype, DokumentNavn, IMellomlagretBrevFritekst } from './BrevTyper';
-import { byggTomRessurs, Ressurs, RessursStatus } from '../../../App/typer/ressurs';
-import { useApp } from '../../../App/context/AppContext';
+import { Brevtype, fritekstmal, IMellomlagretBrevFritekst } from './BrevTyper';
+import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import BrevmenyVisning from './BrevmenyVisning';
 import styled from 'styled-components';
@@ -10,14 +9,15 @@ import {
     useMellomlagringBrev,
 } from '../../../App/hooks/useMellomlagringBrev';
 import FritekstBrev from './FritekstBrev';
-import { useToggles } from '../../../App/context/TogglesContext';
-import { ToggleName } from '../../../App/context/toggles';
 import { Behandling } from '../../../App/typer/fagsak';
 import { useHentBeløpsperioder } from '../../../App/hooks/useHentBeløpsperioder';
-import { Stønadstype } from '../../../App/typer/behandlingstema';
-import { Select } from '@navikt/ds-react';
 import { EBehandlingResultat } from '../../../App/typer/vedtak';
 import { IPersonopplysninger } from '../../../App/typer/personopplysninger';
+import { BrevmalSelect } from './BrevmalSelect';
+import { useHentBrevStruktur } from '../../../App/hooks/useHentBrevStruktur';
+import { useHentBrevmaler } from '../../../App/hooks/useHentBrevmaler';
+import { useVerdierForBrev } from '../../../App/hooks/useVerdierForBrev';
+import { utledHtmlFelterPåStønadstype } from './BrevUtils';
 
 export interface BrevmenyProps {
     oppdaterBrevRessurs: (brevRessurs: Ressurs<string>) => void;
@@ -35,9 +35,6 @@ const StyledBrevMeny = styled.div`
     margin-top: 2rem;
 `;
 
-const datasett = 'ef-brev';
-const fritekstmal = 'Fritekstbrev';
-
 const Brevmeny: React.FC<BrevmenyProps> = (props) => {
     const {
         oppdaterBrevRessurs,
@@ -47,47 +44,20 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
         personopplysninger,
         settKanSendesTilBeslutter,
     } = props;
-    const { axiosRequest } = useApp();
     const { hentBeløpsperioder, beløpsperioder } = useHentBeløpsperioder(
         behandling.id,
         behandling.stønadstype
     );
     const [brevMal, settBrevmal] = useState<string>();
-    const [brevStruktur, settBrevStruktur] = useState<Ressurs<BrevStruktur>>(byggTomRessurs());
-    const [dokumentnavn, settDokumentnavn] = useState<Ressurs<DokumentNavn[] | undefined>>(
-        byggTomRessurs()
-    );
-    const { mellomlagretBrev } = useMellomlagringBrev(behandlingId);
-    const { toggles } = useToggles();
 
-    useEffect(() => {
-        if (brevMal && brevMal !== fritekstmal) {
-            axiosRequest<BrevStruktur, null>({
-                method: 'GET',
-                url: `/familie-brev/api/${datasett}/avansert-dokument/bokmaal/${brevMal}/felter`,
-            }).then((respons: Ressurs<BrevStruktur>) => {
-                settBrevStruktur(respons);
-            });
-        }
-        // eslint-disable-next-line
-    }, [brevMal]);
-
-    useEffect(() => {
-        const skalViseUpubliserteMaler = toggles[ToggleName.visIkkePubliserteBrevmaler] || false;
-
-        axiosRequest<DokumentNavn[], null>({
-            method: 'GET',
-            url: `/familie-brev/api/${datasett}/avansert-dokument/navn/${skalViseUpubliserteMaler}`,
-        }).then((respons: Ressurs<DokumentNavn[]>) => {
-            settDokumentnavn(respons);
-        });
-        // eslint-disable-next-line
-    }, []);
+    const { brevmaler } = useHentBrevmaler();
+    const { brevStruktur } = useHentBrevStruktur(brevMal);
 
     useEffect(() => {
         hentBeløpsperioder(vedtaksresultat);
     }, [vedtaksresultat, hentBeløpsperioder]);
 
+    const { mellomlagreSanitybrev, mellomlagretBrev } = useMellomlagringBrev(behandlingId);
     useEffect(() => {
         if (mellomlagretBrev.status === RessursStatus.SUKSESS) {
             if (mellomlagretBrev.data?.brevtype === Brevtype.SANITYBREV) {
@@ -98,50 +68,16 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
         }
     }, [mellomlagretBrev]);
 
-    function visBrevmal(mal: DokumentNavn): boolean {
-        if (mal.overgangsstonad == null && mal.barnetilsyn == null && mal.skolepenger == null) {
-            return true; // bakoverkompatibilitet ( valg er kanskje ikke utført på eksisterende maler, vises intil videre)
-        }
-
-        switch (behandling.stønadstype) {
-            case Stønadstype.OVERGANGSSTØNAD:
-                return !!mal.overgangsstonad;
-            case Stønadstype.BARNETILSYN:
-                return !!mal.barnetilsyn;
-            case Stønadstype.SKOLEPENGER:
-                return !!mal.skolepenger;
-        }
-    }
+    const brevverdier = useVerdierForBrev(beløpsperioder, behandling);
 
     return (
         <StyledBrevMeny>
-            <DataViewer response={{ dokumentnavn }}>
-                {({ dokumentnavn }) => (
-                    <Select
-                        label="Velg dokument"
-                        onChange={(e) => {
-                            settBrevmal(e.target.value);
-                        }}
-                        value={brevMal}
-                    >
-                        <option value="">Ikke valgt</option>
-
-                        {dokumentnavn
-                            ?.filter((mal) => visBrevmal(mal))
-                            .map((navn: DokumentNavn) => (
-                                <option value={navn.apiNavn} key={navn.apiNavn}>
-                                    {navn.visningsnavn}
-                                </option>
-                            ))}
-                        {brevMal === fritekstmal && (
-                            <option value={fritekstmal} key={fritekstmal}>
-                                {' '}
-                                Fritekstbrev
-                            </option>
-                        )}
-                    </Select>
-                )}
-            </DataViewer>
+            <BrevmalSelect
+                brevmal={brevMal}
+                settBrevmal={settBrevmal}
+                dokumentnavn={brevmaler}
+                stønanadstype={behandling.stønadstype}
+            />
             {brevMal === fritekstmal ? (
                 <DataViewer response={{ mellomlagretBrev }}>
                     {({ mellomlagretBrev }) => (
@@ -160,21 +96,24 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
                         beløpsperioder,
                     }}
                 >
-                    {({ brevStruktur, mellomlagretBrev, beløpsperioder }) =>
+                    {({ brevStruktur, mellomlagretBrev }) =>
                         brevMal ? (
                             <BrevmenyVisning
                                 behandlingId={behandlingId}
                                 oppdaterBrevRessurs={oppdaterBrevRessurs}
-                                behandling={behandling}
                                 brevStruktur={brevStruktur}
-                                beløpsperioder={beløpsperioder}
                                 brevMal={brevMal}
                                 mellomlagretBrevVerdier={
                                     (mellomlagretBrev as IMellomlagretBrevResponse)?.brevverdier
                                 }
-                                stønadstype={behandling.stønadstype}
                                 personopplysninger={personopplysninger}
-                                settKanSendesTilBeslutter={settKanSendesTilBeslutter}
+                                mellomlagreSanityBrev={mellomlagreSanitybrev}
+                                htmlFelter={utledHtmlFelterPåStønadstype(
+                                    behandling.stønadstype,
+                                    beløpsperioder
+                                )}
+                                brevverdier={brevverdier}
+                                settBrevOppdatert={settKanSendesTilBeslutter}
                             />
                         ) : null
                     }
