@@ -258,6 +258,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                         label={''}
                                         options={barnForPeriode}
                                         creatable={false}
+                                        menuPortalTarget={document.querySelector('body')}
                                         isMulti={true}
                                         isDisabled={opphørEllerSanksjon}
                                         defaultValue={ikkeValgteBarn}
