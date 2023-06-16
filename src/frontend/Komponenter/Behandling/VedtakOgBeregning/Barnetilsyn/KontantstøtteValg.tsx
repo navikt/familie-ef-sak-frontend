@@ -196,6 +196,7 @@ const KontantstøtteValg: React.FC<Props> = ({
                                                 <LeggTilKnapp
                                                     onClick={() => leggTilTomRadUnder(index)}
                                                     ikontekst={'Legg til ny rad'}
+                                                    variant="tertiary"
                                                 />
                                             </Tooltip>
                                         )}
