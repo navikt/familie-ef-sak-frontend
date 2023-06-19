@@ -117,6 +117,7 @@ export interface DokumentNavn {
     overgangsstonad?: boolean;
     barnetilsyn?: boolean;
     skolepenger?: boolean;
+    frittstaendeBrev?: { tittelDokumentOversikt: string };
 }
 
 export interface IAvsnitt {

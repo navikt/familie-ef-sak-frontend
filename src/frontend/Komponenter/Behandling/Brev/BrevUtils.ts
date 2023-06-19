@@ -277,7 +277,14 @@ export const erAutomatiskFeltSomSkalSkjules = (
 export const skalSkjuleAlleDelmaler = (gruppe: DelmalGruppe, delmalStore: DelmalStore): boolean =>
     gruppe.delmaler.every((delmal) => erAutomatiskFeltSomSkalSkjules(delmalStore, delmal));
 
-export function visBrevmal(mal: DokumentNavn, stønadstype: Stønadstype | undefined): boolean {
+export function visBrevmal(
+    mal: DokumentNavn,
+    stønadstype: Stønadstype | undefined,
+    frittstående: boolean | undefined
+): boolean {
+    if (frittstående) {
+        return !!mal.frittstaendeBrev;
+    }
     if (mal.overgangsstonad == null && mal.barnetilsyn == null && mal.skolepenger == null) {
         return true; // bakoverkompatibilitet ( valg er kanskje ikke utført på eksisterende maler, vises intil videre)
     }
