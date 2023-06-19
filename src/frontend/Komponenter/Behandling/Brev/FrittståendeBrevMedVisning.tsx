@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from 'react';
-import styled from 'styled-components';
 import { byggTomRessurs, Ressurs } from '../../../App/typer/ressurs';
 import PdfVisning from '../../../Felles/Pdf/PdfVisning';
 import { IFrittståendeBrev } from './BrevTyper';
@@ -12,28 +11,12 @@ import { useToggles } from '../../../App/context/TogglesContext';
 import { ToggleName } from '../../../App/context/toggles';
 import { FrittståendeSanitybrev } from './FrittståendeSanitybrev';
 
+import { HøyreKolonne, StyledBrev, VenstreKolonne } from './StyledBrev';
+
 type Props = {
     fagsakId: string;
     personopplysninger: IPersonopplysninger;
 };
-
-const BrevMedVisning = styled.div`
-    width: 100%;
-    padding-left: 2rem;
-    padding-right: 2rem;
-    display: flex;
-    column-gap: 4rem;
-    flex-flow: wrap;
-`;
-
-const VenstreKolonne = styled.div`
-    width: 48rem;
-`;
-
-const HøyreKolonne = styled.div`
-    flex-shrink: 0;
-    flex-grow: 1;
-`;
 
 const FrittståendeBrevMedVisning: React.FC<Props> = ({ fagsakId, personopplysninger }: Props) => {
     const [brevRessurs, oppdaterBrevressurs] = useState<Ressurs<string>>(byggTomRessurs());
@@ -52,7 +35,7 @@ const FrittståendeBrevMedVisning: React.FC<Props> = ({ fagsakId, personopplysni
     );
 
     return (
-        <BrevMedVisning>
+        <StyledBrev>
             <DataViewer response={{ mellomlagretFrittståendeBrev }}>
                 {({ mellomlagretFrittståendeBrev }) => {
                     const skalViseFritekstbrev =
@@ -82,7 +65,7 @@ const FrittståendeBrevMedVisning: React.FC<Props> = ({ fagsakId, personopplysni
             <HøyreKolonne>
                 <PdfVisning pdfFilInnhold={brevRessurs} />
             </HøyreKolonne>
-        </BrevMedVisning>
+        </StyledBrev>
     );
 };
 

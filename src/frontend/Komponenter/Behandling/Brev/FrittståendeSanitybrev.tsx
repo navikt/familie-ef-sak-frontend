@@ -25,7 +25,6 @@ import Brevmottakere from '../Brevmottakere/Brevmottakere';
 import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
 import { Knapp } from '../../../Felles/Knapper/HovedKnapp';
 import { Alert } from '@navikt/ds-react';
-import styled from 'styled-components';
 import { utledDokumenttittel } from './BrevUtils';
 
 type FrittståendeSanitybrevProps = {
@@ -34,13 +33,6 @@ type FrittståendeSanitybrevProps = {
     oppdaterBrevRessurs: (brevRessurs: Ressurs<string>) => void;
     brevRessurs: Ressurs<string>;
 };
-
-const StyledFrittståendeBrev = styled.div`
-    margin-top: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-`;
 
 export const FrittståendeSanitybrev: React.FC<FrittståendeSanitybrevProps> = ({
     fagsakId,
@@ -119,22 +111,22 @@ export const FrittståendeSanitybrev: React.FC<FrittståendeSanitybrevProps> = (
     };
 
     return (
-        <StyledFrittståendeBrev>
+        <>
             <Brevmottakere
                 personopplysninger={personopplysninger}
                 mottakere={brevmottakere}
                 kallSettBrevmottakere={oppdaterBrevmottakere}
             />
-            <div>
-                <BrevmalSelect
-                    dokumentnavn={brevmaler}
-                    settBrevmal={settBrevmal}
-                    brevmal={brevMal}
-                    frittstående={true}
-                />
-                {brevMal && (
-                    <DataViewer response={{ brevStruktur, mellomlagretBrev }}>
-                        {({ brevStruktur, mellomlagretBrev }) => (
+            <BrevmalSelect
+                dokumentnavn={brevmaler}
+                settBrevmal={settBrevmal}
+                brevmal={brevMal}
+                frittstående={true}
+            />
+            {brevMal && (
+                <DataViewer response={{ brevStruktur, mellomlagretBrev }}>
+                    {({ brevStruktur, mellomlagretBrev }) => (
+                        <>
                             <BrevmenyVisning
                                 fagsakId={fagsakId}
                                 brevMal={brevMal}
@@ -148,20 +140,20 @@ export const FrittståendeSanitybrev: React.FC<FrittståendeSanitybrevProps> = (
                                 settBrevOppdatert={(laster) => settLaster(!laster)}
                                 brevverdier={brevverdier}
                             />
-                        )}
-                    </DataViewer>
-                )}
-                <Knapp
-                    disabled={
-                        brevRessurs.status !== RessursStatus.SUKSESS ||
-                        !brevmottakereValgt(brevmottakere)
-                    }
-                    onClick={() => settVisModal(true)}
-                    type={'button'}
-                >
-                    Send brev
-                </Knapp>
-            </div>
+                            <Knapp
+                                disabled={
+                                    brevRessurs.status !== RessursStatus.SUKSESS ||
+                                    !brevmottakereValgt(brevmottakere)
+                                }
+                                onClick={() => settVisModal(true)}
+                                type={'button'}
+                            >
+                                Send brev
+                            </Knapp>
+                        </>
+                    )}
+                </DataViewer>
+            )}
             <ModalWrapper
                 tittel={'Bekreft utsending av brev'}
                 visModal={visModal}
@@ -179,6 +171,6 @@ export const FrittståendeSanitybrev: React.FC<FrittståendeSanitybrevProps> = (
             >
                 {feilmelding && <Alert variant={'error'}>Utsending feilet. {feilmelding}</Alert>}
             </ModalWrapper>
-        </StyledFrittståendeBrev>
+        </>
     );
 };

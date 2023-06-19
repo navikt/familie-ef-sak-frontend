@@ -16,27 +16,7 @@ import { AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
 import { oppgaveSomSkalOpprettesTilTekst } from '../Totrinnskontroll/oppgaveForOpprettelseTyper';
 import { ToggleName } from '../../../App/context/toggles';
 import { useToggles } from '../../../App/context/TogglesContext';
-
-const StyledBrev = styled.div`
-    background-color: #f2f2f2;
-    padding: 2rem 2rem 15rem 2rem;
-    display: flex;
-    flex-flow: wrap;
-    gap: 3rem;
-    justify-content: center;
-    height: 100%;
-`;
-
-const VenstreKolonne = styled.div`
-    flex-basis: 450px;
-    flex-shrink: 1;
-    flex-grow: 1;
-`;
-
-const HøyreKolonne = styled.div`
-    flex-shrink: 0;
-    flex-grow: 1;
-`;
+import { HøyreKolonne, StyledBrev, VenstreKolonne } from './StyledBrev';
 
 const InfostripeGruppe = styled.div`
     display: flex;
