@@ -320,3 +320,11 @@ export const utledHtmlFelterPåStønadstype = (
         return null;
     }
 };
+
+export const utledDokumenttittel = (
+    brevmaler: Ressurs<DokumentNavn[]>,
+    valgtBrevmal: string | undefined
+) =>
+    brevmaler.status === RessursStatus.SUKSESS &&
+    brevmaler.data.find((mal) => mal.apiNavn == valgtBrevmal)?.frittstaendeBrev
+        ?.tittelDokumentoversikt;

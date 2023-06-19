@@ -117,7 +117,7 @@ export interface DokumentNavn {
     overgangsstonad?: boolean;
     barnetilsyn?: boolean;
     skolepenger?: boolean;
-    frittstaendeBrev?: { tittelDokumentOversikt: string };
+    frittstaendeBrev?: { tittelDokumentoversikt: string };
 }
 
 export interface IAvsnitt {
@@ -142,6 +142,12 @@ export interface IFrittståendeBrev {
     brevType: FrittståendeBrevtype;
     mottakere?: IBrevmottakere;
 }
+
+export type FrittståendeSanitybrevDto = {
+    pdf: string;
+    mottakere: IBrevmottakere;
+    tittel: string;
+};
 
 export enum FrittståendeBrevtype {
     INFORMASJONSBREV = 'INFORMASJONSBREV',

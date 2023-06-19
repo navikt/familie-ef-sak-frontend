@@ -18,4 +18,5 @@ export enum ToggleName {
     settPåVentMedOppgavestyring = 'familie.ef.sak.sett-paa-vent-med-oppgavestyring',
     visVurderHenvendelseOppgaver = 'familie.ef.sak.automatiske-oppgaver-lokalkontor',
     fremleggsoppgave = 'familie.ef.sak.automatiske-oppgaver.fremleggsoppgave',
+    sanitybrev_frittstående = 'familie.ef.sak.frontend-frittstaaende-sanitybrev',
 }

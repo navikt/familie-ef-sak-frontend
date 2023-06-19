@@ -8,6 +8,9 @@ import { AxiosRequestConfig } from 'axios';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import FrittståendeBrev from './FrittståendeBrev';
 import { IPersonopplysninger } from '../../../App/typer/personopplysninger';
+import { useToggles } from '../../../App/context/TogglesContext';
+import { ToggleName } from '../../../App/context/toggles';
+import { FrittståendeSanitybrev } from './FrittståendeSanitybrev';
 
 type Props = {
     fagsakId: string;
@@ -34,6 +37,9 @@ const HøyreKolonne = styled.div`
 
 const FrittståendeBrevMedVisning: React.FC<Props> = ({ fagsakId, personopplysninger }: Props) => {
     const [brevRessurs, oppdaterBrevressurs] = useState<Ressurs<string>>(byggTomRessurs());
+
+    const { toggles } = useToggles();
+
     const hentMellomlagretFrittståendeBrev: AxiosRequestConfig = useMemo(
         () => ({
             method: 'GET',
@@ -48,16 +54,30 @@ const FrittståendeBrevMedVisning: React.FC<Props> = ({ fagsakId, personopplysni
     return (
         <BrevMedVisning>
             <DataViewer response={{ mellomlagretFrittståendeBrev }}>
-                {({ mellomlagretFrittståendeBrev }) => (
-                    <VenstreKolonne>
-                        <FrittståendeBrev
-                            oppdaterBrevressurs={oppdaterBrevressurs}
-                            fagsakId={fagsakId}
-                            mellomlagretFrittståendeBrev={mellomlagretFrittståendeBrev}
-                            personopplysninger={personopplysninger}
-                        />
-                    </VenstreKolonne>
-                )}
+                {({ mellomlagretFrittståendeBrev }) => {
+                    const skalViseFritekstbrev =
+                        mellomlagretFrittståendeBrev ||
+                        !toggles[ToggleName.sanitybrev_frittstående];
+                    return (
+                        <VenstreKolonne>
+                            {skalViseFritekstbrev ? (
+                                <FrittståendeBrev
+                                    oppdaterBrevressurs={oppdaterBrevressurs}
+                                    fagsakId={fagsakId}
+                                    mellomlagretFrittståendeBrev={mellomlagretFrittståendeBrev}
+                                    personopplysninger={personopplysninger}
+                                />
+                            ) : (
+                                <FrittståendeSanitybrev
+                                    fagsakId={fagsakId}
+                                    personopplysninger={personopplysninger}
+                                    brevRessurs={brevRessurs}
+                                    oppdaterBrevRessurs={oppdaterBrevressurs}
+                                />
+                            )}
+                        </VenstreKolonne>
+                    );
+                }}
             </DataViewer>
             <HøyreKolonne>
                 <PdfVisning pdfFilInnhold={brevRessurs} />
