@@ -137,7 +137,7 @@ const AleneomsorgInfo: FC<{
                                 forelderRegister={registergrunnlag.forelder}
                             />
                         )}
-                        {!registergrunnlag.forelder?.dødsfall && (
+                        {skalViseSøknadsdata && !registergrunnlag.forelder?.dødsfall && (
                             <Samvær søknadsgrunnlag={søknadsgrunnlag} />
                         )}
                     </>
