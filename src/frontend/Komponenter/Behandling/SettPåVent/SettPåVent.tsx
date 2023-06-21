@@ -125,8 +125,8 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
         }).then(settOppgave);
     }, [behandling.id, axiosRequest]);
 
-    const [oppgavestatus, settOppgavestatus] = useState<Ressurs<IOppgavestatus>>(
-        byggTomRessurs<IOppgavestatus>()
+    const [oppgavestatus, settOppgavestatus] = useState<Ressurs<IOppgavestatus[]>>(
+        byggTomRessurs<IOppgavestatus[]>()
     );
 
     const hentOppgavestatusForBehandling = useCallback(() => {
@@ -259,8 +259,8 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
     );
 
     return visSettPåVent && toggles[ToggleName.settPåVentMedOppgavestyring] ? (
-        <DataViewer response={{ oppgave }}>
-            {({ oppgave }) => {
+        <DataViewer response={{ oppgave, oppgavestatus }}>
+            {({ oppgave, oppgavestatus }) => {
                 return (
                     <SettPåVentWrapper>
                         <Heading size={'medium'}>
@@ -300,7 +300,9 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
                                     onChange={(e) => settBeskrivelse(e.target.value)}
                                 />
                             )}
-
+                            {oppgavestatus.map((status) => (
+                                <div>{status.datoOpprettet}</div>
+                            ))}
                             {toggles[ToggleName.visVurderHenvendelseOppgaver] &&
                                 erOvergangsstønadEllerSkolepenger &&
                                 !erBehandlingPåVent && (
