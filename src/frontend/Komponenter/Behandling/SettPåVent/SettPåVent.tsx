@@ -85,6 +85,11 @@ type SettPåVentRequest = {
     oppfølgingsoppgaverMotLokalKontor: VurderHenvendelseOppgavetype[];
 };
 
+class IOppgavestatus {
+    vurderHenvendelsOppgave: string;
+    datoOpprettet: string;
+}
+
 export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
     const erBehandlingPåVent = behandling.status === BehandlingStatus.SATT_PÅ_VENT;
     const erOvergangsstønad = behandling.stønadstype === Stønadstype.OVERGANGSSTØNAD;
@@ -120,6 +125,17 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
         }).then(settOppgave);
     }, [behandling.id, axiosRequest]);
 
+    const [oppgavestatus, settOppgavestatus] = useState<Ressurs<IOppgavestatus>>(
+        byggTomRessurs<IOppgavestatus>()
+    );
+
+    const hentOppgavestatusForBehandling = useCallback(() => {
+        axiosRequest<IOppgavestatus, null>({
+            method: 'GET',
+            url: `/familie-ef-sak/api/oppgave/behandling/${behandling.id}/settpavent-oppgavestatus`,
+        }).then(settOppgavestatus);
+    }, [behandling.id, axiosRequest]);
+
     useEffect(() => {
         if (oppgave.status === RessursStatus.SUKSESS) {
             settSaksbehandler(oppgave.data.tilordnetRessurs || '');
@@ -134,6 +150,18 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
             hentOppgaveForBehandling();
         }
     }, [visSettPåVent, hentOppgaveForBehandling]);
+
+    useEffect(() => {
+        if (oppgavestatus.status === RessursStatus.SUKSESS) {
+            // log data her?
+        }
+    }, [oppgavestatus]);
+
+    useEffect(() => {
+        if (visSettPåVent) {
+            hentOppgavestatusForBehandling();
+        }
+    }, [visSettPåVent, hentOppgavestatusForBehandling]);
 
     const taAvVent = () => {
         axiosRequest<string, null>({
@@ -172,12 +200,12 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
 
         settLåsKnapp(true);
 
-        if (oppgave.status !== RessursStatus.SUKSESS || !oppgave.data.versjon || !oppgave.data.id) {
-            settFeilmelding(
-                'Teknisk feil. Mangler versjonsnumer for oppgave. Kontakt brukerstøtte'
-            );
-            return;
-        }
+        // if (oppgave.status !== RessursStatus.SUKSESS || !oppgave.data.versjon || !oppgave.data.id) {
+        //     settFeilmelding(
+        //         'Teknisk feil. Mangler versjonsnumer for oppgave. Kontakt brukerstøtte'
+        //     );
+        //     return;
+        // }
 
         axiosRequest<string, SettPåVentRequest>({
             method: 'POST',
@@ -272,6 +300,7 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
                                     onChange={(e) => settBeskrivelse(e.target.value)}
                                 />
                             )}
+
                             {toggles[ToggleName.visVurderHenvendelseOppgaver] &&
                                 erOvergangsstønadEllerSkolepenger &&
                                 !erBehandlingPåVent && (
