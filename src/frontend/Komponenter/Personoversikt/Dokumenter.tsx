@@ -19,11 +19,11 @@ import {
 } from '../../App/typer/journalføring';
 import { BodyShortSmall, SmallTextLabel } from '../../Felles/Visningskomponenter/Tekster';
 import { VedleggRequest } from './vedleggRequest';
-import { arkivtemaerAsISelectOptions } from '../../App/typer/arkivtema';
+import { Arkivtema, arkivtemaerAsISelectOptions } from '../../App/typer/arkivtema';
 import CustomSelect from '../Oppgavebenk/CustomSelect';
 import { dokumenttyperTilTekst } from '../../App/typer/dokumenttype';
 import { FlexDiv } from '../Oppgavebenk/OppgaveFiltrering';
-import { FamilieReactSelect } from '@navikt/familie-form-elements';
+import { FamilieReactSelect, ISelectOption } from '@navikt/familie-form-elements';
 
 const DokumenterVisning = styled.div`
     display: flex;
@@ -210,6 +210,18 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
                                 options={arkivtemaerAsISelectOptions}
                                 creatable={false}
                                 isMulti={true}
+                                value={(vedleggRequest.tema || []) as unknown as ISelectOption[]}
+                                onChange={(valgteTemaer) => {
+                                    settVedleggRequest((prevState) => ({
+                                        ...prevState,
+                                        tema:
+                                            valgteTemaer === null
+                                                ? []
+                                                : ((valgteTemaer as ISelectOption[]).map(
+                                                      (option) => option.value
+                                                  ) as Arkivtema[]),
+                                    }));
+                                }}
                             />
                             <CustomSelect
                                 onChange={settVedlegg('dokumenttype')}
