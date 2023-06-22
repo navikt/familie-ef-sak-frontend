@@ -13,6 +13,7 @@ export const VenstreKolonne = styled.div`
     flex-basis: 450px;
     flex-shrink: 1;
     flex-grow: 1;
+    max-width: 55rem;
 `;
 export const HøyreKolonne = styled.div`
     flex-shrink: 0;
