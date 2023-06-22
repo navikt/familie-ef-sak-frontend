@@ -263,16 +263,18 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
         return false;
     };
 
-    const oppgaveSendtDato = (oppgave: VurderHenvendelseOppgavetype): undefined | string => {
-        if (oppgavestatus.status === RessursStatus.SUKSESS) {
-            const matchedOppgaveStatus = oppgavestatus.data.find(
-                (status) => status.vurderHenvendelsOppgave === oppgave
-            );
-            if (matchedOppgaveStatus?.datoOpprettet != null) {
-                return ' (Oppgave sendt ' + matchedOppgaveStatus?.datoOpprettet + ')';
-            }
+    const oppgaveSendtDato = (oppgave: VurderHenvendelseOppgavetype): string | undefined => {
+        if (oppgavestatus.status !== RessursStatus.SUKSESS) {
+            return undefined;
         }
-        return undefined;
+
+        const matchedOppgaveStatus = oppgavestatus.data.find(
+            (status) => status.vurderHenvendelsOppgave === oppgave
+        );
+
+        return matchedOppgaveStatus?.datoOpprettet
+            ? ' (Oppgave sendt ' + matchedOppgaveStatus?.datoOpprettet + ')'
+            : undefined;
     };
 
     return visSettPåVent && toggles[ToggleName.settPåVentMedOppgavestyring] ? (
