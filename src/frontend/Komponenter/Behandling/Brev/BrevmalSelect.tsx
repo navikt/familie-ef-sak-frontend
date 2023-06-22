@@ -11,12 +11,14 @@ type BrevmalSelectProps = {
     settBrevmal: Dispatch<SetStateAction<string | undefined>>;
     brevmal: string | undefined;
     stønanadstype?: Stønadstype;
+    frittstående?: boolean;
 };
 export const BrevmalSelect: React.FC<BrevmalSelectProps> = ({
     dokumentnavn,
     settBrevmal,
     brevmal,
     stønanadstype,
+    frittstående,
 }) => (
     <DataViewer response={{ dokumentnavn }}>
         {({ dokumentnavn }) => (
@@ -30,7 +32,7 @@ export const BrevmalSelect: React.FC<BrevmalSelectProps> = ({
                 <option value="">Ikke valgt</option>
 
                 {dokumentnavn
-                    ?.filter((mal) => visBrevmal(mal, stønanadstype))
+                    ?.filter((mal) => visBrevmal(mal, stønanadstype, frittstående))
                     .map((navn: DokumentNavn) => (
                         <option value={navn.apiNavn} key={navn.apiNavn}>
                             {navn.visningsnavn}
