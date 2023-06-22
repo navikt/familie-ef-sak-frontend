@@ -85,10 +85,10 @@ type SettPåVentRequest = {
     oppfølgingsoppgaverMotLokalKontor: VurderHenvendelseOppgavetype[];
 };
 
-class IOppgavestatus {
+type IOppgavestatus = {
     vurderHenvendelsOppgave: string;
     datoOpprettet: string;
-}
+};
 
 export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
     const erBehandlingPåVent = behandling.status === BehandlingStatus.SATT_PÅ_VENT;
@@ -130,10 +130,14 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
     );
 
     const hentOppgavestatusForBehandling = useCallback(() => {
-        axiosRequest<IOppgavestatus, null>({
+        axiosRequest<IOppgavestatus[], null>({
             method: 'GET',
             url: `/familie-ef-sak/api/oppgave/behandling/${behandling.id}/settpavent-oppgavestatus`,
-        }).then(settOppgavestatus);
+        }).then((respons: RessursSuksess<IOppgavestatus[]> | RessursFeilet) => {
+            if (respons.status === RessursStatus.SUKSESS) {
+                settOppgavestatus(respons);
+            }
+        });
     }, [behandling.id, axiosRequest]);
 
     useEffect(() => {
@@ -150,12 +154,6 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
             hentOppgaveForBehandling();
         }
     }, [visSettPåVent, hentOppgaveForBehandling]);
-
-    useEffect(() => {
-        if (oppgavestatus.status === RessursStatus.SUKSESS) {
-            // log data her?
-        }
-    }, [oppgavestatus]);
 
     useEffect(() => {
         if (visSettPåVent) {
@@ -258,9 +256,28 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
         filtrerOppgavetyper(oppgavetype)
     );
 
+    const erSendt = (oppgave: VurderHenvendelseOppgavetype): boolean => {
+        if (oppgavestatus.status === RessursStatus.SUKSESS) {
+            return oppgavestatus.data.some((status) => status.vurderHenvendelsOppgave === oppgave);
+        }
+        return false;
+    };
+
+    const oppgaveSendtDato = (oppgave: VurderHenvendelseOppgavetype): undefined | string => {
+        if (oppgavestatus.status === RessursStatus.SUKSESS) {
+            const matchedOppgaveStatus = oppgavestatus.data.find(
+                (status) => status.vurderHenvendelsOppgave === oppgave
+            );
+            if (matchedOppgaveStatus?.datoOpprettet != null) {
+                return ' (Oppgave sendt ' + matchedOppgaveStatus?.datoOpprettet + ')';
+            }
+        }
+        return undefined;
+    };
+
     return visSettPåVent && toggles[ToggleName.settPåVentMedOppgavestyring] ? (
         <DataViewer response={{ oppgave, oppgavestatus }}>
-            {({ oppgave, oppgavestatus }) => {
+            {({ oppgave }) => {
                 return (
                     <SettPåVentWrapper>
                         <Heading size={'medium'}>
@@ -300,9 +317,6 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
                                     onChange={(e) => settBeskrivelse(e.target.value)}
                                 />
                             )}
-                            {oppgavestatus.map((status) => (
-                                <div>{status.datoOpprettet}</div>
-                            ))}
                             {toggles[ToggleName.visVurderHenvendelseOppgaver] &&
                                 erOvergangsstønadEllerSkolepenger &&
                                 !erBehandlingPåVent && (
@@ -313,6 +327,9 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
                                     >
                                         {aktuelleOppgaver.map((oppgave) => (
                                             <Checkbox
+                                                disabled={erSendt(
+                                                    oppgave as VurderHenvendelseOppgavetype
+                                                )}
                                                 key={oppgave}
                                                 value={oppgave as VurderHenvendelseOppgavetype}
                                             >
@@ -321,6 +338,9 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
                                                         oppgave as VurderHenvendelseOppgavetype
                                                     ]
                                                 }
+                                                {oppgaveSendtDato(
+                                                    oppgave as VurderHenvendelseOppgavetype
+                                                )}
                                             </Checkbox>
                                         ))}
                                     </CheckboxGroup>
