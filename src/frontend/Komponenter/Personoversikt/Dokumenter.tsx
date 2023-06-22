@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useDataHenter } from '../../App/hooks/felles/useDataHenter';
 import { AxiosRequestConfig } from 'axios';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
@@ -18,6 +18,12 @@ import {
     journalstatusTilTekst,
 } from '../../App/typer/journalføring';
 import { BodyShortSmall, SmallTextLabel } from '../../Felles/Visningskomponenter/Tekster';
+import { VedleggRequest } from './vedleggRequest';
+import { arkivtemaerAsISelectOptions } from '../../App/typer/arkivtema';
+import CustomSelect from '../Oppgavebenk/CustomSelect';
+import { dokumenttyperTilTekst } from '../../App/typer/dokumenttype';
+import { FlexDiv } from '../Oppgavebenk/OppgaveFiltrering';
+import { FamilieReactSelect } from '@navikt/familie-form-elements';
 
 const DokumenterVisning = styled.div`
     display: flex;
@@ -52,6 +58,12 @@ const InnUt = styled.div`
         vertical-align: -0.2em;
         margin-right: 0.5rem;
     }
+`;
+
+const ArkivtemaVelger = styled(FamilieReactSelect)`
+    width: 15rem;
+    margin-top: 1rem;
+    margin-right: 1rem;
 `;
 
 /**
@@ -91,12 +103,24 @@ const ikoneForJournalposttype: Record<Journalposttype, React.ReactElement> = {
 };
 
 const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson }) => {
+    const [vedleggRequest, settVedleggRequest] = useState<VedleggRequest>({
+        fagsakPersonId: fagsakPerson.id,
+    });
+    const settVedlegg = (key: keyof VedleggRequest) => {
+        return (val?: string | number) =>
+            settVedleggRequest((prevState: VedleggRequest) => ({
+                ...prevState,
+                [key]: val,
+            }));
+    };
+
     const dokumentConfig: AxiosRequestConfig = useMemo(
         () => ({
-            method: 'GET',
-            url: `/familie-ef-sak/api/vedlegg/fagsak-person/${fagsakPerson.id}`,
+            method: 'POST',
+            url: `/familie-ef-sak/api/vedlegg/fagsak-person`,
+            data: vedleggRequest,
         }),
-        [fagsakPerson]
+        [vedleggRequest]
     );
 
     const dokumentResponse = useDataHenter<Dokumentinfo[], null>(dokumentConfig);
@@ -179,6 +203,27 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
 
                 return (
                     <>
+                        <FlexDiv>
+                            <ArkivtemaVelger
+                                placeholder={'Alle'}
+                                label={'Velg tema(er)'}
+                                options={arkivtemaerAsISelectOptions}
+                                creatable={false}
+                                isMulti={true}
+                            />
+                            <CustomSelect
+                                onChange={settVedlegg('dokumenttype')}
+                                label="Velg dokumenttype"
+                                options={dokumenttyperTilTekst}
+                                value={vedleggRequest.dokumenttype}
+                            />
+                            <CustomSelect
+                                onChange={settVedlegg('journalpostStatus')}
+                                label="Velg journalpoststatus"
+                                options={journalstatusTilTekst}
+                                value={vedleggRequest.journalpostStatus}
+                            />
+                        </FlexDiv>
                         <DokumenterVisning>
                             <TabellWrapper>
                                 <TabellOverskrift Ikon={Mappe} tittel={'Dokumenter'} />

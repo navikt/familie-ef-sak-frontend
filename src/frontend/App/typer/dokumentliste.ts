@@ -5,6 +5,7 @@ export interface Dokumentinfo {
     dokumentinfoId: string;
     filnavn?: string;
     tittel: string;
+    tema: string;
     journalpostId: string;
     dato?: string;
     journalposttype: Journalposttype;
