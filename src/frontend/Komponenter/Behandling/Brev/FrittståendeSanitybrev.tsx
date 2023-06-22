@@ -25,7 +25,7 @@ import Brevmottakere from '../Brevmottakere/Brevmottakere';
 import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
 import { Knapp } from '../../../Felles/Knapper/HovedKnapp';
 import { Alert } from '@navikt/ds-react';
-import { utledDokumenttittel } from './BrevUtils';
+import { finnDokumenttittelForBrevmal } from './BrevUtils';
 
 type FrittståendeSanitybrevProps = {
     fagsakId: string;
@@ -81,7 +81,7 @@ export const FrittståendeSanitybrev: React.FC<FrittståendeSanitybrevProps> = (
         settLaster(true);
         settFeilmelding('');
 
-        const dokumenttittel = utledDokumenttittel(brevmaler, brevMal);
+        const dokumenttittel = finnDokumenttittelForBrevmal(brevmaler, brevMal);
         if (!dokumenttittel) return;
 
         axiosRequest<null, FrittståendeSanitybrevDto>({

@@ -321,7 +321,7 @@ export const utledHtmlFelterPåStønadstype = (
     }
 };
 
-export const utledDokumenttittel = (
+export const finnDokumenttittelForBrevmal = (
     brevmaler: Ressurs<DokumentNavn[]>,
     valgtBrevmal: string | undefined
 ) =>
