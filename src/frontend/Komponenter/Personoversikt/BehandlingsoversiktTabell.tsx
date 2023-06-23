@@ -177,9 +177,18 @@ export const BehandlingsoversiktTabell: React.FC<{
             if (klageBehandlingAvsluttetUtfall) {
                 return klageinstansUtfallTilTekst[klageBehandlingAvsluttetUtfall];
             }
+            if (erKlageFeilregistrertAvKA(behandling)) {
+                return 'Feilregistrert (KA)';
+            }
         }
         return behandling.resultat ? behandlingResultatTilTekst[behandling.resultat] : 'Ikke satt';
     };
+
+    const erKlageFeilregistrertAvKA = (behandling: BehandlingsoversiktTabellBehandling) =>
+        behandling.applikasjon === BehandlingApplikasjon.KLAGE &&
+        behandling.klageinstansResultat?.some(
+            (resultat) => resultat.type == KlageinstansEventType.BEHANDLING_FEILREGISTRERT
+        );
 
     const ankeHarEksistertPåBehandling = (behandling: BehandlingsoversiktTabellBehandling) => {
         return (
@@ -247,6 +256,15 @@ export const BehandlingsoversiktTabell: React.FC<{
                                         {ankeHarEksistertPåBehandling(behandling) && (
                                             <Tooltip content="Det finnes informasjon om anke på denne klagen. Gå inn på klagebehandlingens resultatside for å se detaljer.">
                                                 <AdvarselIkon title={'Har anke informasjon'} />
+                                            </Tooltip>
+                                        )}
+                                        {erKlageFeilregistrertAvKA(behandling) && (
+                                            <Tooltip content="Klagen er feilregistrert av NAV klageinstans. Gå inn på klagebehandlingens resultatside for å se detaljer">
+                                                <AdvarselIkon
+                                                    title={
+                                                        'Behandling feilregistrert av NAV klageinstans'
+                                                    }
+                                                />
                                             </Tooltip>
                                         )}
                                     </>
