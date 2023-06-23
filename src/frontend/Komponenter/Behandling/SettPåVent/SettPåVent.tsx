@@ -60,6 +60,13 @@ const FlexColumnDiv = styled.div`
     gap: 1rem;
 `;
 
+const FlexBox = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: medium;
+`;
+
 const Beskrivelse = styled(Textarea)`
     max-width: 60rem;
 `;
@@ -198,12 +205,12 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
 
         settLåsKnapp(true);
 
-        // if (oppgave.status !== RessursStatus.SUKSESS || !oppgave.data.versjon || !oppgave.data.id) {
-        //     settFeilmelding(
-        //         'Teknisk feil. Mangler versjonsnumer for oppgave. Kontakt brukerstøtte'
-        //     );
-        //     return;
-        // }
+        if (oppgave.status !== RessursStatus.SUKSESS || !oppgave.data.versjon || !oppgave.data.id) {
+            settFeilmelding(
+                'Teknisk feil. Mangler versjonsnumer for oppgave. Kontakt brukerstøtte'
+            );
+            return;
+        }
 
         axiosRequest<string, SettPåVentRequest>({
             method: 'POST',
@@ -248,13 +255,13 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
             case VurderHenvendelseOppgavetype.INNSTILLING_VEDRØRENDE_UTDANNING:
                 return erOvergangsstønadEllerSkolepenger;
             default:
-                return true;
+                return false;
         }
     };
 
     const aktuelleOppgaver = Object.keys(VurderHenvendelseOppgavetype).filter((oppgavetype) =>
         filtrerOppgavetyper(oppgavetype)
-    );
+    ) as VurderHenvendelseOppgavetype[];
 
     const erSendt = (oppgave: VurderHenvendelseOppgavetype): boolean => {
         if (oppgavestatus.status === RessursStatus.SUKSESS) {
@@ -263,7 +270,7 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
         return false;
     };
 
-    const oppgaveSendtDato = (oppgave: VurderHenvendelseOppgavetype): string | undefined => {
+    const lagOppgaveSendtTekst = (oppgave: VurderHenvendelseOppgavetype): string | undefined => {
         if (oppgavestatus.status !== RessursStatus.SUKSESS) {
             return undefined;
         }
@@ -328,22 +335,16 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
                                         size="small"
                                     >
                                         {aktuelleOppgaver.map((oppgave) => (
-                                            <Checkbox
-                                                disabled={erSendt(
-                                                    oppgave as VurderHenvendelseOppgavetype
-                                                )}
-                                                key={oppgave}
-                                                value={oppgave as VurderHenvendelseOppgavetype}
-                                            >
-                                                {
-                                                    vurderHenvendelseOppgaveTilTekst[
-                                                        oppgave as VurderHenvendelseOppgavetype
-                                                    ]
-                                                }
-                                                {oppgaveSendtDato(
-                                                    oppgave as VurderHenvendelseOppgavetype
-                                                )}
-                                            </Checkbox>
+                                            <FlexBox>
+                                                <Checkbox
+                                                    disabled={erSendt(oppgave)}
+                                                    key={oppgave}
+                                                    value={oppgave}
+                                                >
+                                                    {vurderHenvendelseOppgaveTilTekst[oppgave]}
+                                                </Checkbox>
+                                                {lagOppgaveSendtTekst(oppgave)}
+                                            </FlexBox>
                                         ))}
                                     </CheckboxGroup>
                                 )}
