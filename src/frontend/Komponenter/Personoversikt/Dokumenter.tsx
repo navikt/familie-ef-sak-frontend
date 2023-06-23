@@ -75,7 +75,7 @@ const Dokumenttabell = styled.div`
     padding-top: 1rem;
     grid-template-columns: 32px 40px auto 72px;
     grid-template-rows: repeat(2, max-content);
-    grid-template-areas: '. select select  .' '. ikon tittel .' '. . innhold .';
+    grid-template-areas: '. ikon tittel .' '. . select  select' '. . innhold .';
     .tabell {
         .columnHeader {
             font-weight: bold;
