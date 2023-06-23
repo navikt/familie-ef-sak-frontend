@@ -131,10 +131,10 @@ export const arkivtemaerTilTekst: Record<Arkivtema, string> = {
 };
 
 export const arkivtemaerAsISelectOptions = Object.entries(arkivtemaerTilTekst).map<ISelectOption>(
-    (entry) => {
+    ([verdi, label]) => {
         return {
-            value: entry[0],
-            label: entry[1],
+            value: verdi,
+            label: label,
         };
     }
 );
