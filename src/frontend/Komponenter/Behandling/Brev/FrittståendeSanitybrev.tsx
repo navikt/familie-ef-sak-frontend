@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { IPersonopplysninger } from '../../../App/typer/personopplysninger';
 import {
-    byggSuksessRessurs,
     byggTomRessurs,
     Ressurs,
     RessursFeilet,
@@ -16,16 +15,16 @@ import BrevmenyVisning from './BrevmenyVisning';
 import { useMellomlagringFrittståendeSanitybrev } from '../../../App/hooks/useMellomlagringFrittståendeSanitybrev';
 import { IMellomlagretBrevResponse } from '../../../App/hooks/useMellomlagringBrev';
 import { lagTomBrevverdier } from '../../../App/hooks/useVerdierForBrev';
-import { brevmottakereValgt, mottakereEllerBruker } from '../Brevmottakere/brevmottakerUtils';
+import { brevmottakereValgt } from '../Brevmottakere/brevmottakerUtils';
 import { Brevtype, FrittståendeSanitybrevDto } from './BrevTyper';
 import { EToast } from '../../../App/typer/toast';
 import { IBrevmottakere } from '../Brevmottakere/typer';
 import { useApp } from '../../../App/context/AppContext';
-import Brevmottakere from '../Brevmottakere/Brevmottakere';
 import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
 import { Knapp } from '../../../Felles/Knapper/HovedKnapp';
 import { Alert } from '@navikt/ds-react';
 import { finnDokumenttittelForBrevmal } from './BrevUtils';
+import { BrevmottakereFrittståendeBrev } from '../Brevmottakere/BrevmottakereFrittståendeBrev';
 
 type FrittståendeSanitybrevProps = {
     fagsakId: string;
@@ -47,9 +46,7 @@ export const FrittståendeSanitybrev: React.FC<FrittståendeSanitybrevProps> = (
     const { mellomlagreSanitybrev, mellomlagretBrev, settMellomlagretBrev } =
         useMellomlagringFrittståendeSanitybrev(fagsakId);
     const [laster, settLaster] = useState(false);
-    const [brevmottakere, settBrevmottakere] = useState<IBrevmottakere>(
-        mottakereEllerBruker(personopplysninger, undefined) // TODO: Legg til støtte for lagring av brevmottakere
-    );
+    const [brevmottakere, settBrevmottakere] = useState<IBrevmottakere>();
     const [feilmelding, settFeilmelding] = useState('');
     const [visModal, settVisModal] = useState<boolean>(false);
     const { axiosRequest, settToast } = useApp();
@@ -57,11 +54,6 @@ export const FrittståendeSanitybrev: React.FC<FrittståendeSanitybrevProps> = (
     const lukkModal = () => {
         settVisModal(false);
         settFeilmelding('');
-    };
-
-    const oppdaterBrevmottakere = (brevmottakere: IBrevmottakere) => {
-        settBrevmottakere(brevmottakere);
-        return Promise.resolve(byggSuksessRessurs('ok'));
     };
 
     useEffect(() => {
@@ -76,7 +68,7 @@ export const FrittståendeSanitybrev: React.FC<FrittståendeSanitybrevProps> = (
     const sendBrev = () => {
         if (laster) return;
         if (!fagsakId) return;
-        if (!brevmottakereValgt(brevmottakere)) return;
+        if (!brevmottakere || !brevmottakereValgt(brevmottakere)) return;
         if (brevRessurs.status !== RessursStatus.SUKSESS) return;
         settLaster(true);
         settFeilmelding('');
@@ -112,10 +104,11 @@ export const FrittståendeSanitybrev: React.FC<FrittståendeSanitybrevProps> = (
 
     return (
         <>
-            <Brevmottakere
+            <BrevmottakereFrittståendeBrev
                 personopplysninger={personopplysninger}
+                fagsakId={fagsakId}
                 mottakere={brevmottakere}
-                kallSettBrevmottakere={oppdaterBrevmottakere}
+                settMottakere={settBrevmottakere}
             />
             <BrevmalSelect
                 dokumentnavn={brevmaler}
