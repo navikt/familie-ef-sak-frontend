@@ -29,6 +29,7 @@ import { dokumenttyperTilTekst } from '../../App/typer/dokumenttype';
 import { FlexDiv } from '../Oppgavebenk/OppgaveFiltrering';
 import { FamilieReactSelect, MultiValue, SingleValue } from '@navikt/familie-form-elements';
 import { oppdaterVedleggFilter } from './utils';
+import { Utsendingsinfo } from './Utsendingsinfo';
 
 const DokumenterVisning = styled.div`
     display: flex;
@@ -226,6 +227,9 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
                     {tekstMapping(dokument.journalstatus, journalstatusTilTekst)}
                 </BodyShortSmall>
             </Td>
+            <Td>
+                <Utsendingsinfo utsendingsinfo={dokument.utsendingsinfo} />
+            </Td>
         </TrHoveddokument>
     );
 
@@ -283,6 +287,7 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
                             <Kolonnetittel text={'Avsender/mottaker'} width={20} />
                             <Kolonnetittel text={'Tema'} width={20} />
                             <Kolonnetittel text={'Status'} width={10} />
+                            <Kolonnetittel text={'Distribusjon'} width={10} />
                         </tr>
                     </thead>
                     <DataViewer response={{ dokumentResponse }}>
