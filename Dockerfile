@@ -1,6 +1,8 @@
-FROM ghcr.io/navikt/baseimages/node-express:18
+FROM cgr.dev/chainguard/node:18
 
-ADD ./ /var/server/
+WORKDIR /var/server
+
+ADD ./ .
 
 EXPOSE 8000
-CMD ["yarn", "start"]
+CMD ["npm", "run", "start"]
