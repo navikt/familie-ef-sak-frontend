@@ -220,6 +220,7 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
                 <LogiskeVedlegg logiskeVedlegg={dokument.logiskeVedlegg} />
             </Td>
             <Td>{utledAvsenderMottakerDetaljer(dokument)}</Td>
+            <Td>{arkivtemaerTilTekst[dokument.tema as Arkivtema]}</Td>
             <Td>
                 <BodyShortSmall>
                     {tekstMapping(dokument.journalstatus, journalstatusTilTekst)}
@@ -280,6 +281,7 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
                             <Kolonnetittel text={'Inn/ut'} width={5} />
                             <Kolonnetittel text={'Tittel'} width={43} />
                             <Kolonnetittel text={'Avsender/mottaker'} width={20} />
+                            <Kolonnetittel text={'Tema'} width={20} />
                             <Kolonnetittel text={'Status'} width={10} />
                         </tr>
                     </thead>
