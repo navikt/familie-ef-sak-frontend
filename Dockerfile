@@ -5,4 +5,4 @@ WORKDIR /var/server
 ADD ./ .
 
 EXPOSE 8000
-CMD ["npm", "run", "start"]
+CMD ["/usr/bin/npm", "run", "start"]
