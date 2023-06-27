@@ -28,6 +28,7 @@ import CustomSelect from '../Oppgavebenk/CustomSelect';
 import { dokumenttyperTilTekst } from '../../App/typer/dokumenttype';
 import { FlexDiv } from '../Oppgavebenk/OppgaveFiltrering';
 import { FamilieReactSelect, MultiValue, SingleValue } from '@navikt/familie-form-elements';
+import { oppdaterVedleggFilter } from './utils';
 
 const DokumenterVisning = styled.div`
     display: flex;
@@ -140,10 +141,9 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
 
     const settVedlegg = (key: keyof VedleggRequest) => {
         return (val?: string | number) =>
-            settVedleggRequest((prevState: VedleggRequest) => ({
-                ...prevState,
-                [key]: val,
-            }));
+            settVedleggRequest((prevState: VedleggRequest) =>
+                oppdaterVedleggFilter(prevState, key, val)
+            );
     };
 
     const dokumentConfig: AxiosRequestConfig = useMemo(
