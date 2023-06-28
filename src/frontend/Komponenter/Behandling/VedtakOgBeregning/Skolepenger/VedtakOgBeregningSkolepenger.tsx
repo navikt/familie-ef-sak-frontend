@@ -65,7 +65,19 @@ const VedtakOgBeregningSkolepenger: FC<Props> = ({ behandling, vilkår }) => {
                             const erOpphør = resultatType === EBehandlingResultat.OPPHØRT;
                             {
                                 return toggles[ToggleName.visNyttGuiSkolepenger] ? (
-                                    <Vedtaksform />
+                                    <Vedtaksform
+                                        behandling={behandling}
+                                        lagretInnvilgetVedtak={
+                                            vedtakForSkolepenger?._type ===
+                                            IVedtakType.InnvilgelseSkolepenger
+                                                ? vedtakForSkolepenger
+                                                : undefined
+                                        }
+                                        forrigeVedtak={
+                                            vedtakForrigeBehandling &&
+                                            (vedtakForrigeBehandling as unknown as IVedtakForSkolepenger)
+                                        }
+                                    />
                                 ) : (
                                     <VedtaksformSkolepenger
                                         key={erOpphør ? 'opphør' : 'innvilgelse'}
