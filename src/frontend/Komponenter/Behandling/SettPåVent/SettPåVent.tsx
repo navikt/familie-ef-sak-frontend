@@ -8,7 +8,7 @@ import {
     RessursSuksess,
 } from '../../../App/typer/ressurs';
 import { useApp } from '../../../App/context/AppContext';
-import { Alert, Button, Checkbox, CheckboxGroup, Heading, Textarea } from '@navikt/ds-react';
+import { Alert, Button, Heading, Textarea } from '@navikt/ds-react';
 import styled from 'styled-components';
 import { ADeepblue50 } from '@navikt/ds-tokens/dist/tokens';
 import { ToggleName } from '../../../App/context/toggles';
@@ -30,6 +30,7 @@ import { TaAvVentModal } from './TaAvVentModal';
 import { EToast } from '../../../App/typer/toast';
 import { EksisterendeBeskrivelse } from './EksisterendeBeskrivelse';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
+import { LokalkontorOppgavevalg, Oppgavestatus } from './LokalkontorOppgavevalg';
 
 const AlertStripe = styled(Alert)`
     margin-top: 1rem;
@@ -60,13 +61,6 @@ const FlexColumnDiv = styled.div`
     gap: 1rem;
 `;
 
-const FlexBox = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: medium;
-`;
-
 const Beskrivelse = styled(Textarea)`
     max-width: 60rem;
 `;
@@ -75,11 +69,6 @@ enum VurderHenvendelseOppgavetype {
     INFORMERE_OM_SØKT_OVERGANGSSTØNAD = 'INFORMERE_OM_SØKT_OVERGANGSSTØNAD',
     INNSTILLING_VEDRØRENDE_UTDANNING = 'INNSTILLING_VEDRØRENDE_UTDANNING',
 }
-
-const vurderHenvendelseOppgaveTilTekst: Record<VurderHenvendelseOppgavetype, string> = {
-    INFORMERE_OM_SØKT_OVERGANGSSTØNAD: 'Beskjed om at vi har fått søknad',
-    INNSTILLING_VEDRØRENDE_UTDANNING: 'Forespørsel om innstilling - utdanning',
-};
 
 type SettPåVentRequest = {
     oppgaveId: number;
@@ -90,11 +79,6 @@ type SettPåVentRequest = {
     beskrivelse: string | undefined;
     oppgaveVersjon: number;
     oppfølgingsoppgaverMotLokalKontor: VurderHenvendelseOppgavetype[];
-};
-
-type IOppgavestatus = {
-    vurderHenvendelsOppgave: string;
-    datoOpprettet: string;
 };
 
 export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
@@ -110,6 +94,9 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
     const [oppgaverMotLokalkontor, settOppgaverMotLokalkontor] = useState<
         VurderHenvendelseOppgavetype[]
     >([]);
+    const [oppgavestatus, settOppgavestatus] = useState<Ressurs<Oppgavestatus[]>>(
+        byggTomRessurs<Oppgavestatus[]>()
+    );
     const [taAvVentStatus, settTaAvVentStatus] = useState<ETaAvVentStatus>();
     const [låsKnapp, settLåsKnapp] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>();
@@ -132,15 +119,11 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
         }).then(settOppgave);
     }, [behandling.id, axiosRequest]);
 
-    const [oppgavestatus, settOppgavestatus] = useState<Ressurs<IOppgavestatus[]>>(
-        byggTomRessurs<IOppgavestatus[]>()
-    );
-
     const hentOppgavestatusForBehandling = useCallback(() => {
-        axiosRequest<IOppgavestatus[], null>({
+        axiosRequest<Oppgavestatus[], null>({
             method: 'GET',
             url: `/familie-ef-sak/api/oppgave/behandling/${behandling.id}/settpavent-oppgavestatus`,
-        }).then((respons: RessursSuksess<IOppgavestatus[]> | RessursFeilet) => {
+        }).then((respons: RessursSuksess<Oppgavestatus[]> | RessursFeilet) => {
             if (respons.status === RessursStatus.SUKSESS) {
                 settOppgavestatus(respons);
             }
@@ -238,14 +221,12 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
             })
             .finally(() => settLåsKnapp(false));
     };
-
     const nullstillOppgaveFelter = () => {
         settSaksbehandler('');
         settBeskrivelse('');
         settPrioritet(undefined);
         settFrist(undefined);
         settMappe(undefined);
-        settOppgaverMotLokalkontor([]);
     };
 
     const filtrerOppgavetyper = (oppgavetype: string) => {
@@ -262,27 +243,6 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
     const aktuelleOppgaver = Object.keys(VurderHenvendelseOppgavetype).filter((oppgavetype) =>
         filtrerOppgavetyper(oppgavetype)
     ) as VurderHenvendelseOppgavetype[];
-
-    const erSendt = (oppgave: VurderHenvendelseOppgavetype): boolean => {
-        if (oppgavestatus.status === RessursStatus.SUKSESS) {
-            return oppgavestatus.data.some((status) => status.vurderHenvendelsOppgave === oppgave);
-        }
-        return false;
-    };
-
-    const lagOppgaveSendtTekst = (oppgave: VurderHenvendelseOppgavetype): string | undefined => {
-        if (oppgavestatus.status !== RessursStatus.SUKSESS) {
-            return undefined;
-        }
-
-        const matchedOppgaveStatus = oppgavestatus.data.find(
-            (status) => status.vurderHenvendelsOppgave === oppgave
-        );
-
-        return matchedOppgaveStatus?.datoOpprettet
-            ? ' (Oppgave sendt ' + matchedOppgaveStatus?.datoOpprettet + ')'
-            : undefined;
-    };
 
     return visSettPåVent && toggles[ToggleName.settPåVentMedOppgavestyring] ? (
         <DataViewer response={{ oppgave, oppgavestatus }}>
@@ -327,26 +287,14 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
                                 />
                             )}
                             {toggles[ToggleName.visVurderHenvendelseOppgaver] &&
-                                erOvergangsstønadEllerSkolepenger &&
-                                !erBehandlingPåVent && (
-                                    <CheckboxGroup
-                                        legend="Send oppgave til lokalkontoret"
-                                        onChange={settOppgaverMotLokalkontor}
-                                        size="small"
-                                    >
-                                        {aktuelleOppgaver.map((oppgave) => (
-                                            <FlexBox>
-                                                <Checkbox
-                                                    disabled={erSendt(oppgave)}
-                                                    key={oppgave}
-                                                    value={oppgave}
-                                                >
-                                                    {vurderHenvendelseOppgaveTilTekst[oppgave]}
-                                                </Checkbox>
-                                                {lagOppgaveSendtTekst(oppgave)}
-                                            </FlexBox>
-                                        ))}
-                                    </CheckboxGroup>
+                                erOvergangsstønadEllerSkolepenger && (
+                                    <LokalkontorOppgavevalg
+                                        aktuelleOppgaver={aktuelleOppgaver}
+                                        oppgavestatus={oppgavestatus}
+                                        settOppgaverMotLokalkontor={settOppgaverMotLokalkontor}
+                                        oppgaverMotLokalkontor={oppgaverMotLokalkontor}
+                                        erBehandlingPåVent={erBehandlingPåVent}
+                                    />
                                 )}
                         </FlexColumnDiv>
                         <KnappeWrapper>
