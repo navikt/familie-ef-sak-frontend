@@ -14,24 +14,25 @@ import useFormState, { FormState } from '../../../../../App/hooks/felles/useForm
 import { ListState } from '../../../../../App/hooks/felles/useListState';
 import { useBehandling } from '../../../../../App/context/BehandlingContext';
 import styled from 'styled-components';
-import { BodyShort, Button } from '@navikt/ds-react';
-import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
+import { Button } from '@navikt/ds-react';
+// import { BodyShort } from '@navikt/ds-react';
+// import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
 import { useApp } from '../../../../../App/context/AppContext';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../../../App/typer/ressurs';
 import { UtregningstabellSkolepenger } from '../UtregnignstabellSkolepenger';
 import { validerInnvilgetVedtakForm } from './vedtaksvalidering';
 // import { validerSkoleårsperioder } from './vedtaksvalidering';
-import OpphørSkolepenger from '../OpphørSkolepenger/OpphørSkolepenger';
+// import OpphørSkolepenger from '../OpphørSkolepenger/OpphørSkolepenger';
 import { BodyShortSmall } from '../../../../../Felles/Visningskomponenter/Tekster';
 import { ARed500 } from '@navikt/ds-tokens/dist/tokens';
 import { useRedirectEtterLagring } from '../../../../../App/hooks/felles/useRedirectEtterLagring';
 import { v4 as uuidv4 } from 'uuid';
-import { BegrunnelsesFelt } from './BegrunnelsesFelt';
+// import { BegrunnelsesFelt } from './BegrunnelsesFelt';
 import { AlertError } from '../../../../../Felles/Visningskomponenter/Alerts';
 import HovedKnapp from '../../../../../Felles/Knapper/HovedKnapp';
-import LeggTilKnapp from '../../../../../Felles/Knapper/LeggTilKnapp';
+// import LeggTilKnapp from '../../../../../Felles/Knapper/LeggTilKnapp';
 import VisEllerEndreSkoleårsperioder from './VisEllerEndreSkoleårsperioder';
-import { tomSkoleårsperiodeSkolepenger } from '../typer';
+// import { tomSkoleårsperiodeSkolepenger } from '../typer';
 
 const Form = styled.form`
     display: flex;
@@ -47,9 +48,9 @@ const Utregningstabell = styled(UtregningstabellSkolepenger)`
     margin-left: 1rem;
 `;
 
-const Container = styled.div`
-    padding: 1rem;
-`;
+// const Container = styled.div`
+//     padding: 1rem;
+// `;
 
 export const defaultSkoleårsperioder = (
     forrigeVedtak?: IvedtakForSkolepenger
@@ -96,11 +97,11 @@ export const Vedtaksform: React.FC<{
     const skoleårsPerioderState = formState.getProps(
         'skoleårsperioder'
     ) as ListState<ISkoleårsperiodeSkolepenger>;
-    const begrunnelseState = formState.getProps('begrunnelse') as FieldState;
+    // const begrunnelseState = formState.getProps('begrunnelse') as FieldState;
 
-    const utgiftIderForrigeBehandling = forrigeVedtak
-        ? forrigeVedtak.skoleårsperioder.flatMap((p) => p.utgiftsperioder.map((u) => u.id))
-        : [];
+    // const utgiftIderForrigeBehandling = forrigeVedtak
+    //     ? forrigeVedtak.skoleårsperioder.flatMap((p) => p.utgiftsperioder.map((u) => u.id))
+    //     : [];
 
     const lagreVedtak = (vedtaksRequest: IVedtakForSkolepenger) => {
         settLaster(true);
