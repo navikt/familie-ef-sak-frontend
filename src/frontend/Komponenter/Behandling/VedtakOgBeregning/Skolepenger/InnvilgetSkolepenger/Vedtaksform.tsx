@@ -9,8 +9,10 @@ import {
 } from '../../../../../App/typer/vedtak';
 import { Behandling } from '../../../../../App/typer/fagsak';
 import React, { useEffect, useState } from 'react';
-import useFormState, { FormState } from '../../../../../App/hooks/felles/useFormState';
-// import { Valideringsfunksjon } from '../../../../../App/hooks/felles/useFormState';
+import useFormState, {
+    FormState,
+    Valideringsfunksjon,
+} from '../../../../../App/hooks/felles/useFormState';
 import { ListState } from '../../../../../App/hooks/felles/useListState';
 import { useBehandling } from '../../../../../App/context/BehandlingContext';
 import styled from 'styled-components';
@@ -99,9 +101,9 @@ export const Vedtaksform: React.FC<{
     ) as ListState<ISkoleårsperiodeSkolepenger>;
     // const begrunnelseState = formState.getProps('begrunnelse') as FieldState;
 
-    // const utgiftIderForrigeBehandling = forrigeVedtak
-    //     ? forrigeVedtak.skoleårsperioder.flatMap((p) => p.utgiftsperioder.map((u) => u.id))
-    //     : [];
+    const utgiftIderForrigeBehandling = forrigeVedtak
+        ? forrigeVedtak.skoleårsperioder.flatMap((p) => p.utgiftsperioder.map((u) => u.id))
+        : [];
 
     const lagreVedtak = (vedtaksRequest: IVedtakForSkolepenger) => {
         settLaster(true);
@@ -171,8 +173,8 @@ export const Vedtaksform: React.FC<{
         }
     };
 
-    // const customValidate = (fn: Valideringsfunksjon<InnvilgeVedtakForm>) =>
-    //     formState.customValidate(fn);
+    const customValidate = (fn: Valideringsfunksjon<InnvilgeVedtakForm>) =>
+        formState.customValidate(fn);
 
     useEffect(() => {
         if (!behandlingErRedigerbar) {
@@ -185,7 +187,14 @@ export const Vedtaksform: React.FC<{
 
     return (
         <Form onSubmit={formState.onSubmit(handleSubmit)}>
-            <VisEllerEndreSkoleårsperioder />
+            <VisEllerEndreSkoleårsperioder
+                customValidate={customValidate}
+                låsteUtgiftIder={utgiftIderForrigeBehandling}
+                oppdaterHarUtførtBeregning={settHarUtførtBeregning}
+                settValideringsFeil={formState.setErrors}
+                skoleårsperioder={skoleårsPerioderState}
+                valideringsfeil={formState.errors.skoleårsperioder}
+            />
             {feilmelding && <AlertError>{feilmelding}</AlertError>}
             {behandlingErRedigerbar && (
                 <div>
