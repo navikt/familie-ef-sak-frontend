@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { CheckboxGroup, Checkbox, BodyShort } from '@navikt/ds-react';
 import styled from 'styled-components';
 import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
-import { formaterIsoDato } from '../../../App/utils/formatter';
+import { dagensDatoFormatert, formaterIsoDato } from '../../../App/utils/formatter';
 
 const FlexBox = styled.div`
     display: flex;
@@ -40,7 +40,7 @@ export const LokalkontorOppgavevalg: FC<Props> = ({
         );
 
         if (erValgt(oppgave) && erBehandlingPåVent) {
-            return '(Oppgave er sendt)';
+            return '(Oppgave er sendt ' + dagensDatoFormatert() + ')';
         }
         return matchedOppgaveStatus?.datoOpprettet
             ? ' (Oppgave sendt ' + formaterIsoDato(matchedOppgaveStatus?.datoOpprettet) + ')'
