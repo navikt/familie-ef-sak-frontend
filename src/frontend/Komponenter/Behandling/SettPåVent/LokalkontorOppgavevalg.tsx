@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { CheckboxGroup, Checkbox, BodyShort } from '@navikt/ds-react';
 import styled from 'styled-components';
 import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
@@ -11,7 +11,7 @@ const FlexBox = styled.div`
 `;
 
 export type Oppgavestatus = {
-    vurderHenvendelsOppgave: string;
+    vurderHenvendelseOppgave: string;
     datoOpprettet: string;
 };
 
@@ -30,13 +30,36 @@ export const LokalkontorOppgavevalg: FC<Props> = ({
     oppgaverMotLokalkontor,
     erBehandlingPåVent,
 }) => {
+    const tidligereSendteLokalkontorOppgaver = (): VurderHenvendelseOppgavetype[] => {
+        if (oppgavestatus.status === RessursStatus.SUKSESS) {
+            return oppgavestatus.data.map((oppgave) => {
+                return oppgave.vurderHenvendelseOppgave;
+            }) as VurderHenvendelseOppgavetype[];
+        }
+        return [];
+    };
+
+    const [checkedOppgaver, settCheckedOppgaver] = useState([
+        ...tidligereSendteLokalkontorOppgaver(),
+        ...oppgaverMotLokalkontor,
+    ]);
+    const erSendt = (oppgave: VurderHenvendelseOppgavetype): boolean => {
+        if (tidligereSendteLokalkontorOppgaver().includes(oppgave)) {
+            return true;
+        }
+        return false;
+    };
+    const erValgt = (oppgave: VurderHenvendelseOppgavetype): boolean => {
+        return oppgaverMotLokalkontor.includes(oppgave);
+    };
+
     const lagOppgaveSendtTekst = (oppgave: VurderHenvendelseOppgavetype): string | undefined => {
         if (oppgavestatus.status !== RessursStatus.SUKSESS) {
             return undefined;
         }
 
         const matchedOppgaveStatus = oppgavestatus.data.find(
-            (status) => status.vurderHenvendelsOppgave === oppgave
+            (status) => status.vurderHenvendelseOppgave === oppgave
         );
 
         if (erValgt(oppgave) && erBehandlingPåVent) {
@@ -46,15 +69,12 @@ export const LokalkontorOppgavevalg: FC<Props> = ({
             ? ' (Oppgave sendt ' + formaterIsoDato(matchedOppgaveStatus?.datoOpprettet) + ')'
             : undefined;
     };
-    const erSendt = (oppgave: VurderHenvendelseOppgavetype): boolean => {
-        if (oppgavestatus.status === RessursStatus.SUKSESS) {
-            return oppgavestatus.data.some((status) => status.vurderHenvendelsOppgave === oppgave);
-        }
-        return false;
-    };
-    const erValgt = (oppgave: VurderHenvendelseOppgavetype): boolean => {
-        return oppgaverMotLokalkontor.some(
-            (oppgaveMotLokalkontor) => oppgaveMotLokalkontor === oppgave
+
+    const filtrerTidligereSendteOppgaver = (
+        oppgaver: VurderHenvendelseOppgavetype[]
+    ): VurderHenvendelseOppgavetype[] => {
+        return oppgaver.filter(
+            (oppgave) => !tidligereSendteLokalkontorOppgaver().includes(oppgave)
         );
     };
 
@@ -62,8 +82,12 @@ export const LokalkontorOppgavevalg: FC<Props> = ({
         <div>
             <CheckboxGroup
                 legend="Send oppgave til lokalkontoret"
-                onChange={settOppgaverMotLokalkontor}
+                onChange={(oppgaver) => {
+                    settOppgaverMotLokalkontor(filtrerTidligereSendteOppgaver(oppgaver)),
+                        settCheckedOppgaver(oppgaver);
+                }}
                 size="small"
+                value={checkedOppgaver}
             >
                 {aktuelleOppgaver.map((oppgave) => (
                     <FlexBox>
@@ -71,7 +95,6 @@ export const LokalkontorOppgavevalg: FC<Props> = ({
                             disabled={erSendt(oppgave) || erBehandlingPåVent}
                             key={oppgave}
                             value={oppgave}
-                            defaultChecked={erValgt(oppgave) || erSendt(oppgave)}
                         >
                             {vurderHenvendelseOppgaveTilTekst[oppgave]}
                         </Checkbox>
