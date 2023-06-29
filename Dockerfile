@@ -1,6 +1,13 @@
-FROM navikt/node-express:18
+FROM cgr.dev/chainguard/node:18
 
-ADD ./ /var/server/
+WORKDIR /var/server
+
+ADD assets ./assets
+ADD node_modules ./node_modules
+ADD build_n_deploy ./build_n_deploy
+ADD node_dist ./node_dist
+ADD frontend_production ./frontend_production
+ADD package.json .
 
 EXPOSE 8000
-CMD ["yarn", "start"]
+CMD ["/usr/bin/npm", "run", "start"]
