@@ -1,8 +1,4 @@
-import {
-    IPeriodeSkolepenger,
-    ISkoleårsperiodeSkolepenger,
-    SkolepengerUtgift,
-} from '../../../../../App/typer/vedtak';
+import { ISkoleårsperiodeSkolepenger } from '../../../../../App/typer/vedtak';
 import React, { Dispatch, SetStateAction } from 'react';
 import { useBehandling } from '../../../../../App/context/BehandlingContext';
 import { ListState } from '../../../../../App/hooks/felles/useListState';
@@ -30,6 +26,7 @@ const Skoleårsperioder: React.FC<Props> = ({
     valideringsfeil,
     settValideringsFeil,
     oppdaterHarUtførtBeregning,
+    låsteUtgiftIder,
 }) => {
     const { behandlingErRedigerbar } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
@@ -65,6 +62,7 @@ const Skoleårsperioder: React.FC<Props> = ({
                 //     behandlingErRedigerbar && index !== 0 && !inneholderLåsteUtgifter;
                 return (
                     <Skoleårsperiode
+                        låsteUtgiftIder={låsteUtgiftIder}
                         customValidate={customValidate}
                         fjernSkoleårsperiode={() => fjernSkoleårsperiode(index)}
                         key={index}
@@ -75,9 +73,7 @@ const Skoleårsperioder: React.FC<Props> = ({
                         ) => oppdaterSkoleårsperiode(index, property, value)}
                         oppdaterValideringsfeil={(
                             property: keyof ISkoleårsperiodeSkolepenger,
-                            oppdaterteFeil:
-                                | FormErrors<SkolepengerUtgift>[]
-                                | FormErrors<IPeriodeSkolepenger>[]
+                            oppdaterteFeil
                         ) =>
                             oppdaterValideringsfeil(
                                 settValideringsFeil,

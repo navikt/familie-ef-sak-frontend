@@ -17,7 +17,7 @@ interface Props {
     ) => void;
     oppdaterValideringsfeil: (
         property: keyof ISkoleårsperiodeSkolepenger,
-        oppdaterteFeil: FormErrors<SkolepengerUtgift>[] | FormErrors<IPeriodeSkolepenger>[]
+        oppdaterteFeil: FormErrors<SkolepengerUtgift | IPeriodeSkolepenger>[]
     ) => void;
     skoleårsperiode: ISkoleårsperiodeSkolepenger;
     valideringsfeil: FormErrors<ISkoleårsperiodeSkolepenger> | undefined;
