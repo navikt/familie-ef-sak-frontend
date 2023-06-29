@@ -23,7 +23,7 @@ import {
     initValgteFelt,
     skalSkjuleAlleDelmaler,
 } from './BrevUtils';
-import { Ressurs } from '../../../App/typer/ressurs';
+import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { useApp } from '../../../App/context/AppContext';
 import styled from 'styled-components';
 import { apiLoggFeil } from '../../../App/api/axios';
@@ -108,8 +108,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                 ...delmalStore.reduce((acc, delmal) => ({ ...acc, [delmal.delmal]: true }), {}),
             }));
         }
-        // eslint-disable-next-line
-    }, [brevStruktur, flettefeltStore, mellomlagretBrevVerdier]);
+    }, [brevStruktur, flettefeltStore, delmalStore, valgfeltStore, mellomlagretBrevVerdier]);
 
     const [valgteFelt, settValgteFelt] = useState<ValgtFelt>({});
     const [valgteDelmaler, settValgteDelmaler] = useState<ValgteDelmaler>({});
@@ -209,7 +208,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
 
         const url = behandlingId
             ? `/familie-ef-sak/api/brev/${behandlingId}/${brevMal}`
-            : `/familie-ef-sak/api/frittstaende-brev/fagsak/${fagsakId}/${brevMal}`;
+            : `/familie-ef-sak/api/frittstaende-brev/${fagsakId}/${brevMal}`;
 
         axiosRequest<string, unknown>({
             method: 'POST',
@@ -224,6 +223,9 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                 fritekstområder: utledFritekstområderForBrev(),
             },
         }).then((respons: Ressurs<string>) => {
+            if (respons.status === RessursStatus.SUKSESS) {
+                settBrevOppdatert(true);
+            }
             oppdaterBrevRessurs(respons);
         });
     };

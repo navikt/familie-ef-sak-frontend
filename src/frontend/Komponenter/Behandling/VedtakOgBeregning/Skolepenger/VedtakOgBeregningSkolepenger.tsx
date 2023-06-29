@@ -64,8 +64,20 @@ const VedtakOgBeregningSkolepenger: FC<Props> = ({ behandling, vilkår }) => {
                             // eslint-disable-next-line no-case-declarations
                             const erOpphør = resultatType === EBehandlingResultat.OPPHØRT;
                             {
-                                return toggles[ToggleName.visNyttGuiSkolepenger] ? (
-                                    <Vedtaksform />
+                                return toggles[ToggleName.visNyttGuiSkolepenger] && !erOpphør ? (
+                                    <Vedtaksform
+                                        behandling={behandling}
+                                        lagretInnvilgetVedtak={
+                                            vedtakForSkolepenger?._type ===
+                                            IVedtakType.InnvilgelseSkolepenger
+                                                ? vedtakForSkolepenger
+                                                : undefined
+                                        }
+                                        forrigeVedtak={
+                                            vedtakForrigeBehandling &&
+                                            (vedtakForrigeBehandling as unknown as IVedtakForSkolepenger)
+                                        }
+                                    />
                                 ) : (
                                     <VedtaksformSkolepenger
                                         key={erOpphør ? 'opphør' : 'innvilgelse'}

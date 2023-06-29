@@ -21,10 +21,12 @@ export interface KlageinstansResultat {
     type: KlageinstansEventType;
     utfall: KlageinstansUtfall;
     mottattEllerAvsluttetTidspunkt: string | undefined;
+    årsakFeilregistrert?: string;
 }
 
 export enum KlageinstansEventType {
     KLAGEBEHANDLING_AVSLUTTET = 'KLAGEBEHANDLING_AVSLUTTET',
+    BEHANDLING_FEILREGISTRERT = 'BEHANDLING_FEILREGISTRERT',
     ANKEBEHANDLING_OPPRETTET = 'ANKEBEHANDLING_OPPRETTET',
     ANKEBEHANDLING_AVSLUTTET = 'ANKEBEHANDLING_AVSLUTTET',
 }
