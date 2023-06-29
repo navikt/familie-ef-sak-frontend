@@ -11,6 +11,7 @@ export interface Dokumentinfo {
     dato?: string;
     journalposttype: Journalposttype;
     journalstatus: Journalstatus;
+    harSaksbehandlerTilgang: boolean;
     logiskeVedlegg: ILogiskVedlegg[];
     avsenderMottaker?: IJournalpostAvsenderMottaker;
     utsendingsinfo?: Utsendingsinfo;

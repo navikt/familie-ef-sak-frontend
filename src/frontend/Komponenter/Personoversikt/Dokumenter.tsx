@@ -210,15 +210,22 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
                 </InnUt>
             </Td>
             <Td>
-                <HovedLenke
-                    key={dokument.journalpostId}
-                    href={`/dokument/journalpost/${dokument.journalpostId}/dokument-pdf/${dokument.dokumentinfoId}`}
-                    target={'_blank'}
-                    rel={'noreferrer'}
-                >
-                    {dokument.tittel}
-                </HovedLenke>
-                <LogiskeVedlegg logiskeVedlegg={dokument.logiskeVedlegg} />
+                {dokument.harSaksbehandlerTilgang && (
+                    <>
+                        <HovedLenke
+                            key={dokument.journalpostId}
+                            href={`/dokument/journalpost/${dokument.journalpostId}/dokument-pdf/${dokument.dokumentinfoId}`}
+                            target={'_blank'}
+                            rel={'noreferrer'}
+                        >
+                            {dokument.tittel}
+                        </HovedLenke>
+                        <LogiskeVedlegg logiskeVedlegg={dokument.logiskeVedlegg} />
+                    </>
+                )}
+                {!dokument.harSaksbehandlerTilgang && (
+                    <BodyShortSmall>{dokument.tittel}</BodyShortSmall>
+                )}
             </Td>
             <Td>{utledAvsenderMottakerDetaljer(dokument)}</Td>
             <Td>{arkivtemaerTilTekst[dokument.tema as Arkivtema]}</Td>
