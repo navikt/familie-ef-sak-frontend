@@ -102,7 +102,7 @@ const vurderHenvendelseOppgaveTilTekst: Record<VurderHenvendelseOppgavetype, str
     INFORMERE_OM_SØKT_OVERGANGSSTØNAD: 'Beskjed om at vi har fått søknad',
     INNSTILLING_VEDRØRENDE_UTDANNING: 'Forespørsel om innstilling - utdanning',
 };
-export enum VurderHenvendelseOppgavetype {
+enum VurderHenvendelseOppgavetype {
     INFORMERE_OM_SØKT_OVERGANGSSTØNAD = 'INFORMERE_OM_SØKT_OVERGANGSSTØNAD',
     INNSTILLING_VEDRØRENDE_UTDANNING = 'INNSTILLING_VEDRØRENDE_UTDANNING',
 }
