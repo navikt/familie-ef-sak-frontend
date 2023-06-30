@@ -75,8 +75,8 @@ export const LokalkontorOppgavevalg: FC<Props> = ({
             <CheckboxGroup
                 legend="Send oppgave til lokalkontoret"
                 onChange={(oppgaver) => {
-                    settOppgaverMotLokalkontor(filtrerTidligereSendteOppgaver(oppgaver)),
-                        settCheckedOppgaver(oppgaver);
+                    settOppgaverMotLokalkontor(filtrerTidligereSendteOppgaver(oppgaver));
+                    settCheckedOppgaver(oppgaver);
                 }}
                 size="small"
                 value={checkedOppgaver}
