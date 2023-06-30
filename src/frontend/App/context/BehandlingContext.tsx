@@ -49,6 +49,7 @@ const [BehandlingProvider, useBehandling] = constate(() => {
     const { hentRegler, regler } = useHentRegler();
     // eslint-disable-next-line
     useEffect(() => hentRegler(), [behandlingId]);
+
     const hentTotrinnskontroll = useRerunnableEffect(hentTotrinnskontrollCallback, [behandlingId]);
     // eslint-disable-next-line
     useEffect(() => hentPersonopplysninger(behandlingId), [behandlingId]);
