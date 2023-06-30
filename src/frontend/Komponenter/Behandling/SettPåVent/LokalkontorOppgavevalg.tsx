@@ -37,12 +37,8 @@ export const LokalkontorOppgavevalg: FC<Props> = ({
         ...tidligereSendteLokalkontorOppgaver,
         ...oppgaverMotLokalkontor,
     ]);
-    const erSendt = (oppgave: VurderHenvendelseOppgavetype): boolean => {
-        if (tidligereSendteLokalkontorOppgaver.includes(oppgave)) {
-            return true;
-        }
-        return false;
-    };
+    const erSendt = (oppgave: VurderHenvendelseOppgavetype): boolean =>
+        tidligereSendteLokalkontorOppgaver.includes(oppgave);
     const erValgt = (oppgave: VurderHenvendelseOppgavetype): boolean => {
         return oppgaverMotLokalkontor.includes(oppgave);
     };
