@@ -18,10 +18,7 @@ import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
 import { useApp } from '../../../../../App/context/AppContext';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../../../App/typer/ressurs';
 import { UtregningstabellSkolepenger } from '../UtregnignstabellSkolepenger';
-import {
-    validerInnvilgetVedtakForm,
-    validerInnvilgetVedtakFormBeregning,
-} from './vedtaksvalidering';
+import { validerInnvilgetVedtakForm, validerSkoleårsperioder } from './vedtaksvalidering';
 import { tomSkoleårsperiodeSkolepenger } from '../typer';
 import SkoleårsperioderSkolepenger from './SkoleårsperioderSkolepenger';
 import OpphørSkolepenger from '../OpphørSkolepenger/OpphørSkolepenger';
@@ -150,7 +147,7 @@ export const VedtaksformSkolepenger: React.FC<{
     const beregnSkolepenger = () => {
         settHarUtførtBeregning(false);
         settVisFeilmelding(false);
-        if (formState.customValidate(validerInnvilgetVedtakFormBeregning)) {
+        if (formState.customValidate(validerSkoleårsperioder)) {
             axiosRequest<IBeregningSkolepengerResponse, IBeregningsrequestSkolepenger>({
                 method: 'POST',
                 url: `/familie-ef-sak/api/beregning/skolepenger`,
