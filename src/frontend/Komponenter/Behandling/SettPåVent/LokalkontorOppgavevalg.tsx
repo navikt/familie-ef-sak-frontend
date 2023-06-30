@@ -33,8 +33,6 @@ export const LokalkontorOppgavevalg: FC<Props> = ({
         return oppgavestatus.map((oppgave) => {
             return oppgave.vurderHenvendelseOppgave;
         });
-
-        return [];
     };
 
     const [checkedOppgaver, settCheckedOppgaver] = useState([
