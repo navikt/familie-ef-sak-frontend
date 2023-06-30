@@ -9,6 +9,15 @@ const FlexBox = styled.div`
     gap: 0.5rem;
 `;
 
+const vurderHenvendelseOppgaveTilTekst: Record<VurderHenvendelseOppgavetype, string> = {
+    INFORMERE_OM_SØKT_OVERGANGSSTØNAD: 'Beskjed om at vi har fått søknad',
+    INNSTILLING_VEDRØRENDE_UTDANNING: 'Forespørsel om innstilling - utdanning',
+};
+enum VurderHenvendelseOppgavetype {
+    INFORMERE_OM_SØKT_OVERGANGSSTØNAD = 'INFORMERE_OM_SØKT_OVERGANGSSTØNAD',
+    INNSTILLING_VEDRØRENDE_UTDANNING = 'INNSTILLING_VEDRØRENDE_UTDANNING',
+}
+
 export type SendtOppgave = {
     vurderHenvendelseOppgave: VurderHenvendelseOppgavetype;
     datoOpprettet: string;
@@ -63,38 +72,27 @@ export const LokalkontorOppgavevalg: FC<Props> = ({
     };
 
     return (
-        <div>
-            <CheckboxGroup
-                legend="Send oppgave til lokalkontoret"
-                onChange={(oppgaver) => {
-                    settOppgaverMotLokalkontor(filtrerTidligereSendteOppgaver(oppgaver));
-                    settCheckedOppgaver(oppgaver);
-                }}
-                size="small"
-                value={checkedOppgaver}
-            >
-                {aktuelleOppgaver.map((oppgave) => (
-                    <FlexBox>
-                        <Checkbox
-                            disabled={erSendt(oppgave) || erBehandlingPåVent}
-                            key={oppgave}
-                            value={oppgave}
-                        >
-                            {vurderHenvendelseOppgaveTilTekst[oppgave]}
-                        </Checkbox>
-                        <BodyShort size={'small'}>{lagOppgaveSendtTekst(oppgave)}</BodyShort>
-                    </FlexBox>
-                ))}
-            </CheckboxGroup>
-        </div>
+        <CheckboxGroup
+            legend="Send oppgave til lokalkontoret"
+            onChange={(oppgaver) => {
+                settOppgaverMotLokalkontor(filtrerTidligereSendteOppgaver(oppgaver));
+                settCheckedOppgaver(oppgaver);
+            }}
+            size="small"
+            value={checkedOppgaver}
+        >
+            {aktuelleOppgaver.map((oppgave) => (
+                <FlexBox key={oppgave}>
+                    <Checkbox
+                        disabled={erSendt(oppgave) || erBehandlingPåVent}
+                        key={oppgave}
+                        value={oppgave}
+                    >
+                        {vurderHenvendelseOppgaveTilTekst[oppgave]}
+                    </Checkbox>
+                    <BodyShort size={'small'}>{lagOppgaveSendtTekst(oppgave)}</BodyShort>
+                </FlexBox>
+            ))}
+        </CheckboxGroup>
     );
 };
-
-const vurderHenvendelseOppgaveTilTekst: Record<VurderHenvendelseOppgavetype, string> = {
-    INFORMERE_OM_SØKT_OVERGANGSSTØNAD: 'Beskjed om at vi har fått søknad',
-    INNSTILLING_VEDRØRENDE_UTDANNING: 'Forespørsel om innstilling - utdanning',
-};
-enum VurderHenvendelseOppgavetype {
-    INFORMERE_OM_SØKT_OVERGANGSSTØNAD = 'INFORMERE_OM_SØKT_OVERGANGSSTØNAD',
-    INNSTILLING_VEDRØRENDE_UTDANNING = 'INNSTILLING_VEDRØRENDE_UTDANNING',
-}
