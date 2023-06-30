@@ -58,7 +58,7 @@ export const LokalkontorOppgavevalg: FC<Props> = ({
         );
 
         if (erValgt(oppgave) && erBehandlingPåVent) {
-            return '(Oppgave er sendt ' + dagensDatoFormatert() + ')';
+            return '(Oppgave sendt ' + dagensDatoFormatert() + ')';
         }
         return matchedOppgavestatus?.datoOpprettet
             ? ' (Oppgave sendt ' + formaterIsoDato(matchedOppgavestatus?.datoOpprettet) + ')'
