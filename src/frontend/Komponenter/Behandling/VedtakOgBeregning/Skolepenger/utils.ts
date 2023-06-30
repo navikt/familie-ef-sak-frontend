@@ -37,7 +37,7 @@ export const oppdaterValideringsfeil = <
     index: number,
     property: keyof T,
     // @ts-ignore
-    formErrors: FormErrors<T2 extends Array<infer U> ? U[] : T2>
+    formErrors: T2 extends Array<infer U> ? FormErrors<U>[] : FormErrors<T2>
 ) => {
     settValideringsFeil((prevState: FormErrors<InnvilgeVedtakForm>) => {
         const skoleårsperioder = (prevState.skoleårsperioder ?? []).map((p, i) =>
