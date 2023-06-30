@@ -50,15 +50,15 @@ export const LokalkontorOppgavevalg: FC<Props> = ({
     };
 
     const lagOppgaveSendtTekst = (oppgave: VurderHenvendelseOppgavetype): string | undefined => {
-        const matchedOppgaveStatus = oppgavestatus.find(
+        const matchedOppgavestatus = oppgavestatus.find(
             (status) => status.vurderHenvendelseOppgave === oppgave
         );
 
         if (erValgt(oppgave) && erBehandlingPåVent) {
             return '(Oppgave er sendt ' + dagensDatoFormatert() + ')';
         }
-        return matchedOppgaveStatus?.datoOpprettet
-            ? ' (Oppgave sendt ' + formaterIsoDato(matchedOppgaveStatus?.datoOpprettet) + ')'
+        return matchedOppgavestatus?.datoOpprettet
+            ? ' (Oppgave sendt ' + formaterIsoDato(matchedOppgavestatus?.datoOpprettet) + ')'
             : undefined;
     };
 
