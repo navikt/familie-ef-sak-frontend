@@ -30,6 +30,7 @@ import { FlexDiv } from '../Oppgavebenk/OppgaveFiltrering';
 import { FamilieReactSelect, MultiValue, SingleValue } from '@navikt/familie-form-elements';
 import { oppdaterVedleggFilter } from './utils';
 import { Utsendingsinfo } from './Utsendingsinfo';
+import { Checkbox } from '@navikt/ds-react';
 
 const DokumenterVisning = styled.div`
     display: flex;
@@ -158,9 +159,19 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
 
     const dokumentResponse = useDataHenter<Dokumentinfo[], null>(dokumentConfig);
 
+    const [visFeilregistrerteOgAvbruttValgt, setVisFeilregistrerteOgAvbruttValgt] =
+        React.useState(false);
+
+    const visFeilregistrerteOgAvbrutt = () => {
+        setVisFeilregistrerteOgAvbruttValgt(!visFeilregistrerteOgAvbruttValgt);
+    };
+
     const dokumentGruppeSkalIkkeVises = (dokumenter: Dokumentinfo[]): boolean => {
         const journalStatuser = [Journalstatus.FEILREGISTRERT, Journalstatus.AVBRUTT];
-        return dokumenter.some((dokument) => journalStatuser.includes(dokument.journalstatus));
+        return (
+            !visFeilregistrerteOgAvbruttValgt &&
+            dokumenter.some((dokument) => journalStatuser.includes(dokument.journalstatus))
+        );
     };
 
     const Kolonnetittel: React.FC<{ text: string; width: number }> = ({ text, width }) => (
@@ -284,6 +295,12 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
                         options={journalstatusTilTekst}
                         value={vedleggRequest.journalpostStatus}
                     />
+                    <Checkbox
+                        onChange={visFeilregistrerteOgAvbrutt}
+                        checked={visFeilregistrerteOgAvbruttValgt}
+                    >
+                        Vis feilregistrerte/avbrutte
+                    </Checkbox>
                 </FlexDiv>
                 <table className="tabell">
                     <thead>
