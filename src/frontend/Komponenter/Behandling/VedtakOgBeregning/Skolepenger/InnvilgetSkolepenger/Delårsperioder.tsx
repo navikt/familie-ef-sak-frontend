@@ -84,104 +84,102 @@ const Delårsperioder: React.FC<ValideringsPropsMedOppdatering<IPeriodeSkolepeng
     const erLesevisning: boolean = !behandlingErRedigerbar || skoleårErFjernet === true;
 
     return (
-        <>
-            <Grid skoleårErFjernet={skoleårErFjernet}>
-                <Label>Studietype</Label>
-                <Label>Studiebelastning</Label>
-                <Label>Periode fra og med</Label>
-                <Label>Periode til og med</Label>
-                <Label>Antall måneder</Label>
-                {data.map((periode, index) => {
-                    const { studietype, årMånedFra, årMånedTil, studiebelastning } = periode;
-                    const skalViseFjernKnapp =
-                        behandlingErRedigerbar &&
-                        index === data.length - 1 &&
-                        index !== 0 &&
-                        !skoleårErFjernet;
-                    return (
-                        <React.Fragment key={index}>
-                            <EnsligFamilieSelect
-                                className={'ny-rad'}
-                                label="Periodetype"
-                                hideLabel
-                                value={studietype}
-                                error={valideringsfeil && valideringsfeil[index]?.studietype}
-                                onChange={(e) => {
-                                    oppdaterStudietype(e.target.value as ESkolepengerStudietype);
-                                }}
-                                erLesevisning={erLesevisning || erOpphør || index !== 0}
-                                lesevisningVerdi={
-                                    index === 0
-                                        ? studietype && skolepengerStudietypeTilTekst[studietype]
-                                        : ''
+        <Grid skoleårErFjernet={skoleårErFjernet}>
+            <Label>Studietype</Label>
+            <Label>Studiebelastning</Label>
+            <Label>Periode fra og med</Label>
+            <Label>Periode til og med</Label>
+            <Label>Antall måneder</Label>
+            {data.map((periode, index) => {
+                const { studietype, årMånedFra, årMånedTil, studiebelastning } = periode;
+                const skalViseFjernKnapp =
+                    behandlingErRedigerbar &&
+                    index === data.length - 1 &&
+                    index !== 0 &&
+                    !skoleårErFjernet;
+                return (
+                    <React.Fragment key={index}>
+                        <EnsligFamilieSelect
+                            className={'ny-rad'}
+                            label="Periodetype"
+                            hideLabel
+                            value={studietype}
+                            error={valideringsfeil && valideringsfeil[index]?.studietype}
+                            onChange={(e) => {
+                                oppdaterStudietype(e.target.value as ESkolepengerStudietype);
+                            }}
+                            erLesevisning={erLesevisning || erOpphør || index !== 0}
+                            lesevisningVerdi={
+                                index === 0
+                                    ? studietype && skolepengerStudietypeTilTekst[studietype]
+                                    : ''
+                            }
+                        >
+                            <option value="">Velg</option>
+                            {studietyper.map((type) => (
+                                <option value={type} key={type}>
+                                    {skolepengerStudietypeTilTekst[type]}
+                                </option>
+                            ))}
+                        </EnsligFamilieSelect>
+                        <Input
+                            label={'Studiebelastning'}
+                            hideLabel
+                            onKeyPress={tilHeltall}
+                            type="number"
+                            error={valideringsfeil && valideringsfeil[index]?.studiebelastning}
+                            value={harTallverdi(studiebelastning) ? studiebelastning : ''}
+                            formatValue={(k) => k + ' %'}
+                            onChange={(e) =>
+                                oppdaterUtgiftsPeriode(
+                                    index,
+                                    'studiebelastning',
+                                    tilTallverdi(e.target.value)
+                                )
+                            }
+                            erLesevisning={erLesevisning}
+                        />
+                        <MånedÅrPeriode
+                            årMånedFraInitiell={årMånedFra}
+                            årMånedTilInitiell={årMånedTil}
+                            index={index}
+                            onEndre={(verdi, periodeVariant) =>
+                                oppdaterUtgiftsPeriode(
+                                    index,
+                                    periodeVariantTilUtgiftsperiodeProperty(periodeVariant),
+                                    verdi
+                                )
+                            }
+                            feilmelding={valideringsfeil && valideringsfeil[index]?.årMånedFra}
+                            erLesevisning={erLesevisning}
+                        />
+                        <AntallMåneder>
+                            {kalkulerAntallMåneder(årMånedFra, årMånedTil)}
+                        </AntallMåneder>
+                        {!erLesevisning && !erOpphør && (
+                            <LeggTilKnapp
+                                onClick={() =>
+                                    oppdater([
+                                        ...data,
+                                        {
+                                            ...tomSkoleårsperiode,
+                                            studietype: data[0].studietype,
+                                        },
+                                    ])
                                 }
-                            >
-                                <option value="">Velg</option>
-                                {studietyper.map((type) => (
-                                    <option value={type} key={type}>
-                                        {skolepengerStudietypeTilTekst[type]}
-                                    </option>
-                                ))}
-                            </EnsligFamilieSelect>
-                            <Input
-                                label={'Studiebelastning'}
-                                hideLabel
-                                onKeyPress={tilHeltall}
-                                type="number"
-                                error={valideringsfeil && valideringsfeil[index]?.studiebelastning}
-                                value={harTallverdi(studiebelastning) ? studiebelastning : ''}
-                                formatValue={(k) => k + ' %'}
-                                onChange={(e) =>
-                                    oppdaterUtgiftsPeriode(
-                                        index,
-                                        'studiebelastning',
-                                        tilTallverdi(e.target.value)
-                                    )
-                                }
-                                erLesevisning={erLesevisning}
+                                variant="tertiary"
                             />
-                            <MånedÅrPeriode
-                                årMånedFraInitiell={årMånedFra}
-                                årMånedTilInitiell={årMånedTil}
-                                index={index}
-                                onEndre={(verdi, periodeVariant) =>
-                                    oppdaterUtgiftsPeriode(
-                                        index,
-                                        periodeVariantTilUtgiftsperiodeProperty(periodeVariant),
-                                        verdi
-                                    )
-                                }
-                                feilmelding={valideringsfeil && valideringsfeil[index]?.årMånedFra}
-                                erLesevisning={erLesevisning}
+                        )}
+                        {skalViseFjernKnapp && (
+                            <FjernKnapp
+                                onClick={() => fjernDelårsperiode(index)}
+                                ikontekst={'Fjern delårsperiode'}
                             />
-                            <AntallMåneder>
-                                {kalkulerAntallMåneder(årMånedFra, årMånedTil)}
-                            </AntallMåneder>
-                            {!erLesevisning && !erOpphør && (
-                                <LeggTilKnapp
-                                    onClick={() =>
-                                        oppdater([
-                                            ...data,
-                                            {
-                                                ...tomSkoleårsperiode,
-                                                studietype: data[0].studietype,
-                                            },
-                                        ])
-                                    }
-                                    variant="tertiary"
-                                />
-                            )}
-                            {skalViseFjernKnapp && (
-                                <FjernKnapp
-                                    onClick={() => fjernDelårsperiode(index)}
-                                    ikontekst={'Fjern delårsperiode'}
-                                />
-                            )}
-                        </React.Fragment>
-                    );
-                })}
-            </Grid>
-        </>
+                        )}
+                    </React.Fragment>
+                );
+            })}
+        </Grid>
     );
 };
 
