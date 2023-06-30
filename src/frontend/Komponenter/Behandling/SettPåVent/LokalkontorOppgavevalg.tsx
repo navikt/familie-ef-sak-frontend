@@ -1,7 +1,6 @@
 import React, { FC, useState } from 'react';
 import { CheckboxGroup, Checkbox, BodyShort } from '@navikt/ds-react';
 import styled from 'styled-components';
-import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { dagensDatoFormatert, formaterIsoDato } from '../../../App/utils/formatter';
 
 const FlexBox = styled.div`
@@ -11,13 +10,13 @@ const FlexBox = styled.div`
 `;
 
 export type Oppgavestatus = {
-    vurderHenvendelseOppgave: string;
+    vurderHenvendelseOppgave: VurderHenvendelseOppgavetype;
     datoOpprettet: string;
 };
 
 type Props = {
     aktuelleOppgaver: VurderHenvendelseOppgavetype[];
-    oppgavestatus: Ressurs<Oppgavestatus[]>;
+    oppgavestatus: Oppgavestatus[];
     settOppgaverMotLokalkontor: (oppgaverMotLokalkontor: VurderHenvendelseOppgavetype[]) => void;
     oppgaverMotLokalkontor: VurderHenvendelseOppgavetype[];
     erBehandlingPåVent: boolean;
@@ -31,11 +30,10 @@ export const LokalkontorOppgavevalg: FC<Props> = ({
     erBehandlingPåVent,
 }) => {
     const tidligereSendteLokalkontorOppgaver = (): VurderHenvendelseOppgavetype[] => {
-        if (oppgavestatus.status === RessursStatus.SUKSESS) {
-            return oppgavestatus.data.map((oppgave) => {
-                return oppgave.vurderHenvendelseOppgave;
-            }) as VurderHenvendelseOppgavetype[];
-        }
+        return oppgavestatus.map((oppgave) => {
+            return oppgave.vurderHenvendelseOppgave;
+        });
+
         return [];
     };
 
@@ -54,11 +52,7 @@ export const LokalkontorOppgavevalg: FC<Props> = ({
     };
 
     const lagOppgaveSendtTekst = (oppgave: VurderHenvendelseOppgavetype): string | undefined => {
-        if (oppgavestatus.status !== RessursStatus.SUKSESS) {
-            return undefined;
-        }
-
-        const matchedOppgaveStatus = oppgavestatus.data.find(
+        const matchedOppgaveStatus = oppgavestatus.find(
             (status) => status.vurderHenvendelseOppgave === oppgave
         );
 

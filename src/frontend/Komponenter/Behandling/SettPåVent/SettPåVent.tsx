@@ -246,7 +246,7 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
 
     return visSettPåVent && toggles[ToggleName.settPåVentMedOppgavestyring] ? (
         <DataViewer response={{ oppgave, oppgavestatus }}>
-            {({ oppgave }) => {
+            {({ oppgave, oppgavestatus }) => {
                 return (
                     <SettPåVentWrapper>
                         <Heading size={'medium'}>
