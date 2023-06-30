@@ -35,7 +35,14 @@ interface Props {
     oppdaterHarUtførtBeregning: (beregningUtført: boolean) => void;
 }
 
-const VisEllerEndreSkoleårsperioder: React.FC<Props> = ({ skoleårsperioder }) => {
+const VisEllerEndreSkoleårsperioder: React.FC<Props> = ({
+    customValidate,
+    skoleårsperioder,
+    låsteUtgiftIder,
+    valideringsfeil,
+    settValideringsFeil,
+    oppdaterHarUtførtBeregning,
+}) => {
     const { behandlingErRedigerbar } = useBehandling();
     const antallSkoleår = skoleårsperioder.value.length;
 
@@ -60,7 +67,16 @@ const VisEllerEndreSkoleårsperioder: React.FC<Props> = ({ skoleårsperioder }) 
                 </Container>
             );
         case Visningsmodus.VISNING:
-            return <Skoleårsperioder />;
+            return (
+                <Skoleårsperioder
+                    customValidate={customValidate}
+                    skoleårsperioder={skoleårsperioder}
+                    låsteUtgiftIder={låsteUtgiftIder}
+                    valideringsfeil={valideringsfeil}
+                    settValideringsFeil={settValideringsFeil}
+                    oppdaterHarUtførtBeregning={oppdaterHarUtførtBeregning}
+                />
+            );
     }
 };
 
