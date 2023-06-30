@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, Dispatch, SetStateAction, useState } from 'react';
 import { CheckboxGroup, Checkbox, BodyShort } from '@navikt/ds-react';
 import styled from 'styled-components';
 import { dagensDatoFormatert, formaterIsoDato } from '../../../App/utils/formatter';
@@ -9,38 +9,36 @@ const FlexBox = styled.div`
     gap: 0.5rem;
 `;
 
-export type Oppgavestatus = {
+export type SendtOppgave = {
     vurderHenvendelseOppgave: VurderHenvendelseOppgavetype;
     datoOpprettet: string;
 };
 
 type Props = {
     aktuelleOppgaver: VurderHenvendelseOppgavetype[];
-    oppgavestatus: Oppgavestatus[];
-    settOppgaverMotLokalkontor: (oppgaverMotLokalkontor: VurderHenvendelseOppgavetype[]) => void;
+    sendteOppgaver: SendtOppgave[];
+    settOppgaverMotLokalkontor: Dispatch<SetStateAction<VurderHenvendelseOppgavetype[]>>;
     oppgaverMotLokalkontor: VurderHenvendelseOppgavetype[];
     erBehandlingPåVent: boolean;
 };
 
 export const LokalkontorOppgavevalg: FC<Props> = ({
     aktuelleOppgaver,
-    oppgavestatus,
+    sendteOppgaver,
     settOppgaverMotLokalkontor,
     oppgaverMotLokalkontor,
     erBehandlingPåVent,
 }) => {
-    const tidligereSendteLokalkontorOppgaver = (): VurderHenvendelseOppgavetype[] => {
-        return oppgavestatus.map((oppgave) => {
-            return oppgave.vurderHenvendelseOppgave;
-        });
-    };
+    const tidligereSendteLokalkontorOppgaver = sendteOppgaver.map((oppgave) => {
+        return oppgave.vurderHenvendelseOppgave;
+    });
 
     const [checkedOppgaver, settCheckedOppgaver] = useState([
-        ...tidligereSendteLokalkontorOppgaver(),
+        ...tidligereSendteLokalkontorOppgaver,
         ...oppgaverMotLokalkontor,
     ]);
     const erSendt = (oppgave: VurderHenvendelseOppgavetype): boolean => {
-        if (tidligereSendteLokalkontorOppgaver().includes(oppgave)) {
+        if (tidligereSendteLokalkontorOppgaver.includes(oppgave)) {
             return true;
         }
         return false;
@@ -50,7 +48,7 @@ export const LokalkontorOppgavevalg: FC<Props> = ({
     };
 
     const lagOppgaveSendtTekst = (oppgave: VurderHenvendelseOppgavetype): string | undefined => {
-        const matchedOppgavestatus = oppgavestatus.find(
+        const matchedOppgavestatus = sendteOppgaver.find(
             (status) => status.vurderHenvendelseOppgave === oppgave
         );
 
@@ -65,9 +63,7 @@ export const LokalkontorOppgavevalg: FC<Props> = ({
     const filtrerTidligereSendteOppgaver = (
         oppgaver: VurderHenvendelseOppgavetype[]
     ): VurderHenvendelseOppgavetype[] => {
-        return oppgaver.filter(
-            (oppgave) => !tidligereSendteLokalkontorOppgaver().includes(oppgave)
-        );
+        return oppgaver.filter((oppgave) => !tidligereSendteLokalkontorOppgaver.includes(oppgave));
     };
 
     return (

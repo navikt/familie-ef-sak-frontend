@@ -30,7 +30,7 @@ import { TaAvVentModal } from './TaAvVentModal';
 import { EToast } from '../../../App/typer/toast';
 import { EksisterendeBeskrivelse } from './EksisterendeBeskrivelse';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
-import { LokalkontorOppgavevalg, Oppgavestatus } from './LokalkontorOppgavevalg';
+import { LokalkontorOppgavevalg, SendtOppgave } from './LokalkontorOppgavevalg';
 
 const AlertStripe = styled(Alert)`
     margin-top: 1rem;
@@ -94,8 +94,8 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
     const [oppgaverMotLokalkontor, settOppgaverMotLokalkontor] = useState<
         VurderHenvendelseOppgavetype[]
     >([]);
-    const [oppgavestatus, settOppgavestatus] = useState<Ressurs<Oppgavestatus[]>>(
-        byggTomRessurs<Oppgavestatus[]>()
+    const [sendteOppgaver, settSendteOppgaver] = useState<Ressurs<SendtOppgave[]>>(
+        byggTomRessurs<SendtOppgave[]>()
     );
     const [taAvVentStatus, settTaAvVentStatus] = useState<ETaAvVentStatus>();
     const [låsKnapp, settLåsKnapp] = useState<boolean>(false);
@@ -120,12 +120,12 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
     }, [behandling.id, axiosRequest]);
 
     const hentOppgavestatusForBehandling = useCallback(() => {
-        axiosRequest<Oppgavestatus[], null>({
+        axiosRequest<SendtOppgave[], null>({
             method: 'GET',
             url: `/familie-ef-sak/api/oppgave/behandling/${behandling.id}/settpavent-oppgavestatus`,
-        }).then((respons: RessursSuksess<Oppgavestatus[]> | RessursFeilet) => {
+        }).then((respons: RessursSuksess<SendtOppgave[]> | RessursFeilet) => {
             if (respons.status === RessursStatus.SUKSESS) {
-                settOppgavestatus(respons);
+                settSendteOppgaver(respons);
             }
         });
     }, [behandling.id, axiosRequest]);
@@ -245,8 +245,8 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
     ) as VurderHenvendelseOppgavetype[];
 
     return visSettPåVent && toggles[ToggleName.settPåVentMedOppgavestyring] ? (
-        <DataViewer response={{ oppgave, oppgavestatus }}>
-            {({ oppgave, oppgavestatus }) => {
+        <DataViewer response={{ oppgave, sendteOppgaver }}>
+            {({ oppgave, sendteOppgaver }) => {
                 return (
                     <SettPåVentWrapper>
                         <Heading size={'medium'}>
@@ -290,7 +290,7 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
                                 erOvergangsstønadEllerSkolepenger && (
                                     <LokalkontorOppgavevalg
                                         aktuelleOppgaver={aktuelleOppgaver}
-                                        oppgavestatus={oppgavestatus}
+                                        sendteOppgaver={sendteOppgaver}
                                         settOppgaverMotLokalkontor={settOppgaverMotLokalkontor}
                                         oppgaverMotLokalkontor={oppgaverMotLokalkontor}
                                         erBehandlingPåVent={erBehandlingPåVent}
