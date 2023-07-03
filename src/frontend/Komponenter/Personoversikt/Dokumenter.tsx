@@ -225,15 +225,26 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
             <Td></Td>
             <Td></Td>
             <Td>
-                <LenkeVenstreMargin
-                    href={`/dokument/journalpost/${dokument.journalpostId}/dokument-pdf/${dokument.dokumentinfoId}`}
-                    target={'_blank'}
-                    rel={'noreferrer'}
-                >
-                    {dokument.tittel}
-                </LenkeVenstreMargin>
-                <LogiskeVedlegg logiskeVedlegg={dokument.logiskeVedlegg} />
+                {toggles[ToggleName.dokumentoversiktLinkTilDokument] &&
+                    dokument.harSaksbehandlerTilgang && (
+                        <>
+                            <LenkeVenstreMargin
+                                href={`/dokument/journalpost/${dokument.journalpostId}/dokument-pdf/${dokument.dokumentinfoId}`}
+                                target={'_blank'}
+                                rel={'noreferrer'}
+                            >
+                                {dokument.tittel}
+                            </LenkeVenstreMargin>
+                            <LogiskeVedlegg logiskeVedlegg={dokument.logiskeVedlegg} />
+                        </>
+                    )}
+                {(!toggles[ToggleName.dokumentoversiktLinkTilDokument] ||
+                    !dokument.harSaksbehandlerTilgang) && (
+                    <BodyShortSmall>{dokument.tittel}</BodyShortSmall>
+                )}
             </Td>
+            <Td></Td>
+            <Td></Td>
             <Td></Td>
             <Td></Td>
         </tr>
