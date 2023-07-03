@@ -8,6 +8,7 @@ interface Props<U extends string> {
     options: Record<U, string>;
     sortDesc?: boolean;
     skalSkjuleValgetAlle?: boolean;
+    size?: 'medium' | 'small';
 }
 
 function CustomSelect<U extends string>(props: Props<U>): ReactElement {
@@ -29,6 +30,7 @@ function CustomSelect<U extends string>(props: Props<U>): ReactElement {
 
     return (
         <Select
+            size={props.size || 'medium'}
             value={props.value || ''}
             className="flex-item"
             label={props.label}

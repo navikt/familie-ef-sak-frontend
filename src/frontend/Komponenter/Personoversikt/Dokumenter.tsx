@@ -31,6 +31,8 @@ import { FamilieReactSelect, MultiValue, SingleValue } from '@navikt/familie-for
 import { oppdaterVedleggFilter } from './utils';
 import { Utsendingsinfo } from './Utsendingsinfo';
 import { Checkbox } from '@navikt/ds-react';
+import { ToggleName } from '../../App/context/toggles';
+import { useToggles } from '../../App/context/TogglesContext';
 
 const DokumenterVisning = styled.div`
     display: flex;
@@ -67,8 +69,13 @@ const InnUt = styled.div`
     }
 `;
 
+const CheckboxHøyre = styled(Checkbox)`
+    float: right;
+`;
+
 const ArkivtemaVelger = styled(FamilieReactSelect)`
     width: 15rem;
+    height: 1.5rem;
     margin-top: 1rem;
     margin-right: 1rem;
 `;
@@ -158,7 +165,7 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
     );
 
     const dokumentResponse = useDataHenter<Dokumentinfo[], null>(dokumentConfig);
-
+    const { toggles } = useToggles();
     const [visFeilregistrerteOgAvbruttValgt, setVisFeilregistrerteOgAvbruttValgt] =
         React.useState(false);
 
@@ -166,12 +173,27 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
         setVisFeilregistrerteOgAvbruttValgt(!visFeilregistrerteOgAvbruttValgt);
     };
 
-    const dokumentGruppeSkalIkkeVises = (dokumenter: Dokumentinfo[]): boolean => {
+    const dokumentGruppeSkalVises = (dokumenter: Dokumentinfo[]): boolean => {
         const journalStatuser = [Journalstatus.FEILREGISTRERT, Journalstatus.AVBRUTT];
-        return (
-            !visFeilregistrerteOgAvbruttValgt &&
-            dokumenter.some((dokument) => journalStatuser.includes(dokument.journalstatus))
-        );
+        const defaultVisJournalstatuser = [
+            Journalstatus.MOTTATT,
+            Journalstatus.JOURNALFOERT,
+            Journalstatus.FERDIGSTILT,
+            Journalstatus.EKSPEDERT,
+            Journalstatus.UNDER_ARBEID,
+            Journalstatus.UTGAAR,
+            Journalstatus.UKJENT_BRUKER,
+            Journalstatus.RESERVERT,
+            Journalstatus.OPPLASTING_DOKUMENT,
+            Journalstatus.UKJENT,
+        ];
+        if (visFeilregistrerteOgAvbruttValgt) {
+            return dokumenter.some((dokument) => journalStatuser.includes(dokument.journalstatus));
+        } else {
+            return dokumenter.some((dokument) =>
+                defaultVisJournalstatuser.includes(dokument.journalstatus)
+            );
+        }
     };
 
     const Kolonnetittel: React.FC<{ text: string; width: number }> = ({ text, width }) => (
@@ -221,19 +243,20 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
                 </InnUt>
             </Td>
             <Td>
-                {dokument.harSaksbehandlerTilgang && (
-                    <>
-                        <HovedLenke
-                            key={dokument.journalpostId}
-                            href={`/dokument/journalpost/${dokument.journalpostId}/dokument-pdf/${dokument.dokumentinfoId}`}
-                            target={'_blank'}
-                            rel={'noreferrer'}
-                        >
-                            {dokument.tittel}
-                        </HovedLenke>
-                        <LogiskeVedlegg logiskeVedlegg={dokument.logiskeVedlegg} />
-                    </>
-                )}
+                {toggles[ToggleName.dokumentoversiktLinkTilDokument] &&
+                    dokument.harSaksbehandlerTilgang && (
+                        <>
+                            <HovedLenke
+                                key={dokument.journalpostId}
+                                href={`/dokument/journalpost/${dokument.journalpostId}/dokument-pdf/${dokument.dokumentinfoId}`}
+                                target={'_blank'}
+                                rel={'noreferrer'}
+                            >
+                                {dokument.tittel}
+                            </HovedLenke>
+                            <LogiskeVedlegg logiskeVedlegg={dokument.logiskeVedlegg} />
+                        </>
+                    )}
                 {!dokument.harSaksbehandlerTilgang && (
                     <BodyShortSmall>{dokument.tittel}</BodyShortSmall>
                 )}
@@ -288,19 +311,21 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
                         label="Velg dokumenttype"
                         options={dokumenttyperTilTekst}
                         value={vedleggRequest.dokumenttype}
+                        size={'small'}
                     />
                     <CustomSelect
                         onChange={settVedlegg('journalpostStatus')}
                         label="Velg journalpoststatus"
                         options={journalstatusTilTekst}
                         value={vedleggRequest.journalpostStatus}
+                        size={'small'}
                     />
-                    <Checkbox
+                    <CheckboxHøyre
                         onChange={visFeilregistrerteOgAvbrutt}
                         checked={visFeilregistrerteOgAvbruttValgt}
                     >
                         Vis feilregistrerte/avbrutte
-                    </Checkbox>
+                    </CheckboxHøyre>
                 </FlexDiv>
                 <table className="tabell">
                     <thead>
@@ -333,11 +358,10 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
                                             }
                                             return datoA > datoB ? -1 : 1;
                                         })
-                                        .filter(
-                                            (journalPostId: string) =>
-                                                !dokumentGruppeSkalIkkeVises(
-                                                    grupperteDokumenter[journalPostId]
-                                                )
+                                        .filter((journalPostId: string) =>
+                                            dokumentGruppeSkalVises(
+                                                grupperteDokumenter[journalPostId]
+                                            )
                                         )
                                         .map((journalpostId: string) => {
                                             return grupperteDokumenter[journalpostId].map(
