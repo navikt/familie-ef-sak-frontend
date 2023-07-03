@@ -257,9 +257,10 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
                             <LogiskeVedlegg logiskeVedlegg={dokument.logiskeVedlegg} />
                         </>
                     )}
-                {!dokument.harSaksbehandlerTilgang && (
-                    <BodyShortSmall>{dokument.tittel}</BodyShortSmall>
-                )}
+                {!toggles[ToggleName.dokumentoversiktLinkTilDokument] ||
+                    (!dokument.harSaksbehandlerTilgang && (
+                        <BodyShortSmall>{dokument.tittel}</BodyShortSmall>
+                    ))}
             </Td>
             <Td>{utledAvsenderMottakerDetaljer(dokument)}</Td>
             <Td>{arkivtemaerTilTekst[dokument.tema as Arkivtema]}</Td>
