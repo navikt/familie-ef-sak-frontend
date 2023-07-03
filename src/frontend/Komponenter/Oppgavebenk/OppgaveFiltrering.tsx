@@ -24,6 +24,7 @@ export const FlexDiv = styled.div<{ flexDirection?: 'row' | 'column' }>`
     display: flex;
     flex-direction: ${(props) => props.flexDirection ?? 'row'};
     flex-wrap: wrap;
+    justify-content: space-between;
 
     .flex-item {
         padding-right: 1.5rem;

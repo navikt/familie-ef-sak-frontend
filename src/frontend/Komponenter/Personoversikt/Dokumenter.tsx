@@ -69,15 +69,15 @@ const InnUt = styled.div`
     }
 `;
 
-const CheckboxHøyre = styled(Checkbox)`
-    float: right;
-`;
-
 const ArkivtemaVelger = styled(FamilieReactSelect)`
     width: 15rem;
     height: 1.5rem;
-    margin-top: 1rem;
+    margin-top: 0.5rem;
     margin-right: 1rem;
+
+    .react-select__control {
+        height: 3rem;
+    }
 `;
 
 const Dokumenttabell = styled.div`
@@ -85,7 +85,9 @@ const Dokumenttabell = styled.div`
     padding-top: 1rem;
     grid-template-columns: 32px 40px auto 72px;
     grid-template-rows: repeat(2, max-content);
-    grid-template-areas: '. ikon tittel .' '. . select  select' '. . innhold .';
+    grid-template-areas: '. ikon tittel .' '. . select  .' '. . innhold .';
+    gap: 1.5rem;
+
     .tabell {
         .columnHeader {
             font-weight: bold;
@@ -105,6 +107,12 @@ const Dokumenttabell = styled.div`
     .select-area {
         grid-area: select;
     }
+`;
+
+const FilterRad = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
 `;
 
 /**
@@ -279,55 +287,58 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
         <DokumenterVisning>
             <Dokumenttabell>
                 <TabellOverskrift Ikon={Mappe} tittel={'Dokumenter'} />
-                <FlexDiv className={'select-area'}>
-                    <ArkivtemaVelger
-                        placeholder={'Alle'}
-                        label={'Velg tema(er)'}
-                        options={arkivtemaerAsISelectOptions}
-                        creatable={false}
-                        isMulti={true}
-                        value={
-                            vedleggRequest.tema?.map((tema) => ({
-                                value: tema,
-                                label: arkivtemaerTilTekst[tema],
-                            })) || []
-                        }
-                        onChange={(valgteTemaer) => {
-                            const erMultiValue = <T,>(
-                                verdi: MultiValue<T> | SingleValue<T> | null
-                            ): verdi is MultiValue<T> => Array.isArray(verdi);
+                <FilterRad className={'select-area'}>
+                    <FlexDiv>
+                        <ArkivtemaVelger
+                            placeholder={'Alle'}
+                            label={'Velg tema(er)'}
+                            options={arkivtemaerAsISelectOptions}
+                            creatable={false}
+                            isMulti={true}
+                            classNamePrefix={'react-select'}
+                            value={
+                                vedleggRequest.tema?.map((tema) => ({
+                                    value: tema,
+                                    label: arkivtemaerTilTekst[tema],
+                                })) || []
+                            }
+                            onChange={(valgteTemaer) => {
+                                const erMultiValue = <T,>(
+                                    verdi: MultiValue<T> | SingleValue<T> | null
+                                ): verdi is MultiValue<T> => Array.isArray(verdi);
 
-                            const temaer = erMultiValue(valgteTemaer)
-                                ? valgteTemaer.map((tema) => tema.value as Arkivtema)
-                                : [valgteTemaer?.value as Arkivtema];
+                                const temaer = erMultiValue(valgteTemaer)
+                                    ? valgteTemaer.map((tema) => tema.value as Arkivtema)
+                                    : [valgteTemaer?.value as Arkivtema];
 
-                            settVedleggRequest((prevState) => ({
-                                ...prevState,
-                                tema: temaer,
-                            }));
-                        }}
-                    />
-                    <CustomSelect
-                        onChange={settVedlegg('dokumenttype')}
-                        label="Velg dokumenttype"
-                        options={dokumenttyperTilTekst}
-                        value={vedleggRequest.dokumenttype}
-                        size={'small'}
-                    />
-                    <CustomSelect
-                        onChange={settVedlegg('journalpostStatus')}
-                        label="Velg journalpoststatus"
-                        options={journalstatusTilTekst}
-                        value={vedleggRequest.journalpostStatus}
-                        size={'small'}
-                    />
-                    <CheckboxHøyre
+                                settVedleggRequest((prevState) => ({
+                                    ...prevState,
+                                    tema: temaer,
+                                }));
+                            }}
+                        />
+                        <CustomSelect
+                            onChange={settVedlegg('dokumenttype')}
+                            label="Velg dokumenttype"
+                            options={dokumenttyperTilTekst}
+                            value={vedleggRequest.dokumenttype}
+                            size={'medium'}
+                        />
+                        <CustomSelect
+                            onChange={settVedlegg('journalpostStatus')}
+                            label="Velg journalpoststatus"
+                            options={journalstatusTilTekst}
+                            value={vedleggRequest.journalpostStatus}
+                            size={'medium'}
+                        />
+                    </FlexDiv>
+                    <Checkbox
                         onChange={visFeilregistrerteOgAvbrutt}
                         checked={visFeilregistrerteOgAvbruttValgt}
                     >
                         Vis feilregistrerte/avbrutte
-                    </CheckboxHøyre>
-                </FlexDiv>
+                    </Checkbox>
+                </FilterRad>
                 <table className="tabell">
                     <thead>
                         <tr>
