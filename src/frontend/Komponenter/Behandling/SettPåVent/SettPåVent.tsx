@@ -124,9 +124,7 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
             method: 'GET',
             url: `/familie-ef-sak/api/oppgave/behandling/${behandling.id}/settpavent-oppgavestatus`,
         }).then((respons: RessursSuksess<SendtOppgave[]> | RessursFeilet) => {
-            if (respons.status === RessursStatus.SUKSESS) {
-                settSendteOppgaver(respons);
-            }
+            settSendteOppgaver(respons);
         });
     }, [behandling.id, axiosRequest]);
 
