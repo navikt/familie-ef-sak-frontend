@@ -30,6 +30,19 @@ export const journalstatusTilTekst: Record<string, string> = {
     UKJENT: 'Ukjent',
 };
 
+export const journalstatusTilTekstSelect: Record<string, string> = {
+    MOTTATT: 'Mottatt',
+    JOURNALFOERT: 'Journalført',
+    FERDIGSTILT: 'Ferdigstilt',
+    EKSPEDERT: 'Ekspedert',
+    UNDER_ARBEID: 'Under arbeid',
+    UTGAAR: 'Utgår',
+    UKJENT_BRUKER: 'Ukjent bruker',
+    RESERVERT: 'Reservert',
+    OPPLASTING_DOKUMENT: 'Opplasting',
+    UKJENT: 'Ukjent',
+};
+
 type BrukerId = 'AKTOERID' | 'FNR';
 
 type Dokumentstatus = 'FERDIGSTILT' | 'AVBRUTT' | 'UNDER_REDIGERING' | 'KASSERT';
