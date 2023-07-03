@@ -228,6 +228,8 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
             </Td>
             <Td></Td>
             <Td></Td>
+            <Td></Td>
+            <Td></Td>
         </tr>
     );
 
