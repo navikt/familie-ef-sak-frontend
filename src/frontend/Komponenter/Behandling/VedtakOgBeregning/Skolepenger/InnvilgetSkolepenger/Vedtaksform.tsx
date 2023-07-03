@@ -22,9 +22,7 @@ import { Button } from '@navikt/ds-react';
 import { useApp } from '../../../../../App/context/AppContext';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../../../App/typer/ressurs';
 import { UtregningstabellSkolepenger } from '../UtregnignstabellSkolepenger';
-import { validerInnvilgetVedtakForm } from './vedtaksvalidering';
-// import { validerSkoleårsperioder } from './vedtaksvalidering';
-// import OpphørSkolepenger from '../OpphørSkolepenger/OpphørSkolepenger';
+import { validerInnvilgetVedtakForm, validerSkoleårsperioder } from './vedtaksvalidering';
 import { BodyShortSmall } from '../../../../../Felles/Visningskomponenter/Tekster';
 import { ARed500 } from '@navikt/ds-tokens/dist/tokens';
 import { useRedirectEtterLagring } from '../../../../../App/hooks/felles/useRedirectEtterLagring';
@@ -151,13 +149,10 @@ export const Vedtaksform: React.FC<{
         }
     };
 
-    const midlertidigTrue = true;
-
     const beregnSkolepenger = () => {
         settHarUtførtBeregning(false);
         settVisFeilmelding(false);
-        // if (formState.customValidate(validerSkoleårsperioder)) {
-        if (midlertidigTrue) {
+        if (formState.customValidate(validerSkoleårsperioder)) {
             axiosRequest<IBeregningSkolepengerResponse, IBeregningsrequestSkolepenger>({
                 method: 'POST',
                 url: `/familie-ef-sak/api/beregning/skolepenger`,
