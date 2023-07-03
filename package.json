@@ -35,7 +35,7 @@
     "@navikt/ds-css": "2.9.x",
     "@navikt/ds-icons": "2.9.x",
     "@navikt/ds-react": "2.9.x",
-    "@navikt/ds-react-internal": "2.9.x",
+    "@navikt/ds-react-internal": "3.4.x",
     "@navikt/ds-tokens": "2.9.x",
     "@navikt/familie-backend": "10.0.3",
     "@navikt/familie-dokumentliste": "^8.1.0",
