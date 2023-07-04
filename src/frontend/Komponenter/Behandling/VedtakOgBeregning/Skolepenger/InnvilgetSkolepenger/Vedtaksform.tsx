@@ -16,23 +16,20 @@ import useFormState, {
 import { ListState } from '../../../../../App/hooks/felles/useListState';
 import { useBehandling } from '../../../../../App/context/BehandlingContext';
 import styled from 'styled-components';
-import { Button } from '@navikt/ds-react';
-// import { BodyShort } from '@navikt/ds-react';
-// import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
+import { Alert, Button } from '@navikt/ds-react';
 import { useApp } from '../../../../../App/context/AppContext';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../../../App/typer/ressurs';
 import { UtregningstabellSkolepenger } from '../UtregnignstabellSkolepenger';
 import { validerInnvilgetVedtakForm, validerSkoleårsperioder } from './vedtaksvalidering';
-import { BodyShortSmall } from '../../../../../Felles/Visningskomponenter/Tekster';
+import { BodyLongSmall, BodyShortSmall } from '../../../../../Felles/Visningskomponenter/Tekster';
 import { ARed500 } from '@navikt/ds-tokens/dist/tokens';
 import { useRedirectEtterLagring } from '../../../../../App/hooks/felles/useRedirectEtterLagring';
 import { v4 as uuidv4 } from 'uuid';
-// import { BegrunnelsesFelt } from './BegrunnelsesFelt';
 import { AlertError } from '../../../../../Felles/Visningskomponenter/Alerts';
 import HovedKnapp from '../../../../../Felles/Knapper/HovedKnapp';
-// import LeggTilKnapp from '../../../../../Felles/Knapper/LeggTilKnapp';
 import VisEllerEndreSkoleårsperioder from './VisEllerEndreSkoleårsperioder';
-// import { tomSkoleårsperiodeSkolepenger } from '../typer';
+import { BegrunnelsesFelt } from './BegrunnelsesFelt';
+import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
 
 const Form = styled.form`
     display: flex;
@@ -48,9 +45,17 @@ const Utregningstabell = styled(UtregningstabellSkolepenger)`
     margin-left: 1rem;
 `;
 
-// const Container = styled.div`
-//     padding: 1rem;
-// `;
+const InfoStripe = styled(Alert)`
+    .navds-alert__wrapper {
+        max-width: max-content;
+    }
+`;
+
+const FlexColumn = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+`;
 
 export const defaultSkoleårsperioder = (
     forrigeVedtak?: IvedtakForSkolepenger
@@ -97,7 +102,7 @@ export const Vedtaksform: React.FC<{
     const skoleårsPerioderState = formState.getProps(
         'skoleårsperioder'
     ) as ListState<ISkoleårsperiodeSkolepenger>;
-    // const begrunnelseState = formState.getProps('begrunnelse') as FieldState;
+    const begrunnelseState = formState.getProps('begrunnelse') as FieldState;
 
     const utgiftIderForrigeBehandling = forrigeVedtak
         ? forrigeVedtak.skoleårsperioder.flatMap((p) => p.utgiftsperioder.map((u) => u.id))
@@ -182,6 +187,8 @@ export const Vedtaksform: React.FC<{
 
     return (
         <Form onSubmit={formState.onSubmit(handleSubmit)}>
+            <BegrunnelsesFelt begrunnelseState={begrunnelseState} errorState={formState.errors} />
+            {behandlingErRedigerbar && <InfoStripeHvordanFatteVedtak />}
             <VisEllerEndreSkoleårsperioder
                 customValidate={customValidate}
                 låsteUtgiftIder={utgiftIderForrigeBehandling}
@@ -208,3 +215,20 @@ export const Vedtaksform: React.FC<{
         </Form>
     );
 };
+
+const InfoStripeHvordanFatteVedtak: React.FC = () => (
+    <InfoStripe variant="info">
+        <FlexColumn>
+            <BodyLongSmall>
+                Et normalt skoleår defineres som fra august/september år A til Juni/Juli år B.
+                F.eks. september 2023 til og med juni 2024. Hvis bruker studerer på tvers av 2
+                skoleår f.eks. fra januar 2023 til og med desember 2023 må dette fordeles over 2
+                skoleår.
+            </BodyLongSmall>
+            <BodyLongSmall>
+                Hvis bruker innad i et skoleår har perioder med ulik studiebelastning kan det legges
+                til en ekstra rad for dette.
+            </BodyLongSmall>
+        </FlexColumn>
+    </InfoStripe>
+);

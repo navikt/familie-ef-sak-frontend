@@ -6,14 +6,16 @@ import { ButtonProps } from '@navikt/ds-react';
 const LeggTilKnapp: React.FC<{
     className?: string;
     ikontekst?: string;
+    ikonPosisjon?: ButtonProps['iconPosition'];
     knappetekst?: string;
     onClick: () => void;
     variant?: ButtonProps['variant'];
-}> = ({ className, ikontekst, knappetekst, onClick, variant }) => {
+}> = ({ className, ikontekst, ikonPosisjon, knappetekst, onClick, variant }) => {
     return (
         <Knapp
             className={className}
             icon={<AddCircle title={knappetekst ? knappetekst : ikontekst} />}
+            iconPosition={ikonPosisjon}
             onClick={onClick}
             type="button"
             variant={variant || 'secondary'}

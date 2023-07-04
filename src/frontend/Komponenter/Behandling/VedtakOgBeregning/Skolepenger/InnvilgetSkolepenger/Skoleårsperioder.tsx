@@ -13,20 +13,20 @@ import Skoleårsperiode from './Skoleårsperiode';
 
 interface Props {
     customValidate: (fn: Valideringsfunksjon<InnvilgeVedtakForm>) => boolean;
-    skoleårsperioder: ListState<ISkoleårsperiodeSkolepenger>;
     låsteUtgiftIder: string[];
-    valideringsfeil?: FormErrors<InnvilgeVedtakForm>['skoleårsperioder'];
-    settValideringsFeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>;
     oppdaterHarUtførtBeregning: (beregningUtført: boolean) => void;
+    settValideringsFeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>;
+    skoleårsperioder: ListState<ISkoleårsperiodeSkolepenger>;
+    valideringsfeil?: FormErrors<InnvilgeVedtakForm>['skoleårsperioder'];
 }
 
 const Skoleårsperioder: React.FC<Props> = ({
     customValidate,
+    låsteUtgiftIder,
+    oppdaterHarUtførtBeregning,
+    settValideringsFeil,
     skoleårsperioder,
     valideringsfeil,
-    settValideringsFeil,
-    oppdaterHarUtførtBeregning,
-    låsteUtgiftIder,
 }) => {
     const { behandlingErRedigerbar } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
@@ -55,15 +55,11 @@ const Skoleårsperioder: React.FC<Props> = ({
     return (
         <>
             {skoleårsperioder.value.map((skoleårsperiode, index) => {
-                // const inneholderLåsteUtgifter = skoleårsperiode.utgiftsperioder.some(
-                //     (utgift) => låsteUtgiftIder.indexOf(utgift.id) > -1
-                // );
-                // const skalViseFjernKnapp =
-                //     behandlingErRedigerbar && index !== 0 && !inneholderLåsteUtgifter;
                 return (
                     <Skoleårsperiode
                         låsteUtgiftIder={låsteUtgiftIder}
                         customValidate={customValidate}
+                        erFørstePeriode={index === 0}
                         fjernSkoleårsperiode={() => fjernSkoleårsperiode(index)}
                         key={index}
                         skoleårsperiode={skoleårsperiode}
@@ -88,8 +84,9 @@ const Skoleårsperioder: React.FC<Props> = ({
             })}
             {behandlingErRedigerbar && (
                 <LeggTilKnapp
-                    onClick={() => skoleårsperioder.push(tomSkoleårsperiodeSkolepenger())}
+                    ikonPosisjon={'right'}
                     knappetekst="Legg til nytt skoleår"
+                    onClick={() => skoleårsperioder.push(tomSkoleårsperiodeSkolepenger())}
                     variant="tertiary"
                 />
             )}

@@ -46,12 +46,12 @@ const VisEllerEndreSkoleårsperioder: React.FC<Props> = ({
     const { behandlingErRedigerbar } = useBehandling();
     const antallSkoleår = skoleårsperioder.value.length;
 
-    const [visningsmodus, settVisninsmodus] = useState<Visningsmodus>(
+    const [visningsmodus, settVisningsmodus] = useState<Visningsmodus>(
         utledVisningmodus(behandlingErRedigerbar, antallSkoleår)
     );
 
     useEffect(() => {
-        settVisninsmodus(utledVisningmodus(behandlingErRedigerbar, antallSkoleår));
+        settVisningsmodus(utledVisningmodus(behandlingErRedigerbar, antallSkoleår));
     }, [antallSkoleår, behandlingErRedigerbar]);
 
     switch (visningsmodus) {
@@ -60,6 +60,7 @@ const VisEllerEndreSkoleårsperioder: React.FC<Props> = ({
                 <Container>
                     <BodyShort>Bruker har ingen tidligere skoleårsperioder registrert.</BodyShort>
                     <LeggTilKnapp
+                        ikonPosisjon={'right'}
                         knappetekst="Legg til nytt skoleår"
                         onClick={() => skoleårsperioder.push(tomSkoleårsperiodeSkolepenger())}
                         variant="tertiary"
