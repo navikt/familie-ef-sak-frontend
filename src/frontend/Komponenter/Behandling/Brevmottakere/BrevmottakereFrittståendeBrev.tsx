@@ -11,6 +11,7 @@ import {
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { AxiosRequestConfig } from 'axios';
 import Brevmottakere from './Brevmottakere';
+import { mottakereEllerBruker } from './brevmottakerUtils';
 
 export const BrevmottakereFrittståendeBrev: FC<{
     fagsakId: string;
@@ -43,13 +44,13 @@ export const BrevmottakereFrittståendeBrev: FC<{
         };
         return axiosRequest<IBrevmottakere | undefined, null>(behandlingConfig).then(
             (res: RessursSuksess<IBrevmottakere | undefined> | RessursFeilet) => {
-                if (res.status === RessursStatus.SUKSESS && res.data) {
-                    settMottakere(res.data);
+                if (res.status === RessursStatus.SUKSESS) {
+                    settMottakere(mottakereEllerBruker(personopplysninger, res.data));
                 }
                 settMottakereRessurs(res);
             }
         );
-    }, [axiosRequest, fagsakId, settMottakere]);
+    }, [fagsakId, axiosRequest, settMottakere, personopplysninger]);
 
     useEffect(() => {
         hentBrevmottakere();
