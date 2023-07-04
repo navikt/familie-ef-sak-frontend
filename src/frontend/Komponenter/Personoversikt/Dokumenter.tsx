@@ -226,7 +226,7 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
             <Td></Td>
             <Td></Td>
             <Td>
-                {toggles[ToggleName.dokumentoversiktLinkTilDokument] &&
+                {(toggles[ToggleName.dokumentoversiktLinkTilDokument] || dokument.tema === 'ENF') &&
                     dokument.harSaksbehandlerTilgang && (
                         <>
                             <LenkeVenstreMargin
@@ -239,7 +239,8 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
                             <LogiskeVedlegg logiskeVedlegg={dokument.logiskeVedlegg} />
                         </>
                     )}
-                {(!toggles[ToggleName.dokumentoversiktLinkTilDokument] ||
+                {((!toggles[ToggleName.dokumentoversiktLinkTilDokument] &&
+                    dokument.tema !== 'ENF') ||
                     !dokument.harSaksbehandlerTilgang) && (
                     <BodyShortSmall>{dokument.tittel}</BodyShortSmall>
                 )}
@@ -263,7 +264,7 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
                 </InnUt>
             </Td>
             <Td>
-                {toggles[ToggleName.dokumentoversiktLinkTilDokument] &&
+                {(toggles[ToggleName.dokumentoversiktLinkTilDokument] || dokument.tema === 'ENF') &&
                     dokument.harSaksbehandlerTilgang && (
                         <>
                             <HovedLenke
@@ -277,7 +278,8 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
                             <LogiskeVedlegg logiskeVedlegg={dokument.logiskeVedlegg} />
                         </>
                     )}
-                {(!toggles[ToggleName.dokumentoversiktLinkTilDokument] ||
+                {((!toggles[ToggleName.dokumentoversiktLinkTilDokument] &&
+                    dokument.tema !== 'ENF') ||
                     !dokument.harSaksbehandlerTilgang) && (
                     <BodyShortSmall>{dokument.tittel}</BodyShortSmall>
                 )}
