@@ -71,13 +71,11 @@ const InnUt = styled.div`
 `;
 
 const ArkivtemaVelger = styled(FamilieReactSelect)`
-    width: 15rem;
-    height: 1.5rem;
-    margin-top: 0.5rem;
-    margin-right: 1rem;
+    width: 25rem;
+    margin: 0.5rem 1rem 0 0;
 
     .react-select__control {
-        height: 3rem;
+        min-height: 3rem;
     }
 `;
 
