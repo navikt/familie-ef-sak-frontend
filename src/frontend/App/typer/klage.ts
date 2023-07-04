@@ -29,6 +29,7 @@ export enum KlageinstansEventType {
     BEHANDLING_FEILREGISTRERT = 'BEHANDLING_FEILREGISTRERT',
     ANKEBEHANDLING_OPPRETTET = 'ANKEBEHANDLING_OPPRETTET',
     ANKEBEHANDLING_AVSLUTTET = 'ANKEBEHANDLING_AVSLUTTET',
+    ANKE_I_TRYGDERETTENBEHANDLING_OPPRETTET = 'ANKE_I_TRYGDERETTENBEHANDLING_OPPRETTET',
 }
 
 export enum KlageinstansUtfall {
@@ -40,6 +41,8 @@ export enum KlageinstansUtfall {
     STADFESTELSE = 'STADFESTELSE',
     UGUNST = 'UGUNST',
     AVVIST = 'AVVIST',
+    INNSTILLING_STADFESTELSE = 'INNSTILLING_STADFESTELSE',
+    INNSTILLING_AVVIST = 'INNSTILLING_AVVIST',
 }
 
 export const klageinstansUtfallTilTekst: Record<KlageinstansUtfall, string> = {
@@ -51,6 +54,8 @@ export const klageinstansUtfallTilTekst: Record<KlageinstansUtfall, string> = {
     STADFESTELSE: 'Stadfestelse KA',
     UGUNST: 'Ugunst (Ugyldig) KA',
     AVVIST: 'Avvist KA',
+    INNSTILLING_STADFESTELSE: 'Instilling om stadfestelse til trygderetten fra KA',
+    INNSTILLING_AVVIST: 'Instilling om avist til trygderetten fra KA',
 };
 
 export enum KlagebehandlingResultat {
