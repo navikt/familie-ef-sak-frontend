@@ -15,8 +15,8 @@ import { Journalposttype, Journalstatus } from '@navikt/familie-typer';
 import { DownFilled, LeftFilled, RightFilled } from '@navikt/ds-icons';
 import {
     avsenderMottakerIdTypeTilTekst,
+    gyldigeJournalstatusTilTekst,
     journalstatusTilTekst,
-    journalstatusTilTekstSelect,
 } from '../../App/typer/journalføring';
 import { BodyShortSmall, SmallTextLabel } from '../../Felles/Visningskomponenter/Tekster';
 import { VedleggRequest } from './vedleggRequest';
@@ -339,7 +339,7 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
                         <CustomSelect
                             onChange={settVedlegg('journalpostStatus')}
                             label="Velg journalpoststatus"
-                            options={journalstatusTilTekstSelect}
+                            options={gyldigeJournalstatusTilTekst}
                             value={vedleggRequest.journalpostStatus}
                             size={'medium'}
                         />

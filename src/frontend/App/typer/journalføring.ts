@@ -15,32 +15,27 @@ type Journalstatus =
     | 'OPPLASTING_DOKUMENT'
     | 'UKJENT';
 
-export const journalstatusTilTekst: Record<string, string> = {
+export const gyldigeJournalstatusTilTekst: Record<string, string> = {
     MOTTATT: 'Mottatt',
     JOURNALFOERT: 'Journalført',
     FERDIGSTILT: 'Ferdigstilt',
     EKSPEDERT: 'Ekspedert',
     UNDER_ARBEID: 'Under arbeid',
-    FEILREGISTRERT: 'Feilregistrert',
     UTGAAR: 'Utgår',
-    AVBRUTT: 'Avbrutt',
     UKJENT_BRUKER: 'Ukjent bruker',
     RESERVERT: 'Reservert',
     OPPLASTING_DOKUMENT: 'Opplasting',
     UKJENT: 'Ukjent',
 };
 
-export const journalstatusTilTekstSelect: Record<string, string> = {
-    MOTTATT: 'Mottatt',
-    JOURNALFOERT: 'Journalført',
-    FERDIGSTILT: 'Ferdigstilt',
-    EKSPEDERT: 'Ekspedert',
-    UNDER_ARBEID: 'Under arbeid',
-    UTGAAR: 'Utgår',
-    UKJENT_BRUKER: 'Ukjent bruker',
-    RESERVERT: 'Reservert',
-    OPPLASTING_DOKUMENT: 'Opplasting',
-    UKJENT: 'Ukjent',
+export const ugyldigeJournalstatusTilTekst: Record<string, string> = {
+    FEILREGISTRERT: 'Feilregistrert',
+    AVBRUTT: 'Avbrutt',
+};
+
+export const journalstatusTilTekst: Record<string, string> = {
+    ...gyldigeJournalstatusTilTekst,
+    ...ugyldigeJournalstatusTilTekst,
 };
 
 type BrukerId = 'AKTOERID' | 'FNR';
