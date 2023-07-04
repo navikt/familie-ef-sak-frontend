@@ -54,8 +54,8 @@ export const klageinstansUtfallTilTekst: Record<KlageinstansUtfall, string> = {
     STADFESTELSE: 'Stadfestelse KA',
     UGUNST: 'Ugunst (Ugyldig) KA',
     AVVIST: 'Avvist KA',
-    INNSTILLING_STADFESTELSE: 'Instilling om stadfestelse til trygderetten fra KA',
-    INNSTILLING_AVVIST: 'Instilling om avist til trygderetten fra KA',
+    INNSTILLING_STADFESTELSE: 'Innstilling om stadfestelse til trygderetten fra KA',
+    INNSTILLING_AVVIST: 'Innstilling om avist til trygderetten fra KA',
 };
 
 export enum KlagebehandlingResultat {
