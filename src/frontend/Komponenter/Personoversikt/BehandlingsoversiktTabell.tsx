@@ -196,7 +196,8 @@ export const BehandlingsoversiktTabell: React.FC<{
             behandling.klageinstansResultat?.some(
                 (resultat) =>
                     resultat.type === KlageinstansEventType.ANKEBEHANDLING_OPPRETTET ||
-                    resultat.type === KlageinstansEventType.ANKEBEHANDLING_AVSLUTTET
+                    resultat.type === KlageinstansEventType.ANKEBEHANDLING_AVSLUTTET ||
+                    resultat.type === KlageinstansEventType.ANKE_I_TRYGDERETTENBEHANDLING_OPPRETTET
             )
         );
     };
