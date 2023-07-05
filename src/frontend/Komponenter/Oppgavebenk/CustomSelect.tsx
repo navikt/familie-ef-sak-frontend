@@ -3,7 +3,7 @@ import { Select, SelectProps } from '@navikt/ds-react';
 
 interface Props<U extends string> {
     value?: string | number;
-    hideLabel: SelectProps['hideLabel'];
+    hideLabel?: SelectProps['hideLabel'];
     label: string;
     onChange: (value: string) => void;
     options: Record<U, string>;
