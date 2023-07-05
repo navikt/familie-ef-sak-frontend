@@ -113,26 +113,13 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
     };
 
     const dokumentGruppeSkalVises = (dokumenter: Dokumentinfo[]): boolean => {
-        const journalStatuser = [Journalstatus.FEILREGISTRERT, Journalstatus.AVBRUTT];
-        const defaultVisJournalstatuser = [
-            Journalstatus.MOTTATT,
-            Journalstatus.JOURNALFOERT,
-            Journalstatus.FERDIGSTILT,
-            Journalstatus.EKSPEDERT,
-            Journalstatus.UNDER_ARBEID,
-            Journalstatus.UTGAAR,
-            Journalstatus.UKJENT_BRUKER,
-            Journalstatus.RESERVERT,
-            Journalstatus.OPPLASTING_DOKUMENT,
-            Journalstatus.UKJENT,
-        ];
-        if (visFeilregistrerteOgAvbruttValgt) {
-            return dokumenter.some((dokument) => journalStatuser.includes(dokument.journalstatus));
-        } else {
-            return dokumenter.some((dokument) =>
-                defaultVisJournalstatuser.includes(dokument.journalstatus)
-            );
-        }
+        const harFeilregistrerteEllerAvbrutte = dokumenter.some((dokument) =>
+            [Journalstatus.FEILREGISTRERT, Journalstatus.AVBRUTT].includes(dokument.journalstatus)
+        );
+
+        return visFeilregistrerteOgAvbruttValgt
+            ? harFeilregistrerteEllerAvbrutte
+            : !harFeilregistrerteEllerAvbrutte;
     };
 
     return (
