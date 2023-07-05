@@ -3,6 +3,7 @@ import { Select, SelectProps } from '@navikt/ds-react';
 
 interface Props<U extends string> {
     value?: string | number;
+    hideLabel: SelectProps['hideLabel'];
     label: string;
     onChange: (value: string) => void;
     options: Record<U, string>;
@@ -34,6 +35,7 @@ function CustomSelect<U extends string>(props: Props<U>): ReactElement {
             value={props.value || ''}
             className="flex-item"
             label={props.label}
+            hideLabel={props.hideLabel}
             onChange={(event) => {
                 event.persist();
                 props.onChange(event.target.value);
