@@ -10,6 +10,6 @@ export const Utsendingsinfo: React.FC<{ utsendingsinfo: UtsendingsinfoType | und
         <>
             {utsendingsinfo.digitalpostSendt && <BodyShortSmall>Digital post sendt</BodyShortSmall>}
             {utsendingsinfo.fysiskpostSendt && <BodyShortSmall>Fysisk post sendt</BodyShortSmall>}
-            {utsendingsinfo.varselSendt.length > 0 && <BellIcon title="a11y-title" />}
+            {utsendingsinfo.varselSendt.length > 0 && <BellIcon title="Varsel sendt" />}
         </>
     ) : null;

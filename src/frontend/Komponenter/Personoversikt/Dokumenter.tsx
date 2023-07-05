@@ -16,6 +16,7 @@ import { DownFilled, LeftFilled, RightFilled } from '@navikt/ds-icons';
 import {
     avsenderMottakerIdTypeTilTekst,
     gyldigeJournalstatusTilTekst,
+    journalposttypeTilTekst,
     journalstatusTilTekst,
 } from '../../App/typer/journalføring';
 import { BodyShortSmall, SmallTextLabel } from '../../Felles/Visningskomponenter/Tekster';
@@ -26,7 +27,6 @@ import {
     arkivtemaerTilTekst,
 } from '../../App/typer/arkivtema';
 import CustomSelect from '../Oppgavebenk/CustomSelect';
-import { dokumenttyperTilTekst } from '../../App/typer/dokumenttype';
 import { FlexDiv } from '../Oppgavebenk/OppgaveFiltrering';
 import { FamilieReactSelect, MultiValue, SingleValue } from '@navikt/familie-form-elements';
 import { oppdaterVedleggFilter } from './utils';
@@ -176,7 +176,7 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
     const [visFeilregistrerteOgAvbruttValgt, setVisFeilregistrerteOgAvbruttValgt] =
         React.useState(false);
 
-    const visFeilregistrerteOgAvbrutt = () => {
+    const toggleVisFeilregistrerteOgAvbrutt = () => {
         setVisFeilregistrerteOgAvbruttValgt(!visFeilregistrerteOgAvbruttValgt);
     };
 
@@ -332,7 +332,7 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
                         <CustomSelect
                             onChange={settVedlegg('dokumenttype')}
                             label="Velg dokumenttype"
-                            options={dokumenttyperTilTekst}
+                            options={journalposttypeTilTekst}
                             value={vedleggRequest.dokumenttype}
                             size={'medium'}
                         />
@@ -345,7 +345,7 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
                         />
                     </FlexDiv>
                     <Checkbox
-                        onChange={visFeilregistrerteOgAvbrutt}
+                        onChange={toggleVisFeilregistrerteOgAvbrutt}
                         checked={visFeilregistrerteOgAvbruttValgt}
                     >
                         Vis feilregistrerte/avbrutte

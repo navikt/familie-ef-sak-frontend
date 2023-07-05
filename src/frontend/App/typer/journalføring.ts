@@ -1,6 +1,13 @@
 import { Behandlingstema } from './behandlingstema';
 
 export type Journalposttype = 'I' | 'U' | 'N';
+
+export const journalposttypeTilTekst: Record<Journalposttype, string> = {
+    I: 'Inngående',
+    N: 'Notat',
+    U: 'Utgående',
+};
+
 type Journalstatus =
     | 'MOTTATT'
     | 'JOURNALFOERT'

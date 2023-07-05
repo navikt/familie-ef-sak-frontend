@@ -1,5 +1,5 @@
 import React, { ReactElement } from 'react';
-import { Select } from '@navikt/ds-react';
+import { Select, SelectProps } from '@navikt/ds-react';
 
 interface Props<U extends string> {
     value?: string | number;
@@ -8,7 +8,7 @@ interface Props<U extends string> {
     options: Record<U, string>;
     sortDesc?: boolean;
     skalSkjuleValgetAlle?: boolean;
-    size?: 'medium' | 'small';
+    size?: SelectProps['size'];
 }
 
 function CustomSelect<U extends string>(props: Props<U>): ReactElement {
