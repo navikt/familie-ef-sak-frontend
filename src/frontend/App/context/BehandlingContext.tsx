@@ -18,7 +18,6 @@ import { useApp } from './AppContext';
 import { useHentUtestengelser } from '../hooks/useHentUtestengelser';
 import { useHentEndringerPersonopplysninger } from '../hooks/useHentEndringerPersonopplysninger';
 import { useVilkår } from '../hooks/useVilkår';
-import { ToggleName } from './toggles';
 import { useToggles } from './TogglesContext';
 
 const [BehandlingProvider, useBehandling] = constate(() => {
@@ -57,12 +56,10 @@ const [BehandlingProvider, useBehandling] = constate(() => {
         settBehandlingErRedigerbar(
             behandling.status === RessursStatus.SUKSESS && erBehandlingRedigerbar(behandling.data)
         );
-        if (toggles[ToggleName.settPåVentMedOppgavestyring]) {
-            settVisSettPåVent(
-                behandling.status === RessursStatus.SUKSESS &&
-                    behandling.data.status === BehandlingStatus.SATT_PÅ_VENT
-            );
-        }
+        settVisSettPåVent(
+            behandling.status === RessursStatus.SUKSESS &&
+                behandling.data.status === BehandlingStatus.SATT_PÅ_VENT
+        );
     }, [behandling, toggles]);
     useEffect(() => {
         if (behandlingErRedigerbar) {
