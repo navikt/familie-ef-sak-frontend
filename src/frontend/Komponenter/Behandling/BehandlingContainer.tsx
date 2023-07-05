@@ -14,10 +14,8 @@ import { useSetValgtFagsakId } from '../../App/hooks/useSetValgtFagsakId';
 import { useSetPersonIdent } from '../../App/hooks/useSetPersonIdent';
 import { InfostripeUtestengelse } from './InfostripeUtestengelse';
 import { ABorderDefault } from '@navikt/ds-tokens/dist/tokens';
-import { InfostripeSattPåVent } from './SettPåVent/InfostripeSattPåVent';
 import { EkspanderbareVilkårpanelProvider } from '../../App/context/EkspanderbareVilkårpanelContext';
 import Personopplysningsendringer from './Endring/EndringPersonopplysninger';
-import { SettPåVentUtenOppgaveStyring } from './SettPåVent/SettPåVentUtenOppgaveStyring';
 import { SettPåVent } from './SettPåVent/SettPåVent';
 
 const Container = styled.div`
@@ -80,10 +78,8 @@ const BehandlingContent: FC<{
             <Container>
                 <InnholdWrapper åpenHøyremeny={åpenHøyremeny}>
                     <Fanemeny />
-                    <SettPåVentUtenOppgaveStyring behandlingId={behandling.id} />
                     <SettPåVent behandling={behandling} />
                     <InfostripeUtestengelse utestengelser={utestengelser} />
-                    <InfostripeSattPåVent behandling={behandling} />
                     <Personopplysningsendringer behandlingId={behandling.id} />
                     <EkspanderbareVilkårpanelProvider>
                         <BehandlingRoutes />
