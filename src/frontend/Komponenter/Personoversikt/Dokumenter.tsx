@@ -3,23 +3,17 @@ import { useDataHenter } from '../../App/hooks/felles/useDataHenter';
 import { AxiosRequestConfig } from 'axios';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import styled from 'styled-components';
-import { Td, Th } from '../../Felles/Personopplysninger/TabellWrapper';
 import Mappe from '../../Felles/Ikoner/Mappe';
 import TabellOverskrift from '../../Felles/Personopplysninger/TabellOverskrift';
-import { Dokumentinfo, ILogiskVedlegg } from '../../App/typer/dokumentliste';
-import { formaterNullableIsoDatoTid } from '../../App/utils/formatter';
+import { Dokumentinfo } from '../../App/typer/dokumentliste';
 import { groupBy } from '../../App/utils/utils';
-import { tekstMapping } from '../../App/utils/tekstmapping';
 import { IFagsakPerson } from '../../App/typer/fagsak';
-import { Journalposttype, Journalstatus } from '@navikt/familie-typer';
-import { DownFilled, LeftFilled, RightFilled } from '@navikt/ds-icons';
+import { Journalstatus } from '@navikt/familie-typer';
+
 import {
-    avsenderMottakerIdTypeTilTekst,
     gyldigeJournalstatuserTilTekst,
     journalposttypeTilTekst,
-    journalstatusTilTekst,
 } from '../../App/typer/journalføring';
-import { BodyShortSmall, SmallTextLabel } from '../../Felles/Visningskomponenter/Tekster';
 import { VedleggRequest } from './vedleggRequest';
 import {
     Arkivtema,
@@ -30,44 +24,15 @@ import CustomSelect from '../Oppgavebenk/CustomSelect';
 import { FlexDiv } from '../Oppgavebenk/OppgaveFiltrering';
 import { FamilieReactSelect, MultiValue, SingleValue } from '@navikt/familie-form-elements';
 import { oppdaterVedleggFilter } from './utils';
-import { Utsendingsinfo } from './Utsendingsinfo';
 import { Checkbox } from '@navikt/ds-react';
-import { ToggleName } from '../../App/context/toggles';
-import { useToggles } from '../../App/context/TogglesContext';
+import { Kolonnetittel } from './Dokumentoversikt/Kolonnetittel';
+import { HovedTabellrad } from './Dokumentoversikt/Hovedtabellrad';
+import { Tabellrad } from './Dokumentoversikt/Tabellrad';
 
 const DokumenterVisning = styled.div`
     display: flex;
     flex-direction: column;
     margin-bottom: 5rem;
-`;
-
-const TrHoveddokument = styled.tr`
-    background-color: #f7f7f7;
-`;
-
-const LenkeVenstreMargin = styled.a`
-    margin-left: 2rem;
-
-    &:visited {
-        color: purple;
-    }
-`;
-
-const HovedLenke = styled.a`
-    &:visited {
-        color: purple;
-    }
-`;
-
-const DivMedVenstreMargin = styled.div`
-    margin-left: 2rem;
-`;
-
-const InnUt = styled.div`
-    svg {
-        vertical-align: -0.2em;
-        margin-right: 0.5rem;
-    }
 `;
 
 const ArkivtemaVelger = styled(FamilieReactSelect)`
@@ -117,38 +82,6 @@ const FilterRad = styled.div`
 /**
  * Genererer en string av typen `<navn> (<type>: <id>)`
  */
-const utledAvsenderMottakerDetaljer = (dokument: Dokumentinfo): string => {
-    let avsender = '';
-    const avsenderMottaker = dokument.avsenderMottaker;
-    if (!avsenderMottaker) {
-        return avsender;
-    }
-    if (avsenderMottaker.navn) {
-        avsender += avsenderMottaker.navn;
-    }
-    const type = avsenderMottaker.type;
-    const id = avsenderMottaker.id;
-    if (!avsenderMottaker.erLikBruker && (type || id)) {
-        avsender += ' (';
-        if (type && avsenderMottakerIdTypeTilTekst[type]) {
-            avsender += avsenderMottakerIdTypeTilTekst[type];
-            if (id) {
-                avsender += ': ';
-            }
-        }
-        if (id) {
-            avsender += id;
-        }
-        avsender += ')';
-    }
-    return avsender;
-};
-
-const ikoneForJournalposttype: Record<Journalposttype, React.ReactElement> = {
-    I: <LeftFilled />,
-    N: <DownFilled />,
-    U: <RightFilled />,
-};
 
 const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson }) => {
     const [vedleggRequest, settVedleggRequest] = useState<VedleggRequest>({
@@ -172,7 +105,6 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
     );
 
     const dokumentResponse = useDataHenter<Dokumentinfo[], null>(dokumentConfig);
-    const { toggles } = useToggles();
     const [visFeilregistrerteOgAvbruttValgt, setVisFeilregistrerteOgAvbruttValgt] =
         React.useState(false);
 
@@ -202,97 +134,6 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
             );
         }
     };
-
-    const skalViseLenke = (dokument: Dokumentinfo): boolean => {
-        return (
-            (toggles[ToggleName.dokumentoversiktLinkTilDokument] || dokument.tema === 'ENF') &&
-            dokument.harSaksbehandlerTilgang
-        );
-    };
-
-    const Kolonnetittel: React.FC<{ text: string; width: number }> = ({ text, width }) => (
-        <Th width={`${width}%`}>
-            <SmallTextLabel>{text}</SmallTextLabel>
-        </Th>
-    );
-
-    const LogiskeVedlegg: React.FC<{ logiskeVedlegg: ILogiskVedlegg[] }> = ({ logiskeVedlegg }) => (
-        <>
-            {logiskeVedlegg.map((logiskVedlegg, index) => (
-                <DivMedVenstreMargin key={`${logiskVedlegg.tittel}${index}`}>
-                    {logiskVedlegg.tittel}
-                </DivMedVenstreMargin>
-            ))}
-        </>
-    );
-
-    const Tabellrad: React.FC<{ dokument: Dokumentinfo; erKlikketId: string }> = ({ dokument }) => (
-        <tr>
-            <Td></Td>
-            <Td></Td>
-            <Td>
-                {skalViseLenke(dokument) ? (
-                    <>
-                        <LenkeVenstreMargin
-                            href={`/dokument/journalpost/${dokument.journalpostId}/dokument-pdf/${dokument.dokumentinfoId}`}
-                            target={'_blank'}
-                            rel={'noreferrer'}
-                        >
-                            {dokument.tittel}
-                        </LenkeVenstreMargin>
-                        <LogiskeVedlegg logiskeVedlegg={dokument.logiskeVedlegg} />
-                    </>
-                ) : (
-                    <BodyShortSmall>{dokument.tittel}</BodyShortSmall>
-                )}
-            </Td>
-            <Td></Td>
-            <Td></Td>
-            <Td></Td>
-            <Td></Td>
-        </tr>
-    );
-
-    const HovedTabellrad: React.FC<{ dokument: Dokumentinfo; erKlikketId: string }> = ({
-        dokument,
-    }) => (
-        <TrHoveddokument>
-            <Td>{formaterNullableIsoDatoTid(dokument.dato)}</Td>
-            <Td>
-                <InnUt>
-                    {ikoneForJournalposttype[dokument.journalposttype]}
-                    <strong>{dokument.journalposttype}</strong>
-                </InnUt>
-            </Td>
-            <Td>
-                {skalViseLenke(dokument) ? (
-                    <>
-                        <HovedLenke
-                            key={dokument.journalpostId}
-                            href={`/dokument/journalpost/${dokument.journalpostId}/dokument-pdf/${dokument.dokumentinfoId}`}
-                            target={'_blank'}
-                            rel={'noreferrer'}
-                        >
-                            {dokument.tittel}
-                        </HovedLenke>
-                        <LogiskeVedlegg logiskeVedlegg={dokument.logiskeVedlegg} />
-                    </>
-                ) : (
-                    <BodyShortSmall>{dokument.tittel}</BodyShortSmall>
-                )}
-            </Td>
-            <Td>{utledAvsenderMottakerDetaljer(dokument)}</Td>
-            <Td>{arkivtemaerTilTekst[dokument.tema as Arkivtema]}</Td>
-            <Td>
-                <BodyShortSmall>
-                    {tekstMapping(dokument.journalstatus, journalstatusTilTekst)}
-                </BodyShortSmall>
-            </Td>
-            <Td>
-                <Utsendingsinfo utsendingsinfo={dokument.utsendingsinfo} />
-            </Td>
-        </TrHoveddokument>
-    );
 
     return (
         <DokumenterVisning>
