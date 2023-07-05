@@ -22,7 +22,7 @@ type Journalstatus =
     | 'OPPLASTING_DOKUMENT'
     | 'UKJENT';
 
-export const gyldigeJournalstatusTilTekst: Record<string, string> = {
+export const gyldigeJournalstatuserTilTekst: Record<string, string> = {
     MOTTATT: 'Mottatt',
     JOURNALFOERT: 'Journalført',
     FERDIGSTILT: 'Ferdigstilt',
@@ -35,14 +35,14 @@ export const gyldigeJournalstatusTilTekst: Record<string, string> = {
     UKJENT: 'Ukjent',
 };
 
-export const ugyldigeJournalstatusTilTekst: Record<string, string> = {
+export const ugyldigeJournalstatuserTilTekst: Record<string, string> = {
     FEILREGISTRERT: 'Feilregistrert',
     AVBRUTT: 'Avbrutt',
 };
 
 export const journalstatusTilTekst: Record<string, string> = {
-    ...gyldigeJournalstatusTilTekst,
-    ...ugyldigeJournalstatusTilTekst,
+    ...gyldigeJournalstatuserTilTekst,
+    ...ugyldigeJournalstatuserTilTekst,
 };
 
 type BrukerId = 'AKTOERID' | 'FNR';
