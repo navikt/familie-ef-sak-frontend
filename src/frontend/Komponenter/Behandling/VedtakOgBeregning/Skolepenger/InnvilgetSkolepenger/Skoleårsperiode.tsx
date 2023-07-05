@@ -7,61 +7,70 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useBehandling } from '../../../../../App/context/BehandlingContext';
 import { FormErrors, Valideringsfunksjon } from '../../../../../App/hooks/felles/useFormState';
-import UtgiftsperiodeSkolepenger from './UtgiftsperiodeSkolepenger';
-import { ABlue200 } from '@navikt/ds-tokens/dist/tokens';
+import { ABlue200, ABorderSubtle, AGray50 } from '@navikt/ds-tokens/dist/tokens';
 import { HorizontalScroll } from '../../Felles/HorizontalScroll';
 import Delårsperioder from './Delårsperioder';
-import { BodyLongSmall } from '../../../../../Felles/Visningskomponenter/Tekster';
 import { Knapp } from '../../../../../Felles/Knapper/HovedKnapp';
-import { Alert } from '@navikt/ds-react';
 import { InnvilgeVedtakForm } from './VedtaksformSkolepenger';
 import { validerKunSkoleårsperioder } from './vedtaksvalidering';
+import Utgiftsperioder from './Utgiftsperioder';
+import Makssats from './Makssats';
+import SkoleårsperiodeHeader from './SkoleårsperiodeHeader';
 
-const DashedBorder = styled.div`
+const ContainerDashedBorder = styled.div`
     border: 4px dashed ${ABlue200};
     padding: 1rem;
     border-radius: 0.5rem;
 `;
 
-const Container = styled(HorizontalScroll)`
+const Container = styled.div`
+    padding: 1rem;
+    border-radius: 0.25rem;
+    background-color: ${AGray50};
+`;
+
+const HorisontalScroll = styled(HorizontalScroll)`
     display: flex;
     flex-direction: column;
     gap: 1rem;
 `;
 
-const InfoStripe = styled(Alert)`
-    .navds-alert__wrapper {
-        max-width: max-content;
-    }
-`;
-
-const FlexColumn = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-`;
-
-const FlexRow = styled.div`
+const FlexEnd = styled.div`
     display: flex;
     gap: 1rem;
     justify-content: flex-end;
 `;
 
-enum Visningsmodus {
+const FlexRow = styled.div`
+    display: flex;
+    gap: 1rem;
+`;
+
+const Grid = styled.div<{ erRedigerbar: boolean }>`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    opacity: ${(props) => (props.erRedigerbar ? '1' : '0.5')};
+    pointer-events: ${(props) => (props.erRedigerbar ? 'auto' : 'none')};
+`;
+
+const HorizontalDivider = styled.div`
+    border-bottom: 2px solid ${ABorderSubtle};
+`;
+
+const VerticalDivider = styled.span`
+    border-left: 2px solid ${ABorderSubtle};
+`;
+
+export enum Visningsmodus {
     INITIELL = 'INITIELL',
-    REDIGERING = 'REDIGERING',
+    REDIGER_SKOLEÅRSPERIODER = 'REDIGER_SKOLEÅRSPERIODER',
+    REDIGER_UTGIFTSPERIODER = 'REDIGER_UTGIFTSPERIODER',
     VISNING = 'VISNING',
 }
 
-const utledVisningmodus = (behandlingErRedigerbar: boolean) => {
-    if (!behandlingErRedigerbar) {
-        return Visningsmodus.VISNING;
-    }
-    return Visningsmodus.INITIELL;
-};
-
-interface Props {
+type Props = {
     customValidate: (fn: Valideringsfunksjon<InnvilgeVedtakForm>) => boolean;
+    erFørstePeriode: boolean;
     fjernSkoleårsperiode: () => void;
     låsteUtgiftIder: string[];
     oppdaterSkoleårsperiode: (
@@ -74,10 +83,11 @@ interface Props {
     ) => void;
     skoleårsperiode: ISkoleårsperiodeSkolepenger;
     valideringsfeil: FormErrors<ISkoleårsperiodeSkolepenger> | undefined;
-}
+};
 
 const Skoleårsperiode: React.FC<Props> = ({
     customValidate,
+    erFørstePeriode,
     fjernSkoleårsperiode,
     låsteUtgiftIder,
     oppdaterSkoleårsperiode,
@@ -87,51 +97,77 @@ const Skoleårsperiode: React.FC<Props> = ({
 }) => {
     const { behandlingErRedigerbar, åpenHøyremeny } = useBehandling();
 
-    const [visningsmodus, settVisninsmodus] = useState<Visningsmodus>(
-        utledVisningmodus(behandlingErRedigerbar)
-    );
+    const utledVisningsmodus = () => {
+        if (!behandlingErRedigerbar) {
+            return Visningsmodus.VISNING;
+        } else if (skoleårsperiode.perioder.length === 0) {
+            return Visningsmodus.REDIGER_SKOLEÅRSPERIODER;
+        } else if (skoleårsperiode.utgiftsperioder.length === 0) {
+            return Visningsmodus.REDIGER_UTGIFTSPERIODER;
+        }
+        return Visningsmodus.INITIELL;
+    };
 
-    const variabel = false;
+    const [visningsmodus, settVisningsmodus] = useState<Visningsmodus>(utledVisningsmodus);
 
     const oppdaterVisningsmodus = () => {
-        if (customValidate(validerKunSkoleårsperioder)) {
-            settVisninsmodus(Visningsmodus.REDIGERING);
+        if (
+            visningsmodus === Visningsmodus.INITIELL ||
+            visningsmodus === Visningsmodus.REDIGER_SKOLEÅRSPERIODER
+        ) {
+            validerSkoleårsperioderOgEndreVisningsmodus();
+        } else if (visningsmodus === Visningsmodus.REDIGER_UTGIFTSPERIODER) {
+            settVisningsmodus(Visningsmodus.REDIGER_SKOLEÅRSPERIODER);
         }
     };
+
+    const validerSkoleårsperioderOgEndreVisningsmodus = () => {
+        if (customValidate(validerKunSkoleårsperioder)) {
+            settVisningsmodus(Visningsmodus.REDIGER_UTGIFTSPERIODER);
+        }
+    };
+
+    const inneholderLåsteUtgifter = skoleårsperiode.utgiftsperioder.some(
+        (utgift) => låsteUtgiftIder.indexOf(utgift.id) > -1
+    );
+
+    const skalViseFjernKnapp =
+        visningsmodus !== Visningsmodus.VISNING && !erFørstePeriode && !inneholderLåsteUtgifter;
+
+    const erLesevisningForDelårsperioder =
+        visningsmodus === Visningsmodus.VISNING ||
+        visningsmodus === Visningsmodus.REDIGER_UTGIFTSPERIODER;
+
+    const erUtgiftsperioderRedigerbare = visningsmodus === Visningsmodus.REDIGER_UTGIFTSPERIODER;
+
+    const erLesevisningForUtgiftsperioder = visningsmodus === Visningsmodus.VISNING;
 
     switch (visningsmodus) {
         case Visningsmodus.INITIELL:
             return (
-                <DashedBorder>
-                    <Container
+                <ContainerDashedBorder>
+                    <HorisontalScroll
                         synligVedLukketMeny={'1035px'}
                         synligVedÅpenMeny={'1330px'}
                         åpenHøyremeny={åpenHøyremeny}
                     >
+                        <SkoleårsperiodeHeader
+                            oppdaterVisningsmodus={oppdaterVisningsmodus}
+                            skalViseFjernKnapp={skalViseFjernKnapp}
+                            visningsmodus={visningsmodus}
+                        />
                         <Delårsperioder
-                            behandlingErRedigerbar={behandlingErRedigerbar}
-                            data={skoleårsperiode.perioder}
-                            oppdater={(perioder) => oppdaterSkoleårsperiode('perioder', perioder)}
-                            settValideringsFeil={(oppdaterteFeil) =>
+                            delårsperioder={skoleårsperiode.perioder}
+                            erLesevisning={erLesevisningForDelårsperioder}
+                            oppdaterSkoleårsperiode={(perioder) =>
+                                oppdaterSkoleårsperiode('perioder', perioder)
+                            }
+                            settValideringsfeil={(oppdaterteFeil) =>
                                 oppdaterValideringsfeil('perioder', oppdaterteFeil)
                             }
                             valideringsfeil={valideringsfeil && valideringsfeil.perioder}
                         />
-                        <InfoStripe variant="info">
-                            <FlexColumn>
-                                <BodyLongSmall>
-                                    Et normalt skoleår defineres som fra august/september år A til
-                                    Juni/Juli år B. F.eks. september 2023 til og med juni 2024. Hvis
-                                    bruker studerer på tvers av 2 skoleår f.eks. fra januar 2023 til
-                                    og med desember 2023 må dette fordeles over 2 skoleår.
-                                </BodyLongSmall>
-                                <BodyLongSmall>
-                                    Hvis bruker innad i et skoleår har perioder med ulik
-                                    studiebelastning kan det legges til en ekstra rad for dette.
-                                </BodyLongSmall>
-                            </FlexColumn>
-                        </InfoStripe>
-                        <FlexRow>
+                        <FlexEnd>
                             <Knapp onClick={fjernSkoleårsperiode} type="button" variant="tertiary">
                                 Avbryt
                             </Knapp>
@@ -142,28 +178,58 @@ const Skoleårsperiode: React.FC<Props> = ({
                             >
                                 Legg til skoleår
                             </Knapp>
-                        </FlexRow>
-                        {variabel && (
-                            <UtgiftsperiodeSkolepenger
-                                data={skoleårsperiode.utgiftsperioder}
-                                oppdater={(utgiftsperioder) =>
+                        </FlexEnd>
+                    </HorisontalScroll>
+                </ContainerDashedBorder>
+            );
+        case Visningsmodus.REDIGER_SKOLEÅRSPERIODER:
+        case Visningsmodus.REDIGER_UTGIFTSPERIODER:
+        case Visningsmodus.VISNING:
+            return (
+                <Container>
+                    <HorisontalScroll
+                        synligVedLukketMeny={'1035px'}
+                        synligVedÅpenMeny={'1330px'}
+                        åpenHøyremeny={åpenHøyremeny}
+                    >
+                        <SkoleårsperiodeHeader
+                            oppdaterVisningsmodus={oppdaterVisningsmodus}
+                            skalViseFjernKnapp={skalViseFjernKnapp}
+                            visningsmodus={visningsmodus}
+                        />
+                        <Delårsperioder
+                            delårsperioder={skoleårsperiode.perioder}
+                            erLesevisning={erLesevisningForDelårsperioder}
+                            oppdaterSkoleårsperiode={(perioder) =>
+                                oppdaterSkoleårsperiode('perioder', perioder)
+                            }
+                            settValideringsfeil={(oppdaterteFeil) =>
+                                oppdaterValideringsfeil('perioder', oppdaterteFeil)
+                            }
+                            valideringsfeil={valideringsfeil && valideringsfeil.perioder}
+                        />
+                        <HorizontalDivider />
+                        <Grid erRedigerbar={erUtgiftsperioderRedigerbare}>
+                            <Utgiftsperioder
+                                erLesevisning={erLesevisningForUtgiftsperioder}
+                                låsteUtgiftIder={låsteUtgiftIder}
+                                oppdaterSkoleårsperiode={(utgiftsperioder) =>
                                     oppdaterSkoleårsperiode('utgiftsperioder', utgiftsperioder)
                                 }
-                                behandlingErRedigerbar={behandlingErRedigerbar}
-                                valideringsfeil={valideringsfeil && valideringsfeil.utgiftsperioder}
-                                settValideringsFeil={(oppdaterteFeil) =>
+                                settValideringsfeil={(oppdaterteFeil) =>
                                     oppdaterValideringsfeil('utgiftsperioder', oppdaterteFeil)
                                 }
-                                låsteUtgiftIder={låsteUtgiftIder}
+                                utgiftsperioder={skoleårsperiode.utgiftsperioder}
+                                valideringsfeil={valideringsfeil && valideringsfeil.utgiftsperioder}
                             />
-                        )}
-                    </Container>
-                </DashedBorder>
+                            <FlexRow>
+                                <VerticalDivider />
+                                <Makssats makssats={68000} />
+                            </FlexRow>
+                        </Grid>
+                    </HorisontalScroll>
+                </Container>
             );
-        case Visningsmodus.REDIGERING:
-            return <p>😊</p>;
-        case Visningsmodus.VISNING:
-            return <p>😊</p>;
     }
 };
 
