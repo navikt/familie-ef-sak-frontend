@@ -203,6 +203,13 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
         }
     };
 
+    const skalViseLenke = (dokument: Dokumentinfo): boolean => {
+        return (
+            (toggles[ToggleName.dokumentoversiktLinkTilDokument] || dokument.tema === 'ENF') &&
+            dokument.harSaksbehandlerTilgang
+        );
+    };
+
     const Kolonnetittel: React.FC<{ text: string; width: number }> = ({ text, width }) => (
         <Th width={`${width}%`}>
             <SmallTextLabel>{text}</SmallTextLabel>
@@ -224,22 +231,18 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
             <Td></Td>
             <Td></Td>
             <Td>
-                {(toggles[ToggleName.dokumentoversiktLinkTilDokument] || dokument.tema === 'ENF') &&
-                    dokument.harSaksbehandlerTilgang && (
-                        <>
-                            <LenkeVenstreMargin
-                                href={`/dokument/journalpost/${dokument.journalpostId}/dokument-pdf/${dokument.dokumentinfoId}`}
-                                target={'_blank'}
-                                rel={'noreferrer'}
-                            >
-                                {dokument.tittel}
-                            </LenkeVenstreMargin>
-                            <LogiskeVedlegg logiskeVedlegg={dokument.logiskeVedlegg} />
-                        </>
-                    )}
-                {((!toggles[ToggleName.dokumentoversiktLinkTilDokument] &&
-                    dokument.tema !== 'ENF') ||
-                    !dokument.harSaksbehandlerTilgang) && (
+                {skalViseLenke(dokument) ? (
+                    <>
+                        <LenkeVenstreMargin
+                            href={`/dokument/journalpost/${dokument.journalpostId}/dokument-pdf/${dokument.dokumentinfoId}`}
+                            target={'_blank'}
+                            rel={'noreferrer'}
+                        >
+                            {dokument.tittel}
+                        </LenkeVenstreMargin>
+                        <LogiskeVedlegg logiskeVedlegg={dokument.logiskeVedlegg} />
+                    </>
+                ) : (
                     <BodyShortSmall>{dokument.tittel}</BodyShortSmall>
                 )}
             </Td>
@@ -262,23 +265,19 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
                 </InnUt>
             </Td>
             <Td>
-                {(toggles[ToggleName.dokumentoversiktLinkTilDokument] || dokument.tema === 'ENF') &&
-                    dokument.harSaksbehandlerTilgang && (
-                        <>
-                            <HovedLenke
-                                key={dokument.journalpostId}
-                                href={`/dokument/journalpost/${dokument.journalpostId}/dokument-pdf/${dokument.dokumentinfoId}`}
-                                target={'_blank'}
-                                rel={'noreferrer'}
-                            >
-                                {dokument.tittel}
-                            </HovedLenke>
-                            <LogiskeVedlegg logiskeVedlegg={dokument.logiskeVedlegg} />
-                        </>
-                    )}
-                {((!toggles[ToggleName.dokumentoversiktLinkTilDokument] &&
-                    dokument.tema !== 'ENF') ||
-                    !dokument.harSaksbehandlerTilgang) && (
+                {skalViseLenke(dokument) ? (
+                    <>
+                        <HovedLenke
+                            key={dokument.journalpostId}
+                            href={`/dokument/journalpost/${dokument.journalpostId}/dokument-pdf/${dokument.dokumentinfoId}`}
+                            target={'_blank'}
+                            rel={'noreferrer'}
+                        >
+                            {dokument.tittel}
+                        </HovedLenke>
+                        <LogiskeVedlegg logiskeVedlegg={dokument.logiskeVedlegg} />
+                    </>
+                ) : (
                     <BodyShortSmall>{dokument.tittel}</BodyShortSmall>
                 )}
             </Td>
