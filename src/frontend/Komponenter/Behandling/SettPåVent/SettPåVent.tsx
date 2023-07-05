@@ -242,7 +242,7 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
         filtrerOppgavetyper(oppgavetype)
     ) as VurderHenvendelseOppgavetype[];
 
-    return visSettPåVent && toggles[ToggleName.settPåVentMedOppgavestyring] ? (
+    return visSettPåVent ? (
         <DataViewer response={{ oppgave, sendteOppgaver }}>
             {({ oppgave, sendteOppgaver }) => {
                 return (
