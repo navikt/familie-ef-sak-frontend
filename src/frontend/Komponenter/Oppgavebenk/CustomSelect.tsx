@@ -1,13 +1,15 @@
 import React, { ReactElement } from 'react';
-import { Select } from '@navikt/ds-react';
+import { Select, SelectProps } from '@navikt/ds-react';
 
 interface Props<U extends string> {
     value?: string | number;
+    hideLabel?: SelectProps['hideLabel'];
     label: string;
     onChange: (value: string) => void;
     options: Record<U, string>;
     sortDesc?: boolean;
     skalSkjuleValgetAlle?: boolean;
+    size?: SelectProps['size'];
 }
 
 function CustomSelect<U extends string>(props: Props<U>): ReactElement {
@@ -29,9 +31,11 @@ function CustomSelect<U extends string>(props: Props<U>): ReactElement {
 
     return (
         <Select
+            size={props.size || 'medium'}
             value={props.value || ''}
             className="flex-item"
             label={props.label}
+            hideLabel={props.hideLabel}
             onChange={(event) => {
                 event.persist();
                 props.onChange(event.target.value);

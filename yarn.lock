@@ -3339,14 +3339,13 @@
     react-modal "^3.15.1"
     react-transition-group "^4.4.2"
 
-"@navikt/familie-form-elements@^10.1.0":
-  version "10.1.0"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-form-elements/10.1.0/9b06276ba9b2f50054ee28b43952ec4d025a8a5a#9b06276ba9b2f50054ee28b43952ec4d025a8a5a"
-  integrity sha512-18GhBsl6kDxPPgcqndGHjlDT6yxAn1FHee7JF5niRfZrgZVJjbFwi8svbaYZ2OQOf/Q52kLltTLSRFCLWoST4w==
+"@navikt/familie-form-elements@^10.1.2":
+  version "10.1.2"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-form-elements/10.1.2/10f686ffefcec2ff023950c70aa7e1770543e341#10f686ffefcec2ff023950c70aa7e1770543e341"
+  integrity sha512-OBzVrr/B6q+rmSG0qOSb5FI0wVue3EhJYe5aXC4ULTN3JqGOSEyxFjs1zS5FzAyLFkAe4P7GbAxfCL4Ackjofw==
   dependencies:
     "@types/classnames" "^2.3.1"
-    "@types/react-select" "^5.0.1"
-    classnames "^2.3.1"
+    classnames "^2.3.2"
     dayjs "^1.11.3"
     nav-datovelger "^12.6.0"
     nav-frontend-core "^6.0.x"
@@ -3356,7 +3355,7 @@
     nav-frontend-skjema-style "^3.0.2"
     nav-frontend-typografi "^4.0.x"
     nav-frontend-typografi-style "^2.0.1"
-    react-select "^5.4.0"
+    react-select "^5.7.0"
 
 "@navikt/familie-header@^9.0.1":
   version "9.0.1"
@@ -4100,7 +4099,7 @@
     "@types/react" "*"
     pdfjs-dist "^2.10.377"
 
-"@types/react-select@^5.0.1", "@types/react-select@^5.x":
+"@types/react-select@^5.x":
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/@types/react-select/-/react-select-5.0.1.tgz#04fc85edd34a72675a0ab56ad4c30428aab0e444"
   integrity sha512-h5Im0AP0dr4AVeHtrcvQrLV+gmPa7SA0AGdxl2jOhtwiE6KgXBFSogWw8az32/nusE6AQHlCOHQWjP1S/+oMWA==
@@ -9945,7 +9944,7 @@ react-router@6.14.1:
   dependencies:
     "@remix-run/router" "1.7.1"
 
-react-select@*, react-select@^5.4.0:
+react-select@*:
   version "5.4.0"
   resolved "https://registry.yarnpkg.com/react-select/-/react-select-5.4.0.tgz#81f6ac73906126706f104751ee14437bd16798f4"
   integrity sha512-CjE9RFLUvChd5SdlfG4vqxZd55AZJRrLrHzkQyTYeHlpOztqcgnyftYAolJ0SGsBev6zAs6qFrjm6KU3eo2hzg==
