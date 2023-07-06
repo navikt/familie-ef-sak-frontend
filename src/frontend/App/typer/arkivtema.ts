@@ -138,3 +138,7 @@ export const arkivtemaerAsISelectOptions = Object.entries(arkivtemaerTilTekst).m
         };
     }
 );
+export const arkivtemaerMedENFFørst = [
+    { value: Arkivtema.ENF, label: arkivtemaerTilTekst[Arkivtema.ENF] },
+    ...arkivtemaerAsISelectOptions.filter((tema) => tema.value !== Arkivtema.ENF),
+];
