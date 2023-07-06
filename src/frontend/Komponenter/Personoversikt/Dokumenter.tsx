@@ -13,11 +13,7 @@ import {
     journalposttypeTilTekst,
 } from '../../App/typer/journalføring';
 import { VedleggRequest } from './vedleggRequest';
-import {
-    Arkivtema,
-    arkivtemaerAsISelectOptions,
-    arkivtemaerTilTekst,
-} from '../../App/typer/arkivtema';
+import { Arkivtema, arkivtemaerMedENFFørst, arkivtemaerTilTekst } from '../../App/typer/arkivtema';
 import CustomSelect from '../Oppgavebenk/CustomSelect';
 import { FamilieReactSelect, MultiValue, SingleValue } from '@navikt/familie-form-elements';
 import { oppdaterVedleggFilter } from './utils';
@@ -120,7 +116,7 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
                     <ArkivtemaVelger
                         placeholder={'Alle'}
                         label={''}
-                        options={arkivtemaerAsISelectOptions}
+                        options={arkivtemaerMedENFFørst}
                         creatable={false}
                         isMulti={true}
                         classNamePrefix={'react-select'}
