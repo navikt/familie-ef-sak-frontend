@@ -19,12 +19,14 @@ const FlexSpaceBetween = styled.div`
 interface Props {
     oppdaterVisningsmodus: () => void;
     skalViseFjernKnapp: boolean;
+    skoleår: string;
     visningsmodus: Visningsmodus;
 }
 
 const SkoleårsperiodeHeader: React.FC<Props> = ({
     oppdaterVisningsmodus,
     skalViseFjernKnapp,
+    skoleår,
     visningsmodus,
 }) => {
     if (visningsmodus === Visningsmodus.INITIELL) {
@@ -38,7 +40,7 @@ const SkoleårsperiodeHeader: React.FC<Props> = ({
     return (
         <FlexSpaceBetween>
             <Heading size={'medium'} level={'2'}>
-                Skoleår 23/24
+                {`Skoleår ${skoleår}`}
             </Heading>
             <FlexRow>
                 {skalViseFjernKnapp && (

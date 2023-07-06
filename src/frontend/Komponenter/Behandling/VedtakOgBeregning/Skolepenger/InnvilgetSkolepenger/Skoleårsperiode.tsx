@@ -16,6 +16,7 @@ import { validerSkoleårsperioderUtenBegrunnelseOgUtgiftsperioder } from './vedt
 import Utgiftsperioder from './Utgiftsperioder';
 import Makssats from './Makssats';
 import SkoleårsperiodeHeader from './SkoleårsperiodeHeader';
+import { utledSkoleårOgMaksBeløp } from '../skoleår';
 
 const ContainerDashedBorder = styled.div`
     border: 4px dashed ${ABlue200};
@@ -68,6 +69,9 @@ export enum Visningsmodus {
     VISNING = 'VISNING',
 }
 
+const utledSkoleårString = (fomÅr: string, tomÅr: string) =>
+    `${fomÅr.charAt(2)}${fomÅr.charAt(3)}/${(tomÅr + 1).charAt(2)}${(tomÅr + 1).charAt(3)}`;
+
 type Props = {
     customValidate: (fn: Valideringsfunksjon<InnvilgeVedtakForm>) => boolean;
     erFørstePeriode: boolean;
@@ -115,6 +119,10 @@ const Skoleårsperiode: React.FC<Props> = ({
     const erRedigerUtgitfsperiodeModus = visningsmodus === Visningsmodus.REDIGER_UTGIFTSPERIODER;
     const erLesevisning = visningsmodus === Visningsmodus.VISNING;
 
+    const [skoleår, maksBeløp] = utledSkoleårOgMaksBeløp(skoleårsperiode);
+
+    const skoleårString = utledSkoleårString(skoleår.toString(), (skoleår + 1).toString());
+
     const oppdaterVisningsmodus = () => {
         if (erInitiellModus || erRedigerSkoleperiodeModus) {
             validerSkoleårsperioderOgEndreVisningsmodus();
@@ -134,7 +142,6 @@ const Skoleårsperiode: React.FC<Props> = ({
     );
 
     const skalViseFjernKnapp = !erLesevisning && !erFørstePeriode && !inneholderLåsteUtgifter;
-
     const erLesevisningForDelårsperioder = erLesevisning || erRedigerUtgitfsperiodeModus;
 
     switch (visningsmodus) {
@@ -147,6 +154,7 @@ const Skoleårsperiode: React.FC<Props> = ({
                         åpenHøyremeny={åpenHøyremeny}
                     >
                         <SkoleårsperiodeHeader
+                            skoleår={skoleårString}
                             oppdaterVisningsmodus={oppdaterVisningsmodus}
                             skalViseFjernKnapp={skalViseFjernKnapp}
                             visningsmodus={visningsmodus}
@@ -188,6 +196,7 @@ const Skoleårsperiode: React.FC<Props> = ({
                         åpenHøyremeny={åpenHøyremeny}
                     >
                         <SkoleårsperiodeHeader
+                            skoleår={skoleårString}
                             oppdaterVisningsmodus={oppdaterVisningsmodus}
                             skalViseFjernKnapp={skalViseFjernKnapp}
                             visningsmodus={visningsmodus}
@@ -214,12 +223,13 @@ const Skoleårsperiode: React.FC<Props> = ({
                                 settValideringsfeil={(oppdaterteFeil) =>
                                     oppdaterValideringsfeil('utgiftsperioder', oppdaterteFeil)
                                 }
+                                skoleår={skoleårString}
                                 utgiftsperioder={skoleårsperiode.utgiftsperioder}
                                 valideringsfeil={valideringsfeil && valideringsfeil.utgiftsperioder}
                             />
                             <FlexRow>
                                 <VerticalDivider />
-                                <Makssats makssats={68000} />
+                                <Makssats makssats={maksBeløp} />
                             </FlexRow>
                         </Grid>
                     </HorisontalScroll>
