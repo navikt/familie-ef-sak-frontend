@@ -24,14 +24,14 @@ import useFormState, { FormState } from '../../../../../App/hooks/felles/useForm
 import { validerInnvilgetVedtakForm, validerVedtaksperioder } from '../vedtaksvalidering';
 import AlertStripeFeilPreWrap from '../../../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import styled from 'styled-components';
-import { Button } from '@navikt/ds-react';
 import { IVilkår } from '../../../Inngangsvilkår/vilkår';
 import { utledYngsteBarnFødselsdato } from './fødselsdatoUtils';
 import { useRedirectEtterLagring } from '../../../../../App/hooks/felles/useRedirectEtterLagring';
 import InntektsperiodeValgDeprecated from './InntektsperiodeValgDeprecated';
 import { ToggleName } from '../../../../../App/context/toggles';
 import { useToggles } from '../../../../../App/context/TogglesContext';
-import HovedKnapp from '../../../../../Felles/Knapper/HovedKnapp';
+import HovedKnapp, { Knapp } from '../../../../../Felles/Knapper/HovedKnapp';
+import { CalculatorIcon } from '@navikt/aksel-icons';
 
 export type InnvilgeVedtakForm = Omit<
     Omit<IInnvilgeVedtakForOvergangsstønad, 'resultatType'>,
@@ -236,9 +236,15 @@ export const Vedtaksform: React.FC<{
             )}
             {behandlingErRedigerbar && (
                 <div>
-                    <Button onClick={beregnPerioder} variant={'secondary'} type={'button'}>
+                    <Knapp
+                        onClick={beregnPerioder}
+                        variant={'secondary'}
+                        type={'button'}
+                        icon={<CalculatorIcon title={'beregn'} />}
+                        iconPosition={'right'}
+                    >
                         Beregn
-                    </Button>
+                    </Knapp>
                     {feilmelding && <AlertStripeFeilPreWrap>{feilmelding}</AlertStripeFeilPreWrap>}
                 </div>
             )}
