@@ -18,7 +18,7 @@ import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
 import { useApp } from '../../../../../App/context/AppContext';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../../../App/typer/ressurs';
 import { UtregningstabellSkolepenger } from '../UtregnignstabellSkolepenger';
-import { validerInnvilgetVedtakForm, validerSkoleårsperioder } from './vedtaksvalidering';
+import { validerInnvilgetVedtakForm, validerSkoleårsperioder } from './vedtaksvalideringDeprecated';
 import { tomSkoleårsperiodeSkolepenger } from '../typer';
 import SkoleårsperioderSkolepenger from './SkoleårsperioderSkolepenger';
 import OpphørSkolepenger from '../OpphørSkolepenger/OpphørSkolepenger';

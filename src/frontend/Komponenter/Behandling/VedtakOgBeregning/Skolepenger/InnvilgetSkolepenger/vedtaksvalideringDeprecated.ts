@@ -4,14 +4,14 @@ import {
     ISkoleårsperiodeSkolepenger,
     SkolepengerUtgift,
 } from '../../../../../App/typer/vedtak';
-import { InnvilgeVedtakForm } from './Vedtaksform';
+import { InnvilgeVedtakForm } from './VedtaksformSkolepenger';
 import {
     erMånedÅrEtterEllerLik,
     Intervall,
     månedÅrTilDate,
     overlapper,
 } from '../../../../../App/utils/dato';
-import { beregnSkoleår, validerSkoleår } from '../skoleår';
+import { beregnSkoleår } from '../skoleår';
 
 const periodeSkolepengerFeil: FormErrors<IPeriodeSkolepenger> = {
     studietype: undefined,
@@ -27,80 +27,38 @@ const periodeUtgiftFeil: FormErrors<SkolepengerUtgift> = {
     stønad: undefined,
 };
 
-export const validerSkoleårsperioderMedBegrunnelse = ({
+export const validerInnvilgetVedtakForm = ({
     skoleårsperioder,
     begrunnelse,
 }: InnvilgeVedtakForm): FormErrors<InnvilgeVedtakForm> => {
-    const validerteSkoleår = validerSkoleår(skoleårsperioder);
-
-    //TODO: Sett denne feilmeldingen på det skoleåret som er årsaken til duplikatfeil, hvis ønskelig
-    if (!validerteSkoleår.gyldig) {
-        return { skoleårsperioder: [], begrunnelse: validerteSkoleår.årsak };
-    }
-
     return {
-        skoleårsperioder: validerSkoleårsperioder(skoleårsperioder),
+        skoleårsperioder: validerSkoleårsperioderSkolepenger(skoleårsperioder),
         begrunnelse: !harVerdi(begrunnelse) ? 'Mangelfull utfylling av begrunnelse' : undefined,
     };
 };
 
-export const validerSkoleårsperioderUtenBegrunnelse = ({
+export const validerSkoleårsperioder = ({
     skoleårsperioder,
 }: InnvilgeVedtakForm): FormErrors<InnvilgeVedtakForm> => {
-    const validerteSkoleår = validerSkoleår(skoleårsperioder);
-
-    //TODO: Sett denne feilmeldingen på det skoleåret som er årsaken til duplikatfeil, hvis ønskelig
-    if (!validerteSkoleår.gyldig) {
-        return { skoleårsperioder: [], begrunnelse: validerteSkoleår.årsak };
-    }
-
     return {
-        skoleårsperioder: validerSkoleårsperioder(skoleårsperioder),
+        skoleårsperioder: validerSkoleårsperioderSkolepenger(skoleårsperioder),
         begrunnelse: undefined,
     };
 };
 
-export const validerSkoleårsperioderUtenBegrunnelseOgUtgiftsperioder = ({
-    skoleårsperioder,
-}: InnvilgeVedtakForm): FormErrors<InnvilgeVedtakForm> => {
-    const validerteSkoleår = validerSkoleår(skoleårsperioder);
-
-    //TODO: Sett denne feilmeldingen på det skoleåret som er årsaken til duplikatfeil, hvis ønskelig
-    if (!validerteSkoleår.gyldig) {
-        return { skoleårsperioder: [], begrunnelse: validerteSkoleår.årsak };
-    }
-
-    return {
-        skoleårsperioder: validerSkoleårsperioderUtenUtgiftsperioder(skoleårsperioder),
-        begrunnelse: undefined,
-    };
-};
-
-const validerSkoleårsperioder = (
-    perioder: ISkoleårsperiodeSkolepenger[]
-): FormErrors<ISkoleårsperiodeSkolepenger[]> => {
-    return perioder.map((periode) => {
-        const skoleårsperiodeFeil: FormErrors<ISkoleårsperiodeSkolepenger> = {
-            perioder: validerDelårsperioder(periode.perioder),
-            utgiftsperioder: validerUtgifsperioder(periode.utgiftsperioder),
-        };
-        return skoleårsperiodeFeil;
-    });
-};
-
-export const validerSkoleårsperioderUtenUtgiftsperioder = (
+export const validerSkoleårsperioderSkolepenger = (
     perioder: ISkoleårsperiodeSkolepenger[]
 ): FormErrors<ISkoleårsperiodeSkolepenger[]> => {
     return perioder.map((periode) => {
         const utgiftsperiodeFeil: FormErrors<ISkoleårsperiodeSkolepenger> = {
-            perioder: validerDelårsperioder(periode.perioder),
-            utgiftsperioder: [],
+            perioder: validerDelperiodeSkoleår(periode.perioder),
+            utgiftsperioder: validerUtgifter(periode.utgiftsperioder),
         };
         return utgiftsperiodeFeil;
     });
 };
 
-const validerDelårsperioder = (
+const validerDelperiodeSkoleår = (
     perioder: IPeriodeSkolepenger[]
 ): FormErrors<IPeriodeSkolepenger[]> => {
     let skoleår: number | undefined = undefined;
@@ -110,16 +68,10 @@ const validerDelårsperioder = (
         if (!studietype) {
             return { ...periodeSkolepengerFeil, studietype: 'Mangelfull utfylling av studietype' };
         }
-        if (!studiebelastning) {
-            return {
-                ...periodeSkolepengerFeil,
-                studiebelastning: 'Mangelfull utfylling av studiebelastning',
-            };
-        }
         if (!årMånedFra || !årMånedTil) {
             return {
                 ...periodeSkolepengerFeil,
-                årMånedFra: 'Mangelfull utfylling av gjeldende periode',
+                årMånedFra: 'Mangelfull utfylling av utgiftsperiode',
             };
         }
         if (!erMånedÅrEtterEllerLik(årMånedFra, årMånedTil)) {
@@ -155,6 +107,12 @@ const validerDelårsperioder = (
                 };
             }
         }
+        if (!studiebelastning) {
+            return {
+                ...periodeSkolepengerFeil,
+                studiebelastning: 'Mangelfull utfylling av studiebelastning',
+            };
+        }
         if (studiebelastning < 50 || studiebelastning > 100) {
             return {
                 ...periodeSkolepengerFeil,
@@ -165,9 +123,9 @@ const validerDelårsperioder = (
     });
 };
 
-const validerUtgifsperioder = (perioder: SkolepengerUtgift[]): FormErrors<SkolepengerUtgift[]> => {
+const validerUtgifter = (perioder: SkolepengerUtgift[]): FormErrors<SkolepengerUtgift[]> => {
     return perioder.map((periode) => {
-        const { årMånedFra, stønad } = periode;
+        const { årMånedFra, utgifter, stønad } = periode;
 
         if (!årMånedFra) {
             return {
@@ -176,10 +134,23 @@ const validerUtgifsperioder = (perioder: SkolepengerUtgift[]): FormErrors<Skolep
             };
         }
 
+        if (!utgifter || utgifter < 1) {
+            return {
+                ...periodeUtgiftFeil,
+                utgifter: 'Mangelfull utfylling av utgifter',
+            };
+        }
+
         if (stønad === undefined || stønad === null) {
             return {
                 ...periodeUtgiftFeil,
-                stønad: 'Mangelfull utfylling av beløp',
+                stønad: 'Mangelfull utfylling av stønad',
+            };
+        }
+        if (stønad > utgifter) {
+            return {
+                ...periodeUtgiftFeil,
+                stønad: 'Stønad kan ikke være høyere enn utgifter',
             };
         }
         return periodeUtgiftFeil;

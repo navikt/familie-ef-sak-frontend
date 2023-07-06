@@ -6,7 +6,7 @@ import { ListState } from '../../../../../App/hooks/felles/useListState';
 import { useApp } from '../../../../../App/context/AppContext';
 import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import OpphørUtgiftsperiodeSkolepenger from './OpphørUtgiftsperiodeSkolepenger';
-import { beregnSkoleår, GyldigSkoleår } from '../skoleår';
+import { beregnSkoleår, GyldigBeregnetSkoleår } from '../skoleår';
 import { locateIndexToRestorePreviousItemInCurrentItems, oppdaterValideringsfeil } from '../utils';
 import SkoleårDelårsperiode from '../InnvilgetSkolepenger/SkoleårDelårsperiode';
 import { FormErrors } from '../../../../../App/hooks/felles/useFormState';
@@ -39,7 +39,7 @@ const beregnSkoleårForSkoleårsperiode = (periode: ISkoleårsperiodeSkolepenger
         beregnSkoleår(
             periode.perioder[0].årMånedFra,
             periode.perioder[0].årMånedTil
-        ) as GyldigSkoleår
+        ) as GyldigBeregnetSkoleår
     ).skoleår;
 };
 

@@ -54,6 +54,7 @@ type Props = {
     låsteUtgiftIder: string[];
     oppdaterSkoleårsperiode: (data: SkolepengerUtgift[]) => void;
     settValideringsfeil: (errors: FormErrors<SkolepengerUtgift>[]) => void;
+    skoleår: string;
     utgiftsperioder: SkolepengerUtgift[];
     valideringsfeil: FormErrors<SkolepengerUtgift>[] | undefined;
 };
@@ -63,6 +64,7 @@ const Utgiftsperioder: React.FC<Props> = ({
     låsteUtgiftIder,
     oppdaterSkoleårsperiode,
     settValideringsfeil,
+    skoleår,
     utgiftsperioder,
     valideringsfeil,
 }) => {
@@ -86,7 +88,7 @@ const Utgiftsperioder: React.FC<Props> = ({
     return (
         <Container>
             <Heading size={'small'} level={'3'}>
-                Utgifter i skoleåret 23/24
+                {`Utgifter i skoleåret ${skoleår}`}
             </Heading>
             <FlexRow>
                 <VertialDivider lesevisning={erLesevisning} />
@@ -103,16 +105,16 @@ const Utgiftsperioder: React.FC<Props> = ({
                                 <React.Fragment key={index}>
                                     <InputRightAligned
                                         className="ny-rad"
-                                        label={'Utgifter'}
+                                        label={'Stønadsbeløp'}
                                         hideLabel
                                         onKeyPress={tilHeltall}
                                         type="number"
-                                        value={harTallverdi(utgift.utgifter) ? utgift.utgifter : ''}
-                                        error={valideringsfeil && valideringsfeil[index]?.utgifter}
+                                        value={harTallverdi(utgift.stønad) ? utgift.stønad : ''}
+                                        error={valideringsfeil && valideringsfeil[index]?.stønad}
                                         onChange={(e) => {
                                             oppdaterUtgift(
                                                 index,
-                                                'utgifter',
+                                                'stønad',
                                                 tilTallverdi(e.target.value)
                                             );
                                         }}
