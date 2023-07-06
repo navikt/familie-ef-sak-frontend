@@ -1,6 +1,13 @@
 import { Behandlingstema } from './behandlingstema';
 
 export type Journalposttype = 'I' | 'U' | 'N';
+
+export const journalposttypeTilTekst: Record<Journalposttype, string> = {
+    I: 'Inngående',
+    N: 'Notat',
+    U: 'Utgående',
+};
+
 type Journalstatus =
     | 'MOTTATT'
     | 'JOURNALFOERT'
@@ -15,19 +22,27 @@ type Journalstatus =
     | 'OPPLASTING_DOKUMENT'
     | 'UKJENT';
 
-export const journalstatusTilTekst: Record<string, string> = {
+export const gyldigeJournalstatuserTilTekst: Record<string, string> = {
     MOTTATT: 'Mottatt',
     JOURNALFOERT: 'Journalført',
     FERDIGSTILT: 'Ferdigstilt',
     EKSPEDERT: 'Ekspedert',
     UNDER_ARBEID: 'Under arbeid',
-    FEILREGISTRERT: 'Feilregistrert',
     UTGAAR: 'Utgår',
-    AVBRUTT: 'Avbrutt',
     UKJENT_BRUKER: 'Ukjent bruker',
     RESERVERT: 'Reservert',
     OPPLASTING_DOKUMENT: 'Opplasting',
     UKJENT: 'Ukjent',
+};
+
+export const ugyldigeJournalstatuserTilTekst: Record<string, string> = {
+    FEILREGISTRERT: 'Feilregistrert',
+    AVBRUTT: 'Avbrutt',
+};
+
+export const journalstatusTilTekst: Record<string, string> = {
+    ...gyldigeJournalstatuserTilTekst,
+    ...ugyldigeJournalstatuserTilTekst,
 };
 
 type BrukerId = 'AKTOERID' | 'FNR';

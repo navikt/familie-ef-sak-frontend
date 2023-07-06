@@ -25,13 +25,21 @@ export const formatterSkoleår = (skoleår: GyldigBeregnetSkoleår) =>
     `${last2Digits(skoleår.skoleår)}/${last2Digits(skoleår.skoleår + 1)}`;
 const last2Digits = (n: number) => String(n).slice(-2);
 
-const skolepengerMaksBeløpForHøgskoleUniversitet = new Map(
-    Object.entries({ 2019: 65326, 2020: 66604, 2021: 68136, 2022: 69500, 2023: 74366 })
-);
+const skolepengerMaksBeløpForHøgskoleUniversitet: Record<number, number> = {
+    2019: 65326,
+    2020: 66604,
+    2021: 68136,
+    2022: 69500,
+    2023: 74366,
+};
 
-const skolepengerMaksBeløpForVideregående = new Map(
-    Object.entries({ 2019: 27276, 2020: 27794, 2021: 28433, 2022: 29002, 2023: 31033 })
-);
+const skolepengerMaksBeløpForVideregående: Record<number, number> = {
+    2019: 27276,
+    2020: 27794,
+    2021: 28433,
+    2022: 29002,
+    2023: 31033,
+};
 
 /**
  *  Samme validering som i backend:
@@ -114,6 +122,9 @@ export const utledSkoleårOgMaksBeløp = (skoleårsperiode: ISkoleårsperiodeSko
     return [skoleår, maksBeløp];
 };
 
+export const utledSkoleårString = (fomÅr: string, tomÅr: string) =>
+    `${fomÅr.charAt(2)}${fomÅr.charAt(3)}/${(tomÅr + 1).charAt(2)}${(tomÅr + 1).charAt(3)}`;
+
 const utledMaksBeløpForSkoleårsperiode = (
     skoleårsperiode: ISkoleårsperiodeSkolepenger,
     skoleår: number
@@ -123,9 +134,9 @@ const utledMaksBeløpForSkoleårsperiode = (
 
     switch (studieType) {
         case ESkolepengerStudietype.HØGSKOLE_UNIVERSITET:
-            return skolepengerMaksBeløpForHøgskoleUniversitet.get(skoleår.toString()) || 0;
+            return skolepengerMaksBeløpForHøgskoleUniversitet[skoleår] || 0;
         case ESkolepengerStudietype.VIDEREGÅENDE:
-            return skolepengerMaksBeløpForVideregående.get(skoleår.toString()) || 0;
+            return skolepengerMaksBeløpForVideregående[skoleår] || 0;
         default:
             return 0;
     }

@@ -1,245 +1,233 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useDataHenter } from '../../App/hooks/felles/useDataHenter';
 import { AxiosRequestConfig } from 'axios';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import styled from 'styled-components';
-import { TabellWrapper, Td, Th } from '../../Felles/Personopplysninger/TabellWrapper';
-import Mappe from '../../Felles/Ikoner/Mappe';
-import TabellOverskrift from '../../Felles/Personopplysninger/TabellOverskrift';
-import { Dokumentinfo, ILogiskVedlegg } from '../../App/typer/dokumentliste';
-import { formaterNullableIsoDatoTid } from '../../App/utils/formatter';
+import { Dokumentinfo } from '../../App/typer/dokumentliste';
 import { groupBy } from '../../App/utils/utils';
-import { tekstMapping } from '../../App/utils/tekstmapping';
 import { IFagsakPerson } from '../../App/typer/fagsak';
-import { Journalposttype, Journalstatus } from '@navikt/familie-typer';
-import { DownFilled, LeftFilled, RightFilled } from '@navikt/ds-icons';
-import {
-    avsenderMottakerIdTypeTilTekst,
-    journalstatusTilTekst,
-} from '../../App/typer/journalføring';
-import { BodyShortSmall, SmallTextLabel } from '../../Felles/Visningskomponenter/Tekster';
+import { Journalstatus } from '@navikt/familie-typer';
 
-const DokumenterVisning = styled.div`
+import {
+    gyldigeJournalstatuserTilTekst,
+    journalposttypeTilTekst,
+} from '../../App/typer/journalføring';
+import { VedleggRequest } from './vedleggRequest';
+import { Arkivtema, arkivtemaerMedENFFørst, arkivtemaerTilTekst } from '../../App/typer/arkivtema';
+import CustomSelect from '../Oppgavebenk/CustomSelect';
+import { FamilieReactSelect, MultiValue, SingleValue } from '@navikt/familie-form-elements';
+import { oppdaterVedleggFilter } from './utils';
+import { Checkbox, Heading, Label } from '@navikt/ds-react';
+import { Kolonnetittel } from './Dokumentoversikt/Kolonnetittel';
+import { HovedTabellrad } from './Dokumentoversikt/Hovedtabellrad';
+import { Tabellrad } from './Dokumentoversikt/Tabellrad';
+
+const FiltreringGrid = styled.div`
+    display: grid;
+    grid-template-columns: repeat(3, max-content) auto;
+    row-gap: 0.5rem;
+    column-gap: 3rem;
+    align-items: start;
+
+    .checkboks {
+        justify-self: end;
+    }
+
+    .ny-rad {
+        grid-column: 1;
+    }
+`;
+
+const ArkivtemaVelger = styled(FamilieReactSelect)`
+    width: 25rem;
+
+    .react-select__control {
+        min-height: 3rem;
+    }
+`;
+
+const Container = styled.div`
+    margin: 1rem;
+    gap: 1rem;
     display: flex;
     flex-direction: column;
-    margin-bottom: 5rem;
-`;
 
-const TrHoveddokument = styled.tr`
-    background-color: #f7f7f7;
-`;
-
-const LenkeVenstreMargin = styled.a`
-    margin-left: 2rem;
-
-    &:visited {
-        color: purple;
-    }
-`;
-
-const HovedLenke = styled.a`
-    &:visited {
-        color: purple;
-    }
-`;
-
-const DivMedVenstreMargin = styled.div`
-    margin-left: 2rem;
-`;
-
-const InnUt = styled.div`
-    svg {
-        vertical-align: -0.2em;
-        margin-right: 0.5rem;
-    }
-`;
-
-/**
- * Genererer en string av typen `<navn> (<type>: <id>)`
- */
-const utledAvsenderMottakerDetaljer = (dokument: Dokumentinfo): string => {
-    let avsender = '';
-    const avsenderMottaker = dokument.avsenderMottaker;
-    if (!avsenderMottaker) {
-        return avsender;
-    }
-    if (avsenderMottaker.navn) {
-        avsender += avsenderMottaker.navn;
-    }
-    const type = avsenderMottaker.type;
-    const id = avsenderMottaker.id;
-    if (!avsenderMottaker.erLikBruker && (type || id)) {
-        avsender += ' (';
-        if (type && avsenderMottakerIdTypeTilTekst[type]) {
-            avsender += avsenderMottakerIdTypeTilTekst[type];
-            if (id) {
-                avsender += ': ';
-            }
+    .tabell {
+        .columnHeader {
+            font-weight: bold;
         }
-        if (id) {
-            avsender += id;
+        th,
+        td {
+            padding: 0.25rem 0.25rem 0.25rem 0;
         }
-        avsender += ')';
+        table-layout: fixed;
     }
-    return avsender;
-};
-
-const ikoneForJournalposttype: Record<Journalposttype, React.ReactElement> = {
-    I: <LeftFilled />,
-    N: <DownFilled />,
-    U: <RightFilled />,
-};
+`;
 
 const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson }) => {
+    const [vedleggRequest, settVedleggRequest] = useState<VedleggRequest>({
+        fagsakPersonId: fagsakPerson.id,
+    });
+
+    const settVedlegg = (key: keyof VedleggRequest) => {
+        return (val?: string | number) =>
+            settVedleggRequest((prevState: VedleggRequest) =>
+                oppdaterVedleggFilter(prevState, key, val)
+            );
+    };
+
     const dokumentConfig: AxiosRequestConfig = useMemo(
         () => ({
-            method: 'GET',
-            url: `/familie-ef-sak/api/vedlegg/fagsak-person/${fagsakPerson.id}`,
+            method: 'POST',
+            url: `/familie-ef-sak/api/vedlegg/fagsak-person`,
+            data: vedleggRequest,
         }),
-        [fagsakPerson]
+        [vedleggRequest]
     );
 
     const dokumentResponse = useDataHenter<Dokumentinfo[], null>(dokumentConfig);
+    const [visFeilregistrerteOgAvbruttValgt, setVisFeilregistrerteOgAvbruttValgt] =
+        React.useState(false);
 
-    const dokumentGruppeSkalIkkeVises = (dokumenter: Dokumentinfo[]): boolean => {
-        const journalStatuser = [Journalstatus.FEILREGISTRERT, Journalstatus.AVBRUTT];
-        return dokumenter.some((dokument) => journalStatuser.includes(dokument.journalstatus));
+    const toggleVisFeilregistrerteOgAvbrutt = () => {
+        setVisFeilregistrerteOgAvbruttValgt(!visFeilregistrerteOgAvbruttValgt);
     };
 
-    const Kolonnetittel: React.FC<{ text: string; width: number }> = ({ text, width }) => (
-        <Th width={`${width}%`}>
-            <SmallTextLabel>{text}</SmallTextLabel>
-        </Th>
-    );
+    const dokumentGruppeSkalVises = (dokumenter: Dokumentinfo[]): boolean => {
+        const harFeilregistrerteEllerAvbrutte = dokumenter.some((dokument) =>
+            [Journalstatus.FEILREGISTRERT, Journalstatus.AVBRUTT].includes(dokument.journalstatus)
+        );
 
-    const LogiskeVedlegg: React.FC<{ logiskeVedlegg: ILogiskVedlegg[] }> = ({ logiskeVedlegg }) => (
-        <>
-            {logiskeVedlegg.map((logiskVedlegg, index) => (
-                <DivMedVenstreMargin key={`${logiskVedlegg.tittel}${index}`}>
-                    {logiskVedlegg.tittel}
-                </DivMedVenstreMargin>
-            ))}
-        </>
-    );
-
-    const Tabellrad: React.FC<{ dokument: Dokumentinfo; erKlikketId: string }> = ({ dokument }) => (
-        <tr>
-            <Td></Td>
-            <Td></Td>
-            <Td>
-                <LenkeVenstreMargin
-                    href={`/dokument/journalpost/${dokument.journalpostId}/dokument-pdf/${dokument.dokumentinfoId}`}
-                    target={'_blank'}
-                    rel={'noreferrer'}
-                >
-                    {dokument.tittel}
-                </LenkeVenstreMargin>
-                <LogiskeVedlegg logiskeVedlegg={dokument.logiskeVedlegg} />
-            </Td>
-            <Td></Td>
-            <Td></Td>
-        </tr>
-    );
-
-    const HovedTabellrad: React.FC<{ dokument: Dokumentinfo; erKlikketId: string }> = ({
-        dokument,
-    }) => (
-        <TrHoveddokument>
-            <Td>{formaterNullableIsoDatoTid(dokument.dato)}</Td>
-            <Td>
-                <InnUt>
-                    {ikoneForJournalposttype[dokument.journalposttype]}
-                    <strong>{dokument.journalposttype}</strong>
-                </InnUt>
-            </Td>
-            <Td>
-                <HovedLenke
-                    key={dokument.journalpostId}
-                    href={`/dokument/journalpost/${dokument.journalpostId}/dokument-pdf/${dokument.dokumentinfoId}`}
-                    target={'_blank'}
-                    rel={'noreferrer'}
-                >
-                    {dokument.tittel}
-                </HovedLenke>
-                <LogiskeVedlegg logiskeVedlegg={dokument.logiskeVedlegg} />
-            </Td>
-            <Td>{utledAvsenderMottakerDetaljer(dokument)}</Td>
-            <Td>
-                <BodyShortSmall>
-                    {tekstMapping(dokument.journalstatus, journalstatusTilTekst)}
-                </BodyShortSmall>
-            </Td>
-        </TrHoveddokument>
-    );
+        return visFeilregistrerteOgAvbruttValgt
+            ? harFeilregistrerteEllerAvbrutte
+            : !harFeilregistrerteEllerAvbrutte;
+    };
 
     return (
-        <DataViewer response={{ dokumentResponse }}>
-            {({ dokumentResponse }) => {
-                const grupperteDokumenter = groupBy(dokumentResponse, (i) => i.journalpostId);
+        <Container>
+            <Heading size={'large'} level={'1'}>
+                Dokumenter
+            </Heading>
+            <FiltreringGrid>
+                <Label>Velg tema(er)</Label>
+                <Label>Velg dokumenttype</Label>
+                <Label>Velg journalpoststatus</Label>
+                <div className={'ny-rad'}>
+                    <ArkivtemaVelger
+                        placeholder={'Alle'}
+                        label={''}
+                        options={arkivtemaerMedENFFørst}
+                        creatable={false}
+                        isMulti={true}
+                        classNamePrefix={'react-select'}
+                        value={
+                            vedleggRequest.tema?.map((tema) => ({
+                                value: tema,
+                                label: arkivtemaerTilTekst[tema],
+                            })) || []
+                        }
+                        onChange={(valgteTemaer) => {
+                            const erMultiValue = <T,>(
+                                verdi: MultiValue<T> | SingleValue<T> | null
+                            ): verdi is MultiValue<T> => Array.isArray(verdi);
 
-                return (
-                    <>
-                        <DokumenterVisning>
-                            <TabellWrapper>
-                                <TabellOverskrift Ikon={Mappe} tittel={'Dokumenter'} />
-                                <table className="tabell">
-                                    <thead>
-                                        <tr>
-                                            <Kolonnetittel text={'Dato'} width={12} />
-                                            <Kolonnetittel text={'Inn/ut'} width={5} />
-                                            <Kolonnetittel text={'Tittel'} width={43} />
-                                            <Kolonnetittel text={'Avsender/mottaker'} width={20} />
-                                            <Kolonnetittel text={'Status'} width={10} />
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {Object.keys(grupperteDokumenter)
-                                            .sort(function (a, b) {
-                                                const datoA = grupperteDokumenter[a][0].dato;
-                                                const datoB = grupperteDokumenter[b][0].dato;
-                                                if (!datoA) {
-                                                    return -1;
-                                                } else if (!datoB) {
-                                                    return 1;
-                                                }
-                                                return datoA > datoB ? -1 : 1;
-                                            })
-                                            .filter(
-                                                (journalPostId: string) =>
-                                                    !dokumentGruppeSkalIkkeVises(
-                                                        grupperteDokumenter[journalPostId]
-                                                    )
-                                            )
-                                            .map((journalpostId: string) => {
-                                                return grupperteDokumenter[journalpostId].map(
-                                                    (dokument: Dokumentinfo, indeks: number) => {
-                                                        if (indeks === 0) {
-                                                            return (
-                                                                <HovedTabellrad
-                                                                    key={`${journalpostId}-${indeks}`}
-                                                                    erKlikketId={`${journalpostId}-${indeks}`}
-                                                                    dokument={dokument}
-                                                                />
-                                                            );
-                                                        } else
-                                                            return (
-                                                                <Tabellrad
-                                                                    key={`${journalpostId}-${indeks}`}
-                                                                    erKlikketId={`${journalpostId}-${indeks}`}
-                                                                    dokument={dokument}
-                                                                />
-                                                            );
-                                                    }
-                                                );
-                                            })}
-                                    </tbody>
-                                </table>
-                            </TabellWrapper>
-                        </DokumenterVisning>
-                    </>
-                );
-            }}
-        </DataViewer>
+                            const temaer = erMultiValue(valgteTemaer)
+                                ? valgteTemaer.map((tema) => tema.value as Arkivtema)
+                                : [valgteTemaer?.value as Arkivtema];
+
+                            settVedleggRequest((prevState) => ({
+                                ...prevState,
+                                tema: temaer,
+                            }));
+                        }}
+                    />
+                </div>
+                <CustomSelect
+                    onChange={settVedlegg('dokumenttype')}
+                    options={journalposttypeTilTekst}
+                    label={'Velg dokumenttyope'}
+                    hideLabel={true}
+                    value={vedleggRequest.dokumenttype}
+                    size={'medium'}
+                />
+                <CustomSelect
+                    onChange={settVedlegg('journalpostStatus')}
+                    options={gyldigeJournalstatuserTilTekst}
+                    label={'Velg journalpoststatus'}
+                    hideLabel={true}
+                    value={vedleggRequest.journalpostStatus}
+                    size={'medium'}
+                />
+                <Checkbox
+                    className={'checkboks'}
+                    onChange={toggleVisFeilregistrerteOgAvbrutt}
+                    checked={visFeilregistrerteOgAvbruttValgt}
+                >
+                    Vis feilregistrerte/avbrutte
+                </Checkbox>
+            </FiltreringGrid>
+            <table className={'tabell'}>
+                <thead>
+                    <tr>
+                        <Kolonnetittel text={'Dato'} width={12} />
+                        <Kolonnetittel text={'Inn/ut'} width={5} />
+                        <Kolonnetittel text={'Tittel'} width={43} />
+                        <Kolonnetittel text={'Avsender/mottaker'} width={20} />
+                        <Kolonnetittel text={'Tema'} width={20} />
+                        <Kolonnetittel text={'Status'} width={10} />
+                        <Kolonnetittel text={'Distribusjon'} width={10} />
+                    </tr>
+                </thead>
+                <DataViewer response={{ dokumentResponse }}>
+                    {({ dokumentResponse }) => {
+                        const grupperteDokumenter = groupBy(
+                            dokumentResponse,
+                            (i) => i.journalpostId
+                        );
+                        return (
+                            <tbody>
+                                {Object.keys(grupperteDokumenter)
+                                    .sort(function (a, b) {
+                                        const datoA = grupperteDokumenter[a][0].dato;
+                                        const datoB = grupperteDokumenter[b][0].dato;
+                                        if (!datoA) {
+                                            return -1;
+                                        } else if (!datoB) {
+                                            return 1;
+                                        }
+                                        return datoA > datoB ? -1 : 1;
+                                    })
+                                    .filter((journalPostId: string) =>
+                                        dokumentGruppeSkalVises(grupperteDokumenter[journalPostId])
+                                    )
+                                    .map((journalpostId: string) => {
+                                        return grupperteDokumenter[journalpostId].map(
+                                            (dokument: Dokumentinfo, indeks: number) => {
+                                                if (indeks === 0) {
+                                                    return (
+                                                        <HovedTabellrad
+                                                            key={`${journalpostId}-${indeks}`}
+                                                            erKlikketId={`${journalpostId}-${indeks}`}
+                                                            dokument={dokument}
+                                                        />
+                                                    );
+                                                } else
+                                                    return (
+                                                        <Tabellrad
+                                                            key={`${journalpostId}-${indeks}`}
+                                                            erKlikketId={`${journalpostId}-${indeks}`}
+                                                            dokument={dokument}
+                                                        />
+                                                    );
+                                            }
+                                        );
+                                    })}
+                            </tbody>
+                        );
+                    }}
+                </DataViewer>
+            </table>
+        </Container>
     );
 };
 
