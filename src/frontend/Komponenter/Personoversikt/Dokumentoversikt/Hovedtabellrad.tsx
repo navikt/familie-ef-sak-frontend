@@ -16,6 +16,7 @@ import { Journalposttype } from '@navikt/familie-typer';
 import { DownFilled, LeftFilled, RightFilled } from '@navikt/ds-icons';
 import { useToggles } from '../../../App/context/TogglesContext';
 import { skalViseLenke } from '../utils';
+import { PadlockLockedIcon } from '@navikt/aksel-icons';
 
 const TrHoveddokument = styled.tr`
     background-color: #f7f7f7;
@@ -32,6 +33,12 @@ const InnUt = styled.div`
         vertical-align: -0.2em;
         margin-right: 0.5rem;
     }
+`;
+
+export const IkkeTilgang = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 `;
 
 const ikonForJournalposttype: Record<Journalposttype, React.ReactElement> = {
@@ -67,7 +74,10 @@ export const HovedTabellrad: React.FC<{ dokument: Dokumentinfo; erKlikketId: str
                         <LogiskeVedlegg logiskeVedlegg={dokument.logiskeVedlegg} />
                     </>
                 ) : (
-                    <BodyShortSmall>{dokument.tittel}</BodyShortSmall>
+                    <IkkeTilgang>
+                        <PadlockLockedIcon title="Mangler tilgang til dokument" />
+                        <BodyShortSmall>{dokument.tittel}</BodyShortSmall>
+                    </IkkeTilgang>
                 )}
             </Td>
             <Td>{utledAvsenderMottakerDetaljer(dokument)}</Td>
