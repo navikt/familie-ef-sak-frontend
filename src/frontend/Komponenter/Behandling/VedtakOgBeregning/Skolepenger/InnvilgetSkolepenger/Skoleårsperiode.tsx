@@ -157,6 +157,7 @@ const Skoleårsperiode: React.FC<Props> = ({
                         åpenHøyremeny={åpenHøyremeny}
                     >
                         <SkoleårsperiodeHeader
+                            fjernSkoleårsperiode={fjernSkoleårsperiode}
                             skoleår={skoleårString}
                             oppdaterVisningsmodus={oppdaterVisningsmodus}
                             skalViseFjernKnapp={skalViseFjernKnapp}
@@ -199,6 +200,7 @@ const Skoleårsperiode: React.FC<Props> = ({
                         åpenHøyremeny={åpenHøyremeny}
                     >
                         <SkoleårsperiodeHeader
+                            fjernSkoleårsperiode={fjernSkoleårsperiode}
                             skoleår={skoleårString}
                             oppdaterVisningsmodus={oppdaterVisningsmodus}
                             skalViseFjernKnapp={skalViseFjernKnapp}
