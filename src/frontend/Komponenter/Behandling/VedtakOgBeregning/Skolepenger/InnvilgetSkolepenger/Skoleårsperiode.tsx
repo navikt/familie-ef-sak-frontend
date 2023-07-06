@@ -16,7 +16,7 @@ import { validerSkoleårsperioderUtenBegrunnelseOgUtgiftsperioder } from './vedt
 import Utgiftsperioder from './Utgiftsperioder';
 import Makssats from './Makssats';
 import SkoleårsperiodeHeader from './SkoleårsperiodeHeader';
-import { utledSkoleårOgMaksBeløp } from '../skoleår';
+import { utledSkoleårOgMaksBeløp, utledSkoleårString } from '../skoleår';
 
 const ContainerDashedBorder = styled.div`
     border: 4px dashed ${ABlue200};
@@ -68,9 +68,6 @@ export enum Visningsmodus {
     REDIGER_UTGIFTSPERIODER = 'REDIGER_UTGIFTSPERIODER',
     VISNING = 'VISNING',
 }
-
-const utledSkoleårString = (fomÅr: string, tomÅr: string) =>
-    `${fomÅr.charAt(2)}${fomÅr.charAt(3)}/${(tomÅr + 1).charAt(2)}${(tomÅr + 1).charAt(3)}`;
 
 type Props = {
     customValidate: (fn: Valideringsfunksjon<InnvilgeVedtakForm>) => boolean;
