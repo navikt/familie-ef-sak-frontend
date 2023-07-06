@@ -60,12 +60,17 @@ const FlexColumn = styled.div`
     gap: 1rem;
 `;
 
-export const defaultSkoleårsperioder = (
+const markerErHentetFraBackend = (
+    skoleårsperioder: ISkoleårsperiodeSkolepenger[]
+): ISkoleårsperiodeSkolepenger[] =>
+    skoleårsperioder.map((periode) => ({ ...periode, erHentetFraBackend: true }));
+
+const defaultSkoleårsperioder = (
     forrigeVedtak?: IvedtakForSkolepenger
 ): ISkoleårsperiodeSkolepenger[] => {
     const forrigeSkoleårsperioder = forrigeVedtak?.skoleårsperioder;
     if (forrigeSkoleårsperioder && forrigeSkoleårsperioder.length > 0) {
-        return forrigeSkoleårsperioder;
+        return markerErHentetFraBackend(forrigeSkoleårsperioder);
     } else {
         return [];
     }
@@ -96,7 +101,7 @@ export const Vedtaksform: React.FC<{
     const formState = useFormState<InnvilgeVedtakForm>(
         {
             skoleårsperioder: lagretInnvilgetVedtak
-                ? lagretInnvilgetVedtak.skoleårsperioder
+                ? markerErHentetFraBackend(lagretInnvilgetVedtak.skoleårsperioder)
                 : defaultSkoleårsperioder(forrigeVedtak),
             begrunnelse: lagretInnvilgetVedtak?.begrunnelse || '',
         },

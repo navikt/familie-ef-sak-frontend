@@ -48,7 +48,7 @@ const SkoleårsperiodeHeader: React.FC<Props> = ({
                         Fjern skoleårsperiode
                     </Knapp>
                 )}
-                {visningsmodus === Visningsmodus.REDIGER_UTGIFTSPERIODER ? (
+                {visningsmodus === Visningsmodus.REDIGER_UTGIFTSPERIODER && (
                     <Knapp
                         icon={<PencilWritingIcon title={'endre skoleår'} />}
                         iconPosition={'right'}
@@ -58,7 +58,8 @@ const SkoleårsperiodeHeader: React.FC<Props> = ({
                     >
                         Endre skoleår
                     </Knapp>
-                ) : (
+                )}
+                {visningsmodus === Visningsmodus.REDIGER_SKOLEÅRSPERIODER && (
                     <Knapp onClick={oppdaterVisningsmodus} type={'button'} variant={'tertiary'}>
                         Lagre Skoleår
                     </Knapp>
