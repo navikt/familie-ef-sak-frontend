@@ -12,7 +12,7 @@ import { HorizontalScroll } from '../../Felles/HorizontalScroll';
 import Delårsperioder from './Delårsperioder';
 import { Knapp } from '../../../../../Felles/Knapper/HovedKnapp';
 import { InnvilgeVedtakForm } from './VedtaksformSkolepenger';
-import { validerKunSkoleårsperioder } from './vedtaksvalidering';
+import { validerSkoleårsperioderUtenBegrunnelseOgUtgiftsperioder } from './vedtaksvalidering';
 import Utgiftsperioder from './Utgiftsperioder';
 import Makssats from './Makssats';
 import SkoleårsperiodeHeader from './SkoleårsperiodeHeader';
@@ -110,19 +110,21 @@ const Skoleårsperiode: React.FC<Props> = ({
 
     const [visningsmodus, settVisningsmodus] = useState<Visningsmodus>(utledVisningsmodus);
 
+    const erInitiellModus = visningsmodus === Visningsmodus.INITIELL;
+    const erRedigerSkoleperiodeModus = visningsmodus === Visningsmodus.REDIGER_SKOLEÅRSPERIODER;
+    const erRedigerUtgitfsperiodeModus = visningsmodus === Visningsmodus.REDIGER_UTGIFTSPERIODER;
+    const erLesevisning = visningsmodus === Visningsmodus.VISNING;
+
     const oppdaterVisningsmodus = () => {
-        if (
-            visningsmodus === Visningsmodus.INITIELL ||
-            visningsmodus === Visningsmodus.REDIGER_SKOLEÅRSPERIODER
-        ) {
+        if (erInitiellModus || erRedigerSkoleperiodeModus) {
             validerSkoleårsperioderOgEndreVisningsmodus();
-        } else if (visningsmodus === Visningsmodus.REDIGER_UTGIFTSPERIODER) {
+        } else if (erRedigerUtgitfsperiodeModus) {
             settVisningsmodus(Visningsmodus.REDIGER_SKOLEÅRSPERIODER);
         }
     };
 
     const validerSkoleårsperioderOgEndreVisningsmodus = () => {
-        if (customValidate(validerKunSkoleårsperioder)) {
+        if (customValidate(validerSkoleårsperioderUtenBegrunnelseOgUtgiftsperioder)) {
             settVisningsmodus(Visningsmodus.REDIGER_UTGIFTSPERIODER);
         }
     };
@@ -131,16 +133,9 @@ const Skoleårsperiode: React.FC<Props> = ({
         (utgift) => låsteUtgiftIder.indexOf(utgift.id) > -1
     );
 
-    const skalViseFjernKnapp =
-        visningsmodus !== Visningsmodus.VISNING && !erFørstePeriode && !inneholderLåsteUtgifter;
+    const skalViseFjernKnapp = !erLesevisning && !erFørstePeriode && !inneholderLåsteUtgifter;
 
-    const erLesevisningForDelårsperioder =
-        visningsmodus === Visningsmodus.VISNING ||
-        visningsmodus === Visningsmodus.REDIGER_UTGIFTSPERIODER;
-
-    const erUtgiftsperioderRedigerbare = visningsmodus === Visningsmodus.REDIGER_UTGIFTSPERIODER;
-
-    const erLesevisningForUtgiftsperioder = visningsmodus === Visningsmodus.VISNING;
+    const erLesevisningForDelårsperioder = erLesevisning || erRedigerUtgitfsperiodeModus;
 
     switch (visningsmodus) {
         case Visningsmodus.INITIELL:
@@ -209,9 +204,9 @@ const Skoleårsperiode: React.FC<Props> = ({
                             valideringsfeil={valideringsfeil && valideringsfeil.perioder}
                         />
                         <HorizontalDivider />
-                        <Grid erRedigerbar={erUtgiftsperioderRedigerbare}>
+                        <Grid erRedigerbar={erRedigerUtgitfsperiodeModus}>
                             <Utgiftsperioder
-                                erLesevisning={erLesevisningForUtgiftsperioder}
+                                erLesevisning={erLesevisning}
                                 låsteUtgiftIder={låsteUtgiftIder}
                                 oppdaterSkoleårsperiode={(utgiftsperioder) =>
                                     oppdaterSkoleårsperiode('utgiftsperioder', utgiftsperioder)

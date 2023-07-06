@@ -20,7 +20,10 @@ import { Alert, Button } from '@navikt/ds-react';
 import { useApp } from '../../../../../App/context/AppContext';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../../../App/typer/ressurs';
 import { UtregningstabellSkolepenger } from '../UtregnignstabellSkolepenger';
-import { validerInnvilgetVedtakForm, validerSkoleårsperioder } from './vedtaksvalidering';
+import {
+    validerSkoleårsperioderMedBegrunnelse,
+    validerSkoleårsperioderUtenBegrunnelse,
+} from './vedtaksvalidering';
 import { BodyLongSmall, BodyShortSmall } from '../../../../../Felles/Visningskomponenter/Tekster';
 import { ARed500 } from '@navikt/ds-tokens/dist/tokens';
 import { useRedirectEtterLagring } from '../../../../../App/hooks/felles/useRedirectEtterLagring';
@@ -97,7 +100,7 @@ export const Vedtaksform: React.FC<{
                 : defaultSkoleårsperioder(forrigeVedtak),
             begrunnelse: lagretInnvilgetVedtak?.begrunnelse || '',
         },
-        validerInnvilgetVedtakForm
+        validerSkoleårsperioderMedBegrunnelse
     );
     const skoleårsPerioderState = formState.getProps(
         'skoleårsperioder'
@@ -157,7 +160,7 @@ export const Vedtaksform: React.FC<{
     const beregnSkolepenger = () => {
         settHarUtførtBeregning(false);
         settVisFeilmelding(false);
-        if (formState.customValidate(validerSkoleårsperioder)) {
+        if (formState.customValidate(validerSkoleårsperioderUtenBegrunnelse)) {
             axiosRequest<IBeregningSkolepengerResponse, IBeregningsrequestSkolepenger>({
                 method: 'POST',
                 url: `/familie-ef-sak/api/beregning/skolepenger`,

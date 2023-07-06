@@ -103,16 +103,16 @@ const Utgiftsperioder: React.FC<Props> = ({
                                 <React.Fragment key={index}>
                                     <InputRightAligned
                                         className="ny-rad"
-                                        label={'Utgifter'}
+                                        label={'Stønadsbeløp'}
                                         hideLabel
                                         onKeyPress={tilHeltall}
                                         type="number"
-                                        value={harTallverdi(utgift.utgifter) ? utgift.utgifter : ''}
-                                        error={valideringsfeil && valideringsfeil[index]?.utgifter}
+                                        value={harTallverdi(utgift.stønad) ? utgift.stønad : ''}
+                                        error={valideringsfeil && valideringsfeil[index]?.stønad}
                                         onChange={(e) => {
                                             oppdaterUtgift(
                                                 index,
-                                                'utgifter',
+                                                'stønad',
                                                 tilTallverdi(e.target.value)
                                             );
                                         }}

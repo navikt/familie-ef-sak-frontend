@@ -148,6 +148,7 @@ export interface IPeriodeSkolepenger {
     studiebelastning: number | undefined;
 }
 
+// TODO: Fjern utgifter etter at skolepenger-2.0 er prodsatt og testet ferdig
 export interface SkolepengerUtgift {
     id: string;
     årMånedFra: string;
