@@ -83,6 +83,7 @@ const validerSkoleårsperioder = (
         const skoleårsperiodeFeil: FormErrors<ISkoleårsperiodeSkolepenger> = {
             perioder: validerDelårsperioder(periode.perioder),
             utgiftsperioder: validerUtgifsperioder(periode.utgiftsperioder),
+            erHentetFraBackend: undefined,
         };
         return skoleårsperiodeFeil;
     });
@@ -95,6 +96,7 @@ export const validerSkoleårsperioderUtenUtgiftsperioder = (
         const utgiftsperiodeFeil: FormErrors<ISkoleårsperiodeSkolepenger> = {
             perioder: validerDelårsperioder(periode.perioder),
             utgiftsperioder: [],
+            erHentetFraBackend: undefined,
         };
         return utgiftsperiodeFeil;
     });

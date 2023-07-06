@@ -13,7 +13,6 @@ import useFormState, { FormState } from '../../../../../App/hooks/felles/useForm
 import { ListState } from '../../../../../App/hooks/felles/useListState';
 import { useBehandling } from '../../../../../App/context/BehandlingContext';
 import styled from 'styled-components';
-import { Button } from '@navikt/ds-react';
 import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
 import { useApp } from '../../../../../App/context/AppContext';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../../../App/typer/ressurs';
@@ -28,7 +27,8 @@ import { useRedirectEtterLagring } from '../../../../../App/hooks/felles/useRedi
 import { v4 as uuidv4 } from 'uuid';
 import { BegrunnelsesFelt } from './BegrunnelsesFelt';
 import { AlertError } from '../../../../../Felles/Visningskomponenter/Alerts';
-import HovedKnapp from '../../../../../Felles/Knapper/HovedKnapp';
+import HovedKnapp, { Knapp } from '../../../../../Felles/Knapper/HovedKnapp';
+import { CalculatorIcon } from '@navikt/aksel-icons';
 
 const Form = styled.form`
     display: flex;
@@ -194,9 +194,15 @@ export const VedtaksformSkolepenger: React.FC<{
             {feilmelding && <AlertError>{feilmelding}</AlertError>}
             {behandlingErRedigerbar && !erOpphør && (
                 <div>
-                    <Button variant={'secondary'} onClick={beregnSkolepenger} type={'button'}>
+                    <Knapp
+                        variant={'secondary'}
+                        onClick={beregnSkolepenger}
+                        type={'button'}
+                        icon={<CalculatorIcon title={'beregn'} />}
+                        iconPosition={'right'}
+                    >
                         Beregn
-                    </Button>
+                    </Knapp>
                     {visFeilmelding && (
                         <AdvarselTekst>
                             Kan ikke lagre vedtaket før beregning er utført

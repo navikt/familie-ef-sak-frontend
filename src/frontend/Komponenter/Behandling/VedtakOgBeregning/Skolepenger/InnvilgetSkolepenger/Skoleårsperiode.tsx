@@ -47,11 +47,11 @@ const FlexRow = styled.div`
     gap: 1rem;
 `;
 
-const Grid = styled.div<{ erRedigerbar: boolean }>`
+const Grid = styled.div<{ skalSladdes: boolean; erKlikkbar: boolean }>`
     display: grid;
     grid-template-columns: 1fr 1fr;
-    opacity: ${(props) => (props.erRedigerbar ? '1' : '0.5')};
-    pointer-events: ${(props) => (props.erRedigerbar ? 'auto' : 'none')};
+    opacity: ${(props) => (props.skalSladdes ? '0.5' : '1')};
+    pointer-events: ${(props) => (props.erKlikkbar ? 'auto' : 'none')};
 `;
 
 const HorizontalDivider = styled.div`
@@ -101,6 +101,8 @@ const Skoleårsperiode: React.FC<Props> = ({
     const utledVisningsmodus = () => {
         if (!behandlingErRedigerbar) {
             return Visningsmodus.VISNING;
+        } else if (skoleårsperiode.erHentetFraBackend) {
+            return Visningsmodus.REDIGER_UTGIFTSPERIODER;
         } else if (skoleårsperiode.perioder.length === 0) {
             return Visningsmodus.REDIGER_SKOLEÅRSPERIODER;
         } else if (skoleårsperiode.utgiftsperioder.length === 0) {
@@ -112,8 +114,8 @@ const Skoleårsperiode: React.FC<Props> = ({
     const [visningsmodus, settVisningsmodus] = useState<Visningsmodus>(utledVisningsmodus);
 
     const erInitiellModus = visningsmodus === Visningsmodus.INITIELL;
-    const erRedigerSkoleperiodeModus = visningsmodus === Visningsmodus.REDIGER_SKOLEÅRSPERIODER;
-    const erRedigerUtgitfsperiodeModus = visningsmodus === Visningsmodus.REDIGER_UTGIFTSPERIODER;
+    const kanRedigereSkoleperiode = visningsmodus === Visningsmodus.REDIGER_SKOLEÅRSPERIODER;
+    const kanRedigereUtgiftsperiode = visningsmodus === Visningsmodus.REDIGER_UTGIFTSPERIODER;
     const erLesevisning = visningsmodus === Visningsmodus.VISNING;
 
     const [skoleår, maksBeløp] = utledSkoleårOgMaksBeløp(skoleårsperiode);
@@ -121,9 +123,9 @@ const Skoleårsperiode: React.FC<Props> = ({
     const skoleårString = utledSkoleårString(skoleår.toString(), (skoleår + 1).toString());
 
     const oppdaterVisningsmodus = () => {
-        if (erInitiellModus || erRedigerSkoleperiodeModus) {
+        if (erInitiellModus || kanRedigereSkoleperiode) {
             validerSkoleårsperioderOgEndreVisningsmodus();
-        } else if (erRedigerUtgitfsperiodeModus) {
+        } else if (kanRedigereUtgiftsperiode) {
             settVisningsmodus(Visningsmodus.REDIGER_SKOLEÅRSPERIODER);
         }
     };
@@ -139,7 +141,8 @@ const Skoleårsperiode: React.FC<Props> = ({
     );
 
     const skalViseFjernKnapp = !erLesevisning && !erFørstePeriode && !inneholderLåsteUtgifter;
-    const erLesevisningForDelårsperioder = erLesevisning || erRedigerUtgitfsperiodeModus;
+    const erLesevisningForDelårsperioder = erLesevisning || kanRedigereUtgiftsperiode;
+    const utgiftsperioderErKlikkbar = kanRedigereUtgiftsperiode || erLesevisning;
 
     switch (visningsmodus) {
         case Visningsmodus.INITIELL:
@@ -151,6 +154,7 @@ const Skoleårsperiode: React.FC<Props> = ({
                         åpenHøyremeny={åpenHøyremeny}
                     >
                         <SkoleårsperiodeHeader
+                            fjernSkoleårsperiode={fjernSkoleårsperiode}
                             skoleår={skoleårString}
                             oppdaterVisningsmodus={oppdaterVisningsmodus}
                             skalViseFjernKnapp={skalViseFjernKnapp}
@@ -193,6 +197,7 @@ const Skoleårsperiode: React.FC<Props> = ({
                         åpenHøyremeny={åpenHøyremeny}
                     >
                         <SkoleårsperiodeHeader
+                            fjernSkoleårsperiode={fjernSkoleårsperiode}
                             skoleår={skoleårString}
                             oppdaterVisningsmodus={oppdaterVisningsmodus}
                             skalViseFjernKnapp={skalViseFjernKnapp}
@@ -210,7 +215,10 @@ const Skoleårsperiode: React.FC<Props> = ({
                             valideringsfeil={valideringsfeil && valideringsfeil.perioder}
                         />
                         <HorizontalDivider />
-                        <Grid erRedigerbar={erRedigerUtgitfsperiodeModus}>
+                        <Grid
+                            skalSladdes={kanRedigereSkoleperiode}
+                            erKlikkbar={utgiftsperioderErKlikkbar}
+                        >
                             <Utgiftsperioder
                                 erLesevisning={erLesevisning}
                                 låsteUtgiftIder={låsteUtgiftIder}

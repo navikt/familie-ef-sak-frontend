@@ -15,7 +15,6 @@ import { validerInnvilgetVedtakForm, validerPerioder } from './vedtaksvalidering
 import { ListState } from '../../../../App/hooks/felles/useListState';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
 import styled from 'styled-components';
-import { Button } from '@navikt/ds-react';
 import UtgiftsperiodeValg from './UtgiftsperiodeValg';
 import KontantstøtteValg, { tomKontantstøtteRad } from './KontantstøtteValg';
 import TilleggsstønadValg, { tomTilleggsstønadRad } from './Tilleggsstønadsvalg';
@@ -29,11 +28,12 @@ import { tomUtgiftsperiodeRad } from './utils';
 import { useRedirectEtterLagring } from '../../../../App/hooks/felles/useRedirectEtterLagring';
 import { v4 as uuidv4 } from 'uuid';
 import { AlertError } from '../../../../Felles/Visningskomponenter/Alerts';
-import HovedKnapp from '../../../../Felles/Knapper/HovedKnapp';
+import HovedKnapp, { Knapp } from '../../../../Felles/Knapper/HovedKnapp';
 import {
     FinnesKontantstøtteUtbetaling,
     useHentKontantstøtteUtbetaling,
 } from '../../../../App/hooks/useHentKontantstøtteUtbetalinger';
+import { CalculatorIcon } from '@navikt/aksel-icons';
 
 export type InnvilgeVedtakForm = {
     utgiftsperioder: IUtgiftsperiode[];
@@ -309,9 +309,15 @@ export const Vedtaksform: React.FC<{
             />
             {behandlingErRedigerbar && (
                 <div>
-                    <Button variant={'secondary'} onClick={beregnBarnetilsyn} type={'button'}>
+                    <Knapp
+                        variant={'secondary'}
+                        onClick={beregnBarnetilsyn}
+                        type={'button'}
+                        icon={<CalculatorIcon title={'beregn'} />}
+                        iconPosition={'right'}
+                    >
                         Beregn
-                    </Button>
+                    </Knapp>
                     {feilmelding && <AlertError>{feilmelding}</AlertError>}
                 </div>
             )}

@@ -139,6 +139,7 @@ export type IVedtakForSkolepenger = {
 export interface ISkoleårsperiodeSkolepenger {
     perioder: IPeriodeSkolepenger[];
     utgiftsperioder: SkolepengerUtgift[];
+    erHentetFraBackend: boolean | undefined; // kun brukt i frontend for å utlese visningsmodus
 }
 
 export interface IPeriodeSkolepenger {

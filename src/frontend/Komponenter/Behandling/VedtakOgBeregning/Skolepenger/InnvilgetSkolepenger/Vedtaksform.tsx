@@ -16,7 +16,7 @@ import useFormState, {
 import { ListState } from '../../../../../App/hooks/felles/useListState';
 import { useBehandling } from '../../../../../App/context/BehandlingContext';
 import styled from 'styled-components';
-import { Alert, Button } from '@navikt/ds-react';
+import { Alert } from '@navikt/ds-react';
 import { useApp } from '../../../../../App/context/AppContext';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../../../App/typer/ressurs';
 import { UtregningstabellSkolepenger } from '../UtregnignstabellSkolepenger';
@@ -29,10 +29,11 @@ import { ARed500 } from '@navikt/ds-tokens/dist/tokens';
 import { useRedirectEtterLagring } from '../../../../../App/hooks/felles/useRedirectEtterLagring';
 import { v4 as uuidv4 } from 'uuid';
 import { AlertError } from '../../../../../Felles/Visningskomponenter/Alerts';
-import HovedKnapp from '../../../../../Felles/Knapper/HovedKnapp';
+import HovedKnapp, { Knapp } from '../../../../../Felles/Knapper/HovedKnapp';
 import VisEllerEndreSkoleårsperioder from './VisEllerEndreSkoleårsperioder';
 import { BegrunnelsesFelt } from './BegrunnelsesFelt';
 import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
+import { CalculatorIcon } from '@navikt/aksel-icons';
 
 const Form = styled.form`
     display: flex;
@@ -60,12 +61,17 @@ const FlexColumn = styled.div`
     gap: 1rem;
 `;
 
-export const defaultSkoleårsperioder = (
+const markerErHentetFraBackend = (
+    skoleårsperioder: ISkoleårsperiodeSkolepenger[]
+): ISkoleårsperiodeSkolepenger[] =>
+    skoleårsperioder.map((periode) => ({ ...periode, erHentetFraBackend: true }));
+
+const defaultSkoleårsperioder = (
     forrigeVedtak?: IvedtakForSkolepenger
 ): ISkoleårsperiodeSkolepenger[] => {
     const forrigeSkoleårsperioder = forrigeVedtak?.skoleårsperioder;
     if (forrigeSkoleårsperioder && forrigeSkoleårsperioder.length > 0) {
-        return forrigeSkoleårsperioder;
+        return markerErHentetFraBackend(forrigeSkoleårsperioder);
     } else {
         return [];
     }
@@ -96,7 +102,7 @@ export const Vedtaksform: React.FC<{
     const formState = useFormState<InnvilgeVedtakForm>(
         {
             skoleårsperioder: lagretInnvilgetVedtak
-                ? lagretInnvilgetVedtak.skoleårsperioder
+                ? markerErHentetFraBackend(lagretInnvilgetVedtak.skoleårsperioder)
                 : defaultSkoleårsperioder(forrigeVedtak),
             begrunnelse: lagretInnvilgetVedtak?.begrunnelse || '',
         },
@@ -203,9 +209,15 @@ export const Vedtaksform: React.FC<{
             {feilmelding && <AlertError>{feilmelding}</AlertError>}
             {behandlingErRedigerbar && (
                 <div>
-                    <Button variant={'secondary'} onClick={beregnSkolepenger} type={'button'}>
+                    <Knapp
+                        variant={'secondary'}
+                        onClick={beregnSkolepenger}
+                        type={'button'}
+                        icon={<CalculatorIcon title={'beregn'} />}
+                        iconPosition={'right'}
+                    >
                         Beregn
-                    </Button>
+                    </Knapp>
                     {visFeilmelding && (
                         <AdvarselTekst>
                             Kan ikke lagre vedtaket før beregning er utført

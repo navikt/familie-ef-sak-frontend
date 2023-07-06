@@ -1,16 +1,11 @@
 import React from 'react';
-import { BodyShort, Heading, HelpText } from '@navikt/ds-react';
+import { BodyShort, Heading } from '@navikt/ds-react';
 import styled from 'styled-components';
 
 const FlexColumn = styled.div`
     display: flex;
     flex-direction: column;
     gap: 1rem;
-`;
-
-const FlexRow = styled.div`
-    display: flex;
-    gap: 0.5rem;
 `;
 
 const BodyShortBold = styled(BodyShort)`
@@ -28,10 +23,7 @@ const Makssats: React.FC<Props> = ({ makssats }) => {
             <Heading size={'small'} level={'3'}>
                 Makssats for oppgitt periode
             </Heading>
-            <FlexRow>
-                <BodyShortBold>{makssats}</BodyShortBold>
-                <HelpText>Lorem ipsum dollor sit amet concecteur.</HelpText>
-            </FlexRow>
+            <BodyShortBold>{makssats}</BodyShortBold>
         </FlexColumn>
     );
 };

@@ -17,6 +17,7 @@ const FlexSpaceBetween = styled.div`
 `;
 
 interface Props {
+    fjernSkoleårsperiode: () => void;
     oppdaterVisningsmodus: () => void;
     skalViseFjernKnapp: boolean;
     skoleår: string;
@@ -24,6 +25,7 @@ interface Props {
 }
 
 const SkoleårsperiodeHeader: React.FC<Props> = ({
+    fjernSkoleårsperiode,
     oppdaterVisningsmodus,
     skalViseFjernKnapp,
     skoleår,
@@ -44,11 +46,11 @@ const SkoleårsperiodeHeader: React.FC<Props> = ({
             </Heading>
             <FlexRow>
                 {skalViseFjernKnapp && (
-                    <Knapp onClick={() => null} type={'button'} variant={'tertiary'}>
+                    <Knapp onClick={fjernSkoleårsperiode} type={'button'} variant={'tertiary'}>
                         Fjern skoleårsperiode
                     </Knapp>
                 )}
-                {visningsmodus === Visningsmodus.REDIGER_UTGIFTSPERIODER ? (
+                {visningsmodus === Visningsmodus.REDIGER_UTGIFTSPERIODER && (
                     <Knapp
                         icon={<PencilWritingIcon title={'endre skoleår'} />}
                         iconPosition={'right'}
@@ -58,7 +60,8 @@ const SkoleårsperiodeHeader: React.FC<Props> = ({
                     >
                         Endre skoleår
                     </Knapp>
-                ) : (
+                )}
+                {visningsmodus === Visningsmodus.REDIGER_SKOLEÅRSPERIODER && (
                     <Knapp onClick={oppdaterVisningsmodus} type={'button'} variant={'tertiary'}>
                         Lagre Skoleår
                     </Knapp>

@@ -7,7 +7,7 @@ import { tomUtgift } from '../typer';
 import InputMedTusenSkille from '../../../../../Felles/Visningskomponenter/InputMedTusenskille';
 import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 import { SmallTextLabel } from '../../../../../Felles/Visningskomponenter/Tekster';
-import { ABlue300, ABorderStrong } from '@navikt/ds-tokens/dist/tokens';
+import { ABlue300 } from '@navikt/ds-tokens/dist/tokens';
 import LeggTilKnapp from '../../../../../Felles/Knapper/LeggTilKnapp';
 import { Heading } from '@navikt/ds-react';
 import { FormErrors } from '../../../../../App/hooks/felles/useFormState';
@@ -16,6 +16,7 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    padding-bottom: 1rem;
 `;
 
 const FlexRow = styled.div`
@@ -40,8 +41,8 @@ const Grid = styled.div`
     }
 `;
 
-const VertialDivider = styled.span<{ lesevisning?: boolean }>`
-    border-left: 4px solid ${(props) => (props.lesevisning ? ABorderStrong : ABlue300)};
+const VertialDivider = styled.span`
+    border-left: 4px solid ${ABlue300};
     margin-left: 0.25rem;
 `;
 
@@ -91,7 +92,7 @@ const Utgiftsperioder: React.FC<Props> = ({
                 {`Utgifter i skoleåret ${skoleår}`}
             </Heading>
             <FlexRow>
-                <VertialDivider lesevisning={erLesevisning} />
+                <VertialDivider />
                 <FlexColumn>
                     <Grid>
                         <SmallTextLabel>Stønadsbeløp</SmallTextLabel>
@@ -138,12 +139,16 @@ const Utgiftsperioder: React.FC<Props> = ({
                             );
                         })}
                     </Grid>
-                    <LeggTilKnapp
-                        ikonPosisjon={'right'}
-                        knappetekst={'Legg til ny utgift i skoleåret 23/24'}
-                        onClick={() => oppdaterSkoleårsperiode([...utgiftsperioder, tomUtgift()])}
-                        variant={'tertiary'}
-                    />
+                    {!erLesevisning && (
+                        <LeggTilKnapp
+                            ikonPosisjon={'right'}
+                            knappetekst={'Legg til ny utgift i skoleåret 23/24'}
+                            onClick={() =>
+                                oppdaterSkoleårsperiode([...utgiftsperioder, tomUtgift()])
+                            }
+                            variant={'tertiary'}
+                        />
+                    )}
                 </FlexColumn>
             </FlexRow>
         </Container>

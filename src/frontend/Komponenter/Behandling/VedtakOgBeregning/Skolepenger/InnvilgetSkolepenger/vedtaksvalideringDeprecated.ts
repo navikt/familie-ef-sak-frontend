@@ -53,6 +53,7 @@ export const validerSkoleårsperioderSkolepenger = (
         const utgiftsperiodeFeil: FormErrors<ISkoleårsperiodeSkolepenger> = {
             perioder: validerDelperiodeSkoleår(periode.perioder),
             utgiftsperioder: validerUtgifter(periode.utgiftsperioder),
+            erHentetFraBackend: undefined,
         };
         return utgiftsperiodeFeil;
     });

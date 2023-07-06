@@ -43,4 +43,5 @@ export const tomUtgift = (): SkolepengerUtgift => ({
 export const tomSkoleårsperiodeSkolepenger = (): ISkoleårsperiodeSkolepenger => ({
     perioder: [tomSkoleårsperiode],
     utgiftsperioder: [tomUtgift()],
+    erHentetFraBackend: false,
 });
