@@ -20,15 +20,11 @@ import { harEgenAnsattRolle, harStrengtFortroligRolle } from '../../App/utils/ro
 import { ModalWrapper } from '../../Felles/Modal/ModalWrapper';
 import { Alert, Button, Select, TextField } from '@navikt/ds-react';
 
-export const FlexDiv = styled.div<{ flexDirection?: 'row' | 'column' }>`
+export const FlexDiv = styled.div`
     display: flex;
-    flex-direction: ${(props) => props.flexDirection ?? 'row'};
     flex-wrap: wrap;
-    justify-content: space-between;
-
-    .flex-item {
-        padding-right: 1.5rem;
-    }
+    column-gap: 1.5rem;
+    row-gap: 1rem;
 `;
 
 const KnappWrapper = styled.div`
@@ -217,10 +213,8 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({
                     value={oppgaveRequest.mappeId}
                     erUtenMappe={oppgaveRequest.erUtenMappe}
                 />
-
                 <Select
                     value={saksbehandlerTekst}
-                    className="flex-item"
                     label="Saksbehandler"
                     onChange={(event) => {
                         event.persist();
@@ -261,7 +255,6 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({
                         </option>
                     )}
                 </Select>
-
                 <TextField
                     value={oppgaveRequest.ident || ''}
                     label="Personident"
@@ -277,7 +270,6 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({
                     autoComplete="off"
                 />
             </FlexDiv>
-
             <KnappWrapper>
                 <FiltreringKnapp onClick={sjekkFeilOgHentOppgaver} type={'submit'}>
                     Hent oppgaver
