@@ -39,7 +39,7 @@ const DatoPeriode: React.FC<Props> = ({
 }) => {
     return (
         <FlexDiv>
-            <div className="skjemaelement flex-item">
+            <div className="skjemaelement">
                 <DatolabelStyle className="skjemaelement__label" htmlFor="regdatoFra">
                     {datoFraTekst}
                 </DatolabelStyle>
@@ -48,7 +48,7 @@ const DatoPeriode: React.FC<Props> = ({
                     <Datepicker onChange={settDatoFra} value={valgtDatoFra} />
                 </DatepickerWrapper>
             </div>
-            <div className="skjemaelement flex-item">
+            <div className="skjemaelement">
                 <DatolabelStyle className="skjemaelement__label" htmlFor="regdatoTil">
                     {datoTilTekst}
                 </DatolabelStyle>
