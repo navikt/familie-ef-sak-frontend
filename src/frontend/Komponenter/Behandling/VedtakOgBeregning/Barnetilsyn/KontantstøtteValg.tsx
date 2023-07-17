@@ -178,6 +178,10 @@ const KontantstøtteValg: React.FC<Props> = ({
                                             type="number"
                                             size={'small'}
                                             onKeyPress={tilHeltall}
+                                            error={
+                                                valideringsfeil?.kontantstøtteperioder &&
+                                                valideringsfeil?.kontantstøtteperioder[index]?.beløp
+                                            }
                                             value={harTallverdi(beløp) ? beløp : ''}
                                             onChange={(e) => {
                                                 settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);

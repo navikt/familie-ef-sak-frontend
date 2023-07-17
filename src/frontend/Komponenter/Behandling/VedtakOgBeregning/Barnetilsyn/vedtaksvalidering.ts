@@ -8,6 +8,7 @@ import {
 } from '../../../../App/typer/vedtak';
 import { erMånedÅrEtter, erMånedÅrEtterEllerLik } from '../../../../App/utils/dato';
 import { erOpphørEllerSanksjon } from './utils';
+import { erDesimaltall } from '../../../../App/utils/utils';
 
 export const validerInnvilgetVedtakForm = ({
     utgiftsperioder,
@@ -84,14 +85,15 @@ export const validerUtgiftsperioder = ({
     utgiftsperioder: IUtgiftsperiode[];
 }): FormErrors<{ utgiftsperioder: IUtgiftsperiode[] }> => {
     const feilIUtgiftsperioder = utgiftsperioder.map((utgiftsperiode, index) => {
-        const { periodetype, aktivitetstype, årMånedFra, årMånedTil, barn } = utgiftsperiode;
+        const { periodetype, aktivitetstype, årMånedFra, årMånedTil, barn, utgifter } =
+            utgiftsperiode;
         const utgiftsperiodeFeil: FormErrors<IUtgiftsperiode> = {
             periodetype: undefined,
             aktivitetstype: undefined,
             årMånedFra: undefined,
             årMånedTil: undefined,
             barn: [],
-            utgifter: undefined,
+            utgifter: validerGyldigTallverdi(utgifter),
         };
         const erSistePeriode = index === utgiftsperioder.length - 1;
 
@@ -183,7 +185,7 @@ export const validerKontantstøttePerioder = (
         const kontantstøtteperiodeFeil: FormErrors<IPeriodeMedBeløp> = {
             årMånedFra: undefined,
             årMånedTil: undefined,
-            beløp: undefined,
+            beløp: validerGyldigTallverdi(periode.beløp),
         };
 
         if (!årMånedTil || !årMånedFra) {
@@ -241,7 +243,7 @@ export const validerTilleggsstønadPerioder = (
         const tilleggsstønadPeriodeFeil: FormErrors<IPeriodeMedBeløp> = {
             årMånedFra: undefined,
             årMånedTil: undefined,
-            beløp: undefined,
+            beløp: validerGyldigTallverdi(periode.beløp),
         };
 
         if (!årMånedTil || !årMånedFra) {
@@ -275,4 +277,14 @@ export const validerTilleggsstønadPerioder = (
 
 const harVerdi = (begrunnelse?: string) => {
     return begrunnelse !== '' && begrunnelse !== undefined;
+};
+
+const validerGyldigTallverdi = (verdi: string | number | undefined | null) => {
+    const ugyldigVerdiFeilmelding = `Ugyldig verdi - kun heltall tillatt`;
+    if (typeof verdi === 'number') {
+        return isNaN(verdi) || erDesimaltall(verdi) ? ugyldigVerdiFeilmelding : undefined;
+    }
+    if (typeof verdi === 'string') {
+        return !/^[0-9]+$/.test(verdi) ? ugyldigVerdiFeilmelding : undefined;
+    }
 };

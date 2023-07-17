@@ -189,12 +189,16 @@ export type IvedtakForBarnetilsyn = IInnvilgeVedtakForBarnetilsyn;
 
 export type IvedtakForSkolepenger = IVedtakForSkolepenger;
 
+/**
+ * Inntektsverdier kan bli string hvis de er ugyldige tall
+ * Dette valideres før det sendes til backend
+ */
 export interface IInntektsperiode {
     årMånedFra?: string;
-    dagsats?: number;
-    månedsinntekt?: number;
-    forventetInntekt?: number;
-    samordningsfradrag?: number;
+    dagsats?: number | string;
+    månedsinntekt?: number | string;
+    forventetInntekt?: number | string;
+    samordningsfradrag?: number | string;
     endretKey?: string; // intern for re-rendring
     harSaksbehandlerManueltTastetHundreBeløp?: boolean;
 }

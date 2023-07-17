@@ -16,6 +16,10 @@ import {
 import { InnvilgeVedtakForm } from './InnvilgeVedtak/Vedtaksform';
 import { FormErrors } from '../../../../App/hooks/felles/useFormState';
 import { SanksjonereVedtakForm } from '../../Sanksjon/Sanksjonsfastsettelse';
+import { erDesimaltall } from '../../../../App/utils/utils';
+
+const attenMånederFremITiden = tilÅrMåned(plusMåneder(new Date(), 18));
+const syvMånederFremITiden = tilÅrMåned(plusMåneder(new Date(), 7));
 
 export const validerInnvilgetVedtakForm = ({
     perioder,
@@ -81,9 +85,6 @@ export const validerVedtaksperioder = ({
     perioder: IVedtaksperiode[];
     inntekter: IInntektsperiode[];
 }> => {
-    const syvMånederFremITiden = tilÅrMåned(plusMåneder(new Date(), 7));
-    const attenMånederFremITiden = tilÅrMåned(plusMåneder(new Date(), 18));
-
     let harPeriodeFør7mndFremITiden = false;
 
     const feilIVedtaksPerioder = perioder.map((vedtaksperiode, index) => {
@@ -169,36 +170,13 @@ export const validerVedtaksperioder = ({
     });
 
     const inntektsperiodeFeil = inntekter.map((inntektsperiode, index) => {
-        const årMånedFra = inntektsperiode.årMånedFra;
-        if (!årMånedFra) {
-            return { årMånedFra: 'Mangelfull utfylling av inntektsperiode' };
-        }
-        const førsteInnvilgedeVedtaksperiode =
-            perioder.find(
-                (vedtaksperiode) => vedtaksperiode.periodeType !== EPeriodetype.MIDLERTIDIG_OPPHØR
-            ) || perioder[0];
-        if (
-            index === 0 &&
-            førsteInnvilgedeVedtaksperiode &&
-            førsteInnvilgedeVedtaksperiode.årMånedFra &&
-            !erMånedÅrLik(årMånedFra, førsteInnvilgedeVedtaksperiode.årMånedFra)
-        ) {
-            return { årMånedFra: 'Første inntektsperiode må være lik vedtaksperiode' };
-        }
-        const forrige = index > 0 && inntekter[index - 1];
-        if (forrige && forrige.årMånedFra) {
-            if (!erMånedÅrEtter(forrige.årMånedFra, årMånedFra)) {
-                return {
-                    årMånedFra: `Ugyldig etterfølgende periode - fra (${forrige.årMånedFra}) må være etter til (${årMånedFra})`,
-                };
-            }
-        }
-        if (erMånedÅrEtter(attenMånederFremITiden, årMånedFra)) {
-            return {
-                årMånedFra: `Startdato (${årMånedFra}) mer enn 18mnd frem i tid`,
-            };
-        }
-        return { årMånedFra: undefined };
+        return {
+            dagsats: validerGyldigTallverdi(inntektsperiode.dagsats),
+            forventetInntekt: validerGyldigTallverdi(inntektsperiode.forventetInntekt),
+            månedsinntekt: validerGyldigTallverdi(inntektsperiode.månedsinntekt),
+            samordningsfradrag: validerGyldigTallverdi(inntektsperiode.samordningsfradrag),
+            årMånedFra: validerInntektsperiode(inntektsperiode, perioder, index, inntekter),
+        };
     });
 
     return {
@@ -207,6 +185,53 @@ export const validerVedtaksperioder = ({
     };
 };
 
+const validerInntektsperiode = (
+    inntektsperiode: IInntektsperiode,
+    perioder: IVedtaksperiode[],
+    index: number,
+    inntekter: IInntektsperiode[]
+) => {
+    const årMånedFra = inntektsperiode.årMånedFra;
+    if (!årMånedFra) {
+        return 'Mangelfull utfylling av inntektsperiode';
+    }
+    const førsteInnvilgedeVedtaksperiode =
+        perioder.find(
+            (vedtaksperiode) => vedtaksperiode.periodeType !== EPeriodetype.MIDLERTIDIG_OPPHØR
+        ) || perioder[0];
+    if (
+        index === 0 &&
+        førsteInnvilgedeVedtaksperiode &&
+        førsteInnvilgedeVedtaksperiode.årMånedFra &&
+        !erMånedÅrLik(årMånedFra, førsteInnvilgedeVedtaksperiode.årMånedFra)
+    ) {
+        return 'Første inntektsperiode må være lik vedtaksperiode';
+    }
+    const forrige = index > 0 && inntekter[index - 1];
+    if (forrige && forrige.årMånedFra) {
+        if (!erMånedÅrEtter(forrige.årMånedFra, årMånedFra)) {
+            return `Ugyldig etterfølgende periode - fra (${forrige.årMånedFra}) må være etter til (${årMånedFra})`;
+        }
+    }
+    if (erMånedÅrEtter(attenMånederFremITiden, årMånedFra)) {
+        return `Startdato (${årMånedFra}) mer enn 18mnd frem i tid`;
+    }
+    const sisteInntektsperiode = perioder[perioder.length - 1].årMånedTil;
+    if (sisteInntektsperiode && erMånedÅrEtter(sisteInntektsperiode, årMånedFra)) {
+        return `Startdato (${årMånedFra}) mer etter siste inntektsperiode`;
+    }
+    return undefined;
+};
+
+const validerGyldigTallverdi = (verdi: string | number | undefined | null) => {
+    const ugyldigVerdiFeilmelding = `Ugyldig verdi - kun heltall tillatt`;
+    if (typeof verdi === 'number') {
+        return isNaN(verdi) || erDesimaltall(verdi) ? ugyldigVerdiFeilmelding : undefined;
+    }
+    if (typeof verdi === 'string') {
+        return !/^[0-9]+$/.test(verdi) ? ugyldigVerdiFeilmelding : undefined;
+    }
+};
 export const validerSanksjonereVedtakForm = ({
     sanksjonsårsak,
     internBegrunnelse,

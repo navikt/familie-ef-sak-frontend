@@ -12,6 +12,7 @@ import {
     overlapper,
 } from '../../../../../App/utils/dato';
 import { beregnSkoleår, validerSkoleår } from '../skoleår';
+import { erDesimaltall } from '../../../../../App/utils/utils';
 
 const periodeSkolepengerFeil: FormErrors<IPeriodeSkolepenger> = {
     studietype: undefined,
@@ -184,8 +185,21 @@ const validerUtgifsperioder = (perioder: SkolepengerUtgift[]): FormErrors<Skolep
                 stønad: 'Mangelfull utfylling av beløp',
             };
         }
-        return periodeUtgiftFeil;
+        return {
+            ...periodeUtgiftFeil,
+            stønad: validerGyldigTallverdi(stønad),
+        };
     });
+};
+
+const validerGyldigTallverdi = (verdi: string | number | undefined | null) => {
+    const ugyldigVerdiFeilmelding = `Ugyldig verdi - kun heltall tillatt`;
+    if (typeof verdi === 'number') {
+        return isNaN(verdi) || erDesimaltall(verdi) ? ugyldigVerdiFeilmelding : undefined;
+    }
+    if (typeof verdi === 'string') {
+        return !/^[0-9]+$/.test(verdi) ? ugyldigVerdiFeilmelding : undefined;
+    }
 };
 
 const harVerdi = (begrunnelse?: string) => {
