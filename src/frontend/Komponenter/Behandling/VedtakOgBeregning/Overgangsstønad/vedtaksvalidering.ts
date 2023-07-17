@@ -16,7 +16,7 @@ import {
 import { InnvilgeVedtakForm } from './InnvilgeVedtak/Vedtaksform';
 import { FormErrors } from '../../../../App/hooks/felles/useFormState';
 import { SanksjonereVedtakForm } from '../../Sanksjon/Sanksjonsfastsettelse';
-import { erDesimaltall } from '../../../../App/utils/utils';
+import { validerGyldigTallverdi } from '../Felles/utils';
 
 const attenMånederFremITiden = tilÅrMåned(plusMåneder(new Date(), 18));
 const syvMånederFremITiden = tilÅrMåned(plusMåneder(new Date(), 7));
@@ -223,15 +223,6 @@ const validerInntektsperiode = (
     return undefined;
 };
 
-const validerGyldigTallverdi = (verdi: string | number | undefined | null) => {
-    const ugyldigVerdiFeilmelding = `Ugyldig verdi - kun heltall tillatt`;
-    if (typeof verdi === 'number') {
-        return isNaN(verdi) || erDesimaltall(verdi) ? ugyldigVerdiFeilmelding : undefined;
-    }
-    if (typeof verdi === 'string') {
-        return !/^[0-9]+$/.test(verdi) ? ugyldigVerdiFeilmelding : undefined;
-    }
-};
 export const validerSanksjonereVedtakForm = ({
     sanksjonsårsak,
     internBegrunnelse,

@@ -8,7 +8,7 @@ import {
 } from '../../../../App/typer/vedtak';
 import { erMånedÅrEtter, erMånedÅrEtterEllerLik } from '../../../../App/utils/dato';
 import { erOpphørEllerSanksjon } from './utils';
-import { erDesimaltall } from '../../../../App/utils/utils';
+import { validerGyldigTallverdi } from '../Felles/utils';
 
 export const validerInnvilgetVedtakForm = ({
     utgiftsperioder,
@@ -277,14 +277,4 @@ export const validerTilleggsstønadPerioder = (
 
 const harVerdi = (begrunnelse?: string) => {
     return begrunnelse !== '' && begrunnelse !== undefined;
-};
-
-const validerGyldigTallverdi = (verdi: string | number | undefined | null) => {
-    const ugyldigVerdiFeilmelding = `Ugyldig verdi - kun heltall tillatt`;
-    if (typeof verdi === 'number') {
-        return isNaN(verdi) || erDesimaltall(verdi) ? ugyldigVerdiFeilmelding : undefined;
-    }
-    if (typeof verdi === 'string') {
-        return !/^[0-9]+$/.test(verdi) ? ugyldigVerdiFeilmelding : undefined;
-    }
 };
