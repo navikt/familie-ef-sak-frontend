@@ -170,7 +170,8 @@ export const Vedtaksform: React.FC<{
     useEffect(() => {
         if (
             behandlingErRedigerbar &&
-            finnesKontantstøtteUtbetaling === FinnesKontantstøtteUtbetaling.NEI
+            finnesKontantstøtteUtbetaling === FinnesKontantstøtteUtbetaling.NEI &&
+            kontantstøtteState.value === ERadioValg.IKKE_SATT
         ) {
             kontantstøtteState.setValue(ERadioValg.NEI);
         }

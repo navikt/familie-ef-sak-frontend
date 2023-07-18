@@ -72,15 +72,26 @@ export const harIkkeVerdi = (str: string | undefined | null): boolean => !harVer
 export const harVerdi = (str: string | undefined | null): boolean =>
     str !== undefined && str !== '' && str !== null;
 
-export const harTallverdi = (verdi: number | undefined | null): boolean =>
+export const harTallverdi = (verdi: number | undefined | null | string): boolean =>
     verdi !== undefined && verdi !== null;
 
-export const tilTallverdi = (verdi: number | string | undefined): number | undefined => {
+const erPågåendeDesimaltall = (verdi: string) => {
+    return (
+        (verdi.indexOf(',') > 0 && verdi.indexOf(',') == verdi.length - 1) ||
+        (verdi.indexOf('.') > 0 && verdi.indexOf('.') == verdi.length - 1)
+    );
+};
+
+export const tilTallverdi = (verdi: number | string | undefined): number | undefined | string => {
     if (verdi === '' || verdi === undefined || verdi === null) {
         return undefined;
     }
     if (typeof verdi === 'string') {
-        return Number(verdi.replace(/\s/g, ''));
+        if (erPågåendeDesimaltall(verdi)) {
+            return verdi;
+        }
+        const formatertVerdi = Number(verdi.replace(/\s/g, '').replace(/,/g, '.'));
+        return isNaN(formatertVerdi) ? verdi : formatertVerdi;
     }
     return Number(verdi);
 };
@@ -89,6 +100,10 @@ export const tilHeltall = (event: KeyboardEvent<HTMLDivElement>) => {
     if (!/[0-9]/.test(event.key)) {
         event.preventDefault();
     }
+};
+
+export const erDesimaltall = (verdi: number) => {
+    return verdi % 1 !== 0;
 };
 
 export const range = (start: number, end: number): number[] =>

@@ -307,6 +307,10 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                         type="number"
                                         size={'small'}
                                         value={harTallverdi(utgifter) ? utgifter : ''}
+                                        error={
+                                            errorState.utgiftsperioder &&
+                                            errorState.utgiftsperioder[index]?.utgifter
+                                        }
                                         disabled={opphørEllerSanksjon}
                                         onChange={(e) => {
                                             oppdaterUtgiftsperiode(

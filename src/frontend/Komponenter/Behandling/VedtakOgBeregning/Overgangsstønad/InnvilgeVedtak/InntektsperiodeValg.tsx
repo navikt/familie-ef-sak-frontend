@@ -291,6 +291,10 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                             <StyledInput
                                                 label={'Dagsats'}
                                                 hideLabel
+                                                error={
+                                                    errorState?.inntekter &&
+                                                    errorState?.inntekter[index]?.dagsats
+                                                }
                                                 erLesevisning={!behandlingErRedigerbar}
                                                 value={harTallverdi(rad.dagsats) ? rad.dagsats : ''}
                                                 onChange={(e) => {
@@ -308,6 +312,10 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                                 label={'Månedsinntekt'}
                                                 hideLabel
                                                 erLesevisning={!behandlingErRedigerbar}
+                                                error={
+                                                    errorState?.inntekter &&
+                                                    errorState?.inntekter[index]?.månedsinntekt
+                                                }
                                                 value={
                                                     harTallverdi(rad.månedsinntekt)
                                                         ? rad.månedsinntekt
@@ -326,6 +334,10 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                                 label={'Årsinntekt'}
                                                 hideLabel
                                                 type="number"
+                                                error={
+                                                    errorState?.inntekter &&
+                                                    errorState?.inntekter[index]?.forventetInntekt
+                                                }
                                                 value={
                                                     harTallverdi(rad.forventetInntekt)
                                                         ? rad.forventetInntekt
@@ -335,6 +347,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                                     const verdi = tilTallverdi(e.target.value);
                                                     const saksbehandlerHarAvrundetÅrsinntektTilNærmesteHundre =
                                                         verdi !== undefined &&
+                                                        typeof verdi === 'number' &&
                                                         verdi % 100 === 0 &&
                                                         verdi % 1000 !== 0;
 
@@ -356,6 +369,11 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                                     label={'Samordningsfradrag (mnd)'}
                                                     hideLabel
                                                     type="number"
+                                                    error={
+                                                        errorState?.inntekter &&
+                                                        errorState?.inntekter[index]
+                                                            ?.samordningsfradrag
+                                                    }
                                                     value={
                                                         harTallverdi(rad.samordningsfradrag)
                                                             ? rad.samordningsfradrag
