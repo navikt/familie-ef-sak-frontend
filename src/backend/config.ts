@@ -119,7 +119,7 @@ export const sessionConfig: ISessionKonfigurasjon = {
     redisUrl: env.redisUrl,
     redisFullUrl: process.env.REDIS_URI_SESSIONS,
     redisBrukernavn: process.env.REDIS_USERNAME_SESSIONS,
-    redisPassord: process.env.REDIS_PASSWORD,
+    redisPassord: process.env.REDIS_PASSWORD_SESSIONS,
     secureCookie: !(
         process.env.ENV === 'local' ||
         process.env.ENV === 'e2e' ||
