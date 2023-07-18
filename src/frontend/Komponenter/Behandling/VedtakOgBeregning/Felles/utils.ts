@@ -17,6 +17,7 @@ import {
     IVedtakType,
 } from '../../../../App/typer/vedtak';
 import { Ressurs, RessursStatus } from '../../../../App/typer/ressurs';
+import { erDesimaltall } from '../../../../App/utils/utils';
 
 export const mapVilkårtypeTilResultat = (
     vurderinger: IVurdering[]
@@ -182,4 +183,14 @@ export const skalFerdigstilleUtenBeslutter = (vedtak?: IVedtak | undefined): boo
         vedtak.resultatType === EBehandlingResultat.AVSLÅ &&
         vedtak.avslåÅrsak === EAvslagÅrsak.MINDRE_INNTEKTSENDRINGER
     );
+};
+
+export const validerGyldigTallverdi = (verdi: string | number | undefined | null) => {
+    const ugyldigVerdiFeilmelding = `Ugyldig verdi - kun heltall tillatt`;
+    if (typeof verdi === 'number') {
+        return isNaN(verdi) || erDesimaltall(verdi) ? ugyldigVerdiFeilmelding : undefined;
+    }
+    if (typeof verdi === 'string') {
+        return !/^[0-9]+$/.test(verdi) ? ugyldigVerdiFeilmelding : undefined;
+    }
 };

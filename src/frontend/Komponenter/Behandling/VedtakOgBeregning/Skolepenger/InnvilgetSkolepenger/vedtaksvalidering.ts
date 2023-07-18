@@ -12,6 +12,7 @@ import {
     overlapper,
 } from '../../../../../App/utils/dato';
 import { beregnSkoleår, validerSkoleår } from '../skoleår';
+import { validerGyldigTallverdi } from '../../Felles/utils';
 
 const periodeSkolepengerFeil: FormErrors<IPeriodeSkolepenger> = {
     studietype: undefined,
@@ -184,7 +185,10 @@ const validerUtgifsperioder = (perioder: SkolepengerUtgift[]): FormErrors<Skolep
                 stønad: 'Mangelfull utfylling av beløp',
             };
         }
-        return periodeUtgiftFeil;
+        return {
+            ...periodeUtgiftFeil,
+            stønad: validerGyldigTallverdi(stønad),
+        };
     });
 };
 

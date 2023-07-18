@@ -4,7 +4,15 @@ import InputUtenSpinner, { PropsInputUtenSpinner } from './InputUtenSpinner';
 const InputMedTusenSkille: React.FC<PropsInputUtenSpinner & { className?: string }> = (props) => {
     const formaterVerdi = (verdi: number | string | undefined) => {
         if (verdi) {
-            return Number(verdi).toLocaleString('no-NO', { currency: 'NOK' });
+            const formatertVerdi = Number(
+                typeof verdi === 'string' ? verdi.replace(/,/g, '.') : verdi
+            );
+
+            return isNaN(formatertVerdi)
+                ? verdi
+                : formatertVerdi.toLocaleString('no-NO', {
+                      currency: 'NOK',
+                  });
         }
         return verdi;
     };

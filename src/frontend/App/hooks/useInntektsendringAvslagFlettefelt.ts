@@ -53,7 +53,7 @@ export const useInntektsendringAvslagFlettefelt = (
                             vedtaksData.inntekter[vedtaksData.inntekter.length - 1]
                                 .forventetInntekt;
 
-                        if (nåværendeInntekt) {
+                        if (nåværendeInntekt && typeof nåværendeInntekt === 'number') {
                             const tiProsentØkning =
                                 beregnTiProsentØkningIMånedsinntekt(nåværendeInntekt);
                             const tiProsentReduksjon =

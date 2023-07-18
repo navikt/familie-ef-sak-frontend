@@ -195,6 +195,11 @@ const TilleggsstønadValg: React.FC<Props> = ({
                                             erLesevisning={erLesevisning}
                                             hideLabel
                                             label={'Stønadsreduksjon'}
+                                            error={
+                                                valideringsfeil.tilleggsstønadsperioder &&
+                                                valideringsfeil.tilleggsstønadsperioder[index]
+                                                    ?.beløp
+                                            }
                                             onChange={(e) => {
                                                 settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
                                                 oppdaterTilleggsstønadPeriode(
