@@ -216,6 +216,10 @@ const validerInntektsperiode = (
     if (erMånedÅrEtter(attenMånederFremITiden, årMånedFra)) {
         return `Startdato (${årMånedFra}) mer enn 18mnd frem i tid`;
     }
+    const sisteMånedIVedtaksperiode = perioder[perioder.length - 1]?.årMånedTil;
+    if (sisteMånedIVedtaksperiode && erMånedÅrEtter(sisteMånedIVedtaksperiode, årMånedFra)) {
+        return `Startdato (${årMånedFra}) er etter vedtaksperioden`;
+    }
 
     return undefined;
 };
