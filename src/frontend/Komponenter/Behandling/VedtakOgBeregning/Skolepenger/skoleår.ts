@@ -60,20 +60,21 @@ export const beregnSkoleår = (fom: string, tom: string): BeregnetSkoleår => {
     const tomMåned = getMonth(tomDato);
     const tomÅr = getYear(tomDato);
 
+    const ugyldiSkoleårsperiode = 'Perioden kan ikke gå over flere skoleår';
     if (fomMåned > JUNI) {
         if (tomÅr === fomÅr + 1 && tomMåned > AUGUST) {
-            return ugyldigBeregnetSkoleår('Perioden kan ikke gå over flere skoleår');
+            return ugyldigBeregnetSkoleår(ugyldiSkoleårsperiode);
         }
         if (tomÅr > fomÅr + 1) {
-            return ugyldigBeregnetSkoleår('Perioden kan ikke gå over flere skoleår');
+            return ugyldigBeregnetSkoleår(ugyldiSkoleårsperiode);
         }
         return { gyldig: true, skoleår: fomÅr };
     } else {
         if (fomÅr !== tomÅr) {
-            return ugyldigBeregnetSkoleår('Fradato før juli må ha tildato i det samme året');
+            return ugyldigBeregnetSkoleår(ugyldiSkoleårsperiode);
         }
         if (tomMåned > AUGUST) {
-            return ugyldigBeregnetSkoleår('Fradato før juli må ha sluttdato før september');
+            return ugyldigBeregnetSkoleår(ugyldiSkoleårsperiode);
         }
         return { gyldig: true, skoleår: fomÅr - 1 };
     }
