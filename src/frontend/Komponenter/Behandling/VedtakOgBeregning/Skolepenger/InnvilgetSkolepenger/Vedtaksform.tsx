@@ -208,22 +208,27 @@ export const Vedtaksform: React.FC<{
             />
             {feilmelding && <AlertError>{feilmelding}</AlertError>}
             {behandlingErRedigerbar && (
-                <div>
-                    <Knapp
-                        variant={'secondary'}
-                        onClick={beregnSkolepenger}
-                        type={'button'}
-                        icon={<CalculatorIcon title={'beregn'} />}
-                        iconPosition={'right'}
-                    >
-                        Beregn
-                    </Knapp>
-                    {visFeilmelding && (
-                        <AdvarselTekst>
-                            Kan ikke lagre vedtaket før beregning er utført
-                        </AdvarselTekst>
-                    )}
-                </div>
+                <>
+                    <div>
+                        <hr />
+                    </div>
+                    <div>
+                        <Knapp
+                            variant={'secondary'}
+                            onClick={beregnSkolepenger}
+                            type={'button'}
+                            icon={<CalculatorIcon title={'beregn'} />}
+                            iconPosition={'right'}
+                        >
+                            Beregn
+                        </Knapp>
+                        {visFeilmelding && (
+                            <AdvarselTekst>
+                                Kan ikke lagre vedtaket før beregning er utført
+                            </AdvarselTekst>
+                        )}
+                    </div>
+                </>
             )}
             <Utregningstabell beregningsresultat={beregningsresultat} />
             {behandlingErRedigerbar && <HovedKnapp disabled={laster} knappetekst="Lagre vedtak" />}

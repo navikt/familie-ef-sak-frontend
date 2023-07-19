@@ -31,14 +31,12 @@ const Grid = styled.div`
 
 const AntallMåneder = styled(BodyShortSmall)<{ erLesevisning: boolean }>`
     display: flex;
-    justify-content: center;
-    align-items: center;
     padding-top: ${(props) => (props.erLesevisning ? '0rem' : '0.75rem')};
 `;
 
 const Input = styled(InputUtenSpinner)`
     width: 8rem;
-    text-align: right;
+    text-align: left;
 `;
 
 type Props = {

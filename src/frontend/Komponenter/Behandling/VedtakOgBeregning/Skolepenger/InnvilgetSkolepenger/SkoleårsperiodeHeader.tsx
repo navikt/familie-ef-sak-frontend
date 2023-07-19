@@ -63,7 +63,7 @@ const SkoleårsperiodeHeader: React.FC<Props> = ({
                 )}
                 {visningsmodus === Visningsmodus.REDIGER_SKOLEÅRSPERIODER && (
                     <Knapp onClick={oppdaterVisningsmodus} type={'button'} variant={'tertiary'}>
-                        Lagre Skoleår
+                        Lagre skoleår
                     </Knapp>
                 )}
             </FlexRow>
