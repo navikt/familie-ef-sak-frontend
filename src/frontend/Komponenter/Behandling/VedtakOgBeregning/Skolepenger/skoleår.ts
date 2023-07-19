@@ -60,21 +60,21 @@ export const beregnSkoleår = (fom: string, tom: string): BeregnetSkoleår => {
     const tomMåned = getMonth(tomDato);
     const tomÅr = getYear(tomDato);
 
-    const ugyldiSkoleårsperiode = 'Perioden kan ikke gå over flere skoleår';
+    const ugyldigSkoleårsperiode = 'Perioden kan ikke gå over flere skoleår';
     if (fomMåned > JUNI) {
         if (tomÅr === fomÅr + 1 && tomMåned > AUGUST) {
-            return ugyldigBeregnetSkoleår(ugyldiSkoleårsperiode);
+            return ugyldigBeregnetSkoleår(ugyldigSkoleårsperiode);
         }
         if (tomÅr > fomÅr + 1) {
-            return ugyldigBeregnetSkoleår(ugyldiSkoleårsperiode);
+            return ugyldigBeregnetSkoleår(ugyldigSkoleårsperiode);
         }
         return { gyldig: true, skoleår: fomÅr };
     } else {
         if (fomÅr !== tomÅr) {
-            return ugyldigBeregnetSkoleår(ugyldiSkoleårsperiode);
+            return ugyldigBeregnetSkoleår(ugyldigSkoleårsperiode);
         }
         if (tomMåned > AUGUST) {
-            return ugyldigBeregnetSkoleår(ugyldiSkoleårsperiode);
+            return ugyldigBeregnetSkoleår(ugyldigSkoleårsperiode);
         }
         return { gyldig: true, skoleår: fomÅr - 1 };
     }
