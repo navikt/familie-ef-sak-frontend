@@ -11,7 +11,7 @@ import { BodyShort } from '@navikt/ds-react';
 import Skoleårsperioder from './Skoleårsperioder';
 
 const Container = styled.div`
-    padding: 1rem;
+    padding-top: 1rem;
 `;
 
 enum Visningsmodus {
