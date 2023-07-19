@@ -1,6 +1,7 @@
 import React from 'react';
 import { BodyShort, Heading } from '@navikt/ds-react';
 import styled from 'styled-components';
+import { formaterTallMedTusenSkille } from '../../../../../App/utils/formatter';
 
 const FlexColumn = styled.div`
     display: flex;
@@ -23,7 +24,7 @@ const Makssats: React.FC<Props> = ({ makssats }) => {
             <Heading size={'small'} level={'3'}>
                 Makssats for oppgitt periode
             </Heading>
-            <BodyShortBold>{makssats}</BodyShortBold>
+            <BodyShortBold>{formaterTallMedTusenSkille(makssats)} kr</BodyShortBold>
         </FlexColumn>
     );
 };
