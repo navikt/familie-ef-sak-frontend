@@ -16,7 +16,7 @@ import useFormState, {
 import { ListState } from '../../../../../App/hooks/felles/useListState';
 import { useBehandling } from '../../../../../App/context/BehandlingContext';
 import styled from 'styled-components';
-import { Alert } from '@navikt/ds-react';
+import { Alert, Heading } from '@navikt/ds-react';
 import { useApp } from '../../../../../App/context/AppContext';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../../../App/typer/ressurs';
 import { UtregningstabellSkolepenger } from '../UtregnignstabellSkolepenger';
@@ -34,6 +34,8 @@ import VisEllerEndreSkoleårsperioder from './VisEllerEndreSkoleårsperioder';
 import { BegrunnelsesFelt } from './BegrunnelsesFelt';
 import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
 import { CalculatorIcon } from '@navikt/aksel-icons';
+import { useToggles } from '../../../../../App/context/TogglesContext';
+import { ToggleName } from '../../../../../App/context/toggles';
 
 const Form = styled.form`
     display: flex;
@@ -92,6 +94,7 @@ export const Vedtaksform: React.FC<{
     const [feilmelding, settFeilmelding] = useState('');
     const [harUtførtBeregning, settHarUtførtBeregning] = useState<boolean>(false);
     const [visFeilmelding, settVisFeilmelding] = useState<boolean>(false);
+    const { toggles } = useToggles();
 
     const [beregningsresultat, settBeregningsresultat] = useState(
         byggTomRessurs<IBeregningSkolepengerResponse>()
@@ -197,7 +200,12 @@ export const Vedtaksform: React.FC<{
     return (
         <Form onSubmit={formState.onSubmit(handleSubmit)}>
             <BegrunnelsesFelt begrunnelseState={begrunnelseState} errorState={formState.errors} />
-            {behandlingErRedigerbar && <InfoStripeHvordanFatteVedtak />}
+            {behandlingErRedigerbar && !toggles[ToggleName.visNyttGuiSkolepenger] && (
+                <InfoStripeHvordanFatteVedtakGammel />
+            )}
+            {behandlingErRedigerbar && toggles[ToggleName.visNyttGuiSkolepenger] && (
+                <InfoStripeHvordanFatteVedtak />
+            )}
             <VisEllerEndreSkoleårsperioder
                 customValidate={customValidate}
                 låsteUtgiftIder={utgiftIderForrigeBehandling}
@@ -236,7 +244,7 @@ export const Vedtaksform: React.FC<{
     );
 };
 
-const InfoStripeHvordanFatteVedtak: React.FC = () => (
+const InfoStripeHvordanFatteVedtakGammel: React.FC = () => (
     <InfoStripe variant="info">
         <FlexColumn>
             <BodyLongSmall>
@@ -248,6 +256,25 @@ const InfoStripeHvordanFatteVedtak: React.FC = () => (
             <BodyLongSmall>
                 Hvis bruker innad i et skoleår har perioder med ulik studiebelastning kan det legges
                 til en ekstra rad for dette.
+            </BodyLongSmall>
+        </FlexColumn>
+    </InfoStripe>
+);
+
+const InfoStripeHvordanFatteVedtak: React.FC = () => (
+    <InfoStripe variant="info">
+        <FlexColumn>
+            <Heading size={'small'}>Hvordan legge inn utgifter til skolepenger</Heading>
+            <BodyLongSmall>
+                Du må legge til et nytt skoleår og fylle ut feltene med informasjon om utdanningen.
+                Etter at du har lagt til det nye skoleåret, fyller du ut stønadsbeløpet. Hvis du
+                skal innvilge stønad for nye utgifter for et skoleår som allerede er lagt inn,
+                legger du til utgiften ved å klikke på «Legg til ny utgift for skoleåret xx/xx»
+                under det aktuelle skoleåret.
+            </BodyLongSmall>
+            <BodyLongSmall>
+                Hvis utdanningen bruker tar ikke følger det ordinære skoleåret, se
+                opplæringsmateriell.
             </BodyLongSmall>
         </FlexColumn>
     </InfoStripe>
