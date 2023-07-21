@@ -10,6 +10,7 @@ export enum Behandlingsårsak {
     G_OMREGNING = 'G_OMREGNING',
     KORRIGERING_UTEN_BREV = 'KORRIGERING_UTEN_BREV',
     PAPIRSØKNAD = 'PAPIRSØKNAD',
+    MANUELT_OPPRETTET = 'MANUELT_OPPRETTET',
     SATSENDRING = 'SATSENDRING',
 }
 
@@ -22,6 +23,7 @@ export const behandlingsårsakTilTekst: Record<Behandlingsårsak, string> = {
     G_OMREGNING: 'G-omregning',
     KORRIGERING_UTEN_BREV: 'Korrigering uten brev',
     PAPIRSØKNAD: 'Papirsøknad',
+    MANUELT_OPPRETTET: 'Manuelt opprettet',
     SATSENDRING: 'Satsendring',
 };
 
@@ -48,6 +50,7 @@ export const behandlingOgTilbakekrevingsårsakTilTekst: Record<
     SATSENDRING: 'Satsendring',
     KORRIGERING_UTEN_BREV: 'Korrigering uten brev',
     PAPIRSØKNAD: 'Papirsøknad',
+    MANUELT_OPPRETTET: 'Manuelt opprettet',
     /** De neste er revurderingsårsaker for tilbakekrevingsbehandlinger **/
     REVURDERING_KLAGE_NFP: 'Klage tilbakekreving',
     REVURDERING_KLAGE_KA: 'Klage omgjort av KA',
