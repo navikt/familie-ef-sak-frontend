@@ -29,8 +29,23 @@ interface Props {
     behandling: Behandling;
 }
 
+const utledBehandlingsårsakKortTekst = (behandlingÅrsak: Behandlingsårsak) => {
+    switch (behandlingÅrsak) {
+        case Behandlingsårsak.PAPIRSØKNAD:
+            return 'P..';
+        case Behandlingsårsak.MANUELT_OPPRETTET:
+            return 'M..';
+        default:
+            return '';
+    }
+};
+
 const BehandlingTags: React.FC<Props> = ({ behandling }) => {
     const { behandlingsårsak, kategori, stønadstype, type } = behandling;
+    const skalViseBehandlingsårsak =
+        behandlingsårsak === Behandlingsårsak.PAPIRSØKNAD ||
+        behandlingsårsak === Behandlingsårsak.MANUELT_OPPRETTET;
+
     return (
         <>
             {kategori === BehandlingKategori.EØS && (
@@ -50,10 +65,10 @@ const BehandlingTags: React.FC<Props> = ({ behandling }) => {
             <TagStorSkjerm variant={'info'} size={'small'}>
                 {behandlingstypeTilTekst[type]}
             </TagStorSkjerm>
-            {behandlingsårsak === Behandlingsårsak.PAPIRSØKNAD && (
+            {skalViseBehandlingsårsak && (
                 <>
                     <TagLitenSkjerm variant={'warning'} size={'small'}>
-                        P..
+                        {utledBehandlingsårsakKortTekst(behandlingsårsak)}
                     </TagLitenSkjerm>
                     <TagStorSkjerm variant={'warning'} size={'small'}>
                         {behandlingsårsakTilTekst[behandlingsårsak]}

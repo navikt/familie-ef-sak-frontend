@@ -141,7 +141,7 @@ const OpprettFørstegangsbehandling = () => {
                         <div>
                             <TextLabel>Årsak:</TextLabel>
                             <BodyShort>
-                                {behandlingsårsakTilTekst[Behandlingsårsak.PAPIRSØKNAD]}
+                                {behandlingsårsakTilTekst[Behandlingsårsak.MANUELT_OPPRETTET]}
                             </BodyShort>
                             <SkjemaContainer>
                                 <Label htmlFor={'krav-mottatt'}>Krav mottatt</Label>
