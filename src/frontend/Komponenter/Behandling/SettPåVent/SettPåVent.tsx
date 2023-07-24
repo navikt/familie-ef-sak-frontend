@@ -31,6 +31,7 @@ import { EToast } from '../../../App/typer/toast';
 import { EksisterendeBeskrivelse } from './EksisterendeBeskrivelse';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { LokalkontorOppgavevalg, SendtOppgave } from './LokalkontorOppgavevalg';
+import { TaAvVentBekreftModal } from './TaAvVentBekreftModal';
 
 const AlertStripe = styled(Alert)`
     margin-top: 1rem;
@@ -88,7 +89,7 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
         erOvergangsstønad || behandling.stønadstype === Stønadstype.SKOLEPENGER;
     const { visSettPåVent, settVisSettPåVent, hentBehandling } = useBehandling();
     const { toggles } = useToggles();
-    const { axiosRequest, settToast } = useApp();
+    const { axiosRequest, settToast, innloggetSaksbehandler } = useApp();
 
     const [oppgave, settOppgave] = useState<Ressurs<IOppgave>>(byggTomRessurs<IOppgave>());
     const [oppgaverMotLokalkontor, settOppgaverMotLokalkontor] = useState<
@@ -99,6 +100,7 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
     );
     const [taAvVentStatus, settTaAvVentStatus] = useState<ETaAvVentStatus>();
     const [låsKnapp, settLåsKnapp] = useState<boolean>(false);
+    const [visBekreftTaAvVentModal, settVisBekreftTaAvVentModal] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>();
 
     // Oppgavefelter
@@ -177,6 +179,17 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
             }
         });
     };
+
+    const visBekreftelsesModalEllerFortsettBehandling = () => {
+        const stårOppgavePåEnAnnenSaksbehandler =
+            saksbehandler && saksbehandler !== innloggetSaksbehandler.navIdent;
+        if (stårOppgavePåEnAnnenSaksbehandler) {
+            settVisBekreftTaAvVentModal(true);
+        } else {
+            håndterFortsettBehandling();
+        }
+    };
+
     const settPåVent = () => {
         const kanSettePåVent = prioritet && frist;
 
@@ -190,6 +203,7 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
             settFeilmelding(
                 'Teknisk feil. Mangler versjonsnumer for oppgave. Kontakt brukerstøtte'
             );
+            settLåsKnapp(false);
             return;
         }
 
@@ -311,7 +325,10 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
                                 </Button>
                             )}
                             {erBehandlingPåVent && (
-                                <Button onClick={håndterFortsettBehandling} type={'button'}>
+                                <Button
+                                    onClick={visBekreftelsesModalEllerFortsettBehandling}
+                                    type={'button'}
+                                >
                                     Ta av vent
                                 </Button>
                             )}
@@ -321,6 +338,12 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
                             behandlingId={behandling.id}
                             taAvVentStatus={taAvVentStatus}
                             nullstillTaAvVentStatus={() => settTaAvVentStatus(undefined)}
+                        />
+                        <TaAvVentBekreftModal
+                            håndterFortsettBehandling={håndterFortsettBehandling}
+                            avbryt={() => settVisBekreftTaAvVentModal(false)}
+                            ansvarligSaksbehandler={saksbehandler}
+                            visModal={visBekreftTaAvVentModal}
                         />
                     </SettPåVentWrapper>
                 );
