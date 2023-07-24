@@ -66,7 +66,7 @@ const OpprettFørstegangsbehandling = () => {
     const [fagsak, settFagsak] = useState<Ressurs<Fagsak>>(byggTomRessurs());
     const [barnSomSkalFødes, settBarnSomSkalFødes] = useState<BarnSomSkalFødes[]>([]);
     const [kravMottattDato, settKravMottattDato] = useState<string>();
-    const årsak = Behandlingsårsak.PAPIRSØKNAD;
+    const årsak = Behandlingsårsak.MANUELT_OPPRETTET;
     const [feilmelding, settFeilmelding] = useState<string>();
     const [senderInn, settSenderInn] = useState<boolean>(false);
     const { axiosRequest } = useApp();
@@ -141,7 +141,7 @@ const OpprettFørstegangsbehandling = () => {
                         <div>
                             <TextLabel>Årsak:</TextLabel>
                             <BodyShort>
-                                {behandlingsårsakTilTekst[Behandlingsårsak.PAPIRSØKNAD]}
+                                {behandlingsårsakTilTekst[Behandlingsårsak.MANUELT_OPPRETTET]}
                             </BodyShort>
                             <SkjemaContainer>
                                 <Label htmlFor={'krav-mottatt'}>Krav mottatt</Label>
