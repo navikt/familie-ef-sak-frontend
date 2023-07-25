@@ -142,7 +142,7 @@ const Utgiftsperioder: React.FC<Props> = ({
                     {!erLesevisning && (
                         <LeggTilKnapp
                             ikonPosisjon={'right'}
-                            knappetekst={'Legg til ny utgift i skoleåret 23/24'}
+                            knappetekst={`Legg til ny utgift i skoleåret ${skoleår}`}
                             onClick={() =>
                                 oppdaterSkoleårsperiode([...utgiftsperioder, tomUtgift()])
                             }
