@@ -34,8 +34,6 @@ import VisEllerEndreSkoleårsperioder from './VisEllerEndreSkoleårsperioder';
 import { BegrunnelsesFelt } from './BegrunnelsesFelt';
 import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
 import { CalculatorIcon } from '@navikt/aksel-icons';
-import { useToggles } from '../../../../../App/context/TogglesContext';
-import { ToggleName } from '../../../../../App/context/toggles';
 
 const Form = styled.form`
     display: flex;
@@ -94,7 +92,6 @@ export const Vedtaksform: React.FC<{
     const [feilmelding, settFeilmelding] = useState('');
     const [harUtførtBeregning, settHarUtførtBeregning] = useState<boolean>(false);
     const [visFeilmelding, settVisFeilmelding] = useState<boolean>(false);
-    const { toggles } = useToggles();
 
     const [beregningsresultat, settBeregningsresultat] = useState(
         byggTomRessurs<IBeregningSkolepengerResponse>()
@@ -200,12 +197,7 @@ export const Vedtaksform: React.FC<{
     return (
         <Form onSubmit={formState.onSubmit(handleSubmit)}>
             <BegrunnelsesFelt begrunnelseState={begrunnelseState} errorState={formState.errors} />
-            {behandlingErRedigerbar && !toggles[ToggleName.visNyttGuiSkolepenger] && (
-                <InfoStripeHvordanFatteVedtakGammel />
-            )}
-            {behandlingErRedigerbar && toggles[ToggleName.visNyttGuiSkolepenger] && (
-                <InfoStripeHvordanFatteVedtak />
-            )}
+            {behandlingErRedigerbar && <InfoStripeHvordanFatteVedtak />}
             <VisEllerEndreSkoleårsperioder
                 customValidate={customValidate}
                 låsteUtgiftIder={utgiftIderForrigeBehandling}
@@ -243,23 +235,6 @@ export const Vedtaksform: React.FC<{
         </Form>
     );
 };
-
-const InfoStripeHvordanFatteVedtakGammel: React.FC = () => (
-    <InfoStripe variant="info">
-        <FlexColumn>
-            <BodyLongSmall>
-                Et normalt skoleår defineres som fra august/september år A til Juni/Juli år B.
-                F.eks. september 2023 til og med juni 2024. Hvis bruker studerer på tvers av 2
-                skoleår f.eks. fra januar 2023 til og med desember 2023 må dette fordeles over 2
-                skoleår.
-            </BodyLongSmall>
-            <BodyLongSmall>
-                Hvis bruker innad i et skoleår har perioder med ulik studiebelastning kan det legges
-                til en ekstra rad for dette.
-            </BodyLongSmall>
-        </FlexColumn>
-    </InfoStripe>
-);
 
 const InfoStripeHvordanFatteVedtak: React.FC = () => (
     <InfoStripe variant="info">
