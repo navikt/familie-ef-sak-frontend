@@ -59,7 +59,6 @@ const Skoleårsperioder: React.FC<Props> = ({
                     <Skoleårsperiode
                         låsteUtgiftIder={låsteUtgiftIder}
                         customValidate={customValidate}
-                        erFørstePeriode={index === 0}
                         fjernSkoleårsperiode={() => fjernSkoleårsperiode(index)}
                         key={index}
                         skoleårsperiode={skoleårsperiode}

@@ -71,7 +71,6 @@ export enum Visningsmodus {
 
 type Props = {
     customValidate: (fn: Valideringsfunksjon<InnvilgeVedtakForm>) => boolean;
-    erFørstePeriode: boolean;
     fjernSkoleårsperiode: () => void;
     låsteUtgiftIder: string[];
     oppdaterSkoleårsperiode: (
@@ -88,7 +87,6 @@ type Props = {
 
 const Skoleårsperiode: React.FC<Props> = ({
     customValidate,
-    erFørstePeriode,
     fjernSkoleårsperiode,
     låsteUtgiftIder,
     oppdaterSkoleårsperiode,
@@ -140,7 +138,7 @@ const Skoleårsperiode: React.FC<Props> = ({
         (utgift) => låsteUtgiftIder.indexOf(utgift.id) > -1
     );
 
-    const skalViseFjernKnapp = !erLesevisning && !erFørstePeriode && !inneholderLåsteUtgifter;
+    const skalViseFjernKnapp = !erLesevisning && !inneholderLåsteUtgifter;
     const erLesevisningForDelårsperioder = erLesevisning || kanRedigereUtgiftsperiode;
     const utgiftsperioderErKlikkbar = kanRedigereUtgiftsperiode || erLesevisning;
 
