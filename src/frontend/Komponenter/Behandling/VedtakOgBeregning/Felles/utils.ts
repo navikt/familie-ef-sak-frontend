@@ -22,31 +22,37 @@ import { erDesimaltall } from '../../../../App/utils/utils';
 export const mapVilkårtypeTilResultat = (
     vurderinger: IVurdering[]
 ): Record<VilkårType, [Vilkårsresultat]> => {
-    return vurderinger.reduce((acc, vurdering) => {
-        const listeMedVilkårsresultat = acc[vurdering.vilkårType] ?? [];
-        listeMedVilkårsresultat.push(vurdering.resultat);
-        acc[vurdering.vilkårType] = listeMedVilkårsresultat;
-        return acc;
-    }, {} as Record<VilkårType, [Vilkårsresultat]>);
+    return vurderinger.reduce(
+        (acc, vurdering) => {
+            const listeMedVilkårsresultat = acc[vurdering.vilkårType] ?? [];
+            listeMedVilkårsresultat.push(vurdering.resultat);
+            acc[vurdering.vilkårType] = listeMedVilkårsresultat;
+            return acc;
+        },
+        {} as Record<VilkårType, [Vilkårsresultat]>
+    );
 };
 
 export const summerVilkårsresultat = (
     vilkårstypeTilResultat: Record<VilkårType, [Vilkårsresultat]>
 ): Record<Vilkårsresultat, number> => {
-    return Object.entries(vilkårstypeTilResultat).reduce((acc, [type, resultatListe]) => {
-        let resultat;
-        if (
-            type === InngangsvilkårType.ALENEOMSORG ||
-            type === AktivitetsvilkårType.ALDER_PÅ_BARN
-        ) {
-            resultat = vilkårStatusForBarn(resultatListe);
-        } else {
-            // alle andre vilkår har kun ett resultat
-            resultat = resultatListe[0];
-        }
-        acc[resultat] = (acc[resultat] ?? 0) + 1;
-        return acc;
-    }, {} as Record<Vilkårsresultat, number>);
+    return Object.entries(vilkårstypeTilResultat).reduce(
+        (acc, [type, resultatListe]) => {
+            let resultat;
+            if (
+                type === InngangsvilkårType.ALENEOMSORG ||
+                type === AktivitetsvilkårType.ALDER_PÅ_BARN
+            ) {
+                resultat = vilkårStatusForBarn(resultatListe);
+            } else {
+                // alle andre vilkår har kun ett resultat
+                resultat = resultatListe[0];
+            }
+            acc[resultat] = (acc[resultat] ?? 0) + 1;
+            return acc;
+        },
+        {} as Record<Vilkårsresultat, number>
+    );
 };
 
 export const eksistererVilkårsResultat = (

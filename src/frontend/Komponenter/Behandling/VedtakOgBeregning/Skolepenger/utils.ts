@@ -31,7 +31,7 @@ export const locateIndexToRestorePreviousItemInCurrentItems = <T>(
 
 export const oppdaterValideringsfeil = <
     T extends ISkoleårsperiodeSkolepenger,
-    T2 extends T[keyof T]
+    T2 extends T[keyof T],
 >(
     settValideringsFeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>,
     index: number,

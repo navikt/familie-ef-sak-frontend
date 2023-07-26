@@ -13,9 +13,12 @@ interface Props {
 }
 
 function MappeVelger(props: Props): ReactElement {
-    const mapperPerEnhet = [...props.options].reduce((acc, mappe) => {
-        return { ...acc, [mappe.enhetsnr]: [...(acc[mappe.enhetsnr] ?? []), mappe] };
-    }, {} as Record<string, IMappe[]>);
+    const mapperPerEnhet = [...props.options].reduce(
+        (acc, mappe) => {
+            return { ...acc, [mappe.enhetsnr]: [...(acc[mappe.enhetsnr] ?? []), mappe] };
+        },
+        {} as Record<string, IMappe[]>
+    );
 
     const sorterMappeListerPåEnhetsnummer = (a: [string, IMappe[]], b: [string, IMappe[]]) => {
         if (a[0] > b[0]) return -1;

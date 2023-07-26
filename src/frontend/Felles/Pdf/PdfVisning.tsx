@@ -20,7 +20,9 @@ const StyledPagination = styled(Pagination)`
 
 const StyledDokument = styled(Document)`
     .react-pdf__Page__canvas {
-        box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 0px 2px rgb(0 0 0 / 25%);
+        box-shadow:
+            0px 4px 4px rgba(0, 0, 0, 0.25),
+            0px 0px 2px rgb(0 0 0 / 25%);
         margin: 0 auto;
     }
 

@@ -38,12 +38,15 @@ const lagVilkåresresultatPerBarn = (
 ): Record<string, Vilkårsresultat> =>
     vilkår.vurderinger
         .filter((vurdering) => vurdering.vilkårType === vilkårType)
-        .reduce((acc, vurdering) => {
-            if (vurdering.barnId) {
-                acc[vurdering.barnId] = vurdering.resultat;
-            }
-            return acc;
-        }, {} as Record<string, Vilkårsresultat>);
+        .reduce(
+            (acc, vurdering) => {
+                if (vurdering.barnId) {
+                    acc[vurdering.barnId] = vurdering.resultat;
+                }
+                return acc;
+            },
+            {} as Record<string, Vilkårsresultat>
+        );
 
 export const VedtaksoppsummeringBarnetilsyn: React.FC<{
     vilkår: IVilkår;
