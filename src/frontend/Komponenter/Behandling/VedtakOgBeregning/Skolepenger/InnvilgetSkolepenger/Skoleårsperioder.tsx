@@ -3,7 +3,7 @@ import React, { Dispatch, SetStateAction } from 'react';
 import { useBehandling } from '../../../../../App/context/BehandlingContext';
 import { ListState } from '../../../../../App/hooks/felles/useListState';
 import { FormErrors, Valideringsfunksjon } from '../../../../../App/hooks/felles/useFormState';
-import { InnvilgeVedtakForm } from './VedtaksformSkolepenger';
+import { InnvilgeVedtakForm } from '../OpphørSkolepenger/VedtaksformOpphør';
 import { useApp } from '../../../../../App/context/AppContext';
 import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import { tomSkoleårsperiodeSkolepenger } from '../typer';

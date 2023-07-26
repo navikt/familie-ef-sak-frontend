@@ -43,7 +43,7 @@ const Input = styled(InputUtenSpinner)`
     text-align: right;
 `;
 
-const SkoleårDelårsperiode: React.FC<ValideringsPropsMedOppdatering<IPeriodeSkolepenger>> = ({
+const Skoleårsperioder: React.FC<ValideringsPropsMedOppdatering<IPeriodeSkolepenger>> = ({
     data,
     oppdater,
     erOpphør,
@@ -183,4 +183,4 @@ const SkoleårDelårsperiode: React.FC<ValideringsPropsMedOppdatering<IPeriodeSk
     );
 };
 
-export default SkoleårDelårsperiode;
+export default Skoleårsperioder;

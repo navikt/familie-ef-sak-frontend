@@ -7,7 +7,7 @@ import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
 import { useBehandling } from '../../../../../App/context/BehandlingContext';
 import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
 import { useApp } from '../../../../../App/context/AppContext';
-import { InnvilgeVedtakForm } from './VedtaksformSkolepenger';
+import { InnvilgeVedtakForm } from '../OpphørSkolepenger/VedtaksformOpphør';
 import { FormErrors } from '../../../../../App/hooks/felles/useFormState';
 
 interface Props {

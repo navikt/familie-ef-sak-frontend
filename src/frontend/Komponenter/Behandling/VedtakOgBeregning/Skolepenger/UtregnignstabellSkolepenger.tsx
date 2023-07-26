@@ -9,8 +9,6 @@ import {
     formaterTallMedTusenSkille,
 } from '../../../../App/utils/formatter';
 import { BodyShortSmall, SmallTextLabel } from '../../../../Felles/Visningskomponenter/Tekster';
-import { useToggles } from '../../../../App/context/TogglesContext';
-import { ToggleName } from '../../../../App/context/toggles';
 
 const Grid = styled.div`
     display: grid;
@@ -25,8 +23,8 @@ const HøyrejustertBodyShort = styled(BodyShortSmall)`
 export const UtregningstabellSkolepenger: React.FC<{
     beregningsresultat: Ressurs<IBeregningSkolepengerResponse>;
     className?: string;
-}> = ({ beregningsresultat, className }) => {
-    const { toggles } = useToggles();
+    erOpphør: boolean;
+}> = ({ beregningsresultat, className, erOpphør }) => {
     return (
         <DataViewer response={{ beregningsresultat }}>
             {({ beregningsresultat }) => (
@@ -36,11 +34,7 @@ export const UtregningstabellSkolepenger: React.FC<{
                     </Heading>
                     <Grid>
                         <SmallTextLabel>Fra</SmallTextLabel>
-                        {toggles[ToggleName.visNyttGuiSkolepenger] ? (
-                            <div />
-                        ) : (
-                            <SmallTextLabel>Utgifter</SmallTextLabel>
-                        )}
+                        {erOpphør ? <div /> : <SmallTextLabel>Utgifter</SmallTextLabel>}
                         <SmallTextLabel>Stønadsbeløp</SmallTextLabel>
                         {beregningsresultat.perioder.map((periode) => {
                             return (
@@ -48,7 +42,7 @@ export const UtregningstabellSkolepenger: React.FC<{
                                     <BodyShortSmall>
                                         {formaterNullableMånedÅr(periode.årMånedFra)}
                                     </BodyShortSmall>
-                                    {toggles[ToggleName.visNyttGuiSkolepenger] ? (
+                                    {erOpphør ? (
                                         <div />
                                     ) : (
                                         <HøyrejustertBodyShort>

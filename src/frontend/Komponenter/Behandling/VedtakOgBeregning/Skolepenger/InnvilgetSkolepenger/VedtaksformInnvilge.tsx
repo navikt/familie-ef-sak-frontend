@@ -9,25 +9,30 @@ import {
 } from '../../../../../App/typer/vedtak';
 import { Behandling } from '../../../../../App/typer/fagsak';
 import React, { useEffect, useState } from 'react';
-import useFormState, { FormState } from '../../../../../App/hooks/felles/useFormState';
+import useFormState, {
+    FormState,
+    Valideringsfunksjon,
+} from '../../../../../App/hooks/felles/useFormState';
 import { ListState } from '../../../../../App/hooks/felles/useListState';
 import { useBehandling } from '../../../../../App/context/BehandlingContext';
 import styled from 'styled-components';
-import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
+import { Alert, Heading } from '@navikt/ds-react';
 import { useApp } from '../../../../../App/context/AppContext';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../../../App/typer/ressurs';
 import { UtregningstabellSkolepenger } from '../UtregnignstabellSkolepenger';
-import { validerInnvilgetVedtakForm, validerSkoleårsperioder } from './vedtaksvalideringDeprecated';
-import { tomSkoleårsperiodeSkolepenger } from '../typer';
-import SkoleårsperioderSkolepenger from './SkoleårsperioderSkolepenger';
-import OpphørSkolepenger from '../OpphørSkolepenger/OpphørSkolepenger';
-import { BodyShortSmall } from '../../../../../Felles/Visningskomponenter/Tekster';
+import {
+    validerSkoleårsperioderMedBegrunnelse,
+    validerSkoleårsperioderUtenBegrunnelse,
+} from './vedtaksvalidering';
+import { BodyLongSmall, BodyShortSmall } from '../../../../../Felles/Visningskomponenter/Tekster';
 import { ARed500 } from '@navikt/ds-tokens/dist/tokens';
 import { useRedirectEtterLagring } from '../../../../../App/hooks/felles/useRedirectEtterLagring';
 import { v4 as uuidv4 } from 'uuid';
-import { BegrunnelsesFelt } from './BegrunnelsesFelt';
 import { AlertError } from '../../../../../Felles/Visningskomponenter/Alerts';
 import HovedKnapp, { Knapp } from '../../../../../Felles/Knapper/HovedKnapp';
+import VisEllerEndreSkoleårsperioder from './VisEllerEndreSkoleårsperioder';
+import { BegrunnelsesFelt } from './BegrunnelsesFelt';
+import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
 import { CalculatorIcon } from '@navikt/aksel-icons';
 
 const Form = styled.form`
@@ -44,14 +49,31 @@ const Utregningstabell = styled(UtregningstabellSkolepenger)`
     margin-left: 1rem;
 `;
 
-export const defaultSkoleårsperioder = (
+const InfoStripe = styled(Alert)`
+    .navds-alert__wrapper {
+        max-width: max-content;
+    }
+`;
+
+const FlexColumn = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+`;
+
+const markerErHentetFraBackend = (
+    skoleårsperioder: ISkoleårsperiodeSkolepenger[]
+): ISkoleårsperiodeSkolepenger[] =>
+    skoleårsperioder.map((periode) => ({ ...periode, erHentetFraBackend: true }));
+
+const defaultSkoleårsperioder = (
     forrigeVedtak?: IvedtakForSkolepenger
 ): ISkoleårsperiodeSkolepenger[] => {
     const forrigeSkoleårsperioder = forrigeVedtak?.skoleårsperioder;
     if (forrigeSkoleårsperioder && forrigeSkoleårsperioder.length > 0) {
-        return forrigeSkoleårsperioder;
+        return markerErHentetFraBackend(forrigeSkoleårsperioder);
     } else {
-        return [tomSkoleårsperiodeSkolepenger()];
+        return [];
     }
 };
 
@@ -60,12 +82,11 @@ export type InnvilgeVedtakForm = {
     begrunnelse?: string;
 };
 
-export const VedtaksformSkolepenger: React.FC<{
+export const VedtaksformInnvilge: React.FC<{
     behandling: Behandling;
-    erOpphør: boolean;
     lagretInnvilgetVedtak?: IvedtakForSkolepenger;
     forrigeVedtak?: IvedtakForSkolepenger;
-}> = ({ behandling, erOpphør, lagretInnvilgetVedtak, forrigeVedtak }) => {
+}> = ({ behandling, lagretInnvilgetVedtak, forrigeVedtak }) => {
     const { behandlingErRedigerbar, hentBehandling } = useBehandling();
     const [laster, settLaster] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState('');
@@ -81,18 +102,18 @@ export const VedtaksformSkolepenger: React.FC<{
     const formState = useFormState<InnvilgeVedtakForm>(
         {
             skoleårsperioder: lagretInnvilgetVedtak
-                ? lagretInnvilgetVedtak.skoleårsperioder
+                ? markerErHentetFraBackend(lagretInnvilgetVedtak.skoleårsperioder)
                 : defaultSkoleårsperioder(forrigeVedtak),
             begrunnelse: lagretInnvilgetVedtak?.begrunnelse || '',
         },
-        validerInnvilgetVedtakForm
+        validerSkoleårsperioderMedBegrunnelse
     );
     const skoleårsPerioderState = formState.getProps(
         'skoleårsperioder'
     ) as ListState<ISkoleårsperiodeSkolepenger>;
     const begrunnelseState = formState.getProps('begrunnelse') as FieldState;
 
-    const utgiftsIderForrigeBehandling = forrigeVedtak
+    const utgiftIderForrigeBehandling = forrigeVedtak
         ? forrigeVedtak.skoleårsperioder.flatMap((p) => p.utgiftsperioder.map((u) => u.id))
         : [];
 
@@ -129,14 +150,12 @@ export const VedtaksformSkolepenger: React.FC<{
 
     const handleSubmit = (form: FormState<InnvilgeVedtakForm>) => {
         settVisFeilmelding(false);
-        if (harUtførtBeregning || erOpphør) {
+        if (harUtførtBeregning) {
             const vedtaksRequest: IVedtakForSkolepenger = {
                 skoleårsperioder: form.skoleårsperioder,
                 begrunnelse: form.begrunnelse,
-                _type: erOpphør
-                    ? IVedtakType.OpphørSkolepenger
-                    : IVedtakType.InnvilgelseSkolepenger,
-                resultatType: erOpphør ? EBehandlingResultat.OPPHØRT : EBehandlingResultat.INNVILGE,
+                _type: IVedtakType.InnvilgelseSkolepenger,
+                resultatType: EBehandlingResultat.INNVILGE,
             };
             lagreVedtak(vedtaksRequest);
         } else {
@@ -147,14 +166,14 @@ export const VedtaksformSkolepenger: React.FC<{
     const beregnSkolepenger = () => {
         settHarUtførtBeregning(false);
         settVisFeilmelding(false);
-        if (formState.customValidate(validerSkoleårsperioder)) {
+        if (formState.customValidate(validerSkoleårsperioderUtenBegrunnelse)) {
             axiosRequest<IBeregningSkolepengerResponse, IBeregningsrequestSkolepenger>({
                 method: 'POST',
                 url: `/familie-ef-sak/api/beregning/skolepenger`,
                 data: {
                     behandlingId: behandling.id,
                     skoleårsperioder: skoleårsPerioderState.value,
-                    erOpphør: erOpphør,
+                    erOpphør: false,
                 },
             }).then((res: Ressurs<IBeregningSkolepengerResponse>) => {
                 settBeregningsresultat(res);
@@ -162,6 +181,9 @@ export const VedtaksformSkolepenger: React.FC<{
             });
         }
     };
+
+    const customValidate = (fn: Valideringsfunksjon<InnvilgeVedtakForm>) =>
+        formState.customValidate(fn);
 
     useEffect(() => {
         if (!behandlingErRedigerbar) {
@@ -175,43 +197,60 @@ export const VedtaksformSkolepenger: React.FC<{
     return (
         <Form onSubmit={formState.onSubmit(handleSubmit)}>
             <BegrunnelsesFelt begrunnelseState={begrunnelseState} errorState={formState.errors} />
-            {erOpphør ? (
-                <OpphørSkolepenger
-                    skoleårsperioder={skoleårsPerioderState}
-                    forrigeSkoleårsperioder={forrigeVedtak?.skoleårsperioder || []}
-                    valideringsfeil={formState.errors.skoleårsperioder}
-                    settValideringsFeil={formState.setErrors}
-                />
-            ) : (
-                <SkoleårsperioderSkolepenger
-                    skoleårsperioder={skoleårsPerioderState}
-                    låsteUtgiftIder={utgiftsIderForrigeBehandling}
-                    valideringsfeil={formState.errors.skoleårsperioder}
-                    settValideringsFeil={formState.setErrors}
-                    oppdaterHarUtførtBeregning={settHarUtførtBeregning}
-                />
-            )}
+            {behandlingErRedigerbar && <InfoStripeHvordanFatteVedtak />}
+            <VisEllerEndreSkoleårsperioder
+                customValidate={customValidate}
+                låsteUtgiftIder={utgiftIderForrigeBehandling}
+                oppdaterHarUtførtBeregning={settHarUtførtBeregning}
+                settValideringsFeil={formState.setErrors}
+                skoleårsperioder={skoleårsPerioderState}
+                valideringsfeil={formState.errors.skoleårsperioder}
+            />
             {feilmelding && <AlertError>{feilmelding}</AlertError>}
-            {behandlingErRedigerbar && !erOpphør && (
-                <div>
-                    <Knapp
-                        variant={'secondary'}
-                        onClick={beregnSkolepenger}
-                        type={'button'}
-                        icon={<CalculatorIcon title={'beregn'} />}
-                        iconPosition={'right'}
-                    >
-                        Beregn
-                    </Knapp>
-                    {visFeilmelding && (
-                        <AdvarselTekst>
-                            Kan ikke lagre vedtaket før beregning er utført
-                        </AdvarselTekst>
-                    )}
-                </div>
+            {behandlingErRedigerbar && (
+                <>
+                    <div>
+                        <hr />
+                    </div>
+                    <div>
+                        <Knapp
+                            variant={'secondary'}
+                            onClick={beregnSkolepenger}
+                            type={'button'}
+                            icon={<CalculatorIcon title={'beregn'} />}
+                            iconPosition={'right'}
+                        >
+                            Beregn
+                        </Knapp>
+                        {visFeilmelding && (
+                            <AdvarselTekst>
+                                Kan ikke lagre vedtaket før beregning er utført
+                            </AdvarselTekst>
+                        )}
+                    </div>
+                </>
             )}
-            <Utregningstabell beregningsresultat={beregningsresultat} />
+            <Utregningstabell beregningsresultat={beregningsresultat} erOpphør={false} />
             {behandlingErRedigerbar && <HovedKnapp disabled={laster} knappetekst="Lagre vedtak" />}
         </Form>
     );
 };
+
+const InfoStripeHvordanFatteVedtak: React.FC = () => (
+    <InfoStripe variant="info">
+        <FlexColumn>
+            <Heading size={'small'}>Hvordan legge inn utgifter til skolepenger</Heading>
+            <BodyLongSmall>
+                Du må legge til et nytt skoleår og fylle ut feltene med informasjon om utdanningen.
+                Etter at du har lagt til det nye skoleåret, fyller du ut stønadsbeløpet. Hvis du
+                skal innvilge stønad for nye utgifter for et skoleår som allerede er lagt inn,
+                legger du til utgiften ved å klikke på «Legg til ny utgift for skoleåret xx/xx»
+                under det aktuelle skoleåret.
+            </BodyLongSmall>
+            <BodyLongSmall>
+                Hvis utdanningen bruker tar ikke følger det ordinære skoleåret, se
+                opplæringsmateriell.
+            </BodyLongSmall>
+        </FlexColumn>
+    </InfoStripe>
+);

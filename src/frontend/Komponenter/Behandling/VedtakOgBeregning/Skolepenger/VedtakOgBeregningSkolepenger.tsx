@@ -11,11 +11,9 @@ import { erAlleVilkårOppfylt, skalViseNullstillVedtakKnapp } from '../Felles/ut
 import { RessursStatus } from '../../../../App/typer/ressurs';
 import SelectVedtaksresultat from '../Felles/SelectVedtaksresultat';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
-import { VedtaksformSkolepenger } from './InnvilgetSkolepenger/VedtaksformSkolepenger';
+import { VedtaksformOpphør } from './OpphørSkolepenger/VedtaksformOpphør';
 import { AvslåVedtak } from '../Overgangsstønad/AvslåVedtak/AvslåVedtak';
-import { useToggles } from '../../../../App/context/TogglesContext';
-import { ToggleName } from '../../../../App/context/toggles';
-import { Vedtaksform } from './InnvilgetSkolepenger/Vedtaksform';
+import { VedtaksformInnvilge } from './InnvilgetSkolepenger/VedtaksformInnvilge';
 
 interface Props {
     behandling: Behandling;
@@ -28,7 +26,6 @@ const VedtakOgBeregningSkolepenger: FC<Props> = ({ behandling, vilkår }) => {
     const { vedtak, hentVedtak } = useHentVedtak(behandlingId);
     const { vedtak: vedtakForrigeBehandling, hentVedtak: hentVedtakForrigeBehandling } =
         useHentVedtak(forrigeBehandlingId);
-    const { toggles } = useToggles();
 
     const alleVilkårOppfylt = erAlleVilkårOppfylt(vilkår);
 
@@ -63,23 +60,9 @@ const VedtakOgBeregningSkolepenger: FC<Props> = ({ behandling, vilkår }) => {
                         case EBehandlingResultat.OPPHØRT:
                             // eslint-disable-next-line no-case-declarations
                             const erOpphør = resultatType === EBehandlingResultat.OPPHØRT;
-                            {
-                                return toggles[ToggleName.visNyttGuiSkolepenger] && !erOpphør ? (
-                                    <Vedtaksform
-                                        behandling={behandling}
-                                        lagretInnvilgetVedtak={
-                                            vedtakForSkolepenger?._type ===
-                                            IVedtakType.InnvilgelseSkolepenger
-                                                ? vedtakForSkolepenger
-                                                : undefined
-                                        }
-                                        forrigeVedtak={
-                                            vedtakForrigeBehandling &&
-                                            (vedtakForrigeBehandling as unknown as IVedtakForSkolepenger)
-                                        }
-                                    />
-                                ) : (
-                                    <VedtaksformSkolepenger
+                            if (erOpphør) {
+                                return (
+                                    <VedtaksformOpphør
                                         key={erOpphør ? 'opphør' : 'innvilgelse'}
                                         behandling={behandling}
                                         erOpphør={erOpphør}
@@ -96,6 +79,21 @@ const VedtakOgBeregningSkolepenger: FC<Props> = ({ behandling, vilkår }) => {
                                     />
                                 );
                             }
+                            return (
+                                <VedtaksformInnvilge
+                                    behandling={behandling}
+                                    lagretInnvilgetVedtak={
+                                        vedtakForSkolepenger?._type ===
+                                        IVedtakType.InnvilgelseSkolepenger
+                                            ? vedtakForSkolepenger
+                                            : undefined
+                                    }
+                                    forrigeVedtak={
+                                        vedtakForrigeBehandling &&
+                                        (vedtakForrigeBehandling as unknown as IVedtakForSkolepenger)
+                                    }
+                                />
+                            );
                         case EBehandlingResultat.AVSLÅ:
                             return (
                                 <AvslåVedtak

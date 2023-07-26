@@ -48,7 +48,7 @@ const FargetStrek = styled.span`
     margin-bottom: 0.75rem;
 `;
 
-const OpphørUtgiftsperiodeSkolepenger: React.FC<SkolepengerOpphørProps<SkolepengerUtgift>> = ({
+const Utgiftsperioder: React.FC<SkolepengerOpphørProps<SkolepengerUtgift>> = ({
     data,
     forrigeData,
     skoleårErFjernet,
@@ -137,4 +137,4 @@ const OpphørUtgiftsperiodeSkolepenger: React.FC<SkolepengerOpphørProps<Skolepe
     );
 };
 
-export default OpphørUtgiftsperiodeSkolepenger;
+export default Utgiftsperioder;

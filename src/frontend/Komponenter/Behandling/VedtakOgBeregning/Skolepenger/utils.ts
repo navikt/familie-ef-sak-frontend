@@ -1,7 +1,7 @@
 import { ISkoleårsperiodeSkolepenger } from '../../../../App/typer/vedtak';
 import { Dispatch, SetStateAction } from 'react';
 import { FormErrors } from '../../../../App/hooks/felles/useFormState';
-import { InnvilgeVedtakForm } from './InnvilgetSkolepenger/VedtaksformSkolepenger';
+import { InnvilgeVedtakForm } from './OpphørSkolepenger/VedtaksformOpphør';
 
 /**
  * Brukes når man har slettet element i [currentItems] og ønsker å ta en restore for det elementet og plassere det på riktig plass i [currentItems]

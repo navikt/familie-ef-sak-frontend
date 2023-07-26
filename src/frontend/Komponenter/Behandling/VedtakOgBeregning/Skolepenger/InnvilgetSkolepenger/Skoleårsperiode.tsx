@@ -11,7 +11,7 @@ import { ABlue200, ABorderSubtle, AGray50 } from '@navikt/ds-tokens/dist/tokens'
 import { HorizontalScroll } from '../../Felles/HorizontalScroll';
 import Delårsperioder from './Delårsperioder';
 import { Knapp } from '../../../../../Felles/Knapper/HovedKnapp';
-import { InnvilgeVedtakForm } from './VedtaksformSkolepenger';
+import { InnvilgeVedtakForm } from '../OpphørSkolepenger/VedtaksformOpphør';
 import { validerSkoleårsperioderUtenBegrunnelseOgUtgiftsperioder } from './vedtaksvalidering';
 import Utgiftsperioder from './Utgiftsperioder';
 import Makssats from './Makssats';

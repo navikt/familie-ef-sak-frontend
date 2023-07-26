@@ -18,6 +18,5 @@ export enum ToggleName {
     visVurderHenvendelseOppgaver = 'familie.ef.sak.automatiske-oppgaver-lokalkontor',
     fremleggsoppgave = 'familie.ef.sak.automatiske-oppgaver.fremleggsoppgave',
     sanitybrev_frittstående = 'familie.ef.sak.frontend-frittstaaende-sanitybrev',
-    visNyttGuiSkolepenger = 'familie.ef.sak.frontend-skolepenger-utbedret-gui',
     dokumentoversiktLinkTilDokument = 'familie.ef.sak.frontend.dokumentoversikt-link-til-dokument',
 }

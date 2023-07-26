@@ -4,7 +4,7 @@ import {
     ISkoleårsperiodeSkolepenger,
     SkolepengerUtgift,
 } from '../../../../../App/typer/vedtak';
-import { InnvilgeVedtakForm } from './Vedtaksform';
+import { InnvilgeVedtakForm } from './VedtaksformInnvilge';
 import {
     erMånedÅrEtterEllerLik,
     Intervall,

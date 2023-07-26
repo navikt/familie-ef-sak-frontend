@@ -5,20 +5,17 @@ import { useBehandling } from '../../../../../App/context/BehandlingContext';
 import { ListState } from '../../../../../App/hooks/felles/useListState';
 import { useApp } from '../../../../../App/context/AppContext';
 import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
-import OpphørUtgiftsperiodeSkolepenger from './OpphørUtgiftsperiodeSkolepenger';
+import Utgiftsperioder from './Utgiftsperioder';
 import { beregnSkoleår, GyldigBeregnetSkoleår } from '../skoleår';
 import { locateIndexToRestorePreviousItemInCurrentItems, oppdaterValideringsfeil } from '../utils';
-import SkoleårDelårsperiode from '../InnvilgetSkolepenger/SkoleårDelårsperiode';
+import Skoleårsperioder from './Skoleårsperioder';
 import { FormErrors } from '../../../../../App/hooks/felles/useFormState';
-import { InnvilgeVedtakForm } from '../InnvilgetSkolepenger/VedtaksformSkolepenger';
+import { InnvilgeVedtakForm } from './VedtaksformOpphør';
 import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 import TilbakestillKnapp from '../../../../../Felles/Knapper/TilbakestillKnapp';
 import { ABgSubtle } from '@navikt/ds-tokens/dist/tokens';
 
 const Skoleårsperiode = styled.div`
-    margin: 1rem;
-    margin-right: 0.5rem;
-    margin-left: 0rem;
     padding: 1rem;
     background-color: ${ABgSubtle};
 `;
@@ -43,7 +40,7 @@ const beregnSkoleårForSkoleårsperiode = (periode: ISkoleårsperiodeSkolepenger
     ).skoleår;
 };
 
-const OpphørSkolepenger: React.FC<Props> = ({
+const VisEllerEndreSkoleårsperioder: React.FC<Props> = ({
     skoleårsperioder,
     forrigeSkoleårsperioder,
     valideringsfeil,
@@ -122,7 +119,7 @@ const OpphørSkolepenger: React.FC<Props> = ({
                 const erFjernet = !skoleårsperiode;
                 return (
                     <Skoleårsperiode key={index}>
-                        <SkoleårDelårsperiode
+                        <Skoleårsperioder
                             data={
                                 erFjernet
                                     ? forrigeSkoleårsperiode.perioder
@@ -154,7 +151,7 @@ const OpphørSkolepenger: React.FC<Props> = ({
                             skoleårErFjernet={erFjernet}
                             erOpphør={true}
                         />
-                        <OpphørUtgiftsperiodeSkolepenger
+                        <Utgiftsperioder
                             data={skoleårsperiode?.periode?.utgiftsperioder || []}
                             forrigeData={forrigeSkoleårsperiode.utgiftsperioder}
                             skoleårErFjernet={erFjernet}
@@ -187,4 +184,4 @@ const OpphørSkolepenger: React.FC<Props> = ({
     );
 };
 
-export default OpphørSkolepenger;
+export default VisEllerEndreSkoleårsperioder;
