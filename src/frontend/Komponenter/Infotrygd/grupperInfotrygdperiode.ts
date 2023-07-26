@@ -21,12 +21,15 @@ const mapKode = (kode: Kode): number => {
 const grupperPerioderPerVedtak = (
     perioder: InfotrygdPeriode[]
 ): { [key: string]: InfotrygdPeriode[] } =>
-    perioder.reduce((acc, periode) => {
-        const prev = acc[periode.vedtakId] || [];
-        prev.push(periode);
-        acc[periode.vedtakId] = prev;
-        return acc;
-    }, {} as { [key: string]: InfotrygdPeriode[] });
+    perioder.reduce(
+        (acc, periode) => {
+            const prev = acc[periode.vedtakId] || [];
+            prev.push(periode);
+            acc[periode.vedtakId] = prev;
+            return acc;
+        },
+        {} as { [key: string]: InfotrygdPeriode[] }
+    );
 
 /**
  * Et vedtak kan inneholde 1-2 endringer. Hvis det er 2 endringer blir det duplikat av vedtak, med ulike koder.

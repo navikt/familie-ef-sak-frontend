@@ -64,8 +64,8 @@ const lagRaderForVedtak = (
             return `<tr style="text-align: right;">
                         <td style="text-align: left; ${borderStylingCompact}">${andelsperiode}</td>
                         <td style="${borderStyling}">${
-                beløpsperiode.beregningsgrunnlag.antallBarn
-            }</td>
+                            beløpsperiode.beregningsgrunnlag.antallBarn
+                        }</td>
                         <td style="${borderStyling}">${utgifter}</td>
                         ${
                             harKontantStøtte

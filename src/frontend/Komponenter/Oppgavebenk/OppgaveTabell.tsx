@@ -48,10 +48,13 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaver, mapper, settFeilmelding }) =
         15
     );
     const mapperAsRecord = (mapper: IMappe[]): Record<number, string> =>
-        mapper.reduce((acc, item) => {
-            acc[item.id] = item.navn;
-            return acc;
-        }, {} as Record<number, string>);
+        mapper.reduce(
+            (acc, item) => {
+                acc[item.id] = item.navn;
+                return acc;
+            },
+            {} as Record<number, string>
+        );
 
     const formaterteMapper = mapperAsRecord(mapper);
 

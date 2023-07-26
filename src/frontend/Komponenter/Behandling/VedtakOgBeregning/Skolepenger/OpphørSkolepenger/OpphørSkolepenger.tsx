@@ -95,16 +95,22 @@ const OpphørSkolepenger: React.FC<Props> = ({
      */
     const skoleårsperioderPerSkoleår = useMemo(
         () =>
-            skoleårsperioder.value.reduce((acc, periode, index) => {
-                if (periode.perioder.length > 0) {
-                    return {
-                        ...acc,
-                        [beregnSkoleårForSkoleårsperiode(periode)]: { periode, index },
-                    };
-                } else {
-                    return acc;
-                }
-            }, {} as Record<number, { periode: ISkoleårsperiodeSkolepenger; index: number } | undefined>),
+            skoleårsperioder.value.reduce(
+                (acc, periode, index) => {
+                    if (periode.perioder.length > 0) {
+                        return {
+                            ...acc,
+                            [beregnSkoleårForSkoleårsperiode(periode)]: { periode, index },
+                        };
+                    } else {
+                        return acc;
+                    }
+                },
+                {} as Record<
+                    number,
+                    { periode: ISkoleårsperiodeSkolepenger; index: number } | undefined
+                >
+            ),
         [skoleårsperioder]
     );
 
