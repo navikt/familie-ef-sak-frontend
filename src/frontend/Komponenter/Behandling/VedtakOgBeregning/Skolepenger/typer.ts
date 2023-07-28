@@ -12,7 +12,7 @@ export interface SkolepengerProps<T> {
     oppdater: (data: T[]) => void;
     behandlingErRedigerbar: boolean;
     erOpphør?: boolean;
-    skoleårErFjernet?: boolean;
+    erSkoleårOpphørt?: boolean;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -20,10 +20,6 @@ export interface ValideringsPropsMedOppdatering<T extends Record<string, any>>
     extends SkolepengerProps<T> {
     valideringsfeil?: FormErrors<T>[];
     settValideringsFeil: (errors: FormErrors<T>[]) => void;
-}
-
-export interface SkolepengerOpphørProps<T> extends SkolepengerProps<T> {
-    forrigeData: T[];
 }
 
 export const tomSkoleårsperiode: IPeriodeSkolepenger = {

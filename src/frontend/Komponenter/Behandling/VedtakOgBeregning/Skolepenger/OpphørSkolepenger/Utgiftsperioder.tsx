@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import React from 'react';
 import { SkolepengerUtgift } from '../../../../../App/typer/vedtak';
-import { SkolepengerOpphørProps } from '../typer';
 import {
     formaterIsoMånedÅrFull,
     formaterTallMedTusenSkilleEllerStrek,
@@ -33,7 +32,7 @@ const TilbakestillButton = styled(TilbakestillKnapp)`
 
 const FlexRow = styled.div`
     display: flex;
-    margin-top: 0.75rem;
+    column-gap: 1rem;
 `;
 
 const FlexColumn = styled.div`
@@ -41,19 +40,27 @@ const FlexColumn = styled.div`
     flex-direction: column;
 `;
 
-const FargetStrek = styled.span`
+const VertikalStrek = styled.span`
     border-left: 3px solid ${ABorderStrong};
     margin-right: 0.5rem;
     margin-left: 0.5rem;
     margin-bottom: 0.75rem;
 `;
 
-const OpphørUtgiftsperiodeSkolepenger: React.FC<SkolepengerOpphørProps<SkolepengerUtgift>> = ({
+interface Props {
+    behandlingErRedigerbar: boolean;
+    data: SkolepengerUtgift[];
+    forrigeData: SkolepengerUtgift[];
+    oppdater: (data: SkolepengerUtgift[]) => void;
+    skoleårErOpphørt: boolean;
+}
+
+const Utgiftsperioder: React.FC<Props> = ({
+    behandlingErRedigerbar,
     data,
     forrigeData,
-    skoleårErFjernet,
     oppdater,
-    behandlingErRedigerbar,
+    skoleårErOpphørt,
 }) => {
     const erLesevisning = !behandlingErRedigerbar;
 
@@ -82,59 +89,59 @@ const OpphørUtgiftsperiodeSkolepenger: React.FC<SkolepengerOpphørProps<Skolepe
 
     return (
         <FlexRow>
-            <FargetStrek />
-            <div style={{ marginLeft: '1rem' }}>
-                <FlexColumn>
-                    <Utgiftsrad erHeader={true} lesevisning={erLesevisning}>
-                        <SmallTextLabel>Utbetalingsmåned</SmallTextLabel>
-                        <SmallTextLabel>Utgifter</SmallTextLabel>
-                        <SmallTextLabel>Stønadsbeløp</SmallTextLabel>
-                    </Utgiftsrad>
-                    {forrigeData.map((utgift, index) => {
-                        const erFjernet = !nyePerioder[utgift.id];
+            <VertikalStrek />
+            <FlexColumn>
+                <Utgiftsrad erHeader={true} lesevisning={erLesevisning}>
+                    <SmallTextLabel>Utbetalingsmåned</SmallTextLabel>
+                    <SmallTextLabel>Utgifter</SmallTextLabel>
+                    <SmallTextLabel>Stønadsbeløp</SmallTextLabel>
+                </Utgiftsrad>
+                {forrigeData.map((utgift, index) => {
+                    const utgiftsperiodeErFjernet = !nyePerioder[utgift.id];
 
-                        const harFlereUtgifter = data.length > 1;
-                        const skalViseFjernKnapp =
-                            behandlingErRedigerbar &&
-                            !skoleårErFjernet &&
-                            !erFjernet &&
-                            harFlereUtgifter;
+                    const harFlereUtgifter = data.length > 1;
+                    const skalViseFjernKnapp =
+                        behandlingErRedigerbar &&
+                        !skoleårErOpphørt &&
+                        !utgiftsperiodeErFjernet &&
+                        harFlereUtgifter;
 
-                        return (
-                            <Utgiftsrad
-                                erHeader={false}
-                                lesevisning={erLesevisning}
-                                key={index}
-                                erFjernet={erFjernet}
-                            >
-                                <SmallTextLabel>
-                                    {formaterIsoMånedÅrFull(utgift.årMånedFra)}
-                                </SmallTextLabel>
-                                <SmallTextLabel>
-                                    {formaterTallMedTusenSkilleEllerStrek(utgift.utgifter)}
-                                </SmallTextLabel>
-                                <SmallTextLabel>
-                                    {formaterTallMedTusenSkilleEllerStrek(utgift.stønad)}
-                                </SmallTextLabel>
-                                {skalViseFjernKnapp && (
-                                    <FjernKnapp
-                                        onClick={() => fjernUtgift(utgift.id)}
-                                        ikontekst={'Fjern utgift'}
-                                    />
-                                )}
-                                {behandlingErRedigerbar && !skoleårErFjernet && erFjernet && (
+                    return (
+                        <Utgiftsrad
+                            erHeader={false}
+                            lesevisning={erLesevisning}
+                            key={index}
+                            erFjernet={utgiftsperiodeErFjernet}
+                        >
+                            <SmallTextLabel>
+                                {formaterIsoMånedÅrFull(utgift.årMånedFra)}
+                            </SmallTextLabel>
+                            <SmallTextLabel>
+                                {formaterTallMedTusenSkilleEllerStrek(utgift.utgifter)}
+                            </SmallTextLabel>
+                            <SmallTextLabel>
+                                {formaterTallMedTusenSkilleEllerStrek(utgift.stønad)}
+                            </SmallTextLabel>
+                            {skalViseFjernKnapp && (
+                                <FjernKnapp
+                                    onClick={() => fjernUtgift(utgift.id)}
+                                    ikontekst={'Fjern utgift'}
+                                />
+                            )}
+                            {behandlingErRedigerbar &&
+                                !skoleårErOpphørt &&
+                                utgiftsperiodeErFjernet && (
                                     <TilbakestillButton
                                         onClick={() => tilbakestillUtgift(index)}
                                         ikontekst={'Tilbakestill utgiftsrad'}
                                     />
                                 )}
-                            </Utgiftsrad>
-                        );
-                    })}
-                </FlexColumn>
-            </div>
+                        </Utgiftsrad>
+                    );
+                })}
+            </FlexColumn>
         </FlexRow>
     );
 };
 
-export default OpphørUtgiftsperiodeSkolepenger;
+export default Utgiftsperioder;
