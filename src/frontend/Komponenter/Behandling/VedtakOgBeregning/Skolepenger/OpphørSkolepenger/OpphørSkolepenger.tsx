@@ -120,9 +120,6 @@ const OpphørSkolepenger: React.FC<Props> = ({
                 const skoleår = beregnSkoleårForSkoleårsperiode(forrigeSkoleårsperiode);
                 const skoleårsperiode = skoleårsperioderPerSkoleår[skoleår];
                 const skoleårsperiodeErOpphørt = !skoleårsperiode;
-                console.log('skoleår', skoleår);
-                console.log('skoleårsperiode', skoleårsperiode);
-                console.log('skoleårsperiodeErOpphørt', skoleårsperiodeErOpphørt);
                 return (
                     <Skoleårsperiode key={index}>
                         <Delårsperioder

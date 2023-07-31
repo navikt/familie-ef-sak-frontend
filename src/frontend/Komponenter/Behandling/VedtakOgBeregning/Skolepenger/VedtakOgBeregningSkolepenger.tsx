@@ -83,12 +83,7 @@ const VedtakOgBeregningSkolepenger: FC<Props> = ({ behandling, vilkår }) => {
                                         key={erOpphør ? 'opphør' : 'innvilgelse'}
                                         behandling={behandling}
                                         erOpphør={erOpphør}
-                                        lagretInnvilgetVedtak={
-                                            vedtakForSkolepenger?._type ===
-                                            IVedtakType.InnvilgelseSkolepenger
-                                                ? vedtakForSkolepenger
-                                                : undefined
-                                        }
+                                        lagretInnvilgetVedtak={vedtakForSkolepenger}
                                         forrigeVedtak={
                                             vedtakForrigeBehandling &&
                                             (vedtakForrigeBehandling as unknown as IVedtakForSkolepenger)
