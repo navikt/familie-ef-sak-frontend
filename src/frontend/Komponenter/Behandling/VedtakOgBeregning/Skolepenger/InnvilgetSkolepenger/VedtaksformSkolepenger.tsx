@@ -17,7 +17,12 @@ import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
 import { useApp } from '../../../../../App/context/AppContext';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../../../App/typer/ressurs';
 import { UtregningstabellSkolepenger } from '../UtregnignstabellSkolepenger';
-import { validerInnvilgetVedtakForm, validerSkoleårsperioder } from './vedtaksvalideringDeprecated';
+import {
+    validerInnvilgetVedtakForm,
+    validerInnvilgetVedtakFormUtenUtgifter,
+    validerSkoleårsperioder,
+    validerSkoleårsperioderUtenUtgifter,
+} from './vedtaksvalideringDeprecated';
 import { tomSkoleårsperiodeSkolepenger } from '../typer';
 import SkoleårsperioderSkolepenger from './SkoleårsperioderSkolepenger';
 import OpphørSkolepenger from '../OpphørSkolepenger/OpphørSkolepenger';
@@ -29,6 +34,8 @@ import { BegrunnelsesFelt } from './BegrunnelsesFelt';
 import { AlertError } from '../../../../../Felles/Visningskomponenter/Alerts';
 import HovedKnapp, { Knapp } from '../../../../../Felles/Knapper/HovedKnapp';
 import { CalculatorIcon } from '@navikt/aksel-icons';
+import { useToggles } from '../../../../../App/context/TogglesContext';
+import { ToggleName } from '../../../../../App/context/toggles';
 
 const Form = styled.form`
     display: flex;
@@ -67,10 +74,12 @@ export const VedtaksformSkolepenger: React.FC<{
     forrigeVedtak?: IvedtakForSkolepenger;
 }> = ({ behandling, erOpphør, lagretInnvilgetVedtak, forrigeVedtak }) => {
     const { behandlingErRedigerbar, hentBehandling } = useBehandling();
+    const { toggles } = useToggles();
     const [laster, settLaster] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState('');
     const [harUtførtBeregning, settHarUtførtBeregning] = useState<boolean>(false);
     const [visFeilmelding, settVisFeilmelding] = useState<boolean>(false);
+    const skalValidereMangelfullUtfyllingAvUtgifter = !toggles[ToggleName.visNyttGuiSkolepenger];
 
     const [beregningsresultat, settBeregningsresultat] = useState(
         byggTomRessurs<IBeregningSkolepengerResponse>()
@@ -85,7 +94,9 @@ export const VedtaksformSkolepenger: React.FC<{
                 : defaultSkoleårsperioder(forrigeVedtak),
             begrunnelse: lagretInnvilgetVedtak?.begrunnelse || '',
         },
-        validerInnvilgetVedtakForm
+        skalValidereMangelfullUtfyllingAvUtgifter
+            ? validerInnvilgetVedtakForm
+            : validerInnvilgetVedtakFormUtenUtgifter
     );
     const skoleårsPerioderState = formState.getProps(
         'skoleårsperioder'
@@ -147,7 +158,13 @@ export const VedtaksformSkolepenger: React.FC<{
     const beregnSkolepenger = () => {
         settHarUtførtBeregning(false);
         settVisFeilmelding(false);
-        if (formState.customValidate(validerSkoleårsperioder)) {
+        if (
+            formState.customValidate(
+                skalValidereMangelfullUtfyllingAvUtgifter
+                    ? validerSkoleårsperioder
+                    : validerSkoleårsperioderUtenUtgifter
+            )
+        ) {
             axiosRequest<IBeregningSkolepengerResponse, IBeregningsrequestSkolepenger>({
                 method: 'POST',
                 url: `/familie-ef-sak/api/beregning/skolepenger`,
@@ -178,7 +195,7 @@ export const VedtaksformSkolepenger: React.FC<{
             {erOpphør ? (
                 <OpphørSkolepenger
                     skoleårsperioder={skoleårsPerioderState}
-                    forrigeSkoleårsperioder={forrigeVedtak?.skoleårsperioder || []}
+                    skoleårsperioderForrigeVedtak={forrigeVedtak?.skoleårsperioder || []}
                     valideringsfeil={formState.errors.skoleårsperioder}
                     settValideringsFeil={formState.setErrors}
                 />

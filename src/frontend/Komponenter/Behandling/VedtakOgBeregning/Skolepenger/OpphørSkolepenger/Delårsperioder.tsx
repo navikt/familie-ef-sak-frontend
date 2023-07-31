@@ -43,11 +43,11 @@ const Input = styled(InputUtenSpinner)`
     text-align: right;
 `;
 
-const SkoleårDelårsperiode: React.FC<ValideringsPropsMedOppdatering<IPeriodeSkolepenger>> = ({
+const Delårsperioder: React.FC<ValideringsPropsMedOppdatering<IPeriodeSkolepenger>> = ({
     data,
     oppdater,
     erOpphør,
-    skoleårErFjernet,
+    erSkoleårOpphørt,
     behandlingErRedigerbar,
     valideringsfeil,
     settValideringsFeil,
@@ -82,11 +82,11 @@ const SkoleårDelårsperiode: React.FC<ValideringsPropsMedOppdatering<IPeriodeSk
         }
     };
 
-    const erLesevisning: boolean = !behandlingErRedigerbar || skoleårErFjernet === true;
+    const erLesevisning: boolean = !behandlingErRedigerbar || erSkoleårOpphørt === true;
 
     return (
         <>
-            <Grid skoleårErFjernet={skoleårErFjernet}>
+            <Grid skoleårErFjernet={erSkoleårOpphørt}>
                 <Label>Studietype</Label>
                 <Label>Periode fra og med</Label>
                 <Label>Periode til og med</Label>
@@ -98,7 +98,7 @@ const SkoleårDelårsperiode: React.FC<ValideringsPropsMedOppdatering<IPeriodeSk
                         behandlingErRedigerbar &&
                         index === data.length - 1 &&
                         index !== 0 &&
-                        !skoleårErFjernet;
+                        !erSkoleårOpphørt;
                     return (
                         <React.Fragment key={index}>
                             <EnsligFamilieSelect
@@ -183,4 +183,4 @@ const SkoleårDelårsperiode: React.FC<ValideringsPropsMedOppdatering<IPeriodeSk
     );
 };
 
-export default SkoleårDelårsperiode;
+export default Delårsperioder;
