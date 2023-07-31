@@ -195,7 +195,7 @@ export const VedtaksformSkolepenger: React.FC<{
             {erOpphør ? (
                 <OpphørSkolepenger
                     skoleårsperioder={skoleårsPerioderState}
-                    forrigeSkoleårsperioder={forrigeVedtak?.skoleårsperioder || []}
+                    skoleårsperioderForrigeVedtak={forrigeVedtak?.skoleårsperioder || []}
                     valideringsfeil={formState.errors.skoleårsperioder}
                     settValideringsFeil={formState.setErrors}
                 />

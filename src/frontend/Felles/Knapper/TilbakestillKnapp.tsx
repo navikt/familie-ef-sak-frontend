@@ -1,6 +1,6 @@
 import { Cancel } from '@navikt/ds-icons';
 import React from 'react';
-import { Button } from '@navikt/ds-react';
+import { Knapp } from './HovedKnapp';
 
 const TilbakestillKnapp: React.FC<{
     onClick: () => void;
@@ -8,14 +8,14 @@ const TilbakestillKnapp: React.FC<{
     ikontekst?: string;
 }> = ({ onClick, knappetekst, ikontekst }) => {
     return (
-        <Button
+        <Knapp
             onClick={onClick}
             type="button"
             variant={knappetekst ? 'secondary' : 'tertiary'}
             icon={<Cancel title={knappetekst ? knappetekst : ikontekst} />}
         >
             {knappetekst && <span>{knappetekst}</span>}
-        </Button>
+        </Knapp>
     );
 };
 

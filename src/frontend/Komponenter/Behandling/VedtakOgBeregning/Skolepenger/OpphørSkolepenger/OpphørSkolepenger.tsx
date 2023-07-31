@@ -5,22 +5,22 @@ import { useBehandling } from '../../../../../App/context/BehandlingContext';
 import { ListState } from '../../../../../App/hooks/felles/useListState';
 import { useApp } from '../../../../../App/context/AppContext';
 import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
-import OpphørUtgiftsperiodeSkolepenger from './OpphørUtgiftsperiodeSkolepenger';
 import { beregnSkoleår, GyldigBeregnetSkoleår } from '../skoleår';
 import { locateIndexToRestorePreviousItemInCurrentItems, oppdaterValideringsfeil } from '../utils';
-import SkoleårDelårsperiode from '../InnvilgetSkolepenger/SkoleårDelårsperiode';
+import Delårsperioder from './Delårsperioder';
 import { FormErrors } from '../../../../../App/hooks/felles/useFormState';
 import { InnvilgeVedtakForm } from '../InnvilgetSkolepenger/VedtaksformSkolepenger';
 import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 import TilbakestillKnapp from '../../../../../Felles/Knapper/TilbakestillKnapp';
-import { ABgSubtle } from '@navikt/ds-tokens/dist/tokens';
+import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
+import Utgiftsperioder from './Utgiftsperioder';
 
 const Skoleårsperiode = styled.div`
-    margin: 1rem;
-    margin-right: 0.5rem;
-    margin-left: 0rem;
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.75rem;
     padding: 1rem;
-    background-color: ${ABgSubtle};
+    background-color: ${AGray50};
 `;
 
 const TilbakestillButton = styled(TilbakestillKnapp)`
@@ -29,8 +29,8 @@ const TilbakestillButton = styled(TilbakestillKnapp)`
 
 interface Props {
     skoleårsperioder: ListState<ISkoleårsperiodeSkolepenger>;
-    forrigeSkoleårsperioder: ISkoleårsperiodeSkolepenger[];
-    valideringsfeil?: FormErrors<InnvilgeVedtakForm>['skoleårsperioder'];
+    skoleårsperioderForrigeVedtak: ISkoleårsperiodeSkolepenger[];
+    valideringsfeil: FormErrors<InnvilgeVedtakForm>['skoleårsperioder'];
     settValideringsFeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>;
 }
 
@@ -45,7 +45,7 @@ const beregnSkoleårForSkoleårsperiode = (periode: ISkoleårsperiodeSkolepenger
 
 const OpphørSkolepenger: React.FC<Props> = ({
     skoleårsperioder,
-    forrigeSkoleårsperioder,
+    skoleårsperioderForrigeVedtak,
     valideringsfeil,
     settValideringsFeil,
 }) => {
@@ -62,13 +62,13 @@ const OpphørSkolepenger: React.FC<Props> = ({
         const indexForElementFørId = locateIndexToRestorePreviousItemInCurrentItems(
             forrigeIndex,
             skoleårsperioder.value,
-            forrigeSkoleårsperioder,
+            skoleårsperioderForrigeVedtak,
             (t1, t2) => beregnSkoleårForSkoleårsperiode(t1) === beregnSkoleårForSkoleårsperiode(t2)
         );
         skoleårsperioder.setValue((prevState) => {
             return [
                 ...prevState.slice(0, indexForElementFørId),
-                forrigeSkoleårsperioder[forrigeIndex],
+                skoleårsperioderForrigeVedtak[forrigeIndex],
                 ...prevState.slice(indexForElementFørId, prevState.length),
             ];
         });
@@ -116,15 +116,15 @@ const OpphørSkolepenger: React.FC<Props> = ({
 
     return (
         <>
-            {forrigeSkoleårsperioder.map((forrigeSkoleårsperiode, index) => {
+            {skoleårsperioderForrigeVedtak.map((forrigeSkoleårsperiode, index) => {
                 const skoleår = beregnSkoleårForSkoleårsperiode(forrigeSkoleårsperiode);
                 const skoleårsperiode = skoleårsperioderPerSkoleår[skoleår];
-                const erFjernet = !skoleårsperiode;
+                const skoleårsperiodeErOpphørt = !skoleårsperiode;
                 return (
                     <Skoleårsperiode key={index}>
-                        <SkoleårDelårsperiode
+                        <Delårsperioder
                             data={
-                                erFjernet
+                                skoleårsperiodeErOpphørt
                                     ? forrigeSkoleårsperiode.perioder
                                     : skoleårsperiode.periode.perioder
                             }
@@ -136,7 +136,9 @@ const OpphørSkolepenger: React.FC<Props> = ({
                                     perioder
                                 )
                             }
-                            behandlingErRedigerbar={behandlingErRedigerbar && !erFjernet}
+                            behandlingErRedigerbar={
+                                behandlingErRedigerbar && !skoleårsperiodeErOpphørt
+                            }
                             valideringsfeil={
                                 valideringsfeil &&
                                 skoleårsperiode &&
@@ -151,13 +153,13 @@ const OpphørSkolepenger: React.FC<Props> = ({
                                     oppdaterteFeil
                                 )
                             }
-                            skoleårErFjernet={erFjernet}
+                            erSkoleårOpphørt={skoleårsperiodeErOpphørt}
                             erOpphør={true}
                         />
-                        <OpphørUtgiftsperiodeSkolepenger
+                        <Utgiftsperioder
+                            behandlingErRedigerbar={behandlingErRedigerbar}
                             data={skoleårsperiode?.periode?.utgiftsperioder || []}
                             forrigeData={forrigeSkoleårsperiode.utgiftsperioder}
-                            skoleårErFjernet={erFjernet}
                             oppdater={(utgiftsperioder) =>
                                 skoleårsperiode &&
                                 oppdaterSkoleårsperioder(
@@ -166,15 +168,15 @@ const OpphørSkolepenger: React.FC<Props> = ({
                                     utgiftsperioder
                                 )
                             }
-                            behandlingErRedigerbar={behandlingErRedigerbar}
+                            skoleårErOpphørt={skoleårsperiodeErOpphørt}
                         />
-                        {behandlingErRedigerbar && !erFjernet && (
+                        {behandlingErRedigerbar && !skoleårsperiodeErOpphørt && (
                             <FjernKnapp
                                 onClick={() => fjernSkoleårsperiode(skoleårsperiode.periode)}
                                 knappetekst={'Fjern skoleårsperide'}
                             />
                         )}
-                        {behandlingErRedigerbar && erFjernet && (
+                        {behandlingErRedigerbar && skoleårsperiodeErOpphørt && (
                             <TilbakestillButton
                                 onClick={() => tilbakestillSkoleårsperiode(index)}
                                 knappetekst={'Tilbakestill skoleår'}

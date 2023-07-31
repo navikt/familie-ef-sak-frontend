@@ -7,7 +7,7 @@ import { FormErrors } from '../../../../../App/hooks/felles/useFormState';
 import { InnvilgeVedtakForm } from './VedtaksformSkolepenger';
 import { useApp } from '../../../../../App/context/AppContext';
 import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
-import SkoleårDelårsperiode from './SkoleårDelårsperiode';
+import Delårsperioder from '../OpphørSkolepenger/Delårsperioder';
 import UtgiftsperiodeSkolepenger from './UtgiftsperiodeSkolepenger';
 import { tomSkoleårsperiodeSkolepenger } from '../typer';
 import { oppdaterValideringsfeil } from '../utils';
@@ -82,7 +82,7 @@ const SkoleårsperioderSkolepenger: React.FC<Props> = ({
                             synligVedÅpenMeny={'1330px'}
                             åpenHøyremeny={åpenHøyremeny}
                         >
-                            <SkoleårDelårsperiode
+                            <Delårsperioder
                                 data={skoleårsperiode.perioder}
                                 oppdater={(perioder) =>
                                     oppdaterSkoleårsperioder(index, 'perioder', perioder)
