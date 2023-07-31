@@ -2194,14 +2194,6 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react-pdf@^5.7.0":
-  version "5.7.4"
-  resolved "https://registry.yarnpkg.com/@types/react-pdf/-/react-pdf-5.7.4.tgz#031a46a13f82390f84f490e66b0d263c8b7b3728"
-  integrity sha512-Im/HY4QhkhYcG+FJoGCy0WoGvdgYcpm+89W1lK5K9KBEQCy1YqTxhmWey5UkdnIPymmEDyeVJXdK0lPjtcvMyA==
-  dependencies:
-    "@types/react" "*"
-    pdfjs-dist "^2.10.377"
-
 "@types/react-select@^5.x":
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/@types/react-select/-/react-select-5.0.1.tgz#04fc85edd34a72675a0ab56ad4c30428aab0e444"
