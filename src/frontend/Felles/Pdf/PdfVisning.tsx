@@ -5,11 +5,9 @@ import { Document, Page, pdfjs } from 'react-pdf';
 import DataViewer from '../DataViewer/DataViewer';
 import { AlertError } from '../Visningskomponenter/Alerts';
 import { Loader, Pagination } from '@navikt/ds-react';
-import 'react-pdf/dist/esm/Page/TextLayer.css';
-import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 
 // eslint-disable-next-line
-const pdfjsWorker = require('pdfjs-dist/build/pdf.worker.entry.js');
+const pdfjsWorker = require('pdfjs-dist/build/pdf.worker.entry');
 pdfjs.GlobalWorkerOptions.workerSrc = pdfjsWorker;
 
 interface PdfVisningProps {
@@ -73,7 +71,7 @@ const PdfVisning: React.FC<PdfVisningProps> = ({ pdfFilInnhold }) => {
                             <Loader size={'xlarge'} variant="interaction" transparent={true} />
                         }
                     >
-                        <Page pageNumber={pageNumber} renderTextLayer={true} />
+                        <Page pageNumber={pageNumber} />
                     </StyledDokument>
                     <StyledPagination
                         page={pageNumber}
