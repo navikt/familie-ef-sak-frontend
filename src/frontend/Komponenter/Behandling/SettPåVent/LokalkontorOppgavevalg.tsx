@@ -1,5 +1,5 @@
 import React, { FC, Dispatch, SetStateAction, useState } from 'react';
-import { CheckboxGroup, Checkbox, BodyShort } from '@navikt/ds-react';
+import { CheckboxGroup, Checkbox, BodyShort, Textarea } from '@navikt/ds-react';
 import styled from 'styled-components';
 import { dagensDatoFormatert, formaterIsoDato } from '../../../App/utils/formatter';
 
@@ -29,7 +29,13 @@ type Props = {
     settOppgaverMotLokalkontor: Dispatch<SetStateAction<VurderHenvendelseOppgavetype[]>>;
     oppgaverMotLokalkontor: VurderHenvendelseOppgavetype[];
     erBehandlingPåVent: boolean;
+    innstillingsoppgaveBeskrivelse?: string;
+    settInnstillingsoppgaveBeskrivelse: Dispatch<SetStateAction<string>>;
 };
+
+const Beskrivelse = styled(Textarea)`
+    max-width: 60rem;
+`;
 
 export const LokalkontorOppgavevalg: FC<Props> = ({
     aktuelleOppgaver,
@@ -37,6 +43,8 @@ export const LokalkontorOppgavevalg: FC<Props> = ({
     settOppgaverMotLokalkontor,
     oppgaverMotLokalkontor,
     erBehandlingPåVent,
+    innstillingsoppgaveBeskrivelse,
+    settInnstillingsoppgaveBeskrivelse,
 }) => {
     const tidligereSendteLokalkontorOppgaver = sendteOppgaver.map((oppgave) => {
         return oppgave.vurderHenvendelseOppgave;
@@ -72,27 +80,35 @@ export const LokalkontorOppgavevalg: FC<Props> = ({
     };
 
     return (
-        <CheckboxGroup
-            legend="Send oppgave til lokalkontoret"
-            onChange={(oppgaver) => {
-                settOppgaverMotLokalkontor(filtrerTidligereSendteOppgaver(oppgaver));
-                settCheckedOppgaver(oppgaver);
-            }}
-            size="small"
-            value={checkedOppgaver}
-        >
-            {aktuelleOppgaver.map((oppgave) => (
-                <FlexBox key={oppgave}>
-                    <Checkbox
-                        disabled={erSendt(oppgave) || erBehandlingPåVent}
-                        key={oppgave}
-                        value={oppgave}
-                    >
-                        {vurderHenvendelseOppgaveTilTekst[oppgave]}
-                    </Checkbox>
-                    <BodyShort size={'small'}>{lagOppgaveSendtTekst(oppgave)}</BodyShort>
-                </FlexBox>
-            ))}
-        </CheckboxGroup>
+        <>
+            <CheckboxGroup
+                legend="Send oppgave til lokalkontoret"
+                onChange={(oppgaver) => {
+                    settOppgaverMotLokalkontor(filtrerTidligereSendteOppgaver(oppgaver));
+                    settCheckedOppgaver(oppgaver);
+                }}
+                size="small"
+                value={checkedOppgaver}
+            >
+                {aktuelleOppgaver.map((oppgave) => (
+                    <FlexBox key={oppgave}>
+                        <Checkbox
+                            disabled={erSendt(oppgave) || erBehandlingPåVent}
+                            key={oppgave}
+                            value={oppgave}
+                        >
+                            {vurderHenvendelseOppgaveTilTekst[oppgave]}
+                        </Checkbox>
+                        <BodyShort size={'small'}>{lagOppgaveSendtTekst(oppgave)}</BodyShort>
+                    </FlexBox>
+                ))}
+            </CheckboxGroup>
+            <Beskrivelse
+                label={'Beskrivelse'}
+                size={'small'}
+                value={innstillingsoppgaveBeskrivelse}
+                onChange={(e) => settInnstillingsoppgaveBeskrivelse(e.target.value)}
+            />
+        </>
     );
 };

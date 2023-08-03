@@ -80,6 +80,7 @@ type SettPåVentRequest = {
     beskrivelse: string | undefined;
     oppgaveVersjon: number;
     oppfølgingsoppgaverMotLokalKontor: VurderHenvendelseOppgavetype[];
+    innstillingsoppgaveBeskrivelse: string;
 };
 
 export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
@@ -102,6 +103,7 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
     const [låsKnapp, settLåsKnapp] = useState<boolean>(false);
     const [visBekreftTaAvVentModal, settVisBekreftTaAvVentModal] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>();
+    const [innstillingsoppgaveBeskrivelse, settInnstillingsoppgaveBeskrivelse] = useState('');
 
     // Oppgavefelter
     const [saksbehandler, settSaksbehandler] = useState<string>('');
@@ -199,14 +201,6 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
 
         settLåsKnapp(true);
 
-        if (oppgave.status !== RessursStatus.SUKSESS || !oppgave.data.versjon || !oppgave.data.id) {
-            settFeilmelding(
-                'Teknisk feil. Mangler versjonsnumer for oppgave. Kontakt brukerstøtte'
-            );
-            settLåsKnapp(false);
-            return;
-        }
-
         axiosRequest<string, SettPåVentRequest>({
             method: 'POST',
             url: `/familie-ef-sak/api/behandling/${behandling.id}/vent`,
@@ -219,6 +213,7 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
                 oppgaveVersjon: oppgave.data.versjon,
                 oppgaveId: oppgave.data.id,
                 oppfølgingsoppgaverMotLokalKontor: oppgaverMotLokalkontor,
+                innstillingsoppgaveBeskrivelse: innstillingsoppgaveBeskrivelse,
             },
         })
             .then((respons: RessursFeilet | RessursSuksess<string>) => {
@@ -236,6 +231,7 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
     const nullstillOppgaveFelter = () => {
         settSaksbehandler('');
         settBeskrivelse('');
+        settInnstillingsoppgaveBeskrivelse('');
         settPrioritet(undefined);
         settFrist(undefined);
         settMappe(undefined);
@@ -306,6 +302,12 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
                                         settOppgaverMotLokalkontor={settOppgaverMotLokalkontor}
                                         oppgaverMotLokalkontor={oppgaverMotLokalkontor}
                                         erBehandlingPåVent={erBehandlingPåVent}
+                                        innstillingsoppgaveBeskrivelse={
+                                            innstillingsoppgaveBeskrivelse
+                                        }
+                                        settInnstillingsoppgaveBeskrivelse={
+                                            settInnstillingsoppgaveBeskrivelse
+                                        }
                                     />
                                 )}
                         </FlexColumnDiv>
