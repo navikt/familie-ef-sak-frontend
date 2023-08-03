@@ -115,6 +115,7 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
         settFeilmelding('');
         settVisSettPåVent(false);
     };
+    const [erKnappSattPåVentTrykket, settKnappSattPåVentTrykket] = useState<boolean>(false);
 
     const hentOppgaveForBehandling = useCallback(() => {
         axiosRequest<IOppgave, null>({
@@ -229,6 +230,7 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
                     hentBehandling.rerun();
                     lukkSettPåVent();
                     nullstillOppgaveFelter();
+                    settKnappSattPåVentTrykket(true);
                     settToast(EToast.BEHANDLING_SATT_PÅ_VENT);
                 } else {
                     settFeilmelding(respons.frontendFeilmelding);
@@ -310,12 +312,10 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
                                         settOppgaverMotLokalkontor={settOppgaverMotLokalkontor}
                                         oppgaverMotLokalkontor={oppgaverMotLokalkontor}
                                         erBehandlingPåVent={erBehandlingPåVent}
-                                        innstillingsoppgaveBeskrivelse={
-                                            innstillingsoppgaveBeskrivelse
-                                        }
                                         settInnstillingsoppgaveBeskrivelse={
                                             settInnstillingsoppgaveBeskrivelse
                                         }
+                                        erKnappSattPåVentTrykket={erKnappSattPåVentTrykket}
                                     />
                                 )}
                         </FlexColumnDiv>

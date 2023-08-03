@@ -30,13 +30,9 @@ type Props = {
     settOppgaverMotLokalkontor: Dispatch<SetStateAction<VurderHenvendelseOppgavetype[]>>;
     oppgaverMotLokalkontor: VurderHenvendelseOppgavetype[];
     erBehandlingPåVent: boolean;
-    innstillingsoppgaveBeskrivelse?: string;
     settInnstillingsoppgaveBeskrivelse: Dispatch<SetStateAction<string>>;
+    erKnappSattPåVentTrykket: boolean;
 };
-
-//const Beskrivelse = styled(Textarea)`
-//   max-width: 30rem;
-//  `;
 
 const ReadMoreWrapper = styled(ReadMore)`
     max-width: 45rem;
@@ -49,8 +45,8 @@ export const LokalkontorOppgavevalg: FC<Props> = ({
     settOppgaverMotLokalkontor,
     oppgaverMotLokalkontor,
     erBehandlingPåVent,
-    innstillingsoppgaveBeskrivelse,
     settInnstillingsoppgaveBeskrivelse,
+    erKnappSattPåVentTrykket,
 }) => {
     const tidligereSendteLokalkontorOppgaver = sendteOppgaver.map((oppgave) => {
         return oppgave.vurderHenvendelseOppgave;
@@ -108,23 +104,23 @@ export const LokalkontorOppgavevalg: FC<Props> = ({
                         <BodyShort size={'small'}>{lagOppgaveSendtTekst(oppgave)}</BodyShort>
                     </FlexBox>
                 ))}
-                {erValgt(VurderHenvendelseOppgavetype.INNSTILLING_VEDRØRENDE_UTDANNING) && (
-                    <ReadMoreWrapper header="Legg til beskjed">
-                        <BodyShortSmall>
-                            Hvis det er behov for å legge til en beskjed til lokalkontoret, vil
-                            dette vises i tillegg til den faste teksten som automatisk kommer inn i
-                            oppgaven.
-                        </BodyShortSmall>
 
-                        <Textarea
-                            label={''}
-                            size={'small'}
-                            maxLength={200}
-                            value={innstillingsoppgaveBeskrivelse}
-                            onChange={(e) => settInnstillingsoppgaveBeskrivelse(e.target.value)}
-                        />
-                    </ReadMoreWrapper>
-                )}
+                {erValgt(VurderHenvendelseOppgavetype.INNSTILLING_VEDRØRENDE_UTDANNING) &&
+                    !erKnappSattPåVentTrykket && (
+                        <ReadMoreWrapper header="Legg til beskjed">
+                            <BodyShortSmall>
+                                Hvis det er behov for å legge til en beskjed til lokalkontoret, vil
+                                dette vises i tillegg til den faste teksten som automatisk kommer
+                                inn i oppgaven.
+                            </BodyShortSmall>
+                            <Textarea
+                                label={''}
+                                size={'small'}
+                                maxLength={200}
+                                onChange={(e) => settInnstillingsoppgaveBeskrivelse(e.target.value)}
+                            />
+                        </ReadMoreWrapper>
+                    )}
             </CheckboxGroup>
         </>
     );
