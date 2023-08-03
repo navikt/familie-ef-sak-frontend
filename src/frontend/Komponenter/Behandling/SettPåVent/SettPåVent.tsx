@@ -201,6 +201,14 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
 
         settLåsKnapp(true);
 
+        if (oppgave.status !== RessursStatus.SUKSESS || !oppgave.data.versjon || !oppgave.data.id) {
+            settFeilmelding(
+                'Teknisk feil. Mangler versjonsnumer for oppgave. Kontakt brukerstøtte'
+            );
+            settLåsKnapp(false);
+            return;
+        }
+
         axiosRequest<string, SettPåVentRequest>({
             method: 'POST',
             url: `/familie-ef-sak/api/behandling/${behandling.id}/vent`,
