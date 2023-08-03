@@ -1,7 +1,8 @@
 import React, { FC, Dispatch, SetStateAction, useState } from 'react';
-import { CheckboxGroup, Checkbox, BodyShort, Textarea } from '@navikt/ds-react';
+import { CheckboxGroup, Checkbox, BodyShort, Textarea, ReadMore } from '@navikt/ds-react';
 import styled from 'styled-components';
 import { dagensDatoFormatert, formaterIsoDato } from '../../../App/utils/formatter';
+import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 
 const FlexBox = styled.div`
     display: flex;
@@ -33,8 +34,13 @@ type Props = {
     settInnstillingsoppgaveBeskrivelse: Dispatch<SetStateAction<string>>;
 };
 
-const Beskrivelse = styled(Textarea)`
-    max-width: 60rem;
+//const Beskrivelse = styled(Textarea)`
+//   max-width: 30rem;
+//  `;
+
+const ReadMoreWrapper = styled(ReadMore)`
+    max-width: 45rem;
+    margin-top
 `;
 
 export const LokalkontorOppgavevalg: FC<Props> = ({
@@ -102,13 +108,24 @@ export const LokalkontorOppgavevalg: FC<Props> = ({
                         <BodyShort size={'small'}>{lagOppgaveSendtTekst(oppgave)}</BodyShort>
                     </FlexBox>
                 ))}
+                {erValgt(VurderHenvendelseOppgavetype.INNSTILLING_VEDRØRENDE_UTDANNING) && (
+                    <ReadMoreWrapper header="Legg til beskjed">
+                        <BodyShortSmall>
+                            Hvis det er behov for å legge til en beskjed til lokalkontoret, vil
+                            dette vises i tillegg til den faste teksten som automatisk kommer inn i
+                            oppgaven.
+                        </BodyShortSmall>
+
+                        <Textarea
+                            label={''}
+                            size={'small'}
+                            maxLength={200}
+                            value={innstillingsoppgaveBeskrivelse}
+                            onChange={(e) => settInnstillingsoppgaveBeskrivelse(e.target.value)}
+                        />
+                    </ReadMoreWrapper>
+                )}
             </CheckboxGroup>
-            <Beskrivelse
-                label={'Beskrivelse'}
-                size={'small'}
-                value={innstillingsoppgaveBeskrivelse}
-                onChange={(e) => settInnstillingsoppgaveBeskrivelse(e.target.value)}
-            />
         </>
     );
 };
