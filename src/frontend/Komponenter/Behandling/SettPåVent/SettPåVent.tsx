@@ -105,7 +105,6 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
     const [feilmelding, settFeilmelding] = useState<string>();
     const [innstillingsoppgaveBeskrivelse, settInnstillingsoppgaveBeskrivelse] = useState('');
 
-    // Oppgavefelter
     const [saksbehandler, settSaksbehandler] = useState<string>('');
     const [prioritet, settPrioritet] = useState<Prioritet | undefined>();
     const [frist, settFrist] = useState<string | undefined>();
@@ -115,7 +114,6 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
         settFeilmelding('');
         settVisSettPåVent(false);
     };
-    const [erKnappSattPåVentTrykket, settKnappSattPåVentTrykket] = useState<boolean>(false);
 
     const hentOppgaveForBehandling = useCallback(() => {
         axiosRequest<IOppgave, null>({
@@ -199,16 +197,7 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
         if (låsKnapp || !kanSettePåVent) {
             return;
         }
-
         settLåsKnapp(true);
-
-        if (oppgave.status !== RessursStatus.SUKSESS || !oppgave.data.versjon || !oppgave.data.id) {
-            settFeilmelding(
-                'Teknisk feil. Mangler versjonsnumer for oppgave. Kontakt brukerstøtte'
-            );
-            settLåsKnapp(false);
-            return;
-        }
 
         axiosRequest<string, SettPåVentRequest>({
             method: 'POST',
@@ -230,7 +219,6 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
                     hentBehandling.rerun();
                     lukkSettPåVent();
                     nullstillOppgaveFelter();
-                    settKnappSattPåVentTrykket(true);
                     settToast(EToast.BEHANDLING_SATT_PÅ_VENT);
                 } else {
                     settFeilmelding(respons.frontendFeilmelding);
@@ -315,7 +303,9 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
                                         settInnstillingsoppgaveBeskrivelse={
                                             settInnstillingsoppgaveBeskrivelse
                                         }
-                                        erKnappSattPåVentTrykket={erKnappSattPåVentTrykket}
+                                        innstillingsoppgaveBeskrivelse={
+                                            innstillingsoppgaveBeskrivelse
+                                        }
                                     />
                                 )}
                         </FlexColumnDiv>
