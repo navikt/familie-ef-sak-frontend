@@ -67,8 +67,8 @@ const Beskrivelse = styled(Textarea)`
 `;
 
 enum VurderHenvendelseOppgavetype {
-    INFORMERE_OM_SØKT_OVERGANGSSTØNAD = 'INFORMERE_OM_SØKT_OVERGANGSSTØNAD',
     INNSTILLING_VEDRØRENDE_UTDANNING = 'INNSTILLING_VEDRØRENDE_UTDANNING',
+    INFORMERE_OM_SØKT_OVERGANGSSTØNAD = 'INFORMERE_OM_SØKT_OVERGANGSSTØNAD',
 }
 
 type SettPåVentRequest = {
@@ -198,6 +198,14 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
             return;
         }
         settLåsKnapp(true);
+
+        if (oppgave.status !== RessursStatus.SUKSESS || !oppgave.data.versjon || !oppgave.data.id) {
+            settFeilmelding(
+                'Teknisk feil. Mangler versjonsnumer for oppgave. Kontakt brukerstøtte'
+            );
+            settLåsKnapp(false);
+            return;
+        }
 
         axiosRequest<string, SettPåVentRequest>({
             method: 'POST',
