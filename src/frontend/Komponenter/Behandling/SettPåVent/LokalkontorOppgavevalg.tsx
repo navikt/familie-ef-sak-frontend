@@ -70,7 +70,8 @@ export const LokalkontorOppgavevalg: FC<Props> = ({
         return (
             !erSendt(oppgave) &&
             erInstillingVedrørendeUtdanning(oppgave) &&
-            erValgt(VurderHenvendelseOppgavetype.INNSTILLING_VEDRØRENDE_UTDANNING)
+            erValgt(VurderHenvendelseOppgavetype.INNSTILLING_VEDRØRENDE_UTDANNING) &&
+            !erBehandlingPåVent
         );
     };
 
