@@ -30,8 +30,8 @@ type Props = {
     settOppgaverMotLokalkontor: Dispatch<SetStateAction<VurderHenvendelseOppgavetype[]>>;
     oppgaverMotLokalkontor: VurderHenvendelseOppgavetype[];
     erBehandlingPåVent: boolean;
-    settInnstillingsoppgaveBeskrivelse: Dispatch<SetStateAction<string>>;
-    innstillingsoppgaveBeskrivelse: string;
+    settInnstillingsoppgaveBeskjed: Dispatch<SetStateAction<string>>;
+    innstillingsoppgaveBeskjed: string;
 };
 
 const ReadMoreWrapper = styled(ReadMore)`
@@ -45,8 +45,8 @@ export const LokalkontorOppgavevalg: FC<Props> = ({
     settOppgaverMotLokalkontor,
     oppgaverMotLokalkontor,
     erBehandlingPåVent,
-    settInnstillingsoppgaveBeskrivelse,
-    innstillingsoppgaveBeskrivelse,
+    settInnstillingsoppgaveBeskjed,
+    innstillingsoppgaveBeskjed,
 }) => {
     const tidligereSendteLokalkontorOppgaver = sendteOppgaver.map((oppgave) => {
         return oppgave.vurderHenvendelseOppgave;
@@ -128,10 +128,8 @@ export const LokalkontorOppgavevalg: FC<Props> = ({
                                     label={''}
                                     size={'small'}
                                     maxLength={200}
-                                    value={innstillingsoppgaveBeskrivelse}
-                                    onChange={(e) =>
-                                        settInnstillingsoppgaveBeskrivelse(e.target.value)
-                                    }
+                                    value={innstillingsoppgaveBeskjed}
+                                    onChange={(e) => settInnstillingsoppgaveBeskjed(e.target.value)}
                                 />
                             </ReadMoreWrapper>
                         )}

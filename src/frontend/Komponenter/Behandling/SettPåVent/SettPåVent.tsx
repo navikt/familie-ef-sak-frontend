@@ -80,7 +80,7 @@ type SettPåVentRequest = {
     beskrivelse: string | undefined;
     oppgaveVersjon: number;
     oppfølgingsoppgaverMotLokalKontor: VurderHenvendelseOppgavetype[];
-    innstillingsoppgaveBeskrivelse: string;
+    innstillingsoppgaveBeskjed: string;
 };
 
 export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
@@ -103,7 +103,7 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
     const [låsKnapp, settLåsKnapp] = useState<boolean>(false);
     const [visBekreftTaAvVentModal, settVisBekreftTaAvVentModal] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>();
-    const [innstillingsoppgaveBeskrivelse, settInnstillingsoppgaveBeskrivelse] = useState('');
+    const [innstillingsoppgaveBeskjed, settInnstillingsoppgaveBeskjed] = useState('');
 
     const [saksbehandler, settSaksbehandler] = useState<string>('');
     const [prioritet, settPrioritet] = useState<Prioritet | undefined>();
@@ -219,7 +219,7 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
                 oppgaveVersjon: oppgave.data.versjon,
                 oppgaveId: oppgave.data.id,
                 oppfølgingsoppgaverMotLokalKontor: oppgaverMotLokalkontor,
-                innstillingsoppgaveBeskrivelse: innstillingsoppgaveBeskrivelse,
+                innstillingsoppgaveBeskjed: innstillingsoppgaveBeskjed,
             },
         })
             .then((respons: RessursFeilet | RessursSuksess<string>) => {
@@ -237,7 +237,7 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
     const nullstillOppgaveFelter = () => {
         settSaksbehandler('');
         settBeskrivelse('');
-        settInnstillingsoppgaveBeskrivelse('');
+        settInnstillingsoppgaveBeskjed('');
         settPrioritet(undefined);
         settFrist(undefined);
         settMappe(undefined);
@@ -308,12 +308,10 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
                                         settOppgaverMotLokalkontor={settOppgaverMotLokalkontor}
                                         oppgaverMotLokalkontor={oppgaverMotLokalkontor}
                                         erBehandlingPåVent={erBehandlingPåVent}
-                                        settInnstillingsoppgaveBeskrivelse={
-                                            settInnstillingsoppgaveBeskrivelse
+                                        settInnstillingsoppgaveBeskjed={
+                                            settInnstillingsoppgaveBeskjed
                                         }
-                                        innstillingsoppgaveBeskrivelse={
-                                            innstillingsoppgaveBeskrivelse
-                                        }
+                                        innstillingsoppgaveBeskjed={innstillingsoppgaveBeskjed}
                                     />
                                 )}
                         </FlexColumnDiv>
