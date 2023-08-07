@@ -3,6 +3,7 @@ import { CheckboxGroup, Checkbox, BodyShort, Textarea, ReadMore } from '@navikt/
 import styled from 'styled-components';
 import { dagensDatoFormatert, formaterIsoDato } from '../../../App/utils/formatter';
 import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
+import { VurderHenvendelseOppgavetype } from './SettPåVent';
 
 const FlexBox = styled.div`
     display: flex;
@@ -14,10 +15,6 @@ const vurderHenvendelseOppgaveTilTekst: Record<VurderHenvendelseOppgavetype, str
     INFORMERE_OM_SØKT_OVERGANGSSTØNAD: 'Beskjed om at vi har fått søknad',
     INNSTILLING_VEDRØRENDE_UTDANNING: 'Forespørsel om innstilling - utdanning',
 };
-enum VurderHenvendelseOppgavetype {
-    INFORMERE_OM_SØKT_OVERGANGSSTØNAD = 'INFORMERE_OM_SØKT_OVERGANGSSTØNAD',
-    INNSTILLING_VEDRØRENDE_UTDANNING = 'INNSTILLING_VEDRØRENDE_UTDANNING',
-}
 
 export type SendtOppgave = {
     vurderHenvendelseOppgave: VurderHenvendelseOppgavetype;
@@ -118,7 +115,7 @@ export const LokalkontorOppgavevalg: FC<Props> = ({
                             <BodyShort size={'small'}>{lagOppgaveSendtTekst(oppgave)}</BodyShort>
                         </FlexBox>
                         {skalViseTekstfeltForBeskjedTilLokalkontor(oppgave) && (
-                            <ReadMoreWrapper header="Legg til beskjed">
+                            <ReadMoreWrapper header="Legg til beskjed" size="small">
                                 <BodyShortSmall>
                                     Hvis det er behov for å legge til en beskjed til lokalkontoret,
                                     vil dette vises i tillegg til den faste teksten som automatisk
@@ -127,7 +124,7 @@ export const LokalkontorOppgavevalg: FC<Props> = ({
                                 <Textarea
                                     label={''}
                                     size={'small'}
-                                    maxLength={200}
+                                    maxLength={400}
                                     value={innstillingsoppgaveBeskjed}
                                     onChange={(e) => settInnstillingsoppgaveBeskjed(e.target.value)}
                                 />

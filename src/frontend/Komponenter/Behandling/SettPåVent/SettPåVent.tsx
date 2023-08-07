@@ -66,9 +66,9 @@ const Beskrivelse = styled(Textarea)`
     max-width: 60rem;
 `;
 
-enum VurderHenvendelseOppgavetype {
-    INNSTILLING_VEDRØRENDE_UTDANNING = 'INNSTILLING_VEDRØRENDE_UTDANNING',
+export enum VurderHenvendelseOppgavetype {
     INFORMERE_OM_SØKT_OVERGANGSSTØNAD = 'INFORMERE_OM_SØKT_OVERGANGSSTØNAD',
+    INNSTILLING_VEDRØRENDE_UTDANNING = 'INNSTILLING_VEDRØRENDE_UTDANNING',
 }
 
 type SettPåVentRequest = {
