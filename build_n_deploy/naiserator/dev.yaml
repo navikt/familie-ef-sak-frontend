@@ -11,7 +11,6 @@ spec:
   replicas:
     min: 2
     max: 2
-    cpuThresholdPercentage: 50
   port: 8000
   liveness:
     path: /isAlive
@@ -39,7 +38,6 @@ spec:
           - id: "ea930b6b-9397-44d9-b9e6-f4cf527a632a" # 0000-GA-Fortrolig_Adresse
   resources:
     limits:
-      cpu: 2000m
       memory: 1024Mi
     requests:
       memory: 512Mi
