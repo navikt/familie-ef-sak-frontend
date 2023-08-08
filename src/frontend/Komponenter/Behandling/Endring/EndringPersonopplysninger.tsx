@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { Button, Heading } from '@navikt/ds-react';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { utledEndringerPåPersonopplysninger } from './utils';
-import { useToggles } from '../../../App/context/TogglesContext';
-import { ToggleName } from '../../../App/context/toggles';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import {
     endringerKeyTilTekst,
@@ -85,17 +83,11 @@ const Endringsdetaljer: React.FC<{ endringer: IEndringer; personopplysning: keyo
 };
 
 const Personopplysningsendringer: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
-    const { toggles } = useToggles();
-    const skalViseKomponent = toggles[ToggleName.visEndringerPersonopplysninger];
     const { endringerPersonopplysninger, nullstillGrunnlagsendringer, vilkårState } =
         useBehandling();
     const [nyGrunnlagsdataHentes, settNyGrunnlagsdataHentes] = useState(false);
 
     const { oppdaterGrunnlagsdataOgHentVilkår } = vilkårState;
-
-    if (!skalViseKomponent) {
-        return <></>;
-    }
 
     const oppdaterGrunnlagsdata = () => {
         if (!nyGrunnlagsdataHentes) {
