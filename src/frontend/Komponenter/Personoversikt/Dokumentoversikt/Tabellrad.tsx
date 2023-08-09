@@ -4,7 +4,6 @@ import { Td } from '../../../Felles/Personopplysninger/TabellWrapper';
 import { LogiskeVedlegg } from './LogiskeVedlegg';
 import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 import styled from 'styled-components';
-import { useToggles } from '../../../App/context/TogglesContext';
 import { skalViseLenke } from '../utils';
 import { IkkeTilgang } from './Hovedtabellrad';
 import { PadlockLockedIcon } from '@navikt/aksel-icons';
@@ -20,13 +19,12 @@ const LenkeVenstreMargin = styled.a`
 export const Tabellrad: React.FC<{ dokument: Dokumentinfo; erKlikketId: string }> = ({
     dokument,
 }) => {
-    const { toggles } = useToggles();
     return (
         <tr>
             <Td></Td>
             <Td></Td>
             <Td>
-                {skalViseLenke(dokument, toggles) ? (
+                {skalViseLenke(dokument) ? (
                     <>
                         <LenkeVenstreMargin
                             href={`/dokument/journalpost/${dokument.journalpostId}/dokument-pdf/${dokument.dokumentinfoId}`}
