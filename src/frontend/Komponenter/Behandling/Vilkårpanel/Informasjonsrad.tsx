@@ -10,6 +10,7 @@ interface Props {
     label: string;
     verdi?: ReactNode;
     verdiSomString?: boolean;
+    boldLabel?: boolean;
 }
 
 const InformasjonsradContainer = styled.div<{ harVerdi: boolean }>`
@@ -22,13 +23,23 @@ const InformasjonsradContainer = styled.div<{ harVerdi: boolean }>`
     }
 `;
 
-const Informasjonsrad: FC<Props> = ({ ikon, label, verdi, verdiSomString = true }) => {
+const Informasjonsrad: FC<Props> = ({
+    ikon,
+    label,
+    verdi,
+    verdiSomString = true,
+    boldLabel = true,
+}) => {
     return (
         <InformasjonsradContainer harVerdi={!!verdi}>
             {ikon && mapIkon(ikon)}
-            <Label size="small" as="h3" className="label">
-                {label}
-            </Label>
+            {boldLabel ? (
+                <Label size="small" as="h3" className="label">
+                    {label}
+                </Label>
+            ) : (
+                <BodyShortSmall className="label">{label}</BodyShortSmall>
+            )}
             {verdiSomString ? <BodyShortSmall>{verdi}</BodyShortSmall> : verdi}
         </InformasjonsradContainer>
     );
