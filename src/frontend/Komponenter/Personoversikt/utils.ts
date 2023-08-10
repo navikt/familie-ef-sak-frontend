@@ -46,6 +46,4 @@ export const oppdaterVedleggFilter = (
     };
 };
 
-export const skalViseLenke = (dokument: Dokumentinfo): boolean => {
-    return dokument.tema === 'ENF' && dokument.harSaksbehandlerTilgang;
-};
+export const skalViseLenke = (dokument: Dokumentinfo): boolean => dokument.harSaksbehandlerTilgang;
