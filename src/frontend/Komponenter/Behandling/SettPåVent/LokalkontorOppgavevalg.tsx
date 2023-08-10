@@ -1,7 +1,9 @@
 import React, { FC, Dispatch, SetStateAction, useState } from 'react';
-import { CheckboxGroup, Checkbox, BodyShort } from '@navikt/ds-react';
+import { CheckboxGroup, Checkbox, BodyShort, Textarea, ReadMore } from '@navikt/ds-react';
 import styled from 'styled-components';
 import { dagensDatoFormatert, formaterIsoDato } from '../../../App/utils/formatter';
+import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
+import { VurderHenvendelseOppgavetype } from './SettPåVent';
 
 const FlexBox = styled.div`
     display: flex;
@@ -13,10 +15,6 @@ const vurderHenvendelseOppgaveTilTekst: Record<VurderHenvendelseOppgavetype, str
     INFORMERE_OM_SØKT_OVERGANGSSTØNAD: 'Beskjed om at vi har fått søknad',
     INNSTILLING_VEDRØRENDE_UTDANNING: 'Forespørsel om innstilling - utdanning',
 };
-enum VurderHenvendelseOppgavetype {
-    INFORMERE_OM_SØKT_OVERGANGSSTØNAD = 'INFORMERE_OM_SØKT_OVERGANGSSTØNAD',
-    INNSTILLING_VEDRØRENDE_UTDANNING = 'INNSTILLING_VEDRØRENDE_UTDANNING',
-}
 
 export type SendtOppgave = {
     vurderHenvendelseOppgave: VurderHenvendelseOppgavetype;
@@ -29,7 +27,14 @@ type Props = {
     settOppgaverMotLokalkontor: Dispatch<SetStateAction<VurderHenvendelseOppgavetype[]>>;
     oppgaverMotLokalkontor: VurderHenvendelseOppgavetype[];
     erBehandlingPåVent: boolean;
+    settInnstillingsoppgaveBeskjed: Dispatch<SetStateAction<string>>;
+    innstillingsoppgaveBeskjed: string;
 };
+
+const ReadMoreWrapper = styled(ReadMore)`
+    max-width: 45rem;
+    margin-top
+`;
 
 export const LokalkontorOppgavevalg: FC<Props> = ({
     aktuelleOppgaver,
@@ -37,6 +42,8 @@ export const LokalkontorOppgavevalg: FC<Props> = ({
     settOppgaverMotLokalkontor,
     oppgaverMotLokalkontor,
     erBehandlingPåVent,
+    settInnstillingsoppgaveBeskjed,
+    innstillingsoppgaveBeskjed,
 }) => {
     const tidligereSendteLokalkontorOppgaver = sendteOppgaver.map((oppgave) => {
         return oppgave.vurderHenvendelseOppgave;
@@ -50,6 +57,19 @@ export const LokalkontorOppgavevalg: FC<Props> = ({
         tidligereSendteLokalkontorOppgaver.includes(oppgave);
     const erValgt = (oppgave: VurderHenvendelseOppgavetype): boolean => {
         return oppgaverMotLokalkontor.includes(oppgave);
+    };
+    const erInstillingVedrørendeUtdanning = (oppgave: VurderHenvendelseOppgavetype): boolean => {
+        return oppgave === VurderHenvendelseOppgavetype.INNSTILLING_VEDRØRENDE_UTDANNING;
+    };
+    const skalViseTekstfeltForBeskjedTilLokalkontor = (
+        oppgave: VurderHenvendelseOppgavetype
+    ): boolean => {
+        return (
+            !erSendt(oppgave) &&
+            erInstillingVedrørendeUtdanning(oppgave) &&
+            erValgt(VurderHenvendelseOppgavetype.INNSTILLING_VEDRØRENDE_UTDANNING) &&
+            !erBehandlingPåVent
+        );
     };
 
     const lagOppgaveSendtTekst = (oppgave: VurderHenvendelseOppgavetype): string | undefined => {
@@ -72,27 +92,47 @@ export const LokalkontorOppgavevalg: FC<Props> = ({
     };
 
     return (
-        <CheckboxGroup
-            legend="Send oppgave til lokalkontoret"
-            onChange={(oppgaver) => {
-                settOppgaverMotLokalkontor(filtrerTidligereSendteOppgaver(oppgaver));
-                settCheckedOppgaver(oppgaver);
-            }}
-            size="small"
-            value={checkedOppgaver}
-        >
-            {aktuelleOppgaver.map((oppgave) => (
-                <FlexBox key={oppgave}>
-                    <Checkbox
-                        disabled={erSendt(oppgave) || erBehandlingPåVent}
-                        key={oppgave}
-                        value={oppgave}
-                    >
-                        {vurderHenvendelseOppgaveTilTekst[oppgave]}
-                    </Checkbox>
-                    <BodyShort size={'small'}>{lagOppgaveSendtTekst(oppgave)}</BodyShort>
-                </FlexBox>
-            ))}
-        </CheckboxGroup>
+        <>
+            <CheckboxGroup
+                legend="Send oppgave til lokalkontoret"
+                onChange={(oppgaver) => {
+                    settOppgaverMotLokalkontor(filtrerTidligereSendteOppgaver(oppgaver));
+                    settCheckedOppgaver(oppgaver);
+                }}
+                size="small"
+                value={checkedOppgaver}
+            >
+                {aktuelleOppgaver.map((oppgave) => (
+                    <>
+                        <FlexBox key={oppgave}>
+                            <Checkbox
+                                disabled={erSendt(oppgave) || erBehandlingPåVent}
+                                key={oppgave}
+                                value={oppgave}
+                            >
+                                {vurderHenvendelseOppgaveTilTekst[oppgave]}
+                            </Checkbox>
+                            <BodyShort size={'small'}>{lagOppgaveSendtTekst(oppgave)}</BodyShort>
+                        </FlexBox>
+                        {skalViseTekstfeltForBeskjedTilLokalkontor(oppgave) && (
+                            <ReadMoreWrapper header="Legg til beskjed" size="small">
+                                <BodyShortSmall>
+                                    Hvis det er behov for å legge til en beskjed til lokalkontoret,
+                                    vil dette vises i tillegg til den faste teksten som automatisk
+                                    kommer inn i oppgaven.
+                                </BodyShortSmall>
+                                <Textarea
+                                    label={''}
+                                    size={'small'}
+                                    maxLength={400}
+                                    value={innstillingsoppgaveBeskjed}
+                                    onChange={(e) => settInnstillingsoppgaveBeskjed(e.target.value)}
+                                />
+                            </ReadMoreWrapper>
+                        )}
+                    </>
+                ))}
+            </CheckboxGroup>
+        </>
     );
 };

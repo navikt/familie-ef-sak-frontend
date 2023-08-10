@@ -66,7 +66,7 @@ const Beskrivelse = styled(Textarea)`
     max-width: 60rem;
 `;
 
-enum VurderHenvendelseOppgavetype {
+export enum VurderHenvendelseOppgavetype {
     INFORMERE_OM_SØKT_OVERGANGSSTØNAD = 'INFORMERE_OM_SØKT_OVERGANGSSTØNAD',
     INNSTILLING_VEDRØRENDE_UTDANNING = 'INNSTILLING_VEDRØRENDE_UTDANNING',
 }
@@ -80,6 +80,7 @@ type SettPåVentRequest = {
     beskrivelse: string | undefined;
     oppgaveVersjon: number;
     oppfølgingsoppgaverMotLokalKontor: VurderHenvendelseOppgavetype[];
+    innstillingsoppgaveBeskjed: string;
 };
 
 export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
@@ -102,8 +103,8 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
     const [låsKnapp, settLåsKnapp] = useState<boolean>(false);
     const [visBekreftTaAvVentModal, settVisBekreftTaAvVentModal] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>();
+    const [innstillingsoppgaveBeskjed, settInnstillingsoppgaveBeskjed] = useState('');
 
-    // Oppgavefelter
     const [saksbehandler, settSaksbehandler] = useState<string>('');
     const [prioritet, settPrioritet] = useState<Prioritet | undefined>();
     const [frist, settFrist] = useState<string | undefined>();
@@ -196,7 +197,6 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
         if (låsKnapp || !kanSettePåVent) {
             return;
         }
-
         settLåsKnapp(true);
 
         if (oppgave.status !== RessursStatus.SUKSESS || !oppgave.data.versjon || !oppgave.data.id) {
@@ -219,6 +219,7 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
                 oppgaveVersjon: oppgave.data.versjon,
                 oppgaveId: oppgave.data.id,
                 oppfølgingsoppgaverMotLokalKontor: oppgaverMotLokalkontor,
+                innstillingsoppgaveBeskjed: innstillingsoppgaveBeskjed,
             },
         })
             .then((respons: RessursFeilet | RessursSuksess<string>) => {
@@ -236,6 +237,7 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
     const nullstillOppgaveFelter = () => {
         settSaksbehandler('');
         settBeskrivelse('');
+        settInnstillingsoppgaveBeskjed('');
         settPrioritet(undefined);
         settFrist(undefined);
         settMappe(undefined);
@@ -306,6 +308,10 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
                                         settOppgaverMotLokalkontor={settOppgaverMotLokalkontor}
                                         oppgaverMotLokalkontor={oppgaverMotLokalkontor}
                                         erBehandlingPåVent={erBehandlingPåVent}
+                                        settInnstillingsoppgaveBeskjed={
+                                            settInnstillingsoppgaveBeskjed
+                                        }
+                                        innstillingsoppgaveBeskjed={innstillingsoppgaveBeskjed}
                                     />
                                 )}
                         </FlexColumnDiv>
