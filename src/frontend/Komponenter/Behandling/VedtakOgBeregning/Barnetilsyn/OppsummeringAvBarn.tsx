@@ -19,13 +19,17 @@ const Container = styled.div`
     gap: 1rem;
     padding: 1rem;
     background-color: ${AGray50};
-    width: 26rem;
+    min-width: 26rem;
 `;
 
 const Grid = styled.div`
     display: grid;
-    grid-template-columns: repeat(2, max-content);
-    grid-gap: 0.75rem 1rem;
+    grid-template-columns: 14px repeat(2, max-content);
+    grid-gap: 0.5rem 1rem;
+
+    .label {
+        grid-column: 2;
+    }
 `;
 
 const Divider = styled.div`
@@ -86,45 +90,37 @@ export const OppsummeringAvBarn: React.FC<{
                     <BodyShortSmall>Ingen søknadsinformasjon</BodyShortSmall>
                 </FlexCenter>
             )}
-            {barnepassordninger.map((barnepassordning, index) => {
-                return (
-                    <React.Fragment key={index}>
-                        {søkesOmBarnetilsynForBarn ? (
-                            <Grid>
-                                <IkonOgTekstWrapper>
-                                    <Søknadsgrunnlag />
-                                    <Label size="small">Barnepassordning</Label>
-                                </IkonOgTekstWrapper>
-                                <Label size="small">
-                                    {typeBarnepassordningTilTekst[barnepassordning.type]}
-                                </Label>
-                                <IkonOgTekstWrapper>
-                                    <Søknadsgrunnlag />
-                                    <BodyShortSmall>Navn passordning</BodyShortSmall>
-                                </IkonOgTekstWrapper>
-                                <BodyShortSmall>{barnepassordning.navn}</BodyShortSmall>
-                                <IkonOgTekstWrapper>
-                                    <Søknadsgrunnlag />
-                                    <BodyShortSmall>Periode passordning</BodyShortSmall>
-                                </IkonOgTekstWrapper>
-                                <BodyShortSmall>
-                                    {formaterIsoDato(barnepassordning.fra)} -{' '}
-                                    {formaterIsoDato(barnepassordning.til)}
-                                </BodyShortSmall>
-                                <IkonOgTekstWrapper>
-                                    <Søknadsgrunnlag />
-                                    <BodyShortSmall>Utgifter per måned</BodyShortSmall>
-                                </IkonOgTekstWrapper>
-                                <BodyShortSmall>{barnepassordning.beløp},-</BodyShortSmall>
-                            </Grid>
-                        ) : (
-                            <FlexCenter>
-                                <BodyShortSmall>Ikke søkt</BodyShortSmall>
-                            </FlexCenter>
-                        )}
-                    </React.Fragment>
-                );
-            })}
+            {barnepassordninger.map((barnepassordning, index) => (
+                <React.Fragment key={index}>
+                    {søkesOmBarnetilsynForBarn ? (
+                        <Grid>
+                            <Søknadsgrunnlag />
+                            <Label size="small" className="label">
+                                Barnepassordning
+                            </Label>
+                            <Label size="small">
+                                {typeBarnepassordningTilTekst[barnepassordning.type]}
+                            </Label>
+
+                            <BodyShortSmall className="label">Navn passordning</BodyShortSmall>
+                            <BodyShortSmall>{barnepassordning.navn}</BodyShortSmall>
+
+                            <BodyShortSmall className="label">Periode passordning</BodyShortSmall>
+                            <BodyShortSmall>
+                                {formaterIsoDato(barnepassordning.fra)} -{' '}
+                                {formaterIsoDato(barnepassordning.til)}
+                            </BodyShortSmall>
+
+                            <BodyShortSmall className="label">Utgifter per måned</BodyShortSmall>
+                            <BodyShortSmall>{barnepassordning.beløp},-</BodyShortSmall>
+                        </Grid>
+                    ) : (
+                        <FlexCenter>
+                            <BodyShortSmall>Ikke søkt</BodyShortSmall>
+                        </FlexCenter>
+                    )}
+                </React.Fragment>
+            ))}
             <Divider />
             <FlexSpaceAround>
                 <IkonOgTekstWrapper>
