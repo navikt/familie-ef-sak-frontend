@@ -2,7 +2,6 @@ import { useApp } from '../context/AppContext';
 import { byggTomRessurs, Ressurs, RessursFeilet, RessursSuksess } from '../typer/ressurs';
 import { useCallback, useEffect, useState } from 'react';
 import {
-    Brevtype,
     FlettefeltMedVerdi,
     Fritekstområder,
     MellomlagerRespons,
@@ -33,7 +32,6 @@ export interface IMellomlagreBrevRequest {
 export interface IMellomlagretBrevResponse {
     brevverdier?: string;
     brevmal: string;
-    brevtype: Brevtype.SANITYBREV;
 }
 
 export type MellomlagreSanitybrev = (

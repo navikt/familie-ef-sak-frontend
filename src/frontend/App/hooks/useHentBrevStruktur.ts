@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { BrevStruktur, datasett, fritekstmal } from '../../Komponenter/Behandling/Brev/BrevTyper';
+import { BrevStruktur, datasett } from '../../Komponenter/Behandling/Brev/BrevTyper';
 import { byggTomRessurs, Ressurs } from '../typer/ressurs';
 import { useApp } from '../context/AppContext';
 
@@ -10,7 +10,7 @@ export const useHentBrevStruktur = (
     const { axiosRequest } = useApp();
 
     useEffect(() => {
-        if (brevMal && brevMal !== fritekstmal) {
+        if (brevMal) {
             axiosRequest<BrevStruktur, null>({
                 method: 'GET',
                 url: `/familie-brev/api/${datasett}/avansert-dokument/bokmaal/${brevMal}/felter`,

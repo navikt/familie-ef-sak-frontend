@@ -1,5 +1,4 @@
 import {
-    AvsnittMedId,
     BrevmenyBlokk,
     BrevmenyGruppe,
     BrevStruktur,
@@ -9,11 +8,8 @@ import {
     erDelmalGruppe,
     erFritekstblokk,
     FlettefeltMedVerdi,
-    IFritekstBrev,
-    IFrittståendeBrev,
     ValgtFelt,
 } from './BrevTyper';
-import { v4 as uuidv4 } from 'uuid';
 import { Dispatch, SetStateAction } from 'react';
 import { DelmalStore, FlettefeltStore, ValgfeltStore } from '../../../App/hooks/useVerdierForBrev';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
@@ -21,12 +17,6 @@ import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { IBeløpsperiode, IBeregningsperiodeBarnetilsyn } from '../../../App/typer/vedtak';
 import { delmalTilUtregningstabellOS } from './UtregningstabellOvergangsstønad';
 import { delmalTilUtregningstabellBT } from './UtregningstabellBarnetilsyn';
-
-const lagTomtAvsnitt = (): AvsnittMedId => ({
-    deloverskrift: '',
-    innhold: '',
-    id: uuidv4(),
-});
 
 export const finnFlettefeltNavnOgBeskrivelseFraRef = (
     dokument: BrevStruktur,
@@ -193,75 +183,6 @@ export const harValgfeltFeil = (
         settFeil('');
     }
     return harFeil;
-};
-
-export const initielleAvsnittMellomlager = (
-    mellomlagretFritekstbrev: IFritekstBrev | IFrittståendeBrev | undefined
-): AvsnittMedId[] =>
-    mellomlagretFritekstbrev
-        ? mellomlagretFritekstbrev.avsnitt.map((avsnitt) => ({ ...avsnitt, id: uuidv4() }))
-        : [];
-
-export const skjulAvsnittUtenVerdi = (avsnitt: AvsnittMedId[]): AvsnittMedId[] =>
-    avsnitt.map((avsnitt) => {
-        if (avsnitt.skalSkjulesIBrevbygger === undefined) {
-            return { ...avsnitt, skalSkjulesIBrevbygger: true };
-        } else {
-            return avsnitt;
-        }
-    });
-
-export const leggAvsnittBakSisteSynligeAvsnitt = (
-    eksisterendeAvsnitt: AvsnittMedId[]
-): AvsnittMedId[] => {
-    const førsteSkjulteAvsnitt = eksisterendeAvsnitt.findIndex(
-        (avsnitt) => avsnitt.skalSkjulesIBrevbygger
-    );
-
-    return [
-        ...eksisterendeAvsnitt.slice(0, førsteSkjulteAvsnitt),
-        lagTomtAvsnitt(),
-        ...eksisterendeAvsnitt.slice(førsteSkjulteAvsnitt),
-    ];
-};
-
-export const leggTilAvsnittFørst = (eksisterendeAvsnitt: AvsnittMedId[]): AvsnittMedId[] => {
-    return [lagTomtAvsnitt(), ...eksisterendeAvsnitt];
-};
-
-export const flyttAvsnittOppover = (
-    avsnittId: string,
-    eksisterendeAvsnitt: AvsnittMedId[]
-): AvsnittMedId[] => {
-    const avsnittSomSkalFlyttesIndeks = eksisterendeAvsnitt.findIndex(
-        (avsnitt) => avsnitt.id === avsnittId
-    );
-    const avsnittFørIndeks = avsnittSomSkalFlyttesIndeks - 1;
-    const avsnittEtterIndeks = avsnittSomSkalFlyttesIndeks + 1;
-
-    return [
-        ...eksisterendeAvsnitt.slice(0, avsnittFørIndeks),
-        eksisterendeAvsnitt[avsnittSomSkalFlyttesIndeks],
-        eksisterendeAvsnitt[avsnittFørIndeks],
-        ...eksisterendeAvsnitt.slice(avsnittEtterIndeks),
-    ];
-};
-
-export const flyttAvsnittNedover = (
-    avsnittId: string,
-    eksisterendeAvsnitt: AvsnittMedId[]
-): AvsnittMedId[] => {
-    const avsnittSomSkalFlyttesIndeks = eksisterendeAvsnitt.findIndex(
-        (avsnitt) => avsnitt.id === avsnittId
-    );
-    const avsnittEtterIndeks = avsnittSomSkalFlyttesIndeks + 1;
-
-    return [
-        ...eksisterendeAvsnitt.slice(0, avsnittSomSkalFlyttesIndeks),
-        eksisterendeAvsnitt[avsnittEtterIndeks],
-        eksisterendeAvsnitt[avsnittSomSkalFlyttesIndeks],
-        ...eksisterendeAvsnitt.slice(avsnittEtterIndeks + 1),
-    ];
 };
 
 export const erAutomatiskFeltSomSkalSkjules = (

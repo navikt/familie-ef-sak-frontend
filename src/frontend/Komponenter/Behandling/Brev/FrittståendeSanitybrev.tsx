@@ -16,7 +16,7 @@ import { useMellomlagringFrittståendeSanitybrev } from '../../../App/hooks/useM
 import { IMellomlagretBrevResponse } from '../../../App/hooks/useMellomlagringBrev';
 import { lagTomBrevverdier } from '../../../App/hooks/useVerdierForBrev';
 import { brevmottakereValgt } from '../Brevmottakere/brevmottakerUtils';
-import { Brevtype, FrittståendeSanitybrevDto } from './BrevTyper';
+import { FrittståendeSanitybrevDto } from './BrevTyper';
 import { EToast } from '../../../App/typer/toast';
 import { IBrevmottakere } from '../Brevmottakere/typer';
 import { useApp } from '../../../App/context/AppContext';
@@ -57,10 +57,7 @@ export const FrittståendeSanitybrev: React.FC<FrittståendeSanitybrevProps> = (
     };
 
     useEffect(() => {
-        if (
-            mellomlagretBrev.status === RessursStatus.SUKSESS &&
-            mellomlagretBrev.data?.brevtype === Brevtype.SANITYBREV
-        ) {
+        if (mellomlagretBrev.status === RessursStatus.SUKSESS && mellomlagretBrev.data) {
             settBrevmal(mellomlagretBrev.data.brevmal);
         }
     }, [mellomlagretBrev]);

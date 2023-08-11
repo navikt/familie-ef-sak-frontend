@@ -1,5 +1,5 @@
 import { Ressurs } from '../../../App/typer/ressurs';
-import { DokumentNavn, fritekstmal } from './BrevTyper';
+import { DokumentNavn } from './BrevTyper';
 import React, { Dispatch, SetStateAction } from 'react';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { Select } from '@navikt/ds-react';
@@ -38,12 +38,6 @@ export const BrevmalSelect: React.FC<BrevmalSelectProps> = ({
                             {navn.visningsnavn}
                         </option>
                     ))}
-                {brevmal === fritekstmal && (
-                    <option value={fritekstmal} key={fritekstmal}>
-                        {' '}
-                        Fritekstbrev
-                    </option>
-                )}
             </Select>
         )}
     </DataViewer>
