@@ -1575,10 +1575,10 @@
     redis "^4.6.7"
     snyk "^1.1142.0"
 
-"@navikt/familie-clipboard@^10.1.0":
-  version "10.1.0"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-clipboard/10.1.0/21bcdebdae72ea9383dca9ccb348845f909641af#21bcdebdae72ea9383dca9ccb348845f909641af"
-  integrity sha512-ZINIwlyV4O01vq+hiRFTn8WSAFp3ZUPt/wNEspVR1M8GrdFaZ/TT1213IB8feUaYidoTSBRAxHdv1TSvRen8Lg==
+"@navikt/familie-clipboard@^11.0.0":
+  version "11.0.0"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-clipboard/11.0.0/7912b46e2e3a8e896922d3a064a758532d0718a1#7912b46e2e3a8e896922d3a064a758532d0718a1"
+  integrity sha512-0C2P85kokmqGy6qbqS5wxxYglp81IQchFEoX3hCbwGVdoW/XjCAwLlLDXzH/QKJe7QrP8yRKIH9Piqa3hjH/eQ==
   dependencies:
     "@types/react-tooltip" "^4.2.4"
     framer-motion "^6.3.16"
@@ -1663,12 +1663,12 @@
   resolved "https://npm.pkg.github.com/download/@navikt/familie-validering/5.0.2/b890a334ca5f5aa5aeba6873f3fb00aff30be759#b890a334ca5f5aa5aeba6873f3fb00aff30be759"
   integrity sha512-S8C3egFMHC97auVFOlWMmG2Z84X1mwtVAvmp3ACEpFFRtzKQ2CD25ZJV7Sqf3IqHZLLAzGEaYCeMtYIAPwp3ag==
 
-"@navikt/familie-visittkort@^9.0.0":
-  version "9.0.0"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-visittkort/9.0.0/fa20c4e87402752707c062806f4a8cb78bded887#fa20c4e87402752707c062806f4a8cb78bded887"
-  integrity sha512-OHxYpxYYV7sMu6ueXdIssHRDux/QmDpmndf6yhBN6VHx8JzhfGNcMduFpWjJup53V0VDCsKns3sZQ8kOToN2rw==
+"@navikt/familie-visittkort@^10.0.0":
+  version "10.0.0"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-visittkort/10.0.0/de0c4b0e8ee9cf49526e1ab1a09e85e7126a8d50#de0c4b0e8ee9cf49526e1ab1a09e85e7126a8d50"
+  integrity sha512-7pAhNFwJv14XbLIYBLvZf0+tfphPe+3+T3ny/oKVp3FeeW/xMle9VKvjGwT8DUBcKo2Vkd9R0srnDKN41D5Z4w==
   dependencies:
-    "@navikt/familie-clipboard" "^10.1.0"
+    "@navikt/familie-clipboard" "^11.0.0"
     "@navikt/familie-ikoner" "^7.0.0"
     "@navikt/familie-typer" "^8.0.0"
     classnames "^2.3.2"
