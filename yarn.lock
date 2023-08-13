@@ -1584,10 +1584,10 @@
     framer-motion "^6.3.16"
     react-tooltip "^4.2.21"
 
-"@navikt/familie-dokumentliste@^8.1.1":
-  version "8.1.1"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-dokumentliste/8.1.1/d27d48ca0fe9f70afa72690ed13517a938594ae2#d27d48ca0fe9f70afa72690ed13517a938594ae2"
-  integrity sha512-CVVMjqUuKeqflruU8RL0oZXWNpc9lglOc+067G+0Dn2r3ENKe5eF7a0oJcPozFZfxHuN1Pnwp8jIeK+WMlpd2A==
+"@navikt/familie-dokumentliste@^9.0.0":
+  version "9.0.0"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-dokumentliste/9.0.0/9e71e26a2d8acf14f45de9cd7bb9b751e5ac2d6c#9e71e26a2d8acf14f45de9cd7bb9b751e5ac2d6c"
+  integrity sha512-UrhwuNmBqUwCQY/DUzpaDK/HLRGGEgl/dySooR/0Fl7zVY3ioN9VoWPOrzcNL35GwKldUnqSCZqYICPUj1/WqQ==
   dependencies:
     "@navikt/familie-ikoner" "^7.0.0"
     "@navikt/familie-typer" "^8.0.0"
