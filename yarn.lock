@@ -1592,10 +1592,10 @@
     "@navikt/familie-ikoner" "^7.0.0"
     "@navikt/familie-typer" "^8.0.0"
 
-"@navikt/familie-endringslogg@^8.1.1":
-  version "8.1.1"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-endringslogg/8.1.1/e2e3f73951dde3c1d26e28bc03aac05c4a92dd4a#e2e3f73951dde3c1d26e28bc03aac05c4a92dd4a"
-  integrity sha512-ihesWk+6XKN+fHh2tQJMkqAoEv5R/Ryq+zag6wkGIsYRNWGO9eHfJmkPHhRSIi0705RaMswUmtq8yubmv5vGGA==
+"@navikt/familie-endringslogg@^9.0.0":
+  version "9.0.0"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-endringslogg/9.0.0/03ad3e83b12555248e2af987ea3f24a707ec1cd9#03ad3e83b12555248e2af987ea3f24a707ec1cd9"
+  integrity sha512-ZZjlzZYXTfeG45pHtdYTbcbm8mee2B2xW2XL23VtSM/R4yq6r3aFnxOrUJwd0v6zl72EtBAYfV8CDll29Wq61Q==
   dependencies:
     "@portabletext/react" "^1.0.6"
     classnames "^2.3.2"
