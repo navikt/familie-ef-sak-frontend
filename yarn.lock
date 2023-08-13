@@ -1502,10 +1502,15 @@
     hey-listen "^1.0.8"
     tslib "^2.3.1"
 
-"@navikt/aksel-icons@^2.9.8", "@navikt/aksel-icons@^2.9.x":
+"@navikt/aksel-icons@^2.9.8":
   version "2.9.8"
   resolved "https://npm.pkg.github.com/download/@navikt/aksel-icons/2.9.8/04e4868d2f8f1022b52e9de54668127f6d0f5052#04e4868d2f8f1022b52e9de54668127f6d0f5052"
   integrity sha512-HANk2yejzzQxj4UefLg5Q8YXqkwh98SN98fNJUIlfonnh1bla1XB2h690QZJiY5SghHDnb2RGo/aojc8BwI8kQ==
+
+"@navikt/aksel-icons@^4.11.x":
+  version "4.11.0"
+  resolved "https://npm.pkg.github.com/download/@navikt/aksel-icons/4.11.0/8a5b90cbc5147eeaf1bb8c5a766d41acd0d94482#8a5b90cbc5147eeaf1bb8c5a766d41acd0d94482"
+  integrity sha512-4BD1QodgV6F10Ci48UGAialV7XhGnOk0EoKGRqWlHvnkjcK8SyDtJbidK7Oona3aAD8XDviown7BLdpZefn4tA==
 
 "@navikt/ds-css-internal@^2.0.x":
   version "2.9.8"
