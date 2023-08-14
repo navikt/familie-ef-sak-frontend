@@ -13,6 +13,7 @@ export enum ToggleName {
     visSatsendring = 'familie.ef.sak.frontend-vis-satsendring',
     visInntektPersonoversikt = 'familie.ef.sak.frontend.vis-inntekt-personoversikt',
     ulikeInntekter = 'familie.ef.sak-ulike-inntekter',
+    årsakRevurderingBeskrivelse = 'familie.ef.sak.arsak-revurdering-beskrivelse',
     visVurderHenvendelseOppgaver = 'familie.ef.sak.automatiske-oppgaver-lokalkontor',
     fremleggsoppgave = 'familie.ef.sak.automatiske-oppgaver.fremleggsoppgave',
     visNyttGuiSkolepenger = 'familie.ef.sak.frontend-skolepenger-utbedret-gui',
