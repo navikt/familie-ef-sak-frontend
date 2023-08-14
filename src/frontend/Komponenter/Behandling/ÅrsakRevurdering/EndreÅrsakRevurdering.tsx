@@ -17,6 +17,8 @@ import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer
 import { EnsligErrorMessage } from '../../../Felles/ErrorMessage/EnsligErrorMessage';
 import styled from 'styled-components';
 import { erGyldigDato } from '../../../App/utils/dato';
+import { useToggles } from '../../../App/context/TogglesContext';
+import { ToggleName } from '../../../App/context/toggles';
 
 const Container = styled.div`
     > * {
@@ -40,6 +42,8 @@ export const EndreÅrsakRevurdering: React.FC<Props> = ({
     const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
         useApp();
     const { behandlingErRedigerbar, hentBehandling } = useBehandling();
+
+    const { toggles } = useToggles();
 
     const [revurderingsinformasjon, settRevurderingsinformasjon] =
         useState<Revurderingsinformasjon>(initStateRevurderingsinformasjon);
@@ -142,7 +146,9 @@ export const EndreÅrsakRevurdering: React.FC<Props> = ({
                 onChange={(e) =>
                     oppdaterÅrsakRevurdering({
                         årsak: e.target.value as Årsak,
-                        beskrivelse: undefined,
+                        ...(toggles[ToggleName.årsakRevurderingBeskrivelse]
+                            ? {}
+                            : { beskrivelse: undefined }),
                     })
                 }
             >
@@ -153,9 +159,12 @@ export const EndreÅrsakRevurdering: React.FC<Props> = ({
                     </option>
                 ))}
             </Select>
-            {årsakRevurdering?.årsak === Årsak.ANNET && (
+            {(årsakRevurdering?.årsak === Årsak.ANNET ||
+                (toggles[ToggleName.årsakRevurderingBeskrivelse] && årsakRevurdering?.årsak)) && (
                 <Textarea
-                    label={'Beskrivelse av årsak'}
+                    label={`Beskrivelse av årsak${
+                        årsakRevurdering?.årsak === Årsak.ANNET ? '' : ' (Fylles ut ved behov)'
+                    }`}
                     value={beskrivelse}
                     onChange={(e) =>
                         oppdaterÅrsakRevurdering({
