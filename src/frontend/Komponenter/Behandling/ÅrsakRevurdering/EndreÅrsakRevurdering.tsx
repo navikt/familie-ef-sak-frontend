@@ -108,6 +108,9 @@ export const EndreÅrsakRevurdering: React.FC<Props> = ({
         }));
     };
 
+    const labelBeskrivelse = `Beskrivelse av årsak${
+        årsakRevurdering?.årsak === Årsak.ANNET ? '' : ' (Fylles ut ved behov)'
+    }`;
     return (
         <Container>
             <FamilieDatovelger
@@ -160,11 +163,9 @@ export const EndreÅrsakRevurdering: React.FC<Props> = ({
                 ))}
             </Select>
             {(årsakRevurdering?.årsak === Årsak.ANNET ||
-                (toggles[ToggleName.årsakRevurderingBeskrivelse] && årsakRevurdering?.årsak)) && (
+                toggles[ToggleName.årsakRevurderingBeskrivelse]) && (
                 <Textarea
-                    label={`Beskrivelse av årsak${
-                        årsakRevurdering?.årsak === Årsak.ANNET ? '' : ' (Fylles ut ved behov)'
-                    }`}
+                    label={labelBeskrivelse}
                     value={beskrivelse}
                     onChange={(e) =>
                         oppdaterÅrsakRevurdering({
