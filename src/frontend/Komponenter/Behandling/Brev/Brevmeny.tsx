@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Brevtype, fritekstmal, IMellomlagretBrevFritekst } from './BrevTyper';
 import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import BrevmenyVisning from './BrevmenyVisning';
@@ -8,7 +7,6 @@ import {
     IMellomlagretBrevResponse,
     useMellomlagringBrev,
 } from '../../../App/hooks/useMellomlagringBrev';
-import FritekstBrev from './FritekstBrev';
 import { Behandling } from '../../../App/typer/fagsak';
 import { useHentBeløpsperioder } from '../../../App/hooks/useHentBeløpsperioder';
 import { EBehandlingResultat } from '../../../App/typer/vedtak';
@@ -59,12 +57,8 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
 
     const { mellomlagreSanitybrev, mellomlagretBrev } = useMellomlagringBrev(behandlingId);
     useEffect(() => {
-        if (mellomlagretBrev.status === RessursStatus.SUKSESS) {
-            if (mellomlagretBrev.data?.brevtype === Brevtype.SANITYBREV) {
-                settBrevmal(mellomlagretBrev.data.brevmal);
-            } else if (mellomlagretBrev.data?.brevtype === Brevtype.FRITEKSTBREV) {
-                settBrevmal('Fritekstbrev');
-            }
+        if (mellomlagretBrev.status === RessursStatus.SUKSESS && mellomlagretBrev.data) {
+            settBrevmal(mellomlagretBrev.data.brevmal);
         }
     }, [mellomlagretBrev]);
 
@@ -78,47 +72,35 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
                 dokumentnavn={brevmaler}
                 stønanadstype={behandling.stønadstype}
             />
-            {brevMal === fritekstmal ? (
-                <DataViewer response={{ mellomlagretBrev }}>
-                    {({ mellomlagretBrev }) => (
-                        <FritekstBrev
+            <DataViewer
+                response={{
+                    brevStruktur,
+                    mellomlagretBrev,
+                    beløpsperioder,
+                }}
+            >
+                {({ brevStruktur, mellomlagretBrev }) =>
+                    brevMal ? (
+                        <BrevmenyVisning
                             behandlingId={behandlingId}
-                            oppdaterBrevressurs={oppdaterBrevRessurs}
-                            mellomlagretFritekstbrev={mellomlagretBrev as IMellomlagretBrevFritekst}
+                            oppdaterBrevRessurs={oppdaterBrevRessurs}
+                            brevStruktur={brevStruktur}
+                            brevMal={brevMal}
+                            mellomlagretBrevVerdier={
+                                (mellomlagretBrev as IMellomlagretBrevResponse)?.brevverdier
+                            }
+                            personopplysninger={personopplysninger}
+                            mellomlagreSanityBrev={mellomlagreSanitybrev}
+                            htmlFelter={utledHtmlFelterPåStønadstype(
+                                behandling.stønadstype,
+                                beløpsperioder
+                            )}
+                            brevverdier={brevverdier}
+                            settBrevOppdatert={settKanSendesTilBeslutter}
                         />
-                    )}
-                </DataViewer>
-            ) : (
-                <DataViewer
-                    response={{
-                        brevStruktur,
-                        mellomlagretBrev,
-                        beløpsperioder,
-                    }}
-                >
-                    {({ brevStruktur, mellomlagretBrev }) =>
-                        brevMal ? (
-                            <BrevmenyVisning
-                                behandlingId={behandlingId}
-                                oppdaterBrevRessurs={oppdaterBrevRessurs}
-                                brevStruktur={brevStruktur}
-                                brevMal={brevMal}
-                                mellomlagretBrevVerdier={
-                                    (mellomlagretBrev as IMellomlagretBrevResponse)?.brevverdier
-                                }
-                                personopplysninger={personopplysninger}
-                                mellomlagreSanityBrev={mellomlagreSanitybrev}
-                                htmlFelter={utledHtmlFelterPåStønadstype(
-                                    behandling.stønadstype,
-                                    beløpsperioder
-                                )}
-                                brevverdier={brevverdier}
-                                settBrevOppdatert={settKanSendesTilBeslutter}
-                            />
-                        ) : null
-                    }
-                </DataViewer>
-            )}
+                    ) : null
+                }
+            </DataViewer>
         </StyledBrevMeny>
     );
 };
