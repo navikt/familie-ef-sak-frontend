@@ -103,6 +103,11 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
             : !harFeilregistrerteEllerAvbrutte;
     };
 
+    const håndterEndreJournalpoststatus = () => {
+        setVisFeilregistrerteOgAvbruttValgt(false);
+        return settVedlegg('journalpostStatus');
+    };
+
     return (
         <Container>
             <Heading size={'large'} level={'1'}>
@@ -151,7 +156,7 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
                     size={'medium'}
                 />
                 <CustomSelect
-                    onChange={settVedlegg('journalpostStatus')}
+                    onChange={håndterEndreJournalpoststatus}
                     options={gyldigeJournalstatuserTilTekst}
                     label={'Velg journalpoststatus'}
                     hideLabel={true}
