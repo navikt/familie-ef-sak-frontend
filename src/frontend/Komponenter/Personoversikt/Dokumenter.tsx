@@ -91,6 +91,7 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
 
     const toggleVisFeilregistrerteOgAvbrutt = () => {
         setVisFeilregistrerteOgAvbruttValgt(!visFeilregistrerteOgAvbruttValgt);
+        settVedlegg('journalpostStatus')('');
     };
 
     const dokumentGruppeSkalVises = (dokumenter: Dokumentinfo[]): boolean => {
