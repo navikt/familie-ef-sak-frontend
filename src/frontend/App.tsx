@@ -35,6 +35,7 @@ import {
 import UlagretDataModal from './Felles/Visningskomponenter/UlagretDataModal';
 import { loggBesøkEvent } from './App/utils/amplitude/amplitudeLoggEvents';
 import { BesøkEvent } from './App/utils/amplitude/typer';
+import Innloggingsfeilmelding from './Felles/Varsel/Innloggingsfeilmelding';
 
 // @ts-ignore
 Modal.setAppElement(document.getElementById('modal-a11y-wrapper'));
@@ -152,6 +153,7 @@ const AppInnhold: React.FC<{ innloggetSaksbehandler: ISaksbehandler }> = ({
     return (
         <>
             <HeaderMedSøk innloggetSaksbehandler={innloggetSaksbehandler} />
+            <Innloggingsfeilmelding innloggetSaksbehandler={innloggetSaksbehandler} />
             <ScrollToTop />
             <Outlet />
             <Toast />
