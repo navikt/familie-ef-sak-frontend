@@ -124,7 +124,6 @@ export const LokalkontorOppgavevalg: FC<Props> = ({
                                 <Textarea
                                     label={''}
                                     size={'small'}
-                                    maxLength={400}
                                     value={innstillingsoppgaveBeskjed}
                                     onChange={(e) => settInnstillingsoppgaveBeskjed(e.target.value)}
                                 />
