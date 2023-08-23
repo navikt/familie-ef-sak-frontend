@@ -171,11 +171,8 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
             return !erNyBehandling;
         } else if (ustrukturertDokumentasjonType === UstrukturertDokumentasjonType.PAPIRSØKNAD) {
             return !erNyBehandling;
-        } else if (ustrukturertDokumentasjonType === UstrukturertDokumentasjonType.ETTERSENDING) {
-            return erNyBehandling;
         } else {
-            // Skal egentlige ikke komme hit pga validerJournalføringState
-            return erNyBehandling;
+            return false;
         }
     };
 
@@ -321,7 +318,6 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
             <JournalføringIkkeMuligModal
                 visModal={journalpostState.visJournalføringIkkeMuligModal}
                 settVisModal={journalpostState.settJournalføringIkkeMuligModal}
-                erPapirSøknad={erPapirsøknad}
             />
         </>
     );
@@ -330,29 +326,18 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
 const JournalføringIkkeMuligModal: React.FC<{
     visModal: boolean;
     settVisModal: Dispatch<SetStateAction<boolean>>;
-    erPapirSøknad: boolean;
-}> = ({ visModal, settVisModal, erPapirSøknad }) => {
+}> = ({ visModal, settVisModal }) => {
     return (
         <ModalWrapper
             tittel={'Journalføring ikke mulig'}
             visModal={visModal}
             onClose={() => settVisModal(false)}
         >
-            {erPapirSøknad ? (
-                <BodyLong>
-                    Foreløpig er det dessverre ikke mulig å journalføre på en eksisterende
-                    behandling via journalføringsbildet når det ikke er tilknyttet en digital søknad
-                    til journalposten.
-                </BodyLong>
-            ) : (
-                <BodyLong>
-                    Foreløpig er det dessverre ikke mulig å opprette en ny behandling via
-                    journalføringsbildet når det ikke er tilknyttet en digital søknad til
-                    journalposten. Gå inntil videre inn i behandlingsoversikten til bruker og
-                    opprett ny behandling derifra. Deretter kan du journalføre mot den nye
-                    behandlingen.
-                </BodyLong>
-            )}
+            <BodyLong>
+                Foreløpig er det dessverre ikke mulig å journalføre på en eksisterende behandling
+                via journalføringsbildet når det ikke er tilknyttet en digital søknad til
+                journalposten.
+            </BodyLong>
             <ModalKnapp variant={'tertiary'} onClick={() => settVisModal(false)}>
                 Tilbake
             </ModalKnapp>
