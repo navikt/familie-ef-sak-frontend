@@ -14,11 +14,8 @@ interface Props {
     barn: SøknadsgrunnlagNyttBarn;
 }
 
-const SøknadgrunnlagNyttBarn: FC<Props> = ({ barn }) => {
-    const annenForelder =
-        barn.annenForelderRegister && barn.annenForelderSoknad
-            ? barn.annenForelderRegister
-            : barn.annenForelderSoknad;
+const SøknadgrunnlagTerminbarn: FC<Props> = ({ barn }) => {
+    const annenForelder = barn.annenForelderSoknad;
 
     const ikkeOppgittAnnenForelderBegrunnelse = barn.ikkeOppgittAnnenForelderBegrunnelse;
 
@@ -57,4 +54,4 @@ const SøknadgrunnlagNyttBarn: FC<Props> = ({ barn }) => {
     );
 };
 
-export default SøknadgrunnlagNyttBarn;
+export default SøknadgrunnlagTerminbarn;

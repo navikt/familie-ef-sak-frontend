@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { IBarnMedSamvær } from '../Aleneomsorg/typer';
 import { mapTilRegistergrunnlagNyttBarn, mapTilSøknadsgrunnlagNyttBarn } from './utils';
 import RegistergrunnlagNyttBarn from './RegistergrunnlagNyttBarn';
-import SøknadgrunnlagNyttBarn from './SøknadsgrunnlagNyttBarn';
+import SøknadgrunnlagTerminbarn from './SøknadsgrunnlagTerminbarn';
 import TidligereVedtaksperioderSøkerOgAndreForeldre from './TidligereVedtaksperioderSøkerOgAndreForeldre';
 import { ITidligereVedtaksperioder } from '../../TidligereVedtaksperioder/typer';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
@@ -42,7 +42,7 @@ const NyttBarnSammePartnerInfo: FC<Props> = ({
             <UnderseksjonWrapper underoverskrift="Brukers fremtidige barn lagt til i søknad">
                 {søknadsgrunnlagNyttBarn.length ? (
                     søknadsgrunnlagNyttBarn.map((barn) => (
-                        <SøknadgrunnlagNyttBarn key={barn.barnId} barn={barn} />
+                        <SøknadgrunnlagTerminbarn key={barn.barnId} barn={barn} />
                     ))
                 ) : (
                     <BodyShortSmall>
