@@ -39,8 +39,6 @@ export interface JournalføringStateRequest {
     fullførJournalføring: () => void;
     visBekreftelsesModal: boolean;
     settVisBekreftelsesModal: Dispatch<SetStateAction<boolean>>;
-    visJournalføringIkkeMuligModal: boolean;
-    settJournalføringIkkeMuligModal: Dispatch<SetStateAction<boolean>>;
     barnSomSkalFødes: BarnSomSkalFødes[];
     settBarnSomSkalFødes: Dispatch<SetStateAction<BarnSomSkalFødes[]>>;
     ustrukturertDokumentasjonType: UstrukturertDokumentasjonType | undefined;
@@ -59,8 +57,6 @@ export const useJournalføringState = (
     const [dokumentTitler, settDokumentTitler] = useState<DokumentTitler>();
     const [innsending, settInnsending] = useState<Ressurs<string>>(byggTomRessurs());
     const [visBekreftelsesModal, settVisBekreftelsesModal] = useState<boolean>(false);
-    const [visJournalføringIkkeMuligModal, settJournalføringIkkeMuligModal] =
-        useState<boolean>(false);
     const [barnSomSkalFødes, settBarnSomSkalFødes] = useState<BarnSomSkalFødes[]>([]);
     const [ustrukturertDokumentasjonType, settUstrukturertDokumentasjonType] =
         useState<UstrukturertDokumentasjonType>(UstrukturertDokumentasjonType.IKKE_VALGT);
@@ -111,8 +107,6 @@ export const useJournalføringState = (
         fullførJournalføring,
         visBekreftelsesModal,
         settVisBekreftelsesModal,
-        visJournalføringIkkeMuligModal,
-        settJournalføringIkkeMuligModal,
         barnSomSkalFødes,
         settBarnSomSkalFødes,
         ustrukturertDokumentasjonType,

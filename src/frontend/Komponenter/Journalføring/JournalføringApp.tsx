@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { erAvTypeFeil, RessursStatus } from '../../App/typer/ressurs';
 import styled from 'styled-components';
@@ -44,11 +44,6 @@ import JournalføringPdfVisning from './JournalføringPdfVisning';
 import JournalpostTittelOgLenke from './JournalpostTittelOgLenke';
 import { ÅpneKlager } from '../Personoversikt/Klage/ÅpneKlager';
 import { alleBehandlingerErFerdigstiltEllerSattPåVent } from '../Personoversikt/utils';
-
-const ModalKnapp = styled(Button)`
-    margin-bottom: 1rem;
-    float: right;
-`;
 
 const ModalTekst = styled(BodyLong)`
     margin-top: 2rem;
@@ -162,20 +157,11 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
         // eslint-disable-next-line
     }, [fagsak]);
 
-    const skalBeOmBekreftelse = (
-        erNyBehandling: boolean,
-        harStrukturertSøknad: boolean,
-        ustrukturertDokumentasjonType: UstrukturertDokumentasjonType | undefined
-    ) => {
-        if (harStrukturertSøknad) {
-            return !erNyBehandling;
-        } else if (ustrukturertDokumentasjonType === UstrukturertDokumentasjonType.PAPIRSØKNAD) {
-            return !erNyBehandling;
-        } else if (ustrukturertDokumentasjonType === UstrukturertDokumentasjonType.ETTERSENDING) {
-            return erNyBehandling;
+    const skalBeOmBekreftelse = (erNyBehandling: boolean) => {
+        if (!erNyBehandling) {
+            return journalResponse.harStrukturertSøknad || erPapirsøknad;
         } else {
-            // Skal egentlige ikke komme hit pga validerJournalføringState
-            return erNyBehandling;
+            return false;
         }
     };
 
@@ -214,18 +200,8 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
         );
         if (feilmeldingFraValidering) {
             settFeilMeldning(feilmeldingFraValidering);
-        } else if (
-            skalBeOmBekreftelse(
-                harValgtNyBehandling(journalpostState.behandling),
-                journalResponse.harStrukturertSøknad,
-                journalpostState.ustrukturertDokumentasjonType
-            )
-        ) {
-            if (journalResponse.harStrukturertSøknad) {
-                journalpostState.settVisBekreftelsesModal(true);
-            } else if (!journalResponse.harStrukturertSøknad) {
-                journalpostState.settJournalføringIkkeMuligModal(true);
-            }
+        } else if (skalBeOmBekreftelse(harValgtNyBehandling(journalpostState.behandling))) {
+            journalpostState.settVisBekreftelsesModal(true);
         } else {
             journalpostState.fullførJournalføring();
         }
@@ -318,45 +294,7 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
                 </Høyrekolonne>
             </Kolonner>
             <BekreftJournalføringModal journalpostState={journalpostState} />
-            <JournalføringIkkeMuligModal
-                visModal={journalpostState.visJournalføringIkkeMuligModal}
-                settVisModal={journalpostState.settJournalføringIkkeMuligModal}
-                erPapirSøknad={erPapirsøknad}
-            />
         </>
-    );
-};
-
-const JournalføringIkkeMuligModal: React.FC<{
-    visModal: boolean;
-    settVisModal: Dispatch<SetStateAction<boolean>>;
-    erPapirSøknad: boolean;
-}> = ({ visModal, settVisModal, erPapirSøknad }) => {
-    return (
-        <ModalWrapper
-            tittel={'Journalføring ikke mulig'}
-            visModal={visModal}
-            onClose={() => settVisModal(false)}
-        >
-            {erPapirSøknad ? (
-                <BodyLong>
-                    Foreløpig er det dessverre ikke mulig å journalføre på en eksisterende
-                    behandling via journalføringsbildet når det ikke er tilknyttet en digital søknad
-                    til journalposten.
-                </BodyLong>
-            ) : (
-                <BodyLong>
-                    Foreløpig er det dessverre ikke mulig å opprette en ny behandling via
-                    journalføringsbildet når det ikke er tilknyttet en digital søknad til
-                    journalposten. Gå inntil videre inn i behandlingsoversikten til bruker og
-                    opprett ny behandling derifra. Deretter kan du journalføre mot den nye
-                    behandlingen.
-                </BodyLong>
-            )}
-            <ModalKnapp variant={'tertiary'} onClick={() => settVisModal(false)}>
-                Tilbake
-            </ModalKnapp>
-        </ModalWrapper>
     );
 };
 
@@ -384,8 +322,8 @@ const BekreftJournalføringModal: React.FC<{
             ariaLabel={'Bekreft journalføring av oppgave, eller avbryt'}
         >
             <ModalTekst>
-                Behandlingen du har valgt har allerede en digital søknad tilknyttet seg. Om du skal
-                gjennomføre en ny saksbehandling av søknaden må du opprette en ny behandling.
+                Journalposten har en søknad tilknyttet seg. Er du sikker på at du vil journalføre
+                uten å lage en ny behandling?
             </ModalTekst>
         </ModalWrapper>
     );
