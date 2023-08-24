@@ -1,7 +1,7 @@
 import React from 'react';
 import { IVilkår } from '../../Inngangsvilkår/vilkår';
 import styled from 'styled-components';
-import TidligereVedtakOppsummering from './TidligereVedtakOppsummering';
+import TidligereVedtaksperioder from './TidligereVedtaksperioder';
 import { sorterUtTidligereVedtaksvilkår } from '../Felles/utils';
 import { Søknadsinformasjon } from '../Felles/Søknadsinformasjon';
 import { Behandling } from '../../../../App/typer/fagsak';
@@ -25,7 +25,7 @@ export const VedtaksoppsummeringOvergangsstønad: React.FC<{
         <OppsummeringContainer>
             <Vilkårsvurdering vilkår={vilkår} />
             {skalViseSøknadsdata && <Søknadsinformasjon behandlingId={behandling.id} />}
-            <TidligereVedtakOppsummering tidligereVedtaksvilkår={tidligereVedtaksvilkår} />
+            <TidligereVedtaksperioder tidligereVedtaksvilkår={tidligereVedtaksvilkår} />
         </OppsummeringContainer>
     );
 };

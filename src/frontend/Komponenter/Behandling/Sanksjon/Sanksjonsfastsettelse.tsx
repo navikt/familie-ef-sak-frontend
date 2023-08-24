@@ -22,7 +22,7 @@ import {
 } from '../../../App/typer/vedtak';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
 import useFormState, { FormState } from '../../../App/hooks/felles/useFormState';
-import { validerSanksjonereVedtakForm } from '../VedtakOgBeregning/Overgangsstønad/vedtaksvalidering';
+
 import { FieldState } from '../../../App/hooks/felles/useFieldState';
 import { EnsligTextArea } from '../../../Felles/Input/TekstInput/EnsligTextArea';
 import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
@@ -31,6 +31,7 @@ import {
     nesteMånedOgNesteMånedsÅrFormatert,
     nåværendeÅrOgMånedFormatert,
     SANKSJONERE_VEDTAK,
+    validerSanksjonereVedtakForm,
 } from './utils';
 import { useHentVedtak } from '../../../App/hooks/useHentVedtak';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';

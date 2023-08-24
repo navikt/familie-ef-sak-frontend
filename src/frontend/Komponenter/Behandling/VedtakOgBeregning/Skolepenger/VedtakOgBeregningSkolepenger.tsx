@@ -11,11 +11,11 @@ import { erAlleVilkårOppfylt, skalViseNullstillVedtakKnapp } from '../Felles/ut
 import { RessursStatus } from '../../../../App/typer/ressurs';
 import SelectVedtaksresultat from '../Felles/SelectVedtaksresultat';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
-import { VedtaksformSkolepenger } from './InnvilgetSkolepenger/VedtaksformSkolepenger';
-import { AvslåVedtak } from '../Overgangsstønad/AvslåVedtak/AvslåVedtak';
 import { useToggles } from '../../../../App/context/TogglesContext';
 import { ToggleName } from '../../../../App/context/toggles';
-import { Vedtaksform } from './InnvilgetSkolepenger/Vedtaksform';
+import { AvslåVedtak } from '../Felles/AvslåVedtak/AvslåVedtak';
+import { InnvilgeVedtak } from './InnvilgeVedtak/InnvilgeVedtak';
+import { InnvilgeVedtakDeprecated } from './InnvilgeVedtak/InnvilgeVedtakDeprecated';
 
 interface Props {
     behandling: Behandling;
@@ -65,7 +65,7 @@ const VedtakOgBeregningSkolepenger: FC<Props> = ({ behandling, vilkår }) => {
                             const erOpphør = resultatType === EBehandlingResultat.OPPHØRT;
                             {
                                 return toggles[ToggleName.visNyttGuiSkolepenger] && !erOpphør ? (
-                                    <Vedtaksform
+                                    <InnvilgeVedtak
                                         behandling={behandling}
                                         lagretInnvilgetVedtak={
                                             vedtakForSkolepenger?._type ===
@@ -79,7 +79,7 @@ const VedtakOgBeregningSkolepenger: FC<Props> = ({ behandling, vilkår }) => {
                                         }
                                     />
                                 ) : (
-                                    <VedtaksformSkolepenger
+                                    <InnvilgeVedtakDeprecated
                                         key={erOpphør ? 'opphør' : 'innvilgelse'}
                                         behandling={behandling}
                                         erOpphør={erOpphør}

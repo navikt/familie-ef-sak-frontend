@@ -13,7 +13,7 @@ import MånedÅrVelger from '../../../../../Felles/Input/MånedÅr/MånedÅrVelg
 import LeggTilKnapp from '../../../../../Felles/Knapper/LeggTilKnapp';
 import { ListState } from '../../../../../App/hooks/felles/useListState';
 import { FormErrors } from '../../../../../App/hooks/felles/useFormState';
-import { InnvilgeVedtakForm } from './Vedtaksform';
+import { InnvilgeVedtakForm } from './InnvilgeOvergangsstønad';
 import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import { useApp } from '../../../../../App/context/AppContext';
 import { FieldState } from '../../../../../App/hooks/felles/useFieldState';

@@ -13,12 +13,11 @@ import VedtakperiodeSelect from './VedtakperiodeSelect';
 import LeggTilKnapp from '../../../../../Felles/Knapper/LeggTilKnapp';
 import { ListState } from '../../../../../App/hooks/felles/useListState';
 import { FormErrors } from '../../../../../App/hooks/felles/useFormState';
-import { InnvilgeVedtakForm } from './Vedtaksform';
+import { InnvilgeVedtakForm } from './InnvilgeOvergangsstønad';
 import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import { useApp } from '../../../../../App/context/AppContext';
 import { kalkulerAntallMåneder } from '../../../../../App/utils/dato';
 import { Heading, Label, Tooltip } from '@navikt/ds-react';
-import { v4 as uuidv4 } from 'uuid';
 import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 import {
     Sanksjonsmodal,
@@ -29,6 +28,7 @@ import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
 import { IngenBegrunnelseOppgitt } from './IngenBegrunnelseOppgitt';
 import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
 import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
+import { tomVedtaksperiodeRad } from '../Felles/utils';
 
 const Container = styled.div`
     padding: 1rem;
@@ -62,13 +62,6 @@ interface Props {
     errorState?: FormErrors<InnvilgeVedtakForm>;
     vedtaksperiodeListe: ListState<IVedtaksperiode>;
 }
-
-export const tomVedtaksperiodeRad = (årMånedFra?: string): IVedtaksperiode => ({
-    periodeType: '' as EPeriodetype,
-    aktivitet: '' as EAktivitet,
-    årMånedFra: årMånedFra,
-    endretKey: uuidv4(),
-});
 
 const VedtaksperiodeValg: React.FC<Props> = ({
     className,

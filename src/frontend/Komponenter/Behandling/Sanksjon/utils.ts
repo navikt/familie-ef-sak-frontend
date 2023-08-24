@@ -1,3 +1,6 @@
+import { SanksjonereVedtakForm } from './Sanksjonsfastsettelse';
+import { FormErrors } from '../../../App/hooks/felles/useFormState';
+
 const måneder = [
     'januar',
     'februar',
@@ -59,4 +62,21 @@ export const antallDagerIgjenAvNåværendeMåned = (): number => {
     ).getDate();
 
     return antallDagerINåværendeMåned - dagensDato.getDate();
+};
+
+export const validerSanksjonereVedtakForm = ({
+    sanksjonsårsak,
+    internBegrunnelse,
+}: SanksjonereVedtakForm): FormErrors<SanksjonereVedtakForm> => {
+    const sanksjonsårsakFeil =
+        sanksjonsårsak === undefined ? 'Mangelfull utfylling av sanksjonsårsak' : undefined;
+
+    const internBegrunnelseFeil =
+        internBegrunnelse === '' || internBegrunnelse === undefined
+            ? 'Mangelfull utfylling av intern begrunnelse'
+            : undefined;
+    return {
+        sanksjonsårsak: sanksjonsårsakFeil,
+        internBegrunnelse: internBegrunnelseFeil,
+    };
 };
