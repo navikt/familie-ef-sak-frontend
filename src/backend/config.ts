@@ -18,7 +18,6 @@ interface IEnvironment {
     gosys: string;
     modia: string;
     historiskPensjon: string;
-    redisUrl?: string;
     roller: Roller;
 }
 
@@ -78,7 +77,6 @@ const Environment = (): IEnvironment => {
             gosys: 'https://gosys-q1.dev.intern.nav.no/gosys',
             modia: 'https://app-q1.adeo.no/modiapersonoversikt',
             historiskPensjon: 'https://historisk-pensjon.intern.dev.nav.no',
-            redisUrl: 'familie-ef-sak-frontend-redis',
             endringsloggProxyUrl: 'http://familie-endringslogg',
             roller: rollerDev,
         };
@@ -106,7 +104,6 @@ const Environment = (): IEnvironment => {
         gosys: 'https://gosys.intern.nav.no/gosys',
         modia: 'https://app.adeo.no/modiapersonoversikt',
         historiskPensjon: 'https://historisk-pensjon.intern.nav.no',
-        redisUrl: 'familie-ef-sak-frontend-redis',
         endringsloggProxyUrl: 'http://familie-endringslogg',
         roller: rollerProd,
     };
@@ -116,7 +113,6 @@ const env = Environment();
 export const sessionConfig: ISessionKonfigurasjon = {
     cookieSecret: [`${process.env.COOKIE_KEY1}`, `${process.env.COOKIE_KEY2}`],
     navn: 'familie-ef-sak-v2',
-    redisUrl: env.redisUrl,
     redisFullUrl: process.env.REDIS_URI_SESSIONS,
     redisBrukernavn: process.env.REDIS_USERNAME_SESSIONS,
     redisPassord: process.env.REDIS_PASSWORD_SESSIONS,
