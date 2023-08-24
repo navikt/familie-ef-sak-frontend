@@ -34,6 +34,7 @@ import VisEllerEndreSkoleårsperioder from './VisEllerEndreSkoleårsperioder';
 import { BegrunnelsesFelt } from '../Felles/BegrunnelsesFelt';
 import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
 import { CalculatorIcon } from '@navikt/aksel-icons';
+import { InnvilgeVedtakForm } from '../Felles/typer';
 
 const Form = styled.form`
     display: flex;
@@ -75,11 +76,6 @@ const defaultSkoleårsperioder = (
     } else {
         return [];
     }
-};
-
-export type InnvilgeVedtakForm = {
-    skoleårsperioder: ISkoleårsperiodeSkolepenger[];
-    begrunnelse?: string;
 };
 
 export const InnvilgeVedtak: React.FC<{

@@ -4,7 +4,6 @@ import {
     ISkoleårsperiodeSkolepenger,
     SkolepengerUtgift,
 } from '../../../../../App/typer/vedtak';
-import { InnvilgeVedtakForm } from '../InnvilgeVedtak/InnvilgeVedtak';
 import {
     erMånedÅrEtterEllerLik,
     Intervall,
@@ -13,6 +12,7 @@ import {
 } from '../../../../../App/utils/dato';
 import { beregnSkoleår, validerSkoleår } from './skoleår';
 import { validerGyldigTallverdi } from '../../Felles/utils';
+import { InnvilgeVedtakForm } from './typer';
 
 const periodeSkolepengerFeil: FormErrors<IPeriodeSkolepenger> = {
     studietype: undefined,
