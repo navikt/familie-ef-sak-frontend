@@ -23,7 +23,7 @@ import { UtregningstabellSkolepenger } from '../Felles/UtregnignstabellSkolepeng
 import {
     validerSkoleårsperioderMedBegrunnelse,
     validerSkoleårsperioderUtenBegrunnelse,
-} from './vedtaksvalidering';
+} from '../Felles/vedtaksvalidering';
 import { BodyLongSmall, BodyShortSmall } from '../../../../../Felles/Visningskomponenter/Tekster';
 import { ARed500 } from '@navikt/ds-tokens/dist/tokens';
 import { useRedirectEtterLagring } from '../../../../../App/hooks/felles/useRedirectEtterLagring';
@@ -31,7 +31,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { AlertError } from '../../../../../Felles/Visningskomponenter/Alerts';
 import HovedKnapp, { Knapp } from '../../../../../Felles/Knapper/HovedKnapp';
 import VisEllerEndreSkoleårsperioder from './VisEllerEndreSkoleårsperioder';
-import { BegrunnelsesFelt } from './BegrunnelsesFelt';
+import { BegrunnelsesFelt } from '../Felles/BegrunnelsesFelt';
 import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
 import { CalculatorIcon } from '@navikt/aksel-icons';
 
