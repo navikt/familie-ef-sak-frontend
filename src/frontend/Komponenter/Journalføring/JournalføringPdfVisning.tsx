@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { HentDokumentResponse } from '../../App/hooks/useHentDokument';
 import styled from 'styled-components';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
@@ -17,8 +17,8 @@ const JournalføringPdfVisning: React.FC<{ hentDokumentResponse: HentDokumentRes
         hentFørsteDokument();
     }, [hentFørsteDokument]);
 
-    return (
-        <Container>
+    const dokumentMemo = useMemo(() => {
+        return (
             <DataViewer response={{ valgtDokument }}>
                 {({ valgtDokument }) => {
                     const blob = base64toBlob(valgtDokument, 'application/pdf');
@@ -29,8 +29,9 @@ const JournalføringPdfVisning: React.FC<{ hentDokumentResponse: HentDokumentRes
                     );
                 }}
             </DataViewer>
-        </Container>
-    );
+        );
+    }, [valgtDokument]);
+    return <Container>{dokumentMemo}</Container>;
 };
 
 export default JournalføringPdfVisning;
