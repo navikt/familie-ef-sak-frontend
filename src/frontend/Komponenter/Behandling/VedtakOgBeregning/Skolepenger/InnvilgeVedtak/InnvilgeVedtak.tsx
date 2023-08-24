@@ -36,7 +36,7 @@ import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
 import { CalculatorIcon } from '@navikt/aksel-icons';
 import { InnvilgeVedtakForm } from '../Felles/typer';
 
-const Form = styled.form`
+export const Form = styled.form`
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -46,7 +46,7 @@ const AdvarselTekst = styled(BodyShortSmall)`
     color: ${ARed500};
 `;
 
-const Utregningstabell = styled(UtregningstabellSkolepenger)`
+export const Utregningstabell = styled(UtregningstabellSkolepenger)`
     margin-left: 1rem;
 `;
 
@@ -67,7 +67,7 @@ const markerErHentetFraBackend = (
 ): ISkoleårsperiodeSkolepenger[] =>
     skoleårsperioder.map((periode) => ({ ...periode, erHentetFraBackend: true }));
 
-const defaultSkoleårsperioder = (
+const utledInitielleSkoleårsperioder = (
     forrigeVedtak?: IvedtakForSkolepenger
 ): ISkoleårsperiodeSkolepenger[] => {
     const forrigeSkoleårsperioder = forrigeVedtak?.skoleårsperioder;
@@ -99,7 +99,7 @@ export const InnvilgeVedtak: React.FC<{
         {
             skoleårsperioder: lagretInnvilgetVedtak
                 ? markerErHentetFraBackend(lagretInnvilgetVedtak.skoleårsperioder)
-                : defaultSkoleårsperioder(forrigeVedtak),
+                : utledInitielleSkoleårsperioder(forrigeVedtak),
             begrunnelse: lagretInnvilgetVedtak?.begrunnelse || '',
         },
         validerSkoleårsperioderMedBegrunnelse

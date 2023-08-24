@@ -11,11 +11,9 @@ import React, { useEffect, useState } from 'react';
 import useFormState, { FormState } from '../../../../../App/hooks/felles/useFormState';
 import { ListState } from '../../../../../App/hooks/felles/useListState';
 import { useBehandling } from '../../../../../App/context/BehandlingContext';
-import styled from 'styled-components';
 import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
 import { useApp } from '../../../../../App/context/AppContext';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../../../App/typer/ressurs';
-import { UtregningstabellSkolepenger } from '../Felles/UtregnignstabellSkolepenger';
 import { InnvilgeVedtakForm, tomSkoleårsperiodeSkolepenger } from '../Felles/typer';
 import OpphøreSkolepenger from './OpphøreSkolepenger';
 import { useRedirectEtterLagring } from '../../../../../App/hooks/felles/useRedirectEtterLagring';
@@ -24,18 +22,9 @@ import { BegrunnelsesFelt } from '../Felles/BegrunnelsesFelt';
 import { AlertError } from '../../../../../Felles/Visningskomponenter/Alerts';
 import HovedKnapp from '../../../../../Felles/Knapper/HovedKnapp';
 import { validerSkoleårsperioderMedBegrunnelse } from '../Felles/vedtaksvalidering';
+import { Form, Utregningstabell } from '../InnvilgeVedtak/InnvilgeVedtak';
 
-const Form = styled.form`
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-`;
-
-const Utregningstabell = styled(UtregningstabellSkolepenger)`
-    margin-left: 1rem;
-`;
-
-export const defaultSkoleårsperioder = (
+const utledInitielleSkoleårsperioder = (
     forrigeVedtak?: IvedtakForSkolepenger
 ): ISkoleårsperiodeSkolepenger[] => {
     const forrigeSkoleårsperioder = forrigeVedtak?.skoleårsperioder;
@@ -66,7 +55,7 @@ export const OpphøreVedtak: React.FC<{
         {
             skoleårsperioder: lagretInnvilgetVedtak
                 ? lagretInnvilgetVedtak.skoleårsperioder
-                : defaultSkoleårsperioder(forrigeVedtak),
+                : utledInitielleSkoleårsperioder(forrigeVedtak),
             begrunnelse: lagretInnvilgetVedtak?.begrunnelse || '',
         },
         validerSkoleårsperioderMedBegrunnelse
