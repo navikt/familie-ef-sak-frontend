@@ -1,9 +1,9 @@
 import React from 'react';
 import { EBehandlingResultat, IVedtak, IVedtakType } from '../../../../App/typer/vedtak';
 import { Behandling } from '../../../../App/typer/fagsak';
-import { InnvilgeOvergangsstønad } from './InnvilgeVedtak/InnvilgeOvergangsstønad';
-import { AvslåVedtak } from './AvslåVedtak/AvslåVedtak';
-import { Opphør } from './Opphør/Opphør';
+import { InnvilgeVedtak } from './InnvilgeVedtak/InnvilgeVedtak';
+import { AvslåVedtak } from '../Felles/AvslåVedtak/AvslåVedtak';
+import { OpphøreVedtak } from '../Felles/OpphøreVedtak/OpphøreVedtak';
 import { IVilkår } from '../../Inngangsvilkår/vilkår';
 
 interface Props {
@@ -38,7 +38,7 @@ const VedtaksresultatSwitch: React.FC<Props> = ({
             );
         case EBehandlingResultat.INNVILGE:
             return (
-                <InnvilgeOvergangsstønad
+                <InnvilgeVedtak
                     behandling={behandling}
                     lagretVedtak={
                         lagretVedtak?._type === IVedtakType.InnvilgelseOvergangsstønad
@@ -50,7 +50,7 @@ const VedtaksresultatSwitch: React.FC<Props> = ({
             );
         case EBehandlingResultat.OPPHØRT:
             return (
-                <Opphør
+                <OpphøreVedtak
                     behandlingId={behandling.id}
                     lagretVedtak={
                         lagretVedtak?._type === IVedtakType.Opphør ? lagretVedtak : undefined

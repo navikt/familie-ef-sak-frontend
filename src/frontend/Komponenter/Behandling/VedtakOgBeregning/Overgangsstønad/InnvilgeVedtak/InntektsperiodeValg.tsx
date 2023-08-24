@@ -13,7 +13,7 @@ import MånedÅrVelger from '../../../../../Felles/Input/MånedÅr/MånedÅrVelg
 import LeggTilKnapp from '../../../../../Felles/Knapper/LeggTilKnapp';
 import { ListState } from '../../../../../App/hooks/felles/useListState';
 import { FormErrors } from '../../../../../App/hooks/felles/useFormState';
-import { InnvilgeVedtakForm } from './Vedtaksform';
+import { InnvilgeVedtakForm } from './InnvilgeOvergangsstønad';
 import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import { useApp } from '../../../../../App/context/AppContext';
 import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
@@ -26,15 +26,14 @@ import {
     ReadMore,
     Tooltip,
 } from '@navikt/ds-react';
-import { v4 as uuidv4 } from 'uuid';
 import { EnsligFamilieSelect } from '../../../../../Felles/Input/EnsligFamilieSelect';
 import { EnsligErrorMessage } from '../../../../../Felles/ErrorMessage/EnsligErrorMessage';
 import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 import { TextLabel } from '../../../../../Felles/Visningskomponenter/Tekster';
 import { HorizontalScroll } from '../../Felles/HorizontalScroll';
-import { initierValgteInntektstyper } from './utils';
+import { initierValgteInntektstyper, tomInntektsperiodeRad } from '../Felles/utils';
 import { AlertError, AlertWarning } from '../../../../../Felles/Visningskomponenter/Alerts';
-import { EInntektstype, inntektsTypeTilKey, inntektsTypeTilTekst } from './typer';
+import { EInntektstype, inntektsTypeTilKey, inntektsTypeTilTekst } from '../Felles/typer';
 import { ABorderDivider, AGray50 } from '@navikt/ds-tokens/dist/tokens';
 import { IngenBegrunnelseOppgitt } from './IngenBegrunnelseOppgitt';
 import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
@@ -77,11 +76,6 @@ const FlexColumn = styled.div`
     gap: 0.5rem;
     max-width: 55rem;
 `;
-
-export const tomInntektsperiodeRad = (årMånedFra?: string): IInntektsperiode => ({
-    årMånedFra: årMånedFra || '',
-    endretKey: uuidv4(),
-});
 
 const LeggTilRadKnapp = styled(LeggTilKnapp)`
     margin-top: 0.5rem;

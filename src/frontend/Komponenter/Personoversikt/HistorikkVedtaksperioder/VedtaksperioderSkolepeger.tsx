@@ -10,7 +10,7 @@ import React from 'react';
 import {
     beregnSkoleår,
     formatterSkoleår,
-} from '../../Behandling/VedtakOgBeregning/Skolepenger/skoleår';
+} from '../../Behandling/VedtakOgBeregning/Skolepenger/Felles/skoleår';
 import { Table } from '@navikt/ds-react';
 
 const lagSkoleår = (periode: ISkoleårsperiodeSkolepenger): string => {

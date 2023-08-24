@@ -7,10 +7,10 @@ import { erAlleVilkårOppfylt, skalViseNullstillVedtakKnapp } from '../Felles/ut
 import { RessursStatus } from '../../../../App/typer/ressurs';
 import SelectVedtaksresultat from '../Felles/SelectVedtaksresultat';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
-import { AvslåVedtak } from '../Overgangsstønad/AvslåVedtak/AvslåVedtak';
-import { Opphør } from '../Overgangsstønad/Opphør/Opphør';
-import { barnSomOppfyllerAlleVilkår } from './utils';
-import { InnvilgeBarnetilsyn } from './InnvilgeBarnetilsyn';
+import { AvslåVedtak } from '../Felles/AvslåVedtak/AvslåVedtak';
+import { OpphøreVedtak } from '../Felles/OpphøreVedtak/OpphøreVedtak';
+import { barnSomOppfyllerAlleVilkår } from './Felles/utils';
+import { InnvilgeVedtak } from './InnvilgeVedtak/InnvilgeVedtak';
 
 interface Props {
     behandling: Behandling;
@@ -49,7 +49,7 @@ const VedtakOgBeregningBarnetilsyn: FC<Props> = ({ behandling, vilkår }) => {
                         case EBehandlingResultat.INNVILGE:
                         case EBehandlingResultat.INNVILGE_UTEN_UTBETALING:
                             return (
-                                <InnvilgeBarnetilsyn
+                                <InnvilgeVedtak
                                     behandling={behandling}
                                     lagretVedtak={
                                         vedtak?._type === IVedtakType.InnvilgelseBarnetilsyn
@@ -73,7 +73,7 @@ const VedtakOgBeregningBarnetilsyn: FC<Props> = ({ behandling, vilkår }) => {
                             );
                         case EBehandlingResultat.OPPHØRT:
                             return (
-                                <Opphør
+                                <OpphøreVedtak
                                     behandlingId={behandlingId}
                                     lagretVedtak={
                                         vedtak?._type === IVedtakType.Opphør ? vedtak : undefined
