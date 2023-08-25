@@ -27,9 +27,6 @@ import styled from 'styled-components';
 import { IVilkår } from '../../../Inngangsvilkår/vilkår';
 import { utledYngsteBarnFødselsdato } from '../Felles/fødselsdatoUtils';
 import { useRedirectEtterLagring } from '../../../../../App/hooks/felles/useRedirectEtterLagring';
-import InntektsperiodeValgDeprecated from './InntektsperiodeValgDeprecated';
-import { ToggleName } from '../../../../../App/context/toggles';
-import { useToggles } from '../../../../../App/context/TogglesContext';
 import HovedKnapp, { Knapp } from '../../../../../Felles/Knapper/HovedKnapp';
 import { CalculatorIcon } from '@navikt/aksel-icons';
 import { tomInntektsperiodeRad, tomVedtaksperiodeRad } from '../Felles/utils';
@@ -55,7 +52,6 @@ export const InnvilgeOvergangsstønad: React.FC<{
     revurderesFra?: string;
     vilkår: IVilkår;
 }> = ({ behandling, lagretVedtak, revurderesFra, vilkår }) => {
-    const { toggles } = useToggles();
     const { hentBehandling, behandlingErRedigerbar } = useBehandling();
     const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
         useApp();
@@ -217,25 +213,14 @@ export const InnvilgeOvergangsstønad: React.FC<{
                 setValideringsFeil={formState.setErrors}
                 vedtaksperiodeListe={vedtaksperiodeState}
             />
-            {toggles[ToggleName.ulikeInntekter] ? (
-                <InntektsperiodeValg
-                    errorState={formState.errors}
-                    inntektBegrunnelseState={inntektBegrunnelse}
-                    inntektsperiodeListe={inntektsperiodeState}
-                    samordningsfradragstype={typeSamordningsfradag}
-                    setValideringsFeil={formState.setErrors}
-                    skalVelgeSamordningstype={skalVelgeSamordningstype}
-                />
-            ) : (
-                <InntektsperiodeValgDeprecated
-                    errorState={formState.errors}
-                    inntektBegrunnelseState={inntektBegrunnelse}
-                    inntektsperiodeListe={inntektsperiodeState}
-                    samordningsfradragstype={typeSamordningsfradag}
-                    setValideringsFeil={formState.setErrors}
-                    skalVelgeSamordningstype={skalVelgeSamordningstype}
-                />
-            )}
+            <InntektsperiodeValg
+                errorState={formState.errors}
+                inntektBegrunnelseState={inntektBegrunnelse}
+                inntektsperiodeListe={inntektsperiodeState}
+                samordningsfradragstype={typeSamordningsfradag}
+                setValideringsFeil={formState.setErrors}
+                skalVelgeSamordningstype={skalVelgeSamordningstype}
+            />
             {behandlingErRedigerbar && (
                 <div>
                     <Knapp
