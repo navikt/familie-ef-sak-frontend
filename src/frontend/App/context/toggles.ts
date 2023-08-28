@@ -16,5 +16,4 @@ export enum ToggleName {
     årsakRevurderingBeskrivelse = 'familie.ef.sak.arsak-revurdering-beskrivelse',
     visVurderHenvendelseOppgaver = 'familie.ef.sak.automatiske-oppgaver-lokalkontor',
     fremleggsoppgave = 'familie.ef.sak.automatiske-oppgaver.fremleggsoppgave',
-    visNyttGuiSkolepenger = 'familie.ef.sak.frontend-skolepenger-utbedret-gui',
 }

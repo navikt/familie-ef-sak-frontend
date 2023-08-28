@@ -9,12 +9,10 @@ import {
     formaterTallMedTusenSkille,
 } from '../../../../../App/utils/formatter';
 import { BodyShortSmall, SmallTextLabel } from '../../../../../Felles/Visningskomponenter/Tekster';
-import { useToggles } from '../../../../../App/context/TogglesContext';
-import { ToggleName } from '../../../../../App/context/toggles';
 
 const Grid = styled.div`
     display: grid;
-    grid-template-columns: repeat(3, max-content);
+    grid-template-columns: repeat(2, max-content);
     column-gap: 1rem;
 `;
 
@@ -26,7 +24,6 @@ export const UtregningstabellSkolepenger: React.FC<{
     beregningsresultat: Ressurs<IBeregningSkolepengerResponse>;
     className?: string;
 }> = ({ beregningsresultat, className }) => {
-    const { toggles } = useToggles();
     return (
         <DataViewer response={{ beregningsresultat }}>
             {({ beregningsresultat }) => (
@@ -36,11 +33,6 @@ export const UtregningstabellSkolepenger: React.FC<{
                     </Heading>
                     <Grid>
                         <SmallTextLabel>Fra</SmallTextLabel>
-                        {toggles[ToggleName.visNyttGuiSkolepenger] ? (
-                            <div />
-                        ) : (
-                            <SmallTextLabel>Utgifter</SmallTextLabel>
-                        )}
                         <SmallTextLabel>Stønadsbeløp</SmallTextLabel>
                         {beregningsresultat.perioder.map((periode) => {
                             return (
@@ -48,13 +40,6 @@ export const UtregningstabellSkolepenger: React.FC<{
                                     <BodyShortSmall>
                                         {formaterNullableMånedÅr(periode.årMånedFra)}
                                     </BodyShortSmall>
-                                    {toggles[ToggleName.visNyttGuiSkolepenger] ? (
-                                        <div />
-                                    ) : (
-                                        <HøyrejustertBodyShort>
-                                            {formaterTallMedTusenSkille(periode.utgifter)}
-                                        </HøyrejustertBodyShort>
-                                    )}
                                     <HøyrejustertBodyShort>
                                         {formaterTallMedTusenSkille(periode.beløp)}
                                     </HøyrejustertBodyShort>

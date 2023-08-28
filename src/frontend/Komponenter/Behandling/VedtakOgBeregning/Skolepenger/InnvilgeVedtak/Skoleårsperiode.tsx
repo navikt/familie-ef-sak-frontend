@@ -12,7 +12,7 @@ import { HorizontalScroll } from '../../Felles/HorizontalScroll';
 import Delårsperioder from './Delårsperioder';
 import { Knapp } from '../../../../../Felles/Knapper/HovedKnapp';
 import { InnvilgeVedtakForm } from '../Felles/typer';
-import { validerSkoleårsperioderUtenBegrunnelseOgUtgiftsperioder } from './vedtaksvalidering';
+import { validerSkoleårsperioderUtenBegrunnelseOgUtgiftsperioder } from '../Felles/vedtaksvalidering';
 import Utgiftsperioder from './Utgiftsperioder';
 import Makssats from './Makssats';
 import SkoleårsperiodeHeader from './SkoleårsperiodeHeader';

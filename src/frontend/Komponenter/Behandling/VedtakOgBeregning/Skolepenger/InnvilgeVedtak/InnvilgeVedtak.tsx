@@ -23,7 +23,7 @@ import { UtregningstabellSkolepenger } from '../Felles/UtregnignstabellSkolepeng
 import {
     validerSkoleårsperioderMedBegrunnelse,
     validerSkoleårsperioderUtenBegrunnelse,
-} from './vedtaksvalidering';
+} from '../Felles/vedtaksvalidering';
 import { BodyLongSmall, BodyShortSmall } from '../../../../../Felles/Visningskomponenter/Tekster';
 import { ARed500 } from '@navikt/ds-tokens/dist/tokens';
 import { useRedirectEtterLagring } from '../../../../../App/hooks/felles/useRedirectEtterLagring';
@@ -31,11 +31,12 @@ import { v4 as uuidv4 } from 'uuid';
 import { AlertError } from '../../../../../Felles/Visningskomponenter/Alerts';
 import HovedKnapp, { Knapp } from '../../../../../Felles/Knapper/HovedKnapp';
 import VisEllerEndreSkoleårsperioder from './VisEllerEndreSkoleårsperioder';
-import { BegrunnelsesFelt } from './BegrunnelsesFelt';
+import { BegrunnelsesFelt } from '../Felles/BegrunnelsesFelt';
 import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
 import { CalculatorIcon } from '@navikt/aksel-icons';
+import { InnvilgeVedtakForm } from '../Felles/typer';
 
-const Form = styled.form`
+export const Form = styled.form`
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -45,7 +46,7 @@ const AdvarselTekst = styled(BodyShortSmall)`
     color: ${ARed500};
 `;
 
-const Utregningstabell = styled(UtregningstabellSkolepenger)`
+export const Utregningstabell = styled(UtregningstabellSkolepenger)`
     margin-left: 1rem;
 `;
 
@@ -66,7 +67,7 @@ const markerErHentetFraBackend = (
 ): ISkoleårsperiodeSkolepenger[] =>
     skoleårsperioder.map((periode) => ({ ...periode, erHentetFraBackend: true }));
 
-const defaultSkoleårsperioder = (
+const utledInitielleSkoleårsperioder = (
     forrigeVedtak?: IvedtakForSkolepenger
 ): ISkoleårsperiodeSkolepenger[] => {
     const forrigeSkoleårsperioder = forrigeVedtak?.skoleårsperioder;
@@ -75,11 +76,6 @@ const defaultSkoleårsperioder = (
     } else {
         return [];
     }
-};
-
-export type InnvilgeVedtakForm = {
-    skoleårsperioder: ISkoleårsperiodeSkolepenger[];
-    begrunnelse?: string;
 };
 
 export const InnvilgeVedtak: React.FC<{
@@ -103,7 +99,7 @@ export const InnvilgeVedtak: React.FC<{
         {
             skoleårsperioder: lagretInnvilgetVedtak
                 ? markerErHentetFraBackend(lagretInnvilgetVedtak.skoleårsperioder)
-                : defaultSkoleårsperioder(forrigeVedtak),
+                : utledInitielleSkoleårsperioder(forrigeVedtak),
             begrunnelse: lagretInnvilgetVedtak?.begrunnelse || '',
         },
         validerSkoleårsperioderMedBegrunnelse

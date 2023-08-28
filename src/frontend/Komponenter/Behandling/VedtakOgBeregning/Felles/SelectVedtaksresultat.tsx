@@ -96,7 +96,7 @@ const SelectVedtaksresultat = (props: Props): JSX.Element => {
                         value={EBehandlingResultat.OPPHØRT}
                         disabled={!opphørMulig || nullUtbetalingPgaKontantstøtte}
                     >
-                        Opphørt
+                        Opphør
                     </option>
                 </StyledSelect>
                 {behandling.stønadstype === Stønadstype.BARNETILSYN && behandlingErRedigerbar && (
