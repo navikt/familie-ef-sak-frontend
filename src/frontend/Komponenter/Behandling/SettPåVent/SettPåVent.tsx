@@ -11,8 +11,6 @@ import { useApp } from '../../../App/context/AppContext';
 import { Alert, Button, Heading, Textarea } from '@navikt/ds-react';
 import styled from 'styled-components';
 import { ADeepblue50 } from '@navikt/ds-tokens/dist/tokens';
-import { ToggleName } from '../../../App/context/toggles';
-import { useToggles } from '../../../App/context/TogglesContext';
 import { IOppgave } from '../../Oppgavebenk/typer/oppgave';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { Prioritet } from '../../Oppgavebenk/typer/oppgavetema';
@@ -89,7 +87,6 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
     const erOvergangsstønadEllerSkolepenger =
         erOvergangsstønad || behandling.stønadstype === Stønadstype.SKOLEPENGER;
     const { visSettPåVent, settVisSettPåVent, hentBehandling } = useBehandling();
-    const { toggles } = useToggles();
     const { axiosRequest, settToast, innloggetSaksbehandler } = useApp();
 
     const [oppgave, settOppgave] = useState<Ressurs<IOppgave>>(byggTomRessurs<IOppgave>());
@@ -300,20 +297,17 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
                                     onChange={(e) => settBeskrivelse(e.target.value)}
                                 />
                             )}
-                            {toggles[ToggleName.visVurderHenvendelseOppgaver] &&
-                                erOvergangsstønadEllerSkolepenger && (
-                                    <LokalkontorOppgavevalg
-                                        aktuelleOppgaver={aktuelleOppgaver}
-                                        sendteOppgaver={sendteOppgaver}
-                                        settOppgaverMotLokalkontor={settOppgaverMotLokalkontor}
-                                        oppgaverMotLokalkontor={oppgaverMotLokalkontor}
-                                        erBehandlingPåVent={erBehandlingPåVent}
-                                        settInnstillingsoppgaveBeskjed={
-                                            settInnstillingsoppgaveBeskjed
-                                        }
-                                        innstillingsoppgaveBeskjed={innstillingsoppgaveBeskjed}
-                                    />
-                                )}
+                            {erOvergangsstønadEllerSkolepenger && (
+                                <LokalkontorOppgavevalg
+                                    aktuelleOppgaver={aktuelleOppgaver}
+                                    sendteOppgaver={sendteOppgaver}
+                                    settOppgaverMotLokalkontor={settOppgaverMotLokalkontor}
+                                    oppgaverMotLokalkontor={oppgaverMotLokalkontor}
+                                    erBehandlingPåVent={erBehandlingPåVent}
+                                    settInnstillingsoppgaveBeskjed={settInnstillingsoppgaveBeskjed}
+                                    innstillingsoppgaveBeskjed={innstillingsoppgaveBeskjed}
+                                />
+                            )}
                         </FlexColumnDiv>
                         <KnappeWrapper>
                             {!erBehandlingPåVent && (
