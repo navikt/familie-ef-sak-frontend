@@ -24,7 +24,6 @@ const periodeSkolepengerFeil: FormErrors<IPeriodeSkolepenger> = {
 const periodeUtgiftFeil: FormErrors<SkolepengerUtgift> = {
     id: undefined,
     årMånedFra: undefined,
-    utgifter: undefined,
     stønad: undefined,
 };
 
