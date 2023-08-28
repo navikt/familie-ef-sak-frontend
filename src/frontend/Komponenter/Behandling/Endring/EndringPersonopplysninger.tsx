@@ -25,7 +25,7 @@ const OppdaterGrunnlagKnapp = styled(Button)`
 
 const skalViseDetaljer = (ny: string, tidligere: string) => tidligere != '' || ny != '';
 
-const visEndringsdetaljer = (ny: string, tidligere: string) =>
+const visEndringsdetaljer = (tidligere: string, ny: string) =>
     skalViseDetaljer(tidligere, ny) && (
         <>
             - <strong>Tidligere:</strong> {tidligere} <strong>Ny:</strong> {ny}
