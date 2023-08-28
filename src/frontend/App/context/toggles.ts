@@ -12,6 +12,5 @@ export enum ToggleName {
     visAutomatiskUtfylleVilkår = 'familie.ef.sak.frontend-automatisk-utfylle-vilkar', // Miljø-toggle
     visSatsendring = 'familie.ef.sak.frontend-vis-satsendring',
     visInntektPersonoversikt = 'familie.ef.sak.frontend.vis-inntekt-personoversikt',
-    årsakRevurderingBeskrivelse = 'familie.ef.sak.arsak-revurdering-beskrivelse',
     fremleggsoppgave = 'familie.ef.sak.automatiske-oppgaver.fremleggsoppgave',
 }
