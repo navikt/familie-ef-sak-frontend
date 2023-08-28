@@ -17,9 +17,7 @@ const Utgiftsrad = styled.div<{
     erFjernet?: boolean;
 }>`
     display: grid;
-    grid-template-areas: 'fraOgMedVelger utgifter stønad';
-    grid-template-columns: ${(props) =>
-        props.lesevisning ? '9rem 4rem 4rem' : '12rem 5rem 5rem 4rem'};
+    grid-template-columns: ${(props) => (props.lesevisning ? '9rem 4rem' : '12rem 5rem 4rem')};
     grid-gap: 0.5rem;
     margin-bottom: ${(props) => (props.erHeader ? '0rem' : '0.5rem')};
     text-decoration: ${(props) => (props.erFjernet ? 'line-through' : 'inherit')};
@@ -93,7 +91,6 @@ const Utgiftsperioder: React.FC<Props> = ({
             <FlexColumn>
                 <Utgiftsrad erHeader={true} lesevisning={erLesevisning}>
                     <SmallTextLabel>Utbetalingsmåned</SmallTextLabel>
-                    <SmallTextLabel>Utgifter</SmallTextLabel>
                     <SmallTextLabel>Stønadsbeløp</SmallTextLabel>
                 </Utgiftsrad>
                 {forrigeData.map((utgift, index) => {
@@ -108,16 +105,12 @@ const Utgiftsperioder: React.FC<Props> = ({
 
                     return (
                         <Utgiftsrad
-                            erHeader={false}
-                            lesevisning={erLesevisning}
-                            key={index}
                             erFjernet={utgiftsperiodeErFjernet}
+                            key={index}
+                            lesevisning={erLesevisning}
                         >
                             <SmallTextLabel>
                                 {formaterIsoMånedÅrFull(utgift.årMånedFra)}
-                            </SmallTextLabel>
-                            <SmallTextLabel>
-                                {formaterTallMedTusenSkilleEllerStrek(utgift.utgifter)}
                             </SmallTextLabel>
                             <SmallTextLabel>
                                 {formaterTallMedTusenSkilleEllerStrek(utgift.stønad)}

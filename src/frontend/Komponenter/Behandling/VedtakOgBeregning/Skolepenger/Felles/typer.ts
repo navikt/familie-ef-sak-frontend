@@ -37,7 +37,6 @@ export const tomSkoleårsperiode: IPeriodeSkolepenger = {
 export const tomUtgift = (): SkolepengerUtgift => ({
     id: uuidv4(),
     årMånedFra: tilÅrMåned(new Date()),
-    utgifter: undefined,
     stønad: undefined,
 });
 
