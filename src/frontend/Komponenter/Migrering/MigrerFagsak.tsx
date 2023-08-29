@@ -17,8 +17,6 @@ import {
     nullableBooleanTilTekst,
 } from '../../App/utils/formatter';
 import Utregningstabell from '../Behandling/VedtakOgBeregning/Overgangsstønad/InnvilgeVedtak/Utregningstabell';
-import { useToggles } from '../../App/context/TogglesContext';
-import { ToggleName } from '../../App/context/toggles';
 import { IFagsakPerson } from '../../App/typer/fagsak';
 import styled from 'styled-components';
 import { Button, Checkbox, CheckboxGroup } from '@navikt/ds-react';
@@ -102,7 +100,6 @@ const MigrerFagsak: React.FC<{
     fagsakPerson: IFagsakPerson;
 }> = ({ fagsakPerson }) => {
     const { axiosRequest } = useApp();
-    const { toggles } = useToggles();
     const [migreringInfo, settMigreringInfo] = useState<Ressurs<MigreringInfoResponse>>(
         byggTomRessurs()
     );
@@ -118,10 +115,6 @@ const MigrerFagsak: React.FC<{
         }),
         [fagsakPersonId]
     );
-
-    if (!toggles[ToggleName.kanMigrereFagsak]) {
-        return null;
-    }
 
     const hentMigreringInfo = () => {
         settMigrertStatus(byggTomRessurs());
