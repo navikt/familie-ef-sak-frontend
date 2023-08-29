@@ -3,13 +3,16 @@ export interface Toggles {
 }
 
 export enum ToggleName {
-    visValgmulighetForKorrigering = 'familie.ef.sak.behandling-korrigering', // Permission-toggle
-
-    visIkkePubliserteBrevmaler = 'familie.ef.sak.frontend-vis-ikke-publiserte-brevmaler', // Miljø-toggle
-    kanMigrereFagsak = 'familie.ef.sak.migrering',
+    // Permission-toggles - la stå
+    visValgmulighetForKorrigering = 'familie.ef.sak.behandling-korrigering',
+    opprettBehandlingForFerdigstiltJournalpost = 'familie.ef.sak.opprett-behandling-for-ferdigstilt-journalpost',
     kanMigrereBarnetilsyn = 'familie.ef.sak.migrering.barnetilsyn',
-    opprettBehandlingForFerdigstiltJournalpost = 'familie.ef.sak.opprett-behandling-for-ferdigstilt-journalpost', // Permission-toggle
-    visAutomatiskUtfylleVilkår = 'familie.ef.sak.frontend-automatisk-utfylle-vilkar', // Miljø-toggle
+
+    // Miljø-toggles - la stå
+    visIkkePubliserteBrevmaler = 'familie.ef.sak.frontend-vis-ikke-publiserte-brevmaler',
+    visAutomatiskUtfylleVilkår = 'familie.ef.sak.frontend-automatisk-utfylle-vilkar',
+
+    // Midlertidige toggles - kan fjernes etterhvert
     visSatsendring = 'familie.ef.sak.frontend-vis-satsendring',
     visInntektPersonoversikt = 'familie.ef.sak.frontend.vis-inntekt-personoversikt',
 }
