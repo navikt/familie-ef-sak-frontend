@@ -4,14 +4,15 @@ import TabellVisning from '../Tabell/TabellVisning';
 import { Stønadstype, stønadstypeTilTekst } from '../../../App/typer/behandlingstema';
 import { formatterBooleanEllerUkjent } from '../../../App/utils/formatter';
 import { Registergrunnlag } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
-import { BodyShortSmall, SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
+import { SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
 import styled from 'styled-components';
-import { Button, Link } from '@navikt/ds-react';
+import { Button, Link, Tag } from '@navikt/ds-react';
 import { ExternalLink } from '@navikt/ds-icons';
 import { useHentHistoriskPensjon } from '../../../App/hooks/useHentHistoriskPensjon';
 import { RessursStatus } from '../../../App/typer/ressurs';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { VilkårInfoIkon } from '../Vilkårpanel/VilkårInformasjonKomponenter';
+import { TidligereVedtaksperiodeKort } from './TidligereVedtaksperiodeKort';
 
 const FlexDiv = styled.div`
     display: flex;
@@ -117,14 +118,18 @@ const TidligereVedtaksperioderInfo: FC<{ tidligereVedtaksperioder: ITidligereVed
                 />
             </DivMedBottomMargin>
 
+            <TidligereVedtaksperiodeKort tidligereVedtaksperioder={tidligereVedtaksperioder} />
+
             <FlexDiv>
                 <Registergrunnlag />
                 <SmallTextLabel>
                     Har bruker fått stønad før desember 2008 - <span>Infotrygd (PE PP)</span>
                 </SmallTextLabel>
-                <BodyShortSmall>
-                    {formatterBooleanEllerUkjent(tidligereVedtaksperioder.historiskPensjon)}
-                </BodyShortSmall>
+                {tidligereVedtaksperioder.historiskPensjon ? (
+                    <Tag variant="success-filled">Ja</Tag>
+                ) : (
+                    <Tag variant="neutral">Nei</Tag>
+                )}
                 {tidligereVedtaksperioder.historiskPensjon && <HistoriskpensjonLenke />}
             </FlexDiv>
         </>
