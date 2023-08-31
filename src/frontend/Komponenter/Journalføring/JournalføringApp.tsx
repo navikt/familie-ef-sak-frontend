@@ -153,6 +153,7 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
     useEffect(() => {
         if (fagsak.status === RessursStatus.SUKSESS) {
             journalpostState.settFagsakId(fagsak.data.id);
+            settFeilMeldning('');
         }
         // eslint-disable-next-line
     }, [fagsak]);
@@ -189,6 +190,7 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
         UstrukturertDokumentasjonType.PAPIRSØKNAD;
 
     const journalFør = () => {
+        settFeilMeldning('');
         if (fagsak.status !== RessursStatus.SUKSESS) {
             settFeilMeldning('Henting av fagsak feilet, relast siden');
             return;
