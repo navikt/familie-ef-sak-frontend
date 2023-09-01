@@ -3,6 +3,15 @@ import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { ITidligereVedtaksperioder } from './typer';
 import TabellVisningMedTag, { IStonader } from '../Tabell/TabellVisningMedTag';
 import { OSHistorikKort } from './OSHistorikKort';
+import styled from 'styled-components';
+
+const Container = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 0.5rem;
+    text-align: left;
+`;
 
 export const TidligereVedtaksperiodeKort: React.FC<{
     tidligereVedtaksperioder: ITidligereVedtaksperioder;
@@ -11,7 +20,7 @@ export const TidligereVedtaksperiodeKort: React.FC<{
         {
             overskrift: 'Overgangsstønad',
             historikk: {
-                sak: tidligereVedtaksperioder.sak,
+                sak: tidligereVedtaksperioder.sak, // Endre til nytt navn med sak: tidligereVedtaksperioder.sak?.øyeblikksbildeAvPerioderOgPeriodetype,
                 infotrygd: tidligereVedtaksperioder.infotrygd,
             },
             verdier: {
@@ -51,17 +60,17 @@ export const TidligereVedtaksperiodeKort: React.FC<{
     ];
 
     return (
-        <>
-            {stønader.map((stonad) => (
-                <>
+        <Container>
+            {stønader.map((stonad, i) => (
+                <React.Fragment key={i}>
                     {/* <pre>{JSON.stringify(stonad, null, 2)}</pre> */}
                     <TabellVisningMedTag stonad={stonad} />
                     <OSHistorikKort
                         infotrygd={stonad.historikk?.infotrygd}
                         sak={stonad.historikk?.sak}
                     />
-                </>
+                </React.Fragment>
             ))}
-        </>
+        </Container>
     );
 };

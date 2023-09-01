@@ -33,46 +33,42 @@ export const OSHistorikKort: React.FC<ITidligereVedtaksperioder> = ({ infotrygd,
         return null;
     }
 
-    // const harØyeblikksbildeAvInfotrygd = sak?.øyeblikksbildeAvPerioderOgPeriodetype?.length || 0;
-
-    // if (infotrygd?.harTidligereOvergangsstønad && harØyeblikksbildeAvInfotrygd > 0) {
-    //     return (
-    //         <Container>
-    //             <Tittel level="3" size="small">
-    //                 Historikk i Infotrygd
-    //             </Tittel>
-    //             <BodyShort>
-    //                 Bruker har historikk i Infotrygd som må sjekkes manuelt bla bla
-    //             </BodyShort>
-    //         </Container>
-    //     );
-    // }
-
-    const harØyeblikksbildeAvOS = sak?.øyeblikksbildeAvPerioderOgPeriodetype?.length || 0;
-
-    if (harØyeblikksbildeAvOS > 0) {
-        return (
-            <Container>
-                <Tittel level="3" size="small">
-                    Historikk i EF Sak
-                </Tittel>
-                <Grid>
-                    <Row>
-                        <Label>Periode</Label>
-                        <Label>Periodetype</Label>
-                        <Label>Måneder innvilget</Label>
-                    </Row>
-                    {sak?.øyeblikksbildeAvPerioderOgPeriodetype.map((rad, i) => (
-                        <Row key={i}>
-                            <BodyShort>
-                                {rad.periode.fom} - {rad.periode.fom}
-                            </BodyShort>
-                            <BodyShort>{rad.periodeType}</BodyShort>
-                            <BodyShort>XXX</BodyShort>
+    return (
+        <>
+            {sak && (
+                <Container>
+                    <Tittel level="3" size="small">
+                        Historikk i EF Sak
+                    </Tittel>
+                    <Grid>
+                        <Row>
+                            <Label>Periode</Label>
+                            <Label>Periodetype</Label>
+                            <Label>Måneder innvilget</Label>
                         </Row>
-                    ))}
-                </Grid>
-            </Container>
-        );
-    }
+                        {sak?.øyeblikksbildeAvPerioderOgPeriodetype.map((rad, i) => (
+                            <Row key={i}>
+                                <BodyShort>
+                                    {rad.periode.fom} - {rad.periode.fom}
+                                </BodyShort>
+                                <BodyShort>{rad.periodeType}</BodyShort>
+                                <BodyShort>XXX</BodyShort>
+                            </Row>
+                        ))}
+                    </Grid>
+                </Container>
+            )}
+
+            {infotrygd && (
+                <Container>
+                    <Tittel level="3" size="small">
+                        Historikk i Infotrygd
+                    </Tittel>
+                    <BodyShort>
+                        Bruker har historikk i Infotrygd som må sjekkes manuelt bla bla
+                    </BodyShort>
+                </Container>
+            )}
+        </>
+    );
 };
