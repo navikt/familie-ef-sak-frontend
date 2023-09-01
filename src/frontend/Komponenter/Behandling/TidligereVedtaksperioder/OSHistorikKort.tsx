@@ -56,7 +56,6 @@ export const OSHistorikKort: React.FC<ITidligereVedtaksperioder> = ({ infotrygd,
                                             ? `${rad.periode.fom}`
                                             : `${rad.periode.fom} - ${rad.periode.tom}`}
                                     </BodyShort>
-
                                     <div>
                                         <Tag
                                             variant={etikettTypeOvergangsstønad(rad.periodeType)}
@@ -70,7 +69,7 @@ export const OSHistorikKort: React.FC<ITidligereVedtaksperioder> = ({ infotrygd,
                             ))}
                         </Grid>
                     ) : (
-                        <BodyShort size="small">Kan ikke vise tidligere hostorikk.</BodyShort>
+                        <BodyShort size="small">Kan ikke vise tidligere historikk.</BodyShort>
                     )}
                 </Container>
             )}
@@ -80,7 +79,9 @@ export const OSHistorikKort: React.FC<ITidligereVedtaksperioder> = ({ infotrygd,
                     <Tittel level="3" size="small">
                         Historikk i Infotrygd
                     </Tittel>
-                    <BodyShort>Bruker har historikk i Infotrygd som må sjekkes manuelt.</BodyShort>
+                    <BodyShort size="small">
+                        Bruker har historikk i Infotrygd som må sjekkes manuelt.
+                    </BodyShort>
                 </Container>
             )}
         </>
