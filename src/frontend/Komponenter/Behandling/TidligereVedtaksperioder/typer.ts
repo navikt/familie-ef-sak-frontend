@@ -10,12 +10,13 @@ export interface ITidligereInnvilgetVedtak {
     harTidligereOvergangsstønad: boolean;
     harTidligereBarnetilsyn: boolean;
     harTidligereSkolepenger: boolean;
-    øyeblikksbildeAvPerioderOgPeriodetype: IGrunnlagsdataPeriodeHistorikk[];
+    periodeHistorikkOvergangsstønad: IGrunnlagsdataPeriodeHistorikk[];
 }
 
 export interface IGrunnlagsdataPeriodeHistorikk {
     periodeType: EPeriodetype;
     periode: IMånedsperiode;
+    antMnd: number;
 }
 
 export interface IMånedsperiode {

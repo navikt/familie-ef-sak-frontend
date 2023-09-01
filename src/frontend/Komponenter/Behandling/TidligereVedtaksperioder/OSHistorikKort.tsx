@@ -35,7 +35,7 @@ export const OSHistorikKort: React.FC<ITidligereVedtaksperioder> = ({ infotrygd,
 
     return (
         <>
-            {sak && (
+            {sak && ( // TODO: Gjøre endring slik at tabellen ikke vises hvis det mangler data
                 <Container>
                     <Tittel level="3" size="small">
                         Historikk i EF Sak
@@ -46,13 +46,13 @@ export const OSHistorikKort: React.FC<ITidligereVedtaksperioder> = ({ infotrygd,
                             <Label>Periodetype</Label>
                             <Label>Måneder innvilget</Label>
                         </Row>
-                        {sak?.øyeblikksbildeAvPerioderOgPeriodetype.map((rad, i) => (
+                        {sak?.periodeHistorikkOvergangsstønad.map((rad, i) => (
                             <Row key={i}>
                                 <BodyShort>
-                                    {rad.periode.fom} - {rad.periode.fom}
+                                    {rad.periode.fom} - {rad.periode.tom}
                                 </BodyShort>
                                 <BodyShort>{rad.periodeType}</BodyShort>
-                                <BodyShort>XXX</BodyShort>
+                                <BodyShort>{rad.antMnd}</BodyShort>
                             </Row>
                         ))}
                     </Grid>
