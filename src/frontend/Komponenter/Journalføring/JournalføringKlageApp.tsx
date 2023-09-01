@@ -105,7 +105,7 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
     const { klagebehandlinger, hentKlagebehandlinger } = useHentKlagebehandlinger();
 
     const { hentFagsak, fagsak } = useHentFagsak();
-    const [feilmelding, settFeilMeldning] = useState('');
+    const [feilmelding, settFeilmelding] = useState('');
 
     useEffect(() => {
         if (journalpostState.innsending.status === RessursStatus.SUKSESS) {
@@ -140,7 +140,7 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
             journalpostState
         );
         if (feilmeldingFraValidering) {
-            settFeilMeldning(feilmeldingFraValidering);
+            settFeilmelding(feilmeldingFraValidering);
         } else {
             journalpostState.fullførJournalføring();
         }
@@ -188,7 +188,7 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
                             behandling={journalpostState.behandling}
                             behandlinger={klagebehandlinger}
                             valgtFagsak={valgtFagsak}
-                            settFeilmelding={settFeilMeldning}
+                            settFeilmelding={settFeilmelding}
                         />
                         {erNyBehandling && (
                             <KlageMottatt>
