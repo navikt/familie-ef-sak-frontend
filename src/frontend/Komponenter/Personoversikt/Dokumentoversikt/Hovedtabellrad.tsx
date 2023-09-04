@@ -16,6 +16,7 @@ import { Journalposttype } from '@navikt/familie-typer';
 import { DownFilled, LeftFilled, RightFilled } from '@navikt/ds-icons';
 import { skalViseLenke } from '../utils';
 import { PadlockLockedIcon } from '@navikt/aksel-icons';
+import { useUnleashNextToggles } from '../../../App/context/TogglesContext';
 
 const TrHoveddokument = styled.tr`
     background-color: #f7f7f7;
@@ -49,6 +50,7 @@ const ikonForJournalposttype: Record<Journalposttype, React.ReactElement> = {
 export const HovedTabellrad: React.FC<{ dokument: Dokumentinfo; erKlikketId: string }> = ({
     dokument,
 }) => {
+    const { togglesUnleashNext } = useUnleashNextToggles();
     return (
         <TrHoveddokument>
             <Td>{formaterNullableIsoDatoTid(dokument.dato)}</Td>
@@ -59,7 +61,7 @@ export const HovedTabellrad: React.FC<{ dokument: Dokumentinfo; erKlikketId: str
                 </InnUt>
             </Td>
             <Td>
-                {skalViseLenke(dokument) ? (
+                {skalViseLenke(dokument, togglesUnleashNext) ? (
                     <>
                         <HovedLenke
                             key={dokument.journalpostId}
