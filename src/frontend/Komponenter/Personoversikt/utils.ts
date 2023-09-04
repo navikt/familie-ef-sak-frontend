@@ -3,6 +3,7 @@ import { BehandlingStatus } from '../../App/typer/behandlingstatus';
 import { Behandlingstype } from '../../App/typer/behandlingstype';
 import { VedleggRequest } from './vedleggRequest';
 import { Dokumentinfo } from '../../App/typer/dokumentliste';
+import { ToggleName, Toggles } from '../../App/context/toggles';
 
 export const alleBehandlingerErFerdigstiltEllerSattPåVent = (fagsak: Fagsak) =>
     fagsak.behandlinger.every(
@@ -46,4 +47,5 @@ export const oppdaterVedleggFilter = (
     };
 };
 
-export const skalViseLenke = (dokument: Dokumentinfo): boolean => dokument.harSaksbehandlerTilgang;
+export const skalViseLenke = (dokument: Dokumentinfo, toggles: Toggles): boolean =>
+    toggles[ToggleName.testEnvironment] && dokument.harSaksbehandlerTilgang;

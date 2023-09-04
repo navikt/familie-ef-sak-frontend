@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import { skalViseLenke } from '../utils';
 import { IkkeTilgang } from './Hovedtabellrad';
 import { PadlockLockedIcon } from '@navikt/aksel-icons';
+import { useUnleashNextToggles } from '../../../App/context/TogglesContext';
 
 const LenkeVenstreMargin = styled.a`
     margin-left: 2rem;
@@ -19,12 +20,14 @@ const LenkeVenstreMargin = styled.a`
 export const Tabellrad: React.FC<{ dokument: Dokumentinfo; erKlikketId: string }> = ({
     dokument,
 }) => {
+    const { togglesUnleashNext } = useUnleashNextToggles();
+    //const { toggles } = useToggles();
     return (
         <tr>
             <Td></Td>
             <Td></Td>
             <Td>
-                {skalViseLenke(dokument) ? (
+                {skalViseLenke(dokument, togglesUnleashNext) ? (
                     <>
                         <LenkeVenstreMargin
                             href={`/dokument/journalpost/${dokument.journalpostId}/dokument-pdf/${dokument.dokumentinfoId}`}

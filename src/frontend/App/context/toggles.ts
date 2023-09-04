@@ -15,4 +15,7 @@ export enum ToggleName {
     // Midlertidige toggles - kan fjernes etterhvert
     visSatsendring = 'familie.ef.sak.frontend-vis-satsendring',
     visInntektPersonoversikt = 'familie.ef.sak.frontend.vis-inntekt-personoversikt',
+
+    // Unleash next test
+    testEnvironment = 'test.environment',
 }
