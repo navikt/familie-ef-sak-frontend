@@ -35,8 +35,9 @@ const [TogglesUnleashNextProvider, useUnleashNextToggles] = createUseContext(() 
     TogglesUnleashNextProvider.displayName = 'TOGGLES_UNLEASH_NEXT_PROVIDER';
 
     const fetchUnleashNextToggles = useCallback(() => {
+        const toggleId = 'test.environment';
         const hentToggles = () => {
-            return axios.get(`/familie-ef-sak/api/featuretogglenext`, {
+            return axios.get(`/familie-ef-sak/api/featuretogglenext/` + toggleId, {
                 withCredentials: true,
             });
         };
