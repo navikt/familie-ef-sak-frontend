@@ -54,7 +54,7 @@ export const OSHistorikKort: React.FC<ITidligereVedtaksperioder> = ({ infotrygd,
                                     <BodyShort size="small">
                                         {rad.periode.fom === rad.periode.tom
                                             ? `${rad.periode.fom}`
-                                            : `${rad.periode.fom} - ${rad.periode.tom}`}
+                                            : `${rad.fomDato} - ${rad.periode.tom}`}
                                     </BodyShort>
                                     <div>
                                         <Tag
