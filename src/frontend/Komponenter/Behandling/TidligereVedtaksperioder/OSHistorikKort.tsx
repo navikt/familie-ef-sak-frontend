@@ -49,7 +49,7 @@ export const OSHistorikKort: React.FC<ITidligereVedtaksperioder> = ({ infotrygd,
                                 <Label>Periode</Label>
                                 <Label>Periodetype</Label>
                                 <Label>Måneder innvilget</Label>
-                                <Label>Har periode med 0 beløp</Label>
+                                <Label>Har 0 beløp</Label>
                             </Row>
                             {sak?.periodeHistorikkOvergangsstønad.map((rad, i) => (
                                 <Row key={i}>
