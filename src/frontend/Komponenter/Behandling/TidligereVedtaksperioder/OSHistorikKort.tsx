@@ -3,8 +3,8 @@ import { ITidligereVedtaksperioder } from './typer';
 import styled from 'styled-components';
 import { BodyShort, Heading, Label, Tag } from '@navikt/ds-react';
 import { etikettTypeOvergangsstønad } from '../../Personoversikt/HistorikkVedtaksperioder/vedtakshistorikkUtil';
-import { periodetypeTilTekst } from '../../../App/typer/vedtak';
-import { formaterIsoDato } from '../../../App/utils/formatter';
+import { EPeriodetype, periodetypeTilTekst } from '../../../App/typer/vedtak';
+import { formaterIsoDato, formatterBooleanEllerUkjent } from '../../../App/utils/formatter';
 
 const Container = styled.div`
     display: flex;
@@ -23,7 +23,7 @@ const Tittel = styled(Heading)`
 
 const Grid = styled.div`
     display: grid;
-    grid-template-columns: auto auto auto;
+    grid-template-columns: auto auto auto auto;
     gap: 0.2rem;
 `;
 
@@ -35,6 +35,7 @@ export const OSHistorikKort: React.FC<ITidligereVedtaksperioder> = ({ infotrygd,
     if (!infotrygd && !sak) {
         return null;
     }
+
     return (
         <>
             {sak && sak.harTidligereOvergangsstønad && (
@@ -48,6 +49,7 @@ export const OSHistorikKort: React.FC<ITidligereVedtaksperioder> = ({ infotrygd,
                                 <Label>Periode</Label>
                                 <Label>Periodetype</Label>
                                 <Label>Måneder innvilget</Label>
+                                <Label>Har periode med 0 beløp</Label>
                             </Row>
                             {sak?.periodeHistorikkOvergangsstønad.map((rad, i) => (
                                 <Row key={i}>
@@ -65,6 +67,13 @@ export const OSHistorikKort: React.FC<ITidligereVedtaksperioder> = ({ infotrygd,
                                         </Tag>
                                     </div>
                                     <BodyShort size="small">{rad.antMnd}</BodyShort>
+                                    <BodyShort size="small">
+                                        {rad.periodeType === EPeriodetype.SANKSJON
+                                            ? ''
+                                            : formatterBooleanEllerUkjent(
+                                                  rad.harPeriodeUtenUtbetaling
+                                              )}
+                                    </BodyShort>
                                 </Row>
                             ))}
                         </Grid>

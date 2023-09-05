@@ -18,4 +18,5 @@ export interface IGrunnlagsdataPeriodeHistorikk {
     antMnd: number;
     fom: string;
     tom: string;
+    harPeriodeUtenUtbetaling: boolean;
 }
