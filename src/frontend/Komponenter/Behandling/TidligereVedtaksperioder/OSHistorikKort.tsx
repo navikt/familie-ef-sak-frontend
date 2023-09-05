@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { BodyShort, Heading, Label, Tag } from '@navikt/ds-react';
 import { etikettTypeOvergangsstønad } from '../../Personoversikt/HistorikkVedtaksperioder/vedtakshistorikkUtil';
 import { periodetypeTilTekst } from '../../../App/typer/vedtak';
+import { formaterIsoDato } from '../../../App/utils/formatter';
 
 const Container = styled.div`
     display: flex;
@@ -34,10 +35,9 @@ export const OSHistorikKort: React.FC<ITidligereVedtaksperioder> = ({ infotrygd,
     if (!infotrygd && !sak) {
         return null;
     }
-    // TODO: Legg til dager i periode
     return (
         <>
-            {sak && ( // TODO: Endre tekst som vises hvis det ikke finnes noe data
+            {sak && sak.harTidligereOvergangsstønad && (
                 <Container>
                     <Tittel level="3" size="small">
                         Historikk i EF Sak
@@ -52,9 +52,9 @@ export const OSHistorikKort: React.FC<ITidligereVedtaksperioder> = ({ infotrygd,
                             {sak?.periodeHistorikkOvergangsstønad.map((rad, i) => (
                                 <Row key={i}>
                                     <BodyShort size="small">
-                                        {rad.periode.fom === rad.periode.tom
-                                            ? `${rad.periode.fom}`
-                                            : `${rad.fomDato} - ${rad.periode.tom}`}
+                                        {`${formaterIsoDato(rad.fom)} 
+                                        - 
+                                        ${formaterIsoDato(rad.tom)}`}
                                     </BodyShort>
                                     <div>
                                         <Tag

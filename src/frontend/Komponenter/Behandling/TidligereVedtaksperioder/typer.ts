@@ -15,13 +15,7 @@ export interface ITidligereInnvilgetVedtak {
 
 export interface IGrunnlagsdataPeriodeHistorikk {
     periodeType: EPeriodetype;
-    periode: IMånedsperiode;
     antMnd: number;
-    fomDato: string;
-    tomDato: string;
-}
-
-export interface IMånedsperiode {
     fom: string;
     tom: string;
 }
