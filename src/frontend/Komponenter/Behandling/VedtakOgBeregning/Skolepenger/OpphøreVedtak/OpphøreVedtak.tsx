@@ -21,7 +21,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { BegrunnelsesFelt } from '../Felles/BegrunnelsesFelt';
 import { AlertError } from '../../../../../Felles/Visningskomponenter/Alerts';
 import HovedKnapp from '../../../../../Felles/Knapper/HovedKnapp';
-import { validerSkoleårsperioderMedBegrunnelse } from '../Felles/vedtaksvalidering';
+import { validerSkoleårsperioderForOpphør } from '../Felles/vedtaksvalidering';
 import { Form, Utregningstabell } from '../InnvilgeVedtak/InnvilgeVedtak';
 
 const utledInitielleSkoleårsperioder = (
@@ -58,7 +58,7 @@ export const OpphøreVedtak: React.FC<{
                 : utledInitielleSkoleårsperioder(forrigeVedtak),
             begrunnelse: lagretInnvilgetVedtak?.begrunnelse || '',
         },
-        validerSkoleårsperioderMedBegrunnelse
+        validerSkoleårsperioderForOpphør
     );
 
     const skoleårsPerioderState = formState.getProps(
