@@ -27,6 +27,13 @@ const periodeUtgiftFeil: FormErrors<SkolepengerUtgift> = {
     stønad: undefined,
 };
 
+export const validerSkoleårsperioderForOpphør = ({ begrunnelse }: InnvilgeVedtakForm) => {
+    return {
+        skoleårsperioder: [],
+        begrunnelse: !harVerdi(begrunnelse) ? 'Mangelfull utfylling av begrunnelse' : undefined,
+    };
+};
+
 export const validerSkoleårsperioderMedBegrunnelse = ({
     skoleårsperioder,
     begrunnelse,
