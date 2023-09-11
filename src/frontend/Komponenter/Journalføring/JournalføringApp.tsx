@@ -133,7 +133,7 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
     const hentDokumentResponse = useHentDokument(journalResponse.journalpost);
 
     const { hentFagsak, fagsak } = useHentFagsak();
-    const [feilmelding, settFeilMeldning] = useState('');
+    const [feilmelding, settFeilmelding] = useState('');
 
     useEffect(() => {
         if (journalpostState.innsending.status === RessursStatus.SUKSESS) {
@@ -153,6 +153,7 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
     useEffect(() => {
         if (fagsak.status === RessursStatus.SUKSESS) {
             journalpostState.settFagsakId(fagsak.data.id);
+            settFeilmelding('');
         }
         // eslint-disable-next-line
     }, [fagsak]);
@@ -189,8 +190,9 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
         UstrukturertDokumentasjonType.PAPIRSØKNAD;
 
     const journalFør = () => {
+        settFeilmelding('');
         if (fagsak.status !== RessursStatus.SUKSESS) {
-            settFeilMeldning('Henting av fagsak feilet, relast siden');
+            settFeilmelding('Henting av fagsak feilet, relast siden');
             return;
         }
         const feilmeldingFraValidering = validerJournalføringState(
@@ -199,7 +201,7 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
             alleBehandlingerErFerdigstiltEllerSattPåVent(fagsak.data)
         );
         if (feilmeldingFraValidering) {
-            settFeilMeldning(feilmeldingFraValidering);
+            settFeilmelding(feilmeldingFraValidering);
         } else if (skalBeOmBekreftelse(harValgtNyBehandling(journalpostState.behandling))) {
             journalpostState.settVisBekreftelsesModal(true);
         } else {
@@ -260,7 +262,7 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
                             settBehandling={journalpostState.settBehandling}
                             behandling={journalpostState.behandling}
                             fagsak={fagsak}
-                            settFeilmelding={settFeilMeldning}
+                            settFeilmelding={settFeilmelding}
                         />
                         {kanLeggeTilBarnSomSkalFødes() && (
                             <LeggTilBarnSomSkalFødes

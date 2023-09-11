@@ -12,11 +12,10 @@ import { EVilkårsbehandleBarnValg } from '../../App/typer/vilkårsbehandleBarnV
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { NyeBarn } from '../../Felles/NyeBarn/NyeBarn';
 import { Fagsak } from '../../App/typer/fagsak';
-import { BehandlingStatus } from '../../App/typer/behandlingstatus';
+import { alleBehandlingerErFerdigstiltEllerSattPåVent } from '../Personoversikt/utils';
 
-const harBehandlingOgAlleErFerdigstilte = (fagsak: Fagsak) =>
-    fagsak.behandlinger.length > 0 &&
-    fagsak.behandlinger.every((b) => b.status === BehandlingStatus.FERDIGSTILT);
+const harBehandlingOgAlleErFerdigstilteEllerSattPåVent = (fagsak: Fagsak) =>
+    fagsak.behandlinger.length > 0 && alleBehandlingerErFerdigstiltEllerSattPåVent(fagsak);
 
 const EttersendingMedNyeBarn: React.FC<{
     fagsak: Fagsak;
@@ -30,7 +29,7 @@ const EttersendingMedNyeBarn: React.FC<{
     >(byggTomRessurs());
 
     useEffect(() => {
-        if (harBehandlingOgAlleErFerdigstilte(fagsak)) {
+        if (harBehandlingOgAlleErFerdigstilteEllerSattPåVent(fagsak)) {
             axiosRequest<NyeBarnSidenForrigeBehandling, null>({
                 url: `familie-ef-sak/api/behandling/barn/fagsak/${fagsak.id}`,
             }).then((response: RessursSuksess<NyeBarnSidenForrigeBehandling> | RessursFeilet) => {

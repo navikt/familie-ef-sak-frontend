@@ -48,6 +48,7 @@ const BehandlingInnold: React.FC<Props> = ({
 
     const håndterCheck = (behandlingsId: string) => {
         return (e: React.ChangeEvent<HTMLInputElement>) => {
+            settFeilmelding('');
             if (e.target.checked) {
                 if (behandlingsId === 'ny') {
                     settBehandling({
@@ -80,7 +81,7 @@ const BehandlingInnold: React.FC<Props> = ({
                 });
             } else {
                 settFeilmelding(
-                    'Kan ikke opprette ny behandling på fagsak med en behandling som ikke er ferdigstilt'
+                    'Kan ikke opprette ny behandling. Det finnes en behandling som ikke er ferdigstilt.'
                 );
             }
         } else {
