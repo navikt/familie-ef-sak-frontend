@@ -110,4 +110,6 @@ export const svarTypeTilTekst: Record<string, string> = {
     BRUKER_MOTTAR_IKKE_OVERGANGSSTØNAD: 'Bruker mottar ikke overgangsstønad',
 };
 
+/* Alternativer som kun er aktuelle for vedtak før 1. september 2023 skal kursiveres - for å vise saksbehandler at de
+ *  er utdaterte. Alternativene må fortsatt være tilgjengelige å velge for potensielle saker man ikke får migrert fra infotrygd */
 export const tekstSkalKursiveres = (tekst: string): boolean => teksterMedKursiv.includes(tekst);
