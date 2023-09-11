@@ -1,3 +1,13 @@
+export const teksterMedKursiv = [
+    'MEDLEM_MER_ENN_7_ÅR_AVBRUDD_MER_ENN_10ÅR',
+    'ANDRE_FORELDER_MEDLEM_MINST_7_ÅR_AVBRUDD_MER_ENN_10_ÅR',
+    'I_LANDET_FOR_GJENFORENING_ELLER_GIFTE_SEG',
+    'ANDRE_FORELDER_MEDLEM_SISTE_5_ÅR',
+    'ANDRE_FORELDER_MEDLEM_MINST_5_ÅR_AVBRUDD_MINDRE_ENN_10_ÅR',
+    'ANDRE_FORELDER_MEDLEM_MINST_7_ÅR_AVBRUDD_MER_ENN_10_ÅR',
+    'TOTALVURDERING_OPPFYLLER_FORSKRIFT',
+];
+
 export const delvilkårTypeTilTekst: Record<string, string> = {
     SØKER_MEDLEM_I_FOLKETRYGDEN: 'Har bruker vært medlem i folketrygden i de siste 5 årene?',
     BOR_OG_OPPHOLDER_SEG_I_NORGE: 'Bor og oppholder bruker og barna seg i Norge?',
@@ -99,3 +109,7 @@ export const svarTypeTilTekst: Record<string, string> = {
     NOEN_MÅNEDER_OVERSTIGER_6G: 'Ja, men noen måneder overstiger 6G',
     BRUKER_MOTTAR_IKKE_OVERGANGSSTØNAD: 'Bruker mottar ikke overgangsstønad',
 };
+
+/* Alternativer som kun er aktuelle for vedtak før 1. september 2023 skal kursiveres - for å vise saksbehandler at de
+ *  er utdaterte. Alternativene må fortsatt være tilgjengelige å velge for potensielle saker man ikke får migrert fra infotrygd */
+export const tekstSkalKursiveres = (tekst: string): boolean => teksterMedKursiv.includes(tekst);

@@ -3,9 +3,10 @@ import { FC } from 'react';
 import { Regel } from './typer';
 import { DelvilkårContainer } from './DelvilkårContainer';
 import { hjelpeTekstConfig } from './hjelpetekstconfig';
-import { delvilkårTypeTilTekst, svarTypeTilTekst } from './tekster';
+import { delvilkårTypeTilTekst, svarTypeTilTekst, tekstSkalKursiveres } from './tekster';
 import { Vurdering } from '../Inngangsvilkår/vilkår';
 import { HelpText, Radio, RadioGroup } from '@navikt/ds-react';
+import styled from 'styled-components';
 
 interface Props {
     regel: Regel;
@@ -13,26 +14,34 @@ interface Props {
     settVurdering: (nyttSvar: Vurdering) => void;
 }
 
+const FontStyle = styled.div<{ italic: boolean }>`
+    font-style: ${(props) => (props.italic ? 'italic' : 'normal')};
+`;
+
 const Delvilkår: FC<Props> = ({ regel, vurdering, settVurdering }) => {
     const hjelpetekst = hjelpeTekstConfig[regel.regelId];
     return (
         <DelvilkårContainer>
             <RadioGroup legend={delvilkårTypeTilTekst[regel.regelId]} value={vurdering.svar || ''}>
-                {Object.keys(regel.svarMapping).map((svarId) => (
-                    <Radio
-                        key={`${regel.regelId}_${svarId}`}
-                        name={`${regel.regelId}_${svarId}`}
-                        value={svarId}
-                        onChange={() =>
-                            settVurdering({
-                                svar: svarId,
-                                regelId: regel.regelId,
-                            })
-                        }
-                    >
-                        {svarTypeTilTekst[svarId]}
-                    </Radio>
-                ))}
+                {Object.keys(regel.svarMapping).map((svarId) => {
+                    const erTekstKursiv = tekstSkalKursiveres(svarId);
+
+                    return (
+                        <Radio
+                            key={`${regel.regelId}_${svarId}`}
+                            name={`${regel.regelId}_${svarId}`}
+                            value={svarId}
+                            onChange={() =>
+                                settVurdering({
+                                    svar: svarId,
+                                    regelId: regel.regelId,
+                                })
+                            }
+                        >
+                            <FontStyle italic={erTekstKursiv}>{svarTypeTilTekst[svarId]}</FontStyle>
+                        </Radio>
+                    );
+                })}
             </RadioGroup>
             {hjelpetekst && (
                 <HelpText placement={hjelpetekst.plassering}>
