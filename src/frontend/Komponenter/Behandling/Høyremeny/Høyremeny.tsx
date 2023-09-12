@@ -7,12 +7,12 @@ import BehandlingHistorikk from './BehandlingHistorikk';
 import Totrinnskontroll from '../Totrinnskontroll/Totrinnskontroll';
 import { Back, Next } from '@navikt/ds-icons';
 import { useBehandling } from '../../../App/context/BehandlingContext';
-import { RessursStatus } from '../../../App/typer/ressurs';
 import { erBehandlingUnderArbeid } from '../../../App/typer/behandlingstatus';
 import { ABlue400 } from '@navikt/ds-tokens/dist/tokens';
+import { Behandling } from '../../../App/typer/fagsak';
 
-interface IHøyremenyProps {
-    behandlingId: string;
+interface Props {
+    behandling: Behandling;
     åpenHøyremeny: boolean;
 }
 
@@ -26,7 +26,6 @@ const StyledBack = styled(Back)`
 const StyledNext = styled(Next)`
     border-radius: 0;
     margin-top: 3px;
-
     color: white;
 `;
 
@@ -59,15 +58,12 @@ export enum Høyremenyvalg {
     Logg = 'Logg',
 }
 
-const Høyremeny: React.FC<IHøyremenyProps> = ({ behandlingId, åpenHøyremeny }) => {
+const Høyremeny: React.FC<Props> = ({ behandling, åpenHøyremeny }) => {
     const [aktivtValg, settAktivtvalg] = useState<Høyremenyvalg>(Høyremenyvalg.Logg);
-    const { settÅpenHøyremeny, behandling } = useBehandling();
+    const { settÅpenHøyremeny } = useBehandling();
 
     useEffect(() => {
-        if (
-            behandling.status === RessursStatus.SUKSESS &&
-            erBehandlingUnderArbeid(behandling.data)
-        ) {
+        if (erBehandlingUnderArbeid(behandling)) {
             settAktivtvalg(Høyremenyvalg.Mappe);
         }
     }, [behandling]);
@@ -88,21 +84,22 @@ const Høyremeny: React.FC<IHøyremenyProps> = ({ behandlingId, åpenHøyremeny 
                         <Valgvisning aktiv={aktivtValg} settAktiv={settAktivtvalg} />
                         {aktivtValg === Høyremenyvalg.Mappe && <Dokumentoversikt />}
                         {aktivtValg === Høyremenyvalg.Logg && (
-                            <BehandlingHistorikk behandlingId={behandlingId} />
+                            <BehandlingHistorikk
+                                behandling={behandling}
+                                behandlingId={behandling.id}
+                            />
                         )}
                         {aktivtValg === Høyremenyvalg.Dialog && <div>Her kommer dialog</div>}
                     </StyledHøyremeny>
                 </>
             ) : (
-                <div>
-                    <StyledButton
-                        onClick={() => {
-                            settÅpenHøyremeny(!åpenHøyremeny);
-                        }}
-                    >
-                        <StyledBack />
-                    </StyledButton>
-                </div>
+                <StyledButton
+                    onClick={() => {
+                        settÅpenHøyremeny(!åpenHøyremeny);
+                    }}
+                >
+                    <StyledBack />
+                </StyledButton>
             )}
         </>
     );
