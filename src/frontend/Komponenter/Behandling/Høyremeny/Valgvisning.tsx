@@ -3,14 +3,15 @@ import styled from 'styled-components';
 import { Høyremenyvalg } from './Høyremeny';
 import { Folder, ClockFilled } from '@navikt/ds-icons';
 import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
-import { ABlue400, ABlue500, AGray100, ABorderStrong } from '@navikt/ds-tokens/dist/tokens';
+import { ABlue400, ABlue500, AGray100, ABorderDivider } from '@navikt/ds-tokens/dist/tokens';
 
 const StyledIkonWrapper = styled.div`
     width: 100%;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    border-bottom: ${ABorderStrong} solid 2px;
+    border-top: ${ABorderDivider} solid 2px;
+    border-bottom: ${ABorderDivider} solid 2px;
     text-align: center;
 
     .navds-body-short {
