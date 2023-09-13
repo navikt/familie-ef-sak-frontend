@@ -12,17 +12,19 @@ import { RessursStatus } from '../typer/ressurs';
 import {
     BehandlingStatus,
     erBehandlingRedigerbar,
+    innloggetSaksbehandlerKanRedigereBehandling,
     utredesEllerFatterVedtak,
 } from '../typer/behandlingstatus';
-import { useApp } from './AppContext';
 import { useHentUtestengelser } from '../hooks/useHentUtestengelser';
 import { useHentEndringerPersonopplysninger } from '../hooks/useHentEndringerPersonopplysninger';
 import { useVilkår } from '../hooks/useVilkår';
 import { useToggles } from './TogglesContext';
+import { useHentAnsvarligSaksbehandler } from '../hooks/useHentAnsvarligSaksbehandler';
+import { useApp } from './AppContext';
 
 const [BehandlingProvider, useBehandling] = constate(() => {
-    const { axiosRequest } = useApp();
     const { toggles } = useToggles();
+    const { innloggetSaksbehandler } = useApp();
 
     const behandlingId = useParams<IBehandlingParams>().behandlingId as string;
 
@@ -34,6 +36,8 @@ const [BehandlingProvider, useBehandling] = constate(() => {
         useHentBehandlingHistorikk(behandlingId);
     const { hentTotrinnskontrollCallback, totrinnskontroll } =
         useHentTotrinnskontroll(behandlingId);
+    const { hentAnsvarligSaksbehandler, ansvarligSaksbehandler } =
+        useHentAnsvarligSaksbehandler(behandlingId);
 
     const hentBehandling = useRerunnableEffect(hentBehandlingCallback, [behandlingId]);
     const hentBehandlingshistorikk = useRerunnableEffect(hentBehandlingshistorikkCallback, [
@@ -54,22 +58,19 @@ const [BehandlingProvider, useBehandling] = constate(() => {
     useEffect(() => hentPersonopplysninger(behandlingId), [behandlingId]);
     useEffect(() => {
         settBehandlingErRedigerbar(
-            behandling.status === RessursStatus.SUKSESS && erBehandlingRedigerbar(behandling.data)
+            behandling.status === RessursStatus.SUKSESS &&
+                ansvarligSaksbehandler.status === RessursStatus.SUKSESS &&
+                erBehandlingRedigerbar(behandling.data) &&
+                innloggetSaksbehandlerKanRedigereBehandling(
+                    ansvarligSaksbehandler.data,
+                    innloggetSaksbehandler
+                )
         );
         settVisSettPåVent(
             behandling.status === RessursStatus.SUKSESS &&
                 behandling.data.status === BehandlingStatus.SATT_PÅ_VENT
         );
-    }, [behandling, toggles]);
-    useEffect(() => {
-        if (behandlingErRedigerbar) {
-            axiosRequest<string | null, string>({
-                method: 'GET',
-                url: `/familie-ef-sak/api/oppgave/${behandlingId}/tilordnet-ressurs`,
-            });
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [behandling, toggles, ansvarligSaksbehandler, innloggetSaksbehandler]);
 
     const [visHenleggModal, settVisHenleggModal] = useState(false);
     const [visSettPåVent, settVisSettPåVent] = useState(false);
@@ -89,6 +90,7 @@ const [BehandlingProvider, useBehandling] = constate(() => {
         ) {
             hentEndringerForPersonopplysninger(behandling.data.id);
         }
+        hentAnsvarligSaksbehandler();
         // eslint-disable-next-line
     }, [behandling]);
 
@@ -97,23 +99,24 @@ const [BehandlingProvider, useBehandling] = constate(() => {
     return {
         behandling,
         behandlingErRedigerbar,
-        totrinnskontroll,
-        personopplysningerResponse,
         behandlingHistorikk,
-        hentBehandling,
-        hentTotrinnskontroll,
-        hentBehandlingshistorikk,
-        regler,
-        visHenleggModal,
-        settVisHenleggModal,
-        visSettPåVent,
-        settVisSettPåVent,
-        åpenHøyremeny,
-        settÅpenHøyremeny,
-        utestengelser,
         endringerPersonopplysninger,
+        hentBehandling,
+        hentBehandlingshistorikk,
+        hentTotrinnskontroll,
         nullstillGrunnlagsendringer,
+        personopplysningerResponse,
+        regler,
+        settVisHenleggModal,
+        settVisSettPåVent,
+        settÅpenHøyremeny,
+        ansvarligSaksbehandler,
+        totrinnskontroll,
+        utestengelser,
+        visHenleggModal,
+        visSettPåVent,
         vilkårState,
+        åpenHøyremeny,
     };
 });
 

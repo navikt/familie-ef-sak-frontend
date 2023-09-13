@@ -1,4 +1,6 @@
 import { Behandling } from './fagsak';
+import { ISaksbehandler } from './saksbehandler';
+import { AnsvarligSaksbehandler } from '../hooks/useHentAnsvarligSaksbehandler';
 
 export enum BehandlingStatus {
     OPPRETTET = 'OPPRETTET',
@@ -28,6 +30,16 @@ export const erBehandlingUnderArbeid = (behandling: Behandling): boolean =>
 
 export const utredesEllerFatterVedtak = (behandling: Behandling): boolean =>
     [BehandlingStatus.UTREDES, BehandlingStatus.FATTER_VEDTAK].includes(behandling.status);
+
+export const innloggetSaksbehandlerKanRedigereBehandling = (
+    ansvarligSaksbehandler: AnsvarligSaksbehandler | null,
+    innloggetSaksbehandler: ISaksbehandler
+) => {
+    return (
+        !ansvarligSaksbehandler ||
+        ansvarligSaksbehandler.navIdent === innloggetSaksbehandler.navIdent
+    );
+};
 
 export enum ETaAvVentStatus {
     OK = 'OK',

@@ -10,7 +10,7 @@ import { useBehandling } from '../../../App/context/BehandlingContext';
 import { erBehandlingUnderArbeid } from '../../../App/typer/behandlingstatus';
 import { ABlue400 } from '@navikt/ds-tokens/dist/tokens';
 import { Behandling } from '../../../App/typer/fagsak';
-import AnsvarligSaksbehandler from './AnsvarligSaksbehandler';
+import TilegnetSaksbehandler from './TilegnetSaksbehandler';
 
 interface Props {
     behandling: Behandling;
@@ -82,7 +82,7 @@ const Høyremeny: React.FC<Props> = ({ behandling, åpenHøyremeny }) => {
                         >
                             <StyledNext />
                         </StyledButton>
-                        <AnsvarligSaksbehandler behandling={behandling} />
+                        <TilegnetSaksbehandler behandling={behandling} />
                         <Valgvisning aktiv={aktivtValg} settAktiv={settAktivtvalg} />
                         {aktivtValg === Høyremenyvalg.Mappe && <Dokumentoversikt />}
                         {aktivtValg === Høyremenyvalg.Logg && (
