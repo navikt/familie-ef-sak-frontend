@@ -18,12 +18,10 @@ import {
 import { useHentUtestengelser } from '../hooks/useHentUtestengelser';
 import { useHentEndringerPersonopplysninger } from '../hooks/useHentEndringerPersonopplysninger';
 import { useVilkår } from '../hooks/useVilkår';
-import { useToggles } from './TogglesContext';
 import { useHentAnsvarligSaksbehandler } from '../hooks/useHentAnsvarligSaksbehandler';
 import { useApp } from './AppContext';
 
 const [BehandlingProvider, useBehandling] = constate(() => {
-    const { toggles } = useToggles();
     const { innloggetSaksbehandler } = useApp();
 
     const behandlingId = useParams<IBehandlingParams>().behandlingId as string;
@@ -45,32 +43,10 @@ const [BehandlingProvider, useBehandling] = constate(() => {
     ]);
 
     const { hentUtestengelserForBehandling, utestengelser } = useHentUtestengelser();
-    useEffect(() => {
-        hentUtestengelserForBehandling(behandlingId);
-    }, [hentUtestengelserForBehandling, behandlingId]);
 
     const { hentRegler, regler } = useHentRegler();
-    // eslint-disable-next-line
-    useEffect(() => hentRegler(), [behandlingId]);
 
     const hentTotrinnskontroll = useRerunnableEffect(hentTotrinnskontrollCallback, [behandlingId]);
-    // eslint-disable-next-line
-    useEffect(() => hentPersonopplysninger(behandlingId), [behandlingId]);
-    useEffect(() => {
-        settBehandlingErRedigerbar(
-            behandling.status === RessursStatus.SUKSESS &&
-                ansvarligSaksbehandler.status === RessursStatus.SUKSESS &&
-                erBehandlingRedigerbar(behandling.data) &&
-                innloggetSaksbehandlerKanRedigereBehandling(
-                    ansvarligSaksbehandler.data,
-                    innloggetSaksbehandler
-                )
-        );
-        settVisSettPåVent(
-            behandling.status === RessursStatus.SUKSESS &&
-                behandling.data.status === BehandlingStatus.SATT_PÅ_VENT
-        );
-    }, [behandling, toggles, ansvarligSaksbehandler, innloggetSaksbehandler]);
 
     const [visHenleggModal, settVisHenleggModal] = useState(false);
     const [visSettPåVent, settVisSettPåVent] = useState(false);
@@ -83,16 +59,38 @@ const [BehandlingProvider, useBehandling] = constate(() => {
     } = useHentEndringerPersonopplysninger();
 
     useEffect(() => {
-        if (
-            behandling.status === RessursStatus.SUKSESS &&
-            utredesEllerFatterVedtak(behandling.data) &&
-            endringerPersonopplysninger.status === RessursStatus.IKKE_HENTET
-        ) {
-            hentEndringerForPersonopplysninger(behandling.data.id);
+        hentRegler();
+        hentPersonopplysninger(behandlingId);
+        hentUtestengelserForBehandling(behandlingId);
+        // eslint-disable-next-line
+    }, [behandlingId]);
+
+    useEffect(() => {
+        if (behandling.status === RessursStatus.SUKSESS) {
+            if (
+                utredesEllerFatterVedtak(behandling.data) &&
+                endringerPersonopplysninger.status === RessursStatus.IKKE_HENTET
+            ) {
+                hentEndringerForPersonopplysninger(behandling.data.id);
+            }
+            settVisSettPåVent(behandling.data.status === BehandlingStatus.SATT_PÅ_VENT);
         }
+
         hentAnsvarligSaksbehandler();
         // eslint-disable-next-line
     }, [behandling]);
+
+    useEffect(() => {
+        settBehandlingErRedigerbar(
+            behandling.status === RessursStatus.SUKSESS &&
+                ansvarligSaksbehandler.status === RessursStatus.SUKSESS &&
+                erBehandlingRedigerbar(behandling.data) &&
+                innloggetSaksbehandlerKanRedigereBehandling(
+                    ansvarligSaksbehandler.data,
+                    innloggetSaksbehandler
+                )
+        );
+    }, [behandling, ansvarligSaksbehandler, innloggetSaksbehandler]);
 
     const vilkårState = useVilkår();
 
