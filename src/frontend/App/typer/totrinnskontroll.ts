@@ -34,6 +34,7 @@ export enum ÅrsakUnderkjent {
     INNGANGSVILKÅR_ALENEOMSORG = 'INNGANGSVILKÅR_ALENEOMSORG',
     AKTIVITET = 'AKTIVITET',
     VEDTAK_OG_BEREGNING = 'VEDTAK_OG_BEREGNING',
+    SIMULERING = 'SIMULERING',
     VEDTAKSBREV = 'VEDTAKSBREV',
     RETUR_ETTER_ØNSKE_FRA_SAKSBEHANDLER = 'RETUR_ETTER_ØNSKE_FRA_SAKSBEHANDLER',
 }
@@ -45,6 +46,7 @@ export const årsakUnderkjentTilTekst: Record<ÅrsakUnderkjent, string> = {
     INNGANGSVILKÅR_ALENEOMSORG: 'Inngangsvilkår - Aleneomsorg',
     AKTIVITET: 'Aktivitet',
     VEDTAK_OG_BEREGNING: 'Vedtak og beregning',
+    SIMULERING: 'Simulering',
     VEDTAKSBREV: 'Vedtaksbrev',
     RETUR_ETTER_ØNSKE_FRA_SAKSBEHANDLER: 'Retur etter ønske fra saksbehandler',
 };
