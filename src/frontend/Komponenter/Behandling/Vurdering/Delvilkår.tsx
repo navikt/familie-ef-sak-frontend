@@ -5,7 +5,7 @@ import { DelvilkårContainer } from './DelvilkårContainer';
 import { hjelpeTekstConfig } from './hjelpetekstconfig';
 import { delvilkårTypeTilTekst, svarTypeTilTekst, tekstSkalKursiveres } from './tekster';
 import { Vurdering } from '../Inngangsvilkår/vilkår';
-import { HelpText, Radio, RadioGroup } from '@navikt/ds-react';
+import { Alert, HelpText, Radio, RadioGroup } from '@navikt/ds-react';
 import styled from 'styled-components';
 
 interface Props {
@@ -18,28 +18,42 @@ const FontStyle = styled.div<{ italic: boolean }>`
     font-style: ${(props) => (props.italic ? 'italic' : 'normal')};
 `;
 
+const unntakFraHovedregelTekst = 'Er unntak fra hovedregelen oppfylt?';
+
 const Delvilkår: FC<Props> = ({ regel, vurdering, settVurdering }) => {
     const hjelpetekst = hjelpeTekstConfig[regel.regelId];
     return (
         <DelvilkårContainer>
             <RadioGroup legend={delvilkårTypeTilTekst[regel.regelId]} value={vurdering.svar || ''}>
-                {Object.keys(regel.svarMapping).map((svarId) => {
+                {Object.keys(regel.svarMapping).map((svarId, i) => {
                     const erTekstKursiv = tekstSkalKursiveres(svarId);
-
                     return (
-                        <Radio
-                            key={`${regel.regelId}_${svarId}`}
-                            name={`${regel.regelId}_${svarId}`}
-                            value={svarId}
-                            onChange={() =>
-                                settVurdering({
-                                    svar: svarId,
-                                    regelId: regel.regelId,
-                                })
-                            }
-                        >
-                            <FontStyle italic={erTekstKursiv}>{svarTypeTilTekst[svarId]}</FontStyle>
-                        </Radio>
+                        <>
+                            {delvilkårTypeTilTekst[regel.regelId] === unntakFraHovedregelTekst &&
+                                i === 0 && (
+                                    <Alert size="small" variant="info">
+                                        Det er nye regler for unntak fra 1. september 2023. Du må
+                                        vurdere om det er nye eller gamle regler som gjelder for
+                                        saken din.
+                                    </Alert>
+                                )}
+
+                            <Radio
+                                key={`${regel.regelId}_${svarId}`}
+                                name={`${regel.regelId}_${svarId}`}
+                                value={svarId}
+                                onChange={() =>
+                                    settVurdering({
+                                        svar: svarId,
+                                        regelId: regel.regelId,
+                                    })
+                                }
+                            >
+                                <FontStyle italic={erTekstKursiv}>
+                                    {svarTypeTilTekst[svarId]}
+                                </FontStyle>
+                            </Radio>
+                        </>
                     );
                 })}
             </RadioGroup>
