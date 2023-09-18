@@ -2,7 +2,7 @@ import React from 'react';
 import { ISimuleringÅrsvelger } from './SimuleringTyper';
 import styled from 'styled-components';
 import { Button } from '@navikt/ds-react';
-import { Left, Right } from '@navikt/ds-icons';
+import { ArrowLeftIcon, ArrowRightIcon } from '@navikt/aksel-icons';
 
 const Årstall = styled.span`
     margin: 0 1rem;
@@ -15,14 +15,14 @@ const SimuleringÅrvelger: React.FC<{ årsvelger: ISimuleringÅrsvelger }> = ({ 
     return (
         <div>
             <Button
-                icon={<Left />}
+                icon={<ArrowLeftIcon />}
                 disabled={!kanVelgeForrigeÅr}
                 onClick={() => settÅr(valgtÅr - 1)}
                 size={'small'}
             />
             <Årstall>{valgtÅr}</Årstall>
             <Button
-                icon={<Right />}
+                icon={<ArrowRightIcon />}
                 disabled={!kanVelgeNesteÅr}
                 onClick={() => settÅr(valgtÅr + 1)}
                 size={'small'}

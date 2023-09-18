@@ -1,4 +1,4 @@
-import { AddCircle } from '@navikt/ds-icons';
+import { PlusCircleIcon } from '@navikt/aksel-icons';
 import React from 'react';
 import { Knapp } from './HovedKnapp';
 import { ButtonProps } from '@navikt/ds-react';
@@ -14,7 +14,7 @@ const LeggTilKnapp: React.FC<{
     return (
         <Knapp
             className={className}
-            icon={<AddCircle title={knappetekst ? knappetekst : ikontekst} />}
+            icon={<PlusCircleIcon title={knappetekst ? knappetekst : ikontekst} />}
             iconPosition={ikonPosisjon}
             onClick={onClick}
             type="button"

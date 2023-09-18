@@ -1,4 +1,4 @@
-import { Down } from '@navikt/ds-icons';
+import { ArrowDownIcon } from '@navikt/aksel-icons';
 import React from 'react';
 import { Button } from '@navikt/ds-react';
 
@@ -8,7 +8,7 @@ const NedKnapp: React.FC<{ onClick: () => void; ikontekst: string }> = ({ onClic
             type={'button'}
             onClick={onClick}
             variant={'tertiary'}
-            icon={<Down title={ikontekst} />}
+            icon={<ArrowDownIcon title={ikontekst} />}
         />
     );
 };

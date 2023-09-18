@@ -6,7 +6,7 @@ import { HistorikkElementProps, LinjeProps, StyledHistorikkElementProps } from '
 import { useApp } from '../../../App/context/AppContext';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
 import { base64toBlob, winUrl, åpnePdfIEgenTab } from '../../../App/utils/utils';
-import { ExternalLink } from '@navikt/ds-icons';
+import { ExternalLinkIcon } from '@navikt/aksel-icons';
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
 import { BehandlingResultat } from '../../../App/typer/fagsak';
 import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
@@ -118,7 +118,7 @@ const HistorikkElement: React.FC<HistorikkElementProps> = ({
                         type={'button'}
                         variant={'tertiary'}
                         onClick={hentOgÅpneVedtaksbrev}
-                        icon={<ExternalLink />}
+                        icon={<ExternalLinkIcon />}
                         iconPosition={'right'}
                         size={'xsmall'}
                     >

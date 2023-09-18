@@ -26,17 +26,14 @@
   },
   "dependencyComments": {
     "color-string": "Overrider versjon som brukes av winston, som kommer fra familie-frontend-backend",
-    "request-promise": "Overrider versjon som kommer fra familie-frontend-backend",
     "body-parser": "Overrider versjon som  kommer fra familie-frontend backend",
     "react-collapse": "Trengs for datovelgeren, overrider versjonen som ligger der"
   },
   "dependencies": {
-    "@navikt/aksel-icons": "^2.9.x",
-    "@navikt/ds-css": "2.9.x",
-    "@navikt/ds-icons": "2.9.x",
-    "@navikt/ds-react": "2.9.x",
-    "@navikt/ds-react-internal": "2.9.x",
-    "@navikt/ds-tokens": "2.9.x",
+    "@navikt/aksel-icons": "^5.5.0",
+    "@navikt/ds-css": "5.5.0",
+    "@navikt/ds-react": "5.5.0",
+    "@navikt/ds-tokens": "5.5.0",
     "@navikt/familie-backend": "10.0.7",
     "@navikt/familie-dokumentliste": "^8.1.1",
     "@navikt/familie-endringslogg": "^8.1.1",
