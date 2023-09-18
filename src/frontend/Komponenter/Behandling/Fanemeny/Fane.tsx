@@ -71,7 +71,10 @@ interface Props {
 }
 
 const Fane: React.FC<Props> = ({ side, behandling, index, deaktivert }) => {
-    const fanenavn = side.navn === SideNavn.KORRIGERING_UTEN_BREV ? SideNavn.BREV : side.navn;
+    const fanenavn =
+        side.navn === SideNavn.IVERKSETTE_KA_VEDTAK || side.navn === SideNavn.KORRIGERING_UTEN_BREV
+            ? SideNavn.BREV
+            : side.navn;
     const location = useLocation();
     const nåværendeFane = location.pathname.split('/')[3];
     return (
