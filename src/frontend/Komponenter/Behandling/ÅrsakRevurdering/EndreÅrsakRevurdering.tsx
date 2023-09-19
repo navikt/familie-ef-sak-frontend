@@ -39,7 +39,7 @@ export const EndreÅrsakRevurdering: React.FC<Props> = ({
 }) => {
     const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
         useApp();
-    const { behandlingErRedigerbar, hentBehandling } = useBehandling();
+    const { behandlingErRedigerbar, hentAnsvarligSaksbehandler, hentBehandling } = useBehandling();
 
     const [revurderingsinformasjon, settRevurderingsinformasjon] =
         useState<Revurderingsinformasjon>(initStateRevurderingsinformasjon);
@@ -85,6 +85,7 @@ export const EndreÅrsakRevurdering: React.FC<Props> = ({
                     oppdaterRevurderingsinformasjon(res.data);
                 } else {
                     settFeilmelding(res.frontendFeilmelding);
+                    hentAnsvarligSaksbehandler.rerun();
                 }
             })
             .finally(() => {
