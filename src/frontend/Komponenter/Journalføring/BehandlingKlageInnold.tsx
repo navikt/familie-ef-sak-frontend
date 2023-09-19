@@ -1,5 +1,4 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import 'nav-frontend-tabell-style';
 import styled from 'styled-components';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { formaterIsoDatoTid, formaterNullableIsoDato } from '../../App/utils/formatter';

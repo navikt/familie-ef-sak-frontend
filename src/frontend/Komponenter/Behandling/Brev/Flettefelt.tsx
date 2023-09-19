@@ -5,11 +5,8 @@ import styled from 'styled-components';
 import { BodyShort, HelpText, Label, Textarea, TextField } from '@navikt/ds-react';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const StyledInput = styled(({ fetLabel, ...props }) => <TextField autoComplete="off" {...props} />)`
+const StyledInput = styled(({ ...props }) => <TextField autoComplete="off" {...props} />)`
     padding-top: 0.5rem;
-    .skjemaelement__label {
-        font-weight: ${(fetLabel) => (fetLabel ? 600 : 300)};
-    }
 `;
 
 const TekstMedHjelpetekstWrapper = styled.div`

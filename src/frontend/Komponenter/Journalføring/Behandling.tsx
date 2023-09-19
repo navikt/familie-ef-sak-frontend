@@ -1,5 +1,4 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import 'nav-frontend-tabell-style';
 import styled from 'styled-components';
 import { Behandlingstype } from '../../App/typer/behandlingstype';
 import { Behandling, Fagsak } from '../../App/typer/fagsak';

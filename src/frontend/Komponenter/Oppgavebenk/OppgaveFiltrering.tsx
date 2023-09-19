@@ -19,6 +19,7 @@ import { IMappe } from './typer/mappe';
 import { harEgenAnsattRolle, harStrengtFortroligRolle } from '../../App/utils/roller';
 import { ModalWrapper } from '../../Felles/Modal/ModalWrapper';
 import { Alert, Button, Select, TextField } from '@navikt/ds-react';
+import SystemetLaster from '../../Felles/SystemetLaster/SystemetLaster';
 
 export const FlexDiv = styled.div`
     display: flex;
@@ -96,6 +97,7 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({
         : { enhet: IkkeFortroligEnhet.NAY };
     const [oppgaveRequest, settOppgaveRequest] = useState<IOppgaveRequest>({});
     const [periodeFeil, settPerioderFeil] = useState<Feil>(initFeilObjekt);
+    const [lasterFraLokalt, settLasterFraLokalt] = useState(true);
 
     const settOppgave = (key: keyof IOppgaveRequest) => {
         return (val?: string | number) =>
@@ -126,6 +128,7 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({
             harSaksbehandlerStrengtFortroligRolle
         );
         settOppgaveRequest(oppgaveRequestMedEnhet);
+        settLasterFraLokalt(false);
         hentOppgaver(oppgaveRequestMedEnhet);
     }, [hentOppgaver, harSaksbehandlerStrengtFortroligRolle, innloggetSaksbehandler.navIdent]);
 
@@ -152,7 +155,9 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({
         hentOppgaver(tomOppgaveRequest);
     };
 
-    return (
+    return lasterFraLokalt ? (
+        <SystemetLaster />
+    ) : (
         <>
             <FlexDiv>
                 <DatoPeriode
@@ -163,6 +168,7 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({
                     datoFraTekst="Reg.dato fra"
                     datoTilTekst="Reg.dato til"
                     datoFeil={periodeFeil.opprettetPeriodeFeil}
+                    id={'regdato' + oppgaveRequest.opprettetFom + oppgaveRequest.opprettetTom}
                 />
                 <CustomSelect
                     onChange={settOppgave('oppgavetype')}
@@ -184,6 +190,7 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({
                     datoFraTekst="Frist fra"
                     datoTilTekst="Frist til"
                     datoFeil={periodeFeil.fristPeriodeFeil}
+                    id={'frist'}
                 />
                 <CustomSelect
                     onChange={settOppgave('enhet')}

@@ -31,7 +31,7 @@ const StyledIkon = styled.div<IkonProps>`
     background-color: ${ABlue500};
     color: ${ABlue500};
 
-    :hover {
+    &:hover {
         cursor: pointer;
         svg {
             fill: ${ABlue400};
