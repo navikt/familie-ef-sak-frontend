@@ -43,7 +43,7 @@ export const OSHistorikKort: React.FC<ITidligereVedtaksperioder> = ({ infotrygd,
                     <Tittel level="3" size="small">
                         Historikk i EF Sak
                     </Tittel>
-                    {sak?.periodeHistorikkOvergangsstønad.length > 0 ? (
+                    {sak?.periodeHistorikkOvergangsstønad?.length > 0 ? (
                         <Grid>
                             <Row>
                                 <Label>Periode</Label>
