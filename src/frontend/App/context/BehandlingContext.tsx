@@ -34,10 +34,13 @@ const [BehandlingProvider, useBehandling] = constate(() => {
         useHentBehandlingHistorikk(behandlingId);
     const { hentTotrinnskontrollCallback, totrinnskontroll } =
         useHentTotrinnskontroll(behandlingId);
-    const { hentAnsvarligSaksbehandler, ansvarligSaksbehandler } =
+    const { hentAnsvarligSaksbehandlerCallback, ansvarligSaksbehandler } =
         useHentAnsvarligSaksbehandler(behandlingId);
 
     const hentBehandling = useRerunnableEffect(hentBehandlingCallback, [behandlingId]);
+    const hentAnsvarligSaksbehandler = useRerunnableEffect(hentAnsvarligSaksbehandlerCallback, [
+        behandlingId,
+    ]);
     const hentBehandlingshistorikk = useRerunnableEffect(hentBehandlingshistorikkCallback, [
         behandlingId,
     ]);
@@ -76,7 +79,6 @@ const [BehandlingProvider, useBehandling] = constate(() => {
             settVisSettPåVent(behandling.data.status === BehandlingStatus.SATT_PÅ_VENT);
         }
 
-        hentAnsvarligSaksbehandler();
         // eslint-disable-next-line
     }, [behandling]);
 
@@ -85,10 +87,7 @@ const [BehandlingProvider, useBehandling] = constate(() => {
             behandling.status === RessursStatus.SUKSESS &&
                 ansvarligSaksbehandler.status === RessursStatus.SUKSESS &&
                 erBehandlingRedigerbar(behandling.data) &&
-                innloggetSaksbehandlerKanRedigereBehandling(
-                    ansvarligSaksbehandler.data,
-                    innloggetSaksbehandler
-                )
+                innloggetSaksbehandlerKanRedigereBehandling(ansvarligSaksbehandler.data)
         );
     }, [behandling, ansvarligSaksbehandler, innloggetSaksbehandler]);
 
@@ -99,6 +98,7 @@ const [BehandlingProvider, useBehandling] = constate(() => {
         behandlingErRedigerbar,
         behandlingHistorikk,
         endringerPersonopplysninger,
+        hentAnsvarligSaksbehandler,
         hentBehandling,
         hentBehandlingshistorikk,
         hentTotrinnskontroll,

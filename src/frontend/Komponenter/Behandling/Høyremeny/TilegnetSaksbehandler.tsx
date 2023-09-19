@@ -6,12 +6,10 @@ import { BodyShort, Tooltip } from '@navikt/ds-react';
 import { behandlingStatusTilTekst } from '../../../App/typer/behandlingstatus';
 import { Behandling, behandlingResultatTilTekst } from '../../../App/typer/fagsak';
 import { formaterIsoDato, formaterIsoDatoTid } from '../../../App/utils/formatter';
-import { useApp } from '../../../App/context/AppContext';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
-import { ISaksbehandler } from '../../../App/typer/saksbehandler';
+import { AnsvarligSaksbehandlerRolle } from '../../../App/typer/saksbehandler';
 import { ASurfaceSuccess, ASurfaceWarning, ASurfaceNeutral } from '@navikt/ds-tokens/dist/tokens';
-import { AnsvarligSaksbehandler } from '../../../App/hooks/useHentAnsvarligSaksbehandler';
 
 const Container = styled.div`
     padding: 1rem;
@@ -66,36 +64,37 @@ interface Props {
 }
 
 const TilegnetSaksbehandler: React.FC<Props> = ({ behandling }) => {
-    const { innloggetSaksbehandler } = useApp();
     const { ansvarligSaksbehandler } = useBehandling();
 
     const utledStatusbarFarge = (
-        innloggetSaksbehandler: ISaksbehandler,
-        ansvarligSaksbehandler: AnsvarligSaksbehandler | null
-    ) => {
-        if (!ansvarligSaksbehandler) {
-            return ASurfaceNeutral;
-        } else if (innloggetSaksbehandler.navIdent === ansvarligSaksbehandler.navIdent) {
-            return ASurfaceSuccess;
+        ansvarligSaksbehandlerRolle: AnsvarligSaksbehandlerRolle
+    ): string => {
+        switch (ansvarligSaksbehandlerRolle) {
+            case AnsvarligSaksbehandlerRolle.IKKE_SATT:
+                return ASurfaceNeutral;
+            case AnsvarligSaksbehandlerRolle.INNLOGGET_SAKSBEHANDLER:
+                return ASurfaceSuccess;
+            case AnsvarligSaksbehandlerRolle.ANNEN_SAKSBEHANDLER:
+                return ASurfaceWarning;
         }
-        return ASurfaceWarning;
     };
 
     return (
         <DataViewer response={{ ansvarligSaksbehandler }}>
             {({ ansvarligSaksbehandler }) => {
-                const statusBarFarge = utledStatusbarFarge(
-                    innloggetSaksbehandler,
-                    ansvarligSaksbehandler
-                );
+                const statusBarFarge = utledStatusbarFarge(ansvarligSaksbehandler?.rolle);
 
-                const harAnsvarligBehandler = !!ansvarligSaksbehandler;
+                const behandlingHarAnsvarligSaksbehandler =
+                    ansvarligSaksbehandler.rolle ===
+                        AnsvarligSaksbehandlerRolle.INNLOGGET_SAKSBEHANDLER ||
+                    ansvarligSaksbehandler.rolle ===
+                        AnsvarligSaksbehandlerRolle.ANNEN_SAKSBEHANDLER;
 
-                const visingsnavn = harAnsvarligBehandler
+                const visingsnavn = behandlingHarAnsvarligSaksbehandler
                     ? `${ansvarligSaksbehandler.fornavn} ${ansvarligSaksbehandler.etternavn}`
                     : 'ingen ansvarlig';
 
-                const fontStyle = harAnsvarligBehandler ? 'normal' : 'italic';
+                const fontStyle = behandlingHarAnsvarligSaksbehandler ? 'normal' : 'italic';
 
                 return (
                     <Container>

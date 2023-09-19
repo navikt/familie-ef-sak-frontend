@@ -1,31 +1,24 @@
 import { useApp } from '../context/AppContext';
 import { useCallback, useState } from 'react';
 import { byggHenterRessurs, byggTomRessurs, Ressurs } from '../typer/ressurs';
-
-export interface AnsvarligSaksbehandler {
-    azureId: string;
-    enhet: string;
-    etternavn: string;
-    fornavn: string;
-    navIdent: string;
-}
+import { AnsvarligSaksbehandler } from '../typer/saksbehandler';
 
 export const useHentAnsvarligSaksbehandler = (behandlingId: string) => {
     const { axiosRequest } = useApp();
     const [ansvarligSaksbehandler, settAnsvarligSaksbehandler] = useState<
-        Ressurs<AnsvarligSaksbehandler | null>
+        Ressurs<AnsvarligSaksbehandler>
     >(byggTomRessurs());
 
-    const hentAnsvarligSaksbehandler = useCallback(() => {
+    const hentAnsvarligSaksbehandlerCallback = useCallback(() => {
         settAnsvarligSaksbehandler(byggHenterRessurs());
-        axiosRequest<AnsvarligSaksbehandler | null, string>({
+        axiosRequest<AnsvarligSaksbehandler, string>({
             method: 'GET',
             url: `/familie-ef-sak/api/oppgave/${behandlingId}/ansvarlig-saksbehandler`,
-        }).then((res: Ressurs<AnsvarligSaksbehandler | null>) => settAnsvarligSaksbehandler(res));
+        }).then((res: Ressurs<AnsvarligSaksbehandler>) => settAnsvarligSaksbehandler(res));
     }, [axiosRequest, behandlingId]);
 
     return {
         ansvarligSaksbehandler,
-        hentAnsvarligSaksbehandler,
+        hentAnsvarligSaksbehandlerCallback,
     };
 };
