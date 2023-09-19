@@ -14,9 +14,9 @@ export interface ITidligereInnvilgetVedtak {
 }
 
 export interface IGrunnlagsdataPeriodeHistorikk {
-    periodeType: EPeriodetype;
     antMnd: number;
+    antallMndUtenBeløp: number;
+    periodeType: EPeriodetype;
     fom: string;
     tom: string;
-    harPeriodeUtenUtbetaling: boolean;
 }

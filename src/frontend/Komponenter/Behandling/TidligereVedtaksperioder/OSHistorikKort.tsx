@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { BodyShort, Heading, Label, Tag } from '@navikt/ds-react';
 import { etikettTypeOvergangsstønad } from '../../Personoversikt/HistorikkVedtaksperioder/vedtakshistorikkUtil';
 import { EPeriodetype, periodetypeTilTekst } from '../../../App/typer/vedtak';
-import { formaterIsoDato, formatterBooleanEllerUkjent } from '../../../App/utils/formatter';
+import { formaterIsoDato } from '../../../App/utils/formatter';
 
 const Container = styled.div`
     display: flex;
@@ -68,11 +68,10 @@ export const OSHistorikKort: React.FC<ITidligereVedtaksperioder> = ({ infotrygd,
                                     </div>
                                     <BodyShort size="small">{rad.antMnd}</BodyShort>
                                     <BodyShort size="small">
-                                        {rad.periodeType === EPeriodetype.SANKSJON
-                                            ? ''
-                                            : formatterBooleanEllerUkjent(
-                                                  rad.harPeriodeUtenUtbetaling
-                                              )}
+                                        {rad.antallMndUtenBeløp >= 1 &&
+                                        rad.periodeType !== EPeriodetype.SANKSJON
+                                            ? `ja (${rad.antallMndUtenBeløp})`
+                                            : '-'}
                                     </BodyShort>
                                 </Row>
                             ))}
