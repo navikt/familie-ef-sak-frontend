@@ -26,8 +26,8 @@ const HamburgerWrapper = styled.div`
     position: relative;
 `;
 
-const HamburgerMenyInnhold = styled.div`
-    display: ${(props: HamburgerMenyInnholdProps) => (props.åpen ? 'block' : 'none')};
+const HamburgerMenyInnhold = styled.div<HamburgerMenyInnholdProps>`
+    display: ${(props) => (props.åpen ? 'block' : 'none')};
 
     position: absolute;
 

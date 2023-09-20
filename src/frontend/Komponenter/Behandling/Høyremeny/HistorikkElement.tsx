@@ -19,24 +19,22 @@ const IkonMedStipletLinje = styled.div`
     margin-right: 1rem;
 `;
 
-const Linje = styled.div`
+const Linje = styled.div<LinjeProps>`
     margin-right: 13px;
     border-right: 1px dashed #a0a0a0;
 
-    min-height: ${(props: LinjeProps) =>
-        props.siste ? '30px' : props.størreMellomrom ? '75px' : '60px'};
-    height: ${(props: LinjeProps) => (props.siste ? '30px' : '100%')};
+    min-height: ${(props) => (props.siste ? '30px' : props.størreMellomrom ? '75px' : '60px')};
+    height: ${(props) => (props.siste ? '30px' : '100%')};
 `;
 
 const Innhold = styled.div``;
 
-const StyledHistorikkElement = styled.li`
+const StyledHistorikkElement = styled.li<StyledHistorikkElementProps>`
     display: flex;
 
     list-style: none;
 
-    padding: ${(props: StyledHistorikkElementProps) =>
-        props.første ? '0.75rem 2rem 0' : '0 2rem'};
+    padding: ${(props) => (props.første ? '0.75rem 2rem 0' : '0 2rem')};
 
     .navds-body-short,
     .navds-label,

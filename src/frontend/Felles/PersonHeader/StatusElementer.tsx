@@ -18,8 +18,8 @@ export const GråTekst = styled(BodyShort)`
     color: ${ATextSubtle};
 `;
 
-const StatusMenyInnhold = styled.div`
-    display: ${(props: StatusMenyInnholdProps) => (props.åpen ? 'block' : 'none')};
+const StatusMenyInnhold = styled.div<StatusMenyInnholdProps>`
+    display: ${(props) => (props.åpen ? 'block' : 'none')};
 
     position: absolute;
 
