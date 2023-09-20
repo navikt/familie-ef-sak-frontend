@@ -113,7 +113,7 @@ export const InnvilgeBarnetilsyn: React.FC<{
         lagretVedtak?._type === IVedtakType.InnvilgelseBarnetilsynUtenUtbetaling
             ? (lagretVedtak as IInnvilgeVedtakForBarnetilsyn)
             : undefined;
-    const { behandlingErRedigerbar, hentBehandling } = useBehandling();
+    const { behandlingErRedigerbar, hentAnsvarligSaksbehandler, hentBehandling } = useBehandling();
     const { finnesKontantstøtteUtbetaling } = useHentKontantstøtteUtbetaling(behandling.id);
     const [laster, settLaster] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState('');
@@ -205,6 +205,7 @@ export const InnvilgeBarnetilsyn: React.FC<{
                 default:
                     settIkkePersistertKomponent(uuidv4());
                     settFeilmelding(res.frontendFeilmelding);
+                    hentAnsvarligSaksbehandler.rerun();
             }
         };
     };

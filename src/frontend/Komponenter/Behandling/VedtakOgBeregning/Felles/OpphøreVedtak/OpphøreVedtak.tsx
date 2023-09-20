@@ -34,7 +34,7 @@ export const OpphøreVedtak: React.FC<{
         lagretOpphørtVedtak?.begrunnelse || ''
     );
     const [feilmelding, settFeilmelding] = useState<string | undefined>();
-    const { behandlingErRedigerbar, hentBehandling } = useBehandling();
+    const { behandlingErRedigerbar, hentAnsvarligSaksbehandler, hentBehandling } = useBehandling();
     const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
         useApp();
 
@@ -70,6 +70,7 @@ export const OpphøreVedtak: React.FC<{
         } else {
             settIkkePersistertKomponent(uuidv4());
             settFeilmelding(res.frontendFeilmelding);
+            hentAnsvarligSaksbehandler.rerun();
         }
     };
 

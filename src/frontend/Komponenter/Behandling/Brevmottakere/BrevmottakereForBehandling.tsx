@@ -20,7 +20,7 @@ export const BrevmottakereForBehandling: FC<{
     personopplysninger: IPersonopplysninger;
 }> = ({ personopplysninger, behandlingId }) => {
     const { axiosRequest } = useApp();
-    const { behandlingErRedigerbar } = useBehandling();
+    const { hentAnsvarligSaksbehandler, behandlingErRedigerbar } = useBehandling();
 
     const [mottakere, settMottakere] = useState<Ressurs<IBrevmottakere | undefined>>(
         byggTomRessurs()
@@ -34,6 +34,8 @@ export const BrevmottakereForBehandling: FC<{
         }).then((res: RessursSuksess<string> | RessursFeilet) => {
             if (res.status === RessursStatus.SUKSESS) {
                 settMottakere(byggSuksessRessurs(brevmottakere));
+            } else {
+                hentAnsvarligSaksbehandler.rerun();
             }
             return res;
         });

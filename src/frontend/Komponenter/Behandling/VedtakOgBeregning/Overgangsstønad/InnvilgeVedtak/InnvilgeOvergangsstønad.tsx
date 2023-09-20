@@ -52,7 +52,7 @@ export const InnvilgeOvergangsstønad: React.FC<{
     revurderesFra?: string;
     vilkår: IVilkår;
 }> = ({ behandling, lagretVedtak, revurderesFra, vilkår }) => {
-    const { hentBehandling, behandlingErRedigerbar } = useBehandling();
+    const { hentAnsvarligSaksbehandler, hentBehandling, behandlingErRedigerbar } = useBehandling();
     const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
         useApp();
     const { utførRedirect } = useRedirectEtterLagring(`/behandling/${behandling.id}/simulering`);
@@ -168,6 +168,7 @@ export const InnvilgeOvergangsstønad: React.FC<{
                 default:
                     settFeilmelding(res.frontendFeilmelding);
                     settIkkePersistertKomponent(uuidv4());
+                    hentAnsvarligSaksbehandler.rerun();
             }
         };
     };

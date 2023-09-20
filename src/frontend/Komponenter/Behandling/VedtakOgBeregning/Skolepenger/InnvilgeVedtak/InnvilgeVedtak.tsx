@@ -83,7 +83,7 @@ export const InnvilgeVedtak: React.FC<{
     lagretInnvilgetVedtak?: IvedtakForSkolepenger;
     forrigeVedtak?: IvedtakForSkolepenger;
 }> = ({ behandling, lagretInnvilgetVedtak, forrigeVedtak }) => {
-    const { behandlingErRedigerbar, hentBehandling } = useBehandling();
+    const { behandlingErRedigerbar, hentAnsvarligSaksbehandler, hentBehandling } = useBehandling();
     const [laster, settLaster] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState('');
     const [harUtførtBeregning, settHarUtførtBeregning] = useState<boolean>(false);
@@ -140,6 +140,7 @@ export const InnvilgeVedtak: React.FC<{
                 default:
                     settIkkePersistertKomponent(uuidv4());
                     settFeilmelding(res.frontendFeilmelding);
+                    hentAnsvarligSaksbehandler.rerun();
             }
         };
     };

@@ -58,7 +58,12 @@ const SendTilBeslutterFooter: React.FC<{
 }) => {
     const { axiosRequest } = useApp();
     const navigate = useNavigate();
-    const { hentTotrinnskontroll, hentBehandling, hentBehandlingshistorikk } = useBehandling();
+    const {
+        hentTotrinnskontroll,
+        hentAnsvarligSaksbehandler,
+        hentBehandling,
+        hentBehandlingshistorikk,
+    } = useBehandling();
     const [laster, settLaster] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>();
     const [visModal, settVisModal] = useState<boolean>(false);
@@ -82,6 +87,7 @@ const SendTilBeslutterFooter: React.FC<{
                     settVisModal(true);
                 } else {
                     settFeilmelding(res.frontendFeilmelding);
+                    hentAnsvarligSaksbehandler.rerun();
                 }
             })
             .finally(() => settLaster(false));

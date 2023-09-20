@@ -37,7 +37,7 @@ export const AvslåVedtak: React.FC<{
         skalVelgeÅrsak && (!avslagÅrsak || avslagÅrsak === EAvslagÅrsak.VILKÅR_IKKE_OPPFYLT);
 
     const [laster, settLaster] = useState<boolean>();
-    const { hentBehandling, behandlingErRedigerbar } = useBehandling();
+    const { hentAnsvarligSaksbehandler, hentBehandling, behandlingErRedigerbar } = useBehandling();
     const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
         useApp();
 
@@ -64,6 +64,7 @@ export const AvslåVedtak: React.FC<{
                 default:
                     settIkkePersistertKomponent(uuidv4());
                     settFeilmelding(res.frontendFeilmelding);
+                    hentAnsvarligSaksbehandler.rerun();
             }
         };
     };
