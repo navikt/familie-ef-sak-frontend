@@ -25,8 +25,8 @@ interface IkonProps {
 }
 const StyledIkon = styled.div<IkonProps>`
     flex: 1;
-    padding-top: 1rem;
-    padding-bottom: 0.62rem;
+    padding-top: 0.75rem;
+    padding-bottom: 0.25rem;
 
     background-color: ${ABlue500};
     color: ${ABlue500};
@@ -56,7 +56,7 @@ const Valgvisning: React.FC<ValgvisningProps> = ({ aktiv, settAktiv }) => {
                 erAktiv={aktiv === Høyremenyvalg.Logg}
                 onClick={() => settAktiv(Høyremenyvalg.Logg)}
             >
-                <ClockFillIcon aria-label="Historikk" />
+                <ClockFillIcon aria-label="Historikk" fontSize={'1.5em'} />
                 <BodyShortSmall>Historikk</BodyShortSmall>
             </StyledIkon>
             <StyledIkon
@@ -64,7 +64,7 @@ const Valgvisning: React.FC<ValgvisningProps> = ({ aktiv, settAktiv }) => {
                 erAktiv={aktiv === Høyremenyvalg.Mappe}
                 onClick={() => settAktiv(Høyremenyvalg.Mappe)}
             >
-                <FolderIcon />
+                <FolderIcon fontSize={'1.5em'} />
                 <BodyShortSmall>Dokumenter</BodyShortSmall>
             </StyledIkon>
         </StyledIkonWrapper>
