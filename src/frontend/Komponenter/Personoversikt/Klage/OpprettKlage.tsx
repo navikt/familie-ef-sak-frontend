@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { FamilieDatovelger } from '@navikt/familie-form-elements';
 import { erFørEllerLikDagensDato, erGyldigDato } from '../../../App/utils/dato';
 import { Alert, Button } from '@navikt/ds-react';
 import KlageGjelderTilbakekreving from '../../Journalføring/KlageGjelderTilbakekreving';
+import { Datovelger } from '../../../Felles/Datovelger/Datovelger';
 
 const AlertStripe = styled(Alert)`
     margin-top: 1rem;
@@ -63,15 +63,15 @@ export const OpprettKlage: React.FunctionComponent<IProps> = ({ settVisModal, op
                 settKlageGjelderTilbakekreving={settKlageGjelderTilbakekreving}
             />
             <DatoContainer>
-                <FamilieDatovelger
+                <Datovelger
                     id={'krav-mottatt'}
                     label={'Krav mottatt'}
-                    onChange={(dato) => {
+                    settVerdi={(dato) => {
                         settValgtDato(dato as string);
                     }}
-                    value={valgtDato}
-                    feil={valgtDato && !erGyldigDato(valgtDato) && 'Ugyldig dato'}
-                    limitations={{ maxDate: new Date().toISOString() }}
+                    verdi={valgtDato}
+                    feil={valgtDato && !erGyldigDato(valgtDato) ? 'Ugyldig dato' : undefined}
+                    maksDato={new Date()}
                 />
                 {feilmelding && <AlertStripe variant={'error'}>{feilmelding}</AlertStripe>}
             </DatoContainer>

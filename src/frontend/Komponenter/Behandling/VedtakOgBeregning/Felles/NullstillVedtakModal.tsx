@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useApp } from '../../../../App/context/AppContext';
 import { RessursStatus } from '@navikt/familie-typer';
-import { Alert, Button, Ingress, Modal } from '@navikt/ds-react';
+import { Alert, BodyLong, Button, Modal } from '@navikt/ds-react';
 import styled from 'styled-components';
 import { EToast } from '../../../../App/typer/toast';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
@@ -43,24 +43,26 @@ export const NullstillVedtakModal: React.FC<{
         });
     };
     return (
-        <Modal onClose={() => settVisModal(false)} open={visModal}>
-            <Modal.Content>
-                <Container>
-                    <Ingress>
-                        Er du sikker på at du vil nullstille lagret vedtak? Du vil miste alle
-                        lagrede opplysninger på vedtak og beregningssiden.
-                    </Ingress>
-                </Container>
-                <MidtstiltDiv>
-                    <Button variant={'primary'} onClick={nullstillVedtak}>
-                        Nullstill
-                    </Button>
-                    <Button variant={'tertiary'} onClick={() => settVisModal(false)}>
-                        Avbryt
-                    </Button>
-                </MidtstiltDiv>
-                {feilmelding && <Alert variant={'error'}>{feilmelding}</Alert>}
-            </Modal.Content>
-        </Modal>
+        visModal && (
+            <Modal onClose={() => settVisModal(false)} open={visModal}>
+                <Modal.Body>
+                    <Container>
+                        <BodyLong>
+                            Er du sikker på at du vil nullstille lagret vedtak? Du vil miste alle
+                            lagrede opplysninger på vedtak og beregningssiden.
+                        </BodyLong>
+                    </Container>
+                    <MidtstiltDiv>
+                        <Button variant={'primary'} onClick={nullstillVedtak}>
+                            Nullstill
+                        </Button>
+                        <Button variant={'tertiary'} onClick={() => settVisModal(false)}>
+                            Avbryt
+                        </Button>
+                    </MidtstiltDiv>
+                    {feilmelding && <Alert variant={'error'}>{feilmelding}</Alert>}
+                </Modal.Body>
+            </Modal>
+        )
     );
 };

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { ILogiskVedlegg } from '../../App/typer/dokumentliste';
 import { BodyShort, Button, Label, Link } from '@navikt/ds-react';
-import { EditFilled, ExternalLink, FileContent } from '@navikt/ds-icons';
+import { PencilFillIcon, ExternalLinkIcon, FileTextIcon } from '@navikt/aksel-icons';
 import { åpneFilIEgenTab } from '../../App/utils/utils';
 import { DokumentInfo } from '../../App/typer/journalføring';
 
@@ -57,7 +57,7 @@ const VisDokumentTittel: React.FC<VisDokumentTittelProps> = ({
                         type={'button'}
                         variant={'tertiary'}
                         size={'small'}
-                        icon={<ExternalLink aria-hidden />}
+                        icon={<ExternalLinkIcon aria-hidden />}
                         onClick={() =>
                             åpneFilIEgenTab(journalPostId, dokumentInfo.dokumentInfoId, tittel)
                         }
@@ -68,14 +68,14 @@ const VisDokumentTittel: React.FC<VisDokumentTittelProps> = ({
                         type="button"
                         variant={'tertiary'}
                         size={'small'}
-                        icon={<EditFilled />}
+                        icon={<PencilFillIcon />}
                         onClick={settDokumentForRedigering}
                     />
                     <IkonKnapp
                         type="button"
                         variant={'tertiary'}
                         size={'small'}
-                        icon={<FileContent />}
+                        icon={<FileTextIcon />}
                         onClick={hentDokument}
                     />
                 </div>

@@ -15,12 +15,12 @@ import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { BodyLong, BodyShort, Button, Heading, Label } from '@navikt/ds-react';
 import { TextLabel } from '../../../Felles/Visningskomponenter/Tekster';
 import { stønadstypeTilTekst } from '../../../App/typer/behandlingstema';
-import { FamilieDatovelger } from '@navikt/familie-form-elements';
 import { erGyldigDato } from '../../../App/utils/dato';
 import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import styled from 'styled-components';
 import { Behandlingsårsak, behandlingsårsakTilTekst } from '../../../App/typer/Behandlingsårsak';
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
+import { Datovelger } from '../../../Felles/Datovelger/Datovelger';
 
 type IFagsakParam = {
     fagsakId: string;
@@ -145,19 +145,19 @@ const OpprettFørstegangsbehandling = () => {
                             </BodyShort>
                             <SkjemaContainer>
                                 <Label htmlFor={'krav-mottatt'}>Krav mottatt</Label>
-                                <FamilieDatovelger
+                                <Datovelger
                                     id={'krav-mottatt'}
                                     label={''}
-                                    onChange={(dato) => {
+                                    settVerdi={(dato) => {
                                         settKravMottattDato(dato as string);
                                     }}
-                                    value={kravMottattDato}
+                                    verdi={kravMottattDato}
                                     feil={
-                                        kravMottattDato &&
-                                        !erGyldigDato(kravMottattDato) &&
-                                        'Ugyldig dato'
+                                        kravMottattDato && !erGyldigDato(kravMottattDato)
+                                            ? 'Ugyldig dato'
+                                            : undefined
                                     }
-                                    limitations={{ maxDate: new Date().toISOString() }}
+                                    maksDato={new Date()}
                                 />
                             </SkjemaContainer>
                             <LeggTilBarnSomSkalFødes

@@ -1,11 +1,13 @@
 import React from 'react';
 import { formaterFødselsnummer } from '../../App/utils/formatter';
-import Clipboard from '@navikt/familie-clipboard';
+import { CopyButton } from '@navikt/ds-react';
 import styled from 'styled-components';
 
 const NoWrapSpan = styled.span`
     white-space: nowrap;
     font-size: 16px;
+    display: flex;
+    align-items: center;
 `;
 
 export const KopierbartNullableFødselsnummer: React.FC<{ fødselsnummer: string }> = ({
@@ -13,9 +15,13 @@ export const KopierbartNullableFødselsnummer: React.FC<{ fødselsnummer: string
 }) => {
     return (
         <NoWrapSpan>
-            <Clipboard>
-                <span>{formaterFødselsnummer(fødselsnummer)}</span>
-            </Clipboard>
+            <span>{formaterFødselsnummer(fødselsnummer)}</span>
+            <CopyButton
+                size={'xsmall'}
+                copyText={formaterFødselsnummer(fødselsnummer)}
+                variant={'action'}
+                activeText={'kopiert'}
+            />
         </NoWrapSpan>
     );
 };

@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import { IBarn } from '../../App/typer/personopplysninger';
 import { BodyShort, Popover } from '@navikt/ds-react';
 import styled from 'styled-components';
-import { Information } from '@navikt/ds-icons';
+import { InformationSquareIcon } from '@navikt/aksel-icons';
 import { popoverContentDeltBosted } from './BarnDeltBosted';
 
 const FlexBox = styled.div`
@@ -11,7 +11,7 @@ const FlexBox = styled.div`
     gap: 0.5rem;
 `;
 
-const InformationIcon = styled(Information)`
+const InformationIcon = styled(InformationSquareIcon)`
     &:hover {
         cursor: pointer;
     }
