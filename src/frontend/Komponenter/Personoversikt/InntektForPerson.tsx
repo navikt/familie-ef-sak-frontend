@@ -85,7 +85,15 @@ const PensjonsgivendeInntektTabell: React.FC<{
                                             <HøyrestiltDataCell>
                                                 {formaterTallMedTusenSkille(
                                                     pensjonsgivendeInntekt.næring +
-                                                        pensjonsgivendeInntekt.person
+                                                        pensjonsgivendeInntekt.person +
+                                                        (pensjonsgivendeInntekt.svalbard
+                                                            ? pensjonsgivendeInntekt.svalbard
+                                                                  ?.næring
+                                                            : 0) +
+                                                        (pensjonsgivendeInntekt.svalbard
+                                                            ? pensjonsgivendeInntekt.svalbard
+                                                                  ?.person
+                                                            : 0)
                                                 )}
                                             </HøyrestiltDataCell>
                                             <HøyrestiltDataCell>
