@@ -30,7 +30,7 @@ export const Datovelger: FC<{
                     verdi={formaterNullableIsoDato(verdi)}
                 />
             ) : (
-                <DatePicker id={id} {...datepickerProps}>
+                <DatePicker id={id} {...datepickerProps} dropdownCaption>
                     <DatePicker.Input label={label} {...inputProps} error={feil} size={'medium'} />
                 </DatePicker>
             )}
