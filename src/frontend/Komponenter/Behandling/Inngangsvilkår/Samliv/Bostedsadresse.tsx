@@ -5,7 +5,7 @@ import { useApp } from '../../../../App/context/AppContext';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../../App/typer/ressurs';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 import styled from 'styled-components';
-import { Collapse, Expand } from '@navikt/ds-icons';
+import { ChevronUpIcon, ChevronDownIcon } from '@navikt/aksel-icons';
 import { AlertStripeVariant } from '../../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import { Button } from '@navikt/ds-react';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
@@ -74,7 +74,7 @@ export const Bostedsadresse = ({ behandlingId, personalia }: BostedsadresseProps
                             <KnappMedMarginTop
                                 type={'button'}
                                 variant={'tertiary'}
-                                icon={visBeboere ? <Collapse /> : <Expand />}
+                                icon={visBeboere ? <ChevronUpIcon /> : <ChevronDownIcon />}
                                 iconPosition={'right'}
                                 onClick={() => {
                                     settVisBeboere(!visBeboere);

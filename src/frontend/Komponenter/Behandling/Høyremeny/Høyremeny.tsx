@@ -5,7 +5,7 @@ import Valgvisning from './Valgvisning';
 import styled from 'styled-components';
 import BehandlingHistorikk from './BehandlingHistorikk';
 import Totrinnskontroll from '../Totrinnskontroll/Totrinnskontroll';
-import { Back, Next } from '@navikt/ds-icons';
+import { ChevronLeftIcon, ChevronRightIcon } from '@navikt/aksel-icons';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { RessursStatus } from '../../../App/typer/ressurs';
 import { erBehandlingUnderArbeid } from '../../../App/typer/behandlingstatus';
@@ -16,14 +16,14 @@ interface IHøyremenyProps {
     åpenHøyremeny: boolean;
 }
 
-const StyledBack = styled(Back)`
+const StyledBack = styled(ChevronLeftIcon)`
     border-radius: 0;
     margin-top: 3px;
     margin-right: 2px;
     color: white;
 `;
 
-const StyledNext = styled(Next)`
+const StyledNext = styled(ChevronRightIcon)`
     border-radius: 0;
     margin-top: 3px;
 

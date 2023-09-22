@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import { Link } from '@navikt/ds-react';
-import { ExternalLink } from '@navikt/ds-icons';
+import { ExternalLinkIcon } from '@navikt/aksel-icons';
 import { Ressurs, RessursStatus } from '../../App/typer/ressurs';
 import { useApp } from '../../App/context/AppContext';
 import { BodyShortSmall } from '../Visningskomponenter/Tekster';
@@ -40,7 +40,7 @@ export const LenkeTilPersonopplysningsside: React.FC<IProps> = ({ personIdent, c
                     redirectTilPersonopplysningsside(personIdent);
                 }}
             >
-                {children} <ExternalLink title="Gå til person" />
+                {children} <ExternalLinkIcon title="Gå til person" />
             </Link>
         </BodyShortSmall>
     ) : (

@@ -30,9 +30,13 @@ const IngenDataContainer = styled.div`
     margin-top: 1.5rem;
 `;
 
+const Container = styled.div`
+    margin-bottom: 1rem;
+`;
+
 export function Tabell<T>({ data, kolonner, onEmpty }: Props<T>): React.ReactElement {
     return (
-        <div className="blokk-xs">
+        <Container>
             <StyledTable>
                 <thead>
                     <tr>
@@ -66,6 +70,6 @@ export function Tabell<T>({ data, kolonner, onEmpty }: Props<T>): React.ReactEle
                     <BodyShortSmall>{onEmpty}</BodyShortSmall>
                 </IngenDataContainer>
             )}
-        </div>
+        </Container>
     );
 }

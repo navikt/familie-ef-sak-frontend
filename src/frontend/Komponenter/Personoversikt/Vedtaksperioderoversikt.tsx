@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { AxiosRequestConfig } from 'axios';
-import 'nav-frontend-tabell-style';
 import styled from 'styled-components';
 import { AndelEndringType, AndelHistorikk } from '../../App/typer/tilkjentytelse';
 import { formaterNullableIsoDatoTid } from '../../App/utils/formatter';

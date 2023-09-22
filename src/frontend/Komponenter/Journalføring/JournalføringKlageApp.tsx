@@ -33,7 +33,6 @@ import { useHentKlagebehandlinger } from '../../App/hooks/useHentKlagebehandling
 import BehandlingKlageInnold from './BehandlingKlageInnold';
 import { Klagebehandlinger } from '../../App/typer/klage';
 import { Fagsak } from '../../App/typer/fagsak';
-import { FamilieDatovelger } from '@navikt/familie-form-elements';
 import { harValgtNyKlageBehandling } from './journalførBehandlingUtil';
 import { erGyldigDato } from '../../App/utils/dato';
 import styled from 'styled-components';
@@ -41,6 +40,7 @@ import JournalpostTittelOgLenke from './JournalpostTittelOgLenke';
 import { Button, Fieldset, Heading } from '@navikt/ds-react';
 import { ÅpneKlager } from '../Personoversikt/Klage/ÅpneKlager';
 import KlageGjelderTilbakekreving from './KlageGjelderTilbakekreving';
+import { Datovelger } from '../../Felles/Datovelger/Datovelger';
 
 const KlageMottatt = styled.div`
     margin-top: 1rem;
@@ -192,21 +192,21 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
                         />
                         {erNyBehandling && (
                             <KlageMottatt>
-                                <FamilieDatovelger
+                                <Datovelger
                                     id={'datoMottatt'}
                                     label={'Klage mottatt'}
-                                    onChange={(mottattDato) => {
+                                    settVerdi={(mottattDato) => {
                                         journalpostState.settBehandling((prevState) => ({
                                             ...prevState,
                                             mottattDato,
                                         }));
                                     }}
-                                    value={
+                                    verdi={
                                         journalResponse.journalpost.datoMottatt
                                             ? journalResponse.journalpost.datoMottatt
                                             : journalpostState.behandling?.mottattDato
                                     }
-                                    erLesesvisning={!!journalResponse.journalpost.datoMottatt}
+                                    erLesevisning={!!journalResponse.journalpost.datoMottatt}
                                 />
                             </KlageMottatt>
                         )}
