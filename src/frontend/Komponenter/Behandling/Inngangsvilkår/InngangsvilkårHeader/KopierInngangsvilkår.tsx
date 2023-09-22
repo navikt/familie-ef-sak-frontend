@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { ChevronUpIcon, ChevronDownIcon, ExternalLinkIcon } from '@navikt/aksel-icons';
+import { Collapse, Expand, ExternalLink } from '@navikt/ds-icons';
 import { Alert, BodyLong, Button, Heading, Link } from '@navikt/ds-react';
 import { Behandling, behandlingResultatTilTekst } from '../../../../App/typer/fagsak';
 import { behandlingstypeTilTekst } from '../../../../App/typer/behandlingstype';
@@ -60,7 +60,7 @@ export const KopierInngangsvilkår: React.FC<Props> = ({
                 <ÅpneLukkeKnapp
                     type={'button'}
                     variant={'tertiary'}
-                    icon={visForrigeBehandlinger ? <ChevronUpIcon /> : <ChevronDownIcon />}
+                    icon={visForrigeBehandlinger ? <Collapse /> : <Expand />}
                     iconPosition={'right'}
                     onClick={() => {
                         settVisForrigeBehandlinger((prevState) => !prevState);
@@ -103,7 +103,7 @@ export const KopierInngangsvilkår: React.FC<Props> = ({
                                                 target={'_blank'}
                                             >
                                                 {behandlingstypeTilTekst[behandling.type]}
-                                                <ExternalLinkIcon />
+                                                <ExternalLink />
                                             </Link>
                                         </td>
                                         <td>{behandlingStatusTilTekst[behandling.status]}</td>

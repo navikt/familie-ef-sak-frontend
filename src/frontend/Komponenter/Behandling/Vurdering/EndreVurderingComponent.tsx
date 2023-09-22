@@ -35,10 +35,6 @@ const LagreKnapp = styled(Button)`
     margin-top: 1rem;
 `;
 
-const DelvilkårContainer = styled.div`
-    margin-bottom: 1rem;
-`;
-
 const EndreVurderingComponent: FC<{
     vilkårType: VilkårType;
     regler: Regler;
@@ -145,7 +141,7 @@ const EndreVurderingComponent: FC<{
                 return delvikår.vurderinger.map((svar) => {
                     const regel = regler[svar.regelId];
                     return (
-                        <DelvilkårContainer key={regel.regelId}>
+                        <div key={regel.regelId} className="blokk-xs">
                             <Delvilkår
                                 vurdering={svar}
                                 regel={regel}
@@ -163,7 +159,7 @@ const EndreVurderingComponent: FC<{
                                 svar={svar}
                                 regel={regel}
                             />
-                        </DelvilkårContainer>
+                        </div>
                     );
                 });
             })}

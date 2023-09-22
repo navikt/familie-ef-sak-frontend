@@ -1,7 +1,7 @@
 import React from 'react';
 import { FC, useState } from 'react';
 import { Behandling, behandlingResultatTilTekst } from '../../App/typer/fagsak';
-import { ChevronDownIcon } from '@navikt/aksel-icons';
+import { Expand } from '@navikt/ds-icons';
 import { BodyShort, Button } from '@navikt/ds-react';
 import { behandlingStatusTilTekst } from '../../App/typer/behandlingstatus';
 import { behandlingstypeTilTekst } from '../../App/typer/behandlingstype';
@@ -18,8 +18,8 @@ export const GråTekst = styled(BodyShort)`
     color: ${ATextSubtle};
 `;
 
-const StatusMenyInnhold = styled.div<StatusMenyInnholdProps>`
-    display: ${(props) => (props.åpen ? 'block' : 'none')};
+const StatusMenyInnhold = styled.div`
+    display: ${(props: StatusMenyInnholdProps) => (props.åpen ? 'block' : 'none')};
 
     position: absolute;
 
@@ -113,7 +113,7 @@ const StatusMeny: FC<{ behandling: Behandling }> = ({ behandling }) => {
                 onClick={() => {
                     settÅpenStatusMeny(!åpenStatusMeny);
                 }}
-                icon={<ChevronDownIcon />}
+                icon={<Expand />}
             />
             <StatusMenyInnhold className="liten-skjerm" åpen={åpenStatusMeny}>
                 <ul>

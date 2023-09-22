@@ -1,10 +1,16 @@
 import styled from 'styled-components';
-import { Button, Modal } from '@navikt/ds-react';
+import { Button, Heading, Modal } from '@navikt/ds-react';
 import React from 'react';
 
 const ModalContainer = styled(Modal)<{ maxWidth?: number }>`
     min-width: 30rem;
     max-width: ${(props) => (props.maxWidth ? `${props.maxWidth}rem` : '40rem')};
+`;
+
+const Tittel = styled(Heading)`
+    margin-top: 0.5rem;
+    margin-right: 3.5rem;
+    margin-left: 2rem;
 `;
 
 const Innhold = styled.div`
@@ -52,36 +58,37 @@ export const ModalWrapper: React.FC<ModalProps> = ({
     children,
 }) => {
     return (
-        visModal && (
-            <ModalContainer
-                open={visModal}
-                onClose={onClose ? () => onClose() : () => null}
-                maxWidth={maxWidth}
-                aria-label={ariaLabel ? ariaLabel : tittel}
-                header={{ heading: tittel, closeButton: !!onClose }}
-            >
-                <Modal.Body>
-                    <Innhold>{children}</Innhold>
-                    {aksjonsknapper && (
-                        <ButtonContainer marginTop={aksjonsknapper.marginTop}>
-                            <ModalKnapp
-                                variant="tertiary"
-                                onClick={aksjonsknapper.lukkKnapp.onClick}
-                                disabled={aksjonsknapper.lukkKnapp.disabled}
-                            >
-                                {aksjonsknapper.lukkKnapp.tekst}
-                            </ModalKnapp>
-                            <ModalKnapp
-                                variant="primary"
-                                onClick={aksjonsknapper.hovedKnapp.onClick}
-                                disabled={aksjonsknapper.hovedKnapp.disabled}
-                            >
-                                {aksjonsknapper.hovedKnapp.tekst}
-                            </ModalKnapp>
-                        </ButtonContainer>
-                    )}
-                </Modal.Body>
-            </ModalContainer>
-        )
+        <ModalContainer
+            open={visModal}
+            closeButton={!!onClose}
+            onClose={onClose ? () => onClose() : () => null}
+            maxWidth={maxWidth}
+            aria-label={ariaLabel ? ariaLabel : tittel}
+        >
+            <Modal.Content>
+                <Tittel spacing={true} size={'medium'}>
+                    {tittel}
+                </Tittel>
+                <Innhold>{children}</Innhold>
+                {aksjonsknapper && (
+                    <ButtonContainer marginTop={aksjonsknapper.marginTop}>
+                        <ModalKnapp
+                            variant="tertiary"
+                            onClick={aksjonsknapper.lukkKnapp.onClick}
+                            disabled={aksjonsknapper.lukkKnapp.disabled}
+                        >
+                            {aksjonsknapper.lukkKnapp.tekst}
+                        </ModalKnapp>
+                        <ModalKnapp
+                            variant="primary"
+                            onClick={aksjonsknapper.hovedKnapp.onClick}
+                            disabled={aksjonsknapper.hovedKnapp.disabled}
+                        >
+                            {aksjonsknapper.hovedKnapp.tekst}
+                        </ModalKnapp>
+                    </ButtonContainer>
+                )}
+            </Modal.Content>
+        </ModalContainer>
     );
 };

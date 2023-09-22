@@ -1,4 +1,4 @@
-import { TrashIcon } from '@navikt/aksel-icons';
+import { Delete } from '@navikt/ds-icons';
 import React from 'react';
 import { Knapp } from './HovedKnapp';
 
@@ -11,7 +11,7 @@ const FjernKnapp: React.FC<{
     return (
         <Knapp
             className={className}
-            icon={<TrashIcon title={knappetekst ? knappetekst : ikontekst} />}
+            icon={<Delete title={knappetekst ? knappetekst : ikontekst} />}
             onClick={onClick}
             type="button"
             variant={knappetekst ? 'secondary' : 'tertiary'}

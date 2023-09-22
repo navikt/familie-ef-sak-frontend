@@ -4,7 +4,7 @@ import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponente
 import { IDeltBostedPeriode } from '../../../../App/typer/personopplysninger';
 import styled from 'styled-components';
 import { Popover } from '@navikt/ds-react';
-import { InformationSquareIcon } from '@navikt/aksel-icons';
+import { Information } from '@navikt/ds-icons';
 import { popoverContentDeltBosted } from '../../../../Felles/Personopplysninger/BarnDeltBosted';
 
 interface Props {
@@ -21,7 +21,7 @@ const FlexBox = styled.div`
     gap: 0.5rem;
 `;
 
-const InformationIcon = styled(InformationSquareIcon)`
+const InformationIcon = styled(Information)`
     &:hover {
         cursor: pointer;
     }

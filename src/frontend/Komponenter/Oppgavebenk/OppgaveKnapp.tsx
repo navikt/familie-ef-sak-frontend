@@ -3,7 +3,7 @@ import { IOppgave } from './typer/oppgave';
 import { useOppgave } from '../../App/hooks/useOppgave';
 import { useApp } from '../../App/context/AppContext';
 import { Button } from '@navikt/ds-react';
-import { MenuElipsisHorizontalCircleIcon } from '@navikt/aksel-icons';
+import { EllipsisCircleH } from '@navikt/ds-icons';
 import styled from 'styled-components';
 import {
     oppgaveKanJournalføres,
@@ -13,7 +13,7 @@ import {
     oppgaveErTilbakekreving,
     oppgaveErKlage,
 } from './utils';
-import { Dropdown } from '@navikt/ds-react';
+import { Dropdown } from '@navikt/ds-react-internal';
 
 const TabellKnapp = styled(Button)`
     width: fit-content;
@@ -143,7 +143,7 @@ const OppgaveValgMeny: React.FC<{ valg: OppgaveValg[] }> = ({ valg }) => {
         <Dropdown>
             <Button
                 variant={'tertiary'}
-                icon={<MenuElipsisHorizontalCircleIcon />}
+                icon={<EllipsisCircleH />}
                 size={'small'}
                 as={Dropdown.Toggle}
             />

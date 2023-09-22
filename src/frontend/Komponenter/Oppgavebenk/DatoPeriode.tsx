@@ -1,8 +1,22 @@
+import { Datepicker } from 'nav-datovelger';
 import React from 'react';
+import styled from 'styled-components';
 import { FlexDiv } from './OppgaveFiltrering';
 import { OrNothing } from '../../App/hooks/felles/useSorteringState';
 import { EnsligErrorMessage } from '../../Felles/ErrorMessage/EnsligErrorMessage';
-import { Datovelger } from '../../Felles/Datovelger/Datovelger';
+import { ASpacing12 } from '@navikt/ds-tokens/dist/tokens';
+
+const DatolabelStyle = styled.label`
+    padding-bottom: 0.5rem;
+`;
+
+const DatepickerWrapper = styled.div`
+    margin-top: 0.5rem;
+
+    .nav-datovelger__input {
+        height: ${ASpacing12};
+    }
+`;
 
 interface Props {
     datoFraTekst: string;
@@ -12,7 +26,6 @@ interface Props {
     settDatoFra: (dato?: string) => void;
     settDatoTil: (dato?: string) => void;
     datoFeil: OrNothing<string>;
-    id: string;
 }
 
 const DatoPeriode: React.FC<Props> = ({
@@ -23,23 +36,27 @@ const DatoPeriode: React.FC<Props> = ({
     settDatoFra,
     settDatoTil,
     datoFeil,
-    id,
 }) => {
     return (
         <FlexDiv>
-            <Datovelger
-                settVerdi={settDatoFra}
-                verdi={valgtDatoFra}
-                id={'fra-dato-filter' + id}
-                label={datoFraTekst}
-            />
-            <Datovelger
-                settVerdi={settDatoTil}
-                verdi={valgtDatoTil}
-                label={datoTilTekst}
-                id={'til-dato-filter' + id}
-            />
-            <EnsligErrorMessage>{datoFeil}</EnsligErrorMessage>
+            <div className="skjemaelement">
+                <DatolabelStyle className="skjemaelement__label" htmlFor="regdatoFra">
+                    {datoFraTekst}
+                </DatolabelStyle>
+
+                <DatepickerWrapper>
+                    <Datepicker onChange={settDatoFra} value={valgtDatoFra} />
+                </DatepickerWrapper>
+            </div>
+            <div className="skjemaelement">
+                <DatolabelStyle className="skjemaelement__label" htmlFor="regdatoTil">
+                    {datoTilTekst}
+                </DatolabelStyle>
+                <DatepickerWrapper>
+                    <Datepicker onChange={settDatoTil} value={valgtDatoTil} />
+                </DatepickerWrapper>
+                <EnsligErrorMessage>{datoFeil}</EnsligErrorMessage>
+            </div>
         </FlexDiv>
     );
 };
