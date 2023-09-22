@@ -7,7 +7,7 @@ import { Registergrunnlag } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { BodyShortSmall, SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
 import styled from 'styled-components';
 import { Button, Link } from '@navikt/ds-react';
-import { ExternalLinkIcon } from '@navikt/aksel-icons';
+import { ExternalLink } from '@navikt/ds-icons';
 import { useHentHistoriskPensjon } from '../../../App/hooks/useHentHistoriskPensjon';
 import { RessursStatus } from '../../../App/typer/ressurs';
 import { useBehandling } from '../../../App/context/BehandlingContext';
@@ -96,7 +96,7 @@ const HistoriskpensjonLenke: React.FC = () => {
                 as={'p'}
                 size={'small'}
                 variant={'tertiary'}
-                icon={<ExternalLinkIcon />}
+                icon={<ExternalLink />}
                 iconPosition={'right'}
             >
                 Se vedtaksperioder

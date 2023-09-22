@@ -7,14 +7,10 @@ export const StyledDiv = styled.div`
     margin-bottom: 2rem;
 `;
 
-const SmallTextLabelMedMargin = styled(SmallTextLabel)`
-    margin-bottom: 0.5rem;
-`;
-
 export const IngenBegrunnelseOppgitt: React.FC = () => {
     return (
         <StyledDiv>
-            <SmallTextLabelMedMargin>Begrunnelse</SmallTextLabelMedMargin>
+            <SmallTextLabel className={'blokk-xxs'}>Begrunnelse</SmallTextLabel>
             <BodyShortSmall style={{ fontStyle: 'italic' }}>
                 Ingen opplysninger oppgitt.
             </BodyShortSmall>

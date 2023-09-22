@@ -18,7 +18,7 @@ import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
 import { useApp } from '../../../App/context/AppContext';
 import { Alert, BodyShort, Button, Detail, Heading, Label } from '@navikt/ds-react';
 import { BodyShortSmall, SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
-import { CheckmarkIcon } from '@navikt/aksel-icons';
+import { SuccessStroke } from '@navikt/ds-icons';
 import { useNavigate } from 'react-router-dom';
 
 export const BorderBox = styled.div`
@@ -38,7 +38,7 @@ export const BorderBox = styled.div`
     }
 `;
 
-const SukksessIkonMedHøyreMargin = styled(CheckmarkIcon)`
+const SukksessIkonMedHøyreMargin = styled(SuccessStroke)`
     margin-right: 0.5rem;
 `;
 

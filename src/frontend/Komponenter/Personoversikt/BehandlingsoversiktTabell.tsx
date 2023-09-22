@@ -34,10 +34,9 @@ import {
     klageinstansUtfallTilTekst,
     KlageÅrsak,
 } from '../../App/typer/klage';
-import { ExclamationmarkTriangleFillIcon } from '@navikt/aksel-icons';
+import { WarningColored } from '@navikt/ds-icons';
 import { Tag, Tooltip } from '@navikt/ds-react';
 import { sorterBehandlinger } from '../../App/utils/behandlingutil';
-import { AIconWarning } from '@navikt/ds-tokens/dist/tokens';
 
 const StyledTable = styled.table`
     width: 60%;
@@ -45,9 +44,8 @@ const StyledTable = styled.table`
     margin-left: 1rem;
 `;
 
-const AdvarselIkon = styled(ExclamationmarkTriangleFillIcon)`
+const AdvarselIkon = styled(WarningColored)`
     margin-left: 1rem;
-    background-color: ${AIconWarning};
 `;
 
 const FlexBox = styled.div`

@@ -1,13 +1,13 @@
 import * as React from 'react';
 
-import { PersonPencilFillIcon } from '@navikt/aksel-icons';
+import { CaseworkerFilled } from '@navikt/ds-icons';
 
 import { TidslinjeIkonbakgrunn } from './ikonelementer';
 
 const SaksbehandlerIkon: React.FC = () => {
     return (
         <TidslinjeIkonbakgrunn>
-            <PersonPencilFillIcon fr="mask" fontSize="15" aria-label="Saksbehandler" />
+            <CaseworkerFilled fr="mask" fontSize="15" aria-label="Saksbehandler" />
         </TidslinjeIkonbakgrunn>
     );
 };

@@ -5,7 +5,7 @@ import { useApp } from '../../../App/context/AppContext';
 import { base64toBlob, åpnePdfIEgenTab } from '../../../App/utils/utils';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
-import { FileTextIcon } from '@navikt/aksel-icons';
+import { FileContent } from '@navikt/ds-icons';
 import { Button, Heading } from '@navikt/ds-react';
 import { BodyShortSmall, SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
 
@@ -69,7 +69,7 @@ export const VisTilbakekreving: React.FC<Props> = ({
                         <Button
                             type={'button'}
                             variant={'tertiary'}
-                            icon={<FileTextIcon />}
+                            icon={<FileContent />}
                             size={'xsmall'}
                             onClick={visBrevINyFane}
                         >

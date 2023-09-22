@@ -6,7 +6,8 @@ import EtikettDød from '../../../Felles/Etiketter/EtikettDød';
 import LiteBarn from '../../../Felles/Ikoner/LiteBarn';
 import styled from 'styled-components';
 import { Registergrunnlag, Søknadsgrunnlag } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
-import { CalculatorIcon, SackKronerIcon } from '@navikt/aksel-icons';
+import { Calculator } from '@navikt/ds-icons';
+import { SackKronerIcon } from '@navikt/aksel-icons';
 
 interface UnderseksjonWrapperProps {
     underoverskrift: string;
@@ -93,7 +94,7 @@ export const mapIkon = (ikon: VilkårInfoIkon) => {
         case VilkårInfoIkon.SØKNAD:
             return <Søknadsgrunnlag />;
         case VilkårInfoIkon.KALKULATOR:
-            return <CalculatorIcon />;
+            return <Calculator />;
         case VilkårInfoIkon.PENGESEKK:
             return <SackKronerIcon />;
     }

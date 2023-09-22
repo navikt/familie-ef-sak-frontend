@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import { AxiosRequestConfig } from 'axios';
+import 'nav-frontend-tabell-style';
 import styled from 'styled-components';
 import { useDataHenter } from '../../App/hooks/felles/useDataHenter';
 import DataViewer from '../../Felles/DataViewer/DataViewer';

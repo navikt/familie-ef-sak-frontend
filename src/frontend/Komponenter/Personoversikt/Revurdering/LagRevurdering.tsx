@@ -7,6 +7,7 @@ import {
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import styled from 'styled-components';
+import { FamilieDatovelger } from '@navikt/familie-form-elements';
 import {
     byggTomRessurs,
     Ressurs,
@@ -27,7 +28,6 @@ import { Fagsak } from '../../../App/typer/fagsak';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { erEtterDagensDato, erGyldigDato } from '../../../App/utils/dato';
 import { Alert, Button, Select } from '@navikt/ds-react';
-import { Datovelger } from '../../../Felles/Datovelger/Datovelger';
 
 const DatoContainer = styled.div`
     margin-top: 2rem;
@@ -183,19 +183,19 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                                     ))}
                         </StyledSelect>
                         <DatoContainer>
-                            <Datovelger
+                            <FamilieDatovelger
                                 id={'krav-mottatt'}
                                 label={'Krav mottatt'}
-                                settVerdi={(dato) => {
+                                onChange={(dato) => {
                                     settValgtDato(dato as string);
                                 }}
-                                verdi={valgtDato}
+                                value={valgtDato}
                                 feil={
                                     valgtDato && !erGyldigDato(valgtDato)
                                         ? 'Ugyldig dato'
                                         : undefined
                                 }
-                                maksDato={new Date()}
+                                limitations={{ maxDate: new Date().toISOString() }}
                             />
                             {skalViseNyeBarnValg && (
                                 <NyeBarn

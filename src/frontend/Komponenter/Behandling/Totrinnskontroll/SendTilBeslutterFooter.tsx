@@ -14,7 +14,6 @@ import OppgaverForOpprettelse from './OppgaverForOpprettelse';
 import { Behandling } from '../../../App/typer/fagsak';
 import { IOppgaverForOpprettelse } from '../../../App/hooks/useHentOppgaverForOpprettelse';
 import { OppgaveTypeForOpprettelse } from './oppgaveForOpprettelseTyper';
-import { harVerdi } from '../../../App/utils/utils';
 
 const Footer = styled.footer`
     width: 100%;
@@ -122,7 +121,7 @@ const SendTilBeslutterFooter: React.FC<{
                                 disabled={
                                     laster ||
                                     !kanSendesTilBeslutter ||
-                                    harVerdi(oppgaverForOpprettelse?.feilmelding)
+                                    oppgaverForOpprettelse?.feilmelding
                                 }
                                 type={'button'}
                             >

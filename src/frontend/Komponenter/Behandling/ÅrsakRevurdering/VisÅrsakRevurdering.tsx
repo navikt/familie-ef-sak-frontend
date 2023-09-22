@@ -12,7 +12,7 @@ import {
     formaterIsoDatoTidMedSekunder,
     formaterNullableIsoDato,
 } from '../../../App/utils/formatter';
-import { TrashIcon, PencilIcon } from '@navikt/aksel-icons';
+import { Delete, Edit } from '@navikt/ds-icons';
 import {
     SistOppdatertOgVurderingWrapper,
     VertikalStrek,
@@ -83,7 +83,7 @@ export const VisÅrsakRevurdering: React.FC<Props> = ({
                             variant={'tertiary'}
                             type={'button'}
                             onClick={() => settRedigeringsmodus(true)}
-                            icon={<PencilIcon />}
+                            icon={<Edit />}
                         >
                             Rediger
                         </Button>
@@ -92,7 +92,7 @@ export const VisÅrsakRevurdering: React.FC<Props> = ({
                             type={'button'}
                             onClick={slettÅrsakRevurdering}
                             disabled={laster}
-                            icon={<TrashIcon />}
+                            icon={<Delete />}
                         >
                             Slett
                         </Button>

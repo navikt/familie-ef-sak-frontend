@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { AlertInfo, AlertWarning } from '../../../Felles/Visningskomponenter/Alerts';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { BodyShort, Button, Link } from '@navikt/ds-react';
-import { ExternalLinkIcon } from '@navikt/aksel-icons';
+import { ExternalLink } from '@navikt/ds-icons';
 import { useHentHistoriskPensjon } from '../../../App/hooks/useHentHistoriskPensjon';
 
 const FlexBox = styled.div`
@@ -43,7 +43,7 @@ const Historiskpensjon: React.FC<{ fagsakPersonId: string }> = ({ fagsakPersonId
                                     as={'p'}
                                     size={'small'}
                                     variant={'tertiary'}
-                                    icon={<ExternalLinkIcon />}
+                                    icon={<ExternalLink />}
                                     iconPosition={'right'}
                                 >
                                     Se vedtaksperioder

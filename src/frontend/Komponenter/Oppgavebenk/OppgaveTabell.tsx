@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import OppgaveRad from './OppgaveRad';
 import { IOppgave } from './typer/oppgave';
+import 'nav-frontend-tabell-style';
 import OppgaveSorteringsHeader from './OppgaveSorteringHeader';
 import { useSorteringState } from '../../App/hooks/felles/useSorteringState';
 import { usePagineringState } from '../../App/hooks/felles/usePaginerState';
