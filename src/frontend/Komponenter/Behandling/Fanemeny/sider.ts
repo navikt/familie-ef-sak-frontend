@@ -10,9 +10,8 @@ import { Simulering } from '../Simulering/Simulering';
 import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
 import Sanksjonsfastsettelse from '../Sanksjon/Sanksjonsfastsettelse';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
-import KorrigeringUtenBrev from './KorrigeringUtenBrev';
 import { ÅrsakRevurderingSide } from '../ÅrsakRevurdering/ÅrsakRevurderingSide';
-import IverksetteKAVedtak from './IverksetteKAVedtak';
+import BehandlingsÅrsakUtenBrev from './BehandlingsÅrsakUtenBrev';
 
 export interface ISide {
     href: string;
@@ -76,13 +75,8 @@ const alleSider: ISide[] = [
     },
     {
         href: 'brev',
-        navn: SideNavn.KORRIGERING_UTEN_BREV,
-        komponent: KorrigeringUtenBrev,
-    },
-    {
-        href: 'brev',
-        navn: SideNavn.IVERKSETTE_KA_VEDTAK,
-        komponent: IverksetteKAVedtak,
+        navn: SideNavn.KORRIGERING_UTEN_BREV || SideNavn.IVERKSETTE_KA_VEDTAK,
+        komponent: BehandlingsÅrsakUtenBrev,
     },
 ];
 
@@ -111,16 +105,7 @@ const filtrerVekkHvisStandard = [
     SideNavn.KORRIGERING_UTEN_BREV,
     SideNavn.IVERKSETTE_KA_VEDTAK,
 ];
-const filtrerVekkHvisKorrigeringUtenBrev = [
-    SideNavn.IVERKSETTE_KA_VEDTAK,
-    SideNavn.SANKSJON,
-    SideNavn.BREV,
-];
-const filtrerVekkHvisIverksetteKAVedtak = [
-    SideNavn.KORRIGERING_UTEN_BREV,
-    SideNavn.SANKSJON,
-    SideNavn.BREV,
-];
+const filtrerVekkHvisBehandlingsÅrsakUtenBrev = [SideNavn.SANKSJON, SideNavn.BREV];
 
 const ikkeVisBrevHvisHenlagt = (behandling: Behandling, side: ISide) =>
     behandling.resultat !== BehandlingResultat.HENLAGT || side.navn !== SideNavn.BREV;
@@ -147,15 +132,14 @@ export const filtrerSiderEtterBehandlingstype = (behandling: Behandling): ISide[
         );
     }
 
-    if (behandling.behandlingsårsak === Behandlingsårsak.KORRIGERING_UTEN_BREV) {
+    if (
+        behandling.behandlingsårsak === Behandlingsårsak.KORRIGERING_UTEN_BREV ||
+        behandling.behandlingsårsak === Behandlingsårsak.IVERKSETTE_KA_VEDTAK
+    ) {
         return sider
-            .filter((side) => !filtrerVekkHvisKorrigeringUtenBrev.includes(side.navn as SideNavn))
-            .filter((side) => filtrerVekkÅrsakRevurderingHvisIkkeRevurdering(side, behandling));
-    }
-
-    if (behandling.behandlingsårsak === Behandlingsårsak.IVERKSETTE_KA_VEDTAK) {
-        return sider
-            .filter((side) => !filtrerVekkHvisIverksetteKAVedtak.includes(side.navn as SideNavn))
+            .filter(
+                (side) => !filtrerVekkHvisBehandlingsÅrsakUtenBrev.includes(side.navn as SideNavn)
+            )
             .filter((side) => filtrerVekkÅrsakRevurderingHvisIkkeRevurdering(side, behandling));
     }
 
