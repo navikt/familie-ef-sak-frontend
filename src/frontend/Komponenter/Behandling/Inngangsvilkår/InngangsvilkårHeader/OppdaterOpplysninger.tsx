@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { Refresh } from '@navikt/ds-icons';
+import { ArrowsCirclepathIcon } from '@navikt/aksel-icons';
 import { Button, HelpText } from '@navikt/ds-react';
 import { DetailSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 import { ATextSubtle } from '@navikt/ds-tokens/dist/tokens';
@@ -62,7 +62,7 @@ export const OppdaterOpplysninger: React.FC<Props> = ({
                     loading={nyGrunnlagsdataHentes}
                     variant={'tertiary'}
                     size={'small'}
-                    icon={<Refresh role="img" focusable="false" />}
+                    icon={<ArrowsCirclepathIcon role="img" focusable="false" />}
                 >
                     Oppdater
                 </Button>

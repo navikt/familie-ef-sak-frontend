@@ -1,4 +1,4 @@
-import { Cancel } from '@navikt/ds-icons';
+import { ArrowUndoIcon } from '@navikt/aksel-icons';
 import React from 'react';
 import { Knapp } from './HovedKnapp';
 
@@ -12,7 +12,7 @@ const TilbakestillKnapp: React.FC<{
             onClick={onClick}
             type="button"
             variant={knappetekst ? 'secondary' : 'tertiary'}
-            icon={<Cancel title={knappetekst ? knappetekst : ikontekst} />}
+            icon={<ArrowUndoIcon title={knappetekst ? knappetekst : ikontekst} />}
         >
             {knappetekst && <span>{knappetekst}</span>}
         </Knapp>

@@ -1,4 +1,4 @@
-import { BodyLong, Modal } from '@navikt/ds-react';
+import { BodyLong } from '@navikt/ds-react';
 import * as React from 'react';
 import { useState } from 'react';
 import { AppProvider, useApp } from './App/context/AppContext';
@@ -36,9 +36,6 @@ import UlagretDataModal from './Felles/Visningskomponenter/UlagretDataModal';
 import { loggBesøkEvent } from './App/utils/amplitude/amplitudeLoggEvents';
 import { BesøkEvent } from './App/utils/amplitude/typer';
 import Innloggingsfeilmelding from './Felles/Varsel/Innloggingsfeilmelding';
-
-// @ts-ignore
-Modal.setAppElement(document.getElementById('modal-a11y-wrapper'));
 
 const Innhold = styled(BodyLong)`
     margin-top: 2rem;

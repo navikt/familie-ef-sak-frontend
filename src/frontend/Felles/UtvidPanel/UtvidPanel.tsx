@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from '@navikt/ds-react';
-import { Down, Up } from '@navikt/ds-icons';
+import { ArrowUpIcon, ArrowDownIcon } from '@navikt/aksel-icons';
 import styled from 'styled-components';
 
 export interface UtvidPanelProps {
@@ -34,7 +34,7 @@ const UtvidPanel: React.FC<UtvidPanelProps> = ({
                     size={'small'}
                     variant={'tertiary'}
                     onClick={onClick}
-                    icon={åpen ? <Up /> : <Down />}
+                    icon={åpen ? <ArrowUpIcon /> : <ArrowDownIcon />}
                 >
                     {knappTekst}
                 </Button>
