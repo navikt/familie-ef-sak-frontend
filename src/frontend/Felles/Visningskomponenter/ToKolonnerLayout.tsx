@@ -1,11 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Container = styled.div`
+const Container = styled.div<{ skillelinje?: boolean }>`
     display: flex;
     margin: 2rem;
-    border-bottom: ${(props: { skillelinje: boolean }) =>
-        props.skillelinje ? '3px solid #e9e7e7' : 'none'};
+    border-bottom: ${(props) => (props.skillelinje ? '3px solid var(--a-border-subtle)' : 'none')};
 
     @media (max-width: 1600px) {
         flex-direction: column;

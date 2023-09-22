@@ -187,7 +187,8 @@ export const skalFerdigstilleUtenBeslutter = (vedtak?: IVedtak | undefined): boo
         !!vedtak &&
         vedtak._type === IVedtakType.Avslag &&
         vedtak.resultatType === EBehandlingResultat.AVSLÅ &&
-        vedtak.avslåÅrsak === EAvslagÅrsak.MINDRE_INNTEKTSENDRINGER
+        (vedtak.avslåÅrsak === EAvslagÅrsak.MINDRE_INNTEKTSENDRINGER ||
+            vedtak.avslåÅrsak === EAvslagÅrsak.KORTVARIG_AVBRUDD_JOBB)
     );
 };
 

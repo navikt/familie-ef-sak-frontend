@@ -7,7 +7,7 @@ import { IVurdering, resultatTilTekst, Vilk√•rsresultat } from '../Inngangsvilk√
 import { BreakWordBodyLongSmall } from '../../../Felles/Visningskomponenter/BreakWordBodyLongSmall';
 import { formaterIsoDatoTidMedSekunder } from '../../../App/utils/formatter';
 import { Button, ErrorMessage, Heading } from '@navikt/ds-react';
-import { Delete, Edit } from '@navikt/ds-icons';
+import { TrashIcon, PencilIcon } from '@navikt/aksel-icons';
 import {
     SistOppdatertOgVurderingWrapper,
     TittelOgKnappWrapper,
@@ -106,7 +106,7 @@ const VisVurdering: FC<Props> = ({
                                 <Button
                                     type={'button'}
                                     variant={'tertiary'}
-                                    icon={<Edit />}
+                                    icon={<PencilIcon />}
                                     onClick={startRedigering}
                                     size={'small'}
                                 >
@@ -117,7 +117,7 @@ const VisVurdering: FC<Props> = ({
                             <Button
                                 type={'button'}
                                 variant={'tertiary'}
-                                icon={<Delete />}
+                                icon={<TrashIcon />}
                                 onClick={resetVurdering}
                                 size={'small'}
                             >

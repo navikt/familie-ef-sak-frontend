@@ -1,4 +1,3 @@
-import { FamilieDatovelger } from '@navikt/familie-form-elements';
 import {
     IÅrsakRevurdering,
     Opplysningskilde,
@@ -17,6 +16,7 @@ import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer
 import { EnsligErrorMessage } from '../../../Felles/ErrorMessage/EnsligErrorMessage';
 import styled from 'styled-components';
 import { erGyldigDato } from '../../../App/utils/dato';
+import { Datovelger } from '../../../Felles/Datovelger/Datovelger';
 
 const Container = styled.div`
     > * {
@@ -110,19 +110,19 @@ export const EndreÅrsakRevurdering: React.FC<Props> = ({
     }`;
     return (
         <Container>
-            <FamilieDatovelger
-                erLesesvisning={!behandlingErRedigerbar}
+            <Datovelger
+                erLesevisning={!behandlingErRedigerbar}
                 label={'Krav mottatt'}
                 id={'krav-mottatt'}
-                value={kravMottatt || ''}
-                onChange={(dato) => {
+                verdi={kravMottatt}
+                settVerdi={(dato) => {
                     settRevurderingsinformasjon((prevState) => ({
                         ...prevState,
                         kravMottatt: dato as string,
                     }));
                 }}
                 feil={kravMottatt && !erGyldigDato(kravMottatt) ? 'Ugyldig dato' : undefined}
-                limitations={{ maxDate: new Date().toISOString() }}
+                maksDato={new Date()}
             />
             <Select
                 label={'Hvordan har vi fått opplysningene?'}

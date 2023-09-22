@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { FamilieDatovelger } from '@navikt/familie-form-elements';
 import LeggtilMedSirkel from '../../Felles/Ikoner/LeggtilMedSirkel';
 import SlettSøppelkasse from '../../Felles/Ikoner/SlettSøppelkasse';
 import { BarnSomSkalFødes } from '../../App/hooks/useJournalføringState';
@@ -8,6 +7,7 @@ import styled from 'styled-components';
 import { ABlue300 } from '@navikt/ds-tokens/dist/tokens';
 import { v4 as uuidv4 } from 'uuid';
 import { erGyldigDato } from '../../App/utils/dato';
+import { Datovelger } from '../../Felles/Datovelger/Datovelger';
 
 const Tittel = styled(Heading)`
     color: ${ABlue300};
@@ -78,11 +78,11 @@ const LeggTilBarnSomSkalFødes: React.FC<{
                 {barnSomSkalFødes.map((barn, index) => (
                     <TerminbarnMedDatovelger key={barn._id}>
                         <div>Terminbarn {index + 1}</div>
-                        <FamilieDatovelger
+                        <Datovelger
                             id={'Termindato'}
                             label={'Termindato'}
-                            onChange={(dato) => oppdaterTermindato(barn._id, dato as string)}
-                            value={barn.fødselTerminDato}
+                            settVerdi={(dato) => oppdaterTermindato(barn._id, dato as string)}
+                            verdi={barn.fødselTerminDato}
                             feil={
                                 barn.fødselTerminDato && !erGyldigDato(barn.fødselTerminDato)
                                     ? 'Ugyldig dato'

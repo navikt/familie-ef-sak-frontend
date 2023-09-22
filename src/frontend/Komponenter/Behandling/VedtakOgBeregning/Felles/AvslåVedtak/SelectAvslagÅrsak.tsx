@@ -19,10 +19,6 @@ interface Props {
 
 const StyledSelect = styled(EnsligFamilieSelect)`
     max-width: 200px;
-    .skjemaelement__label {
-        font-size: 1.25rem;
-        line-height: 1.5625rem;
-    }
     margin-top: 0.6rem;
     margin-bottom: 1rem;
 `;

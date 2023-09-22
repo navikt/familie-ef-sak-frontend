@@ -1,7 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { PersonHeadsetIcon } from '@navikt/aksel-icons';
-import { ATextSubtle } from '@navikt/ds-tokens/dist/tokens';
 import { BodyShort, Tooltip } from '@navikt/ds-react';
 import { behandlingStatusTilTekst } from '../../../App/typer/behandlingstatus';
 import { Behandling, behandlingResultatTilTekst } from '../../../App/typer/fagsak';
@@ -9,7 +8,12 @@ import { formaterIsoDato, formaterIsoDatoTid } from '../../../App/utils/formatte
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { AnsvarligSaksbehandlerRolle } from '../../../App/typer/saksbehandler';
-import { ASurfaceSuccess, ASurfaceWarning, ASurfaceNeutral } from '@navikt/ds-tokens/dist/tokens';
+import {
+    ATextSubtle,
+    ASurfaceSuccess,
+    ASurfaceWarning,
+    ASurfaceNeutral,
+} from '@navikt/ds-tokens/dist/tokens';
 
 const Container = styled.div`
     padding: 1rem;

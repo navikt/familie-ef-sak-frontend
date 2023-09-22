@@ -1,12 +1,12 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
-import { Hamburger, EllipsisV } from '@navikt/ds-icons';
+import { MenuHamburgerIcon, MenuElipsisVerticalIcon } from '@navikt/aksel-icons';
 import styled from 'styled-components';
 
 interface HamburgerMenyInnholdProps {
     åpen: boolean;
 }
 
-const HamburgerMenyIkon = styled(Hamburger)`
+const HamburgerMenyIkon = styled(MenuHamburgerIcon)`
     margin: 1rem 1rem 0 1rem;
 
     &:hover {
@@ -14,7 +14,7 @@ const HamburgerMenyIkon = styled(Hamburger)`
     }
 `;
 
-const HamburgerMenyEllipsisVIkon = styled(EllipsisV)`
+const HamburgerMenyEllipsisVIkon = styled(MenuElipsisVerticalIcon)`
     margin: 0.5rem 0.5rem 0 0.5rem;
 
     &:hover {
@@ -26,8 +26,8 @@ const HamburgerWrapper = styled.div`
     position: relative;
 `;
 
-const HamburgerMenyInnhold = styled.div`
-    display: ${(props: HamburgerMenyInnholdProps) => (props.åpen ? 'block' : 'none')};
+const HamburgerMenyInnhold = styled.div<HamburgerMenyInnholdProps>`
+    display: ${(props) => (props.åpen ? 'block' : 'none')};
 
     position: absolute;
 
