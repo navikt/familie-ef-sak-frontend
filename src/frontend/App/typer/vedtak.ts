@@ -76,7 +76,7 @@ export type IInnvilgeVedtakForOvergangsstønad = {
 };
 
 export type IInnvilgeVedtakForBarnetilsyn = {
-    resultatType: EBehandlingResultat.INNVILGE;
+    resultatType: EBehandlingResultat.INNVILGE | EBehandlingResultat.INNVILGE_UTEN_UTBETALING;
     begrunnelse?: string;
     perioder: IUtgiftsperiode[];
     perioderKontantstøtte: IPeriodeMedBeløp[];
