@@ -9,7 +9,7 @@ import DataViewer from '../../Felles/DataViewer/DataViewer';
 import PersonHeaderComponent from '../../Felles/PersonHeader/PersonHeader';
 import { Behandling } from '../../App/typer/fagsak';
 import { IPersonopplysninger } from '../../App/typer/personopplysninger';
-import { HenleggModal } from './Henleggelse/HenleggModal';
+import { HenleggModal } from './Modal/HenleggModal';
 import { useSetValgtFagsakId } from '../../App/hooks/useSetValgtFagsakId';
 import { useSetPersonIdent } from '../../App/hooks/useSetPersonIdent';
 import { InfostripeUtestengelse } from './InfostripeUtestengelse';
@@ -17,6 +17,7 @@ import { ABorderDefault } from '@navikt/ds-tokens/dist/tokens';
 import { EkspanderbareVilkårpanelProvider } from '../../App/context/EkspanderbareVilkårpanelContext';
 import Personopplysningsendringer from './Endring/EndringPersonopplysninger';
 import { SettPåVent } from './SettPåVent/SettPåVent';
+import { NyEierModal } from './Modal/NyEierModal';
 
 const Container = styled.div`
     display: flex;
@@ -85,6 +86,7 @@ const BehandlingContent: FC<{
                         <BehandlingRoutes />
                     </EkspanderbareVilkårpanelProvider>
                     <HenleggModal behandling={behandling} />
+                    <NyEierModal />
                 </InnholdWrapper>
                 <HøyreMenyWrapper åpenHøyremeny={åpenHøyremeny}>
                     <Høyremeny behandling={behandling} åpenHøyremeny={åpenHøyremeny} />

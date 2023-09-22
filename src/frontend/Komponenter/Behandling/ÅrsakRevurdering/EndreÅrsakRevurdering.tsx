@@ -17,6 +17,7 @@ import { EnsligErrorMessage } from '../../../Felles/ErrorMessage/EnsligErrorMess
 import styled from 'styled-components';
 import { erGyldigDato } from '../../../App/utils/dato';
 import { Datovelger } from '../../../Felles/Datovelger/Datovelger';
+import { ModalState } from '../Modal/NyEierModal';
 
 const Container = styled.div`
     > * {
@@ -39,7 +40,12 @@ export const EndreÅrsakRevurdering: React.FC<Props> = ({
 }) => {
     const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
         useApp();
-    const { behandlingErRedigerbar, hentAnsvarligSaksbehandler, hentBehandling } = useBehandling();
+    const {
+        behandlingErRedigerbar,
+        hentAnsvarligSaksbehandler,
+        hentBehandling,
+        settNyEierModalState,
+    } = useBehandling();
 
     const [revurderingsinformasjon, settRevurderingsinformasjon] =
         useState<Revurderingsinformasjon>(initStateRevurderingsinformasjon);
@@ -85,6 +91,7 @@ export const EndreÅrsakRevurdering: React.FC<Props> = ({
                     oppdaterRevurderingsinformasjon(res.data);
                 } else {
                     settFeilmelding(res.frontendFeilmelding);
+                    settNyEierModalState(ModalState.LUKKET);
                     hentAnsvarligSaksbehandler.rerun();
                 }
             })

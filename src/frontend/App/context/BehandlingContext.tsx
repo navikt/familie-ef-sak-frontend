@@ -20,6 +20,7 @@ import { useHentEndringerPersonopplysninger } from '../hooks/useHentEndringerPer
 import { useVilkår } from '../hooks/useVilkår';
 import { useHentAnsvarligSaksbehandler } from '../hooks/useHentAnsvarligSaksbehandler';
 import { useApp } from './AppContext';
+import { ModalState, utledModalState } from '../../Komponenter/Behandling/Modal/NyEierModal';
 
 const [BehandlingProvider, useBehandling] = constate(() => {
     const { innloggetSaksbehandler } = useApp();
@@ -52,6 +53,9 @@ const [BehandlingProvider, useBehandling] = constate(() => {
     const hentTotrinnskontroll = useRerunnableEffect(hentTotrinnskontrollCallback, [behandlingId]);
 
     const [visHenleggModal, settVisHenleggModal] = useState(false);
+    const [nyEierModalState, settNyEierModalState] = useState<ModalState>(
+        ModalState.SKAL_IKKE_ÅPNES
+    );
     const [visSettPåVent, settVisSettPåVent] = useState(false);
     const [åpenHøyremeny, settÅpenHøyremeny] = useState(true);
 
@@ -83,6 +87,17 @@ const [BehandlingProvider, useBehandling] = constate(() => {
     }, [behandling]);
 
     useEffect(() => {
+        if (ansvarligSaksbehandler.status === RessursStatus.SUKSESS) {
+            settNyEierModalState((prevState) =>
+                utledModalState(
+                    prevState,
+                    innloggetSaksbehandlerKanRedigereBehandling(ansvarligSaksbehandler.data)
+                )
+            );
+        }
+    }, [ansvarligSaksbehandler]);
+
+    useEffect(() => {
         settBehandlingErRedigerbar(
             behandling.status === RessursStatus.SUKSESS &&
                 ansvarligSaksbehandler.status === RessursStatus.SUKSESS &&
@@ -94,6 +109,7 @@ const [BehandlingProvider, useBehandling] = constate(() => {
     const vilkårState = useVilkår();
 
     return {
+        ansvarligSaksbehandler,
         behandling,
         behandlingErRedigerbar,
         behandlingHistorikk,
@@ -106,14 +122,15 @@ const [BehandlingProvider, useBehandling] = constate(() => {
         personopplysningerResponse,
         regler,
         settVisHenleggModal,
+        settNyEierModalState,
         settVisSettPåVent,
         settÅpenHøyremeny,
-        ansvarligSaksbehandler,
         totrinnskontroll,
         utestengelser,
         visHenleggModal,
         visSettPåVent,
         vilkårState,
+        nyEierModalState,
         åpenHøyremeny,
     };
 });

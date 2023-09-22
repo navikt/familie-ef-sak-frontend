@@ -12,6 +12,7 @@ import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
 import { useRedirectEtterLagring } from '../../../../../App/hooks/felles/useRedirectEtterLagring';
 import { v4 as uuidv4 } from 'uuid';
 import HovedKnapp from '../../../../../Felles/Knapper/HovedKnapp';
+import { ModalState } from '../../../Modal/NyEierModal';
 
 const Form = styled.form`
     padding: 1rem;
@@ -34,7 +35,12 @@ export const OpphøreVedtak: React.FC<{
         lagretOpphørtVedtak?.begrunnelse || ''
     );
     const [feilmelding, settFeilmelding] = useState<string | undefined>();
-    const { behandlingErRedigerbar, hentAnsvarligSaksbehandler, hentBehandling } = useBehandling();
+    const {
+        behandlingErRedigerbar,
+        hentAnsvarligSaksbehandler,
+        hentBehandling,
+        settNyEierModalState,
+    } = useBehandling();
     const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
         useApp();
 
@@ -70,6 +76,7 @@ export const OpphøreVedtak: React.FC<{
         } else {
             settIkkePersistertKomponent(uuidv4());
             settFeilmelding(res.frontendFeilmelding);
+            settNyEierModalState(ModalState.LUKKET);
             hentAnsvarligSaksbehandler.rerun();
         }
     };

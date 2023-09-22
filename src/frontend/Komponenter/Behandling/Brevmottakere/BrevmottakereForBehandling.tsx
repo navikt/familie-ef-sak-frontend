@@ -14,13 +14,15 @@ import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { AxiosRequestConfig } from 'axios';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import Brevmottakere from './Brevmottakere';
+import { ModalState } from '../Modal/NyEierModal';
 
 export const BrevmottakereForBehandling: FC<{
     behandlingId: string;
     personopplysninger: IPersonopplysninger;
 }> = ({ personopplysninger, behandlingId }) => {
     const { axiosRequest } = useApp();
-    const { hentAnsvarligSaksbehandler, behandlingErRedigerbar } = useBehandling();
+    const { hentAnsvarligSaksbehandler, behandlingErRedigerbar, settNyEierModalState } =
+        useBehandling();
 
     const [mottakere, settMottakere] = useState<Ressurs<IBrevmottakere | undefined>>(
         byggTomRessurs()
@@ -35,6 +37,7 @@ export const BrevmottakereForBehandling: FC<{
             if (res.status === RessursStatus.SUKSESS) {
                 settMottakere(byggSuksessRessurs(brevmottakere));
             } else {
+                settNyEierModalState(ModalState.LUKKET);
                 hentAnsvarligSaksbehandler.rerun();
             }
             return res;

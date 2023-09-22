@@ -14,6 +14,7 @@ import { Behandlingstype } from '../../../../../App/typer/behandlingstype';
 import { Stønadstype } from '../../../../../App/typer/behandlingstema';
 import { useRedirectEtterLagring } from '../../../../../App/hooks/felles/useRedirectEtterLagring';
 import { v4 as uuidv4 } from 'uuid';
+import { ModalState } from '../../../Modal/NyEierModal';
 
 export const AvslåVedtak: React.FC<{
     behandling: Behandling;
@@ -37,7 +38,12 @@ export const AvslåVedtak: React.FC<{
         skalVelgeÅrsak && (!avslagÅrsak || avslagÅrsak === EAvslagÅrsak.VILKÅR_IKKE_OPPFYLT);
 
     const [laster, settLaster] = useState<boolean>();
-    const { hentAnsvarligSaksbehandler, hentBehandling, behandlingErRedigerbar } = useBehandling();
+    const {
+        hentAnsvarligSaksbehandler,
+        hentBehandling,
+        behandlingErRedigerbar,
+        settNyEierModalState,
+    } = useBehandling();
     const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
         useApp();
 
@@ -64,6 +70,7 @@ export const AvslåVedtak: React.FC<{
                 default:
                     settIkkePersistertKomponent(uuidv4());
                     settFeilmelding(res.frontendFeilmelding);
+                    settNyEierModalState(ModalState.LUKKET);
                     hentAnsvarligSaksbehandler.rerun();
             }
         };

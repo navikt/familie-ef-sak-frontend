@@ -15,6 +15,7 @@ import { Behandling } from '../../../App/typer/fagsak';
 import { IOppgaverForOpprettelse } from '../../../App/hooks/useHentOppgaverForOpprettelse';
 import { OppgaveTypeForOpprettelse } from './oppgaveForOpprettelseTyper';
 import { harVerdi } from '../../../App/utils/utils';
+import { ModalState } from '../Modal/NyEierModal';
 
 const Footer = styled.footer`
     width: 100%;
@@ -64,6 +65,7 @@ const SendTilBeslutterFooter: React.FC<{
         hentAnsvarligSaksbehandler,
         hentBehandling,
         hentBehandlingshistorikk,
+        settNyEierModalState,
     } = useBehandling();
     const [laster, settLaster] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>();
@@ -88,6 +90,7 @@ const SendTilBeslutterFooter: React.FC<{
                     settVisModal(true);
                 } else {
                     settFeilmelding(res.frontendFeilmelding);
+                    settNyEierModalState(ModalState.LUKKET);
                     hentAnsvarligSaksbehandler.rerun();
                 }
             })

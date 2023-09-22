@@ -30,6 +30,7 @@ import { useRedirectEtterLagring } from '../../../../../App/hooks/felles/useRedi
 import HovedKnapp, { Knapp } from '../../../../../Felles/Knapper/HovedKnapp';
 import { CalculatorIcon } from '@navikt/aksel-icons';
 import { tomInntektsperiodeRad, tomVedtaksperiodeRad } from '../Felles/utils';
+import { ModalState } from '../../../Modal/NyEierModal';
 
 export type InnvilgeVedtakForm = Omit<
     Omit<IInnvilgeVedtakForOvergangsstønad, 'resultatType'>,
@@ -52,7 +53,12 @@ export const InnvilgeOvergangsstønad: React.FC<{
     revurderesFra?: string;
     vilkår: IVilkår;
 }> = ({ behandling, lagretVedtak, revurderesFra, vilkår }) => {
-    const { hentAnsvarligSaksbehandler, hentBehandling, behandlingErRedigerbar } = useBehandling();
+    const {
+        hentAnsvarligSaksbehandler,
+        hentBehandling,
+        behandlingErRedigerbar,
+        settNyEierModalState,
+    } = useBehandling();
     const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
         useApp();
     const { utførRedirect } = useRedirectEtterLagring(`/behandling/${behandling.id}/simulering`);
@@ -168,6 +174,7 @@ export const InnvilgeOvergangsstønad: React.FC<{
                 default:
                     settFeilmelding(res.frontendFeilmelding);
                     settIkkePersistertKomponent(uuidv4());
+                    settNyEierModalState(ModalState.LUKKET);
                     hentAnsvarligSaksbehandler.rerun();
             }
         };
