@@ -18,7 +18,7 @@ export const KopierbartNullableFødselsnummer: React.FC<{ fødselsnummer: string
             <span>{formaterFødselsnummer(fødselsnummer)}</span>
             <CopyButton
                 size={'xsmall'}
-                copyText={formaterFødselsnummer(fødselsnummer)}
+                copyText={fødselsnummer}
                 variant={'action'}
                 activeText={'kopiert'}
             />
