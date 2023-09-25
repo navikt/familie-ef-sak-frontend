@@ -1,9 +1,11 @@
 import React from 'react';
-import { Stønadstype } from '../../../App/typer/behandlingstema';
-import { ITidligereVedtaksperioder } from './typer';
-import TabellVisningMedTag, { IStonader } from '../Tabell/TabellVisningMedTag';
-import { OSHistorikKort } from './OSHistorikKort';
+import { IStonader, ITidligereVedtaksperioder } from './typer';
+import TabellVisningMedTag from '../Tabell/TabellVisningMedTag';
 import styled from 'styled-components';
+import { Heading } from '@navikt/ds-react';
+import HistorikkIInfotrygdKort from './HistorikkIInfotrygdKort';
+import { Stønadstype } from '../../../App/typer/behandlingstema';
+import HistorikkIEfKort from './HistorikkIEfKort';
 
 const Container = styled.div`
     display: flex;
@@ -13,48 +15,60 @@ const Container = styled.div`
     text-align: left;
 `;
 
+const Tittel = styled(Heading)`
+    text-decoration: underline;
+`;
+
+const StønadsKort: React.FC<{ stonad: IStonader }> = ({ stonad }) => {
+    const { historikkISak, viseInfotrygdKort } = stonad;
+
+    const stønadstypeTilOverskrift = (stønadstype: string) => {
+        return stønadstype.charAt(0).toUpperCase() + stønadstype.slice(1).toLowerCase();
+    };
+
+    return (
+        <>
+            <Tittel level="3" size="small">
+                {stønadstypeTilOverskrift(stonad.stønadstype)}
+            </Tittel>
+            <TabellVisningMedTag stonad={stonad} />
+            {historikkISak && (
+                <HistorikkIEfKort historikkISak={historikkISak} stønadstype={stonad.stønadstype} />
+            )}
+            {viseInfotrygdKort && <HistorikkIInfotrygdKort />}
+        </>
+    );
+};
+
 export const TidligereVedtaksperiodeKort: React.FC<{
     tidligereVedtaksperioder: ITidligereVedtaksperioder;
 }> = ({ tidligereVedtaksperioder }) => {
     const stønader: IStonader[] = [
         {
-            overskrift: 'Overgangsstønad',
-            historikk: {
-                sak: tidligereVedtaksperioder.sak, // Endre til nytt navn med sak: tidligereVedtaksperioder.sak?.øyeblikksbildeAvPerioderOgPeriodetype,
-                infotrygd: tidligereVedtaksperioder.infotrygd,
-            },
+            stønadstype: Stønadstype.OVERGANGSSTØNAD,
+            viseInfotrygdKort: tidligereVedtaksperioder.infotrygd?.harTidligereOvergangsstønad,
+            historikkISak: tidligereVedtaksperioder.sak?.periodeHistorikkOvergangsstønad,
             verdier: {
-                stønad: Stønadstype.OVERGANGSSTØNAD,
-                verdi: [
-                    { sak: tidligereVedtaksperioder.sak?.harTidligereOvergangsstønad },
-                    {
-                        infotrygd: tidligereVedtaksperioder.infotrygd?.harTidligereOvergangsstønad,
-                    },
-                ],
+                sak: tidligereVedtaksperioder.sak?.harTidligereOvergangsstønad,
+                infotrygd: tidligereVedtaksperioder.infotrygd?.harTidligereOvergangsstønad,
             },
         },
         {
-            overskrift: 'Barnetilsyn',
+            stønadstype: Stønadstype.BARNETILSYN,
+            viseInfotrygdKort: tidligereVedtaksperioder.infotrygd?.harTidligereBarnetilsyn,
+            historikkISak: undefined,
             verdier: {
-                stønad: Stønadstype.BARNETILSYN,
-                verdi: [
-                    { sak: tidligereVedtaksperioder.sak?.harTidligereBarnetilsyn },
-                    {
-                        infotrygd: tidligereVedtaksperioder.infotrygd?.harTidligereBarnetilsyn,
-                    },
-                ],
+                sak: tidligereVedtaksperioder.sak?.harTidligereBarnetilsyn,
+                infotrygd: tidligereVedtaksperioder.infotrygd?.harTidligereBarnetilsyn,
             },
         },
         {
-            overskrift: 'Skolepenger',
+            stønadstype: Stønadstype.SKOLEPENGER,
+            viseInfotrygdKort: tidligereVedtaksperioder.infotrygd?.harTidligereSkolepenger,
+            historikkISak: undefined,
             verdier: {
-                stønad: Stønadstype.SKOLEPENGER,
-                verdi: [
-                    { sak: tidligereVedtaksperioder.sak?.harTidligereSkolepenger },
-                    {
-                        infotrygd: tidligereVedtaksperioder.infotrygd?.harTidligereSkolepenger,
-                    },
-                ],
+                sak: tidligereVedtaksperioder.sak?.harTidligereSkolepenger,
+                infotrygd: tidligereVedtaksperioder.infotrygd?.harTidligereSkolepenger,
             },
         },
     ];
@@ -62,14 +76,7 @@ export const TidligereVedtaksperiodeKort: React.FC<{
     return (
         <Container>
             {stønader.map((stonad, i) => (
-                <React.Fragment key={i}>
-                    {/* <pre>{JSON.stringify(stonad, null, 2)}</pre> */}
-                    <TabellVisningMedTag stonad={stonad} />
-                    <OSHistorikKort
-                        infotrygd={stonad.historikk?.infotrygd}
-                        sak={stonad.historikk?.sak}
-                    />
-                </React.Fragment>
+                <StønadsKort key={i} stonad={stonad} />
             ))}
         </Container>
     );

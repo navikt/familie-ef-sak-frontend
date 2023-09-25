@@ -1,23 +1,7 @@
 import * as React from 'react';
-import styled from 'styled-components';
-import { ITidligereVedtaksperioder } from '../TidligereVedtaksperioder/typer';
-import { Heading, Tag } from '@navikt/ds-react';
+import { IStonader } from '../TidligereVedtaksperioder/typer';
+import { Tag } from '@navikt/ds-react';
 import { formatterBooleanEllerUkjent } from '../../../App/utils/formatter';
-
-export interface IStonader {
-    overskrift: string;
-    historikk?: undefined | ITidligereVedtaksperioder;
-    verdier?: IVerdier;
-}
-
-interface IVerdier {
-    stønad: string;
-    verdi: [{ sak: boolean | undefined }, { infotrygd: boolean | undefined }];
-}
-
-const Tittel = styled(Heading)`
-    text-decoration: underline;
-`;
 
 const TabellVisningMedTag: React.FC<{ stonad: IStonader }> = ({ stonad }) => {
     const renderTag = (verdi: boolean | undefined) => {
@@ -33,9 +17,6 @@ const TabellVisningMedTag: React.FC<{ stonad: IStonader }> = ({ stonad }) => {
 
     return (
         <>
-            <Tittel level="3" size="small">
-                {stonad.overskrift}
-            </Tittel>
             <table>
                 <tbody>
                     <tr>
@@ -43,8 +24,8 @@ const TabellVisningMedTag: React.FC<{ stonad: IStonader }> = ({ stonad }) => {
                         <th>{'Historikk i Infotrygd'}</th>
                     </tr>
                     <tr>
-                        {renderTag(stonad.verdier?.verdi[0].sak)}
-                        {renderTag(stonad.verdier?.verdi[1].infotrygd)}
+                        {renderTag(stonad.verdier?.sak)}
+                        {renderTag(stonad.verdier?.infotrygd)}
                     </tr>
                 </tbody>
             </table>

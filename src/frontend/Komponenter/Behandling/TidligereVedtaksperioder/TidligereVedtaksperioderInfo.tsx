@@ -9,7 +9,6 @@ import { useHentHistoriskPensjon } from '../../../App/hooks/useHentHistoriskPens
 import { RessursStatus } from '../../../App/typer/ressurs';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { TidligereVedtaksperiodeKort } from './TidligereVedtaksperiodeKort';
-import { mapIkon, VilkårInfoIkon } from '../Vilkårpanel/VilkårInformasjonKomponenter';
 import { formatterBooleanEllerUkjent } from '../../../App/utils/formatter';
 
 const Container = styled.div`
@@ -56,10 +55,12 @@ const HistoriskpensjonLenke: React.FC = () => {
 const TidligereVedtaksperioderInfo: FC<{ tidligereVedtaksperioder: ITidligereVedtaksperioder }> = ({
     tidligereVedtaksperioder,
 }) => {
+    const tagVariant = tidligereVedtaksperioder.historiskPensjon ? 'success-filled' : 'neutral';
+
     return (
         <Container>
             <FlexDiv>
-                {mapIkon(VilkårInfoIkon.REGISTER)}
+                <Registergrunnlag />
 
                 <Label size="small" className="tittel" as="h3">
                     Har bruker tidligere vedtaksperioder i EF Sak eller Infotrygd
@@ -72,11 +73,7 @@ const TidligereVedtaksperioderInfo: FC<{ tidligereVedtaksperioder: ITidligereVed
                 <SmallTextLabel>
                     Har bruker fått stønad før desember 2008 - <span>Infotrygd (PE PP)</span>
                 </SmallTextLabel>
-                <Tag
-                    variant={
-                        tidligereVedtaksperioder.historiskPensjon ? 'success-filled' : 'neutral'
-                    }
-                >
+                <Tag variant={tagVariant}>
                     {formatterBooleanEllerUkjent(tidligereVedtaksperioder.historiskPensjon)}
                 </Tag>
                 {tidligereVedtaksperioder.historiskPensjon && <HistoriskpensjonLenke />}

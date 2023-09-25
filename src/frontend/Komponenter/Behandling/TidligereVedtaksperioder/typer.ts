@@ -14,9 +14,21 @@ export interface ITidligereInnvilgetVedtak {
 }
 
 export interface IGrunnlagsdataPeriodeHistorikk {
-    antMnd: number;
-    antallMndUtenBeløp: number;
-    periodeType: EPeriodetype;
+    antallMåneder: number;
+    antallMånederUtenBeløp: number;
+    vedtaksperiodeType: EPeriodetype;
     fom: string;
     tom: string;
+}
+
+export interface IStonader {
+    stønadstype: string;
+    viseInfotrygdKort?: boolean;
+    historikkISak?: IGrunnlagsdataPeriodeHistorikk[] | undefined;
+    verdier?: IVerdier;
+}
+
+interface IVerdier {
+    sak: boolean | undefined;
+    infotrygd: boolean | undefined;
 }
