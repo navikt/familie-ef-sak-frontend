@@ -56,11 +56,7 @@ const MånedÅrVelger: React.FC<Props> = ({
 
     return (
         <div className={className} style={lesevisning ? { minWidth: '140px' } : {}}>
-            {label && (
-                <DatolabelStyle className="skjemaelement__label" htmlFor="regdatoTil">
-                    {label}
-                </DatolabelStyle>
-            )}
+            {label && <DatolabelStyle htmlFor="regdatoTil">{label}</DatolabelStyle>}
             <FlexDiv>
                 <MånedVelger
                     måned={måned}

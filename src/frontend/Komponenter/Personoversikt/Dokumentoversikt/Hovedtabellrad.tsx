@@ -13,7 +13,7 @@ import {
 import { Utsendingsinfo } from '../Utsendingsinfo';
 import styled from 'styled-components';
 import { Journalposttype } from '@navikt/familie-typer';
-import { DownFilled, LeftFilled, RightFilled } from '@navikt/ds-icons';
+import { ArrowDownIcon, ArrowLeftIcon, ArrowRightIcon } from '@navikt/aksel-icons';
 import { skalViseLenke } from '../utils';
 import { PadlockLockedIcon } from '@navikt/aksel-icons';
 
@@ -41,9 +41,9 @@ export const IkkeTilgang = styled.div`
 `;
 
 const ikonForJournalposttype: Record<Journalposttype, React.ReactElement> = {
-    I: <LeftFilled />,
-    N: <DownFilled />,
-    U: <RightFilled />,
+    I: <ArrowLeftIcon />,
+    N: <ArrowDownIcon />,
+    U: <ArrowRightIcon />,
 };
 
 export const HovedTabellrad: React.FC<{ dokument: Dokumentinfo; erKlikketId: string }> = ({

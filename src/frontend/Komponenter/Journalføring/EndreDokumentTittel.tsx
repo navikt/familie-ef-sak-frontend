@@ -41,7 +41,7 @@ const customStyles: StylesConfig = {
         outline: 'none',
         border: 'none',
         backgroundColor: '#fff',
-        ':hover': {
+        '&:hover': {
             borderColor: ABlue500,
         },
     }),

@@ -6,7 +6,7 @@ import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import EndreVurderingComponent from './EndreVurderingComponent';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { Redigeringsmodus } from './VisEllerEndreVurdering';
-import { Cancel } from '@navikt/ds-icons';
+import { ArrowUndoIcon } from '@navikt/aksel-icons';
 import { Button, ErrorMessage, Heading } from '@navikt/ds-react';
 import {
     EkspandertTilstand,
@@ -92,7 +92,7 @@ const EndreVurdering: FC<Props> = ({
                         <Button
                             type={'button'}
                             variant={'tertiary'}
-                            icon={<Cancel />}
+                            icon={<ArrowUndoIcon />}
                             onClick={avbrytVurdering}
                             size={'small'}
                         >

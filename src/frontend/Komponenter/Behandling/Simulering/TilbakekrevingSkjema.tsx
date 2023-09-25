@@ -7,7 +7,7 @@ import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer
 import { base64toBlob, åpnePdfIEgenTab } from '../../../App/utils/utils';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 import { Button, Radio, RadioGroup } from '@navikt/ds-react';
-import { FileContent } from '@navikt/ds-icons';
+import { FileTextIcon } from '@navikt/aksel-icons';
 import { ARed500 } from '@navikt/ds-tokens/dist/tokens';
 import { InfostripeTilbakekrevingsvalg } from './InfostripeTilbakekrevingsvalg';
 
@@ -114,7 +114,7 @@ export const TilbakekrevingSkjema: React.FC<Props> = ({
                         <Button
                             type={'button'}
                             variant={'tertiary'}
-                            icon={<FileContent />}
+                            icon={<FileTextIcon />}
                             size={'xsmall'}
                             onClick={åpneBrevINyFane}
                         >

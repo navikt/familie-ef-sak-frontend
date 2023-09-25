@@ -90,7 +90,7 @@ export const Fritekstområde: React.FC<{
                         <FritekstAvsnittContainer key={indeks}>
                             <TextField
                                 size={'small'}
-                                value={avsnitt.deloverskrift}
+                                value={avsnitt.deloverskrift || ''}
                                 label={'Deloverskrift'}
                                 onChange={(e) =>
                                     oppdaterAvsnitt(indeks, {

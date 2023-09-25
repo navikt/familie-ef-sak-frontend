@@ -1,5 +1,4 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import 'nav-frontend-tabell-style';
 import styled from 'styled-components';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { formaterIsoDatoTid, formaterNullableIsoDato } from '../../App/utils/formatter';
@@ -7,7 +6,7 @@ import { Ressurs, RessursStatus } from '../../App/typer/ressurs';
 import { KlageBehandling, Klagebehandlinger } from '../../App/typer/klage';
 import { BehandlingKlageRequest } from '../../App/hooks/useJournalføringKlageState';
 import { Alert, Button, Checkbox, Heading } from '@navikt/ds-react';
-import { AddCircle } from '@navikt/ds-icons';
+import { PlusCircleIcon } from '@navikt/aksel-icons';
 import { harÅpenKlage } from '../../App/utils/klage';
 
 interface Props {
@@ -147,7 +146,7 @@ const BehandlingKlageInnold: React.FC<Props> = ({
                     variant={'tertiary'}
                     type={'button'}
                     onClick={lagNyBehandlingRad}
-                    icon={<AddCircle />}
+                    icon={<PlusCircleIcon />}
                 >
                     <span>Opprett ny behandling</span>
                 </Button>

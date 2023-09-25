@@ -46,6 +46,10 @@ export const TabellWrapper = styled.div<{ erDobbelTabell?: boolean }>`
 
 export const SmallTable = styled(Table).attrs({ size: 'small' })`
     max-width: max-content;
+    th,
+    td {
+        font-size: var(--a-font-size-medium);
+    }
 `;
 
 type Kolonnetittel = string | React.ReactNode;

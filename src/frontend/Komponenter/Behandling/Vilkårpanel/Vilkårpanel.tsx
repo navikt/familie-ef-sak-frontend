@@ -2,7 +2,7 @@ import React, { FC, ReactNode } from 'react';
 import styled from 'styled-components';
 import { Vilkårsresultat, VilkårType } from '../Inngangsvilkår/vilkår';
 import { Button, Heading } from '@navikt/ds-react';
-import { Collapse, Expand } from '@navikt/ds-icons';
+import { ChevronUpIcon, ChevronDownIcon } from '@navikt/aksel-icons';
 import { VilkårsresultatIkon } from '../../../Felles/Ikoner/VilkårsresultatIkon';
 import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 import { AGray50, ATextSubtle } from '@navikt/ds-tokens/dist/tokens';
@@ -72,9 +72,9 @@ export const Vilkårpanel: FC<Props> = ({
                         variant="tertiary"
                         icon={
                             ekspanderteVilkår[vilkår] === EkspandertTilstand.KOLLAPSET ? (
-                                <Collapse />
+                                <ChevronUpIcon />
                             ) : (
-                                <Expand />
+                                <ChevronDownIcon />
                             )
                         }
                         onClick={() => toggleEkspandertTilstand(vilkår)}

@@ -76,7 +76,7 @@ export type IInnvilgeVedtakForOvergangsstønad = {
 };
 
 export type IInnvilgeVedtakForBarnetilsyn = {
-    resultatType: EBehandlingResultat.INNVILGE;
+    resultatType: EBehandlingResultat.INNVILGE | EBehandlingResultat.INNVILGE_UTEN_UTBETALING;
     begrunnelse?: string;
     perioder: IUtgiftsperiode[];
     perioderKontantstøtte: IPeriodeMedBeløp[];
@@ -302,6 +302,7 @@ export enum EAvslagÅrsak {
     STØNADSTID_OPPBRUKT = 'STØNADSTID_OPPBRUKT',
     MANGLENDE_OPPLYSNINGER = 'MANGLENDE_OPPLYSNINGER',
     MINDRE_INNTEKTSENDRINGER = 'MINDRE_INNTEKTSENDRINGER',
+    KORTVARIG_AVBRUDD_JOBB = 'KORTVARIG_AVBRUDD_JOBB',
 }
 
 export const årsakerTilAvslag: EAvslagÅrsak[] = [
@@ -309,6 +310,7 @@ export const årsakerTilAvslag: EAvslagÅrsak[] = [
     EAvslagÅrsak.MANGLENDE_OPPLYSNINGER,
     EAvslagÅrsak.STØNADSTID_OPPBRUKT,
     EAvslagÅrsak.MINDRE_INNTEKTSENDRINGER,
+    EAvslagÅrsak.KORTVARIG_AVBRUDD_JOBB,
 ];
 
 export enum ESkolepengerStudietype {
@@ -438,6 +440,7 @@ export const avslagÅrsakTilTekst: Record<EAvslagÅrsak, string> = {
     STØNADSTID_OPPBRUKT: 'Stønadstiden er brukt opp',
     MANGLENDE_OPPLYSNINGER: 'Manglende opplysninger',
     MINDRE_INNTEKTSENDRINGER: 'Ikke 10 % endring inntekt',
+    KORTVARIG_AVBRUDD_JOBB: 'Kortvarig avbrudd jobb',
 };
 
 export const samordningsfradragstypeTilTekst: Record<ESamordningsfradragtype, string> = {
