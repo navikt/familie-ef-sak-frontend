@@ -52,7 +52,7 @@ const HistorikkIEfKort: React.FC<{
                                 <Label>Har 0 beløp</Label>
                             </Row>
                             {historikkISak?.map((rad, i) => (
-                                <HistorikkRad key={i} rad={rad} index={i} />
+                                <HistorikkRad key={i} rad={rad} indeks={i} />
                             ))}
                         </Grid>
                     ) : (

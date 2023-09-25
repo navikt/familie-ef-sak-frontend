@@ -8,16 +8,16 @@ import styled from 'styled-components';
 
 interface HistorikkRadProps {
     rad: IGrunnlagsdataPeriodeHistorikk;
-    index: number;
+    indeks: number;
 }
 
 const Row = styled.div`
     display: contents;
 `;
 
-const HistorikkRad: React.FC<HistorikkRadProps> = ({ rad, index }) => {
+const HistorikkRad: React.FC<HistorikkRadProps> = ({ rad, indeks }) => {
     return (
-        <Row key={index}>
+        <Row key={indeks}>
             <BodyShort size="small">
                 {`${formaterIsoDato(rad.fom)} 
             - 
