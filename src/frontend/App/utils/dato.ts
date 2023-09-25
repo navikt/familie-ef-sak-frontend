@@ -86,8 +86,13 @@ export const tilDato = (dato: string | Date): Date =>
 
 export const tilLocaleDateString = (dato: Date) => formatISO(dato, { representation: 'date' });
 
-export const nullableTilDato = (dato: string | Date | undefined): Date | undefined =>
-    typeof dato === 'string' ? parseISO(dato) : dato;
+export const nullableTilDato = (dato: string | Date | undefined): Date | undefined => {
+    if (typeof dato === 'string') {
+        return dato !== '' ? parseISO(dato) : undefined;
+    } else {
+        return dato;
+    }
+};
 
 export const nullableDatoTilAlder = (dato?: string | Date | null): number | undefined => {
     return dato ? datoTilAlder(dato) : undefined;

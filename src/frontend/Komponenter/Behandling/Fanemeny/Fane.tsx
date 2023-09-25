@@ -23,7 +23,7 @@ const StyledNavLink = styled(NavLink)`
     padding-left: 5px;
     padding-right: 5px;
 
-    :hover {
+    &:hover {
         border-bottom: 5px solid ${ABlue400};
 
         .navds-body-short {

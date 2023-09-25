@@ -52,7 +52,9 @@ const VedtakOgBeregningBarnetilsyn: FC<Props> = ({ behandling, vilkår }) => {
                                 <InnvilgeVedtak
                                     behandling={behandling}
                                     lagretVedtak={
-                                        vedtak?._type === IVedtakType.InnvilgelseBarnetilsyn
+                                        vedtak?._type === IVedtakType.InnvilgelseBarnetilsyn ||
+                                        vedtak?._type ===
+                                            IVedtakType.InnvilgelseBarnetilsynUtenUtbetaling
                                             ? vedtak
                                             : undefined
                                     }

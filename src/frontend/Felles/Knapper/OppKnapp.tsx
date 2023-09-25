@@ -1,4 +1,4 @@
-import { Up } from '@navikt/ds-icons';
+import { ArrowUpIcon } from '@navikt/aksel-icons';
 import React from 'react';
 import { Button } from '@navikt/ds-react';
 
@@ -8,7 +8,7 @@ const OppKnapp: React.FC<{ onClick: () => void; ikontekst: string }> = ({ onClic
             type={'button'}
             onClick={onClick}
             variant={'tertiary'}
-            icon={<Up title={ikontekst} />}
+            icon={<ArrowUpIcon title={ikontekst} />}
         />
     );
 };

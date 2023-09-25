@@ -1,5 +1,4 @@
 import React from 'react';
-import 'nav-frontend-tabell-style';
 import InnflyttingUtflytting from './InnflyttingUtflytting';
 import Barn from './Barn';
 import Adressehistorikk from './Adressehistorikk';

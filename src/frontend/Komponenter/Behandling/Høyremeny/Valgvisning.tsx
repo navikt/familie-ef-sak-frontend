@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { Høyremenyvalg } from './Høyremeny';
-import { Folder, ClockFilled } from '@navikt/ds-icons';
+import { FolderIcon, ClockFillIcon } from '@navikt/aksel-icons';
 import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 import { ABlue400, ABlue500, AGray100, ABorderStrong } from '@navikt/ds-tokens/dist/tokens';
 
@@ -25,13 +25,13 @@ interface IkonProps {
 }
 const StyledIkon = styled.div<IkonProps>`
     flex: 1;
-    padding-top: 1rem;
-    padding-bottom: 0.62rem;
+    padding-top: 0.75rem;
+    padding-bottom: 0.25rem;
 
     background-color: ${ABlue500};
     color: ${ABlue500};
 
-    :hover {
+    &:hover {
         cursor: pointer;
         svg {
             fill: ${ABlue400};
@@ -56,7 +56,7 @@ const Valgvisning: React.FC<ValgvisningProps> = ({ aktiv, settAktiv }) => {
                 erAktiv={aktiv === Høyremenyvalg.Logg}
                 onClick={() => settAktiv(Høyremenyvalg.Logg)}
             >
-                <ClockFilled aria-label="Historikk" />
+                <ClockFillIcon aria-label="Historikk" fontSize={'1.5em'} />
                 <BodyShortSmall>Historikk</BodyShortSmall>
             </StyledIkon>
             <StyledIkon
@@ -64,7 +64,7 @@ const Valgvisning: React.FC<ValgvisningProps> = ({ aktiv, settAktiv }) => {
                 erAktiv={aktiv === Høyremenyvalg.Mappe}
                 onClick={() => settAktiv(Høyremenyvalg.Mappe)}
             >
-                <Folder />
+                <FolderIcon fontSize={'1.5em'} />
                 <BodyShortSmall>Dokumenter</BodyShortSmall>
             </StyledIkon>
         </StyledIkonWrapper>
