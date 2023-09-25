@@ -35,6 +35,11 @@ const HistorikkIEfKort: React.FC<{
     stønadstype: string;
 }> = ({ historikkISak, stønadstype }) => {
     const erOvergansstønad = stønadstype === Stønadstype.OVERGANGSSTØNAD;
+    const harHistorikkMedInnhold = historikkISak && historikkISak?.length > 0;
+
+    if (!harHistorikkMedInnhold) {
+        return <></>;
+    }
 
     return (
         <>
@@ -48,8 +53,8 @@ const HistorikkIEfKort: React.FC<{
                             <Row>
                                 <Label>Periode</Label>
                                 <Label>Periodetype</Label>
-                                <Label>Måneder innvilget</Label>
-                                <Label>Har 0 beløp</Label>
+                                <Label>Måneder med utbet.</Label>
+                                <Label>Måneder uten utbet.</Label>
                             </Row>
                             {historikkISak?.map((rad, i) => (
                                 <HistorikkRad key={i} rad={rad} indeks={i} />

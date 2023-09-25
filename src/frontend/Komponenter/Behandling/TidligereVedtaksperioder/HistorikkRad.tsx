@@ -31,7 +31,7 @@ const HistorikkRad: React.FC<HistorikkRadProps> = ({ rad, indeks }) => {
             <BodyShort size="small">{rad.antallMåneder}</BodyShort>
             <BodyShort size="small">
                 {rad.antallMånederUtenBeløp >= 1 && rad.vedtaksperiodeType !== EPeriodetype.SANKSJON
-                    ? `ja (${rad.antallMånederUtenBeløp})`
+                    ? rad.antallMånederUtenBeløp
                     : '-'}
             </BodyShort>
         </Row>
