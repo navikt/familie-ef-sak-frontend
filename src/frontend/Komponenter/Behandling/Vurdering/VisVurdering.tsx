@@ -73,7 +73,7 @@ const VisVurdering: FC<Props> = ({
 }) => {
     const vilkårsresultat = vurdering.resultat;
     const sistOppdatert = formaterIsoDatoTidMedSekunder(
-        vurdering.opphavsvilkår?.vurderingstidspunkt || vurdering.endretTid
+        vurdering.opphavsvilkår?.endretTid || vurdering.endretTid
     );
     const vurderingerBesvartAvSaksbehandler = vurdering.delvilkårsvurderinger.filter(
         (delvilkårsvurdering) =>
