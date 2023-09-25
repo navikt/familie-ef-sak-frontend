@@ -54,7 +54,7 @@ export interface IVurdering {
 
 export interface Opphavsvilkår {
     behandlingId: string;
-    vurderingstidspunkt: string;
+    endretTid: string;
 }
 
 export interface IDokumentasjonGrunnlag {
