@@ -18,10 +18,9 @@ const FontStyle = styled.div<{ italic: boolean }>`
     font-style: ${(props) => (props.italic ? 'italic' : 'normal')};
 `;
 
-const unntakFraHovedregelTekst = 'Er unntak fra hovedregelen oppfylt?';
-
 const Delvilkår: FC<Props> = ({ regel, vurdering, settVurdering }) => {
     const hjelpetekst = hjelpeTekstConfig[regel.regelId];
+
     return (
         <DelvilkårContainer>
             <RadioGroup legend={delvilkårTypeTilTekst[regel.regelId]} value={vurdering.svar || ''}>
@@ -29,14 +28,7 @@ const Delvilkår: FC<Props> = ({ regel, vurdering, settVurdering }) => {
                     const erTekstKursiv = tekstSkalKursiveres(svarId);
                     return (
                         <>
-                            {delvilkårTypeTilTekst[regel.regelId] === unntakFraHovedregelTekst &&
-                                i === 0 && (
-                                    <Alert size="small" variant="info">
-                                        Det er nye regler for unntak fra 1. september 2023. Du må
-                                        vurdere om det er nye eller gamle regler som gjelder for
-                                        saken din.
-                                    </Alert>
-                                )}
+                            <InfoStripe indeks={i} regelId={regel.regelId} />
 
                             <Radio
                                 key={`${regel.regelId}_${svarId}`}
@@ -67,3 +59,18 @@ const Delvilkår: FC<Props> = ({ regel, vurdering, settVurdering }) => {
 };
 
 export default Delvilkår;
+
+const InfoStripe: FC<{ indeks: number; regelId: string }> = ({ indeks, regelId }) => {
+    const skalViseInfostripe = indeks === 0 && regelId === 'MEDLEMSKAP_UNNTAK';
+
+    if (!skalViseInfostripe) {
+        return <></>;
+    }
+
+    return (
+        <Alert size="small" variant="info">
+            Det er nye regler for unntak fra 1. september 2023. Du må vurdere om det er nye eller
+            gamle regler som gjelder for saken din.
+        </Alert>
+    );
+};
