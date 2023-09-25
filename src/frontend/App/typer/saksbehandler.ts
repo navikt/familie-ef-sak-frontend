@@ -16,10 +16,7 @@ export enum AnsvarligSaksbehandlerRolle {
 }
 
 export interface AnsvarligSaksbehandler {
-    azureId: string;
-    enhet: string;
     etternavn: string;
     fornavn: string;
-    navIdent: string;
     rolle: AnsvarligSaksbehandlerRolle;
 }
