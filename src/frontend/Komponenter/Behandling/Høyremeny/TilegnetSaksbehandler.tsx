@@ -80,6 +80,8 @@ const TilegnetSaksbehandler: React.FC<Props> = ({ behandling }) => {
                 return ASurfaceSuccess;
             case AnsvarligSaksbehandlerRolle.ANNEN_SAKSBEHANDLER:
                 return ASurfaceWarning;
+            default:
+                return ASurfaceNeutral;
         }
     };
 
@@ -100,21 +102,32 @@ const TilegnetSaksbehandler: React.FC<Props> = ({ behandling }) => {
 
                 const fontStyle = behandlingHarAnsvarligSaksbehandler ? 'normal' : 'italic';
 
+                const skalViseAnsvarligSaksbehandler =
+                    ansvarligSaksbehandler.rolle !==
+                    AnsvarligSaksbehandlerRolle.OPPGAVE_FINNES_IKKE;
+
                 return (
                     <Container>
                         <FlexBoxColumnFullWidth>
-                            <FlexBoxRow>
-                                <PersonIkon />
-                                <FlexBoxColumn>
-                                    <GråBodyShort size={'small'}>
-                                        Ansvarlig saksbehandler
-                                    </GråBodyShort>
-                                    <FontStyledBodyShort fontStyle={fontStyle} size={'small'}>
-                                        {visingsnavn}
-                                    </FontStyledBodyShort>
-                                </FlexBoxColumn>
-                            </FlexBoxRow>
-                            <StatusBar color={statusBarFarge} />
+                            {skalViseAnsvarligSaksbehandler && (
+                                <>
+                                    <FlexBoxRow>
+                                        <PersonIkon />
+                                        <FlexBoxColumn>
+                                            <GråBodyShort size={'small'}>
+                                                Ansvarlig saksbehandler
+                                            </GråBodyShort>
+                                            <FontStyledBodyShort
+                                                fontStyle={fontStyle}
+                                                size={'small'}
+                                            >
+                                                {visingsnavn}
+                                            </FontStyledBodyShort>
+                                        </FlexBoxColumn>
+                                    </FlexBoxRow>
+                                    <StatusBar color={statusBarFarge} />
+                                </>
+                            )}
                             <Grid>
                                 <FlexBoxColumn>
                                     <GråBodyShort size={'small'}>Behandlingsstatus</GråBodyShort>

@@ -13,6 +13,7 @@ export enum AnsvarligSaksbehandlerRolle {
     IKKE_SATT = 'IKKE_SATT',
     INNLOGGET_SAKSBEHANDLER = 'INNLOGGET_SAKSBEHANDLER',
     ANNEN_SAKSBEHANDLER = 'ANNEN_SAKSBEHANDLER',
+    OPPGAVE_FINNES_IKKE = 'OPPGAVE_FINNES_IKKE',
 }
 
 export interface AnsvarligSaksbehandler {
