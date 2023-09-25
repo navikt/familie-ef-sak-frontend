@@ -5,6 +5,8 @@ import styled from 'styled-components';
 import { Button } from '@navikt/ds-react';
 import { Behandling } from '../../App/typer/fagsak';
 import { BehandlingStatus, erBehandlingRedigerbar } from '../../App/typer/behandlingstatus';
+import DataViewer from '../DataViewer/DataViewer';
+import { AnsvarligSaksbehandlerRolle } from '../../App/typer/saksbehandler';
 
 const StyledHamburgermeny = styled(Hamburgermeny)`
     margin-right: -1rem;
@@ -30,7 +32,7 @@ interface Props {
 }
 
 export const AksjonsknapperPersonHeader: React.FC<Props> = ({ erSaksbehandler, behandling }) => {
-    const { settVisHenleggModal, settVisSettPåVent } = useBehandling();
+    const { ansvarligSaksbehandler, settVisHenleggModal, settVisSettPåVent } = useBehandling();
 
     const menyvalg = [
         {
@@ -45,28 +47,39 @@ export const AksjonsknapperPersonHeader: React.FC<Props> = ({ erSaksbehandler, b
 
     const sattPåVent = behandling.status === BehandlingStatus.SATT_PÅ_VENT;
 
-    if (erSaksbehandler && (erBehandlingRedigerbar(behandling) || sattPåVent))
-        return (
-            <>
-                {!sattPåVent && <StyledHamburgermeny items={menyvalg} />}
-                <ButtonSmall
-                    disabled={sattPåVent}
-                    onClick={() => settVisSettPåVent(true)}
-                    size="xsmall"
-                    variant="secondary"
-                >
-                    Sett på vent
-                </ButtonSmall>
-                <ButtonSmall
-                    disabled={sattPåVent}
-                    onClick={() => settVisHenleggModal(true)}
-                    size="xsmall"
-                    variant="secondary"
-                >
-                    Henlegg
-                </ButtonSmall>
-            </>
-        );
+    return (
+        <DataViewer response={{ ansvarligSaksbehandler }}>
+            {({ ansvarligSaksbehandler }) => {
+                if (
+                    erSaksbehandler &&
+                    (erBehandlingRedigerbar(behandling) || sattPåVent) &&
+                    ansvarligSaksbehandler.rolle !== AnsvarligSaksbehandlerRolle.ANNEN_SAKSBEHANDLER
+                ) {
+                    return (
+                        <>
+                            {!sattPåVent && <StyledHamburgermeny items={menyvalg} />}
+                            <ButtonSmall
+                                disabled={sattPåVent}
+                                onClick={() => settVisSettPåVent(true)}
+                                size="xsmall"
+                                variant="secondary"
+                            >
+                                Sett på vent
+                            </ButtonSmall>
+                            <ButtonSmall
+                                disabled={sattPåVent}
+                                onClick={() => settVisHenleggModal(true)}
+                                size="xsmall"
+                                variant="secondary"
+                            >
+                                Henlegg
+                            </ButtonSmall>
+                        </>
+                    );
+                }
 
-    return <></>;
+                return <></>;
+            }}
+        </DataViewer>
+    );
 };
