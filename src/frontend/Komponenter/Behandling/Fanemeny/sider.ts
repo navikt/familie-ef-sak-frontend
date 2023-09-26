@@ -10,8 +10,8 @@ import { Simulering } from '../Simulering/Simulering';
 import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
 import Sanksjonsfastsettelse from '../Sanksjon/Sanksjonsfastsettelse';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
-import KorrigeringUtenBrev from './KorrigeringUtenBrev';
 import { ÅrsakRevurderingSide } from '../ÅrsakRevurdering/ÅrsakRevurderingSide';
+import BehandlingsÅrsakUtenBrev from './BehandlingsÅrsakUtenBrev';
 
 export interface ISide {
     href: string;
@@ -23,6 +23,7 @@ export enum SideNavn {
     AKTIVITET = 'Aktivitet',
     BREV = 'Vedtaksbrev',
     KORRIGERING_UTEN_BREV = 'Korrigering uten brev',
+    IVERKSETTE_KA_VEDTAK = 'Iverksette KA-vedtak (uten brev)',
     INNGANGSVILKÅR = 'Inngangsvilkår',
     SIMULERING = 'Simulering',
     SANKSJON = 'Sanksjonsfastsettelse',
@@ -74,8 +75,8 @@ const alleSider: ISide[] = [
     },
     {
         href: 'brev',
-        navn: SideNavn.KORRIGERING_UTEN_BREV,
-        komponent: KorrigeringUtenBrev,
+        navn: SideNavn.KORRIGERING_UTEN_BREV || SideNavn.IVERKSETTE_KA_VEDTAK,
+        komponent: BehandlingsÅrsakUtenBrev,
     },
 ];
 
@@ -97,10 +98,14 @@ const filtrerHvisGOmregningEllerSatsendring = [
     SideNavn.VEDTAK_OG_BEREGNING,
     SideNavn.SIMULERING,
     SideNavn.KORRIGERING_UTEN_BREV,
+    SideNavn.IVERKSETTE_KA_VEDTAK,
 ];
-
-const filtrerVekkHvisStandard = [SideNavn.SANKSJON, SideNavn.KORRIGERING_UTEN_BREV];
-const filtrerVekkHvisKorrigeringUtenBrev = [SideNavn.SANKSJON, SideNavn.BREV];
+const filtrerVekkHvisStandard = [
+    SideNavn.SANKSJON,
+    SideNavn.KORRIGERING_UTEN_BREV,
+    SideNavn.IVERKSETTE_KA_VEDTAK,
+];
+const filtrerVekkHvisBehandlingsÅrsakUtenBrev = [SideNavn.SANKSJON, SideNavn.BREV];
 
 const ikkeVisBrevHvisHenlagt = (behandling: Behandling, side: ISide) =>
     behandling.resultat !== BehandlingResultat.HENLAGT || side.navn !== SideNavn.BREV;
@@ -127,11 +132,17 @@ export const filtrerSiderEtterBehandlingstype = (behandling: Behandling): ISide[
         );
     }
 
-    if (behandling.behandlingsårsak === Behandlingsårsak.KORRIGERING_UTEN_BREV) {
+    if (
+        behandling.behandlingsårsak === Behandlingsårsak.KORRIGERING_UTEN_BREV ||
+        behandling.behandlingsårsak === Behandlingsårsak.IVERKSETTE_KA_VEDTAK
+    ) {
         return sider
-            .filter((side) => !filtrerVekkHvisKorrigeringUtenBrev.includes(side.navn as SideNavn))
+            .filter(
+                (side) => !filtrerVekkHvisBehandlingsÅrsakUtenBrev.includes(side.navn as SideNavn)
+            )
             .filter((side) => filtrerVekkÅrsakRevurderingHvisIkkeRevurdering(side, behandling));
     }
+
     return sider
         .filter((side) => !filtrerVekkHvisStandard.includes(side.navn as SideNavn))
         .filter((side) => filtrerVekkÅrsakRevurderingHvisIkkeRevurdering(side, behandling));

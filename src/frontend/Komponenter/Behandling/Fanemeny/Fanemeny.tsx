@@ -29,12 +29,18 @@ const Fanemeny: FC = () => {
     const { behandling, behandlingErRedigerbar } = useBehandling();
     const { erSaksbehandler } = useApp();
     const låsendeSteg = [Steg.VILKÅR, Steg.BEREGNE_YTELSE];
-    const fanerSomKanLåses = [SideNavn.SIMULERING, SideNavn.BREV, SideNavn.KORRIGERING_UTEN_BREV];
+    const fanerSomKanLåses = [
+        SideNavn.SIMULERING,
+        SideNavn.BREV,
+        SideNavn.KORRIGERING_UTEN_BREV,
+        SideNavn.IVERKSETTE_KA_VEDTAK,
+    ];
     const fanerSomErLåstForVeilederUnderArbeid = [
         SideNavn.VEDTAK_OG_BEREGNING,
         SideNavn.SIMULERING,
         SideNavn.BREV,
         SideNavn.KORRIGERING_UTEN_BREV,
+        SideNavn.IVERKSETTE_KA_VEDTAK,
     ];
     const faneErLåst = (side: ISide, steg: Steg): boolean => {
         if (behandlingErRedigerbar && !erSaksbehandler) {
