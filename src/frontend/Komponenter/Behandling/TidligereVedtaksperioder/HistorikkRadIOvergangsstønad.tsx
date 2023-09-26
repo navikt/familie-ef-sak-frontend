@@ -15,7 +15,7 @@ const Row = styled.div`
     display: contents;
 `;
 
-const HistorikkRad: React.FC<HistorikkRadProps> = ({ rad, indeks }) => {
+const HistorikkRadIOvergangsstønad: React.FC<HistorikkRadProps> = ({ rad, indeks }) => {
     return (
         <Row key={indeks}>
             <BodyShort size="small">
@@ -38,4 +38,4 @@ const HistorikkRad: React.FC<HistorikkRadProps> = ({ rad, indeks }) => {
     );
 };
 
-export default HistorikkRad;
+export default HistorikkRadIOvergangsstønad;

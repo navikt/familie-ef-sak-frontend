@@ -2,8 +2,8 @@ import React from 'react';
 import { IGrunnlagsdataPeriodeHistorikk } from './typer';
 import styled from 'styled-components';
 import { BodyShort, Heading, Label } from '@navikt/ds-react';
-import HistorikkRad from './HistorikkRad';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
+import HistorikkRadIOvergangsstønad from './HistorikkRadIOvergangsstønad';
 
 const Container = styled.div`
     display: flex;
@@ -31,11 +31,11 @@ const Row = styled.div`
 `;
 
 const HistorikkIEfKort: React.FC<{
-    historikkISak: IGrunnlagsdataPeriodeHistorikk[] | undefined;
+    periodeHistorikkData: IGrunnlagsdataPeriodeHistorikk[] | undefined;
     stønadstype: string;
-}> = ({ historikkISak, stønadstype }) => {
+}> = ({ periodeHistorikkData, stønadstype }) => {
     const erOvergansstønad = stønadstype === Stønadstype.OVERGANGSSTØNAD;
-    const harHistorikkMedInnhold = historikkISak && historikkISak?.length > 0;
+    const harHistorikkMedInnhold = periodeHistorikkData && periodeHistorikkData?.length > 0;
 
     if (!harHistorikkMedInnhold) {
         return <></>;
@@ -43,12 +43,12 @@ const HistorikkIEfKort: React.FC<{
 
     return (
         <>
-            {historikkISak && (
+            {periodeHistorikkData && (
                 <Container>
                     <Tittel level="3" size="small">
                         Historikk i EF Sak
                     </Tittel>
-                    {erOvergansstønad && historikkISak?.length > 0 ? (
+                    {erOvergansstønad && periodeHistorikkData?.length > 0 ? (
                         <Grid>
                             <Row>
                                 <Label>Periode</Label>
@@ -56,8 +56,8 @@ const HistorikkIEfKort: React.FC<{
                                 <Label>Måneder med utbet.</Label>
                                 <Label>Måneder uten utbet.</Label>
                             </Row>
-                            {historikkISak?.map((rad, i) => (
-                                <HistorikkRad key={i} rad={rad} indeks={i} />
+                            {periodeHistorikkData?.map((rad, i) => (
+                                <HistorikkRadIOvergangsstønad key={i} rad={rad} indeks={i} />
                             ))}
                         </Grid>
                     ) : (

@@ -21,14 +21,10 @@ export interface IGrunnlagsdataPeriodeHistorikk {
     tom: string;
 }
 
-export interface IStonader {
+export interface IHistorikkForStønad {
     stønadstype: string;
-    viseInfotrygdKort?: boolean;
-    historikkISak?: IGrunnlagsdataPeriodeHistorikk[] | undefined;
-    verdier?: IVerdier;
-}
-
-interface IVerdier {
-    sak: boolean | undefined;
-    infotrygd: boolean | undefined;
+    skalViseInfotrygdKort?: boolean;
+    periodeHistorikkData?: IGrunnlagsdataPeriodeHistorikk[] | undefined;
+    harHistorikkISak: boolean | undefined;
+    harHistorikkIInfotrygd: boolean | undefined;
 }

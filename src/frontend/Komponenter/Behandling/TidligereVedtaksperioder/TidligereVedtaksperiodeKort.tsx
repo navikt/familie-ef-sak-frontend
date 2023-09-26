@@ -1,5 +1,5 @@
 import React from 'react';
-import { IStonader, ITidligereVedtaksperioder } from './typer';
+import { IHistorikkForStønad, ITidligereVedtaksperioder } from './typer';
 import TabellVisningMedTag from '../Tabell/TabellVisningMedTag';
 import styled from 'styled-components';
 import { Heading } from '@navikt/ds-react';
@@ -19,8 +19,8 @@ const Tittel = styled(Heading)`
     text-decoration: underline;
 `;
 
-const StønadsKort: React.FC<{ stonad: IStonader }> = ({ stonad }) => {
-    const { historikkISak, viseInfotrygdKort } = stonad;
+const Stønadskort: React.FC<{ stønad: IHistorikkForStønad }> = ({ stønad }) => {
+    const { periodeHistorikkData, skalViseInfotrygdKort } = stønad;
 
     const stønadstypeTilOverskrift = (stønadstype: string) => {
         return stønadstype.charAt(0).toUpperCase() + stønadstype.slice(1).toLowerCase();
@@ -29,13 +29,16 @@ const StønadsKort: React.FC<{ stonad: IStonader }> = ({ stonad }) => {
     return (
         <>
             <Tittel level="3" size="small">
-                {stønadstypeTilOverskrift(stonad.stønadstype)}
+                {stønadstypeTilOverskrift(stønad.stønadstype)}
             </Tittel>
-            <TabellVisningMedTag stonad={stonad} />
-            {historikkISak && (
-                <HistorikkIEfKort historikkISak={historikkISak} stønadstype={stonad.stønadstype} />
+            <TabellVisningMedTag stønad={stønad} />
+            {periodeHistorikkData && (
+                <HistorikkIEfKort
+                    periodeHistorikkData={periodeHistorikkData}
+                    stønadstype={stønad.stønadstype}
+                />
             )}
-            {viseInfotrygdKort && <HistorikkIInfotrygdKort />}
+            {skalViseInfotrygdKort && <HistorikkIInfotrygdKort />}
         </>
     );
 };
@@ -43,40 +46,34 @@ const StønadsKort: React.FC<{ stonad: IStonader }> = ({ stonad }) => {
 export const TidligereVedtaksperiodeKort: React.FC<{
     tidligereVedtaksperioder: ITidligereVedtaksperioder;
 }> = ({ tidligereVedtaksperioder }) => {
-    const stønader: IStonader[] = [
+    const historikkForStønader: IHistorikkForStønad[] = [
         {
             stønadstype: Stønadstype.OVERGANGSSTØNAD,
-            viseInfotrygdKort: tidligereVedtaksperioder.infotrygd?.harTidligereOvergangsstønad,
-            historikkISak: tidligereVedtaksperioder.sak?.periodeHistorikkOvergangsstønad,
-            verdier: {
-                sak: tidligereVedtaksperioder.sak?.harTidligereOvergangsstønad,
-                infotrygd: tidligereVedtaksperioder.infotrygd?.harTidligereOvergangsstønad,
-            },
+            skalViseInfotrygdKort: tidligereVedtaksperioder.infotrygd?.harTidligereOvergangsstønad,
+            periodeHistorikkData: tidligereVedtaksperioder.sak?.periodeHistorikkOvergangsstønad,
+            harHistorikkISak: tidligereVedtaksperioder.sak?.harTidligereOvergangsstønad,
+            harHistorikkIInfotrygd: tidligereVedtaksperioder.infotrygd?.harTidligereOvergangsstønad,
         },
         {
             stønadstype: Stønadstype.BARNETILSYN,
-            viseInfotrygdKort: tidligereVedtaksperioder.infotrygd?.harTidligereBarnetilsyn,
-            historikkISak: undefined,
-            verdier: {
-                sak: tidligereVedtaksperioder.sak?.harTidligereBarnetilsyn,
-                infotrygd: tidligereVedtaksperioder.infotrygd?.harTidligereBarnetilsyn,
-            },
+            skalViseInfotrygdKort: tidligereVedtaksperioder.infotrygd?.harTidligereBarnetilsyn,
+            periodeHistorikkData: undefined,
+            harHistorikkISak: tidligereVedtaksperioder.sak?.harTidligereBarnetilsyn,
+            harHistorikkIInfotrygd: tidligereVedtaksperioder.infotrygd?.harTidligereBarnetilsyn,
         },
         {
             stønadstype: Stønadstype.SKOLEPENGER,
-            viseInfotrygdKort: tidligereVedtaksperioder.infotrygd?.harTidligereSkolepenger,
-            historikkISak: undefined,
-            verdier: {
-                sak: tidligereVedtaksperioder.sak?.harTidligereSkolepenger,
-                infotrygd: tidligereVedtaksperioder.infotrygd?.harTidligereSkolepenger,
-            },
+            skalViseInfotrygdKort: tidligereVedtaksperioder.infotrygd?.harTidligereSkolepenger,
+            periodeHistorikkData: undefined,
+            harHistorikkISak: tidligereVedtaksperioder.sak?.harTidligereSkolepenger,
+            harHistorikkIInfotrygd: tidligereVedtaksperioder.infotrygd?.harTidligereSkolepenger,
         },
     ];
 
     return (
         <Container>
-            {stønader.map((stonad, i) => (
-                <StønadsKort key={i} stonad={stonad} />
+            {historikkForStønader.map((stønad, i) => (
+                <Stønadskort key={i} stønad={stønad} />
             ))}
         </Container>
     );

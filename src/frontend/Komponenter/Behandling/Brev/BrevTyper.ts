@@ -105,4 +105,4 @@ export type FrittståendeSanitybrevDto = {
 };
 
 export type MellomlagerRespons = IMellomlagretBrevResponse;
-export const datasett = 'ef-brev';
+export const datasett = 'ef-test'; /*TODO bytt tilbake*/
