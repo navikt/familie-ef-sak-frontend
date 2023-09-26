@@ -4,8 +4,10 @@ import styled from 'styled-components';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import HistorikkElement from './HistorikkElement';
 import { behandlingHarBlittGodkjent } from './utils';
+import { Behandling } from '../../../App/typer/fagsak';
 
-interface IBehandlingHistorikkProps {
+interface Props {
+    behandling: Behandling;
     behandlingId: string;
 }
 
@@ -14,12 +16,12 @@ const HistorikkListe = styled.ul`
     margin: 0;
 `;
 
-const BehandlingHistorikk: React.FC<IBehandlingHistorikkProps> = ({ behandlingId }) => {
-    const { behandlingHistorikk, behandling } = useBehandling();
+const BehandlingHistorikk: React.FC<Props> = ({ behandling, behandlingId }) => {
+    const { behandlingHistorikk } = useBehandling();
 
     return (
-        <DataViewer response={{ behandlingHistorikkResponse: behandlingHistorikk, behandling }}>
-            {({ behandlingHistorikkResponse, behandling }) => {
+        <DataViewer response={{ behandlingHistorikkResponse: behandlingHistorikk }}>
+            {({ behandlingHistorikkResponse }) => {
                 const skalViseBegrunnelse = !behandlingHarBlittGodkjent(
                     behandlingHistorikkResponse
                 );

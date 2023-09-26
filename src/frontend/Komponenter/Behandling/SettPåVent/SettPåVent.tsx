@@ -86,7 +86,8 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
     const erOvergangsstønad = behandling.stønadstype === Stønadstype.OVERGANGSSTØNAD;
     const erOvergangsstønadEllerSkolepenger =
         erOvergangsstønad || behandling.stønadstype === Stønadstype.SKOLEPENGER;
-    const { visSettPåVent, settVisSettPåVent, hentBehandling } = useBehandling();
+    const { visSettPåVent, settVisSettPåVent, hentAnsvarligSaksbehandler, hentBehandling } =
+        useBehandling();
     const { axiosRequest, settToast, innloggetSaksbehandler } = useApp();
 
     const [oppgave, settOppgave] = useState<Ressurs<IOppgave>>(byggTomRessurs<IOppgave>());
@@ -227,6 +228,7 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
                     settToast(EToast.BEHANDLING_SATT_PÅ_VENT);
                 } else {
                     settFeilmelding(respons.frontendFeilmelding);
+                    hentAnsvarligSaksbehandler.rerun();
                 }
             })
             .finally(() => settLåsKnapp(false));

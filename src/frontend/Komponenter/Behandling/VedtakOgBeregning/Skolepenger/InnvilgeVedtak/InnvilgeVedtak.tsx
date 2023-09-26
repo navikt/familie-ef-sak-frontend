@@ -35,6 +35,7 @@ import { BegrunnelsesFelt } from '../Felles/BegrunnelsesFelt';
 import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
 import { CalculatorIcon } from '@navikt/aksel-icons';
 import { InnvilgeVedtakForm } from '../Felles/typer';
+import { ModalState } from '../../../Modal/NyEierModal';
 
 export const Form = styled.form`
     display: flex;
@@ -83,7 +84,12 @@ export const InnvilgeVedtak: React.FC<{
     lagretInnvilgetVedtak?: IvedtakForSkolepenger;
     forrigeVedtak?: IvedtakForSkolepenger;
 }> = ({ behandling, lagretInnvilgetVedtak, forrigeVedtak }) => {
-    const { behandlingErRedigerbar, hentBehandling } = useBehandling();
+    const {
+        behandlingErRedigerbar,
+        hentAnsvarligSaksbehandler,
+        hentBehandling,
+        settNyEierModalState,
+    } = useBehandling();
     const [laster, settLaster] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState('');
     const [harUtførtBeregning, settHarUtførtBeregning] = useState<boolean>(false);
@@ -140,6 +146,8 @@ export const InnvilgeVedtak: React.FC<{
                 default:
                     settIkkePersistertKomponent(uuidv4());
                     settFeilmelding(res.frontendFeilmelding);
+                    settNyEierModalState(ModalState.LUKKET);
+                    hentAnsvarligSaksbehandler.rerun();
             }
         };
     };

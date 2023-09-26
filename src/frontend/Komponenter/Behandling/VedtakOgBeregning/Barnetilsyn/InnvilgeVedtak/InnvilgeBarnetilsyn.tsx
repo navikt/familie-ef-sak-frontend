@@ -34,6 +34,7 @@ import {
     useHentKontantstøtteUtbetaling,
 } from '../../../../../App/hooks/useHentKontantstøtteUtbetalinger';
 import { CalculatorIcon } from '@navikt/aksel-icons';
+import { ModalState } from '../../../Modal/NyEierModal';
 
 export type InnvilgeVedtakForm = {
     utgiftsperioder: IUtgiftsperiode[];
@@ -113,7 +114,12 @@ export const InnvilgeBarnetilsyn: React.FC<{
         lagretVedtak?._type === IVedtakType.InnvilgelseBarnetilsynUtenUtbetaling
             ? (lagretVedtak as IInnvilgeVedtakForBarnetilsyn)
             : undefined;
-    const { behandlingErRedigerbar, hentBehandling } = useBehandling();
+    const {
+        behandlingErRedigerbar,
+        hentAnsvarligSaksbehandler,
+        hentBehandling,
+        settNyEierModalState,
+    } = useBehandling();
     const { finnesKontantstøtteUtbetaling } = useHentKontantstøtteUtbetaling(behandling.id);
     const [laster, settLaster] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState('');
@@ -205,6 +211,8 @@ export const InnvilgeBarnetilsyn: React.FC<{
                 default:
                     settIkkePersistertKomponent(uuidv4());
                     settFeilmelding(res.frontendFeilmelding);
+                    settNyEierModalState(ModalState.LUKKET);
+                    hentAnsvarligSaksbehandler.rerun();
             }
         };
     };

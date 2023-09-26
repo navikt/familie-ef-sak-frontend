@@ -17,6 +17,7 @@ import {
     EkspandertTilstand,
     useEkspanderbareVilkårpanelContext,
 } from '../../../App/context/EkspanderbareVilkårpanelContext';
+import { ModalState } from '../Modal/NyEierModal';
 
 const KnappWrapper = styled.div`
     display: flex;
@@ -75,7 +76,12 @@ const VisEllerEndreVurdering: FC<Props> = ({
     høyreKnappetekst,
     tittelTekstVisVurdering,
 }) => {
-    const { behandlingErRedigerbar, hentBehandling } = useBehandling();
+    const {
+        behandlingErRedigerbar,
+        hentAnsvarligSaksbehandler,
+        hentBehandling,
+        settNyEierModalState,
+    } = useBehandling();
     const { settPanelITilstand } = useEkspanderbareVilkårpanelContext();
     const [redigeringsmodus, settRedigeringsmodus] = useState<Redigeringsmodus>(
         utledRedigeringsmodus(feilmelding, vurdering, behandlingErRedigerbar)
@@ -96,6 +102,9 @@ const VisEllerEndreVurdering: FC<Props> = ({
             if (response.status === RessursStatus.SUKSESS) {
                 settRedigeringsmodus(Redigeringsmodus.VISNING);
                 hentBehandling.rerun();
+            } else {
+                settNyEierModalState(ModalState.LUKKET);
+                hentAnsvarligSaksbehandler.rerun();
             }
         });
     };
@@ -116,6 +125,8 @@ const VisEllerEndreVurdering: FC<Props> = ({
                 settResetFeilmelding(undefined);
             } else {
                 settResetFeilmelding(response.frontendFeilmelding);
+                settNyEierModalState(ModalState.LUKKET);
+                hentAnsvarligSaksbehandler.rerun();
             }
         });
 

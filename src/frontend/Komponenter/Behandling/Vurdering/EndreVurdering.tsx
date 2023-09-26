@@ -12,6 +12,7 @@ import {
     EkspandertTilstand,
     useEkspanderbareVilkårpanelContext,
 } from '../../../App/context/EkspanderbareVilkårpanelContext';
+import { ModalState } from '../Modal/NyEierModal';
 
 const Container = styled.div`
     > *:not(:first-child) {
@@ -47,7 +48,8 @@ const EndreVurdering: FC<Props> = ({
     settRedigeringsmodus,
     initiellRedigeringsmodus,
 }) => {
-    const { regler, hentBehandling } = useBehandling();
+    const { regler, hentAnsvarligSaksbehandler, hentBehandling, settNyEierModalState } =
+        useBehandling();
     const { settPanelITilstand } = useEkspanderbareVilkårpanelContext();
     const vurdering = data;
     const [oppdatererVurdering, settOppdatererVurdering] = useState<boolean>(false);
@@ -61,6 +63,9 @@ const EndreVurdering: FC<Props> = ({
                 if (response.status === RessursStatus.SUKSESS) {
                     settRedigeringsmodus(Redigeringsmodus.VISNING);
                     hentBehandling.rerun();
+                } else {
+                    settNyEierModalState(ModalState.LUKKET);
+                    hentAnsvarligSaksbehandler.rerun();
                 }
             });
         }
