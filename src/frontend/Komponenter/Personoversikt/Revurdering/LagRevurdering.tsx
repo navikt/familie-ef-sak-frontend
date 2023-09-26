@@ -117,6 +117,8 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                     toggles[ToggleName.visSatsendring] &&
                     fagsak.stønadstype === Stønadstype.BARNETILSYN
                 );
+            case Behandlingsårsak.IVERKSETTE_KA_VEDTAK:
+                return false;
             default:
                 return true;
         }
