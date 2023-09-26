@@ -92,6 +92,7 @@ export interface Delmal {
 export interface DokumentNavn {
     apiNavn: string;
     visningsnavn: string;
+    prioriteringsnummer: number;
     overgangsstonad?: boolean;
     barnetilsyn?: boolean;
     skolepenger?: boolean;
@@ -105,4 +106,4 @@ export type FrittståendeSanitybrevDto = {
 };
 
 export type MellomlagerRespons = IMellomlagretBrevResponse;
-export const datasett = 'ef-brev';
+export const datasett = 'ef-test'; // TODO endre til ef-brev
