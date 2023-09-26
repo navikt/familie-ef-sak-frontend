@@ -34,13 +34,13 @@ export const NyEierModal: FC = () => {
             tittel={'Behandlingen har en ny eier'}
             visModal={nyEierModalState === ModalState.ÅPEN}
             onClose={() => lukkModal()}
-            ariaLabel={'Behandlingen har en ny eier'}
+            ariaLabel={'Behandlingen har ny ansvarlig saksbehandler'}
         >
             <DataViewer response={{ ansvarligSaksbehandler }}>
                 {({ ansvarligSaksbehandler }) => {
                     return (
                         <BodyLong>
-                            {`Behandlingen vil bli satt i lesemodus da ${ansvarligSaksbehandler.fornavn} ${ansvarligSaksbehandler.etternavn} er satt som ny eier.`}
+                            {`Behandlingen er i lesemodus fordi ${ansvarligSaksbehandler.fornavn} ${ansvarligSaksbehandler.etternavn} er satt som ny ansvarlig saksbehandler.`}
                         </BodyLong>
                     );
                 }}
