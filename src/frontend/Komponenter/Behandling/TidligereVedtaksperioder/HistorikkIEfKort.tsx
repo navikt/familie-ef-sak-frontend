@@ -34,37 +34,33 @@ const HistorikkIEfKort: React.FC<{
     periodeHistorikkData: IGrunnlagsdataPeriodeHistorikk[] | undefined;
     stønadstype: string;
 }> = ({ periodeHistorikkData, stønadstype }) => {
-    const erOvergansstønad = stønadstype === Stønadstype.OVERGANGSSTØNAD;
-    const harHistorikkMedInnhold = periodeHistorikkData && periodeHistorikkData?.length > 0;
-
-    if (!harHistorikkMedInnhold) {
-        return <></>;
-    }
+    const erOvergansstønadMedData =
+        stønadstype === Stønadstype.OVERGANGSSTØNAD &&
+        periodeHistorikkData &&
+        periodeHistorikkData?.length > 0;
 
     return (
         <>
-            {periodeHistorikkData && (
-                <Container>
-                    <Tittel level="3" size="small">
-                        Historikk i EF Sak
-                    </Tittel>
-                    {erOvergansstønad && periodeHistorikkData?.length > 0 ? (
-                        <Grid>
-                            <Row>
-                                <Label>Periode</Label>
-                                <Label>Periodetype</Label>
-                                <Label>Måneder med utbet.</Label>
-                                <Label>Måneder uten utbet.</Label>
-                            </Row>
-                            {periodeHistorikkData?.map((rad, i) => (
-                                <HistorikkRadIOvergangsstønad key={i} rad={rad} indeks={i} />
-                            ))}
-                        </Grid>
-                    ) : (
-                        <BodyShort size="small">Kan ikke vise tidligere historikk.</BodyShort>
-                    )}
-                </Container>
-            )}
+            <Container>
+                <Tittel level="3" size="small">
+                    Historikk i EF Sak
+                </Tittel>
+                {erOvergansstønadMedData ? (
+                    <Grid>
+                        <Row>
+                            <Label>Periode</Label>
+                            <Label>Periodetype</Label>
+                            <Label>Måneder med utbet.</Label>
+                            <Label>Måneder uten utbet.</Label>
+                        </Row>
+                        {periodeHistorikkData?.map((rad, i) => (
+                            <HistorikkRadIOvergangsstønad key={i} rad={rad} indeks={i} />
+                        ))}
+                    </Grid>
+                ) : (
+                    <BodyShort size="small">Kan ikke vise tidligere historikk.</BodyShort>
+                )}
+            </Container>
         </>
     );
 };

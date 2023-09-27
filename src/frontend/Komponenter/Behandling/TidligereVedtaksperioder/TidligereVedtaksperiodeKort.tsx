@@ -20,7 +20,7 @@ const Tittel = styled(Heading)`
 `;
 
 const Stønadskort: React.FC<{ stønad: IHistorikkForStønad }> = ({ stønad }) => {
-    const { periodeHistorikkData, skalViseInfotrygdKort } = stønad;
+    const { periodeHistorikkData, harHistorikkISak, harHistorikkIInfotrygd } = stønad;
 
     const stønadstypeTilOverskrift = (stønadstype: string) => {
         return stønadstype.charAt(0).toUpperCase() + stønadstype.slice(1).toLowerCase();
@@ -32,13 +32,13 @@ const Stønadskort: React.FC<{ stønad: IHistorikkForStønad }> = ({ stønad }) 
                 {stønadstypeTilOverskrift(stønad.stønadstype)}
             </Tittel>
             <TabellVisningMedTag stønad={stønad} />
-            {periodeHistorikkData && (
+            {harHistorikkISak && (
                 <HistorikkIEfKort
                     periodeHistorikkData={periodeHistorikkData}
                     stønadstype={stønad.stønadstype}
                 />
             )}
-            {skalViseInfotrygdKort && <HistorikkIInfotrygdKort />}
+            {harHistorikkIInfotrygd && <HistorikkIInfotrygdKort />}
         </>
     );
 };
@@ -49,21 +49,18 @@ export const TidligereVedtaksperiodeKort: React.FC<{
     const historikkForStønader: IHistorikkForStønad[] = [
         {
             stønadstype: Stønadstype.OVERGANGSSTØNAD,
-            skalViseInfotrygdKort: tidligereVedtaksperioder.infotrygd?.harTidligereOvergangsstønad,
             periodeHistorikkData: tidligereVedtaksperioder.sak?.periodeHistorikkOvergangsstønad,
             harHistorikkISak: tidligereVedtaksperioder.sak?.harTidligereOvergangsstønad,
             harHistorikkIInfotrygd: tidligereVedtaksperioder.infotrygd?.harTidligereOvergangsstønad,
         },
         {
             stønadstype: Stønadstype.BARNETILSYN,
-            skalViseInfotrygdKort: tidligereVedtaksperioder.infotrygd?.harTidligereBarnetilsyn,
             periodeHistorikkData: undefined,
             harHistorikkISak: tidligereVedtaksperioder.sak?.harTidligereBarnetilsyn,
             harHistorikkIInfotrygd: tidligereVedtaksperioder.infotrygd?.harTidligereBarnetilsyn,
         },
         {
             stønadstype: Stønadstype.SKOLEPENGER,
-            skalViseInfotrygdKort: tidligereVedtaksperioder.infotrygd?.harTidligereSkolepenger,
             periodeHistorikkData: undefined,
             harHistorikkISak: tidligereVedtaksperioder.sak?.harTidligereSkolepenger,
             harHistorikkIInfotrygd: tidligereVedtaksperioder.infotrygd?.harTidligereSkolepenger,
