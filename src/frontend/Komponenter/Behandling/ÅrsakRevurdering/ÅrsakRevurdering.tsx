@@ -21,25 +21,35 @@ export const ÅrsakRevurdering: React.FC<Props> = ({
     const [revurderingsinformasjon, settRevurderingsinformasjon] =
         useState<Revurderingsinformasjon>(initState);
 
-    const [redigeringsmodus, settRedigeringsmodus] = useState<boolean>(
+    const [erRedigeringsmodus, settErRedigeringsmodus] = useState<boolean>(
         behandlingErRedigerbar && !revurderingsinformasjon.årsakRevurdering
     );
 
     useEffect(() => {
+        settErRedigeringsmodus(behandlingErRedigerbar && !revurderingsinformasjon.årsakRevurdering);
+        return () => {
+            settErRedigeringsmodus(
+                behandlingErRedigerbar && !revurderingsinformasjon.årsakRevurdering
+            );
+        };
+        // eslint-disable-next-line
+    }, [behandlingErRedigerbar]);
+
+    useEffect(() => {
         const årsakRevurderingUtfyltOgIkkeRedigeringsmodus =
-            !redigeringsmodus && revurderingsinformasjon.årsakRevurdering !== undefined;
+            !erRedigeringsmodus && revurderingsinformasjon.årsakRevurdering !== undefined;
         settVurderingUtfylt(årsakRevurderingUtfyltOgIkkeRedigeringsmodus);
-    }, [redigeringsmodus, revurderingsinformasjon.årsakRevurdering, settVurderingUtfylt]);
+    }, [erRedigeringsmodus, revurderingsinformasjon.årsakRevurdering, settVurderingUtfylt]);
 
     return (
         <>
-            {redigeringsmodus ? (
+            {erRedigeringsmodus ? (
                 <EndreÅrsakRevurdering
                     revurderingsinformasjon={revurderingsinformasjon}
                     behandling={behandling}
                     oppdaterRevurderingsinformasjon={(revurderingsinformasjon) => {
                         settRevurderingsinformasjon(revurderingsinformasjon);
-                        settRedigeringsmodus(false);
+                        settErRedigeringsmodus(false);
                     }}
                 />
             ) : (
@@ -47,9 +57,9 @@ export const ÅrsakRevurdering: React.FC<Props> = ({
                     revurderingsinformasjon={revurderingsinformasjon}
                     oppdaterRevurderingsinformasjon={(revurderingsinformasjon) => {
                         settRevurderingsinformasjon(revurderingsinformasjon);
-                        settRedigeringsmodus(true);
+                        settErRedigeringsmodus(true);
                     }}
-                    settRedigeringsmodus={settRedigeringsmodus}
+                    settRedigeringsmodus={settErRedigeringsmodus}
                     behandling={behandling}
                 />
             )}

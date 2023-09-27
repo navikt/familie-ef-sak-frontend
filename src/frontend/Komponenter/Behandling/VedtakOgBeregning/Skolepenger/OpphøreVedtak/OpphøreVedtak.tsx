@@ -23,6 +23,7 @@ import { AlertError } from '../../../../../Felles/Visningskomponenter/Alerts';
 import HovedKnapp from '../../../../../Felles/Knapper/HovedKnapp';
 import { validerSkoleårsperioderForOpphør } from '../Felles/vedtaksvalidering';
 import { Form, Utregningstabell } from '../InnvilgeVedtak/InnvilgeVedtak';
+import { ModalState } from '../../../Modal/NyEierModal';
 
 const utledInitielleSkoleårsperioder = (
     forrigeVedtak?: IvedtakForSkolepenger
@@ -40,7 +41,12 @@ export const OpphøreVedtak: React.FC<{
     lagretInnvilgetVedtak?: IvedtakForSkolepenger;
     forrigeVedtak?: IvedtakForSkolepenger;
 }> = ({ behandling, lagretInnvilgetVedtak, forrigeVedtak }) => {
-    const { behandlingErRedigerbar, hentBehandling } = useBehandling();
+    const {
+        behandlingErRedigerbar,
+        hentAnsvarligSaksbehandler,
+        hentBehandling,
+        settNyEierModalState,
+    } = useBehandling();
     const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
         useApp();
     const { utførRedirect } = useRedirectEtterLagring(`/behandling/${behandling.id}/simulering`);
@@ -94,6 +100,8 @@ export const OpphøreVedtak: React.FC<{
                 default:
                     settIkkePersistertKomponent(uuidv4());
                     settFeilmelding(res.frontendFeilmelding);
+                    settNyEierModalState(ModalState.LUKKET);
+                    hentAnsvarligSaksbehandler.rerun();
             }
         };
     };

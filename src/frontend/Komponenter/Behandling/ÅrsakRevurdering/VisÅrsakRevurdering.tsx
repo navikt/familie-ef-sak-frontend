@@ -23,6 +23,8 @@ import { useApp } from '../../../App/context/AppContext';
 import { Behandling } from '../../../App/typer/fagsak';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
 import styled from 'styled-components';
+import { ModalState } from '../Modal/NyEierModal';
+import { erBehandlingUnderArbeid } from '../../../App/typer/behandlingstatus';
 
 interface Props {
     revurderingsinformasjon: Revurderingsinformasjon;
@@ -42,7 +44,12 @@ export const VisÅrsakRevurdering: React.FC<Props> = ({
     behandling,
     oppdaterRevurderingsinformasjon,
 }) => {
-    const { behandlingErRedigerbar, hentBehandling } = useBehandling();
+    const {
+        behandlingErRedigerbar,
+        hentAnsvarligSaksbehandler,
+        hentBehandling,
+        settNyEierModalState,
+    } = useBehandling();
     const { axiosRequest } = useApp();
     const [feil, settFeil] = useState('');
     const [laster, settLaster] = useState(false);
@@ -65,6 +72,8 @@ export const VisÅrsakRevurdering: React.FC<Props> = ({
                     hentBehandling.rerun();
                 } else {
                     settFeil('Kunne ikke slette: ' + res.frontendFeilmelding);
+                    settNyEierModalState(ModalState.LUKKET);
+                    hentAnsvarligSaksbehandler.rerun();
                 }
             })
             .finally(() => settLaster(false));
@@ -137,7 +146,7 @@ export const VisÅrsakRevurdering: React.FC<Props> = ({
                         )}
                     </>
                 )}
-                {!årsakRevurdering && !behandlingErRedigerbar && (
+                {!årsakRevurdering && !erBehandlingUnderArbeid(behandling) && (
                     <Alert variant={'info'}>
                         Ingen informasjon å vise. Behandlingen ble opprettet før årsak til
                         revurdering ble lagt til som egen fane i behandling.

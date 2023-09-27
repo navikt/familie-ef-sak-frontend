@@ -9,7 +9,6 @@ import { useApp } from '../../App/context/AppContext';
 import { ISøkPerson } from '../../App/typer/personsøk';
 import { IPersonIdent } from '../../App/typer/felles';
 import { AksjonsknapperPersonHeader } from './AksjonsknapperPersonHeader';
-import BehandlingStatus from './StatusElementer';
 import { Stønadstype } from '../../App/typer/behandlingstema';
 import { ABorderStrong } from '@navikt/ds-tokens/dist/tokens';
 import Visittkort from './Visittkort';
@@ -118,7 +117,6 @@ const PersonHeaderComponent: FC<{ data: IPersonopplysninger; behandling?: Behand
             {behandling && (
                 <FlexContainer>
                     <BehandlingTags behandling={behandling} />
-                    <BehandlingStatus behandling={behandling} />
                     <AksjonsknapperPersonHeader
                         behandling={behandling}
                         erSaksbehandler={erSaksbehandler}

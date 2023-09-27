@@ -115,7 +115,7 @@ const SanksjonsvedtakVisning: FC<{
             ? (lagretVedtak as ISanksjonereVedtakForOvergangsstønad)
             : undefined;
     const [feilmelding, settFeilmelding] = useState<string>();
-    const { hentBehandling, behandlingErRedigerbar } = useBehandling();
+    const { hentAnsvarligSaksbehandler, hentBehandling, behandlingErRedigerbar } = useBehandling();
     const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
         useApp();
     const { utførRedirect } = useRedirectEtterLagring(`/behandling/${behandling.id}/simulering`);
@@ -141,6 +141,7 @@ const SanksjonsvedtakVisning: FC<{
             } else {
                 settIkkePersistertKomponent(uuidv4());
                 settFeilmelding(res.frontendFeilmelding);
+                hentAnsvarligSaksbehandler.rerun();
             }
         };
 

@@ -1,4 +1,5 @@
 import { Behandling } from './fagsak';
+import { AnsvarligSaksbehandler, AnsvarligSaksbehandlerRolle } from './saksbehandler';
 
 export enum BehandlingStatus {
     OPPRETTET = 'OPPRETTET',
@@ -28,6 +29,16 @@ export const erBehandlingUnderArbeid = (behandling: Behandling): boolean =>
 
 export const utredesEllerFatterVedtak = (behandling: Behandling): boolean =>
     [BehandlingStatus.UTREDES, BehandlingStatus.FATTER_VEDTAK].includes(behandling.status);
+
+export const innloggetSaksbehandlerKanRedigereBehandling = (
+    ansvarligSaksbehandler: AnsvarligSaksbehandler
+) => {
+    return (
+        ansvarligSaksbehandler.rolle === AnsvarligSaksbehandlerRolle.IKKE_SATT ||
+        ansvarligSaksbehandler.rolle === AnsvarligSaksbehandlerRolle.INNLOGGET_SAKSBEHANDLER ||
+        ansvarligSaksbehandler.rolle === AnsvarligSaksbehandlerRolle.OPPGAVE_FINNES_IKKE
+    );
+};
 
 export enum ETaAvVentStatus {
     OK = 'OK',

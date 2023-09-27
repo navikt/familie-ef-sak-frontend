@@ -16,7 +16,7 @@ const AlertStripe = styled(Alert)`
 `;
 
 export const HenleggModal: FC<{ behandling: Behandling }> = ({ behandling }) => {
-    const { visHenleggModal, settVisHenleggModal } = useBehandling();
+    const { visHenleggModal, settVisHenleggModal, hentAnsvarligSaksbehandler } = useBehandling();
     const { utførRedirect } = useRedirectEtterLagring(`/fagsak/${behandling.fagsakId}`);
     const {
         axiosRequest,
@@ -57,6 +57,7 @@ export const HenleggModal: FC<{ behandling: Behandling }> = ({ behandling }) => 
                     default:
                         settIkkePersistertKomponent(uuidv4());
                         settFeilmelding(respons.frontendFeilmelding);
+                        hentAnsvarligSaksbehandler.rerun();
                 }
             })
             .finally(() => settLåsKnapp(false));
