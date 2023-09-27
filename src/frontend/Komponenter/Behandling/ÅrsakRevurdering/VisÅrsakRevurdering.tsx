@@ -24,6 +24,7 @@ import { Behandling } from '../../../App/typer/fagsak';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
 import styled from 'styled-components';
 import { ModalState } from '../Modal/NyEierModal';
+import { erBehandlingUnderArbeid } from '../../../App/typer/behandlingstatus';
 
 interface Props {
     revurderingsinformasjon: Revurderingsinformasjon;
@@ -145,7 +146,7 @@ export const VisÅrsakRevurdering: React.FC<Props> = ({
                         )}
                     </>
                 )}
-                {!årsakRevurdering && !behandlingErRedigerbar && (
+                {!årsakRevurdering && !erBehandlingUnderArbeid(behandling) && (
                     <Alert variant={'info'}>
                         Ingen informasjon å vise. Behandlingen ble opprettet før årsak til
                         revurdering ble lagt til som egen fane i behandling.
