@@ -24,14 +24,19 @@ export const BrevmalSelect: React.FC<BrevmalSelectProps> = ({
         return dokumentnanvn?.filter((mal) => visBrevmal(mal, stønanadstype, frittstående));
     };
 
-    const sorterPåPrioriteringsnummer = (dokumentnanvn: DokumentNavn[]) => {
+    const sorterPåPrioriteringsnummerDeretterAlfabetisk = (dokumentnanvn: DokumentNavn[]) => {
         return dokumentnanvn
             ?.filter((mal) => visBrevmal(mal, stønanadstype, frittstående))
             .sort((a, b) => {
-                if (a?.prioriteringsnummer !== b?.prioriteringsnummer) {
+                if (a.prioriteringsnummer && b.prioriteringsnummer) {
                     return a.prioriteringsnummer - b.prioriteringsnummer;
+                } else if (a.prioriteringsnummer) {
+                    return -1;
+                } else if (b.prioriteringsnummer) {
+                    return 1;
+                } else {
+                    return a.visningsnavn.localeCompare(b.visningsnavn);
                 }
-                return a.visningsnavn.localeCompare(b.visningsnavn);
             });
     };
 
@@ -39,7 +44,7 @@ export const BrevmalSelect: React.FC<BrevmalSelectProps> = ({
         dokumentnavn.status === RessursStatus.SUKSESS ? dokumentnavn.data : []
     );
 
-    const sortertBrevliste = sorterPåPrioriteringsnummer(ønskedeBrevmalListe);
+    const sortertBrevliste = sorterPåPrioriteringsnummerDeretterAlfabetisk(ønskedeBrevmalListe);
 
     return (
         <DataViewer response={{ dokumentnavn }}>
