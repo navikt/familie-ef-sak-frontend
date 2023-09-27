@@ -26,6 +26,7 @@ export const ÅrsakRevurdering: React.FC<Props> = ({
     );
 
     useEffect(() => {
+        settErRedigeringsmodus(behandlingErRedigerbar && !revurderingsinformasjon.årsakRevurdering);
         return () => {
             settErRedigeringsmodus(
                 behandlingErRedigerbar && !revurderingsinformasjon.årsakRevurdering
