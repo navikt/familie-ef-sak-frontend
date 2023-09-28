@@ -106,4 +106,4 @@ export type FrittståendeSanitybrevDto = {
 };
 
 export type MellomlagerRespons = IMellomlagretBrevResponse;
-export const datasett = 'ef-brev'; // TODO: bruk ef-test for testing, slett kommentar før prodsetting
+export const datasett = 'ef-brev';
