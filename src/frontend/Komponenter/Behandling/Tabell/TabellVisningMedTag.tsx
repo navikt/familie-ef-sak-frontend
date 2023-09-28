@@ -4,7 +4,7 @@ import { Tag } from '@navikt/ds-react';
 import { formatterBooleanEllerUkjent } from '../../../App/utils/formatter';
 
 const TabellVisningMedTag: React.FC<{ stønad: IHistorikkForStønad }> = ({ stønad }) => {
-    const renderTag = (verdi: boolean | undefined) => {
+    const JaEllerNeiTag: React.FC<{ verdi: boolean | undefined }> = ({ verdi }) => {
         const tagVariant = verdi ? 'success-filled' : 'neutral';
         const tagTekst = formatterBooleanEllerUkjent(verdi);
 
@@ -23,8 +23,8 @@ const TabellVisningMedTag: React.FC<{ stønad: IHistorikkForStønad }> = ({ stø
                     <th>{'Historikk i Infotrygd'}</th>
                 </tr>
                 <tr>
-                    {renderTag(stønad.harHistorikkISak)}
-                    {renderTag(stønad.harHistorikkIInfotrygd)}
+                    <JaEllerNeiTag verdi={stønad.harHistorikkISak} />
+                    <JaEllerNeiTag verdi={stønad.harHistorikkIInfotrygd} />
                 </tr>
             </tbody>
         </table>
