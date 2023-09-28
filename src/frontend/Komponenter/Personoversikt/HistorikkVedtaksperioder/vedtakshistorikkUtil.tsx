@@ -41,10 +41,10 @@ export const etikettTypeOvergangsstønad = (periodeType?: EPeriodetype): TagProp
             return 'success';
         case EPeriodetype.PERIODE_FØR_FØDSEL:
             return 'info';
-        case EPeriodetype.UTVIDELSE:
-            return 'warning';
         case EPeriodetype.MIGRERING:
         case EPeriodetype.FORLENGELSE:
+        case EPeriodetype.UTVIDELSE:
+            return 'warning';
         case EPeriodetype.SANKSJON:
             return 'error';
         default:
