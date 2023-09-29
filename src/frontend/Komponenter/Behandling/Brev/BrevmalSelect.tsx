@@ -20,7 +20,7 @@ export const BrevmalSelect: React.FC<BrevmalSelectProps> = ({
     stønanadstype,
     frittstående,
 }) => {
-    const ønskedeBrevmaler = (dokumentnanvn: DokumentNavn[]) => {
+    const filtrerBrevmaler = (dokumentnanvn: DokumentNavn[]) => {
         return dokumentnanvn?.filter((mal) => visBrevmal(mal, stønanadstype, frittstående));
     };
 
@@ -38,11 +38,11 @@ export const BrevmalSelect: React.FC<BrevmalSelectProps> = ({
         });
     };
 
-    const ønskedeBrevmalListe = ønskedeBrevmaler(
+    const filtrertBrevmalListe = filtrerBrevmaler(
         dokumentnavn.status === RessursStatus.SUKSESS ? dokumentnavn.data : []
     );
 
-    const sortertBrevliste = sorterPåPrioriteringsnummerDeretterAlfabetisk(ønskedeBrevmalListe);
+    const sortertBrevliste = sorterPåPrioriteringsnummerDeretterAlfabetisk(filtrertBrevmalListe);
 
     return (
         <DataViewer response={{ dokumentnavn }}>
