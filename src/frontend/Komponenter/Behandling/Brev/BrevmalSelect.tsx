@@ -27,6 +27,9 @@ export const BrevmalSelect: React.FC<BrevmalSelectProps> = ({
     const sorterPåPrioriteringsnummerDeretterAlfabetisk = (dokumentnanvn: DokumentNavn[]) => {
         return dokumentnanvn.sort((a, b) => {
             if (a.prioriteringsnummer && b.prioriteringsnummer) {
+                if (a.prioriteringsnummer === b.prioriteringsnummer) {
+                    return a.visningsnavn.localeCompare(b.visningsnavn);
+                }
                 return a.prioriteringsnummer - b.prioriteringsnummer;
             } else if (a.prioriteringsnummer) {
                 return -1;
