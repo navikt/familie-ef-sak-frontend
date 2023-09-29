@@ -92,6 +92,7 @@ export interface Delmal {
 export interface DokumentNavn {
     apiNavn: string;
     visningsnavn: string;
+    prioriteringsnummer?: number;
     overgangsstonad?: boolean;
     barnetilsyn?: boolean;
     skolepenger?: boolean;
