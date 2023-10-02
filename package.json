@@ -32,7 +32,7 @@
   "dependencies": {
     "@navikt/aksel-icons": "^5.5.0",
     "@navikt/ds-css": "5.5.0",
-    "@navikt/ds-react": "5.5.0",
+    "@navikt/ds-react": "5.6.1",
     "@navikt/ds-tokens": "5.5.0",
     "@navikt/familie-backend": "10.0.7",
     "@navikt/familie-dokumentliste": "^9.0.1",
