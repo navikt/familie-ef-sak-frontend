@@ -30,14 +30,6 @@ const SubmitButtonWrapper = styled.div`
     justify-content: center;
 `;
 
-const StyledForm = styled.form`
-    padding: 0.25rem;
-
-    .textarea__container {
-        margin-bottom: 1rem;
-    }
-`;
-
 const TittelContainer = styled.div`
     margin: 0.5rem 0;
 `;
@@ -111,7 +103,7 @@ const FatterVedtak: React.FC<{
     };
 
     return (
-        <StyledForm onSubmit={fatteTotrinnsKontroll}>
+        <form onSubmit={fatteTotrinnsKontroll}>
             <BorderBox>
                 <TittelContainer>
                     <Heading size={'small'} level={'3'}>
@@ -181,7 +173,7 @@ const FatterVedtak: React.FC<{
                 )}
                 {feil && <AlertStripeFeilPreWrap>{feil}</AlertStripeFeilPreWrap>}
             </BorderBox>
-        </StyledForm>
+        </form>
     );
 };
 
