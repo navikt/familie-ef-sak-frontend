@@ -53,7 +53,10 @@ export const AksjonsknapperPersonHeader: React.FC<Props> = ({ erSaksbehandler, b
                 if (
                     erSaksbehandler &&
                     (erBehandlingRedigerbar(behandling) || sattPåVent) &&
-                    ansvarligSaksbehandler.rolle !== AnsvarligSaksbehandlerRolle.ANNEN_SAKSBEHANDLER
+                    ansvarligSaksbehandler.rolle !==
+                        AnsvarligSaksbehandlerRolle.ANNEN_SAKSBEHANDLER &&
+                    ansvarligSaksbehandler.rolle !==
+                        AnsvarligSaksbehandlerRolle.UTVIKLER_MED_VEILDERROLLE
                 ) {
                     return (
                         <>
