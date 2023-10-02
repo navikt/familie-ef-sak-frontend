@@ -39,6 +39,9 @@ export const SagtOppEllerRedusert: React.FC<VilkårProps> = ({
                         <SagtOppEllerRedusertInfo
                             sagtOppEllerRedusert={grunnlag.sagtOppEllerRedusertStilling}
                             dokumentasjon={grunnlag.dokumentasjon}
+                            harAvsluttetArbeidsforholdIRegister={
+                                grunnlag.harAvsluttetArbeidsforhold
+                            }
                         />
                     ),
                     høyre: (

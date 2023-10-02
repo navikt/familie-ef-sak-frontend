@@ -26,6 +26,7 @@ export interface IVilkårGrunnlag {
     registeropplysningerOpprettetTid: string;
     adresseopplysninger?: IAdresseopplysninger;
     dokumentasjon?: IDokumentasjonGrunnlag;
+    harAvsluttetArbeidsforhold: boolean;
 }
 
 export interface IPersonalia {
