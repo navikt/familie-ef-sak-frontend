@@ -82,7 +82,7 @@
     "react-day-picker": "^8.8.2",
     "react-dom": "^18.2.0",
     "react-is": "^18.2.0",
-    "react-pdf": "7.3.3",
+    "react-pdf": "7.4.0",
     "react-router-dom": "^6.16.0",
     "react-router-prompt": "^0.5.4",
     "react-select": "^5.7.4",

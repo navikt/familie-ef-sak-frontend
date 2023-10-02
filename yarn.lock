@@ -6987,15 +6987,13 @@ pause@0.0.1:
   resolved "https://registry.yarnpkg.com/pause/-/pause-0.0.1.tgz#1d408b3fdb76923b9543d96fb4c9dfd535d9cb5d"
   integrity sha512-KG8UEiEVkR3wGEb4m5yZkVCzigAD+cVEJck2CzYZO37ZGJfctvVptVO192MwrtPhzONn6go8ylnOdMhKqi4nfg==
 
-pdfjs-dist@3.6.172:
-  version "3.6.172"
-  resolved "https://registry.yarnpkg.com/pdfjs-dist/-/pdfjs-dist-3.6.172.tgz#f9efdfc5e850e1fecfc70b7f6f45c5dc990d8096"
-  integrity sha512-bfOhCg+S9DXh/ImWhWYTOiq3aVMFSCvzGiBzsIJtdMC71kVWDBw7UXr32xh0y56qc5wMVylIeqV3hBaRsu+e+w==
-  dependencies:
-    path2d-polyfill "^2.0.1"
-    web-streams-polyfill "^3.2.1"
+pdfjs-dist@3.11.174:
+  version "3.11.174"
+  resolved "https://registry.yarnpkg.com/pdfjs-dist/-/pdfjs-dist-3.11.174.tgz#5ff47b80f2d58c8dd0d74f615e7c6a7e7e704c4b"
+  integrity sha512-TdTZPf1trZ8/UFu5Cx/GXB7GZM30LT+wWUNfsi6Bq8ePLnb+woNKtDymI2mxZYBpMbonNFqKmiz684DIfnd8dA==
   optionalDependencies:
     canvas "^2.11.2"
+    path2d-polyfill "^2.0.1"
 
 picocolors@^1.0.0:
   version "1.0.0"
@@ -7278,16 +7276,16 @@ react-lifecycles-compat@^3.0.4:
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
-react-pdf@7.3.3:
-  version "7.3.3"
-  resolved "https://registry.yarnpkg.com/react-pdf/-/react-pdf-7.3.3.tgz#cfdf485fa73de01b5f0d76745e3e48e358e74e25"
-  integrity sha512-d7WAxcsjOogJfJ+I+zX/mdip3VjR1yq/yDa4hax4XbQVjbbbup6rqs4c8MGx0MLSnzob17TKp1t4CsNbDZ6GeQ==
+react-pdf@7.4.0:
+  version "7.4.0"
+  resolved "https://registry.yarnpkg.com/react-pdf/-/react-pdf-7.4.0.tgz#b8b01dab7a9dece8d99e767baa26cc1219626a8d"
+  integrity sha512-L2GIUc9eBLdb51DRqUe3zlkTmvOq7KQN5cKmgcrWdnWNwhYgrOGgpJQ3f56kG26G+B5GoasAHI6RjQrLfTjTnw==
   dependencies:
     clsx "^2.0.0"
     make-cancellable-promise "^1.3.1"
     make-event-props "^1.6.0"
     merge-refs "^1.2.1"
-    pdfjs-dist "3.6.172"
+    pdfjs-dist "3.11.174"
     prop-types "^15.6.2"
     tiny-invariant "^1.0.0"
     tiny-warning "^1.0.0"
@@ -8480,7 +8478,7 @@ watchpack@^2.4.0:
     glob-to-regexp "^0.4.1"
     graceful-fs "^4.1.2"
 
-web-streams-polyfill@^3.0.3, web-streams-polyfill@^3.2.1:
+web-streams-polyfill@^3.0.3:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/web-streams-polyfill/-/web-streams-polyfill-3.2.1.tgz#71c2718c52b45fd49dbeee88634b3a60ceab42a6"
   integrity sha512-e0MO3wdXWKrLbL0DgGnUV7WHVuw9OUvL4hjgnPkIeEvESk74gAITi5G606JtZPp39cd8HA9VQzCIvA49LpPN5Q==
