@@ -110,7 +110,9 @@ const HarSagtOppEllerRedusertStilling: React.FC<ISagtOppEllerRedusertStilling> =
             {harAvsluttetArbeidsforholdIRegister && (
                 <Informasjonsrad
                     ikon={VilkårInfoIkon.REGISTER}
-                    label={'Registrert avsluttet arbeidsforhold i aareg siste 6 mnd'}
+                    label={
+                        'Det er registrert avsluttet arbeidsforhold i arbeidsregisteret (aareg) siste 6 mnd'
+                    }
                     verdi={
                         <Link
                             href="#"
@@ -121,7 +123,7 @@ const HarSagtOppEllerRedusertStilling: React.FC<ISagtOppEllerRedusertStilling> =
                                 );
                             }}
                         >
-                            Se arbeidsforhold i aareg
+                            Se arbeidsforhold i arbeidsregisteret
                         </Link>
                     }
                 />
