@@ -15,14 +15,17 @@ import {
     ASurfaceNeutral,
     ASurfaceSuccess,
     ASurfaceWarning,
+    ABorderSubtle,
     ATextSubtle,
 } from '@navikt/ds-tokens/dist/tokens';
 
 const Container = styled.div`
     padding: 1rem;
-    width: 100%;
     display: flex;
     gap: 0.5rem;
+    border: 1px solid ${ABorderSubtle};
+    border-radius: 0.125rem;
+    margin: 1rem 0.5rem;
 `;
 
 const FlexBoxRow = styled.div`
