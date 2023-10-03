@@ -7,12 +7,15 @@ import { Behandling, behandlingResultatTilTekst } from '../../../App/typer/fagsa
 import { formaterIsoDato, formaterIsoDatoTid } from '../../../App/utils/formatter';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
-import { AnsvarligSaksbehandlerRolle } from '../../../App/typer/saksbehandler';
 import {
-    ATextSubtle,
+    AnsvarligSaksbehandler,
+    AnsvarligSaksbehandlerRolle,
+} from '../../../App/typer/saksbehandler';
+import {
+    ASurfaceNeutral,
     ASurfaceSuccess,
     ASurfaceWarning,
-    ASurfaceNeutral,
+    ATextSubtle,
 } from '@navikt/ds-tokens/dist/tokens';
 
 const Container = styled.div`
@@ -75,6 +78,7 @@ const TilegnetSaksbehandler: React.FC<Props> = ({ behandling }) => {
     ): string => {
         switch (ansvarligSaksbehandlerRolle) {
             case AnsvarligSaksbehandlerRolle.IKKE_SATT:
+            case AnsvarligSaksbehandlerRolle.UTVIKLER_MED_VEILDERROLLE:
                 return ASurfaceNeutral;
             case AnsvarligSaksbehandlerRolle.INNLOGGET_SAKSBEHANDLER:
                 return ASurfaceSuccess;
@@ -82,6 +86,18 @@ const TilegnetSaksbehandler: React.FC<Props> = ({ behandling }) => {
                 return ASurfaceWarning;
             default:
                 return ASurfaceNeutral;
+        }
+    };
+
+    const utledVisningsnavn = (ansvarligSaksbehandler: AnsvarligSaksbehandler): string => {
+        switch (ansvarligSaksbehandler.rolle) {
+            case AnsvarligSaksbehandlerRolle.INNLOGGET_SAKSBEHANDLER:
+            case AnsvarligSaksbehandlerRolle.ANNEN_SAKSBEHANDLER:
+                return `${ansvarligSaksbehandler.fornavn} ${ansvarligSaksbehandler.etternavn}`;
+            case AnsvarligSaksbehandlerRolle.UTVIKLER_MED_VEILDERROLLE:
+                return 'ingen tilgang';
+            default:
+                return 'ingen ansvarlig';
         }
     };
 
@@ -96,9 +112,7 @@ const TilegnetSaksbehandler: React.FC<Props> = ({ behandling }) => {
                     ansvarligSaksbehandler.rolle ===
                         AnsvarligSaksbehandlerRolle.ANNEN_SAKSBEHANDLER;
 
-                const visingsnavn = behandlingHarAnsvarligSaksbehandler
-                    ? `${ansvarligSaksbehandler.fornavn} ${ansvarligSaksbehandler.etternavn}`
-                    : 'ingen ansvarlig';
+                const visingsnavn = utledVisningsnavn(ansvarligSaksbehandler);
 
                 const fontStyle = behandlingHarAnsvarligSaksbehandler ? 'normal' : 'italic';
 
