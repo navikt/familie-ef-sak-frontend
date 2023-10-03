@@ -2063,28 +2063,28 @@
     "@navikt/familie-ikoner" "^7.0.1"
     "@navikt/familie-typer" "^8.0.1"
 
-"@navikt/familie-endringslogg@^9.0.3":
-  version "9.0.3"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-endringslogg/9.0.3/0935613ba550b711a10ddd2e0d35e2f5a9e9567b#0935613ba550b711a10ddd2e0d35e2f5a9e9567b"
-  integrity sha512-8zhCUXXz69pkTtzS+3OTDwBiAyxa2ciHziGn7jm1L9Pv0HYSIL9eKxacZuBSTS/tKtNzKv1BD96LmW4ST11+ww==
+"@navikt/familie-endringslogg@^10.0.0":
+  version "10.0.0"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-endringslogg/10.0.0/a85a44073c816ec36daaaa8d20c44ab8dff0ccaa#a85a44073c816ec36daaaa8d20c44ab8dff0ccaa"
+  integrity sha512-uCyWfVXfEYGscmarSxa5PSMzQsEWdff9Ky3mRkR6cmEYjkJi6gMFS/i5wpkY3NmlEJtq/83bJVcfj8HpuIseJQ==
   dependencies:
     "@portabletext/react" "^3.0.7"
     classnames "^2.3.2"
     react-transition-group "^4.4.5"
 
-"@navikt/familie-form-elements@^12.0.0":
-  version "12.0.0"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-form-elements/12.0.0/a333e46e08a5bff4d30c92f1ce990a2b58fe1cb7#a333e46e08a5bff4d30c92f1ce990a2b58fe1cb7"
-  integrity sha512-6k8XoBzgAEfOIaACVDSyWvYEYgXqOskUc1VvY41o8zpDKqgbQ636fw0H1kFaVN2Qq+yKjZUxTRIH5ryhSlcgSA==
+"@navikt/familie-form-elements@^13.0.0":
+  version "13.0.0"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-form-elements/13.0.0/c3ec85621cb87c35cece49ce4a0d59d17ab0ad7c#c3ec85621cb87c35cece49ce4a0d59d17ab0ad7c"
+  integrity sha512-C7Co3jFGad7TdS7P2QM1l58rb4T82lE31Gx6gOC7MXRaBKTDnd9MJCf8AXazUyjmxUASmWepdSoGo/bgZjtJdA==
   dependencies:
     "@types/classnames" "^2.3.1"
     classnames "^2.3.2"
     react-select "^5.7.0"
 
-"@navikt/familie-header@^11.0.1":
-  version "11.0.1"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-header/11.0.1/3954f23cb5091c12fe388aedce89525f437fae3c#3954f23cb5091c12fe388aedce89525f437fae3c"
-  integrity sha512-mcM7/V7glv4ZTcstBQ5O1UjvbllPHy5c+LpnQRh9iUH+zKNrWT4RvxJdPswpuKv+MFyzp/qhNAuNf5GlchCiew==
+"@navikt/familie-header@^12.0.0":
+  version "12.0.0"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-header/12.0.0/4f96471ee373b3b2a21794abff348ae41e0755e9#4f96471ee373b3b2a21794abff348ae41e0755e9"
+  integrity sha512-nP5qsKQFZCEILVrvQHV2pd0Nlkgi2bCUfSMqReZ05ZwUe5N4eMu8Gx4PfGs2lmLb73vBIzgUOlx3WfpupCZ+tw==
   dependencies:
     "@navikt/familie-ikoner" "^7.0.1"
     "@navikt/familie-typer" "^8.0.1"
@@ -2114,10 +2114,10 @@
   resolved "https://npm.pkg.github.com/download/@navikt/familie-validering/5.0.2/b890a334ca5f5aa5aeba6873f3fb00aff30be759#b890a334ca5f5aa5aeba6873f3fb00aff30be759"
   integrity sha512-S8C3egFMHC97auVFOlWMmG2Z84X1mwtVAvmp3ACEpFFRtzKQ2CD25ZJV7Sqf3IqHZLLAzGEaYCeMtYIAPwp3ag==
 
-"@navikt/familie-visittkort@^11.0.2":
-  version "11.0.2"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-visittkort/11.0.2/87876bff6515e6e7cdcd6ef265921bfc288596a2#87876bff6515e6e7cdcd6ef265921bfc288596a2"
-  integrity sha512-UwFYLGXMTVBBN6vP389VIQc+qZp3ugQFeaqHVzv7n8Lz9BjY5hiq78GCtZnWvCdRa5TNoQJ+BitiIrMvGFPGUQ==
+"@navikt/familie-visittkort@^12.0.0":
+  version "12.0.0"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-visittkort/12.0.0/2fbf0c4ef0e9fcdde0c0021af58c7e689cf5bc3a#2fbf0c4ef0e9fcdde0c0021af58c7e689cf5bc3a"
+  integrity sha512-f8PBgdgVJSELAQnQw0OOrVjhhcxi5NTU3qqJIlyNwlziyqEZUVM+QmDaYkTEQU9FduJDamBoqvKQUzW4B7V/uw==
   dependencies:
     "@navikt/familie-ikoner" "^7.0.1"
     "@navikt/familie-typer" "^8.0.1"
