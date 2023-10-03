@@ -20,9 +20,10 @@ import { Alert, BodyShort, Button, Detail, Heading, Label } from '@navikt/ds-rea
 import { BodyShortSmall, SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
 import { CheckmarkIcon } from '@navikt/aksel-icons';
 import { useNavigate } from 'react-router-dom';
+import { ABorderSubtle } from '@navikt/ds-tokens/dist/tokens';
 
 export const BorderBox = styled.div`
-    border: 1px solid #c6c2bf;
+    border: 1px solid ${ABorderSubtle};
     padding: 0.5rem 1rem;
     margin: 1rem 0.5rem;
     border-radius: 0.125rem;
