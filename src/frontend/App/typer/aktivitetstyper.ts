@@ -29,6 +29,7 @@ export interface ISagtOppEllerRedusertStilling {
     årsak?: string;
     dato?: string;
     dokumentasjon?: IDokumentasjon;
+    harAvsluttetArbeidsforholdIRegister: boolean;
 }
 
 export interface IArbeidsforhold {

@@ -12,13 +12,21 @@ import { BodyLongSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
 import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 import { InformasjonContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
+import { lagArbeidsforholdLink } from '../../../../Felles/Lenker/Lenker';
+import { useApp } from '../../../../App/context/AppContext';
+import { Link } from '@navikt/ds-react';
 
 interface Props {
     sagtOppEllerRedusert: ISagtOppEllerRedusertStilling;
     dokumentasjon?: IDokumentasjonGrunnlag;
+    harAvsluttetArbeidsforholdIRegister: boolean;
 }
 
-const SagtOppEllerRedusertInfo: FC<Props> = ({ sagtOppEllerRedusert, dokumentasjon }) => {
+const SagtOppEllerRedusertInfo: FC<Props> = ({
+    sagtOppEllerRedusert,
+    dokumentasjon,
+    harAvsluttetArbeidsforholdIRegister,
+}) => {
     const { sagtOppEllerRedusertStilling, årsak, dato } = sagtOppEllerRedusert;
     return (
         <InformasjonContainer>
@@ -27,6 +35,7 @@ const SagtOppEllerRedusertInfo: FC<Props> = ({ sagtOppEllerRedusert, dokumentasj
                     sagtOppEllerRedusertStilling={sagtOppEllerRedusertStilling}
                     årsak={årsak}
                     dato={dato}
+                    harAvsluttetArbeidsforholdIRegister={harAvsluttetArbeidsforholdIRegister}
                 />
             ) : (
                 <BodyLongSmall className="tekstUtenIkon">
@@ -54,10 +63,12 @@ const HarSagtOppEllerRedusertStilling: React.FC<ISagtOppEllerRedusertStilling> =
     sagtOppEllerRedusertStilling,
     årsak,
     dato,
+    harAvsluttetArbeidsforholdIRegister,
 }) => {
     const harSagtOpp = sagtOppEllerRedusertStilling === ESagtOppEllerRedusert.sagtOpp;
     const harRedusertStilling =
         sagtOppEllerRedusertStilling === ESagtOppEllerRedusert.redusertStilling;
+    const { axiosRequest, appEnv, valgtFagsakId } = useApp();
     return (
         <>
             <Informasjonsrad
@@ -95,6 +106,27 @@ const HarSagtOppEllerRedusertStilling: React.FC<ISagtOppEllerRedusertStilling> =
                         verdi={dato}
                     />
                 </>
+            )}
+            {harAvsluttetArbeidsforholdIRegister && (
+                <Informasjonsrad
+                    ikon={VilkårInfoIkon.REGISTER}
+                    label={
+                        'Det er registrert avsluttet arbeidsforhold i arbeidsregisteret (aareg) siste 6 mnd'
+                    }
+                    verdi={
+                        <Link
+                            href="#"
+                            onClick={async (e: React.SyntheticEvent) => {
+                                e.preventDefault();
+                                window.open(
+                                    await lagArbeidsforholdLink(axiosRequest, appEnv, valgtFagsakId)
+                                );
+                            }}
+                        >
+                            Se arbeidsforhold i arbeidsregisteret
+                        </Link>
+                    }
+                />
             )}
         </>
     );

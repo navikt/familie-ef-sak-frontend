@@ -25,6 +25,25 @@ export const lagAInntektLink = async (
         });
 };
 
+export const lagArbeidsforholdLink = async (
+    axiosRequest: AxiosRequestCallback,
+    appEnv: AppEnv,
+    fagsakId: string | undefined
+): Promise<string> => {
+    const url = `/familie-ef-sak/api/inntekt/fagsak/${fagsakId}/generer-url-arbeidsforhold`;
+    return await axiosRequest<string, null>({
+        method: 'GET',
+        url: url,
+    })
+        .then((response: Ressurs<string>) => {
+            return response.status === RessursStatus.SUKSESS ? response.data : appEnv.aInntekt;
+        })
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        .catch((_: AxiosError<string>) => {
+            return appEnv.aInntekt;
+        });
+};
+
 export const lagGosysLink = (appEnv: AppEnv, personIdent: string): string => {
     return `${appEnv.gosys}/personoversikt/fnr=${personIdent}`;
 };
