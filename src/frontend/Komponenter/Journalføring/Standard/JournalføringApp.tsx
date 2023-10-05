@@ -1,46 +1,45 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { erAvTypeFeil, RessursStatus } from '../../App/typer/ressurs';
+import { erAvTypeFeil, RessursStatus } from '../../../App/typer/ressurs';
 import styled from 'styled-components';
-import Brukerinfo from './Brukerinfo';
-import DokumentVisning from './Dokumentvisning';
+import Brukerinfo from '../Felles/Brukerinfo';
+import DokumentVisning from '../Felles/Dokumentvisning';
 import {
     JournalføringStateRequest,
     useJournalføringState,
-} from '../../App/hooks/useJournalføringState';
-import { useHentDokument } from '../../App/hooks/useHentDokument';
-import { useHentFagsak } from '../../App/hooks/useHentFagsak';
-import { useApp } from '../../App/context/AppContext';
+} from '../../../App/hooks/useJournalføringState';
+import { useHentDokument } from '../../../App/hooks/useHentDokument';
+import { useHentFagsak } from '../../../App/hooks/useHentFagsak';
+import { useApp } from '../../../App/context/AppContext';
 import {
     hentFraLocalStorage,
     lagreTilLocalStorage,
     oppgaveRequestKey,
-} from '../Oppgavebenk/oppgavefilterStorage';
+} from '../../Oppgavebenk/oppgavefilterStorage';
 import BehandlingInnold from './Behandling';
-import { UtledEllerVelgFagsak } from './UtledEllerVelgFagsak';
+import { UtledEllerVelgFagsak } from '../Felles/UtledEllerVelgFagsak';
 import { BodyLong, Button, Fieldset, Heading } from '@navikt/ds-react';
-import LeggTilBarnSomSkalFødes from './LeggTilBarnSomSkalFødes';
+import LeggTilBarnSomSkalFødes from '../../Behandling/Førstegangsbehandling/LeggTilBarnSomSkalFødes';
 import VelgUstrukturertDokumentasjonType, {
     UstrukturertDokumentasjonType,
 } from './VelgUstrukturertDokumentasjonType';
-import { VelgFagsakForIkkeSøknad } from './VelgFagsakForIkkeSøknad';
+import { VelgFagsakForIkkeSøknad } from '../Felles/VelgFagsakForIkkeSøknad';
 import EttersendingMedNyeBarn from './EttersendingMedNyeBarn';
-import { harValgtNyBehandling } from './journalførBehandlingUtil';
-import { ModalWrapper } from '../../Felles/Modal/ModalWrapper';
-import { AlertError } from '../../Felles/Visningskomponenter/Alerts';
-import { utledKolonneTittel } from './utils';
+import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
+import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
+import { harValgtNyBehandling, utledKolonneTittel } from '../Felles/utils';
 import JournalføringWrapper, {
     FlexKnapper,
     Høyrekolonne,
     JournalføringAppProps,
     Kolonner,
     Venstrekolonne,
-} from './JournalføringWrapper';
-import JournalføringPdfVisning from './JournalføringPdfVisning';
-import JournalpostTittelOgLenke from './JournalpostTittelOgLenke';
-import { ÅpneKlager } from '../Personoversikt/Klage/ÅpneKlager';
-import { alleBehandlingerErFerdigstiltEllerSattPåVent } from '../Personoversikt/utils';
-import { validerJournalføringState } from './JournalføringValidering';
+} from '../Felles/JournalføringWrapper';
+import JournalføringPdfVisning from '../Felles/JournalføringPdfVisning';
+import JournalpostTittelOgLenke from '../Felles/JournalpostTittelOgLenke';
+import { ÅpneKlager } from '../../Personoversikt/Klage/ÅpneKlager';
+import { alleBehandlingerErFerdigstiltEllerSattPåVent } from '../../Personoversikt/utils';
+import { validerJournalføringState } from '../Felles/JournalføringValidering';
 
 const ModalTekst = styled(BodyLong)`
     margin-top: 2rem;

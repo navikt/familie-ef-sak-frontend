@@ -1,6 +1,6 @@
 import { Heading } from '@navikt/ds-react';
 import React from 'react';
-import { IJojurnalpostResponse } from '../../App/typer/journalføring';
+import { IJojurnalpostResponse } from '../../../App/typer/journalføring';
 import styled from 'styled-components';
 import { lagJournalføringKlageUrl, lagJournalføringUrl } from './utils';
 import { Link } from 'react-router-dom';

@@ -1,11 +1,15 @@
-import { IJojurnalpostResponse } from '../../App/typer/journalføring';
-import { JournalføringStateRequest } from '../../App/hooks/useJournalføringState';
-import { harValgtNyBehandling } from './journalførBehandlingUtil';
-import { harTittelForAlleDokumenter } from './utils';
-import { UstrukturertDokumentasjonType } from './VelgUstrukturertDokumentasjonType';
-import { erGyldigDato } from '../../App/utils/dato';
-import { Behandlingstype } from '../../App/typer/behandlingstype';
-import { EVilkårsbehandleBarnValg } from '../../App/typer/vilkårsbehandleBarnValg';
+import { IJojurnalpostResponse } from '../../../App/typer/journalføring';
+import { JournalføringStateRequest } from '../../../App/hooks/useJournalføringState';
+import {
+    harTittelForAlleDokumenter,
+    harValgtNyBehandling,
+    harValgtNyKlageBehandling,
+} from './utils';
+import { UstrukturertDokumentasjonType } from '../Standard/VelgUstrukturertDokumentasjonType';
+import { erGyldigDato } from '../../../App/utils/dato';
+import { Behandlingstype } from '../../../App/typer/behandlingstype';
+import { EVilkårsbehandleBarnValg } from '../../../App/typer/vilkårsbehandleBarnValg';
+import { JournalføringKlageStateRequest } from '../../../App/hooks/useJournalføringKlageState';
 
 export const validerJournalføringState = (
     journalResponse: IJojurnalpostResponse,
@@ -36,6 +40,28 @@ export const validerJournalføringState = (
         return 'Mangler valg om å vilkårsbehandle nye barn';
     } else if (journalResponse.journalpost.tema !== 'ENF') {
         return 'Tema på journalføringsoppgaven må endres til «Enslig forsørger» i Gosys før du kan journalføre dokumentet i EF Sak';
+    } else {
+        return undefined;
+    }
+};
+
+export const validerJournalføringKlageState = (
+    journalResponse: IJojurnalpostResponse,
+    journalpostState: JournalføringKlageStateRequest
+): string | undefined => {
+    if (!journalpostState.behandling) {
+        return 'Du må velge en behandling for å journalføre';
+    } else if (!harTittelForAlleDokumenter(journalResponse, journalpostState.dokumentTitler)) {
+        return 'Mangler tittel på et eller flere dokumenter';
+    } else if (journalResponse.journalpost.tema !== 'ENF') {
+        return 'Tema på journalføringsoppgaven må endres til «Enslig forsørger» i Gosys før du kan journalføre dokumentet i EF Sak';
+    } else if (
+        harValgtNyKlageBehandling(journalpostState.behandling) &&
+        !journalResponse.journalpost.datoMottatt &&
+        (!journalpostState.behandling.mottattDato ||
+            !erGyldigDato(journalpostState.behandling.mottattDato))
+    ) {
+        return 'Mangler gyldig mottatt dato';
     } else {
         return undefined;
     }

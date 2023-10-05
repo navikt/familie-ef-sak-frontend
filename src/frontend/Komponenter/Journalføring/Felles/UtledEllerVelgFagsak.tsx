@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { IJojurnalpostResponse } from '../../App/typer/journalføring';
+import { IJojurnalpostResponse } from '../../../App/typer/journalføring';
 import {
     behandlingstemaTilStønadstype,
     Stønadstype,
     stønadstypeTilTekst,
-} from '../../App/typer/behandlingstema';
+} from '../../../App/typer/behandlingstema';
 import { Alert, Select } from '@navikt/ds-react';
 import styled from 'styled-components';
 

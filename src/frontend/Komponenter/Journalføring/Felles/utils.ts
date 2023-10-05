@@ -1,5 +1,9 @@
-import { DokumentTitler, IJojurnalpostResponse } from '../../App/typer/journalføring';
-import { Behandlingstema, behandlingstemaTilTekst } from '../../App/typer/behandlingstema';
+import { DokumentTitler, IJojurnalpostResponse } from '../../../App/typer/journalføring';
+import { Behandlingstema, behandlingstemaTilTekst } from '../../../App/typer/behandlingstema';
+import { Behandling, BehandlingResultat } from '../../../App/typer/fagsak';
+import { Behandlingstype } from '../../../App/typer/behandlingstype';
+import { BehandlingRequest } from '../../../App/hooks/useJournalføringState';
+import { BehandlingKlageRequest } from '../../../App/hooks/useJournalføringKlageState';
 
 export const JOURNALPOST_QUERY_STRING = 'journalpostId';
 export const OPPGAVEID_QUERY_STRING = 'oppgaveId';
@@ -81,3 +85,22 @@ export const dokumentTitler: { value: string; label: string }[] = [
     { value: 'Arbeidsforhold', label: 'Arbeidsforhold' },
     { value: 'Anke på tilbakekreving', label: 'Anke på tilbakekreving' },
 ];
+
+export const utledRiktigBehandlingstype = (
+    tidligereBehandlinger: Behandling[]
+): Behandlingstype => {
+    const harIverksattTidligereBehandlinger = tidligereBehandlinger.some(
+        (tidligereBehandling) => tidligereBehandling.resultat !== BehandlingResultat.HENLAGT
+    );
+
+    return harIverksattTidligereBehandlinger
+        ? Behandlingstype.REVURDERING
+        : Behandlingstype.FØRSTEGANGSBEHANDLING;
+};
+
+export const harValgtNyBehandling = (behandling: BehandlingRequest | undefined): boolean =>
+    behandling !== undefined && behandling.behandlingsId === undefined;
+
+export const harValgtNyKlageBehandling = (
+    behandling: BehandlingKlageRequest | undefined
+): boolean => behandling !== undefined && behandling.behandlingId === undefined;

@@ -1,10 +1,10 @@
 import React, { FunctionComponent, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
-import { useQueryParams } from '../../App/hooks/felles/useQueryParams';
+import { useQueryParams } from '../../../App/hooks/felles/useQueryParams';
 import { JOURNALPOST_QUERY_STRING, OPPGAVEID_QUERY_STRING } from './utils';
-import { useHentJournalpost } from '../../App/hooks/useHentJournalpost';
-import DataViewer from '../../Felles/DataViewer/DataViewer';
-import { IJojurnalpostResponse } from '../../App/typer/journalføring';
+import { useHentJournalpost } from '../../../App/hooks/useHentJournalpost';
+import DataViewer from '../../../Felles/DataViewer/DataViewer';
+import { IJojurnalpostResponse } from '../../../App/typer/journalføring';
 import styled from 'styled-components';
 
 export const SideLayout = styled.div``;
