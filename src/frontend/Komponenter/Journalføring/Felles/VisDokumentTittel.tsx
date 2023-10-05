@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ILogiskVedlegg } from '../../App/typer/dokumentliste';
+import { ILogiskVedlegg } from '../../../App/typer/dokumentliste';
 import { BodyShort, Button, Label, Link } from '@navikt/ds-react';
 import { PencilFillIcon, ExternalLinkIcon, FileTextIcon } from '@navikt/aksel-icons';
-import { åpneFilIEgenTab } from '../../App/utils/utils';
-import { DokumentInfo } from '../../App/typer/journalføring';
+import { åpneFilIEgenTab } from '../../../App/utils/utils';
+import { DokumentInfo } from '../../../App/typer/journalføring';
 
 const IkonKnapp = styled(Button)`
     margin-right: 0.5rem;

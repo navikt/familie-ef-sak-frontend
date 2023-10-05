@@ -1,16 +1,16 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Behandlingstype } from '../../App/typer/behandlingstype';
-import { Behandling, Fagsak } from '../../App/typer/fagsak';
-import DataViewer from '../../Felles/DataViewer/DataViewer';
-import { BehandlingRequest } from '../../App/hooks/useJournalføringState';
-import { formaterIsoDatoTid } from '../../App/utils/formatter';
-import { Ressurs, RessursStatus } from '../../App/typer/ressurs';
-import { Behandlingsårsak } from '../../App/typer/Behandlingsårsak';
-import { utledRiktigBehandlingstype } from './journalførBehandlingUtil';
+import { Behandlingstype } from '../../../App/typer/behandlingstype';
+import { Behandling, Fagsak } from '../../../App/typer/fagsak';
+import DataViewer from '../../../Felles/DataViewer/DataViewer';
+import { BehandlingRequest } from '../../../App/hooks/useJournalføringState';
+import { formaterIsoDatoTid } from '../../../App/utils/formatter';
+import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
+import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
 import { Button, Checkbox, Heading } from '@navikt/ds-react';
 import { PlusCircleIcon } from '@navikt/aksel-icons';
-import { alleBehandlingerErFerdigstiltEllerSattPåVent } from '../Personoversikt/utils';
+import { alleBehandlingerErFerdigstiltEllerSattPåVent } from '../../Personoversikt/utils';
+import { utledRiktigBehandlingstype } from '../Felles/utils';
 
 interface Props {
     settBehandling: (behandling?: BehandlingRequest) => void;

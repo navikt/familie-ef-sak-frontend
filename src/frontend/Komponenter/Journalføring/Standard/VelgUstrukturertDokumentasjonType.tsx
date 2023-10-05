@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { IOppgave } from '../Oppgavebenk/typer/oppgave';
-import { byggTomRessurs, Ressurs, RessursStatus } from '../../App/typer/ressurs';
-import { useApp } from '../../App/context/AppContext';
-import DataViewer from '../../Felles/DataViewer/DataViewer';
-import { AlertWarning } from '../../Felles/Visningskomponenter/Alerts';
+import { IOppgave } from '../../Oppgavebenk/typer/oppgave';
+import { byggTomRessurs, Ressurs, RessursStatus } from '../../../App/typer/ressurs';
+import { useApp } from '../../../App/context/AppContext';
+import DataViewer from '../../../Felles/DataViewer/DataViewer';
+import { AlertWarning } from '../../../Felles/Visningskomponenter/Alerts';
 import { Select } from '@navikt/ds-react';
 
 const VelgUstrukturertDokumentasjonTypeSelect = styled(Select)`

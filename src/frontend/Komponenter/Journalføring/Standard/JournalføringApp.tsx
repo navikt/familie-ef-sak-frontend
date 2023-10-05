@@ -1,117 +1,49 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { erAvTypeFeil, RessursStatus } from '../../App/typer/ressurs';
+import { erAvTypeFeil, RessursStatus } from '../../../App/typer/ressurs';
 import styled from 'styled-components';
-import Brukerinfo from './Brukerinfo';
-import DokumentVisning from './Dokumentvisning';
+import Brukerinfo from '../Felles/Brukerinfo';
+import DokumentVisning from '../Felles/Dokumentvisning';
 import {
     JournalføringStateRequest,
     useJournalføringState,
-} from '../../App/hooks/useJournalføringState';
-import { useHentDokument } from '../../App/hooks/useHentDokument';
-import { useHentFagsak } from '../../App/hooks/useHentFagsak';
-import { useApp } from '../../App/context/AppContext';
+} from '../../../App/hooks/useJournalføringState';
+import { useHentDokument } from '../../../App/hooks/useHentDokument';
+import { useHentFagsak } from '../../../App/hooks/useHentFagsak';
+import { useApp } from '../../../App/context/AppContext';
 import {
     hentFraLocalStorage,
     lagreTilLocalStorage,
     oppgaveRequestKey,
-} from '../Oppgavebenk/oppgavefilterStorage';
+} from '../../Oppgavebenk/oppgavefilterStorage';
 import BehandlingInnold from './Behandling';
-import { UtledEllerVelgFagsak } from './UtledEllerVelgFagsak';
+import { UtledEllerVelgFagsak } from '../Felles/UtledEllerVelgFagsak';
 import { BodyLong, Button, Fieldset, Heading } from '@navikt/ds-react';
-import LeggTilBarnSomSkalFødes from './LeggTilBarnSomSkalFødes';
-import { IJojurnalpostResponse } from '../../App/typer/journalføring';
+import LeggTilBarnSomSkalFødes from '../../Behandling/Førstegangsbehandling/LeggTilBarnSomSkalFødes';
 import VelgUstrukturertDokumentasjonType, {
     UstrukturertDokumentasjonType,
 } from './VelgUstrukturertDokumentasjonType';
-import { VelgFagsakForIkkeSøknad } from './VelgFagsakForIkkeSøknad';
+import { VelgFagsakForIkkeSøknad } from '../Felles/VelgFagsakForIkkeSøknad';
 import EttersendingMedNyeBarn from './EttersendingMedNyeBarn';
-import { harValgtNyBehandling } from './journalførBehandlingUtil';
-import { EVilkårsbehandleBarnValg } from '../../App/typer/vilkårsbehandleBarnValg';
-import { Behandlingstype } from '../../App/typer/behandlingstype';
-import { erGyldigDato } from '../../App/utils/dato';
-import { ModalWrapper } from '../../Felles/Modal/ModalWrapper';
-import { AlertError } from '../../Felles/Visningskomponenter/Alerts';
-import { harTittelForAlleDokumenter, utledKolonneTittel } from './utils';
+import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
+import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
+import { harValgtNyBehandling, utledKolonneTittel } from '../Felles/utils';
 import JournalføringWrapper, {
     FlexKnapper,
     Høyrekolonne,
     JournalføringAppProps,
     Kolonner,
     Venstrekolonne,
-} from './JournalføringWrapper';
-import JournalføringPdfVisning from './JournalføringPdfVisning';
-import JournalpostTittelOgLenke from './JournalpostTittelOgLenke';
-import { ÅpneKlager } from '../Personoversikt/Klage/ÅpneKlager';
-import { alleBehandlingerErFerdigstiltEllerSattPåVent } from '../Personoversikt/utils';
+} from '../Felles/JournalføringWrapper';
+import JournalføringPdfVisning from '../Felles/JournalføringPdfVisning';
+import JournalpostTittelOgLenke from '../Felles/JournalpostTittelOgLenke';
+import { ÅpneKlager } from '../../Personoversikt/Klage/ÅpneKlager';
+import { alleBehandlingerErFerdigstiltEllerSattPåVent } from '../../Personoversikt/utils';
+import { validerJournalføringState } from '../Felles/JournalføringValidering';
 
 const ModalTekst = styled(BodyLong)`
     margin-top: 2rem;
 `;
-
-const erUstrukturertSøknadOgManglerDokumentasjonsType = (
-    journalResponse: IJojurnalpostResponse,
-    ustrukturertDokumentasjonType: UstrukturertDokumentasjonType | undefined
-) =>
-    !journalResponse.harStrukturertSøknad &&
-    ustrukturertDokumentasjonType !== UstrukturertDokumentasjonType.PAPIRSØKNAD &&
-    ustrukturertDokumentasjonType !== UstrukturertDokumentasjonType.ETTERSENDING;
-
-const erEttersendingPåNyBehandlingOgManglerVilkårsbehandleNyeBarnValg = (
-    journalpostState: JournalføringStateRequest
-): boolean =>
-    journalpostState.ustrukturertDokumentasjonType === UstrukturertDokumentasjonType.ETTERSENDING &&
-    harValgtNyBehandling(journalpostState.behandling) &&
-    journalpostState.vilkårsbehandleNyeBarn === EVilkårsbehandleBarnValg.IKKE_VALGT;
-
-const erEttersendingPåNyFørstegangsbehandling = (
-    journalpostState: JournalføringStateRequest
-): boolean =>
-    journalpostState.ustrukturertDokumentasjonType === UstrukturertDokumentasjonType.ETTERSENDING &&
-    harValgtNyBehandling(journalpostState.behandling) &&
-    journalpostState.behandling?.behandlingstype === Behandlingstype.FØRSTEGANGSBEHANDLING;
-
-const inneholderBarnSomErUgyldige = (journalpostState: JournalføringStateRequest) =>
-    journalpostState.barnSomSkalFødes.some(
-        (barn) =>
-            !barn.fødselTerminDato ||
-            barn.fødselTerminDato.trim() === '' ||
-            !erGyldigDato(barn.fødselTerminDato)
-    );
-
-const validerJournalføringState = (
-    journalResponse: IJojurnalpostResponse,
-    journalpostState: JournalføringStateRequest,
-    erAlleBehandlingerFerdigstilte: boolean
-): string | undefined => {
-    if (!journalpostState.behandling) {
-        return 'Du må velge en behandling for å journalføre';
-    } else if (
-        !erAlleBehandlingerFerdigstilte &&
-        harValgtNyBehandling(journalpostState.behandling)
-    ) {
-        return 'Kan ikke journalføre på ny behandling når det finnes en behandling som ikke er ferdigstilt';
-    } else if (
-        erUstrukturertSøknadOgManglerDokumentasjonsType(
-            journalResponse,
-            journalpostState.ustrukturertDokumentasjonType
-        )
-    ) {
-        return 'Mangler type dokumentasjon';
-    } else if (inneholderBarnSomErUgyldige(journalpostState)) {
-        return 'Et eller flere barn mangler gyldig dato';
-    } else if (!harTittelForAlleDokumenter(journalResponse, journalpostState.dokumentTitler)) {
-        return 'Mangler tittel på et eller flere dokumenter';
-    } else if (erEttersendingPåNyFørstegangsbehandling(journalpostState)) {
-        return 'Kan ikke journalføre ettersending på ny førstegangsbehandling';
-    } else if (erEttersendingPåNyBehandlingOgManglerVilkårsbehandleNyeBarnValg(journalpostState)) {
-        return 'Mangler valg om å vilkårsbehandle nye barn';
-    } else if (journalResponse.journalpost.tema !== 'ENF') {
-        return 'Tema på journalføringsoppgaven må endres til «Enslig forsørger» i Gosys før du kan journalføre dokumentet i EF Sak';
-    } else {
-        return undefined;
-    }
-};
 
 export const JournalføringApp: React.FC = () => {
     return <JournalføringWrapper komponent={JournalføringAppContent} />;
