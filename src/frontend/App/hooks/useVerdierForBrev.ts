@@ -12,6 +12,7 @@ export enum EBehandlingFlettefelt {
     tomdatoInnvilgelse = 'tomdatoInnvilgelse',
     fomdatoInnvilgelseBarnetilsyn = 'fomdatoInnvilgelseBarnetilsyn',
     tomdatoInnvilgelseBarnetilsyn = 'tomdatoInnvilgelseBarnetilsyn',
+    seksGangerGrunnbelop = 'seksGangerGrunnbelop',
     fomdatoRevurderingBT = 'fomdatoRevurderingBT',
     tomdatoRevurderingBT = 'tomdatoRevurderingBT',
     belopInntektPlussTiProsentv2 = 'belopInntektPlussTiProsentv2', // Innvilgelse 10% økning
@@ -74,6 +75,8 @@ export const useVerdierForBrev = (
         leggTilNyeFlettefelt
     );
 
+    const G = 118_620;
+
     useEffect(() => {
         if (
             beløpsperioder &&
@@ -85,7 +88,7 @@ export const useVerdierForBrev = (
                 beløpsperioder.data[beløpsperioder.data.length - 1].periode.tildato
             );
             const fraDato = formaterIsoDato(beløpsperioder.data[0].periode.fradato);
-
+            const SEKS_G = (6 * G).toLocaleString('nb-NO');
             if (innholderBeløpsperioderForOvergangsstønad(beløpsperioder.data)) {
                 const inntektsgrunnlag =
                     beløpsperioder.data[beløpsperioder.data.length - 1].beregningsgrunnlag.inntekt;
@@ -120,6 +123,7 @@ export const useVerdierForBrev = (
                 [EBehandlingFlettefelt.fomdatoInnvilgelse]: fraDato,
                 [EBehandlingFlettefelt.fomdatoInnvilgelseBarnetilsyn]: fraDato,
                 [EBehandlingFlettefelt.tomdatoInnvilgelseBarnetilsyn]: tilDato,
+                [EBehandlingFlettefelt.seksGangerGrunnbelop]: SEKS_G,
                 [EBehandlingFlettefelt.fomdatoRevurderingBT]: fraDato,
                 [EBehandlingFlettefelt.tomdatoRevurderingBT]: tilDato,
             });
