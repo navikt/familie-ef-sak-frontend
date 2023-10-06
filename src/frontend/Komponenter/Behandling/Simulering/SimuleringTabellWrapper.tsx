@@ -80,6 +80,7 @@ const SimuleringTabellWrapper: React.FC<{
                 simuleringsresultat.sumManuellePosteringer > 0 && (
                     <StyledAlert variant={'warning'}>
                         Det finnes manuelle posteringer tilknyttet tidligere behandling.
+                        Simuleringsbildet kan derfor være utilstrekkelig.
                     </StyledAlert>
                 )}
             <SimuleringTabell
