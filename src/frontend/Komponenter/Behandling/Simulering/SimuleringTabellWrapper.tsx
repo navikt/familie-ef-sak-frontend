@@ -77,7 +77,7 @@ const SimuleringTabellWrapper: React.FC<{
         <SimuleringsContainer>
             <SimuleringOversikt simulering={simuleringsresultat} />
             {simuleringsresultat.sumManuellePosteringer != null &&
-                simuleringsresultat.sumManuellePosteringer == 0 && (
+                simuleringsresultat.sumManuellePosteringer > 0 && (
                     <StyledAlert variant={'warning'}>
                         Det finnes manuelle posteringer tilknyttet tidligere behandling.
                         Simuleringsbildet kan derfor være ufullstendig.
