@@ -75,7 +75,7 @@ export const useVerdierForBrev = (
         leggTilNyeFlettefelt
     );
 
-    const G = 118_620;
+    const G = 118620; // Grunnbeløpet (G) per 1. mai 2023 er 118 620 kroner.
 
     useEffect(() => {
         if (
