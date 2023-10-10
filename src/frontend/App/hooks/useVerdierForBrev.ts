@@ -95,7 +95,7 @@ export const useVerdierForBrev = (
                 beløpsperioder.data[beløpsperioder.data.length - 1].periode.tildato
             );
             const fraDato = formaterIsoDato(beløpsperioder.data[0].periode.fradato);
-            const seksGangerGrunnbeløp = seksGangerGrunnbeløpTall.toLocaleString('nb-NO');
+            const seksGangerGrunnbeløp = seksGangerGrunnbeløpTall?.toLocaleString('nb-NO');
 
             if (innholderBeløpsperioderForOvergangsstønad(beløpsperioder.data)) {
                 const inntektsgrunnlag =
