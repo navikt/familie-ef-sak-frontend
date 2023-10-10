@@ -1,4 +1,4 @@
-import { IJojurnalpostResponse } from '../../../App/typer/journalføring';
+import { IJournalpostResponse } from '../../../App/typer/journalføring';
 import { JournalføringStateRequest } from '../../../App/hooks/useJournalføringState';
 import {
     harTittelForAlleDokumenter,
@@ -12,7 +12,7 @@ import { EVilkårsbehandleBarnValg } from '../../../App/typer/vilkårsbehandleBa
 import { JournalføringKlageStateRequest } from '../../../App/hooks/useJournalføringKlageState';
 
 export const validerJournalføringState = (
-    journalResponse: IJojurnalpostResponse,
+    journalResponse: IJournalpostResponse,
     journalpostState: JournalføringStateRequest,
     erAlleBehandlingerFerdigstilte: boolean
 ): string | undefined => {
@@ -46,7 +46,7 @@ export const validerJournalføringState = (
 };
 
 export const validerJournalføringKlageState = (
-    journalResponse: IJojurnalpostResponse,
+    journalResponse: IJournalpostResponse,
     journalpostState: JournalføringKlageStateRequest
 ): string | undefined => {
     if (!journalpostState.behandling) {
@@ -68,7 +68,7 @@ export const validerJournalføringKlageState = (
 };
 
 const erUstrukturertSøknadOgManglerDokumentasjonsType = (
-    journalResponse: IJojurnalpostResponse,
+    journalResponse: IJournalpostResponse,
     ustrukturertDokumentasjonType: UstrukturertDokumentasjonType | undefined
 ) =>
     !journalResponse.harStrukturertSøknad &&

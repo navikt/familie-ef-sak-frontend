@@ -1,4 +1,4 @@
-import { IJojurnalpostResponse } from '../../../App/typer/journalføring';
+import { IJournalpostResponse } from '../../../App/typer/journalføring';
 import {
     behandlingstemaTilStønadstype,
     Stønadstype,
@@ -9,7 +9,7 @@ import { Select } from '@navikt/ds-react';
 import styled from 'styled-components';
 
 export function VelgFagsakForIkkeSøknad(props: {
-    journalResponse: IJojurnalpostResponse;
+    journalResponse: IJournalpostResponse;
     hentFagsak: (personIdent: string, stønadstype: Stønadstype) => void;
 }) {
     const { journalResponse, hentFagsak } = props;

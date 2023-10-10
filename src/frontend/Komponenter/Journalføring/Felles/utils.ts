@@ -1,4 +1,4 @@
-import { DokumentTitler, IJojurnalpostResponse } from '../../../App/typer/journalføring';
+import { DokumentTitler, IJournalpostResponse } from '../../../App/typer/journalføring';
 import { Behandlingstema, behandlingstemaTilTekst } from '../../../App/typer/behandlingstema';
 import { Behandling, BehandlingResultat } from '../../../App/typer/fagsak';
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
@@ -20,7 +20,7 @@ export const lagJournalføringUrl = (journalpostId: string, oppgaveId: string | 
 };
 
 export const harTittelForAlleDokumenter = (
-    journalResponse: IJojurnalpostResponse,
+    journalResponse: IJournalpostResponse,
     dokumentTitler?: DokumentTitler
 ) =>
     journalResponse.journalpost.dokumenter
