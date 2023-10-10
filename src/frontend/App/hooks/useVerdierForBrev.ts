@@ -4,6 +4,7 @@ import { IBeløpsperiode, IBeregningsperiodeBarnetilsyn } from '../typer/vedtak'
 import { Behandling } from '../typer/fagsak';
 import { useInntektsendringAvslagFlettefelt } from './useInntektsendringAvslagFlettefelt';
 import { Ressurs, RessursStatus } from '../typer/ressurs';
+import { useHentNyesteGrunnbeløpOgAntallGrunnløpsperioderTilbakeITid } from './felles/useHentGrunbeløpsperioder';
 
 export enum EBehandlingFlettefelt {
     fomdatoInnvilgelseForstegangsbehandling = 'fomdatoInnvilgelseForstegangsbehandling',
@@ -61,6 +62,8 @@ export const useVerdierForBrev = (
     const [flettefeltStore, settFlettefeltStore] = useState<FlettefeltStore>({});
     const [valgfeltStore, settValgfeltStore] = useState<ValgfeltStore>({});
     const [delmalStore, settDelmalStore] = useState<DelmalStore>([]);
+    const { grunnbeløpsperioder, hentGrunnbeløpsperioderCallback } =
+        useHentNyesteGrunnbeløpOgAntallGrunnløpsperioderTilbakeITid(1);
 
     const leggTilNyeFlettefelt = (nyeFlettefelt: FlettefeltStore) => {
         settFlettefeltStore((prevState) => ({
@@ -75,7 +78,11 @@ export const useVerdierForBrev = (
         leggTilNyeFlettefelt
     );
 
-    const G = 118620; // Grunnbeløpet (G) per 1. mai 2023 er 118 620 kroner.
+    useEffect(() => {
+        hentGrunnbeløpsperioderCallback();
+    }, [hentGrunnbeløpsperioderCallback]);
+
+    const seksGangerGrunnbeløpTall = grunnbeløpsperioder[0]?.seksGangerGrunnbeløp;
 
     useEffect(() => {
         if (
@@ -88,7 +95,8 @@ export const useVerdierForBrev = (
                 beløpsperioder.data[beløpsperioder.data.length - 1].periode.tildato
             );
             const fraDato = formaterIsoDato(beløpsperioder.data[0].periode.fradato);
-            const SEKS_G = (6 * G).toLocaleString('nb-NO');
+            const seksGangerGrunnbeløp = seksGangerGrunnbeløpTall.toLocaleString('nb-NO');
+
             if (innholderBeløpsperioderForOvergangsstønad(beløpsperioder.data)) {
                 const inntektsgrunnlag =
                     beløpsperioder.data[beløpsperioder.data.length - 1].beregningsgrunnlag.inntekt;
@@ -123,12 +131,12 @@ export const useVerdierForBrev = (
                 [EBehandlingFlettefelt.fomdatoInnvilgelse]: fraDato,
                 [EBehandlingFlettefelt.fomdatoInnvilgelseBarnetilsyn]: fraDato,
                 [EBehandlingFlettefelt.tomdatoInnvilgelseBarnetilsyn]: tilDato,
-                [EBehandlingFlettefelt.seksGangerGrunnbelop]: SEKS_G,
+                [EBehandlingFlettefelt.seksGangerGrunnbelop]: seksGangerGrunnbeløp,
                 [EBehandlingFlettefelt.fomdatoRevurderingBT]: fraDato,
                 [EBehandlingFlettefelt.tomdatoRevurderingBT]: tilDato,
             });
         }
-    }, [beløpsperioder]);
+    }, [beløpsperioder, seksGangerGrunnbeløpTall]);
 
     useEffect(() => {
         settFlettefeltForAvslagMindreInntektsøkning();

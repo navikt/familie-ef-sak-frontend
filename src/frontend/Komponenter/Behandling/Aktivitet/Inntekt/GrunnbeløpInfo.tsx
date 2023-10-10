@@ -1,40 +1,38 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { formaterTallMedTusenSkille } from '../../../../App/utils/formatter';
 import TabellVisning from '../../Tabell/TabellVisning';
 import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
+import { useHentNyesteGrunnbeløpOgAntallGrunnløpsperioderTilbakeITid } from '../../../../App/hooks/felles/useHentGrunbeløpsperioder';
 
 export const GrunnbeløpInfo: FC = () => {
-    const grunnbeløpGanger6 = [
-        {
-            fra: '01.05.2023',
-            grunnbeløpÅr: 711720,
-            grunnbeløpMåned: 59310,
-        },
-        {
-            fra: '01.05.2022',
-            grunnbeløpÅr: 668862,
-            grunnbeløpMåned: 55739,
-        },
-    ];
+    const { grunnbeløpsperioder, hentGrunnbeløpsperioderCallback } =
+        useHentNyesteGrunnbeløpOgAntallGrunnløpsperioderTilbakeITid(4);
+
+    useEffect(() => {
+        hentGrunnbeløpsperioderCallback();
+    }, [hentGrunnbeløpsperioderCallback]);
+
     return (
         <div>
             <TabellVisning
                 ikon={VilkårInfoIkon.PENGESEKK}
                 tittel="6 ganger grunnbeløpet"
-                verdier={grunnbeløpGanger6}
+                verdier={grunnbeløpsperioder}
                 minimerKolonnebredde={true}
                 kolonner={[
                     {
                         overskrift: 'Fra',
-                        tekstVerdi: (d) => d.fra,
+                        tekstVerdi: (d) => d.periode.fom,
                     },
                     {
                         overskrift: '6G  (år)',
-                        tekstVerdi: (d) => `${formaterTallMedTusenSkille(d.grunnbeløpÅr)} kr`,
+                        tekstVerdi: (d) =>
+                            `${formaterTallMedTusenSkille(d.seksGangerGrunnbeløp)} kr`,
                     },
                     {
                         overskrift: '6G (måned)',
-                        tekstVerdi: (d) => `${formaterTallMedTusenSkille(d.grunnbeløpMåned)} kr`,
+                        tekstVerdi: (d) =>
+                            `${formaterTallMedTusenSkille(d.seksGangerGrunnbeløpPerMåned)} kr`,
                     },
                 ]}
             />
