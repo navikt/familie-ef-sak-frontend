@@ -6,7 +6,7 @@ import { useHentNyesteGrunnbeløpOgAntallGrunnløpsperioderTilbakeITid } from '.
 
 export const GrunnbeløpInfo: FC = () => {
     const { grunnbeløpsperioder, hentGrunnbeløpsperioderCallback } =
-        useHentNyesteGrunnbeløpOgAntallGrunnløpsperioderTilbakeITid(4);
+        useHentNyesteGrunnbeløpOgAntallGrunnløpsperioderTilbakeITid(2);
 
     useEffect(() => {
         hentGrunnbeløpsperioderCallback();
