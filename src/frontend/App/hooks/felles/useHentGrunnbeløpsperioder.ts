@@ -14,7 +14,7 @@ type GrunnbeløpData = {
 
 const tomGrunnbeløpsdata: GrunnbeløpData[] = [];
 
-export const useHentNyesteGrunnbeløpOgAntallGrunnløpsperioderTilbakeITid = (antall: number) => {
+export const useHentNyesteGrunnbeløpOgAntallGrunnbeløpsperioderTilbakeITid = (antall: number) => {
     const { axiosRequest } = useApp();
 
     const [grunnbeløpsperioder, settGrunnbeløpsperioder] =

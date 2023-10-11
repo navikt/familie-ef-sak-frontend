@@ -2,11 +2,11 @@ import React, { FC, useEffect } from 'react';
 import { formaterTallMedTusenSkille } from '../../../../App/utils/formatter';
 import TabellVisning from '../../Tabell/TabellVisning';
 import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
-import { useHentNyesteGrunnbeløpOgAntallGrunnløpsperioderTilbakeITid } from '../../../../App/hooks/felles/useHentGrunbeløpsperioder';
+import { useHentNyesteGrunnbeløpOgAntallGrunnbeløpsperioderTilbakeITid } from '../../../../App/hooks/felles/useHentGrunnbeløpsperioder';
 
 export const GrunnbeløpInfo: FC = () => {
     const { grunnbeløpsperioder, hentGrunnbeløpsperioderCallback } =
-        useHentNyesteGrunnbeløpOgAntallGrunnløpsperioderTilbakeITid(2);
+        useHentNyesteGrunnbeløpOgAntallGrunnbeløpsperioderTilbakeITid(2);
 
     useEffect(() => {
         hentGrunnbeløpsperioderCallback();

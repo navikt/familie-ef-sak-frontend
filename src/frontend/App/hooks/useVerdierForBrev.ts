@@ -4,7 +4,7 @@ import { IBeløpsperiode, IBeregningsperiodeBarnetilsyn } from '../typer/vedtak'
 import { Behandling } from '../typer/fagsak';
 import { useInntektsendringAvslagFlettefelt } from './useInntektsendringAvslagFlettefelt';
 import { Ressurs, RessursStatus } from '../typer/ressurs';
-import { useHentNyesteGrunnbeløpOgAntallGrunnløpsperioderTilbakeITid } from './felles/useHentGrunbeløpsperioder';
+import { useHentNyesteGrunnbeløpOgAntallGrunnbeløpsperioderTilbakeITid } from './felles/useHentGrunnbeløpsperioder';
 
 export enum EBehandlingFlettefelt {
     fomdatoInnvilgelseForstegangsbehandling = 'fomdatoInnvilgelseForstegangsbehandling',
@@ -63,7 +63,7 @@ export const useVerdierForBrev = (
     const [valgfeltStore, settValgfeltStore] = useState<ValgfeltStore>({});
     const [delmalStore, settDelmalStore] = useState<DelmalStore>([]);
     const { grunnbeløpsperioder, hentGrunnbeløpsperioderCallback } =
-        useHentNyesteGrunnbeløpOgAntallGrunnløpsperioderTilbakeITid(1);
+        useHentNyesteGrunnbeløpOgAntallGrunnbeløpsperioderTilbakeITid(1);
 
     const leggTilNyeFlettefelt = (nyeFlettefelt: FlettefeltStore) => {
         settFlettefeltStore((prevState) => ({
