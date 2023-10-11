@@ -76,16 +76,23 @@ const SimuleringTabellWrapper: React.FC<{
         return simuleringsresultat.feilutbetaling > 0;
     }
 
+    function positivSumAvManuellePosteringer(simuleringsresultat: ISimulering) {
+        return (
+            simuleringsresultat.sumManuellePosteringer !== null &&
+            simuleringsresultat.sumManuellePosteringer !== undefined &&
+            simuleringsresultat.sumManuellePosteringer > 0
+        );
+    }
+
     return (
         <SimuleringsContainer>
             <SimuleringOversikt simulering={simuleringsresultat} />
-            {simuleringsresultat.sumManuellePosteringer !== null &&
-                simuleringsresultat.sumManuellePosteringer == 0 && (
-                    <StyledAlert variant={'warning'}>
-                        Det finnes manuelle posteringer tilknyttet tidligere behandling.
-                        Simuleringsbildet kan derfor være ufullstendig.
-                    </StyledAlert>
-                )}
+            {positivSumAvManuellePosteringer(simuleringsresultat) && (
+                <StyledAlert variant={'warning'}>
+                    Det finnes manuelle posteringer tilknyttet tidligere behandling.
+                    Simuleringsbildet kan derfor være ufullstendig.
+                </StyledAlert>
+            )}
             <SimuleringTabell
                 perioder={simuleringTabellRader}
                 årsvelger={{ valgtÅr: år, settÅr: settÅr, muligeÅr: muligeÅr }}
