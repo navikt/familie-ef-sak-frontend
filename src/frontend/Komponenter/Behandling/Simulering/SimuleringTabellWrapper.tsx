@@ -17,6 +17,10 @@ import { Heading, Alert } from '@navikt/ds-react';
 
 const SimuleringsContainer = styled.div`
     margin: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: fit-content;
 `;
 
 const Seksjon = styled.div`
@@ -29,7 +33,6 @@ const TekstMedMargin = styled(BodyShortSmall)`
 
 const StyledAlert = styled(Alert)`
     max-width: 60rem;
-    margin: 1rem 0 0.25rem 0;
 `;
 
 const mapSimuleringstabellRader = (
@@ -76,8 +79,8 @@ const SimuleringTabellWrapper: React.FC<{
     return (
         <SimuleringsContainer>
             <SimuleringOversikt simulering={simuleringsresultat} />
-            {simuleringsresultat.sumManuellePosteringer != null &&
-                simuleringsresultat.sumManuellePosteringer > 0 && (
+            {simuleringsresultat.sumManuellePosteringer !== null &&
+                simuleringsresultat.sumManuellePosteringer == 0 && (
                     <StyledAlert variant={'warning'}>
                         Det finnes manuelle posteringer tilknyttet tidligere behandling.
                         Simuleringsbildet kan derfor være ufullstendig.
