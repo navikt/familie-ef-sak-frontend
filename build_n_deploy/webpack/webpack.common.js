@@ -47,6 +47,7 @@ const common = {
             template: path.join(process.cwd(), 'src/frontend/index.html'),
             inject: 'body',
             alwaysWriteToDisk: true,
+            favicon: path.join(process.cwd(), '/src/frontend/favicon.ico'),
         }),
         new ForkTsCheckerWebpackPlugin({
             async: true,
