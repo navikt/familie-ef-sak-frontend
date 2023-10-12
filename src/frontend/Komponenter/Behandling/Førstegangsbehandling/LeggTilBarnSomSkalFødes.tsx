@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
-import LeggtilMedSirkel from '../../Felles/Ikoner/LeggtilMedSirkel';
-import SlettSøppelkasse from '../../Felles/Ikoner/SlettSøppelkasse';
-import { BarnSomSkalFødes } from '../../App/hooks/useJournalføringState';
+import LeggtilMedSirkel from '../../../Felles/Ikoner/LeggtilMedSirkel';
+import SlettSøppelkasse from '../../../Felles/Ikoner/SlettSøppelkasse';
+import { BarnSomSkalFødes } from '../../../App/hooks/useJournalføringState';
 import { Button, Heading } from '@navikt/ds-react';
 import styled from 'styled-components';
 import { ABlue300 } from '@navikt/ds-tokens/dist/tokens';
 import { v4 as uuidv4 } from 'uuid';
-import { erGyldigDato } from '../../App/utils/dato';
-import { Datovelger } from '../../Felles/Datovelger/Datovelger';
+import { erGyldigDato } from '../../../App/utils/dato';
+import { Datovelger } from '../../../Felles/Datovelger/Datovelger';
 
 const Tittel = styled(Heading)`
     color: ${ABlue300};

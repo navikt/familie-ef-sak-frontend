@@ -1,18 +1,18 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { NyeBarnSidenForrigeBehandling } from '../../App/typer/revurderingstype';
+import { NyeBarnSidenForrigeBehandling } from '../../../App/typer/revurderingstype';
 import {
     byggTomRessurs,
     Ressurs,
     RessursFeilet,
     RessursStatus,
     RessursSuksess,
-} from '../../App/typer/ressurs';
-import { useApp } from '../../App/context/AppContext';
-import { EVilkårsbehandleBarnValg } from '../../App/typer/vilkårsbehandleBarnValg';
-import DataViewer from '../../Felles/DataViewer/DataViewer';
-import { NyeBarn } from '../../Felles/NyeBarn/NyeBarn';
-import { Fagsak } from '../../App/typer/fagsak';
-import { alleBehandlingerErFerdigstiltEllerSattPåVent } from '../Personoversikt/utils';
+} from '../../../App/typer/ressurs';
+import { useApp } from '../../../App/context/AppContext';
+import { EVilkårsbehandleBarnValg } from '../../../App/typer/vilkårsbehandleBarnValg';
+import DataViewer from '../../../Felles/DataViewer/DataViewer';
+import { NyeBarn } from '../../../Felles/NyeBarn/NyeBarn';
+import { Fagsak } from '../../../App/typer/fagsak';
+import { alleBehandlingerErFerdigstiltEllerSattPåVent } from '../../Personoversikt/utils';
 
 const harBehandlingOgAlleErFerdigstilteEllerSattPåVent = (fagsak: Fagsak) =>
     fagsak.behandlinger.length > 0 && alleBehandlingerErFerdigstiltEllerSattPåVent(fagsak);

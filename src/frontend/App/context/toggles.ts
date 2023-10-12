@@ -12,9 +12,11 @@ export enum ToggleName {
     visIkkePubliserteBrevmaler = 'familie.ef.sak.frontend-vis-ikke-publiserte-brevmaler',
     visAutomatiskUtfylleVilkår = 'familie.ef.sak.frontend-automatisk-utfylle-vilkar',
 
+    // Release-toggles
     // Midlertidige toggles - kan fjernes etterhvert
     visSatsendring = 'familie.ef.sak.frontend-vis-satsendring',
     visInntektPersonoversikt = 'familie.ef.sak.frontend.vis-inntekt-personoversikt',
+    visNyJournalføring = 'familie.ef.sak-ny-journalforing',
 
     // Test toggle som kan fjernes etterhvert
     visKAVedtakAlternativ = 'familie.ef.sak.frontend.vis-ka-uten-brev',

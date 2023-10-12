@@ -1,8 +1,8 @@
 import React from 'react';
-import { KopierbartNullableFødselsnummer } from '../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
+import { KopierbartNullableFødselsnummer } from '../../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
 import styled from 'styled-components';
 import { Heading } from '@navikt/ds-react';
-import { BodyShortSmall } from '../../Felles/Visningskomponenter/Tekster';
+import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 
 interface BrukerinfoProps {
     navn: string;

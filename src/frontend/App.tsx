@@ -9,7 +9,7 @@ import { TogglesProvider } from './App/context/TogglesContext';
 import { HeaderMedSøk } from './Felles/HeaderMedSøk/HeaderMedSøk';
 import { BehandlingContainer } from './Komponenter/Behandling/BehandlingContainer';
 import { OppgavebenkApp } from './Komponenter/Oppgavebenk/OppgavebenkApp';
-import { JournalføringApp } from './Komponenter/Journalføring/JournalføringApp';
+import { JournalføringApp } from './Komponenter/Journalføring/Standard/JournalføringApp';
 import Personoversikt from './Komponenter/Personoversikt/Personoversikt';
 import EksternRedirectContainer from './Komponenter/EksternRedirect/EksternRedirectContainer';
 import UttrekkArbeidssøker from './Komponenter/Uttrekk/UttrekkArbeidssøker';
@@ -20,7 +20,7 @@ import { AdminApp } from './Komponenter/Admin/AdminApp';
 import ScrollToTop from './Felles/ScrollToTop/ScrollToTop';
 import styled from 'styled-components';
 import { ModalWrapper } from './Felles/Modal/ModalWrapper';
-import { JournalføringKlageApp } from './Komponenter/Journalføring/JournalføringKlageApp';
+import { JournalføringKlageApp } from './Komponenter/Journalføring/Klage/JournalføringKlageApp';
 import VelgPersonOgStønadstype from './Komponenter/Behandling/Førstegangsbehandling/VelgPersonOgStønadstype';
 import OpprettFørstegangsbehandling from './Komponenter/Behandling/Førstegangsbehandling/OpprettFørstegangsbehandling';
 import {
