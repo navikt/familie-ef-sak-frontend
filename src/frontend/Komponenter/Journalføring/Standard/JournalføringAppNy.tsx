@@ -23,6 +23,7 @@ import JournalføringWrapper, {
 } from '../Felles/JournalføringWrapper';
 import JournalføringPdfVisning from '../Felles/JournalføringPdfVisning';
 import JournalpostPanel from './JournalpostPanel';
+import Dokumenter from './Dokumenter';
 
 const InnerContainer = styled.div`
     display: flex;
@@ -83,6 +84,16 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
                             Journalføring
                         </Tittel>
                         <JournalpostPanel journalpost={journalResponse.journalpost} />
+                    </section>
+                    <section>
+                        <Tittel size={'small'} level={'2'}>
+                            Dokumenter
+                        </Tittel>
+                        <Dokumenter
+                            journalpost={journalResponse.journalpost}
+                            hentDokument={hentDokumentResponse.hentDokument}
+                            settDokumentTitler={journalpostState.settDokumentTitler}
+                        />
                     </section>
                 </InnerContainer>
             </Venstrekolonne>
