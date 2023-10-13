@@ -24,6 +24,8 @@ import JournalføringWrapper, {
 import JournalføringPdfVisning from '../Felles/JournalføringPdfVisning';
 import JournalpostPanel from './JournalpostPanel';
 import Dokumenter from './Dokumenter';
+import BrukerPanel from './BrukerPanel';
+import AvsenderPanel from './AvsenderPanel';
 
 const InnerContainer = styled.div`
     display: flex;
@@ -94,6 +96,18 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
                             hentDokument={hentDokumentResponse.hentDokument}
                             settDokumentTitler={journalpostState.settDokumentTitler}
                         />
+                    </section>
+                    <section>
+                        <Tittel size={'small'} level={'2'}>
+                            Bruker
+                        </Tittel>
+                        <BrukerPanel journalpostResponse={journalResponse} />
+                    </section>
+                    <section>
+                        <Tittel size={'small'} level={'2'}>
+                            Avsender
+                        </Tittel>
+                        <AvsenderPanel journalpostResponse={journalResponse} />
                     </section>
                 </InnerContainer>
             </Venstrekolonne>
