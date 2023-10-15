@@ -93,7 +93,7 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "@axe-core/react": "4.7.3",
+    "@axe-core/react": "4.8.1",
     "@babel/core": "^7.22.20",
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@babel/preset-env": "^7.22.20",
