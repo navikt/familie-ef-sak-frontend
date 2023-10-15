@@ -7849,18 +7849,10 @@ slice-ansi@^5.0.0:
     ansi-styles "^6.0.0"
     is-fullwidth-code-point "^4.0.0"
 
-snyk@^1.1142.0:
-  version "1.1196.0"
-  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.1196.0.tgz#7bf7b5c44d800bf4b32f039baf07ae34def7d844"
-  integrity sha512-zrsIU9eDPqusrZ/zMjlOgubWFsU3PV/HGmSDvULNoMCxpt3ZR45ANljQXNZFCbT/jjVDfTuxos/YL9RnjBXPdg==
-  dependencies:
-    "@sentry/node" "^7.36.0"
-    global-agent "^3.0.0"
-
-snyk@^1.1221.0:
-  version "1.1221.0"
-  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.1221.0.tgz#2eda292b4b6b3d9d175fde660a4f365f740f02b8"
-  integrity sha512-qomgcW9VR6hNMa7gB4XW2Lo6MTbYj141FMcqVLarq0d9VVPJhxuxCJyqp+IXLGHKVE9cAdSXWYkrGZ34VxX0Rw==
+snyk@^1.1142.0, snyk@^1.1234.0:
+  version "1.1234.0"
+  resolved "https://registry.yarnpkg.com/snyk/-/snyk-1.1234.0.tgz#faed198c2ee2be9723b3d791e4f2c5046e54d083"
+  integrity sha512-L1OwTF+2lPDnAfxnc7dmmoBE11Qf++0Np7imSK5zrVoMqchKtdmmweAuWe5q98lbBuekpET/ioaERQraef8jYw==
   dependencies:
     "@sentry/node" "^7.36.0"
     global-agent "^3.0.0"
