@@ -98,3 +98,26 @@ export const dokumentTitlerMultiSelect: ISelectOption[] = dokumentTitler.map((ti
 export const mapDokumentTittel = (tittel: string) => {
     return { value: tittel, label: tittel };
 };
+
+export enum Journalføringsårsak {
+    PAPIRSØKNAD = 'PAPIRSØKNAD',
+    ETTERSENDING = 'ETTERSENDING',
+    KLAGE = 'KLAGE',
+    DIGITAL_SØKNAD = 'DIGITAL_SØKNAD',
+    IKKE_VALGT = 'IKKE_VALGT',
+}
+
+export const journalføringsårsakTilTekst: Record<Journalføringsårsak, string> = {
+    PAPIRSØKNAD: 'Papirsøknad',
+    ETTERSENDING: 'Ettersending',
+    KLAGE: 'Klage',
+    DIGITAL_SØKNAD: 'Digital søknad',
+    IKKE_VALGT: 'Ikke valgt',
+};
+
+export const valgbareJournalføringsårsaker = [
+    Journalføringsårsak.IKKE_VALGT,
+    Journalføringsårsak.ETTERSENDING,
+    Journalføringsårsak.KLAGE,
+    Journalføringsårsak.PAPIRSØKNAD,
+];
