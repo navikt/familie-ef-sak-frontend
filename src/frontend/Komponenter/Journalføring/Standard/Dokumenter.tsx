@@ -22,9 +22,8 @@ const Dokumenter: React.FC<Props> = ({ journalpost, hentDokument, settDokumentTi
     return (
         <Liste>
             {journalpost.dokumenter.map((dokument) => (
-                <li>
+                <li key={dokument.dokumentInfoId}>
                     <DokumentPanel
-                        key={dokument.dokumentInfoId}
                         dokument={dokument}
                         journalpost={journalpost}
                         hentDokument={hentDokument}

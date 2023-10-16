@@ -1,10 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import { BodyShort, Button, Label } from '@navikt/ds-react';
-import { ExternalLinkIcon, FileTextFillIcon, FileTextIcon } from '@navikt/aksel-icons';
+import { BodyShort, Label } from '@navikt/ds-react';
+import { FileTextFillIcon, FileTextIcon } from '@navikt/aksel-icons';
 import { DokumentInfo } from '../../../App/typer/journalføring';
 import { ABlue500 } from '@navikt/ds-tokens/dist/tokens';
-import { åpneFilIEgenTab } from '../../../App/utils/utils';
 
 const Container = styled.div`
     display: flex;
@@ -18,11 +17,6 @@ const DokumentTitler = styled.div`
     justify-content: center;
 `;
 
-const Tittel = styled.div`
-    display: flex;
-    align-items: center;
-`;
-
 const IkonContainer = styled.div`
     color: ${ABlue500};
 `;
@@ -30,16 +24,10 @@ const IkonContainer = styled.div`
 interface Props {
     dokument: DokumentInfo;
     dokumentTittel: string;
-    journalpostId: string;
     valgt: boolean;
 }
 
-export const DokumentPanelHeader: React.FC<Props> = ({
-    dokument,
-    dokumentTittel,
-    journalpostId,
-    valgt,
-}) => {
+export const DokumentPanelHeader: React.FC<Props> = ({ dokument, dokumentTittel, valgt }) => {
     return (
         <Container>
             <IkonContainer>
@@ -50,18 +38,7 @@ export const DokumentPanelHeader: React.FC<Props> = ({
                 )}
             </IkonContainer>
             <DokumentTitler>
-                <Tittel>
-                    <Label as={'p'}>{dokumentTittel}</Label>
-                    <Button
-                        type={'button'}
-                        variant={'tertiary'}
-                        size={'small'}
-                        icon={<ExternalLinkIcon aria-hidden />}
-                        onClick={() =>
-                            åpneFilIEgenTab(journalpostId, dokument.dokumentInfoId, dokumentTittel)
-                        }
-                    />
-                </Tittel>
+                <Label as={'p'}>{dokumentTittel}</Label>
                 {dokument.logiskeVedlegg.map((it) => (
                     <BodyShort key={it.logiskVedleggId}>{it.tittel}</BodyShort>
                 ))}
