@@ -59,6 +59,7 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
     const journalpostId = journalResponse.journalpost.journalpostId;
 
     const journalpostState: JournalføringStateRequest = useJournalføringState(
+        journalResponse,
         oppgaveId,
         journalpostId
     );

@@ -14,7 +14,7 @@ import {
     lagreTilLocalStorage,
     oppgaveRequestKey,
 } from '../../Oppgavebenk/oppgavefilterStorage';
-import { IJojurnalpostResponse, journalstatusTilTekst } from '../../../App/typer/journalføring';
+import { IJournalpostResponse, journalstatusTilTekst } from '../../../App/typer/journalføring';
 import { formaterIsoDatoTid } from '../../../App/utils/formatter';
 import { UtledEllerVelgFagsak } from '../Felles/UtledEllerVelgFagsak';
 import { AlertError, AlertWarning } from '../../../Felles/Visningskomponenter/Alerts';
@@ -73,7 +73,7 @@ export const JournalføringAdmin: React.FC = () => {
         navigate('/oppgavebenk');
     };
 
-    const sendInn = (journalpostResponse: IJojurnalpostResponse, fagsakId: string) => {
+    const sendInn = (journalpostResponse: IJournalpostResponse, fagsakId: string) => {
         settFeilmelding('');
         if (!nyBehandlingstype) {
             settFeilmelding('Har ikke fått satt riktig behandlingstype');

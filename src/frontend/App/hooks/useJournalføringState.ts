@@ -4,7 +4,9 @@ import { useApp } from '../context/AppContext';
 import { Behandlingstype } from '../typer/behandlingstype';
 import { UstrukturertDokumentasjonType } from '../../Komponenter/Journalføring/Standard/VelgUstrukturertDokumentasjonType';
 import { EVilkårsbehandleBarnValg } from '../typer/vilkårsbehandleBarnValg';
-import { DokumentTitler } from '../typer/journalføring';
+import { DokumentTitler, IJournalpostResponse } from '../typer/journalføring';
+import { Journalføringsårsak } from '../../Komponenter/Journalføring/Felles/utils';
+import { behandlingstemaTilStønadstype, Stønadstype } from '../typer/behandlingstema';
 
 export interface BehandlingRequest {
     behandlingsId?: string;
@@ -45,12 +47,27 @@ export interface JournalføringStateRequest {
     settUstrukturertDokumentasjonType: Dispatch<SetStateAction<UstrukturertDokumentasjonType>>;
     vilkårsbehandleNyeBarn: EVilkårsbehandleBarnValg;
     settVilkårsbehandleNyeBarn: Dispatch<SetStateAction<EVilkårsbehandleBarnValg>>;
+    journalføringsårsak: Journalføringsårsak;
+    settJournalføringsårsak: Dispatch<SetStateAction<Journalføringsårsak>>;
+    stønadstype: Stønadstype | undefined;
+    settStønadstype: Dispatch<SetStateAction<Stønadstype | undefined>>;
 }
 
 export const useJournalføringState = (
+    journalResponse: IJournalpostResponse,
     oppgaveId: string,
     journalpostId: string
 ): JournalføringStateRequest => {
+    const utledJournalføringsårsak = () => {
+        if (journalResponse.harStrukturertSøknad) {
+            return Journalføringsårsak.DIGITAL_SØKNAD;
+        } else if (journalResponse.journalpost.tittel.includes('Ettersending')) {
+            return Journalføringsårsak.ETTERSENDING;
+        } else {
+            return Journalføringsårsak.IKKE_VALGT;
+        }
+    };
+
     const { axiosRequest, innloggetSaksbehandler } = useApp();
     const [fagsakId, settFagsakId] = useState<string>('');
     const [behandling, settBehandling] = useState<BehandlingRequest>();
@@ -62,6 +79,12 @@ export const useJournalføringState = (
         useState<UstrukturertDokumentasjonType>(UstrukturertDokumentasjonType.IKKE_VALGT);
     const [vilkårsbehandleNyeBarn, settVilkårsbehandleNyeBarn] = useState<EVilkårsbehandleBarnValg>(
         EVilkårsbehandleBarnValg.IKKE_VALGT
+    );
+    const [journalføringsårsak, settJournalføringsårsak] = useState<Journalføringsårsak>(
+        utledJournalføringsårsak()
+    );
+    const [stønadstype, settStønadstype] = useState<Stønadstype | undefined>(
+        behandlingstemaTilStønadstype(journalResponse.journalpost.behandlingstema)
     );
 
     useEffect(() => {
@@ -113,5 +136,9 @@ export const useJournalføringState = (
         settUstrukturertDokumentasjonType,
         vilkårsbehandleNyeBarn,
         settVilkårsbehandleNyeBarn,
+        journalføringsårsak,
+        settJournalføringsårsak,
+        stønadstype,
+        settStønadstype,
     };
 };

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { IJojurnalpostResponse } from '../../../App/typer/journalføring';
+import { IJournalpostResponse } from '../../../App/typer/journalføring';
 import {
     behandlingstemaTilStønadstype,
     Stønadstype,
@@ -16,7 +16,7 @@ const DivMedBottomPadding = styled.div`
 `;
 
 export const UtledEllerVelgFagsak: React.FC<{
-    journalResponse: IJojurnalpostResponse;
+    journalResponse: IJournalpostResponse;
     hentFagsak: (personIdent: string, stønadstype: Stønadstype) => void;
 }> = ({ journalResponse, hentFagsak }) => {
     {
