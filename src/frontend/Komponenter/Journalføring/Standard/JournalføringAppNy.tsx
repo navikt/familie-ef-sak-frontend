@@ -45,6 +45,7 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
     const journalpostId = journalResponse.journalpost.journalpostId;
 
     const journalpostState: JournalføringStateRequest = useJournalføringState(
+        journalResponse,
         oppgaveId,
         journalpostId
     );
@@ -82,7 +83,10 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
                         <Tittel size={'medium'} level={'1'}>
                             Journalføring
                         </Tittel>
-                        <JournalpostPanel journalpost={journalResponse.journalpost} />
+                        <JournalpostPanel
+                            journalpost={journalResponse.journalpost}
+                            journalpostState={journalpostState}
+                        />
                     </section>
                 </InnerContainer>
             </Venstrekolonne>
