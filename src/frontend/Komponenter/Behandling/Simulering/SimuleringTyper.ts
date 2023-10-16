@@ -8,6 +8,7 @@ export interface ISimulering {
     forfallsdatoNestePeriode: string;
     tidSimuleringHentet: string;
     tomSisteUtbetaling: string;
+    sumManuellePosteringer?: number;
 }
 
 export interface ISimuleringPeriode {
