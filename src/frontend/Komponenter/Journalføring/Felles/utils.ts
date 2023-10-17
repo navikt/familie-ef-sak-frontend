@@ -1,4 +1,4 @@
-import { DokumentTitler, IJojurnalpostResponse } from '../../../App/typer/journalføring';
+import { DokumentTitler, IJournalpostResponse } from '../../../App/typer/journalføring';
 import { Behandlingstema, behandlingstemaTilTekst } from '../../../App/typer/behandlingstema';
 import { Behandling, BehandlingResultat } from '../../../App/typer/fagsak';
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
@@ -20,7 +20,7 @@ export const lagJournalføringUrl = (journalpostId: string, oppgaveId: string | 
 };
 
 export const harTittelForAlleDokumenter = (
-    journalResponse: IJojurnalpostResponse,
+    journalResponse: IJournalpostResponse,
     dokumentTitler?: DokumentTitler
 ) =>
     journalResponse.journalpost.dokumenter
@@ -104,3 +104,26 @@ export const harValgtNyBehandling = (behandling: BehandlingRequest | undefined):
 export const harValgtNyKlageBehandling = (
     behandling: BehandlingKlageRequest | undefined
 ): boolean => behandling !== undefined && behandling.behandlingId === undefined;
+
+export enum Journalføringsårsak {
+    PAPIRSØKNAD = 'PAPIRSØKNAD',
+    ETTERSENDING = 'ETTERSENDING',
+    KLAGE = 'KLAGE',
+    DIGITAL_SØKNAD = 'DIGITAL_SØKNAD',
+    IKKE_VALGT = 'IKKE_VALGT',
+}
+
+export const journalføringsårsakTilTekst: Record<Journalføringsårsak, string> = {
+    PAPIRSØKNAD: 'Papirsøknad',
+    ETTERSENDING: 'Ettersending',
+    KLAGE: 'Klage',
+    DIGITAL_SØKNAD: 'Digital søknad',
+    IKKE_VALGT: 'Ikke valgt',
+};
+
+export const valgbareJournalføringsårsaker = [
+    Journalføringsårsak.IKKE_VALGT,
+    Journalføringsårsak.ETTERSENDING,
+    Journalføringsårsak.KLAGE,
+    Journalføringsårsak.PAPIRSØKNAD,
+];
