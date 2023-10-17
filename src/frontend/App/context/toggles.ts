@@ -7,7 +7,7 @@ export enum ToggleName {
     visValgmulighetForKorrigering = 'familie.ef.sak.behandling-korrigering',
     opprettBehandlingForFerdigstiltJournalpost = 'familie.ef.sak.opprett-behandling-for-ferdigstilt-journalpost',
     kanMigrereBarnetilsyn = 'familie.ef.sak.migrering.barnetilsyn',
-    papirsoknadTerminbarnRevurdering = 'familie.ef.sak-papirsoknad-og-terminbarn-paa-revurdering',
+    papirsoknadTerminbarnRevurdering = 'familie.ef.sak.papirsoknad-og-terminbarn-paa-revurdering',
 
     // Miljø-toggles - la stå
     visIkkePubliserteBrevmaler = 'familie.ef.sak.frontend-vis-ikke-publiserte-brevmaler',
