@@ -4,6 +4,7 @@ import { IBeløpsperiode, IBeregningsperiodeBarnetilsyn } from '../typer/vedtak'
 import { Behandling } from '../typer/fagsak';
 import { useInntektsendringAvslagFlettefelt } from './useInntektsendringAvslagFlettefelt';
 import { Ressurs, RessursStatus } from '../typer/ressurs';
+import { useHentNyesteGrunnbeløpOgAntallGrunnbeløpsperioderTilbakeITid } from './felles/useHentGrunnbeløpsperioder';
 
 export enum EBehandlingFlettefelt {
     fomdatoInnvilgelseForstegangsbehandling = 'fomdatoInnvilgelseForstegangsbehandling',
@@ -12,6 +13,7 @@ export enum EBehandlingFlettefelt {
     tomdatoInnvilgelse = 'tomdatoInnvilgelse',
     fomdatoInnvilgelseBarnetilsyn = 'fomdatoInnvilgelseBarnetilsyn',
     tomdatoInnvilgelseBarnetilsyn = 'tomdatoInnvilgelseBarnetilsyn',
+    seksGangerGrunnbelop = 'seksGangerGrunnbelop',
     fomdatoRevurderingBT = 'fomdatoRevurderingBT',
     tomdatoRevurderingBT = 'tomdatoRevurderingBT',
     belopInntektPlussTiProsentv2 = 'belopInntektPlussTiProsentv2', // Innvilgelse 10% økning
@@ -60,6 +62,8 @@ export const useVerdierForBrev = (
     const [flettefeltStore, settFlettefeltStore] = useState<FlettefeltStore>({});
     const [valgfeltStore, settValgfeltStore] = useState<ValgfeltStore>({});
     const [delmalStore, settDelmalStore] = useState<DelmalStore>([]);
+    const { grunnbeløpsperioder, hentGrunnbeløpsperioderCallback } =
+        useHentNyesteGrunnbeløpOgAntallGrunnbeløpsperioderTilbakeITid(1);
 
     const leggTilNyeFlettefelt = (nyeFlettefelt: FlettefeltStore) => {
         settFlettefeltStore((prevState) => ({
@@ -75,6 +79,12 @@ export const useVerdierForBrev = (
     );
 
     useEffect(() => {
+        hentGrunnbeløpsperioderCallback();
+    }, [hentGrunnbeløpsperioderCallback]);
+
+    const seksGangerGrunnbeløpTall = grunnbeløpsperioder[0]?.seksGangerGrunnbeløp;
+
+    useEffect(() => {
         if (
             beløpsperioder &&
             beløpsperioder.status === RessursStatus.SUKSESS &&
@@ -85,6 +95,7 @@ export const useVerdierForBrev = (
                 beløpsperioder.data[beløpsperioder.data.length - 1].periode.tildato
             );
             const fraDato = formaterIsoDato(beløpsperioder.data[0].periode.fradato);
+            const seksGangerGrunnbeløp = seksGangerGrunnbeløpTall?.toLocaleString('nb-NO');
 
             if (innholderBeløpsperioderForOvergangsstønad(beløpsperioder.data)) {
                 const inntektsgrunnlag =
@@ -120,11 +131,12 @@ export const useVerdierForBrev = (
                 [EBehandlingFlettefelt.fomdatoInnvilgelse]: fraDato,
                 [EBehandlingFlettefelt.fomdatoInnvilgelseBarnetilsyn]: fraDato,
                 [EBehandlingFlettefelt.tomdatoInnvilgelseBarnetilsyn]: tilDato,
+                [EBehandlingFlettefelt.seksGangerGrunnbelop]: seksGangerGrunnbeløp,
                 [EBehandlingFlettefelt.fomdatoRevurderingBT]: fraDato,
                 [EBehandlingFlettefelt.tomdatoRevurderingBT]: tilDato,
             });
         }
-    }, [beløpsperioder]);
+    }, [beløpsperioder, seksGangerGrunnbeløpTall]);
 
     useEffect(() => {
         settFlettefeltForAvslagMindreInntektsøkning();
