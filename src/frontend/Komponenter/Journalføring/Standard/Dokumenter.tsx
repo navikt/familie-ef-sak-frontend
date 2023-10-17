@@ -1,7 +1,8 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { IJournalpost } from '../../../App/typer/journalføring';
 import DokumentPanel from './DokumentPanel';
+import { JournalføringStateRequest } from '../../../App/hooks/useJournalføringState';
 
 const Liste = styled.ul`
     display: flex;
@@ -14,20 +15,20 @@ const Liste = styled.ul`
 
 interface Props {
     journalpost: IJournalpost;
+    journalpostState: JournalføringStateRequest;
     hentDokument: (dokumentInfoId: string) => void;
-    settDokumentTitler: Dispatch<SetStateAction<Record<string, string> | undefined>>;
 }
 
-const Dokumenter: React.FC<Props> = ({ journalpost, hentDokument, settDokumentTitler }) => {
+const Dokumenter: React.FC<Props> = ({ journalpost, journalpostState, hentDokument }) => {
     return (
         <Liste>
             {journalpost.dokumenter.map((dokument) => (
                 <li key={dokument.dokumentInfoId}>
                     <DokumentPanel
                         dokument={dokument}
-                        journalpost={journalpost}
                         hentDokument={hentDokument}
-                        settDokumentTitler={settDokumentTitler}
+                        journalpost={journalpost}
+                        journalpostState={journalpostState}
                     />
                 </li>
             ))}

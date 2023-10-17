@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React from 'react';
 import { Button, ExpansionCard } from '@navikt/ds-react';
 import styled from 'styled-components';
 import { DokumentInfo, IJournalpost } from '../../../App/typer/journalføring';
@@ -7,6 +7,7 @@ import { FamilieReactSelect, ISelectOption } from '@navikt/familie-form-elements
 import { dokumentTitlerMultiSelect, mapDokumentTittel } from '../Felles/utils';
 import { ExternalLinkIcon } from '@navikt/aksel-icons';
 import { åpneFilIEgenTab } from '../../../App/utils/utils';
+import { JournalføringStateRequest } from '../../../App/hooks/useJournalføringState';
 
 const ExpansionCardHeader = styled(ExpansionCard.Header)`
     padding-bottom: 0.35rem;
@@ -23,29 +24,31 @@ const EksternLenkeKnapp = styled(Button)`
     width: fit-content;
 `;
 
-interface Props {
-    journalpost: IJournalpost;
-    dokument: DokumentInfo;
-    hentDokument: (dokumentInfoId: string) => void;
-    settDokumentTitler: Dispatch<SetStateAction<Record<string, string> | undefined>>;
-}
-
 const MultiSelect = styled(FamilieReactSelect)`
     margin-bottom: -1rem;
 `;
 
-const utledDokumentTittel = (
-    gammelTittel: string | undefined,
-    nyTittel: string | undefined
-): string => nyTittel || gammelTittel || 'ukjent';
+interface Props {
+    journalpost: IJournalpost;
+    journalpostState: JournalføringStateRequest;
+    dokument: DokumentInfo;
+    hentDokument: (dokumentInfoId: string) => void;
+}
 
-const DokumentPanel: React.FC<Props> = ({ dokument, journalpost }) => {
-    const [nyDokumentTittel, settNyDokumentTittel] = useState<string | undefined>(undefined);
-    const [nyAnnetInnholdsliste, settNyAnnetInnholdsliste] = useState<string[]>([]);
+const DokumentPanel: React.FC<Props> = ({ journalpost, journalpostState, dokument }) => {
+    const endreDokumentNavn = (dokumentInfoId: string, nyttDokumentNavn: string) => {
+        settDokumentTitler((prevState: Record<string, string> | undefined) => ({
+            ...prevState,
+            [dokumentInfoId]: nyttDokumentNavn,
+        }));
+    };
+
+    const { dokumentTitler, settDokumentTitler } = journalpostState;
 
     const erDokumentPanelValgt = dokument.dokumentInfoId === dokument.dokumentInfoId;
-    const defaultTittelValue = dokument.tittel ? mapDokumentTittel(dokument.tittel) : undefined;
-    const dokumentTittel = utledDokumentTittel(dokument.tittel, nyDokumentTittel);
+    const dokumentTittel =
+        (dokumentTitler && dokumentTitler[dokument.dokumentInfoId]) || dokument.tittel || 'Ukjent';
+    const defaultTittelValue = dokumentTittel ? mapDokumentTittel(dokumentTittel) : undefined;
 
     return (
         <ExpansionCard id={dokument.dokumentInfoId} size="small" aria-label="journalpost">
@@ -69,8 +72,9 @@ const DokumentPanel: React.FC<Props> = ({ dokument, journalpost }) => {
                         defaultValue={defaultTittelValue}
                         feil={null}
                         onChange={(value: unknown) => {
-                            settNyDokumentTittel(
-                                value ? (value as ISelectOption).value : undefined
+                            endreDokumentNavn(
+                                dokument.dokumentInfoId,
+                                value ? (value as ISelectOption).value : ''
                             );
                         }}
                     />
@@ -83,11 +87,7 @@ const DokumentPanel: React.FC<Props> = ({ dokument, journalpost }) => {
                         isDisabled={false}
                         defaultValue={undefined}
                         feil={null}
-                        onChange={(values: unknown) => {
-                            settNyAnnetInnholdsliste(
-                                (values as ISelectOption[]).map((value) => value.value)
-                            );
-                        }}
+                        onChange={(values: unknown) => {}}
                     />
                     <EksternLenkeKnapp
                         type={'button'}

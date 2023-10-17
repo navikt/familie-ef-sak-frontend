@@ -94,9 +94,9 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
                             Dokumenter
                         </Tittel>
                         <Dokumenter
-                            journalpost={journalResponse.journalpost}
                             hentDokument={hentDokumentResponse.hentDokument}
-                            settDokumentTitler={journalpostState.settDokumentTitler}
+                            journalpost={journalResponse.journalpost}
+                            journalpostState={journalpostState}
                         />
                     </section>
                 </InnerContainer>
