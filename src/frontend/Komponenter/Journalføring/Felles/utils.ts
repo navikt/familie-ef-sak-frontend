@@ -4,10 +4,11 @@ import { Behandling, BehandlingResultat } from '../../../App/typer/fagsak';
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
 import { BehandlingRequest } from '../../../App/hooks/useJournalføringState';
 import { BehandlingKlageRequest } from '../../../App/hooks/useJournalføringKlageState';
-import { ISelectOption } from '@navikt/familie-form-elements';
+import { ISelectOption, MultiValue, SingleValue } from '@navikt/familie-form-elements';
 
 export const JOURNALPOST_QUERY_STRING = 'journalpostId';
 export const OPPGAVEID_QUERY_STRING = 'oppgaveId';
+export type MultiSelectValue = { label: string; value: string };
 
 export const lagJournalføringKlageUrl = (
     journalpostId: string,
@@ -95,8 +96,25 @@ export const dokumentTitlerMultiSelect: ISelectOption[] = dokumentTitler.map((ti
     return { value: tittel, label: tittel };
 });
 
-export const mapDokumentTittel = (tittel: string) => {
+export const mapDokumentTittelTilMultiselectValue = (tittel: string) => {
     return { value: tittel, label: tittel };
+};
+
+export const mapLogiskeVedleggTilMultiselectValue = (logiskeVedlegg: string[]) => {
+    return logiskeVedlegg.map((vedlegg) => {
+        return { label: vedlegg, value: vedlegg };
+    });
+};
+
+export const mapMultiselectValueTilLogiskeVedlegg = (
+    values: MultiValue<MultiSelectValue> | SingleValue<MultiSelectValue>
+) => {
+    if ((values as MultiValue<MultiSelectValue>).length !== undefined) {
+        return (values as MultiValue<MultiSelectValue>).map((value) => value.value);
+    } else {
+        const value = values as SingleValue<MultiSelectValue>;
+        return [value === null ? '' : value.value];
+    }
 };
 
 export enum Journalføringsårsak {

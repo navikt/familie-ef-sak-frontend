@@ -4,7 +4,11 @@ import { useApp } from '../context/AppContext';
 import { Behandlingstype } from '../typer/behandlingstype';
 import { UstrukturertDokumentasjonType } from '../../Komponenter/Journalføring/Standard/VelgUstrukturertDokumentasjonType';
 import { EVilkårsbehandleBarnValg } from '../typer/vilkårsbehandleBarnValg';
-import { DokumentTitler, IJournalpostResponse } from '../typer/journalføring';
+import {
+    LogiskeVedleggPåDokument,
+    DokumentTitler,
+    IJournalpostResponse,
+} from '../typer/journalføring';
 import { Journalføringsårsak } from '../../Komponenter/Journalføring/Felles/utils';
 import { behandlingstemaTilStønadstype, Stønadstype } from '../typer/behandlingstema';
 
@@ -36,6 +40,8 @@ export interface JournalføringStateRequest {
     settBehandling: Dispatch<SetStateAction<BehandlingRequest | undefined>>;
     dokumentTitler?: DokumentTitler;
     settDokumentTitler: Dispatch<SetStateAction<DokumentTitler | undefined>>;
+    logiskeVedleggPåDokument?: LogiskeVedleggPåDokument;
+    settLogiskeVedleggPåDokument: Dispatch<SetStateAction<LogiskeVedleggPåDokument | undefined>>;
     innsending: Ressurs<string>;
     settInnsending: Dispatch<SetStateAction<Ressurs<string>>>;
     fullførJournalføring: () => void;
@@ -72,6 +78,8 @@ export const useJournalføringState = (
     const [fagsakId, settFagsakId] = useState<string>('');
     const [behandling, settBehandling] = useState<BehandlingRequest>();
     const [dokumentTitler, settDokumentTitler] = useState<DokumentTitler>();
+    const [logiskeVedleggPåDokument, settLogiskeVedleggPåDokument] =
+        useState<LogiskeVedleggPåDokument>();
     const [innsending, settInnsending] = useState<Ressurs<string>>(byggTomRessurs());
     const [visBekreftelsesModal, settVisBekreftelsesModal] = useState<boolean>(false);
     const [barnSomSkalFødes, settBarnSomSkalFødes] = useState<BarnSomSkalFødes[]>([]);
@@ -125,6 +133,8 @@ export const useJournalføringState = (
         settBehandling,
         dokumentTitler,
         settDokumentTitler,
+        logiskeVedleggPåDokument,
+        settLogiskeVedleggPåDokument,
         innsending,
         settInnsending,
         fullførJournalføring,
