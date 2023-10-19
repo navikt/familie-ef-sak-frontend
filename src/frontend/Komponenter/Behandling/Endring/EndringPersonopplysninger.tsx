@@ -67,7 +67,7 @@ const FeltEndring: React.FC<{ feltendring: Feltendring }> = ({ feltendring }) =>
 
 const AdresseEndring: React.FC = () => (
     <ul>
-        <li>Det finnes adresseendring på bruker.</li>
+        <li>Det finnes adresseendring på bruker</li>
     </ul>
 );
 
