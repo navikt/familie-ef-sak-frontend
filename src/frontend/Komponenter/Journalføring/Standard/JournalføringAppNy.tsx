@@ -6,7 +6,6 @@ import {
     JournalføringStateRequest,
     useJournalføringState,
 } from '../../../App/hooks/useJournalføringState';
-import { useHentDokument } from '../../../App/hooks/useHentDokument';
 import { useHentFagsak } from '../../../App/hooks/useHentFagsak';
 import { useApp } from '../../../App/context/AppContext';
 import {
@@ -44,14 +43,10 @@ export const JournalføringAppNy: React.FC = () => {
 const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journalResponse }) => {
     const { innloggetSaksbehandler } = useApp();
     const navigate = useNavigate();
-
-    const journalpostId = journalResponse.journalpost.journalpostId;
-
     const journalpostState: JournalføringStateRequest = useJournalføringState(
-        oppgaveId,
-        journalpostId
+        journalResponse,
+        oppgaveId
     );
-    const hentDokumentResponse = useHentDokument(journalResponse.journalpost);
 
     const { fagsak } = useHentFagsak();
 
@@ -85,7 +80,10 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
                         <Tittel size={'medium'} level={'1'}>
                             Journalføring
                         </Tittel>
-                        <JournalpostPanel journalpost={journalResponse.journalpost} />
+                        <JournalpostPanel
+                            journalpost={journalResponse.journalpost}
+                            journalpostState={journalpostState}
+                        />
                     </section>
                     <section>
                         <Tittel size={'small'} level={'2'}>
@@ -93,8 +91,7 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
                         </Tittel>
                         <Dokumenter
                             journalpost={journalResponse.journalpost}
-                            hentDokument={hentDokumentResponse.hentDokument}
-                            settDokumentTitler={journalpostState.settDokumentTitler}
+                            journalpostState={journalpostState}
                         />
                     </section>
                     <section>
@@ -112,7 +109,9 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
                 </InnerContainer>
             </Venstrekolonne>
             <Høyrekolonne>
-                <JournalføringPdfVisning hentDokumentResponse={hentDokumentResponse} />
+                <JournalføringPdfVisning
+                    hentDokumentResponse={journalpostState.hentDokumentResponse}
+                />
             </Høyrekolonne>
         </Kolonner>
     );

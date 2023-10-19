@@ -116,3 +116,4 @@ export interface BrukerInfo {
 }
 
 export type DokumentTitler = Record<string, string>;
+export type LogiskeVedleggPåDokument = Record<string, string[]>;

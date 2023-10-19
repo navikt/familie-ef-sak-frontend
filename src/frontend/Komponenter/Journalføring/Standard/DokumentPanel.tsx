@@ -1,10 +1,18 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
-import { ExpansionCard } from '@navikt/ds-react';
+import React from 'react';
+import { Button, ExpansionCard } from '@navikt/ds-react';
 import styled from 'styled-components';
 import { DokumentInfo, IJournalpost } from '../../../App/typer/journalføring';
 import { DokumentPanelHeader } from './DokumentPanelHeader';
 import { FamilieReactSelect, ISelectOption } from '@navikt/familie-form-elements';
-import { dokumentTitlerMultiSelect, mapDokumentTittel } from '../Felles/utils';
+import {
+    dokumentTitlerMultiSelect,
+    mapLogiskeVedleggTilMultiselectValue,
+    mapDokumentTittelTilMultiselectValue,
+    mapMultiselectValueTilLogiskeVedlegg,
+} from '../Felles/utils';
+import { ExternalLinkIcon } from '@navikt/aksel-icons';
+import { åpneFilIEgenTab } from '../../../App/utils/utils';
+import { JournalføringStateRequest } from '../../../App/hooks/useJournalføringState';
 
 const ExpansionCardHeader = styled(ExpansionCard.Header)`
     padding-bottom: 0.35rem;
@@ -17,38 +25,79 @@ const ExpansionCardContent = styled.div`
     padding-bottom: 1rem;
 `;
 
-interface Props {
-    journalpost: IJournalpost;
-    dokument: DokumentInfo;
-    hentDokument: (dokumentInfoId: string) => void;
-    settDokumentTitler: Dispatch<SetStateAction<Record<string, string> | undefined>>;
-}
+const EksternLenkeKnapp = styled(Button)`
+    width: fit-content;
+`;
 
 const MultiSelect = styled(FamilieReactSelect)`
     margin-bottom: -1rem;
 `;
 
-const utledDokumentTittel = (
-    gammelTittel: string | undefined,
-    nyTittel: string | undefined
-): string => nyTittel || gammelTittel || 'ukjent';
+interface Props {
+    journalpost: IJournalpost;
+    journalpostState: JournalføringStateRequest;
+    dokument: DokumentInfo;
+    hentDokument: (dokumentInfoId: string) => void;
+}
 
-const DokumentPanel: React.FC<Props> = ({ dokument, journalpost }) => {
-    const [nyDokumentTittel, settNyDokumentTittel] = useState<string | undefined>(undefined);
-    const [nyAnnetInnholdsliste, settNyAnnetInnholdsliste] = useState<string[]>([]);
+const DokumentPanel: React.FC<Props> = ({ journalpost, journalpostState, dokument }) => {
+    const {
+        dokumentTitler,
+        hentDokumentResponse,
+        logiskeVedleggPåDokument,
+        settDokumentTitler,
+        settLogiskeVedleggPåDokument,
+        settValgtDokumentPanel,
+        valgtDokumentPanel,
+    } = journalpostState;
 
-    const erDokumentPanelValgt = dokument.dokumentInfoId === dokument.dokumentInfoId;
-    const defaultTittelValue = dokument.tittel ? mapDokumentTittel(dokument.tittel) : undefined;
-    const dokumentTittel = utledDokumentTittel(dokument.tittel, nyDokumentTittel);
+    const { hentDokument } = hentDokumentResponse;
+
+    const endreDokumentNavn = (dokumentInfoId: string, nyttDokumentNavn: string) => {
+        settDokumentTitler((prevState: Record<string, string> | undefined) => ({
+            ...prevState,
+            [dokumentInfoId]: nyttDokumentNavn,
+        }));
+    };
+
+    const endreLogiskeVedlegg = (dokumentInfoId: string, nyeLogiskeVedlegg: string[]) => {
+        settLogiskeVedleggPåDokument((prevState: Record<string, string[]> | undefined) => ({
+            ...prevState,
+            [dokumentInfoId]: nyeLogiskeVedlegg,
+        }));
+    };
+
+    const dokumentPanelErValgt = valgtDokumentPanel === dokument.dokumentInfoId;
+    const dokumentTittel =
+        (dokumentTitler && dokumentTitler[dokument.dokumentInfoId]) || dokument.tittel || 'Ukjent';
+    const defaultTittelValue = dokumentTittel
+        ? mapDokumentTittelTilMultiselectValue(dokumentTittel)
+        : undefined;
+
+    const logiskeVedlegg = logiskeVedleggPåDokument
+        ? logiskeVedleggPåDokument[dokument.dokumentInfoId]
+        : undefined;
+    const defaultLogiskeVedleggValue = logiskeVedlegg
+        ? mapLogiskeVedleggTilMultiselectValue(logiskeVedlegg)
+        : undefined;
 
     return (
-        <ExpansionCard id={dokument.dokumentInfoId} size="small" aria-label="journalpost">
+        <ExpansionCard
+            id={dokument.dokumentInfoId}
+            size="small"
+            aria-label="journalpost"
+            onToggle={() => {
+                if (!dokumentPanelErValgt) {
+                    hentDokument(dokument.dokumentInfoId);
+                    settValgtDokumentPanel(dokument.dokumentInfoId);
+                }
+            }}
+        >
             <ExpansionCardHeader>
                 <DokumentPanelHeader
                     dokument={dokument}
                     dokumentTittel={dokumentTittel}
-                    valgt={erDokumentPanelValgt}
-                    journalpostId={journalpost.journalpostId}
+                    erValgt={dokumentPanelErValgt}
                 />
             </ExpansionCardHeader>
             <ExpansionCard.Content>
@@ -63,9 +112,10 @@ const DokumentPanel: React.FC<Props> = ({ dokument, journalpost }) => {
                         isDisabled={false}
                         defaultValue={defaultTittelValue}
                         feil={null}
-                        onChange={(value: unknown) => {
-                            settNyDokumentTittel(
-                                value ? (value as ISelectOption).value : undefined
+                        onChange={(value) => {
+                            endreDokumentNavn(
+                                dokument.dokumentInfoId,
+                                value ? (value as ISelectOption).value : ''
                             );
                         }}
                     />
@@ -76,14 +126,31 @@ const DokumentPanel: React.FC<Props> = ({ dokument, journalpost }) => {
                         menuPortalTarget={document.querySelector('body')}
                         isMulti={true}
                         isDisabled={false}
-                        defaultValue={undefined}
+                        defaultValue={defaultLogiskeVedleggValue}
                         feil={null}
-                        onChange={(values: unknown) => {
-                            settNyAnnetInnholdsliste(
-                                (values as ISelectOption[]).map((value) => value.value)
+                        onChange={(values) => {
+                            endreLogiskeVedlegg(
+                                dokument.dokumentInfoId,
+                                mapMultiselectValueTilLogiskeVedlegg(values)
                             );
                         }}
                     />
+                    <EksternLenkeKnapp
+                        type={'button'}
+                        variant={'tertiary'}
+                        size={'small'}
+                        icon={<ExternalLinkIcon aria-hidden />}
+                        iconPosition={'right'}
+                        onClick={() =>
+                            åpneFilIEgenTab(
+                                journalpost.journalpostId,
+                                dokument.dokumentInfoId,
+                                dokumentTittel
+                            )
+                        }
+                    >
+                        Åpne i ny fane
+                    </EksternLenkeKnapp>
                 </ExpansionCardContent>
             </ExpansionCard.Content>
         </ExpansionCard>
