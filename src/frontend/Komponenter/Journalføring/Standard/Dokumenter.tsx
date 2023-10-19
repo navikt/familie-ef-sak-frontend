@@ -16,17 +16,16 @@ const Liste = styled.ul`
 interface Props {
     journalpost: IJournalpost;
     journalpostState: JournalføringStateRequest;
-    hentDokument: (dokumentInfoId: string) => void;
 }
 
-const Dokumenter: React.FC<Props> = ({ journalpost, journalpostState, hentDokument }) => {
+const Dokumenter: React.FC<Props> = ({ journalpost, journalpostState }) => {
     return (
         <Liste>
             {journalpost.dokumenter.map((dokument) => (
                 <li key={dokument.dokumentInfoId}>
                     <DokumentPanel
                         dokument={dokument}
-                        hentDokument={hentDokument}
+                        hentDokument={journalpostState.hentDokumentResponse.hentDokument}
                         journalpost={journalpost}
                         journalpostState={journalpostState}
                     />

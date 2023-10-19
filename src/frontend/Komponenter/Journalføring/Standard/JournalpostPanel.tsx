@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BodyShort, ExpansionCard, Heading, Select } from '@navikt/ds-react';
 import styled from 'styled-components';
-import { FolderFileFillIcon } from '@navikt/aksel-icons';
+import { FolderFileFillIcon, FolderFileIcon } from '@navikt/aksel-icons';
 import { ABlue500 } from '@navikt/ds-tokens/dist/tokens';
 import {
     behandlingstemaTilTemaTekst,
@@ -53,10 +53,13 @@ interface Props {
 }
 
 const JournalpostPanel: React.FC<Props> = ({ journalpost, journalpostState }) => {
-    const tema = behandlingstemaTilTemaTekst(journalpost.behandlingstema);
-    const datoMottatt = formaterIsoDato(journalpost.datoMottatt);
     const { journalføringsårsak, settJournalføringsårsak, stønadstype, settStønadstype } =
         journalpostState;
+
+    const [erPanelEkspandert, settErPanelEkspandert] = useState<boolean>(false);
+
+    const tema = behandlingstemaTilTemaTekst(journalpost.behandlingstema);
+    const datoMottatt = formaterIsoDato(journalpost.datoMottatt);
     const kanRedigere = journalføringsårsak !== Journalføringsårsak.DIGITAL_SØKNAD;
     const valgbareStønadstyper = [
         Stønadstype.OVERGANGSSTØNAD,
@@ -65,11 +68,20 @@ const JournalpostPanel: React.FC<Props> = ({ journalpost, journalpostState }) =>
     ];
 
     return (
-        <ExpansionCard id={journalpost.journalpostId} size="small" aria-label="journalpost">
+        <ExpansionCard
+            id={journalpost.journalpostId}
+            size="small"
+            aria-label="journalpost"
+            onToggle={() => settErPanelEkspandert((prevState) => !prevState)}
+        >
             <ExpansionCardHeader>
                 <FlexRow>
                     <IconContainer>
-                        <FolderFileFillIcon fontSize={'3.5rem'} />
+                        {erPanelEkspandert ? (
+                            <FolderFileFillIcon fontSize={'3.5rem'} />
+                        ) : (
+                            <FolderFileIcon fontSize={'3.5rem'} />
+                        )}
                     </IconContainer>
                     <Grid>
                         <Heading size={'small'} level={'2'}>

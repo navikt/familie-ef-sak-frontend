@@ -55,13 +55,9 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
 }) => {
     const { innloggetSaksbehandler } = useApp();
     const navigate = useNavigate();
-
-    const journalpostId = journalResponse.journalpost.journalpostId;
-
     const journalpostState: JournalføringStateRequest = useJournalføringState(
         journalResponse,
-        oppgaveId,
-        journalpostId
+        oppgaveId
     );
     const hentDokumentResponse = useHentDokument(journalResponse.journalpost);
 

@@ -24,14 +24,14 @@ const IkonContainer = styled.div`
 interface Props {
     dokument: DokumentInfo;
     dokumentTittel: string;
-    valgt: boolean;
+    erValgt: boolean;
 }
 
-export const DokumentPanelHeader: React.FC<Props> = ({ dokument, dokumentTittel, valgt }) => {
+export const DokumentPanelHeader: React.FC<Props> = ({ dokument, dokumentTittel, erValgt }) => {
     return (
         <Container>
             <IkonContainer>
-                {valgt ? (
+                {erValgt ? (
                     <FileTextFillIcon fontSize={'3.5rem'} />
                 ) : (
                     <FileTextIcon fontSize={'3.5rem'} />

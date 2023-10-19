@@ -43,10 +43,15 @@ interface Props {
 const DokumentPanel: React.FC<Props> = ({ journalpost, journalpostState, dokument }) => {
     const {
         dokumentTitler,
-        settDokumentTitler,
+        hentDokumentResponse,
         logiskeVedleggPåDokument,
+        settDokumentTitler,
         settLogiskeVedleggPåDokument,
+        settValgtDokumentPanel,
+        valgtDokumentPanel,
     } = journalpostState;
+
+    const { hentDokument } = hentDokumentResponse;
 
     const endreDokumentNavn = (dokumentInfoId: string, nyttDokumentNavn: string) => {
         settDokumentTitler((prevState: Record<string, string> | undefined) => ({
@@ -62,8 +67,7 @@ const DokumentPanel: React.FC<Props> = ({ journalpost, journalpostState, dokumen
         }));
     };
 
-    const erDokumentPanelValgt = dokument.dokumentInfoId === dokument.dokumentInfoId;
-
+    const dokumentPanelErValgt = valgtDokumentPanel === dokument.dokumentInfoId;
     const dokumentTittel =
         (dokumentTitler && dokumentTitler[dokument.dokumentInfoId]) || dokument.tittel || 'Ukjent';
     const defaultTittelValue = dokumentTittel
@@ -78,12 +82,22 @@ const DokumentPanel: React.FC<Props> = ({ journalpost, journalpostState, dokumen
         : undefined;
 
     return (
-        <ExpansionCard id={dokument.dokumentInfoId} size="small" aria-label="journalpost">
+        <ExpansionCard
+            id={dokument.dokumentInfoId}
+            size="small"
+            aria-label="journalpost"
+            onToggle={() => {
+                if (!dokumentPanelErValgt) {
+                    hentDokument(dokument.dokumentInfoId);
+                    settValgtDokumentPanel(dokument.dokumentInfoId);
+                }
+            }}
+        >
             <ExpansionCardHeader>
                 <DokumentPanelHeader
                     dokument={dokument}
                     dokumentTittel={dokumentTittel}
-                    valgt={erDokumentPanelValgt}
+                    erValgt={dokumentPanelErValgt}
                 />
             </ExpansionCardHeader>
             <ExpansionCard.Content>
