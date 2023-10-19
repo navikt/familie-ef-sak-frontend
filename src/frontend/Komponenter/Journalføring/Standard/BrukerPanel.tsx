@@ -8,12 +8,11 @@ interface Props {
 }
 
 const BrukerPanel: React.FC<Props> = ({ journalpostResponse }) => {
+    const { navn, personIdent } = journalpostResponse;
+
     return (
         <Panel border>
-            <BrukerPanelHeader
-                navn={journalpostResponse.navn}
-                personIdent={journalpostResponse.personIdent}
-            />
+            <BrukerPanelHeader navn={navn} personIdent={personIdent} />
         </Panel>
     );
 };

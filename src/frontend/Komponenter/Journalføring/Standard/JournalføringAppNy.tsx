@@ -22,9 +22,9 @@ import JournalføringWrapper, {
 } from '../Felles/JournalføringWrapper';
 import JournalføringPdfVisning from '../Felles/JournalføringPdfVisning';
 import JournalpostPanel from './JournalpostPanel';
-import Dokumenter from './Dokumenter';
 import BrukerPanel from './BrukerPanel';
 import AvsenderPanel from './AvsenderPanel';
+import Dokumenter from './Dokumenter';
 
 const InnerContainer = styled.div`
     display: flex;

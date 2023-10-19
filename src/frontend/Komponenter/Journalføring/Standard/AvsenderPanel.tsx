@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Checkbox, ExpansionCard, Label, TextField } from '@navikt/ds-react';
+import { Checkbox, CopyButton, ExpansionCard, Label, TextField } from '@navikt/ds-react';
 import styled from 'styled-components';
 import { IJournalpostResponse } from '../../../App/typer/journalføring';
 import { EnvelopeClosedFillIcon, EnvelopeClosedIcon } from '@navikt/aksel-icons';
@@ -12,7 +12,7 @@ const ExpansionCardHeader = styled(ExpansionCard.Header)`
 const ExpansionCardContent = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1rem;
     padding-bottom: 1rem;
 `;
 
@@ -28,6 +28,10 @@ const IconContainer = styled.div`
 const Tittel = styled.div`
     display: flex;
     align-items: center;
+`;
+
+const KopierPersonIdent = styled(CopyButton)`
+    z-index: 2;
 `;
 
 const utledAvsender = (
@@ -47,35 +51,42 @@ interface Props {
 }
 
 const AvsenderPanel: React.FC<Props> = ({ journalpostResponse }) => {
+    const { journalpost, navn, personIdent } = journalpostResponse;
+
+    const [erPanelEkspandert, settErPanelEkspandert] = useState<boolean>(false);
     const [erBrukerAvsender, settErBrukerAvsender] = useState<boolean>(false);
     const [harRedigertAvsender, settHarRedigertAvsender] = useState<boolean>(false);
     const [nyAvsender, settNyAvsender] = useState<string>('');
-    const valgt = false;
-    const avsender = utledAvsender(
-        erBrukerAvsender,
-        harRedigertAvsender,
-        nyAvsender,
-        journalpostResponse.navn
-    );
+
+    const avsender = utledAvsender(erBrukerAvsender, harRedigertAvsender, nyAvsender, navn);
+    const brukerErAvsender = erBrukerAvsender || avsender === navn;
 
     return (
         <ExpansionCard
-            id={journalpostResponse.journalpost.journalpostId}
+            id={journalpost.journalpostId}
             size="small"
             aria-label="journalpost"
             defaultOpen={avsender === 'Ukjent avsender'}
+            onToggle={() => settErPanelEkspandert((prevState) => !prevState)}
         >
             <ExpansionCardHeader>
                 <FlexRow>
                     <IconContainer>
-                        {valgt ? (
+                        {erPanelEkspandert ? (
                             <EnvelopeClosedFillIcon fontSize={'3.5rem'} />
                         ) : (
                             <EnvelopeClosedIcon fontSize={'3.5rem'} />
                         )}
                     </IconContainer>
                     <Tittel>
-                        <Label as={'p'}>{avsender}</Label>
+                        {brukerErAvsender ? (
+                            <>
+                                <Label as={'p'}>{`${avsender} - ${personIdent}`}</Label>
+                                <KopierPersonIdent copyText={personIdent} variant="action" />
+                            </>
+                        ) : (
+                            <Label as={'p'}>{avsender}</Label>
+                        )}
                     </Tittel>
                 </FlexRow>
             </ExpansionCardHeader>
@@ -97,6 +108,7 @@ const AvsenderPanel: React.FC<Props> = ({ journalpostResponse }) => {
                             settNyAvsender(event.target.value);
                             if (!harRedigertAvsender) settHarRedigertAvsender(true);
                         }}
+                        size={'small'}
                         value={avsender}
                     />
                 </ExpansionCardContent>
