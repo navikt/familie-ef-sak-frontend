@@ -4,9 +4,11 @@ import { Behandling, BehandlingResultat } from '../../../App/typer/fagsak';
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
 import { BehandlingRequest } from '../../../App/hooks/useJournalføringState';
 import { BehandlingKlageRequest } from '../../../App/hooks/useJournalføringKlageState';
+import { ISelectOption, MultiValue, SingleValue } from '@navikt/familie-form-elements';
 
 export const JOURNALPOST_QUERY_STRING = 'journalpostId';
 export const OPPGAVEID_QUERY_STRING = 'oppgaveId';
+export type MultiSelectValue = { label: string; value: string };
 
 export const lagJournalføringKlageUrl = (
     journalpostId: string,
@@ -37,55 +39,6 @@ export const utledKolonneTittel = (
     return `${prefix}${type}${stønadstype}`;
 };
 
-export const dokumentTitler: { value: string; label: string }[] = [
-    { value: 'Uttalelse tilbakekreving', label: 'Uttalelse tilbakekreving' },
-    { value: 'Uttalelse', label: 'Uttalelse' },
-    {
-        value: 'Tilmelding til NAV som reell arbeidssøker ved krav om overgangsstønad',
-        label: "Tilmelding til NAV som reell arbeidssøker ved krav om overgangsstønad'",
-    },
-    {
-        value: 'Søknad om stønad til skolepenger - enslig mor eller far',
-        label: 'Søknad om stønad til skolepenger - enslig mor eller far',
-    },
-    {
-        value: 'Søknad om stønad til barnetilsyn - enslig mor eller far i arbeid',
-        label: 'Søknad om stønad til skolepenger - enslig mor eller far',
-    },
-    {
-        value: 'Søknad om overgangsstønad - enslig mor eller far',
-        label: 'Søknad om overgangsstønad - enslig mor eller far',
-    },
-    { value: 'Stevning', label: 'Stevning' },
-    { value: 'Skatteopplysninger', label: 'Skatteopplysninger' },
-    { value: 'Rettsavgjørelse', label: 'Rettsavgjørelse' },
-    { value: 'Refusjonskrav/faktura', label: 'Refusjonskrav/faktura' },
-    { value: 'Oppholdstillatelse', label: 'Oppholdstillatelse' },
-    { value: 'Merknader i ankesak', label: 'Merknader i ankesak' },
-    { value: 'Medisinsk dokumentasjon', label: 'Medisinsk dokumentasjon' },
-    { value: 'Krav om gjenopptak av ankesak', label: 'Krav om gjenopptak av ankesak' },
-    { value: 'Klage/Anke', label: 'Klage/Anke' },
-    { value: 'Klage på tilbakekreving', label: 'Klage på tilbakekreving' },
-    { value: 'Inntektsopplysninger', label: 'Inntektsopplysninger' },
-    { value: 'Grunnblankett', label: 'Grunnblankett' },
-    { value: 'Fødselsmelding/Fødselsattest', label: 'Fødselsmelding/Fødselsattest' },
-    { value: 'Forespørsel', label: 'Forespørsel' },
-    { value: 'EØS-dokument', label: 'EØS-dokument' },
-    { value: 'Erklæring samlivsbrudd', label: 'Erklæring samlivsbrudd' },
-    {
-        value: 'Enslig mor eller far som er arbeidssøker',
-        label: 'nslig mor eller far som er arbeidssøker',
-    },
-    { value: 'Endring i sivilstand', label: 'Endring i sivilstand' },
-    { value: 'Bekreftelse på utdanning / utgifter', label: 'Bekreftelse på utdanning / utgifter' },
-    { value: 'Bekreftelse på tilsynsutgifter', label: 'Bekreftelse på tilsynsutgifter' },
-    { value: 'Bekreftelse på termindato', label: 'Bekreftelse på termindato' },
-    { value: 'Bekreftelse fra barnevernet', label: 'Bekreftelse fra barnevernet' },
-    { value: 'Avtale / avgjørelse om samvær', label: 'Avtale / avgjørelse om samvær' },
-    { value: 'Arbeidsforhold', label: 'Arbeidsforhold' },
-    { value: 'Anke på tilbakekreving', label: 'Anke på tilbakekreving' },
-];
-
 export const utledRiktigBehandlingstype = (
     tidligereBehandlinger: Behandling[]
 ): Behandlingstype => {
@@ -104,6 +57,65 @@ export const harValgtNyBehandling = (behandling: BehandlingRequest | undefined):
 export const harValgtNyKlageBehandling = (
     behandling: BehandlingKlageRequest | undefined
 ): boolean => behandling !== undefined && behandling.behandlingId === undefined;
+
+const dokumentTitler: string[] = [
+    'Anke på tilbakekreving',
+    'Arbeidsforhold',
+    'Avtale / Avgjørelse om samvær',
+    'Bekreftelse fra barnevernet',
+    'Bekreftelse på termindato',
+    'Bekreftelse på tilsynsutgifter',
+    'Bekreftelse på utdanning / utgifter',
+    'Endring i sivilstand',
+    'Enslig mor eller far som er arbeidssøker',
+    'Eklæring om samlivsbrudd',
+    'EØS dokument',
+    'Forespørsel',
+    'Fødselsmelding/Fødselsattest',
+    'Grunnblankett',
+    'Inntektsopplysninger',
+    'Klage på tilbakekreving',
+    'Klage/Anke',
+    'Krav om gjenopptak av ankesak',
+    'Medisinsk dokumentasjon',
+    'Merknader i ankesak',
+    'Oppholdstillatelse',
+    'Refusjonskrav/faktura',
+    'Rettsavgjørelse',
+    'Skatteopplysninger',
+    'Stevning',
+    'Søknad om overgangsstønad',
+    'Søknad om skolepenger',
+    'Søknad om barnetilsyn',
+    'Tilmelding til NAV som reell arbeidssøker ved krav om overgangsstønad',
+    'Uttalelse',
+    'Uttalelse tilbakekreving',
+];
+
+export const dokumentTitlerMultiSelect: ISelectOption[] = dokumentTitler.map((tittel) => {
+    return { value: tittel, label: tittel };
+});
+
+export const mapDokumentTittelTilMultiselectValue = (tittel: string) => {
+    return { value: tittel, label: tittel };
+};
+
+export const mapLogiskeVedleggTilMultiselectValue = (logiskeVedlegg: string[]) => {
+    return logiskeVedlegg.map((vedlegg) => {
+        return { label: vedlegg, value: vedlegg };
+    });
+};
+
+export const mapMultiselectValueTilLogiskeVedlegg = (
+    values: MultiValue<MultiSelectValue> | SingleValue<MultiSelectValue>
+) => {
+    if ((values as MultiValue<MultiSelectValue>).length !== undefined) {
+        return (values as MultiValue<MultiSelectValue>).map((value) => value.value);
+    } else {
+        const value = values as SingleValue<MultiSelectValue>;
+        return [value === null ? '' : value.value];
+    }
+};
 
 export enum Journalføringsårsak {
     PAPIRSØKNAD = 'PAPIRSØKNAD',

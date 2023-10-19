@@ -6,7 +6,6 @@ import {
     JournalføringStateRequest,
     useJournalføringState,
 } from '../../../App/hooks/useJournalføringState';
-import { useHentDokument } from '../../../App/hooks/useHentDokument';
 import { useHentFagsak } from '../../../App/hooks/useHentFagsak';
 import { useApp } from '../../../App/context/AppContext';
 import {
@@ -23,6 +22,7 @@ import JournalføringWrapper, {
 } from '../Felles/JournalføringWrapper';
 import JournalføringPdfVisning from '../Felles/JournalføringPdfVisning';
 import JournalpostPanel from './JournalpostPanel';
+import Dokumenter from './Dokumenter';
 
 const InnerContainer = styled.div`
     display: flex;
@@ -41,15 +41,10 @@ export const JournalføringAppNy: React.FC = () => {
 const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journalResponse }) => {
     const { innloggetSaksbehandler } = useApp();
     const navigate = useNavigate();
-
-    const journalpostId = journalResponse.journalpost.journalpostId;
-
     const journalpostState: JournalføringStateRequest = useJournalføringState(
         journalResponse,
-        oppgaveId,
-        journalpostId
+        oppgaveId
     );
-    const hentDokumentResponse = useHentDokument(journalResponse.journalpost);
 
     const { fagsak } = useHentFagsak();
 
@@ -88,10 +83,21 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
                             journalpostState={journalpostState}
                         />
                     </section>
+                    <section>
+                        <Tittel size={'small'} level={'2'}>
+                            Dokumenter
+                        </Tittel>
+                        <Dokumenter
+                            journalpost={journalResponse.journalpost}
+                            journalpostState={journalpostState}
+                        />
+                    </section>
                 </InnerContainer>
             </Venstrekolonne>
             <Høyrekolonne>
-                <JournalføringPdfVisning hentDokumentResponse={hentDokumentResponse} />
+                <JournalføringPdfVisning
+                    hentDokumentResponse={journalpostState.hentDokumentResponse}
+                />
             </Høyrekolonne>
         </Kolonner>
     );

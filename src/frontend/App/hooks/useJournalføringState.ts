@@ -4,9 +4,15 @@ import { useApp } from '../context/AppContext';
 import { Behandlingstype } from '../typer/behandlingstype';
 import { UstrukturertDokumentasjonType } from '../../Komponenter/Journalføring/Standard/VelgUstrukturertDokumentasjonType';
 import { EVilkårsbehandleBarnValg } from '../typer/vilkårsbehandleBarnValg';
-import { DokumentTitler, IJournalpostResponse } from '../typer/journalføring';
+import {
+    LogiskeVedleggPåDokument,
+    DokumentTitler,
+    IJournalpostResponse,
+    DokumentInfo,
+} from '../typer/journalføring';
 import { Journalføringsårsak } from '../../Komponenter/Journalføring/Felles/utils';
 import { behandlingstemaTilStønadstype, Stønadstype } from '../typer/behandlingstema';
+import { HentDokumentResponse, useHentDokument } from './useHentDokument';
 
 export interface BehandlingRequest {
     behandlingsId?: string;
@@ -36,6 +42,8 @@ export interface JournalføringStateRequest {
     settBehandling: Dispatch<SetStateAction<BehandlingRequest | undefined>>;
     dokumentTitler?: DokumentTitler;
     settDokumentTitler: Dispatch<SetStateAction<DokumentTitler | undefined>>;
+    logiskeVedleggPåDokument?: LogiskeVedleggPåDokument;
+    settLogiskeVedleggPåDokument: Dispatch<SetStateAction<LogiskeVedleggPåDokument | undefined>>;
     innsending: Ressurs<string>;
     settInnsending: Dispatch<SetStateAction<Ressurs<string>>>;
     fullførJournalføring: () => void;
@@ -51,12 +59,14 @@ export interface JournalføringStateRequest {
     settJournalføringsårsak: Dispatch<SetStateAction<Journalføringsårsak>>;
     stønadstype: Stønadstype | undefined;
     settStønadstype: Dispatch<SetStateAction<Stønadstype | undefined>>;
+    valgtDokumentPanel: string;
+    settValgtDokumentPanel: Dispatch<SetStateAction<string>>;
+    hentDokumentResponse: HentDokumentResponse;
 }
 
 export const useJournalføringState = (
     journalResponse: IJournalpostResponse,
-    oppgaveId: string,
-    journalpostId: string
+    oppgaveId: string
 ): JournalføringStateRequest => {
     const utledJournalføringsårsak = () => {
         if (journalResponse.harStrukturertSøknad) {
@@ -68,10 +78,17 @@ export const useJournalføringState = (
         }
     };
 
+    const utledFørsteDokument = (dokumenter: DokumentInfo[]) =>
+        dokumenter.length > 0 ? dokumenter[0].dokumentInfoId : '';
+
     const { axiosRequest, innloggetSaksbehandler } = useApp();
+    const hentDokumentResponse = useHentDokument(journalResponse.journalpost);
+
     const [fagsakId, settFagsakId] = useState<string>('');
     const [behandling, settBehandling] = useState<BehandlingRequest>();
     const [dokumentTitler, settDokumentTitler] = useState<DokumentTitler>();
+    const [logiskeVedleggPåDokument, settLogiskeVedleggPåDokument] =
+        useState<LogiskeVedleggPåDokument>(); // TODO: Disse må sendes med til backend for å bli satt
     const [innsending, settInnsending] = useState<Ressurs<string>>(byggTomRessurs());
     const [visBekreftelsesModal, settVisBekreftelsesModal] = useState<boolean>(false);
     const [barnSomSkalFødes, settBarnSomSkalFødes] = useState<BarnSomSkalFødes[]>([]);
@@ -85,6 +102,9 @@ export const useJournalføringState = (
     );
     const [stønadstype, settStønadstype] = useState<Stønadstype | undefined>(
         behandlingstemaTilStønadstype(journalResponse.journalpost.behandlingstema)
+    );
+    const [valgtDokumentPanel, settValgtDokumentPanel] = useState<string>(
+        utledFørsteDokument(journalResponse.journalpost.dokumenter)
     );
 
     useEffect(() => {
@@ -113,7 +133,7 @@ export const useJournalføringState = (
         settInnsending(byggHenterRessurs());
         axiosRequest<string, JournalføringRequest>({
             method: 'POST',
-            url: `/familie-ef-sak/api/journalpost/${journalpostId}/fullfor`,
+            url: `/familie-ef-sak/api/journalpost/${journalResponse.journalpost.journalpostId}/fullfor`,
             data,
         }).then((resp) => settInnsending(resp));
     };
@@ -125,6 +145,8 @@ export const useJournalføringState = (
         settBehandling,
         dokumentTitler,
         settDokumentTitler,
+        logiskeVedleggPåDokument,
+        settLogiskeVedleggPåDokument,
         innsending,
         settInnsending,
         fullførJournalføring,
@@ -140,5 +162,8 @@ export const useJournalføringState = (
         settJournalføringsårsak,
         stønadstype,
         settStønadstype,
+        valgtDokumentPanel,
+        settValgtDokumentPanel,
+        hentDokumentResponse,
     };
 };
