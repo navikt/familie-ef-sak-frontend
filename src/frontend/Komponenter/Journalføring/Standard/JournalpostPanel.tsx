@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BodyShort, ExpansionCard, Heading, Select } from '@navikt/ds-react';
+import { BodyShort, ExpansionCard, Heading, HStack, Select, VStack } from '@navikt/ds-react';
 import styled from 'styled-components';
 import { FolderFileFillIcon, FolderFileIcon } from '@navikt/aksel-icons';
 import { ABlue500 } from '@navikt/ds-tokens/dist/tokens';
@@ -17,11 +17,6 @@ import {
 } from '../Felles/utils';
 import { JournalføringStateRequest } from '../../../App/hooks/useJournalføringState';
 
-const FlexRow = styled.div`
-    display: flex;
-    gap: 1rem;
-`;
-
 const IconContainer = styled.div`
     color: ${ABlue500};
 `;
@@ -30,10 +25,7 @@ const ExpansionCardHeader = styled(ExpansionCard.Header)`
     padding-bottom: 0.25rem;
 `;
 
-const ExpansionCardContent = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+const ExpansionCardContent = styled(VStack)`
     padding-bottom: 1rem;
 `;
 
@@ -75,7 +67,7 @@ const JournalpostPanel: React.FC<Props> = ({ journalpost, journalpostState }) =>
             onToggle={() => settErPanelEkspandert((prevState) => !prevState)}
         >
             <ExpansionCardHeader>
-                <FlexRow>
+                <HStack gap="4">
                     <IconContainer>
                         {erPanelEkspandert ? (
                             <FolderFileFillIcon fontSize={'3.5rem'} />
@@ -103,10 +95,10 @@ const JournalpostPanel: React.FC<Props> = ({ journalpost, journalpostState }) =>
                         <BodyShort>{journalføringsårsakTilTekst[journalføringsårsak]}</BodyShort>
                         <BodyShort>{datoMottatt}</BodyShort>
                     </Grid>
-                </FlexRow>
+                </HStack>
             </ExpansionCardHeader>
             <ExpansionCard.Content>
-                <ExpansionCardContent>
+                <ExpansionCardContent gap="4">
                     <StyledSelect
                         label="Stønadstype"
                         size="small"

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Checkbox, CopyButton, ExpansionCard, Label, TextField } from '@navikt/ds-react';
+import { Checkbox, CopyButton, ExpansionCard, HStack, Label, TextField } from '@navikt/ds-react';
 import styled from 'styled-components';
 import { IJournalpostResponse } from '../../../App/typer/journalføring';
 import { EnvelopeClosedFillIcon, EnvelopeClosedIcon } from '@navikt/aksel-icons';
@@ -16,18 +16,8 @@ const ExpansionCardContent = styled.div`
     padding-bottom: 1rem;
 `;
 
-const FlexRow = styled.div`
-    display: flex;
-    gap: 1rem;
-`;
-
 const IconContainer = styled.div`
     color: ${ABlue500};
-`;
-
-const Tittel = styled.div`
-    display: flex;
-    align-items: center;
 `;
 
 const KopierPersonIdent = styled(CopyButton)`
@@ -70,7 +60,7 @@ const AvsenderPanel: React.FC<Props> = ({ journalpostResponse }) => {
             onToggle={() => settErPanelEkspandert((prevState) => !prevState)}
         >
             <ExpansionCardHeader>
-                <FlexRow>
+                <HStack gap="4">
                     <IconContainer>
                         {erPanelEkspandert ? (
                             <EnvelopeClosedFillIcon fontSize={'3.5rem'} />
@@ -78,7 +68,7 @@ const AvsenderPanel: React.FC<Props> = ({ journalpostResponse }) => {
                             <EnvelopeClosedIcon fontSize={'3.5rem'} />
                         )}
                     </IconContainer>
-                    <Tittel>
+                    <HStack align="center">
                         {brukerErAvsender ? (
                             <>
                                 <Label as={'p'}>{`${avsender} - ${personIdent}`}</Label>
@@ -87,8 +77,8 @@ const AvsenderPanel: React.FC<Props> = ({ journalpostResponse }) => {
                         ) : (
                             <Label as={'p'}>{avsender}</Label>
                         )}
-                    </Tittel>
-                </FlexRow>
+                    </HStack>
+                </HStack>
             </ExpansionCardHeader>
             <ExpansionCard.Content>
                 <ExpansionCardContent>

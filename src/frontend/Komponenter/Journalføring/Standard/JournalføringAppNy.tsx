@@ -12,7 +12,7 @@ import {
     lagreTilLocalStorage,
     oppgaveRequestKey,
 } from '../../Oppgavebenk/oppgavefilterStorage';
-import { Heading } from '@navikt/ds-react';
+import { Heading, HStack } from '@navikt/ds-react';
 import JournalføringWrapper, {
     Høyrekolonne,
     JournalføringAppProps,
@@ -26,6 +26,7 @@ import AvsenderPanel from './AvsenderPanel';
 import Dokumenter from './Dokumenter';
 import { AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
 import Behandlinger from './Behandlinger';
+import { Knapp } from '../../../Felles/Knapper/HovedKnapp';
 
 const InnerContainer = styled.div`
     display: flex;
@@ -110,6 +111,14 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
                         </AlertInfo>
                         <Behandlinger fagsak={journalpostState.fagsak} />
                     </section>
+                    <HStack gap="4" justify="end">
+                        <Knapp size={'small'} variant={'tertiary'} onClick={() => {}}>
+                            Avbryt
+                        </Knapp>
+                        <Knapp size={'small'} variant={'primary'} onClick={() => {}}>
+                            Journalfør
+                        </Knapp>
+                    </HStack>
                 </InnerContainer>
             </Venstrekolonne>
             <Høyrekolonne>
