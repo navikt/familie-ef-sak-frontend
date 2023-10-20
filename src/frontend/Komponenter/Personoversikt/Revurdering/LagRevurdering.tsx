@@ -130,15 +130,14 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                 );
             case Behandlingsårsak.IVERKSETTE_KA_VEDTAK:
                 return toggles[ToggleName.visKAVedtakAlternativ];
+            case Behandlingsårsak.PAPIRSØKNAD:
+                return toggles[ToggleName.papirsoknadTerminbarnRevurdering];
             default:
                 return true;
         }
     };
 
-    const opprettRevurdering = (
-        måTaStillingTilBarn: boolean,
-        nyeBarnSidenForrigeBehandling: NyeBarnSidenForrigeBehandling
-    ) => {
+    const opprettRevurdering = (måTaStillingTilBarn: boolean) => {
         if (!valgtBehandlingsårsak) {
             settFeilmeldingModal('Vennligst velg en årsak');
         } else if (!valgtDato || !erGyldigDato(valgtDato)) {
@@ -155,13 +154,10 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
         } else {
             lagRevurdering({
                 fagsakId: fagsak.id,
-                barn:
-                    vilkårsbehandleNyeBarn === EVilkårsbehandleBarnValg.VILKÅRSBEHANDLE
-                        ? nyeBarnSidenForrigeBehandling.nyeBarn
-                        : [],
                 behandlingsårsak: valgtBehandlingsårsak,
                 kravMottatt: valgtDato,
                 vilkårsbehandleNyeBarn: vilkårsbehandleNyeBarn,
+                barnSomSkalFødes: barnSomSkalFødes,
             });
         }
     };
@@ -246,12 +242,7 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                             </ModalKnapp>
                             <ModalKnapp
                                 variant="primary"
-                                onClick={() =>
-                                    opprettRevurdering(
-                                        måTaStillingTilBarn,
-                                        nyeBarnSidenForrigeBehandling
-                                    )
-                                }
+                                onClick={() => opprettRevurdering(måTaStillingTilBarn)}
                             >
                                 Opprett
                             </ModalKnapp>

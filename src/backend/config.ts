@@ -91,6 +91,7 @@ const Environment = (): IEnvironment => {
             modia: 'https://app-q1.adeo.no/modiapersonoversikt',
             historiskPensjon: 'https://historisk-pensjon.intern.dev.nav.no',
             endringsloggProxyUrl: 'https://familie-endringslogg.intern.dev.nav.no',
+            // endringsloggProxyUrl: 'http://localhost:8080',
             roller: rollerDev,
         };
     }
