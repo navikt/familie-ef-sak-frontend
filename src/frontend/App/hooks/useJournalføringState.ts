@@ -13,6 +13,8 @@ import {
 import { Journalføringsårsak } from '../../Komponenter/Journalføring/Felles/utils';
 import { behandlingstemaTilStønadstype, Stønadstype } from '../typer/behandlingstema';
 import { HentDokumentResponse, useHentDokument } from './useHentDokument';
+import { useHentFagsak } from './useHentFagsak';
+import { Fagsak } from '../typer/fagsak';
 
 export interface BehandlingRequest {
     behandlingsId?: string;
@@ -36,6 +38,7 @@ export interface BarnSomSkalFødes {
 }
 
 export interface JournalføringStateRequest {
+    fagsak: Ressurs<Fagsak>;
     fagsakId: string;
     settFagsakId: Dispatch<SetStateAction<string>>;
     behandling?: BehandlingRequest;
@@ -82,6 +85,7 @@ export const useJournalføringState = (
         dokumenter.length > 0 ? dokumenter[0].dokumentInfoId : '';
 
     const { axiosRequest, innloggetSaksbehandler } = useApp();
+    const { fagsak, hentFagsak } = useHentFagsak();
     const hentDokumentResponse = useHentDokument(journalResponse.journalpost);
 
     const [fagsakId, settFagsakId] = useState<string>('');
@@ -106,6 +110,12 @@ export const useJournalføringState = (
     const [valgtDokumentPanel, settValgtDokumentPanel] = useState<string>(
         utledFørsteDokument(journalResponse.journalpost.dokumenter)
     );
+
+    useEffect(() => {
+        if (stønadstype) {
+            hentFagsak(journalResponse.personIdent, stønadstype);
+        }
+    }, [journalResponse.personIdent, stønadstype, hentFagsak]);
 
     useEffect(() => {
         settBehandling(undefined);
@@ -139,6 +149,7 @@ export const useJournalføringState = (
     };
 
     return {
+        fagsak,
         fagsakId,
         settFagsakId,
         behandling,

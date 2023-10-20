@@ -6,7 +6,6 @@ import {
     JournalføringStateRequest,
     useJournalføringState,
 } from '../../../App/hooks/useJournalføringState';
-import { useHentFagsak } from '../../../App/hooks/useHentFagsak';
 import { useApp } from '../../../App/context/AppContext';
 import {
     hentFraLocalStorage,
@@ -25,6 +24,8 @@ import JournalpostPanel from './JournalpostPanel';
 import BrukerPanel from './BrukerPanel';
 import AvsenderPanel from './AvsenderPanel';
 import Dokumenter from './Dokumenter';
+import { AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
+import Behandlinger from './Behandlinger';
 
 const InnerContainer = styled.div`
     display: flex;
@@ -48,8 +49,6 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
         oppgaveId
     );
 
-    const { fagsak } = useHentFagsak();
-
     useEffect(() => {
         if (journalpostState.innsending.status === RessursStatus.SUKSESS) {
             const lagredeOppgaveFiltreringer = hentFraLocalStorage(
@@ -64,13 +63,6 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
             navigate('/oppgavebenk');
         }
     }, [innloggetSaksbehandler, journalResponse, journalpostState, navigate]);
-
-    useEffect(() => {
-        if (fagsak.status === RessursStatus.SUKSESS) {
-            journalpostState.settFagsakId(fagsak.data.id);
-        }
-        // eslint-disable-next-line
-    }, [fagsak]);
 
     return (
         <Kolonner>
@@ -105,6 +97,18 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
                             Avsender
                         </Tittel>
                         <AvsenderPanel journalpostResponse={journalResponse} />
+                    </section>
+                    <section>
+                        <Tittel size={'small'} level={'2'}>
+                            Behandling
+                        </Tittel>
+                        <AlertInfo>
+                            Merk at du ikke lenger trenger å knytte dokumenter til spesifikke
+                            behandlinger da de automatisk knyttes til bruker. Du kan i listen under
+                            få oversikt over tidligere behandlinger og vurdere om det skal opprettes
+                            en ny behandling fra denne journalføringen.
+                        </AlertInfo>
+                        <Behandlinger fagsak={journalpostState.fagsak} />
                     </section>
                 </InnerContainer>
             </Venstrekolonne>
