@@ -65,6 +65,8 @@ export interface JournalføringStateRequest {
     valgtDokumentPanel: string;
     settValgtDokumentPanel: Dispatch<SetStateAction<string>>;
     hentDokumentResponse: HentDokumentResponse;
+    skalOppretteNyBehandling: boolean;
+    settSkalOppretteNyBehandling: Dispatch<SetStateAction<boolean>>;
 }
 
 export const useJournalføringState = (
@@ -110,6 +112,7 @@ export const useJournalføringState = (
     const [valgtDokumentPanel, settValgtDokumentPanel] = useState<string>(
         utledFørsteDokument(journalResponse.journalpost.dokumenter)
     );
+    const [skalOppretteNyBehandling, settSkalOppretteNyBehandling] = useState<boolean>(false); // TODO: Denne må sendes med til backend for å bli utført
 
     useEffect(() => {
         if (stønadstype) {
@@ -176,5 +179,7 @@ export const useJournalføringState = (
         valgtDokumentPanel,
         settValgtDokumentPanel,
         hentDokumentResponse,
+        skalOppretteNyBehandling,
+        settSkalOppretteNyBehandling,
     };
 };

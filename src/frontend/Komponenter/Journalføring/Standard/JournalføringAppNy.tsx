@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { RessursStatus } from '../../../App/typer/ressurs';
 import styled from 'styled-components';
@@ -24,7 +24,7 @@ import JournalpostPanel from './JournalpostPanel';
 import BrukerPanel from './BrukerPanel';
 import AvsenderPanel from './AvsenderPanel';
 import Dokumenter from './Dokumenter';
-import { AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
+import { AlertError, AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
 import Behandlinger from './Behandlinger';
 import { Knapp } from '../../../Felles/Knapper/HovedKnapp';
 
@@ -49,6 +49,8 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
         journalResponse,
         oppgaveId
     );
+
+    const [feilmelding, settFeilmelding] = useState<string>('');
 
     useEffect(() => {
         if (journalpostState.innsending.status === RessursStatus.SUKSESS) {
@@ -109,16 +111,28 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
                             få oversikt over tidligere behandlinger og vurdere om det skal opprettes
                             en ny behandling fra denne journalføringen.
                         </AlertInfo>
-                        <Behandlinger fagsak={journalpostState.fagsak} />
+                        <Behandlinger
+                            fagsak={journalpostState.fagsak}
+                            settFeilmelding={settFeilmelding}
+                            skalOppretteNyBehandling={journalpostState.skalOppretteNyBehandling}
+                            settSkalOppretteNyBehandling={
+                                journalpostState.settSkalOppretteNyBehandling
+                            }
+                        />
                     </section>
                     <HStack gap="4" justify="end">
-                        <Knapp size={'small'} variant={'tertiary'} onClick={() => {}}>
+                        <Knapp
+                            size={'small'}
+                            variant={'tertiary'}
+                            onClick={() => navigate('/oppgavebenk')}
+                        >
                             Avbryt
                         </Knapp>
                         <Knapp size={'small'} variant={'primary'} onClick={() => {}}>
                             Journalfør
                         </Knapp>
                     </HStack>
+                    {feilmelding && <AlertError>{feilmelding}</AlertError>}
                 </InnerContainer>
             </Venstrekolonne>
             <Høyrekolonne>
