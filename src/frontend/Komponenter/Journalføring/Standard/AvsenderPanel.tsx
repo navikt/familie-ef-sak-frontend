@@ -57,7 +57,7 @@ const AvsenderPanel: React.FC<Props> = ({ journalpostResponse, journalpostState 
     const { nyAvsender, settNyAvsender } = journalpostState;
 
     const [erPanelEkspandert, settErPanelEkspandert] = useState<boolean>(false);
-    const [erBrukerAvsender, settErBrukerAvsender] = useState<boolean>(false);
+    const [erBrukerAvsender, settErBrukerAvsender] = useState<boolean>(navn !== '');
     const [harRedigertAvsender, settHarRedigertAvsender] = useState<boolean>(false);
 
     const avsender = utledAvsender(erBrukerAvsender, harRedigertAvsender, nyAvsender, navn);
@@ -108,6 +108,7 @@ const AvsenderPanel: React.FC<Props> = ({ journalpostResponse, journalpostState 
                             );
                         }}
                         value={erBrukerAvsender}
+                        checked={erBrukerAvsender}
                     >
                         Avsender er bruker
                     </Checkbox>
