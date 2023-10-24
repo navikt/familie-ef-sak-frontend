@@ -99,7 +99,10 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
                         <Tittel size={'small'} level={'2'}>
                             Avsender
                         </Tittel>
-                        <AvsenderPanel journalpostResponse={journalResponse} />
+                        <AvsenderPanel
+                            journalpostResponse={journalResponse}
+                            journalpostState={journalpostState}
+                        />
                     </section>
                     <section>
                         <Tittel size={'small'} level={'2'}>

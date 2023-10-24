@@ -67,6 +67,8 @@ export interface JournalføringStateRequest {
     hentDokumentResponse: HentDokumentResponse;
     skalOppretteNyBehandling: boolean;
     settSkalOppretteNyBehandling: Dispatch<SetStateAction<boolean>>;
+    nyAvsender: string;
+    settNyAvsender: Dispatch<SetStateAction<string>>;
 }
 
 export const useJournalføringState = (
@@ -94,7 +96,7 @@ export const useJournalføringState = (
     const [behandling, settBehandling] = useState<BehandlingRequest>();
     const [dokumentTitler, settDokumentTitler] = useState<DokumentTitler>();
     const [logiskeVedleggPåDokument, settLogiskeVedleggPåDokument] =
-        useState<LogiskeVedleggPåDokument>(); // TODO: Disse må sendes med til backend for å bli satt
+        useState<LogiskeVedleggPåDokument>(); // TODO: Denne må sendes med til backend for å bli satt
     const [innsending, settInnsending] = useState<Ressurs<string>>(byggTomRessurs());
     const [visBekreftelsesModal, settVisBekreftelsesModal] = useState<boolean>(false);
     const [barnSomSkalFødes, settBarnSomSkalFødes] = useState<BarnSomSkalFødes[]>([]);
@@ -113,6 +115,7 @@ export const useJournalføringState = (
         utledFørsteDokument(journalResponse.journalpost.dokumenter)
     );
     const [skalOppretteNyBehandling, settSkalOppretteNyBehandling] = useState<boolean>(false); // TODO: Denne må sendes med til backend for å bli utført
+    const [nyAvsender, settNyAvsender] = useState<string>(''); // TODO: Denne må sendes med til backend for å bli satt
 
     useEffect(() => {
         if (stønadstype) {
@@ -181,5 +184,7 @@ export const useJournalføringState = (
         hentDokumentResponse,
         skalOppretteNyBehandling,
         settSkalOppretteNyBehandling,
+        nyAvsender,
+        settNyAvsender,
     };
 };

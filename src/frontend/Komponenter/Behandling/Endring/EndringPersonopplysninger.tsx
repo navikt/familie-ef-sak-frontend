@@ -65,6 +65,12 @@ const FeltEndring: React.FC<{ feltendring: Feltendring }> = ({ feltendring }) =>
     </ul>
 );
 
+const AdresseEndring: React.FC = () => (
+    <ul>
+        <li>Det finnes adresseendring på bruker</li>
+    </ul>
+);
+
 const Endringsdetaljer: React.FC<{ endringer: IEndringer; personopplysning: keyof IEndringer }> = ({
     endringer,
     personopplysning,
@@ -77,6 +83,8 @@ const Endringsdetaljer: React.FC<{ endringer: IEndringer; personopplysning: keyo
         case 'fødselsdato':
         case 'dødsdato':
             return <FeltEndring feltendring={endringer[personopplysning].detaljer} />;
+        case 'adresse':
+            return <AdresseEndring />;
         default:
             return null;
     }

@@ -1,5 +1,6 @@
 import { Behandlingsårsak } from './Behandlingsårsak';
 import { EVilkårsbehandleBarnValg } from './vilkårsbehandleBarnValg';
+import { BarnSomSkalFødes } from '../hooks/useJournalføringState';
 
 export interface NyeBarnSidenForrigeBehandling {
     nyeBarn: BarnForRevurdering[];
@@ -17,5 +18,5 @@ export interface RevurderingInnhold {
     behandlingsårsak: Behandlingsårsak;
     kravMottatt: string;
     vilkårsbehandleNyeBarn: EVilkårsbehandleBarnValg;
-    barn: BarnForRevurdering[];
+    barnSomSkalFødes: BarnSomSkalFødes[];
 }

@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { IJournalpostResponse } from '../../../App/typer/journalføring';
 import { EnvelopeClosedFillIcon, EnvelopeClosedIcon } from '@navikt/aksel-icons';
 import { ABlue500 } from '@navikt/ds-tokens/dist/tokens';
+import { JournalføringStateRequest } from '../../../App/hooks/useJournalføringState';
 
 const ExpansionCardHeader = styled(ExpansionCard.Header)`
     padding-bottom: 0.35rem;
@@ -38,15 +39,16 @@ const utledAvsender = (
 
 interface Props {
     journalpostResponse: IJournalpostResponse;
+    journalpostState: JournalføringStateRequest;
 }
 
-const AvsenderPanel: React.FC<Props> = ({ journalpostResponse }) => {
+const AvsenderPanel: React.FC<Props> = ({ journalpostResponse, journalpostState }) => {
     const { journalpost, navn, personIdent } = journalpostResponse;
+    const { nyAvsender, settNyAvsender } = journalpostState;
 
     const [erPanelEkspandert, settErPanelEkspandert] = useState<boolean>(false);
-    const [erBrukerAvsender, settErBrukerAvsender] = useState<boolean>(false);
+    const [erBrukerAvsender, settErBrukerAvsender] = useState<boolean>(navn !== '');
     const [harRedigertAvsender, settHarRedigertAvsender] = useState<boolean>(false);
-    const [nyAvsender, settNyAvsender] = useState<string>('');
 
     const avsender = utledAvsender(erBrukerAvsender, harRedigertAvsender, nyAvsender, navn);
     const brukerErAvsender = erBrukerAvsender || avsender === navn;
@@ -86,8 +88,17 @@ const AvsenderPanel: React.FC<Props> = ({ journalpostResponse }) => {
                         onChange={() => {
                             settErBrukerAvsender((prevState) => !prevState);
                             if (harRedigertAvsender) settHarRedigertAvsender(false);
+                            settNyAvsender(
+                                utledAvsender(
+                                    erBrukerAvsender,
+                                    harRedigertAvsender,
+                                    nyAvsender,
+                                    navn
+                                )
+                            );
                         }}
                         value={erBrukerAvsender}
+                        checked={erBrukerAvsender}
                     >
                         Avsender er bruker
                     </Checkbox>
