@@ -1,7 +1,15 @@
 import { Client, ensureAuthenticated, logRequest } from '@navikt/familie-backend';
 import { Request, Response, Router } from 'express';
 import path from 'path';
-import { buildPath, roller, urlAInntekt, urlGosys, urlHistoriskPensjon, urlModia } from './config';
+import {
+    buildPath,
+    roller,
+    urlAInntekt,
+    urlDrek,
+    urlGosys,
+    urlHistoriskPensjon,
+    urlModia,
+} from './config';
 import { prometheusTellere } from './metrikker';
 import { LOG_LEVEL } from '@navikt/familie-logging';
 
@@ -16,6 +24,7 @@ export default (authClient: Client, router: Router): Router => {
                 gosys: urlGosys,
                 modia: urlModia,
                 historiskPensjon: urlHistoriskPensjon,
+                drek: urlDrek,
                 roller,
             })
             .end();
