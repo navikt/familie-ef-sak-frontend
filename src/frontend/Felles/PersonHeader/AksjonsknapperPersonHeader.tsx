@@ -59,7 +59,7 @@ export const AksjonsknapperPersonHeader: React.FC<Props> = ({ erSaksbehandler, b
     const saksbehandlerKanRedigereBehandling = (rolle: AnsvarligSaksbehandlerRolle) =>
         gyldigeSaksbehandlerRoller.includes(rolle) ||
         (toggles[ToggleName.henleggBehandlingUtenÅHenleggeOppgave] &&
-            rolle === AnsvarligSaksbehandlerRolle.OPPGAVE_HAR_ANNET_TEMA_ENN_ENF);
+            rolle === AnsvarligSaksbehandlerRolle.OPPGAVE_TILHØRER_IKKE_ENF);
 
     return (
         <DataViewer response={{ ansvarligSaksbehandler }}>
