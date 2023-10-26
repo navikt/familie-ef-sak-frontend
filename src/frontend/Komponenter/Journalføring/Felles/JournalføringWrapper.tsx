@@ -16,7 +16,7 @@ export const Kolonner = styled.div`
 `;
 
 export const Venstrekolonne = styled.div`
-    padding: 1rem 2rem 0 2rem;
+    padding: 1rem 2rem 1rem 2rem;
     height: inherit;
     overflow: auto;
     @media (min-width: 1225px) {

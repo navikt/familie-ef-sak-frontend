@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { RessursStatus } from '../../../App/typer/ressurs';
 import styled from 'styled-components';
@@ -6,14 +6,13 @@ import {
     JournalføringStateRequest,
     useJournalføringState,
 } from '../../../App/hooks/useJournalføringState';
-import { useHentFagsak } from '../../../App/hooks/useHentFagsak';
 import { useApp } from '../../../App/context/AppContext';
 import {
     hentFraLocalStorage,
     lagreTilLocalStorage,
     oppgaveRequestKey,
 } from '../../Oppgavebenk/oppgavefilterStorage';
-import { Heading } from '@navikt/ds-react';
+import { Heading, HStack } from '@navikt/ds-react';
 import JournalføringWrapper, {
     Høyrekolonne,
     JournalføringAppProps,
@@ -25,6 +24,9 @@ import JournalpostPanel from './JournalpostPanel';
 import BrukerPanel from './BrukerPanel';
 import AvsenderPanel from './AvsenderPanel';
 import Dokumenter from './Dokumenter';
+import { AlertError, AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
+import Behandlinger from './Behandlinger';
+import { Knapp } from '../../../Felles/Knapper/HovedKnapp';
 
 const InnerContainer = styled.div`
     display: flex;
@@ -48,7 +50,7 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
         oppgaveId
     );
 
-    const { fagsak } = useHentFagsak();
+    const [feilmelding, settFeilmelding] = useState<string>('');
 
     useEffect(() => {
         if (journalpostState.innsending.status === RessursStatus.SUKSESS) {
@@ -64,13 +66,6 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
             navigate('/oppgavebenk');
         }
     }, [innloggetSaksbehandler, journalResponse, journalpostState, navigate]);
-
-    useEffect(() => {
-        if (fagsak.status === RessursStatus.SUKSESS) {
-            journalpostState.settFagsakId(fagsak.data.id);
-        }
-        // eslint-disable-next-line
-    }, [fagsak]);
 
     return (
         <Kolonner>
@@ -109,6 +104,38 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
                             journalpostState={journalpostState}
                         />
                     </section>
+                    <section>
+                        <Tittel size={'small'} level={'2'}>
+                            Behandling
+                        </Tittel>
+                        <AlertInfo>
+                            Merk at du ikke lenger trenger å knytte dokumenter til spesifikke
+                            behandlinger da de automatisk knyttes til bruker. Du kan i listen under
+                            få oversikt over tidligere behandlinger og vurdere om det skal opprettes
+                            en ny behandling fra denne journalføringen.
+                        </AlertInfo>
+                        <Behandlinger
+                            fagsak={journalpostState.fagsak}
+                            settFeilmelding={settFeilmelding}
+                            skalOppretteNyBehandling={journalpostState.skalOppretteNyBehandling}
+                            settSkalOppretteNyBehandling={
+                                journalpostState.settSkalOppretteNyBehandling
+                            }
+                        />
+                    </section>
+                    <HStack gap="4" justify="end">
+                        <Knapp
+                            size={'small'}
+                            variant={'tertiary'}
+                            onClick={() => navigate('/oppgavebenk')}
+                        >
+                            Avbryt
+                        </Knapp>
+                        <Knapp size={'small'} variant={'primary'} onClick={() => {}}>
+                            Journalfør
+                        </Knapp>
+                    </HStack>
+                    {feilmelding && <AlertError>{feilmelding}</AlertError>}
                 </InnerContainer>
             </Venstrekolonne>
             <Høyrekolonne>
