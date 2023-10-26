@@ -13,14 +13,10 @@ import {
 } from '../../../App/typer/vedtak';
 import { nåværendeÅrOgMånedFormatert } from '../Sanksjon/utils';
 import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
-import { Heading, Alert } from '@navikt/ds-react';
+import { Heading } from '@navikt/ds-react';
 
 const SimuleringsContainer = styled.div`
     margin: 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    width: fit-content;
 `;
 
 const Seksjon = styled.div`
@@ -29,10 +25,6 @@ const Seksjon = styled.div`
 
 const TekstMedMargin = styled(BodyShortSmall)`
     margin-top: 1rem;
-`;
-
-const StyledAlert = styled(Alert)`
-    max-width: 60rem;
 `;
 
 const mapSimuleringstabellRader = (
@@ -76,23 +68,9 @@ const SimuleringTabellWrapper: React.FC<{
         return simuleringsresultat.feilutbetaling > 0;
     }
 
-    function positivSumAvManuellePosteringer(simuleringsresultat: ISimulering) {
-        return (
-            simuleringsresultat.sumManuellePosteringer !== null &&
-            simuleringsresultat.sumManuellePosteringer !== undefined &&
-            simuleringsresultat.sumManuellePosteringer > 0
-        );
-    }
-
     return (
         <SimuleringsContainer>
             <SimuleringOversikt simulering={simuleringsresultat} />
-            {positivSumAvManuellePosteringer(simuleringsresultat) && (
-                <StyledAlert variant={'warning'}>
-                    Det finnes manuelle posteringer tilknyttet tidligere behandling.
-                    Simuleringsbildet kan derfor være ufullstendig.
-                </StyledAlert>
-            )}
             <SimuleringTabell
                 perioder={simuleringTabellRader}
                 årsvelger={{ valgtÅr: år, settÅr: settÅr, muligeÅr: muligeÅr }}
