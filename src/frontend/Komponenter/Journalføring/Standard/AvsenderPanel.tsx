@@ -17,7 +17,7 @@ const ExpansionCardContent = styled.div`
     padding-bottom: 1rem;
 `;
 
-const IconContainer = styled.div`
+const IkonContainer = styled.div`
     color: ${ABlue500};
 `;
 
@@ -63,13 +63,13 @@ const AvsenderPanel: React.FC<Props> = ({ journalpostResponse, journalpostState 
         >
             <ExpansionCardHeader>
                 <HStack gap="4">
-                    <IconContainer>
+                    <IkonContainer>
                         {erPanelEkspandert ? (
                             <EnvelopeClosedFillIcon fontSize={'3.5rem'} />
                         ) : (
                             <EnvelopeClosedIcon fontSize={'3.5rem'} />
                         )}
-                    </IconContainer>
+                    </IkonContainer>
                     <HStack align="center">
                         {brukerErAvsender ? (
                             <>

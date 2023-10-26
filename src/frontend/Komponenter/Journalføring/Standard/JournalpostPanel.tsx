@@ -17,7 +17,7 @@ import {
 } from '../Felles/utils';
 import { JournalføringStateRequest } from '../../../App/hooks/useJournalføringState';
 
-const IconContainer = styled.div`
+const IkonContainer = styled.div`
     color: ${ABlue500};
 `;
 
@@ -68,13 +68,13 @@ const JournalpostPanel: React.FC<Props> = ({ journalpost, journalpostState }) =>
         >
             <ExpansionCardHeader>
                 <HStack gap="4">
-                    <IconContainer>
+                    <IkonContainer>
                         {erPanelEkspandert ? (
                             <FolderFileFillIcon fontSize={'3.5rem'} />
                         ) : (
                             <FolderFileIcon fontSize={'3.5rem'} />
                         )}
-                    </IconContainer>
+                    </IkonContainer>
                     <Grid>
                         <Heading size={'small'} level={'2'}>
                             Tema:
