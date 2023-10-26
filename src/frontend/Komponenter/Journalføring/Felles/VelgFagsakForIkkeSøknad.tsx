@@ -1,15 +1,15 @@
-import { IJojurnalpostResponse } from '../../App/typer/journalføring';
+import { IJournalpostResponse } from '../../../App/typer/journalføring';
 import {
     behandlingstemaTilStønadstype,
     Stønadstype,
     stønadstypeTilTekst,
-} from '../../App/typer/behandlingstema';
+} from '../../../App/typer/behandlingstema';
 import React, { useEffect, useState } from 'react';
 import { Select } from '@navikt/ds-react';
 import styled from 'styled-components';
 
 export function VelgFagsakForIkkeSøknad(props: {
-    journalResponse: IJojurnalpostResponse;
+    journalResponse: IJournalpostResponse;
     hentFagsak: (personIdent: string, stønadstype: Stønadstype) => void;
 }) {
     const { journalResponse, hentFagsak } = props;

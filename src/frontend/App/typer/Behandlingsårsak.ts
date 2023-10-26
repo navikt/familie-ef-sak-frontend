@@ -29,11 +29,12 @@ export const behandlingsårsakTilTekst: Record<Behandlingsårsak, string> = {
     SATSENDRING: 'Satsendring',
 };
 
-export const behandlingsårsaker: Behandlingsårsak[] = [
+export const behandlingsårsakerForRevurdering: Behandlingsårsak[] = [
     Behandlingsårsak.KLAGE,
     Behandlingsårsak.NYE_OPPLYSNINGER,
     Behandlingsårsak.SANKSJON_1_MND,
     Behandlingsårsak.SØKNAD,
+    Behandlingsårsak.PAPIRSØKNAD,
     Behandlingsårsak.G_OMREGNING,
     Behandlingsårsak.IVERKSETTE_KA_VEDTAK,
     Behandlingsårsak.KORRIGERING_UTEN_BREV,

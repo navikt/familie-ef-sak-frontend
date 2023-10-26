@@ -34,7 +34,6 @@ export const innloggetSaksbehandlerKanRedigereBehandling = (
     ansvarligSaksbehandler: AnsvarligSaksbehandler
 ) => {
     return (
-        ansvarligSaksbehandler.rolle === AnsvarligSaksbehandlerRolle.IKKE_SATT ||
         ansvarligSaksbehandler.rolle === AnsvarligSaksbehandlerRolle.INNLOGGET_SAKSBEHANDLER ||
         ansvarligSaksbehandler.rolle === AnsvarligSaksbehandlerRolle.OPPGAVE_FINNES_IKKE
     );

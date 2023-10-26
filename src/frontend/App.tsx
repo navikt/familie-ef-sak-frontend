@@ -5,11 +5,11 @@ import { AppProvider, useApp } from './App/context/AppContext';
 import { hentInnloggetBruker } from './App/api/saksbehandler';
 import { ISaksbehandler } from './App/typer/saksbehandler';
 import ErrorBoundary from './Felles/ErrorBoundary/ErrorBoundary';
-import { TogglesProvider } from './App/context/TogglesContext';
+import { TogglesProvider, useToggles } from './App/context/TogglesContext';
 import { HeaderMedSøk } from './Felles/HeaderMedSøk/HeaderMedSøk';
 import { BehandlingContainer } from './Komponenter/Behandling/BehandlingContainer';
 import { OppgavebenkApp } from './Komponenter/Oppgavebenk/OppgavebenkApp';
-import { JournalføringApp } from './Komponenter/Journalføring/JournalføringApp';
+import { JournalføringApp } from './Komponenter/Journalføring/Standard/JournalføringApp';
 import Personoversikt from './Komponenter/Personoversikt/Personoversikt';
 import EksternRedirectContainer from './Komponenter/EksternRedirect/EksternRedirectContainer';
 import UttrekkArbeidssøker from './Komponenter/Uttrekk/UttrekkArbeidssøker';
@@ -20,7 +20,7 @@ import { AdminApp } from './Komponenter/Admin/AdminApp';
 import ScrollToTop from './Felles/ScrollToTop/ScrollToTop';
 import styled from 'styled-components';
 import { ModalWrapper } from './Felles/Modal/ModalWrapper';
-import { JournalføringKlageApp } from './Komponenter/Journalføring/JournalføringKlageApp';
+import { JournalføringKlageApp } from './Komponenter/Journalføring/Klage/JournalføringKlageApp';
 import VelgPersonOgStønadstype from './Komponenter/Behandling/Førstegangsbehandling/VelgPersonOgStønadstype';
 import OpprettFørstegangsbehandling from './Komponenter/Behandling/Førstegangsbehandling/OpprettFørstegangsbehandling';
 import {
@@ -36,6 +36,8 @@ import UlagretDataModal from './Felles/Visningskomponenter/UlagretDataModal';
 import { loggBesøkEvent } from './App/utils/amplitude/amplitudeLoggEvents';
 import { BesøkEvent } from './App/utils/amplitude/typer';
 import Innloggingsfeilmelding from './Felles/Varsel/Innloggingsfeilmelding';
+import { ToggleName } from './App/context/toggles';
+import { JournalføringAppNy } from './Komponenter/Journalføring/Standard/JournalføringAppNy';
 
 const Innhold = styled(BodyLong)`
     margin-top: 2rem;
@@ -78,6 +80,7 @@ const AppRoutes: React.FC<{ innloggetSaksbehandler: ISaksbehandler }> = ({
     innloggetSaksbehandler,
 }) => {
     const { autentisert } = useApp();
+    const { toggles } = useToggles();
 
     const router = createBrowserRouter(
         createRoutesFromElements(
@@ -92,7 +95,16 @@ const AppRoutes: React.FC<{ innloggetSaksbehandler: ISaksbehandler }> = ({
                     />
                     <Route path="/behandling/:behandlingId/*" element={<BehandlingContainer />} />
                     <Route path="/oppgavebenk" element={<OppgavebenkApp />} />
-                    <Route path="/journalfor" element={<JournalføringApp />} />
+                    <Route
+                        path="/journalfor"
+                        element={
+                            toggles[ToggleName.visNyJournalføring] ? (
+                                <JournalføringAppNy />
+                            ) : (
+                                <JournalføringApp />
+                            )
+                        }
+                    />
                     <Route path="/journalfor-klage" element={<JournalføringKlageApp />} />
                     <Route path="/admin/*" element={<AdminApp />} />
                     <Route path="/fagsak/:fagsakId" element={<FagsakTilFagsakPersonRedirect />} />

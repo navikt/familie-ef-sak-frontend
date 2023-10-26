@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { erFørEllerLikDagensDato, erGyldigDato } from '../../../App/utils/dato';
 import { Alert, Button } from '@navikt/ds-react';
-import KlageGjelderTilbakekreving from '../../Journalføring/KlageGjelderTilbakekreving';
+import KlageGjelderTilbakekreving from './KlageGjelderTilbakekreving';
 import { Datovelger } from '../../../Felles/Datovelger/Datovelger';
 
 const AlertStripe = styled(Alert)`

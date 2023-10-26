@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useApp } from '../../../App/context/AppContext';
-import LeggTilBarnSomSkalFødes from '../../Journalføring/LeggTilBarnSomSkalFødes';
+import LeggTilBarnSomSkalFødes from './LeggTilBarnSomSkalFødes';
 import { BarnSomSkalFødes } from '../../../App/hooks/useJournalføringState';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Behandling, BehandlingResultat, Fagsak } from '../../../App/typer/fagsak';

@@ -20,7 +20,7 @@ export interface IOppgave {
     tilordnetRessurs?: string;
     beskrivelse?: string;
     temagruppe?: string;
-    tema?: string; // TEMA???
+    tema?: string;
     behandlingstema?: Behandlingstema;
     oppgavetype?: Oppgavetype;
     behandlingstype?: string;
@@ -33,6 +33,6 @@ export interface IOppgave {
     endretAv?: string;
     ferdigstiltTidspunkt?: string;
     endretTidspunkt?: string;
-    prioritet?: Prioritet; //OppgavePrioritet
-    status?: string; //StatusEnum
+    prioritet?: Prioritet;
+    status?: string;
 }

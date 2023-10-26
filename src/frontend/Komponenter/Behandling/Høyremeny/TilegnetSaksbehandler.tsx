@@ -81,7 +81,7 @@ const TilegnetSaksbehandler: React.FC<Props> = ({ behandling }) => {
     ): string => {
         switch (ansvarligSaksbehandlerRolle) {
             case AnsvarligSaksbehandlerRolle.IKKE_SATT:
-            case AnsvarligSaksbehandlerRolle.UTVIKLER_MED_VEILDERROLLE:
+            case AnsvarligSaksbehandlerRolle.UTVIKLER_MED_VEILEDERROLLE:
                 return ASurfaceNeutral;
             case AnsvarligSaksbehandlerRolle.INNLOGGET_SAKSBEHANDLER:
                 return ASurfaceSuccess;
@@ -97,7 +97,7 @@ const TilegnetSaksbehandler: React.FC<Props> = ({ behandling }) => {
             case AnsvarligSaksbehandlerRolle.INNLOGGET_SAKSBEHANDLER:
             case AnsvarligSaksbehandlerRolle.ANNEN_SAKSBEHANDLER:
                 return `${ansvarligSaksbehandler.fornavn} ${ansvarligSaksbehandler.etternavn}`;
-            case AnsvarligSaksbehandlerRolle.UTVIKLER_MED_VEILDERROLLE:
+            case AnsvarligSaksbehandlerRolle.UTVIKLER_MED_VEILEDERROLLE:
                 return 'ingen tilgang';
             default:
                 return 'ingen ansvarlig';

@@ -1,8 +1,8 @@
 import React, { useEffect, useMemo } from 'react';
-import { HentDokumentResponse } from '../../App/hooks/useHentDokument';
+import { HentDokumentResponse } from '../../../App/hooks/useHentDokument';
 import styled from 'styled-components';
-import DataViewer from '../../Felles/DataViewer/DataViewer';
-import { base64toBlob } from '../../App/utils/utils';
+import DataViewer from '../../../Felles/DataViewer/DataViewer';
+import { base64toBlob } from '../../../App/utils/utils';
 
 const Container = styled.div`
     flex: 1 1 auto;

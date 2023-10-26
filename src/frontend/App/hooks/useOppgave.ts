@@ -7,7 +7,7 @@ import { Stønadstype } from '../typer/behandlingstema';
 import {
     lagJournalføringKlageUrl,
     lagJournalføringUrl,
-} from '../../Komponenter/Journalføring/utils';
+} from '../../Komponenter/Journalføring/Felles/utils';
 import { useNavigate } from 'react-router-dom';
 
 interface OppgaveDto {

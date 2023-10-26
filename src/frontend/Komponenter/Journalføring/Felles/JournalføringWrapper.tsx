@@ -1,10 +1,10 @@
 import React, { FunctionComponent, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
-import { useQueryParams } from '../../App/hooks/felles/useQueryParams';
+import { useQueryParams } from '../../../App/hooks/felles/useQueryParams';
 import { JOURNALPOST_QUERY_STRING, OPPGAVEID_QUERY_STRING } from './utils';
-import { useHentJournalpost } from '../../App/hooks/useHentJournalpost';
-import DataViewer from '../../Felles/DataViewer/DataViewer';
-import { IJojurnalpostResponse } from '../../App/typer/journalføring';
+import { useHentJournalpost } from '../../../App/hooks/useHentJournalpost';
+import DataViewer from '../../../Felles/DataViewer/DataViewer';
+import { IJournalpostResponse } from '../../../App/typer/journalføring';
 import styled from 'styled-components';
 
 export const SideLayout = styled.div``;
@@ -16,7 +16,7 @@ export const Kolonner = styled.div`
 `;
 
 export const Venstrekolonne = styled.div`
-    padding: 1rem 2rem 0 2rem;
+    padding: 1rem 2rem 1rem 2rem;
     height: inherit;
     overflow: auto;
     @media (min-width: 1225px) {
@@ -38,7 +38,7 @@ export const FlexKnapper = styled.div`
 
 export interface JournalføringAppProps {
     oppgaveId: string;
-    journalResponse: IJojurnalpostResponse;
+    journalResponse: IJournalpostResponse;
 }
 
 interface JournalføringAppSide {
