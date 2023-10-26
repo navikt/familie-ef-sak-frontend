@@ -97,13 +97,15 @@ export const BrevmottakereModal: FC<{
             return true;
         }
         const initielleOrganisasjonsNummer = initielleOrgNumre.map(
-            (org) => org.organisasjonsnummer
+            (organisasjonsMottaker) => organisasjonsMottaker.organisasjonsnummer
         );
-        const initielleNavHosOrganisasjon = initielleOrgNumre.map((org) => org.navnHosOrganisasjon);
+        const initielleNavHosOrganisasjon = initielleOrgNumre.map(
+            (organisasjonsMottaker) => organisasjonsMottaker.navnHosOrganisasjon
+        );
         return valgteOrgNumre.some(
-            (organisasjon) =>
-                !initielleOrganisasjonsNummer.includes(organisasjon.organisasjonsnummer) ||
-                !initielleNavHosOrganisasjon.includes(organisasjon.navnHosOrganisasjon)
+            (organisasjonsMottaker) =>
+                !initielleOrganisasjonsNummer.includes(organisasjonsMottaker.organisasjonsnummer) ||
+                !initielleNavHosOrganisasjon.includes(organisasjonsMottaker.navnHosOrganisasjon)
         );
     };
 
