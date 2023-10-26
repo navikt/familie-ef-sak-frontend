@@ -22,7 +22,7 @@ const FlexRow = styled.div`
     gap: 1rem;
 `;
 
-const IconContainer = styled.div`
+const IkonContainer = styled.div`
     color: ${ABlue500};
 `;
 
@@ -73,13 +73,13 @@ const AvsenderPanel: React.FC<Props> = ({ journalpostResponse, journalpostState 
         >
             <ExpansionCardHeader>
                 <FlexRow>
-                    <IconContainer>
+                    <IkonContainer>
                         {erPanelEkspandert ? (
                             <EnvelopeClosedFillIcon fontSize={'3.5rem'} />
                         ) : (
                             <EnvelopeClosedIcon fontSize={'3.5rem'} />
                         )}
-                    </IconContainer>
+                    </IkonContainer>
                     <Tittel>
                         {brukerErAvsender ? (
                             <>
