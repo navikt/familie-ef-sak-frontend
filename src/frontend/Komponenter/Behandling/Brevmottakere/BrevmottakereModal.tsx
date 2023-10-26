@@ -67,7 +67,7 @@ export const BrevmottakereModal: FC<{
 
     const initiellePersonIdenter = mottakere.personer.map((mottaker) => mottaker.personIdent);
     const valgtePersonIdenter = valgtePersonMottakere.map((mottaker) => mottaker.personIdent);
-    const initelleOrgNumre = mottakere.organisasjoner;
+    const initielleOrgNumre = mottakere.organisasjoner;
 
     const settBrevmottakere = () => {
         settFeilmelding('');
@@ -114,7 +114,7 @@ export const BrevmottakereModal: FC<{
 
     const mottakerListeHarEndringer =
         harNyeMottakere(initiellePersonIdenter, valgtePersonIdenter) ||
-        harNyeOrganisasjoner(initelleOrgNumre, valgteOrganisasjonMottakere);
+        harNyeOrganisasjoner(initielleOrgNumre, valgteOrganisasjonMottakere);
 
     const deaktiverSettMottakere = !harBrevmottakere || !mottakerListeHarEndringer;
 
