@@ -1,21 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { erAvTypeFeil, Ressurs, RessursStatus } from '../../App/typer/ressurs';
-import Brukerinfo from './Brukerinfo';
-import DokumentVisning from './Dokumentvisning';
-import { Stønadstype } from '../../App/typer/behandlingstema';
-import { useHentDokument } from '../../App/hooks/useHentDokument';
-import { useHentFagsak } from '../../App/hooks/useHentFagsak';
-import { useApp } from '../../App/context/AppContext';
+import { erAvTypeFeil, Ressurs, RessursStatus } from '../../../App/typer/ressurs';
+import Brukerinfo from '../Felles/Brukerinfo';
+import DokumentVisning from '../Felles/Dokumentvisning';
+import { Stønadstype } from '../../../App/typer/behandlingstema';
+import { useHentDokument } from '../../../App/hooks/useHentDokument';
+import { useHentFagsak } from '../../../App/hooks/useHentFagsak';
+import { useApp } from '../../../App/context/AppContext';
 import {
     hentFraLocalStorage,
     lagreTilLocalStorage,
     oppgaveRequestKey,
-} from '../Oppgavebenk/oppgavefilterStorage';
-import { IJojurnalpostResponse } from '../../App/typer/journalføring';
-import { VelgFagsakForIkkeSøknad } from './VelgFagsakForIkkeSøknad';
-import { AlertError } from '../../Felles/Visningskomponenter/Alerts';
-import { harTittelForAlleDokumenter, utledKolonneTittel } from './utils';
+} from '../../Oppgavebenk/oppgavefilterStorage';
+import { VelgFagsakForIkkeSøknad } from '../Felles/VelgFagsakForIkkeSøknad';
+import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
+import { harValgtNyKlageBehandling, utledKolonneTittel } from '../Felles/utils';
 import JournalføringWrapper, {
     FlexKnapper,
     Høyrekolonne,
@@ -23,51 +22,28 @@ import JournalføringWrapper, {
     Kolonner,
     SideLayout,
     Venstrekolonne,
-} from './JournalføringWrapper';
-import JournalføringPdfVisning from './JournalføringPdfVisning';
+} from '../Felles/JournalføringWrapper';
+import JournalføringPdfVisning from '../Felles/JournalføringPdfVisning';
 import {
     JournalføringKlageStateRequest,
     useJournalføringKlageState,
-} from '../../App/hooks/useJournalføringKlageState';
-import { useHentKlagebehandlinger } from '../../App/hooks/useHentKlagebehandlinger';
+} from '../../../App/hooks/useJournalføringKlageState';
+import { useHentKlagebehandlinger } from '../../../App/hooks/useHentKlagebehandlinger';
 import BehandlingKlageInnold from './BehandlingKlageInnold';
-import { Klagebehandlinger } from '../../App/typer/klage';
-import { Fagsak } from '../../App/typer/fagsak';
-import { harValgtNyKlageBehandling } from './journalførBehandlingUtil';
-import { erGyldigDato } from '../../App/utils/dato';
+import { Klagebehandlinger } from '../../../App/typer/klage';
+import { Fagsak } from '../../../App/typer/fagsak';
 import styled from 'styled-components';
-import JournalpostTittelOgLenke from './JournalpostTittelOgLenke';
+import JournalpostTittelOgLenke from '../Felles/JournalpostTittelOgLenke';
 import { Button, Fieldset, Heading } from '@navikt/ds-react';
-import { ÅpneKlager } from '../Personoversikt/Klage/ÅpneKlager';
-import KlageGjelderTilbakekreving from './KlageGjelderTilbakekreving';
-import { Datovelger } from '../../Felles/Datovelger/Datovelger';
+import { ÅpneKlager } from '../../Personoversikt/Klage/ÅpneKlager';
+import KlageGjelderTilbakekreving from '../../Personoversikt/Klage/KlageGjelderTilbakekreving';
+import { Datovelger } from '../../../Felles/Datovelger/Datovelger';
+import { validerJournalføringKlageState } from '../Felles/JournalføringValidering';
 
 const KlageMottatt = styled.div`
     margin-top: 1rem;
     margin-bottom: 1rem;
 `;
-
-const validerJournalføringState = (
-    journalResponse: IJojurnalpostResponse,
-    journalpostState: JournalføringKlageStateRequest
-): string | undefined => {
-    if (!journalpostState.behandling) {
-        return 'Du må velge en behandling for å journalføre';
-    } else if (!harTittelForAlleDokumenter(journalResponse, journalpostState.dokumentTitler)) {
-        return 'Mangler tittel på et eller flere dokumenter';
-    } else if (journalResponse.journalpost.tema !== 'ENF') {
-        return 'Tema på journalføringsoppgaven må endres til «Enslig forsørger» i Gosys før du kan journalføre dokumentet i EF Sak';
-    } else if (
-        harValgtNyKlageBehandling(journalpostState.behandling) &&
-        !journalResponse.journalpost.datoMottatt &&
-        (!journalpostState.behandling.mottattDato ||
-            !erGyldigDato(journalpostState.behandling.mottattDato))
-    ) {
-        return 'Mangler gyldig mottatt dato';
-    } else {
-        return undefined;
-    }
-};
 
 export const JournalføringKlageApp: React.FC = () => {
     return <JournalføringWrapper komponent={JournalføringAppContent} />;
@@ -135,7 +111,7 @@ const JournalføringAppContent: React.FC<JournalføringAppProps> = ({
     const erNyBehandling = harValgtNyKlageBehandling(journalpostState.behandling);
 
     const journalFør = () => {
-        const feilmeldingFraValidering = validerJournalføringState(
+        const feilmeldingFraValidering = validerJournalføringKlageState(
             journalResponse,
             journalpostState
         );

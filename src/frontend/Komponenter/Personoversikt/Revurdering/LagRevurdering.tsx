@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
     Behandlingsårsak,
-    behandlingsårsaker,
+    behandlingsårsakerForRevurdering,
     behandlingsårsakTilTekst,
 } from '../../../App/typer/Behandlingsårsak';
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
@@ -28,6 +28,8 @@ import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { erEtterDagensDato, erGyldigDato } from '../../../App/utils/dato';
 import { Alert, Button, Select } from '@navikt/ds-react';
 import { Datovelger } from '../../../Felles/Datovelger/Datovelger';
+import LeggTilBarnSomSkalFødes from '../../Behandling/Førstegangsbehandling/LeggTilBarnSomSkalFødes';
+import { BarnSomSkalFødes } from '../../../App/hooks/useJournalføringState';
 
 const DatoContainer = styled.div`
     margin-top: 2rem;
@@ -54,6 +56,14 @@ const ModalKnapp = styled(Button)`
     padding-left: 1.5rem;
     margin-left: 1rem;
 `;
+
+const inneholderBarnSomErUgyldige = (barnSomSkalFødes: BarnSomSkalFødes[]) =>
+    barnSomSkalFødes.some(
+        (barn) =>
+            !barn.fødselTerminDato ||
+            barn.fødselTerminDato.trim() === '' ||
+            !erGyldigDato(barn.fødselTerminDato)
+    );
 
 interface IProps {
     fagsak: Fagsak;
@@ -82,6 +92,7 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
     const [vilkårsbehandleNyeBarn, settVilkårsbehandleNyeBarn] = useState<EVilkårsbehandleBarnValg>(
         EVilkårsbehandleBarnValg.IKKE_VALGT
     );
+    const [barnSomSkalFødes, settBarnSomSkalFødes] = useState<BarnSomSkalFødes[]>([]);
 
     useEffect(() => {
         axiosRequest<NyeBarnSidenForrigeBehandling, null>({
@@ -119,15 +130,14 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                 );
             case Behandlingsårsak.IVERKSETTE_KA_VEDTAK:
                 return toggles[ToggleName.visKAVedtakAlternativ];
+            case Behandlingsårsak.PAPIRSØKNAD:
+                return toggles[ToggleName.papirsoknadTerminbarnRevurdering];
             default:
                 return true;
         }
     };
 
-    const opprettRevurdering = (
-        måTaStillingTilBarn: boolean,
-        nyeBarnSidenForrigeBehandling: NyeBarnSidenForrigeBehandling
-    ) => {
+    const opprettRevurdering = (måTaStillingTilBarn: boolean) => {
         if (!valgtBehandlingsårsak) {
             settFeilmeldingModal('Vennligst velg en årsak');
         } else if (!valgtDato || !erGyldigDato(valgtDato)) {
@@ -139,16 +149,15 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
             vilkårsbehandleNyeBarn === EVilkårsbehandleBarnValg.IKKE_VALGT
         ) {
             settFeilmeldingModal('Vennligst ta stilling til barn');
+        } else if (inneholderBarnSomErUgyldige(barnSomSkalFødes)) {
+            settFeilmeldingModal('Et eller flere barn mangler gyldig dato');
         } else {
             lagRevurdering({
                 fagsakId: fagsak.id,
-                barn:
-                    vilkårsbehandleNyeBarn === EVilkårsbehandleBarnValg.VILKÅRSBEHANDLE
-                        ? nyeBarnSidenForrigeBehandling.nyeBarn
-                        : [],
                 behandlingsårsak: valgtBehandlingsårsak,
                 kravMottatt: valgtDato,
                 vilkårsbehandleNyeBarn: vilkårsbehandleNyeBarn,
+                barnSomSkalFødes: barnSomSkalFødes,
             });
         }
     };
@@ -176,7 +185,7 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                         >
                             <option value="">Velg</option>
                             {valgtBehandlingstype === Behandlingstype.REVURDERING &&
-                                behandlingsårsaker
+                                behandlingsårsakerForRevurdering
                                     .filter(skalViseÅrsak)
                                     .map((behandlingsårsak: Behandlingsårsak, index: number) => (
                                         <option key={index} value={behandlingsårsak}>
@@ -209,6 +218,15 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                                     settVilkårsbehandleNyeBarn={settVilkårsbehandleNyeBarn}
                                 />
                             )}
+                            {toggles[ToggleName.papirsoknadTerminbarnRevurdering] &&
+                                fagsak.stønadstype !== Stønadstype.BARNETILSYN &&
+                                valgtBehandlingsårsak === Behandlingsårsak.PAPIRSØKNAD && (
+                                    <LeggTilBarnSomSkalFødes
+                                        barnSomSkalFødes={barnSomSkalFødes}
+                                        oppdaterBarnSomSkalFødes={settBarnSomSkalFødes}
+                                        tittel={'Terminbarn'}
+                                    />
+                                )}
                             {feilmeldingModal && (
                                 <AlertStripe variant={'error'}>{feilmeldingModal}</AlertStripe>
                             )}
@@ -224,12 +242,7 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                             </ModalKnapp>
                             <ModalKnapp
                                 variant="primary"
-                                onClick={() =>
-                                    opprettRevurdering(
-                                        måTaStillingTilBarn,
-                                        nyeBarnSidenForrigeBehandling
-                                    )
-                                }
+                                onClick={() => opprettRevurdering(måTaStillingTilBarn)}
                             >
                                 Opprett
                             </ModalKnapp>

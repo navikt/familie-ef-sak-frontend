@@ -103,7 +103,7 @@ export const avsenderMottakerIdTypeTilTekst: Record<AvsenderMottakerIdType, stri
     NULL: '',
 };
 
-export interface IJojurnalpostResponse {
+export interface IJournalpostResponse {
     journalpost: IJournalpost;
     personIdent: string;
     navn: string;
@@ -116,3 +116,4 @@ export interface BrukerInfo {
 }
 
 export type DokumentTitler = Record<string, string>;
+export type LogiskeVedleggPåDokument = Record<string, string[]>;

@@ -2,8 +2,8 @@ import EndreDokumentTittel from './EndreDokumentTittel';
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import styled from 'styled-components';
 import VisDokumentTittel from './VisDokumentTittel';
-import { IJournalpost } from '../../App/typer/journalføring';
-import { OrNothing } from '../../App/hooks/felles/useSorteringState';
+import { IJournalpost } from '../../../App/typer/journalføring';
+import { OrNothing } from '../../../App/hooks/felles/useSorteringState';
 import { Heading } from '@navikt/ds-react';
 import { ABorderDivider } from '@navikt/ds-tokens/dist/tokens';
 
