@@ -67,8 +67,7 @@ export const BrevmottakereModal: FC<{
 
     const initiellePersonIdenter = mottakere.personer.map((mottaker) => mottaker.personIdent);
     const valgtePersonIdenter = valgtePersonMottakere.map((mottaker) => mottaker.personIdent);
-    const initelleOrgNumre = mottakere.organisasjoner.map((org) => org.organisasjonsnummer);
-    const valgteOrgNumre = valgteOrganisasjonMottakere.map((org) => org.organisasjonsnummer);
+    const initielleOrgNumre = mottakere.organisasjoner;
 
     const settBrevmottakere = () => {
         settFeilmelding('');
@@ -90,12 +89,32 @@ export const BrevmottakereModal: FC<{
         valgteIdenter.some((identNummer) => !initelleIdenter.includes(identNummer)) ||
         valgteIdenter.length !== initelleIdenter.length;
 
+    const harNyeOrganisasjoner = (
+        initielleOrgNumre: IOrganisasjonMottaker[],
+        valgteOrgNumre: IOrganisasjonMottaker[]
+    ) => {
+        if (initielleOrgNumre.length !== valgteOrgNumre.length) {
+            return true;
+        }
+        const initielleOrganisasjonsNummer = initielleOrgNumre.map(
+            (organisasjonsMottaker) => organisasjonsMottaker.organisasjonsnummer
+        );
+        const initielleNavHosOrganisasjon = initielleOrgNumre.map(
+            (organisasjonsMottaker) => organisasjonsMottaker.navnHosOrganisasjon
+        );
+        return valgteOrgNumre.some(
+            (organisasjonsMottaker) =>
+                !initielleOrganisasjonsNummer.includes(organisasjonsMottaker.organisasjonsnummer) ||
+                !initielleNavHosOrganisasjon.includes(organisasjonsMottaker.navnHosOrganisasjon)
+        );
+    };
+
     const harBrevmottakere =
         valgtePersonMottakere.length > 0 || valgteOrganisasjonMottakere.length > 0;
 
     const mottakerListeHarEndringer =
         harNyeMottakere(initiellePersonIdenter, valgtePersonIdenter) ||
-        harNyeMottakere(initelleOrgNumre, valgteOrgNumre);
+        harNyeOrganisasjoner(initielleOrgNumre, valgteOrganisasjonMottakere);
 
     const deaktiverSettMottakere = !harBrevmottakere || !mottakerListeHarEndringer;
 
