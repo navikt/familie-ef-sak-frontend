@@ -40,7 +40,7 @@ export const HenleggModal: FC<{ behandling: Behandling }> = ({ behandling }) => 
 
     const utledEndepunktForHenleggelse = (rolle: AnsvarligSaksbehandlerRolle) =>
         toggles[ToggleName.henleggBehandlingUtenÅHenleggeOppgave] &&
-        rolle === AnsvarligSaksbehandlerRolle.OPPGAVE_HAR_ANNET_TEMA_ENN_ENF
+        rolle === AnsvarligSaksbehandlerRolle.OPPGAVE_TILHØRER_IKKE_ENF
             ? `/familie-ef-sak/api/behandling/${behandling.id}/henlegg/behandling-uten-oppgave`
             : `/familie-ef-sak/api/behandling/${behandling.id}/henlegg`;
 
