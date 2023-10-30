@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import { BodyShort, ExpansionCard, Heading, HStack, Select, VStack } from '@navikt/ds-react';
+import {
+    BodyShort,
+    Checkbox,
+    ExpansionCard,
+    Heading,
+    HStack,
+    Select,
+    VStack,
+} from '@navikt/ds-react';
 import styled from 'styled-components';
 import { FolderFileFillIcon, FolderFileIcon } from '@navikt/aksel-icons';
 import { ABlue500 } from '@navikt/ds-tokens/dist/tokens';
@@ -33,6 +41,10 @@ const StyledSelect = styled(Select)`
     max-width: 13rem;
 `;
 
+const StyledCheckbox = styled(Checkbox)`
+    margin-left: 1rem;
+`;
+
 const Grid = styled.div`
     display: grid;
     grid-template-columns: repeat(4, max-content);
@@ -45,8 +57,14 @@ interface Props {
 }
 
 const JournalpostPanel: React.FC<Props> = ({ journalpost, journalpostState }) => {
-    const { journalføringsårsak, settJournalføringsårsak, stønadstype, settStønadstype } =
-        journalpostState;
+    const {
+        journalføringsårsak,
+        settJournalføringsårsak,
+        stønadstype,
+        settStønadstype,
+        klageGjelderTilbakekreving,
+        settKlageGjelderTilbakekreving,
+    } = journalpostState;
 
     const [erPanelEkspandert, settErPanelEkspandert] = useState<boolean>(false);
 
@@ -134,6 +152,17 @@ const JournalpostPanel: React.FC<Props> = ({ journalpost, journalpostState }) =>
                             </option>
                         ))}
                     </StyledSelect>
+                    {journalføringsårsak === Journalføringsårsak.KLAGE && (
+                        <StyledCheckbox
+                            size="small"
+                            checked={klageGjelderTilbakekreving}
+                            onChange={() => {
+                                settKlageGjelderTilbakekreving((prevState) => !prevState);
+                            }}
+                        >
+                            Klagen gjelder tilbakekreving
+                        </StyledCheckbox>
+                    )}
                 </ExpansionCardContent>
             </ExpansionCard.Content>
         </ExpansionCard>

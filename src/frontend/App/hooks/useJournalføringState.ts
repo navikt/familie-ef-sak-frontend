@@ -69,6 +69,8 @@ export interface JournalføringStateRequest {
     settSkalOppretteNyBehandling: Dispatch<SetStateAction<boolean>>;
     nyAvsender: string;
     settNyAvsender: Dispatch<SetStateAction<string>>;
+    klageGjelderTilbakekreving: boolean;
+    settKlageGjelderTilbakekreving: Dispatch<SetStateAction<boolean>>;
 }
 
 export const useJournalføringState = (
@@ -116,6 +118,7 @@ export const useJournalføringState = (
     );
     const [skalOppretteNyBehandling, settSkalOppretteNyBehandling] = useState<boolean>(false); // TODO: Denne må sendes med til backend for å bli utført
     const [nyAvsender, settNyAvsender] = useState<string>(''); // TODO: Denne må sendes med til backend for å bli satt
+    const [klageGjelderTilbakekreving, settKlageGjelderTilbakekreving] = useState<boolean>(false); // TODO: Denne må sendes med til backend for å bli satt
 
     useEffect(() => {
         if (stønadstype) {
@@ -186,5 +189,7 @@ export const useJournalføringState = (
         settSkalOppretteNyBehandling,
         nyAvsender,
         settNyAvsender,
+        klageGjelderTilbakekreving,
+        settKlageGjelderTilbakekreving,
     };
 };
