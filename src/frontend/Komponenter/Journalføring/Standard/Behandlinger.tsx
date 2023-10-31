@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import { Button, HStack, Table, VStack } from '@navikt/ds-react';
+import { BodyShort, Button, HStack, Table, VStack } from '@navikt/ds-react';
 import { Fagsak } from '../../../App/typer/fagsak';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { formaterIsoDatoTid } from '../../../App/utils/formatter';
@@ -18,7 +18,17 @@ const StyledDataCell = styled(Table.DataCell)`
 `;
 
 const FjernBehandlingButton = styled(Button)`
-    margin-right: 1rem;
+    margin-right: 0.5rem;
+`;
+
+const TekstContainer = styled.div`
+    padding-left: 1rem;
+    padding-right: 1rem;
+`;
+
+const BodyShortItalic = styled(BodyShort)`
+    font-style: italic;
+    width: 47rem;
 `;
 
 interface Props {
@@ -102,6 +112,15 @@ const Behandlinger: React.FC<Props> = ({ journalpostState, settFeilmelding }) =>
                                 ))}
                             </Table.Body>
                         </Table>
+                        {behandlinger.length === 0 && (
+                            <TekstContainer>
+                                <BodyShortItalic>
+                                    Det finnes ingen behandlinger på denne fagsaken til brukeren. Du
+                                    kan opprette en behandling eller journalføre på bruker uten
+                                    behandling (lik generell sak i Gosys)
+                                </BodyShortItalic>
+                            </TekstContainer>
+                        )}
                         <LeggTilKnapp
                             onClick={() => leggTilNyBehandlingForOpprettelse(fagsak)}
                             knappetekst={'Opprett ny behandling'}
