@@ -1,16 +1,16 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useEffect } from 'react';
 import { Button, HStack, Table, VStack } from '@navikt/ds-react';
-import { Fagsak } from '../../../App/typer/fagsak';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
-import { formaterIsoDatoTid } from '../../../App/utils/formatter';
-import { behandlingStatusTilTekst } from '../../../App/typer/behandlingstatus';
-import { behandlingstypeTilTekst } from '../../../App/typer/behandlingstype';
+import { formaterNullableIsoDato } from '../../../App/utils/formatter';
 import LeggTilKnapp from '../../../Felles/Knapper/LeggTilKnapp';
-import { alleBehandlingerErFerdigstiltEllerSattPåVent } from '../../Personoversikt/utils';
-import { utledRiktigBehandlingstype } from '../Felles/utils';
+import { stønadstypeTilKey } from '../Felles/utils';
 import { TrashIcon } from '@navikt/aksel-icons';
 import styled from 'styled-components';
 import { JournalføringStateRequest } from '../../../App/hooks/useJournalføringState';
+import { useHentKlagebehandlinger } from '../../../App/hooks/useHentKlagebehandlinger';
+import { RessursStatus } from '../../../App/typer/ressurs';
+import { KlagebehandlingStatusTilTekst } from '../../../App/typer/klage';
+import { harÅpenKlage } from '../../../App/utils/klage';
 import { AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
 
 const StyledDataCell = styled(Table.DataCell)`
@@ -18,7 +18,7 @@ const StyledDataCell = styled(Table.DataCell)`
 `;
 
 const FjernBehandlingButton = styled(Button)`
-    margin-right: 1rem;
+    margin-right: 0.5rem;
 `;
 
 interface Props {
@@ -29,26 +29,35 @@ interface Props {
 const Behandlinger: React.FC<Props> = ({ journalpostState, settFeilmelding }) => {
     const { fagsak, skalOppretteNyBehandling, settSkalOppretteNyBehandling, stønadstype } =
         journalpostState;
+    const { klagebehandlinger, hentKlagebehandlinger } = useHentKlagebehandlinger();
 
-    const leggTilNyBehandlingForOpprettelse = (fagsak: Fagsak) => {
+    useEffect(() => {
+        if (
+            fagsak.status === RessursStatus.SUKSESS &&
+            klagebehandlinger.status === RessursStatus.IKKE_HENTET
+        ) {
+            hentKlagebehandlinger(fagsak.data.fagsakPersonId);
+        }
+    }, [fagsak, klagebehandlinger, hentKlagebehandlinger]);
+
+    const leggTilNyBehandlingForOpprettelse = () => {
         settFeilmelding('');
-        const kanOppretteNyBehandling = alleBehandlingerErFerdigstiltEllerSattPåVent(fagsak);
-
-        if (kanOppretteNyBehandling) {
+        if (stønadstype) {
             settSkalOppretteNyBehandling(true);
         } else {
-            settFeilmelding(
-                'Kan ikke opprette ny behandling. Denne fagsaken har en behandling som ikke er ferdigstilt.'
-            );
+            settFeilmelding('Velg stønadstype for å opprette ny behandling.');
         }
     };
 
     return (
-        <DataViewer response={{ fagsak }}>
-            {({ fagsak }) => {
-                const behandlinger = stønadstype ? fagsak.behandlinger.slice().reverse() : [];
-                const behandlingstypePåNyBehandling =
-                    behandlingstypeTilTekst[utledRiktigBehandlingstype(fagsak.behandlinger)];
+        <DataViewer response={{ klagebehandlinger }}>
+            {({ klagebehandlinger }) => {
+                const valgtStønadstypeKey = stønadstypeTilKey(stønadstype);
+                const klageBehandlinger = valgtStønadstypeKey
+                    ? klagebehandlinger[valgtStønadstypeKey]
+                    : [];
+                const fagsakHarÅpenKlagebehandling =
+                    valgtStønadstypeKey && harÅpenKlage(klagebehandlinger[valgtStønadstypeKey]);
 
                 return (
                     <VStack gap="4">
@@ -58,6 +67,11 @@ const Behandlinger: React.FC<Props> = ({ journalpostState, settFeilmelding }) =>
                             få oversikt over tidligere behandlinger og vurdere om det skal opprettes
                             en ny behandling fra denne journalføringen.
                         </AlertInfo>
+                        {fagsakHarÅpenKlagebehandling && (
+                            <AlertInfo>
+                                Merk at det allerede finnes en åpen fagsak på denne fagsaken
+                            </AlertInfo>
+                        )}
                         <Table zebraStripes={true}>
                             <Table.Header>
                                 <Table.Row>
@@ -69,9 +83,7 @@ const Behandlinger: React.FC<Props> = ({ journalpostState, settFeilmelding }) =>
                             <Table.Body>
                                 {skalOppretteNyBehandling && (
                                     <Table.Row>
-                                        <Table.DataCell>
-                                            {behandlingstypePåNyBehandling}
-                                        </Table.DataCell>
+                                        <Table.DataCell>Klage</Table.DataCell>
                                         <Table.DataCell>Opprettes ved journalføring</Table.DataCell>
                                         <StyledDataCell>
                                             <HStack justify={'end'}>
@@ -87,23 +99,21 @@ const Behandlinger: React.FC<Props> = ({ journalpostState, settFeilmelding }) =>
                                         </StyledDataCell>
                                     </Table.Row>
                                 )}
-                                {behandlinger.map((behandling) => (
+                                {klageBehandlinger.map((behandling) => (
                                     <Table.Row key={behandling.id}>
+                                        <Table.DataCell>Klage</Table.DataCell>
                                         <Table.DataCell>
-                                            {behandlingstypeTilTekst[behandling.type]}
+                                            {KlagebehandlingStatusTilTekst[behandling.status]}
                                         </Table.DataCell>
                                         <Table.DataCell>
-                                            {behandlingStatusTilTekst[behandling.status]}
-                                        </Table.DataCell>
-                                        <Table.DataCell>
-                                            {formaterIsoDatoTid(behandling.sistEndret)}
+                                            {formaterNullableIsoDato(behandling.vedtaksdato)}
                                         </Table.DataCell>
                                     </Table.Row>
                                 ))}
                             </Table.Body>
                         </Table>
                         <LeggTilKnapp
-                            onClick={() => leggTilNyBehandlingForOpprettelse(fagsak)}
+                            onClick={() => leggTilNyBehandlingForOpprettelse()}
                             knappetekst={'Opprett ny behandling'}
                             size={'small'}
                             disabled={skalOppretteNyBehandling}

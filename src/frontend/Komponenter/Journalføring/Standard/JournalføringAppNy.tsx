@@ -24,9 +24,11 @@ import JournalpostPanel from './JournalpostPanel';
 import BrukerPanel from './BrukerPanel';
 import AvsenderPanel from './AvsenderPanel';
 import Dokumenter from './Dokumenter';
-import { AlertError, AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
+import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 import Behandlinger from './Behandlinger';
 import { Knapp } from '../../../Felles/Knapper/HovedKnapp';
+import { Journalføringsårsak } from '../Felles/utils';
+import Klagebehandlinger from './Klagebehandlinger';
 
 const InnerContainer = styled.div`
     display: flex;
@@ -66,6 +68,9 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
             navigate('/oppgavebenk');
         }
     }, [innloggetSaksbehandler, journalResponse, journalpostState, navigate]);
+
+    const skalViseKlagebehandlinger =
+        journalpostState.journalføringsårsak === Journalføringsårsak.KLAGE;
 
     return (
         <Kolonner>
@@ -108,20 +113,17 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
                         <Tittel size={'small'} level={'2'}>
                             Behandling
                         </Tittel>
-                        <AlertInfo>
-                            Merk at du ikke lenger trenger å knytte dokumenter til spesifikke
-                            behandlinger da de automatisk knyttes til bruker. Du kan i listen under
-                            få oversikt over tidligere behandlinger og vurdere om det skal opprettes
-                            en ny behandling fra denne journalføringen.
-                        </AlertInfo>
-                        <Behandlinger
-                            fagsak={journalpostState.fagsak}
-                            settFeilmelding={settFeilmelding}
-                            skalOppretteNyBehandling={journalpostState.skalOppretteNyBehandling}
-                            settSkalOppretteNyBehandling={
-                                journalpostState.settSkalOppretteNyBehandling
-                            }
-                        />
+                        {skalViseKlagebehandlinger ? (
+                            <Klagebehandlinger
+                                journalpostState={journalpostState}
+                                settFeilmelding={settFeilmelding}
+                            />
+                        ) : (
+                            <Behandlinger
+                                journalpostState={journalpostState}
+                                settFeilmelding={settFeilmelding}
+                            />
+                        )}
                     </section>
                     <HStack gap="4" justify="end">
                         <Knapp

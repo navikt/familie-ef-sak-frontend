@@ -1,10 +1,15 @@
 import { DokumentTitler, IJournalpostResponse } from '../../../App/typer/journalføring';
-import { Behandlingstema, behandlingstemaTilTekst } from '../../../App/typer/behandlingstema';
+import {
+    Behandlingstema,
+    behandlingstemaTilTekst,
+    Stønadstype,
+} from '../../../App/typer/behandlingstema';
 import { Behandling, BehandlingResultat } from '../../../App/typer/fagsak';
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
 import { BehandlingRequest } from '../../../App/hooks/useJournalføringState';
 import { BehandlingKlageRequest } from '../../../App/hooks/useJournalføringKlageState';
 import { ISelectOption, MultiValue, SingleValue } from '@navikt/familie-form-elements';
+import { Klagebehandlinger } from '../../../App/typer/klage';
 
 export const JOURNALPOST_QUERY_STRING = 'journalpostId';
 export const OPPGAVEID_QUERY_STRING = 'oppgaveId';
@@ -139,3 +144,18 @@ export const valgbareJournalføringsårsaker = [
     Journalføringsårsak.KLAGE,
     Journalføringsårsak.PAPIRSØKNAD,
 ];
+
+export const stønadstypeTilKey = (
+    stønadstype: Stønadstype | undefined
+): keyof Klagebehandlinger | undefined => {
+    switch (stønadstype) {
+        case Stønadstype.OVERGANGSSTØNAD:
+            return 'overgangsstønad';
+        case Stønadstype.BARNETILSYN:
+            return 'barnetilsyn';
+        case Stønadstype.SKOLEPENGER:
+            return 'skolepenger';
+        default:
+            return undefined;
+    }
+};

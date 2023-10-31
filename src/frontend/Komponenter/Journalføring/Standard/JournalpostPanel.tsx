@@ -62,6 +62,7 @@ const JournalpostPanel: React.FC<Props> = ({ journalpost, journalpostState }) =>
         settJournalføringsårsak,
         stønadstype,
         settStønadstype,
+        settSkalOppretteNyBehandling,
         klageGjelderTilbakekreving,
         settKlageGjelderTilbakekreving,
     } = journalpostState;
@@ -122,6 +123,7 @@ const JournalpostPanel: React.FC<Props> = ({ journalpost, journalpostState }) =>
                         size="small"
                         value={stønadstype}
                         onChange={(event) => {
+                            settSkalOppretteNyBehandling(false);
                             settStønadstype(event.target.value as Stønadstype);
                         }}
                         disabled={!kanRedigere}
@@ -141,9 +143,10 @@ const JournalpostPanel: React.FC<Props> = ({ journalpost, journalpostState }) =>
                         label="Type"
                         size="small"
                         value={journalføringsårsak}
-                        onChange={(event) =>
-                            settJournalføringsårsak(event.target.value as Journalføringsårsak)
-                        }
+                        onChange={(event) => {
+                            settSkalOppretteNyBehandling(false);
+                            settJournalføringsårsak(event.target.value as Journalføringsårsak);
+                        }}
                         disabled={!kanRedigere}
                     >
                         {valgbareJournalføringsårsaker.map((type) => (
