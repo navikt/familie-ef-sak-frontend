@@ -23,7 +23,10 @@ import {
     journalføringsårsakTilTekst,
     valgbareJournalføringsårsaker,
 } from '../Felles/utils';
-import { JournalføringStateRequest } from '../../../App/hooks/useJournalføringState';
+import {
+    Journalføringsaksjon,
+    JournalføringStateRequest,
+} from '../../../App/hooks/useJournalføringState';
 
 const IkonContainer = styled.div`
     color: ${ABlue500};
@@ -62,7 +65,7 @@ const JournalpostPanel: React.FC<Props> = ({ journalpost, journalpostState }) =>
         settJournalføringsårsak,
         stønadstype,
         settStønadstype,
-        settSkalOppretteNyBehandling,
+        settJournalføringsaksjon,
         klageGjelderTilbakekreving,
         settKlageGjelderTilbakekreving,
     } = journalpostState;
@@ -123,7 +126,7 @@ const JournalpostPanel: React.FC<Props> = ({ journalpost, journalpostState }) =>
                         size="small"
                         value={stønadstype}
                         onChange={(event) => {
-                            settSkalOppretteNyBehandling(false);
+                            settJournalføringsaksjon(Journalføringsaksjon.JOURNALFØR_PÅ_FAGSAK);
                             settStønadstype(event.target.value as Stønadstype);
                         }}
                         disabled={!kanRedigere}
@@ -144,7 +147,7 @@ const JournalpostPanel: React.FC<Props> = ({ journalpost, journalpostState }) =>
                         size="small"
                         value={journalføringsårsak}
                         onChange={(event) => {
-                            settSkalOppretteNyBehandling(false);
+                            settJournalføringsaksjon(Journalføringsaksjon.JOURNALFØR_PÅ_FAGSAK);
                             settJournalføringsårsak(event.target.value as Journalføringsårsak);
                         }}
                         disabled={!kanRedigere}

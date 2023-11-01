@@ -10,7 +10,10 @@ import { alleBehandlingerErFerdigstiltEllerSattPåVent } from '../../Personovers
 import { utledRiktigBehandlingstype } from '../Felles/utils';
 import { TrashIcon } from '@navikt/aksel-icons';
 import styled from 'styled-components';
-import { JournalføringStateRequest } from '../../../App/hooks/useJournalføringState';
+import {
+    Journalføringsaksjon,
+    JournalføringStateRequest,
+} from '../../../App/hooks/useJournalføringState';
 import { AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
 
 const StyledDataCell = styled(Table.DataCell)`
@@ -37,7 +40,7 @@ interface Props {
 }
 
 const Behandlinger: React.FC<Props> = ({ journalpostState, settFeilmelding }) => {
-    const { fagsak, skalOppretteNyBehandling, settSkalOppretteNyBehandling, stønadstype } =
+    const { fagsak, journalføringsaksjon, settJournalføringsaksjon, stønadstype } =
         journalpostState;
 
     const leggTilNyBehandlingForOpprettelse = (fagsak: Fagsak) => {
@@ -45,13 +48,16 @@ const Behandlinger: React.FC<Props> = ({ journalpostState, settFeilmelding }) =>
         const kanOppretteNyBehandling = alleBehandlingerErFerdigstiltEllerSattPåVent(fagsak);
 
         if (kanOppretteNyBehandling) {
-            settSkalOppretteNyBehandling(true);
+            settJournalføringsaksjon(Journalføringsaksjon.OPPRETT_BEHANDLING);
         } else {
             settFeilmelding(
                 'Kan ikke opprette ny behandling. Denne fagsaken har en behandling som ikke er ferdigstilt.'
             );
         }
     };
+
+    const skalOppretteNyBehandling =
+        journalføringsaksjon === Journalføringsaksjon.OPPRETT_BEHANDLING;
 
     return (
         <DataViewer response={{ fagsak }}>
@@ -88,7 +94,9 @@ const Behandlinger: React.FC<Props> = ({ journalpostState, settFeilmelding }) =>
                                                 <FjernBehandlingButton
                                                     type={'button'}
                                                     onClick={() =>
-                                                        settSkalOppretteNyBehandling(false)
+                                                        settJournalføringsaksjon(
+                                                            Journalføringsaksjon.JOURNALFØR_PÅ_FAGSAK
+                                                        )
                                                     }
                                                     variant={'tertiary'}
                                                     icon={<TrashIcon title={'fjern rad'} />}

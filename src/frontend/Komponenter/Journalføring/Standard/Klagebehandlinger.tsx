@@ -6,7 +6,10 @@ import LeggTilKnapp from '../../../Felles/Knapper/LeggTilKnapp';
 import { stønadstypeTilKey } from '../Felles/utils';
 import { TrashIcon } from '@navikt/aksel-icons';
 import styled from 'styled-components';
-import { JournalføringStateRequest } from '../../../App/hooks/useJournalføringState';
+import {
+    Journalføringsaksjon,
+    JournalføringStateRequest,
+} from '../../../App/hooks/useJournalføringState';
 import { useHentKlagebehandlinger } from '../../../App/hooks/useHentKlagebehandlinger';
 import { RessursStatus } from '../../../App/typer/ressurs';
 import { KlagebehandlingStatusTilTekst } from '../../../App/typer/klage';
@@ -36,8 +39,8 @@ interface Props {
     settFeilmelding: Dispatch<SetStateAction<string>>;
 }
 
-const Behandlinger: React.FC<Props> = ({ journalpostState, settFeilmelding }) => {
-    const { fagsak, skalOppretteNyBehandling, settSkalOppretteNyBehandling, stønadstype } =
+const Klagebehandlinger: React.FC<Props> = ({ journalpostState, settFeilmelding }) => {
+    const { fagsak, journalføringsaksjon, settJournalføringsaksjon, stønadstype } =
         journalpostState;
     const { klagebehandlinger, hentKlagebehandlinger } = useHentKlagebehandlinger();
 
@@ -53,11 +56,14 @@ const Behandlinger: React.FC<Props> = ({ journalpostState, settFeilmelding }) =>
     const leggTilNyBehandlingForOpprettelse = () => {
         settFeilmelding('');
         if (stønadstype) {
-            settSkalOppretteNyBehandling(true);
+            settJournalføringsaksjon(Journalføringsaksjon.OPPRETT_BEHANDLING);
         } else {
             settFeilmelding('Velg stønadstype for å opprette ny behandling.');
         }
     };
+
+    const skalOppretteNyBehandling =
+        journalføringsaksjon === Journalføringsaksjon.OPPRETT_BEHANDLING;
 
     return (
         <DataViewer response={{ klagebehandlinger }}>
@@ -100,7 +106,9 @@ const Behandlinger: React.FC<Props> = ({ journalpostState, settFeilmelding }) =>
                                                 <FjernBehandlingButton
                                                     type={'button'}
                                                     onClick={() =>
-                                                        settSkalOppretteNyBehandling(false)
+                                                        settJournalføringsaksjon(
+                                                            Journalføringsaksjon.JOURNALFØR_PÅ_FAGSAK
+                                                        )
                                                     }
                                                     variant={'tertiary'}
                                                     icon={<TrashIcon title={'fjern rad'} />}
@@ -144,4 +152,4 @@ const Behandlinger: React.FC<Props> = ({ journalpostState, settFeilmelding }) =>
     );
 };
 
-export default Behandlinger;
+export default Klagebehandlinger;

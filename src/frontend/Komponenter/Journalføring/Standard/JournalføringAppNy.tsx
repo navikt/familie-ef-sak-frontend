@@ -51,11 +51,12 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
         journalResponse,
         oppgaveId
     );
+    const { fullførJournalføringV2, innsending, journalføringsårsak } = journalpostState;
 
     const [feilmelding, settFeilmelding] = useState<string>('');
 
     useEffect(() => {
-        if (journalpostState.innsending.status === RessursStatus.SUKSESS) {
+        if (innsending.status === RessursStatus.SUKSESS) {
             const lagredeOppgaveFiltreringer = hentFraLocalStorage(
                 oppgaveRequestKey(innloggetSaksbehandler.navIdent),
                 {}
@@ -67,10 +68,9 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
             });
             navigate('/oppgavebenk');
         }
-    }, [innloggetSaksbehandler, journalResponse, journalpostState, navigate]);
+    }, [innloggetSaksbehandler, journalResponse, innsending, navigate]);
 
-    const skalViseKlagebehandlinger =
-        journalpostState.journalføringsårsak === Journalføringsårsak.KLAGE;
+    const skalViseKlagebehandlinger = journalføringsårsak === Journalføringsårsak.KLAGE;
 
     return (
         <Kolonner>
@@ -133,7 +133,11 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
                         >
                             Avbryt
                         </Knapp>
-                        <Knapp size={'small'} variant={'primary'} onClick={() => {}}>
+                        <Knapp
+                            size={'small'}
+                            variant={'primary'}
+                            onClick={() => fullførJournalføringV2}
+                        >
                             Journalfør
                         </Knapp>
                     </HStack>
