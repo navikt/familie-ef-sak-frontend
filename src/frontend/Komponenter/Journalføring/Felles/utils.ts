@@ -6,7 +6,7 @@ import {
 } from '../../../App/typer/behandlingstema';
 import { Behandling, BehandlingResultat } from '../../../App/typer/fagsak';
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
-import { BehandlingRequest } from '../../../App/hooks/useJournalføringState';
+import { BehandlingRequest, Journalføringsaksjon } from '../../../App/hooks/useJournalføringState';
 import { BehandlingKlageRequest } from '../../../App/hooks/useJournalføringKlageState';
 import { ISelectOption, MultiValue, SingleValue } from '@navikt/familie-form-elements';
 import { Klagebehandlinger } from '../../../App/typer/klage';
@@ -159,3 +159,12 @@ export const stønadstypeTilKey = (
             return undefined;
     }
 };
+
+export const skalViseBekreftelsesmodal = (
+    journalResponse: IJournalpostResponse,
+    journalføringsaksjon: Journalføringsaksjon,
+    erPapirSøknad: boolean
+) =>
+    journalføringsaksjon === Journalføringsaksjon.OPPRETT_BEHANDLING
+        ? false
+        : journalResponse.harStrukturertSøknad || erPapirSøknad;

@@ -27,8 +27,10 @@ import Dokumenter from './Dokumenter';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 import Behandlinger from './Behandlinger';
 import { Knapp } from '../../../Felles/Knapper/HovedKnapp';
-import { Journalføringsårsak } from '../Felles/utils';
+import { Journalføringsårsak, skalViseBekreftelsesmodal } from '../Felles/utils';
 import Klagebehandlinger from './Klagebehandlinger';
+import { validerJournalføring } from '../Felles/journalføringValidering';
+import { UstrukturertDokumentasjonType } from './VelgUstrukturertDokumentasjonType';
 
 const InnerContainer = styled.div`
     display: flex;
@@ -51,7 +53,16 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
         journalResponse,
         oppgaveId
     );
-    const { fullførJournalføringV2, innsending, journalføringsårsak } = journalpostState;
+    const {
+        fagsak,
+        fullførJournalføringV2,
+        hentDokumentResponse,
+        innsending,
+        journalføringsaksjon,
+        journalføringsårsak,
+        settVisBekreftelsesModal,
+        ustrukturertDokumentasjonType,
+    } = journalpostState;
 
     const [feilmelding, settFeilmelding] = useState<string>('');
 
@@ -70,7 +81,32 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
         }
     }, [innloggetSaksbehandler, journalResponse, innsending, navigate]);
 
+    const validerOgJournalfør = () => {
+        settFeilmelding('');
+        if (fagsak.status !== RessursStatus.SUKSESS) {
+            settFeilmelding('Henting av fagsak feilet. Last inn siden på nytt.');
+            return;
+        }
+        const valideringsfeil = validerJournalføring(
+            journalResponse,
+            journalpostState,
+            fagsak.data
+        );
+
+        if (valideringsfeil) {
+            settFeilmelding(valideringsfeil);
+        } else if (
+            skalViseBekreftelsesmodal(journalResponse, journalføringsaksjon, erPapirSøknad)
+        ) {
+            settVisBekreftelsesModal(true);
+        } else {
+            fullførJournalføringV2();
+        }
+    };
+
     const skalViseKlagebehandlinger = journalføringsårsak === Journalføringsårsak.KLAGE;
+    const erPapirSøknad =
+        ustrukturertDokumentasjonType === UstrukturertDokumentasjonType.PAPIRSØKNAD;
 
     return (
         <Kolonner>
@@ -133,11 +169,7 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
                         >
                             Avbryt
                         </Knapp>
-                        <Knapp
-                            size={'small'}
-                            variant={'primary'}
-                            onClick={() => fullførJournalføringV2}
-                        >
+                        <Knapp size={'small'} variant={'primary'} onClick={validerOgJournalfør}>
                             Journalfør
                         </Knapp>
                     </HStack>
@@ -145,9 +177,7 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
                 </InnerContainer>
             </Venstrekolonne>
             <Høyrekolonne>
-                <JournalføringPdfVisning
-                    hentDokumentResponse={journalpostState.hentDokumentResponse}
-                />
+                <JournalføringPdfVisning hentDokumentResponse={hentDokumentResponse} />
             </Høyrekolonne>
         </Kolonner>
     );
