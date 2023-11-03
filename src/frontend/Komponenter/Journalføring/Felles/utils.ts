@@ -123,27 +123,26 @@ export const mapMultiselectValueTilLogiskeVedlegg = (
 };
 
 export enum Journalføringsårsak {
-    PAPIRSØKNAD = 'PAPIRSØKNAD',
-    ETTERSENDING = 'ETTERSENDING',
-    KLAGE = 'KLAGE',
     DIGITAL_SØKNAD = 'DIGITAL_SØKNAD',
+    ETTERSENDING = 'ETTERSENDING',
     IKKE_VALGT = 'IKKE_VALGT',
+    KLAGE = 'KLAGE',
+    KLAGE_TILBAKEKREVING = 'KLAGE_TILBAKEKREVING',
+    PAPIRSØKNAD = 'PAPIRSØKNAD',
 }
 
 export const journalføringsårsakTilTekst: Record<Journalføringsårsak, string> = {
-    PAPIRSØKNAD: 'Papirsøknad',
-    ETTERSENDING: 'Ettersending',
-    KLAGE: 'Klage',
     DIGITAL_SØKNAD: 'Digital søknad',
+    ETTERSENDING: 'Ettersending',
     IKKE_VALGT: 'Ikke valgt',
+    KLAGE: 'Klage',
+    KLAGE_TILBAKEKREVING: 'Klage',
+    PAPIRSØKNAD: 'Papirsøknad',
 };
 
-export const valgbareJournalføringsårsaker = [
-    Journalføringsårsak.IKKE_VALGT,
-    Journalføringsårsak.ETTERSENDING,
-    Journalføringsårsak.KLAGE,
-    Journalføringsårsak.PAPIRSØKNAD,
-];
+export const journalføringGjelderKlage = (journalføringsårsak: Journalføringsårsak) =>
+    journalføringsårsak === Journalføringsårsak.KLAGE ||
+    journalføringsårsak === Journalføringsårsak.KLAGE_TILBAKEKREVING;
 
 export const stønadstypeTilKey = (
     stønadstype: Stønadstype | undefined

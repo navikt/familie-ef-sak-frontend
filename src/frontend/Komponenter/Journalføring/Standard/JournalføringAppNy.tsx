@@ -27,7 +27,7 @@ import Dokumenter from './Dokumenter';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 import Behandlinger from './Behandlinger';
 import { Knapp } from '../../../Felles/Knapper/HovedKnapp';
-import { Journalføringsårsak, skalViseBekreftelsesmodal } from '../Felles/utils';
+import { journalføringGjelderKlage, skalViseBekreftelsesmodal } from '../Felles/utils';
 import Klagebehandlinger from './Klagebehandlinger';
 import { validerJournalføring } from '../Felles/journalføringValidering';
 import { UstrukturertDokumentasjonType } from './VelgUstrukturertDokumentasjonType';
@@ -104,7 +104,7 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
         }
     };
 
-    const skalViseKlagebehandlinger = journalføringsårsak === Journalføringsårsak.KLAGE;
+    const skalViseKlagebehandlinger = journalføringGjelderKlage(journalføringsårsak);
     const erPapirSøknad =
         ustrukturertDokumentasjonType === UstrukturertDokumentasjonType.PAPIRSØKNAD;
 

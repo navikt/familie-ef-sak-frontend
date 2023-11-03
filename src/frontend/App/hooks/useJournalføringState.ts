@@ -10,7 +10,10 @@ import {
     IJournalpostResponse,
     LogiskeVedleggPåDokument,
 } from '../typer/journalføring';
-import { Journalføringsårsak } from '../../Komponenter/Journalføring/Felles/utils';
+import {
+    journalføringGjelderKlage,
+    Journalføringsårsak,
+} from '../../Komponenter/Journalføring/Felles/utils';
 import { behandlingstemaTilStønadstype, Stønadstype } from '../typer/behandlingstema';
 import { HentDokumentResponse, useHentDokument } from './useHentDokument';
 import { useHentFagsak } from './useHentFagsak';
@@ -47,7 +50,6 @@ interface JournalføringRequestV2 {
     årsak: Journalføringsårsak;
     aksjon: Journalføringsaksjon;
     mottattDato: string | undefined;
-    klageGjelderTilbakekreving: boolean;
     barnSomSkalFødes: BarnSomSkalFødes[];
     vilkårsbehandleNyeBarn: EVilkårsbehandleBarnValg;
 }
@@ -87,8 +89,6 @@ export interface JournalføringStateRequest {
     hentDokumentResponse: HentDokumentResponse;
     nyAvsender: string;
     settNyAvsender: Dispatch<SetStateAction<string>>;
-    klageGjelderTilbakekreving: boolean;
-    settKlageGjelderTilbakekreving: Dispatch<SetStateAction<boolean>>;
     journalføringsaksjon: Journalføringsaksjon;
     settJournalføringsaksjon: Dispatch<SetStateAction<Journalføringsaksjon>>;
 }
@@ -137,7 +137,6 @@ export const useJournalføringState = (
         utledFørsteDokument(journalResponse.journalpost.dokumenter)
     );
     const [nyAvsender, settNyAvsender] = useState<string>(''); // TODO: Denne må sendes med til backend for å bli satt
-    const [klageGjelderTilbakekreving, settKlageGjelderTilbakekreving] = useState<boolean>(false); // TODO: Denne må sendes med til backend for å bli satt
     const [journalføringsaksjon, settJournalføringsaksjon] = useState<Journalføringsaksjon>(
         Journalføringsaksjon.JOURNALFØR_PÅ_FAGSAK
     ); // TODO: Denne må sendes med til backend for å bli satt
@@ -185,7 +184,7 @@ export const useJournalføringState = (
         }
 
         const mottattDato =
-            journalføringsårsak === Journalføringsårsak.KLAGE &&
+            journalføringGjelderKlage(journalføringsårsak) &&
             journalføringsaksjon === Journalføringsaksjon.OPPRETT_BEHANDLING
                 ? journalResponse.journalpost.datoMottatt
                 : undefined;
@@ -200,7 +199,6 @@ export const useJournalføringState = (
             årsak: journalføringsårsak,
             aksjon: journalføringsaksjon,
             mottattDato: mottattDato,
-            klageGjelderTilbakekreving: klageGjelderTilbakekreving,
             barnSomSkalFødes: barnSomSkalFødes,
             vilkårsbehandleNyeBarn: vilkårsbehandleNyeBarn,
         };
@@ -242,8 +240,6 @@ export const useJournalføringState = (
         hentDokumentResponse,
         nyAvsender,
         settNyAvsender,
-        klageGjelderTilbakekreving,
-        settKlageGjelderTilbakekreving,
         journalføringsaksjon,
         settJournalføringsaksjon,
     };

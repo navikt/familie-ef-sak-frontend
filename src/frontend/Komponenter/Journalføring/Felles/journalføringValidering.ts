@@ -4,7 +4,7 @@ import {
     Journalføringsaksjon,
     JournalføringStateRequest,
 } from '../../../App/hooks/useJournalføringState';
-import { Journalføringsårsak } from './utils';
+import { journalføringGjelderKlage } from './utils';
 import { Fagsak } from '../../../App/typer/fagsak';
 import { alleBehandlingerErFerdigstiltEllerSattPåVent } from '../../Personoversikt/utils';
 import { UstrukturertDokumentasjonType } from '../Standard/VelgUstrukturertDokumentasjonType';
@@ -15,7 +15,7 @@ export const validerJournalføring = (
     journalpostState: JournalføringStateRequest,
     fagsak: Fagsak
 ): string | undefined => {
-    if (journalpostState.journalføringsårsak === Journalføringsårsak.KLAGE)
+    if (journalføringGjelderKlage(journalpostState.journalføringsårsak))
         return validerKlageJournalføring(journalResponse, journalpostState);
     return validerStandardJournalføring(journalResponse, journalpostState, fagsak);
 };
