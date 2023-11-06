@@ -8,6 +8,7 @@ import { journalføringGjelderKlage, Journalføringsårsak } from './utils';
 import { Fagsak } from '../../../App/typer/fagsak';
 import { alleBehandlingerErFerdigstiltEllerSattPåVent } from '../../Personoversikt/utils';
 import { erGyldigDato } from '../../../App/utils/dato';
+import { EVilkårsbehandleBarnValg } from '../../../App/typer/vilkårsbehandleBarnValg';
 
 export const validerJournalføring = (
     journalResponse: IJournalpostResponse,
@@ -45,16 +46,26 @@ const validerStandardJournalføring = (
 
     if (valideringsfeil) return valideringsfeil;
 
-    if (
-        !alleBehandlingerErFerdigstiltEllerSattPåVent(fagsak) &&
-        journalpostState.journalføringsaksjon === Journalføringsaksjon.OPPRETT_BEHANDLING
-    )
-        return 'Kan ikke journalføre på ny behandling når det finnes en behandling som ikke er ferdigstilt';
-
     if (!harGyldigeTerminDatoer(journalpostState.barnSomSkalFødes))
         return 'Et eller flere barn mangler gyldig dato';
 
-    return undefined;
+    if (
+        journalpostState.journalføringsårsak !== Journalføringsårsak.ETTERSENDING &&
+        journalpostState.vilkårsbehandleNyeBarn != EVilkårsbehandleBarnValg.IKKE_VALGT
+    )
+        return 'Årsaken til journalføring er ettersending og man kan derfor ikke velge vilkårsbehandling av nye barn.';
+
+    if (
+        journalpostState.journalføringsårsak !== Journalføringsårsak.PAPIRSØKNAD &&
+        journalpostState.barnSomSkalFødes.length > 0
+    )
+        return 'Årsak må være satt til papirsøknad hvis man sender inn barn som skal fødes';
+
+    if (journalpostState.journalføringsaksjon === Journalføringsaksjon.OPPRETT_BEHANDLING) {
+        return validerForJournalføringTilNyBehandling(journalResponse, journalpostState, fagsak);
+    }
+
+    return validerForJournalføringTilEksisterendeBehandling(journalResponse, journalpostState);
 };
 
 const validerFellesFelter = (
@@ -71,6 +82,38 @@ const validerFellesFelter = (
 
     if (journalResponse.journalpost.tema !== 'ENF')
         return 'Tema på journalføringsoppgaven må endres til «Enslig forsørger» i Gosys før du kan journalføre dokumentet i EF Sak';
+
+    return undefined;
+};
+
+const validerForJournalføringTilNyBehandling = (
+    journalResponse: IJournalpostResponse,
+    journalpostState: JournalføringStateRequest,
+    fagsak: Fagsak
+) => {
+    if (
+        journalpostState.journalføringsårsak === Journalføringsårsak.ETTERSENDING &&
+        journalpostState.vilkårsbehandleNyeBarn === EVilkårsbehandleBarnValg.IKKE_VALGT
+    )
+        return 'Man må velge om man skal vilkårsbehandle nye barn på ny behandling av type ettersending';
+
+    if (!alleBehandlingerErFerdigstiltEllerSattPåVent(fagsak))
+        return 'Kan ikke journalføre på ny behandling når det finnes en behandling som ikke er ferdigstilt';
+
+    return undefined;
+};
+
+const validerForJournalføringTilEksisterendeBehandling = (
+    journalResponse: IJournalpostResponse,
+    journalpostState: JournalføringStateRequest
+) => {
+    if (journalpostState.barnSomSkalFødes.length > 0) {
+        return 'Kan ikke legge inn barn når man journalfører til en eksisterende behandling';
+    }
+
+    if (journalpostState.vilkårsbehandleNyeBarn !== EVilkårsbehandleBarnValg.IKKE_VALGT) {
+        return 'Kan ikke vilkårsbehandle nye barn på en eksisterende behandling';
+    }
 
     return undefined;
 };
