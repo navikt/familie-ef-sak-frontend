@@ -100,6 +100,14 @@ const lagHistoriskPensjon = (appEnv: AppEnv): PopoverItem => {
     };
 };
 
+const lagDrek = (appEnv: AppEnv): PopoverItem => {
+    return {
+        name: 'Rekvirere D-nummer',
+        href: appEnv.drek,
+        isExternal: true,
+    };
+};
+
 const lagEksterneLenker = (
     axiosRequest: AxiosRequestCallback,
     appEnv: AppEnv,
@@ -114,6 +122,7 @@ const lagEksterneLenker = (
         lagGosys(appEnv, personIdent),
         lagModia(appEnv, personIdent),
         lagHistoriskPensjon(appEnv),
+        lagDrek(appEnv),
     ];
     if (harTilgangTilRolle(appEnv, innloggetSaksbehandler, 'saksbehandler')) {
         eksterneLenker.push({

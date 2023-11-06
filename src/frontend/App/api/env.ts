@@ -5,6 +5,7 @@ export interface AppEnv {
     aInntekt: string;
     gosys: string;
     modia: string;
+    drek: string;
     historiskPensjon: string;
     roller: Roller;
 }
