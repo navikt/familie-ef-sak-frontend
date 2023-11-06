@@ -161,6 +161,7 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
                             />
                         )}
                     </section>
+                    {feilmelding && <AlertError>{feilmelding}</AlertError>}
                     <HStack gap="4" justify="end">
                         <Knapp
                             size={'small'}
@@ -173,7 +174,6 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
                             Journalfør
                         </Knapp>
                     </HStack>
-                    {feilmelding && <AlertError>{feilmelding}</AlertError>}
                 </InnerContainer>
             </Venstrekolonne>
             <Høyrekolonne>

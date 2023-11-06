@@ -4,10 +4,9 @@ import {
     Journalføringsaksjon,
     JournalføringStateRequest,
 } from '../../../App/hooks/useJournalføringState';
-import { journalføringGjelderKlage } from './utils';
+import { journalføringGjelderKlage, Journalføringsårsak } from './utils';
 import { Fagsak } from '../../../App/typer/fagsak';
 import { alleBehandlingerErFerdigstiltEllerSattPåVent } from '../../Personoversikt/utils';
-import { UstrukturertDokumentasjonType } from '../Standard/VelgUstrukturertDokumentasjonType';
 import { erGyldigDato } from '../../../App/utils/dato';
 
 export const validerJournalføring = (
@@ -24,7 +23,9 @@ const validerKlageJournalføring = (
     journalResponse: IJournalpostResponse,
     journalpostState: JournalføringStateRequest
 ): string | undefined => {
-    validerFellesFelter(journalResponse, journalpostState);
+    const valideringsfeil = validerFellesFelter(journalResponse, journalpostState);
+
+    if (valideringsfeil) return valideringsfeil;
 
     if (
         journalpostState.journalføringsaksjon === Journalføringsaksjon.OPPRETT_BEHANDLING &&
@@ -40,19 +41,15 @@ const validerStandardJournalføring = (
     journalpostState: JournalføringStateRequest,
     fagsak: Fagsak
 ): string | undefined => {
-    validerFellesFelter(journalResponse, journalpostState);
+    const valideringsfeil = validerFellesFelter(journalResponse, journalpostState);
+
+    if (valideringsfeil) return valideringsfeil;
 
     if (
         !alleBehandlingerErFerdigstiltEllerSattPåVent(fagsak) &&
         journalpostState.journalføringsaksjon === Journalføringsaksjon.OPPRETT_BEHANDLING
     )
         return 'Kan ikke journalføre på ny behandling når det finnes en behandling som ikke er ferdigstilt';
-
-    if (
-        !erStrukturertSøknad(journalResponse) &&
-        !harDokumentasjonstype(journalpostState.ustrukturertDokumentasjonType)
-    )
-        return 'Mangler dokumentasjonstype';
 
     if (!harGyldigeTerminDatoer(journalpostState.barnSomSkalFødes))
         return 'Et eller flere barn mangler gyldig dato';
@@ -64,6 +61,11 @@ const validerFellesFelter = (
     journalResponse: IJournalpostResponse,
     journalpostState: JournalføringStateRequest
 ): string | undefined => {
+    if (journalpostState.journalføringsårsak === Journalføringsårsak.IKKE_VALGT)
+        return 'Mangler journalføringsårsak (Type)';
+
+    if (!journalpostState.stønadstype) return 'Mangler stønadstype';
+
     if (!harTittelForAlleDokumenter(journalResponse, journalpostState.dokumentTitler))
         return 'Mangler tittel på et eller flere dokumenter';
 
@@ -72,15 +74,6 @@ const validerFellesFelter = (
 
     return undefined;
 };
-
-const erStrukturertSøknad = (journalResponse: IJournalpostResponse) =>
-    journalResponse.harStrukturertSøknad;
-
-const harDokumentasjonstype = (
-    ustrukturertDokumentasjonType: UstrukturertDokumentasjonType | undefined
-) =>
-    ustrukturertDokumentasjonType === UstrukturertDokumentasjonType.ETTERSENDING ||
-    ustrukturertDokumentasjonType === UstrukturertDokumentasjonType.PAPIRSØKNAD;
 
 const harGyldigeTerminDatoer = (barnSomSkalFødes: BarnSomSkalFødes[]) =>
     barnSomSkalFødes.every(
