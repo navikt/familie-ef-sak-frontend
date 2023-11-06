@@ -13,6 +13,8 @@ import {
 import { Journalføringsårsak } from '../../Komponenter/Journalføring/Felles/utils';
 import { behandlingstemaTilStønadstype, Stønadstype } from '../typer/behandlingstema';
 import { HentDokumentResponse, useHentDokument } from './useHentDokument';
+import { useHentFagsak } from './useHentFagsak';
+import { Fagsak } from '../typer/fagsak';
 
 export interface BehandlingRequest {
     behandlingsId?: string;
@@ -36,6 +38,7 @@ export interface BarnSomSkalFødes {
 }
 
 export interface JournalføringStateRequest {
+    fagsak: Ressurs<Fagsak>;
     fagsakId: string;
     settFagsakId: Dispatch<SetStateAction<string>>;
     behandling?: BehandlingRequest;
@@ -62,6 +65,12 @@ export interface JournalføringStateRequest {
     valgtDokumentPanel: string;
     settValgtDokumentPanel: Dispatch<SetStateAction<string>>;
     hentDokumentResponse: HentDokumentResponse;
+    skalOppretteNyBehandling: boolean;
+    settSkalOppretteNyBehandling: Dispatch<SetStateAction<boolean>>;
+    nyAvsender: string;
+    settNyAvsender: Dispatch<SetStateAction<string>>;
+    klageGjelderTilbakekreving: boolean;
+    settKlageGjelderTilbakekreving: Dispatch<SetStateAction<boolean>>;
 }
 
 export const useJournalføringState = (
@@ -82,13 +91,14 @@ export const useJournalføringState = (
         dokumenter.length > 0 ? dokumenter[0].dokumentInfoId : '';
 
     const { axiosRequest, innloggetSaksbehandler } = useApp();
+    const { fagsak, hentFagsak } = useHentFagsak();
     const hentDokumentResponse = useHentDokument(journalResponse.journalpost);
 
     const [fagsakId, settFagsakId] = useState<string>('');
     const [behandling, settBehandling] = useState<BehandlingRequest>();
     const [dokumentTitler, settDokumentTitler] = useState<DokumentTitler>();
     const [logiskeVedleggPåDokument, settLogiskeVedleggPåDokument] =
-        useState<LogiskeVedleggPåDokument>(); // TODO: Disse må sendes med til backend for å bli satt
+        useState<LogiskeVedleggPåDokument>(); // TODO: Denne må sendes med til backend for å bli satt
     const [innsending, settInnsending] = useState<Ressurs<string>>(byggTomRessurs());
     const [visBekreftelsesModal, settVisBekreftelsesModal] = useState<boolean>(false);
     const [barnSomSkalFødes, settBarnSomSkalFødes] = useState<BarnSomSkalFødes[]>([]);
@@ -106,6 +116,15 @@ export const useJournalføringState = (
     const [valgtDokumentPanel, settValgtDokumentPanel] = useState<string>(
         utledFørsteDokument(journalResponse.journalpost.dokumenter)
     );
+    const [skalOppretteNyBehandling, settSkalOppretteNyBehandling] = useState<boolean>(false); // TODO: Denne må sendes med til backend for å bli utført
+    const [nyAvsender, settNyAvsender] = useState<string>(''); // TODO: Denne må sendes med til backend for å bli satt
+    const [klageGjelderTilbakekreving, settKlageGjelderTilbakekreving] = useState<boolean>(false); // TODO: Denne må sendes med til backend for å bli satt
+
+    useEffect(() => {
+        if (stønadstype) {
+            hentFagsak(journalResponse.personIdent, stønadstype);
+        }
+    }, [journalResponse.personIdent, stønadstype, hentFagsak]);
 
     useEffect(() => {
         settBehandling(undefined);
@@ -139,6 +158,7 @@ export const useJournalføringState = (
     };
 
     return {
+        fagsak,
         fagsakId,
         settFagsakId,
         behandling,
@@ -165,5 +185,11 @@ export const useJournalføringState = (
         valgtDokumentPanel,
         settValgtDokumentPanel,
         hentDokumentResponse,
+        skalOppretteNyBehandling,
+        settSkalOppretteNyBehandling,
+        nyAvsender,
+        settNyAvsender,
+        klageGjelderTilbakekreving,
+        settKlageGjelderTilbakekreving,
     };
 };

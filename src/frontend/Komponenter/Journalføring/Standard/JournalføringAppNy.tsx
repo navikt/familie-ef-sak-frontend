@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { RessursStatus } from '../../../App/typer/ressurs';
 import styled from 'styled-components';
@@ -6,14 +6,13 @@ import {
     JournalføringStateRequest,
     useJournalføringState,
 } from '../../../App/hooks/useJournalføringState';
-import { useHentFagsak } from '../../../App/hooks/useHentFagsak';
 import { useApp } from '../../../App/context/AppContext';
 import {
     hentFraLocalStorage,
     lagreTilLocalStorage,
     oppgaveRequestKey,
 } from '../../Oppgavebenk/oppgavefilterStorage';
-import { Heading } from '@navikt/ds-react';
+import { Heading, HStack } from '@navikt/ds-react';
 import JournalføringWrapper, {
     Høyrekolonne,
     JournalføringAppProps,
@@ -22,7 +21,14 @@ import JournalføringWrapper, {
 } from '../Felles/JournalføringWrapper';
 import JournalføringPdfVisning from '../Felles/JournalføringPdfVisning';
 import JournalpostPanel from './JournalpostPanel';
+import BrukerPanel from './BrukerPanel';
+import AvsenderPanel from './AvsenderPanel';
 import Dokumenter from './Dokumenter';
+import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
+import Behandlinger from './Behandlinger';
+import { Knapp } from '../../../Felles/Knapper/HovedKnapp';
+import { Journalføringsårsak } from '../Felles/utils';
+import Klagebehandlinger from './Klagebehandlinger';
 
 const InnerContainer = styled.div`
     display: flex;
@@ -46,7 +52,7 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
         oppgaveId
     );
 
-    const { fagsak } = useHentFagsak();
+    const [feilmelding, settFeilmelding] = useState<string>('');
 
     useEffect(() => {
         if (journalpostState.innsending.status === RessursStatus.SUKSESS) {
@@ -63,12 +69,8 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
         }
     }, [innloggetSaksbehandler, journalResponse, journalpostState, navigate]);
 
-    useEffect(() => {
-        if (fagsak.status === RessursStatus.SUKSESS) {
-            journalpostState.settFagsakId(fagsak.data.id);
-        }
-        // eslint-disable-next-line
-    }, [fagsak]);
+    const skalViseKlagebehandlinger =
+        journalpostState.journalføringsårsak === Journalføringsårsak.KLAGE;
 
     return (
         <Kolonner>
@@ -92,6 +94,50 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
                             journalpostState={journalpostState}
                         />
                     </section>
+                    <section>
+                        <Tittel size={'small'} level={'2'}>
+                            Bruker
+                        </Tittel>
+                        <BrukerPanel journalpostResponse={journalResponse} />
+                    </section>
+                    <section>
+                        <Tittel size={'small'} level={'2'}>
+                            Avsender
+                        </Tittel>
+                        <AvsenderPanel
+                            journalpostResponse={journalResponse}
+                            journalpostState={journalpostState}
+                        />
+                    </section>
+                    <section>
+                        <Tittel size={'small'} level={'2'}>
+                            Behandling
+                        </Tittel>
+                        {skalViseKlagebehandlinger ? (
+                            <Klagebehandlinger
+                                journalpostState={journalpostState}
+                                settFeilmelding={settFeilmelding}
+                            />
+                        ) : (
+                            <Behandlinger
+                                journalpostState={journalpostState}
+                                settFeilmelding={settFeilmelding}
+                            />
+                        )}
+                    </section>
+                    <HStack gap="4" justify="end">
+                        <Knapp
+                            size={'small'}
+                            variant={'tertiary'}
+                            onClick={() => navigate('/oppgavebenk')}
+                        >
+                            Avbryt
+                        </Knapp>
+                        <Knapp size={'small'} variant={'primary'} onClick={() => {}}>
+                            Journalfør
+                        </Knapp>
+                    </HStack>
+                    {feilmelding && <AlertError>{feilmelding}</AlertError>}
                 </InnerContainer>
             </Venstrekolonne>
             <Høyrekolonne>

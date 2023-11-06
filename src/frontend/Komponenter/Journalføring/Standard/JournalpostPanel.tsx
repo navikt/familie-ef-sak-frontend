@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import { BodyShort, ExpansionCard, Heading, Select } from '@navikt/ds-react';
+import {
+    BodyShort,
+    Checkbox,
+    ExpansionCard,
+    Heading,
+    HStack,
+    Select,
+    VStack,
+} from '@navikt/ds-react';
 import styled from 'styled-components';
 import { FolderFileFillIcon, FolderFileIcon } from '@navikt/aksel-icons';
 import { ABlue500 } from '@navikt/ds-tokens/dist/tokens';
@@ -17,12 +25,7 @@ import {
 } from '../Felles/utils';
 import { JournalføringStateRequest } from '../../../App/hooks/useJournalføringState';
 
-const FlexRow = styled.div`
-    display: flex;
-    gap: 1rem;
-`;
-
-const IconContainer = styled.div`
+const IkonContainer = styled.div`
     color: ${ABlue500};
 `;
 
@@ -30,15 +33,16 @@ const ExpansionCardHeader = styled(ExpansionCard.Header)`
     padding-bottom: 0.25rem;
 `;
 
-const ExpansionCardContent = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+const ExpansionCardContent = styled(VStack)`
     padding-bottom: 1rem;
 `;
 
 const StyledSelect = styled(Select)`
     max-width: 13rem;
+`;
+
+const StyledCheckbox = styled(Checkbox)`
+    margin-left: 1rem;
 `;
 
 const Grid = styled.div`
@@ -53,8 +57,15 @@ interface Props {
 }
 
 const JournalpostPanel: React.FC<Props> = ({ journalpost, journalpostState }) => {
-    const { journalføringsårsak, settJournalføringsårsak, stønadstype, settStønadstype } =
-        journalpostState;
+    const {
+        journalføringsårsak,
+        settJournalføringsårsak,
+        stønadstype,
+        settStønadstype,
+        settSkalOppretteNyBehandling,
+        klageGjelderTilbakekreving,
+        settKlageGjelderTilbakekreving,
+    } = journalpostState;
 
     const [erPanelEkspandert, settErPanelEkspandert] = useState<boolean>(false);
 
@@ -75,14 +86,14 @@ const JournalpostPanel: React.FC<Props> = ({ journalpost, journalpostState }) =>
             onToggle={() => settErPanelEkspandert((prevState) => !prevState)}
         >
             <ExpansionCardHeader>
-                <FlexRow>
-                    <IconContainer>
+                <HStack gap="4">
+                    <IkonContainer>
                         {erPanelEkspandert ? (
                             <FolderFileFillIcon fontSize={'3.5rem'} />
                         ) : (
                             <FolderFileIcon fontSize={'3.5rem'} />
                         )}
-                    </IconContainer>
+                    </IkonContainer>
                     <Grid>
                         <Heading size={'small'} level={'2'}>
                             Tema:
@@ -103,15 +114,16 @@ const JournalpostPanel: React.FC<Props> = ({ journalpost, journalpostState }) =>
                         <BodyShort>{journalføringsårsakTilTekst[journalføringsårsak]}</BodyShort>
                         <BodyShort>{datoMottatt}</BodyShort>
                     </Grid>
-                </FlexRow>
+                </HStack>
             </ExpansionCardHeader>
             <ExpansionCard.Content>
-                <ExpansionCardContent>
+                <ExpansionCardContent gap="4">
                     <StyledSelect
                         label="Stønadstype"
                         size="small"
                         value={stønadstype}
                         onChange={(event) => {
+                            settSkalOppretteNyBehandling(false);
                             settStønadstype(event.target.value as Stønadstype);
                         }}
                         disabled={!kanRedigere}
@@ -131,9 +143,10 @@ const JournalpostPanel: React.FC<Props> = ({ journalpost, journalpostState }) =>
                         label="Type"
                         size="small"
                         value={journalføringsårsak}
-                        onChange={(event) =>
-                            settJournalføringsårsak(event.target.value as Journalføringsårsak)
-                        }
+                        onChange={(event) => {
+                            settSkalOppretteNyBehandling(false);
+                            settJournalføringsårsak(event.target.value as Journalføringsårsak);
+                        }}
                         disabled={!kanRedigere}
                     >
                         {valgbareJournalføringsårsaker.map((type) => (
@@ -142,6 +155,17 @@ const JournalpostPanel: React.FC<Props> = ({ journalpost, journalpostState }) =>
                             </option>
                         ))}
                     </StyledSelect>
+                    {journalføringsårsak === Journalføringsårsak.KLAGE && (
+                        <StyledCheckbox
+                            size="small"
+                            checked={klageGjelderTilbakekreving}
+                            onChange={() => {
+                                settKlageGjelderTilbakekreving((prevState) => !prevState);
+                            }}
+                        >
+                            Klagen gjelder tilbakekreving
+                        </StyledCheckbox>
+                    )}
                 </ExpansionCardContent>
             </ExpansionCard.Content>
         </ExpansionCard>

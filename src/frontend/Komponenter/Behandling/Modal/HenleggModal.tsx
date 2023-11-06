@@ -10,13 +10,23 @@ import { Alert, Radio, RadioGroup } from '@navikt/ds-react';
 import styled from 'styled-components';
 import { useRedirectEtterLagring } from '../../../App/hooks/felles/useRedirectEtterLagring';
 import { v4 as uuidv4 } from 'uuid';
+import { useToggles } from '../../../App/context/TogglesContext';
+import DataViewer from '../../../Felles/DataViewer/DataViewer';
+import { AnsvarligSaksbehandlerRolle } from '../../../App/typer/saksbehandler';
+import { ToggleName } from '../../../App/context/toggles';
 
 const AlertStripe = styled(Alert)`
     margin-top: 1rem;
 `;
 
 export const HenleggModal: FC<{ behandling: Behandling }> = ({ behandling }) => {
-    const { visHenleggModal, settVisHenleggModal, hentAnsvarligSaksbehandler } = useBehandling();
+    const {
+        visHenleggModal,
+        settVisHenleggModal,
+        hentAnsvarligSaksbehandler,
+        ansvarligSaksbehandler,
+    } = useBehandling();
+    const { toggles } = useToggles();
     const { utførRedirect } = useRedirectEtterLagring(`/fagsak/${behandling.fagsakId}`);
     const {
         axiosRequest,
@@ -28,7 +38,13 @@ export const HenleggModal: FC<{ behandling: Behandling }> = ({ behandling }) => 
     const [låsKnapp, settLåsKnapp] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>();
 
-    const lagreHenleggelse = () => {
+    const utledEndepunktForHenleggelse = (rolle: AnsvarligSaksbehandlerRolle) =>
+        toggles[ToggleName.henleggBehandlingUtenÅHenleggeOppgave] &&
+        rolle === AnsvarligSaksbehandlerRolle.OPPGAVE_TILHØRER_IKKE_ENF
+            ? `/familie-ef-sak/api/behandling/${behandling.id}/henlegg/behandling-uten-oppgave`
+            : `/familie-ef-sak/api/behandling/${behandling.id}/henlegg`;
+
+    const lagreHenleggelse = (ansvarligSaksbehandlerRolle: AnsvarligSaksbehandlerRolle) => {
         if (!henlagtårsak) {
             settFeilmelding('Du må velge en henleggelsesårsak');
         }
@@ -38,9 +54,12 @@ export const HenleggModal: FC<{ behandling: Behandling }> = ({ behandling }) => 
         }
         settLåsKnapp(true);
         nullstillIkkePersisterteKomponenter();
+
+        const endepunkt = utledEndepunktForHenleggelse(ansvarligSaksbehandlerRolle);
+
         axiosRequest<string, { årsak: EHenlagtårsak }>({
             method: 'POST',
-            url: `/familie-ef-sak/api/behandling/${behandling.id}/henlegg`,
+            url: endepunkt,
             data: {
                 årsak: henlagtårsak,
             },
@@ -69,25 +88,34 @@ export const HenleggModal: FC<{ behandling: Behandling }> = ({ behandling }) => 
     };
 
     return (
-        <ModalWrapper
-            tittel={'Henlegg'}
-            visModal={visHenleggModal}
-            onClose={() => lukkModal()}
-            aksjonsknapper={{
-                hovedKnapp: {
-                    onClick: () => lagreHenleggelse(),
-                    tekst: 'Henlegg',
-                    disabled: låsKnapp,
-                },
-                lukkKnapp: { onClick: () => lukkModal(), tekst: 'Avbryt' },
+        <DataViewer response={{ ansvarligSaksbehandler }}>
+            {({ ansvarligSaksbehandler }) => {
+                return (
+                    <ModalWrapper
+                        tittel={'Henlegg'}
+                        visModal={visHenleggModal}
+                        onClose={() => lukkModal()}
+                        aksjonsknapper={{
+                            hovedKnapp: {
+                                onClick: () => lagreHenleggelse(ansvarligSaksbehandler.rolle),
+                                tekst: 'Henlegg',
+                                disabled: låsKnapp,
+                            },
+                            lukkKnapp: { onClick: () => lukkModal(), tekst: 'Avbryt' },
+                        }}
+                        ariaLabel={'Velg årsak til henleggelse av behandlingen'}
+                    >
+                        <RadioGroup
+                            legend={''}
+                            onChange={(årsak: EHenlagtårsak) => settHenlagtårsak(årsak)}
+                        >
+                            <Radio value={EHenlagtårsak.TRUKKET_TILBAKE}>Trukket tilbake</Radio>
+                            <Radio value={EHenlagtårsak.FEILREGISTRERT}>Feilregistrert</Radio>
+                        </RadioGroup>
+                        {feilmelding && <AlertStripe variant={'error'}>{feilmelding}</AlertStripe>}
+                    </ModalWrapper>
+                );
             }}
-            ariaLabel={'Velg årsak til henleggelse av behandlingen'}
-        >
-            <RadioGroup legend={''} onChange={(årsak: EHenlagtårsak) => settHenlagtårsak(årsak)}>
-                <Radio value={EHenlagtårsak.TRUKKET_TILBAKE}>Trukket tilbake</Radio>
-                <Radio value={EHenlagtårsak.FEILREGISTRERT}>Feilregistrert</Radio>
-            </RadioGroup>
-            {feilmelding && <AlertStripe variant={'error'}>{feilmelding}</AlertStripe>}
-        </ModalWrapper>
+        </DataViewer>
     );
 };

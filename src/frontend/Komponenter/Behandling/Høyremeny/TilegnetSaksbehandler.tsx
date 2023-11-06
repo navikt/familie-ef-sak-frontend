@@ -12,12 +12,13 @@ import {
     AnsvarligSaksbehandlerRolle,
 } from '../../../App/typer/saksbehandler';
 import {
+    ABorderSubtle,
     ASurfaceNeutral,
     ASurfaceSuccess,
     ASurfaceWarning,
-    ABorderSubtle,
     ATextSubtle,
 } from '@navikt/ds-tokens/dist/tokens';
+import { AlertWarning } from '../../../Felles/Visningskomponenter/Alerts';
 
 const Container = styled.div`
     padding: 1rem;
@@ -81,11 +82,12 @@ const TilegnetSaksbehandler: React.FC<Props> = ({ behandling }) => {
     ): string => {
         switch (ansvarligSaksbehandlerRolle) {
             case AnsvarligSaksbehandlerRolle.IKKE_SATT:
-            case AnsvarligSaksbehandlerRolle.UTVIKLER_MED_VEILDERROLLE:
+            case AnsvarligSaksbehandlerRolle.UTVIKLER_MED_VEILEDERROLLE:
                 return ASurfaceNeutral;
             case AnsvarligSaksbehandlerRolle.INNLOGGET_SAKSBEHANDLER:
                 return ASurfaceSuccess;
             case AnsvarligSaksbehandlerRolle.ANNEN_SAKSBEHANDLER:
+            case AnsvarligSaksbehandlerRolle.OPPGAVE_TILHØRER_IKKE_ENF:
                 return ASurfaceWarning;
             default:
                 return ASurfaceNeutral;
@@ -97,7 +99,7 @@ const TilegnetSaksbehandler: React.FC<Props> = ({ behandling }) => {
             case AnsvarligSaksbehandlerRolle.INNLOGGET_SAKSBEHANDLER:
             case AnsvarligSaksbehandlerRolle.ANNEN_SAKSBEHANDLER:
                 return `${ansvarligSaksbehandler.fornavn} ${ansvarligSaksbehandler.etternavn}`;
-            case AnsvarligSaksbehandlerRolle.UTVIKLER_MED_VEILDERROLLE:
+            case AnsvarligSaksbehandlerRolle.UTVIKLER_MED_VEILEDERROLLE:
                 return 'ingen tilgang';
             default:
                 return 'ingen ansvarlig';
@@ -178,6 +180,13 @@ const TilegnetSaksbehandler: React.FC<Props> = ({ behandling }) => {
                                     </FlexBoxColumn>
                                 </Tooltip>
                             </Grid>
+                            {ansvarligSaksbehandler.rolle ===
+                                AnsvarligSaksbehandlerRolle.OPPGAVE_TILHØRER_IKKE_ENF && (
+                                <AlertWarning>
+                                    Behandlingens tilhørende oppgave er enten feilregistrert eller
+                                    satt på et annet tema.
+                                </AlertWarning>
+                            )}
                         </FlexBoxColumnFullWidth>
                     </Container>
                 );

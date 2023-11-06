@@ -10,7 +10,9 @@ const LeggTilKnapp: React.FC<{
     knappetekst?: string;
     onClick: () => void;
     variant?: ButtonProps['variant'];
-}> = ({ className, ikontekst, ikonPosisjon, knappetekst, onClick, variant }) => {
+    size?: ButtonProps['size'];
+    disabled?: boolean;
+}> = ({ className, ikontekst, ikonPosisjon, knappetekst, onClick, variant, size, disabled }) => {
     return (
         <Knapp
             className={className}
@@ -19,6 +21,8 @@ const LeggTilKnapp: React.FC<{
             onClick={onClick}
             type="button"
             variant={variant || 'secondary'}
+            size={size || 'medium'}
+            disabled={disabled}
         >
             {knappetekst && <span>{knappetekst}</span>}
         </Knapp>

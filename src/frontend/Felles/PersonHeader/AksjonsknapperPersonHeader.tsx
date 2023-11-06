@@ -7,6 +7,8 @@ import { Behandling } from '../../App/typer/fagsak';
 import { BehandlingStatus, erBehandlingRedigerbar } from '../../App/typer/behandlingstatus';
 import DataViewer from '../DataViewer/DataViewer';
 import { AnsvarligSaksbehandlerRolle } from '../../App/typer/saksbehandler';
+import { useToggles } from '../../App/context/TogglesContext';
+import { ToggleName } from '../../App/context/toggles';
 
 const StyledHamburgermeny = styled(Hamburgermeny)`
     margin-right: -1rem;
@@ -33,6 +35,7 @@ interface Props {
 
 export const AksjonsknapperPersonHeader: React.FC<Props> = ({ erSaksbehandler, behandling }) => {
     const { ansvarligSaksbehandler, settVisHenleggModal, settVisSettPåVent } = useBehandling();
+    const { toggles } = useToggles();
 
     const menyvalg = [
         {
@@ -47,16 +50,24 @@ export const AksjonsknapperPersonHeader: React.FC<Props> = ({ erSaksbehandler, b
 
     const sattPåVent = behandling.status === BehandlingStatus.SATT_PÅ_VENT;
 
+    const gyldigeSaksbehandlerRoller = [
+        AnsvarligSaksbehandlerRolle.IKKE_SATT,
+        AnsvarligSaksbehandlerRolle.OPPGAVE_FINNES_IKKE,
+        AnsvarligSaksbehandlerRolle.INNLOGGET_SAKSBEHANDLER,
+    ];
+
+    const saksbehandlerKanRedigereBehandling = (rolle: AnsvarligSaksbehandlerRolle) =>
+        gyldigeSaksbehandlerRoller.includes(rolle) ||
+        (toggles[ToggleName.henleggBehandlingUtenÅHenleggeOppgave] &&
+            rolle === AnsvarligSaksbehandlerRolle.OPPGAVE_TILHØRER_IKKE_ENF);
+
     return (
         <DataViewer response={{ ansvarligSaksbehandler }}>
             {({ ansvarligSaksbehandler }) => {
                 if (
                     erSaksbehandler &&
                     (erBehandlingRedigerbar(behandling) || sattPåVent) &&
-                    ansvarligSaksbehandler.rolle !==
-                        AnsvarligSaksbehandlerRolle.ANNEN_SAKSBEHANDLER &&
-                    ansvarligSaksbehandler.rolle !==
-                        AnsvarligSaksbehandlerRolle.UTVIKLER_MED_VEILDERROLLE
+                    saksbehandlerKanRedigereBehandling(ansvarligSaksbehandler.rolle)
                 ) {
                     return (
                         <>

@@ -45,19 +45,6 @@ export enum KlageinstansUtfall {
     INNSTILLING_AVVIST = 'INNSTILLING_AVVIST',
 }
 
-export const klageinstansUtfallTilTekst: Record<KlageinstansUtfall, string> = {
-    TRUKKET: 'Trukket KA',
-    RETUR: 'Retur KA',
-    OPPHEVET: 'Opphevet KA',
-    MEDHOLD: 'Medhold KA',
-    DELVIS_MEDHOLD: 'Delvis medhold KA',
-    STADFESTELSE: 'Stadfestelse KA',
-    UGUNST: 'Ugunst (Ugyldig) KA',
-    AVVIST: 'Avvist KA',
-    INNSTILLING_STADFESTELSE: 'Innstilling om stadfestelse til trygderetten fra KA',
-    INNSTILLING_AVVIST: 'Innstilling om avist til trygderetten fra KA',
-};
-
 export enum KlagebehandlingResultat {
     MEDHOLD = 'MEDHOLD',
     IKKE_MEDHOLD = 'IKKE_MEDHOLD',
@@ -85,3 +72,23 @@ export enum KlageHenlagtÅrsak {
     TRUKKET_TILBAKE = 'TRUKKET_TILBAKE',
     FEILREGISTRERT = 'FEILREGISTRERT',
 }
+
+export const klageinstansUtfallTilTekst: Record<KlageinstansUtfall, string> = {
+    TRUKKET: 'Trukket KA',
+    RETUR: 'Retur KA',
+    OPPHEVET: 'Opphevet KA',
+    MEDHOLD: 'Medhold KA',
+    DELVIS_MEDHOLD: 'Delvis medhold KA',
+    STADFESTELSE: 'Stadfestelse KA',
+    UGUNST: 'Ugunst (Ugyldig) KA',
+    AVVIST: 'Avvist KA',
+    INNSTILLING_STADFESTELSE: 'Innstilling om stadfestelse til trygderetten fra KA',
+    INNSTILLING_AVVIST: 'Innstilling om avist til trygderetten fra KA',
+};
+
+export const KlagebehandlingStatusTilTekst: Record<KlagebehandlingStatus, string> = {
+    OPPRETTET: 'Opprettet',
+    UTREDES: 'Utredes',
+    VENTER: 'Venter',
+    FERDIGSTILT: 'Ferdigstilt',
+};
