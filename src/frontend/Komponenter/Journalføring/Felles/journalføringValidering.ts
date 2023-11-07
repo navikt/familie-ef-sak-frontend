@@ -100,6 +100,17 @@ const validerForJournalføringTilNyBehandling = (
     if (!alleBehandlingerErFerdigstiltEllerSattPåVent(fagsak))
         return 'Kan ikke journalføre på ny behandling når det finnes en behandling som ikke er ferdigstilt';
 
+    if (journalResponse.harStrukturertSøknad) {
+        if (journalpostState.journalføringsårsak !== Journalføringsårsak.DIGITAL_SØKNAD) {
+            return 'Årsak til journalføring må være digital søknad siden det foreligger en digital søknad på journalposten';
+        }
+        if (journalpostState.vilkårsbehandleNyeBarn != EVilkårsbehandleBarnValg.IKKE_VALGT)
+            return 'Kan ikke velge å vilkårsbehandle nye barn når man har strukturert søknad';
+    } else {
+        if (journalpostState.journalføringsårsak === Journalføringsårsak.DIGITAL_SØKNAD)
+            return 'Må velge mellom PAPIRSØKNAD, ETTERSENDING eller KLAGE når journalposten mangler en digital søknad';
+    }
+
     return undefined;
 };
 
