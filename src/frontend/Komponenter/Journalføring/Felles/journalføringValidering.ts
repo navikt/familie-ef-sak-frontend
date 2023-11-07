@@ -72,16 +72,28 @@ const validerFellesFelter = (
     journalResponse: IJournalpostResponse,
     journalpostState: JournalføringStateRequest
 ): string | undefined => {
-    if (journalpostState.journalføringsårsak === Journalføringsårsak.IKKE_VALGT)
+    const { journalføringsårsak, stønadstype, dokumentTitler, nyAvsender } = journalpostState;
+
+    if (journalføringsårsak === Journalføringsårsak.IKKE_VALGT)
         return 'Mangler journalføringsårsak (Type)';
 
-    if (!journalpostState.stønadstype) return 'Mangler stønadstype';
+    if (!stønadstype) return 'Mangler stønadstype';
 
-    if (!harTittelForAlleDokumenter(journalResponse, journalpostState.dokumentTitler))
+    if (!harTittelForAlleDokumenter(journalResponse, dokumentTitler))
         return 'Mangler tittel på et eller flere dokumenter';
 
     if (journalResponse.journalpost.tema !== 'ENF')
         return 'Tema på journalføringsoppgaven må endres til «Enslig forsørger» i Gosys før du kan journalføre dokumentet i EF Sak';
+
+    if (nyAvsender?.erBruker && nyAvsender.navn)
+        return 'Kan ikke velge at ny avsender er bruker samtidig som man sender inn navn på ny avsender';
+
+    if (
+        journalResponse.journalpost.avsenderMottaker?.id &&
+        journalResponse.journalpost.avsenderMottaker.navn &&
+        nyAvsender
+    )
+        return 'Kan ikke sette ny avsender dersom avsender allerede er satt på journalposten';
 
     return undefined;
 };
