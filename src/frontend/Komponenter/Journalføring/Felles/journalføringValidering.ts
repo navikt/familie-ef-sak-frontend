@@ -65,7 +65,7 @@ const validerStandardJournalføring = (
         return validerForJournalføringTilNyBehandling(journalResponse, journalpostState, fagsak);
     }
 
-    return validerForJournalføringTilEksisterendeBehandling(journalResponse, journalpostState);
+    return validerForJournalføringTilEksisterendeBehandling(journalpostState);
 };
 
 const validerFellesFelter = (
@@ -115,7 +115,6 @@ const validerForJournalføringTilNyBehandling = (
 };
 
 const validerForJournalføringTilEksisterendeBehandling = (
-    journalResponse: IJournalpostResponse,
     journalpostState: JournalføringStateRequest
 ) => {
     if (journalpostState.barnSomSkalFødes.length > 0) {

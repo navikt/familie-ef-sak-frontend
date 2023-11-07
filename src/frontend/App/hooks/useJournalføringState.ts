@@ -43,7 +43,7 @@ interface JournalføringRequest {
 interface JournalføringRequestV2 {
     fagsakId: string;
     oppgaveId: string;
-    avsender: string;
+    avsender: NyAvsender | undefined;
     dokumentTitler: DokumentTitler | undefined;
     logiskeVedlegg: LogiskeVedleggPåDokument | undefined;
     journalførendeEnhet: string;
@@ -52,6 +52,11 @@ interface JournalføringRequestV2 {
     mottattDato: string | undefined;
     barnSomSkalFødes: BarnSomSkalFødes[];
     vilkårsbehandleNyeBarn: EVilkårsbehandleBarnValg;
+}
+
+interface NyAvsender {
+    erBruker: boolean;
+    navn?: string;
 }
 
 export interface BarnSomSkalFødes {
@@ -87,8 +92,8 @@ export interface JournalføringStateRequest {
     valgtDokumentPanel: string;
     settValgtDokumentPanel: Dispatch<SetStateAction<string>>;
     hentDokumentResponse: HentDokumentResponse;
-    nyAvsender: string;
-    settNyAvsender: Dispatch<SetStateAction<string>>;
+    nyAvsender: NyAvsender | undefined;
+    settNyAvsender: Dispatch<SetStateAction<NyAvsender | undefined>>;
     journalføringsaksjon: Journalføringsaksjon;
     settJournalføringsaksjon: Dispatch<SetStateAction<Journalføringsaksjon>>;
 }
@@ -97,10 +102,12 @@ export const useJournalføringState = (
     journalResponse: IJournalpostResponse,
     oppgaveId: string
 ): JournalføringStateRequest => {
+    const { harStrukturertSøknad, journalpost, personIdent } = journalResponse;
+
     const utledJournalføringsårsak = () => {
-        if (journalResponse.harStrukturertSøknad) {
+        if (harStrukturertSøknad) {
             return Journalføringsårsak.DIGITAL_SØKNAD;
-        } else if (journalResponse.journalpost.tittel.includes('Ettersending')) {
+        } else if (journalpost.tittel.includes('Ettersending')) {
             return Journalføringsårsak.ETTERSENDING;
         } else {
             return Journalføringsårsak.IKKE_VALGT;
@@ -112,7 +119,7 @@ export const useJournalføringState = (
 
     const { axiosRequest, innloggetSaksbehandler } = useApp();
     const { fagsak, hentFagsak } = useHentFagsak();
-    const hentDokumentResponse = useHentDokument(journalResponse.journalpost);
+    const hentDokumentResponse = useHentDokument(journalpost);
 
     const [fagsakId, settFagsakId] = useState<string>('');
     const [behandling, settBehandling] = useState<BehandlingRequest>();
@@ -131,21 +138,21 @@ export const useJournalføringState = (
         utledJournalføringsårsak()
     );
     const [stønadstype, settStønadstype] = useState<Stønadstype | undefined>(
-        behandlingstemaTilStønadstype(journalResponse.journalpost.behandlingstema)
+        behandlingstemaTilStønadstype(journalpost.behandlingstema)
     );
     const [valgtDokumentPanel, settValgtDokumentPanel] = useState<string>(
-        utledFørsteDokument(journalResponse.journalpost.dokumenter)
+        utledFørsteDokument(journalpost.dokumenter)
     );
-    const [nyAvsender, settNyAvsender] = useState<string>(''); // TODO: Denne må sendes med til backend for å bli satt
+    const [nyAvsender, settNyAvsender] = useState<NyAvsender>();
     const [journalføringsaksjon, settJournalføringsaksjon] = useState<Journalføringsaksjon>(
         Journalføringsaksjon.JOURNALFØR_PÅ_FAGSAK
-    ); // TODO: Denne må sendes med til backend for å bli satt
+    );
 
     useEffect(() => {
         if (stønadstype) {
-            hentFagsak(journalResponse.personIdent, stønadstype);
+            hentFagsak(personIdent, stønadstype);
         }
-    }, [journalResponse.personIdent, stønadstype, hentFagsak]);
+    }, [personIdent, stønadstype, hentFagsak]);
 
     useEffect(() => {
         settBehandling(undefined);
@@ -173,7 +180,7 @@ export const useJournalføringState = (
         settInnsending(byggHenterRessurs());
         axiosRequest<string, JournalføringRequest>({
             method: 'POST',
-            url: `/familie-ef-sak/api/journalpost/${journalResponse.journalpost.journalpostId}/fullfor`,
+            url: `/familie-ef-sak/api/journalpost/${journalpost.journalpostId}/fullfor`,
             data,
         }).then((resp) => settInnsending(resp));
     };
@@ -186,7 +193,7 @@ export const useJournalføringState = (
         const mottattDato =
             journalføringGjelderKlage(journalføringsårsak) &&
             journalføringsaksjon === Journalføringsaksjon.OPPRETT_BEHANDLING
-                ? journalResponse.journalpost.datoMottatt
+                ? journalpost.datoMottatt
                 : undefined;
 
         const request: JournalføringRequestV2 = {
@@ -205,7 +212,7 @@ export const useJournalføringState = (
         settInnsending(byggHenterRessurs());
         axiosRequest<string, JournalføringRequestV2>({
             method: 'POST',
-            url: `/familie-ef-sak/api/journalpost/${journalResponse.journalpost.journalpostId}/fullfor/v2`,
+            url: `/familie-ef-sak/api/journalpost/${journalpost.journalpostId}/fullfor/v2`,
             data: request,
         }).then((res) => settInnsending(res));
     };

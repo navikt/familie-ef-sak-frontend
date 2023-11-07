@@ -1,7 +1,7 @@
 import React from 'react';
 import { Panel } from '@navikt/ds-react';
 import { IJournalpostResponse } from '../../../App/typer/journalføring';
-import { BrukerPanelHeader } from './BrukerPanelHeader';
+import { PanelHeader, PanelHeaderType } from './PanelHeader';
 
 interface Props {
     journalpostResponse: IJournalpostResponse;
@@ -12,7 +12,7 @@ const BrukerPanel: React.FC<Props> = ({ journalpostResponse }) => {
 
     return (
         <Panel border>
-            <BrukerPanelHeader navn={navn} personIdent={personIdent} />
+            <PanelHeader navn={navn} personIdent={personIdent} type={PanelHeaderType.Bruker} />
         </Panel>
     );
 };

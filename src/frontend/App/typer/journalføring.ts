@@ -75,6 +75,7 @@ export interface IJournalpost {
     dokumenter: DokumentInfo[];
     relevanteDatoer: RelevantDato[];
     datoMottatt: string;
+    avsenderMottaker: IJournalpostAvsenderMottaker | undefined;
 }
 
 export interface IJournalpostAvsenderMottaker {
