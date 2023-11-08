@@ -97,6 +97,8 @@ const AvsenderPanel: React.FC<Props> = ({ journalpostResponse, journalpostState 
                                 onChange={(event) => {
                                     settNyAvsender({
                                         erBruker: event.target.checked,
+                                        navn: navn,
+                                        personIdent: personIdent,
                                     });
                                 }}
                                 value={erBrukerAvsender}

@@ -85,15 +85,17 @@ const validerFellesFelter = (
     if (journalResponse.journalpost.tema !== 'ENF')
         return 'Tema på journalføringsoppgaven må endres til «Enslig forsørger» i Gosys før du kan journalføre dokumentet i EF Sak';
 
-    if (nyAvsender?.erBruker && nyAvsender.navn)
-        return 'Kan ikke velge at ny avsender er bruker samtidig som man sender inn navn på ny avsender';
-
     if (
-        journalResponse.journalpost.avsenderMottaker?.id &&
-        journalResponse.journalpost.avsenderMottaker.navn &&
-        nyAvsender
+        nyAvsender?.erBruker &&
+        (nyAvsender.navn === undefined ||
+            nyAvsender.navn === '' ||
+            nyAvsender.personIdent === undefined ||
+            nyAvsender.personIdent === '')
     )
-        return 'Kan ikke sette ny avsender dersom avsender allerede er satt på journalposten';
+        return 'Kan ikke velge at ny avsender er bruker uten å sende inn verdier for navn og personident';
+
+    if (nyAvsender?.erBruker === false && (nyAvsender.navn === undefined || nyAvsender.navn === ''))
+        return 'Kan ikke sende inn ny avsender uten å fylle inn et nytt navn';
 
     return undefined;
 };

@@ -57,6 +57,7 @@ interface JournalføringRequestV2 {
 interface NyAvsender {
     erBruker: boolean;
     navn?: string;
+    personIdent?: string;
 }
 
 export interface BarnSomSkalFødes {
