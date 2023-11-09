@@ -74,7 +74,7 @@ export interface JournalføringStateRequest {
     dokumentTitler?: DokumentTitler;
     settDokumentTitler: Dispatch<SetStateAction<DokumentTitler | undefined>>;
     logiskeVedleggPåDokument?: LogiskeVedleggPåDokument;
-    settLogiskeVedleggPåDokument: Dispatch<SetStateAction<LogiskeVedleggPåDokument | undefined>>;
+    settLogiskeVedleggPåDokument: Dispatch<SetStateAction<LogiskeVedleggPåDokument>>;
     innsending: Ressurs<string>;
     fullførJournalføring: () => void;
     fullførJournalføringV2: () => void;
@@ -105,6 +105,14 @@ export const useJournalføringState = (
 ): JournalføringStateRequest => {
     const { harStrukturertSøknad, journalpost, personIdent } = journalResponse;
 
+    const initielleLogiskeVedlegg = journalResponse.journalpost.dokumenter.reduce(
+        (acc, { dokumentInfoId, logiskeVedlegg }) => ({
+            ...acc,
+            [dokumentInfoId]: logiskeVedlegg,
+        }),
+        {} as LogiskeVedleggPåDokument
+    );
+
     const utledJournalføringsårsak = () => {
         if (harStrukturertSøknad) {
             return Journalføringsårsak.DIGITAL_SØKNAD;
@@ -126,7 +134,7 @@ export const useJournalføringState = (
     const [behandling, settBehandling] = useState<BehandlingRequest>();
     const [dokumentTitler, settDokumentTitler] = useState<DokumentTitler>();
     const [logiskeVedleggPåDokument, settLogiskeVedleggPåDokument] =
-        useState<LogiskeVedleggPåDokument>();
+        useState<LogiskeVedleggPåDokument>(initielleLogiskeVedlegg);
     const [innsending, settInnsending] = useState<Ressurs<string>>(byggTomRessurs());
     const [visBekreftelsesModal, settVisBekreftelsesModal] = useState<boolean>(false);
     const [barnSomSkalFødes, settBarnSomSkalFødes] = useState<BarnSomSkalFødes[]>([]);
@@ -196,7 +204,6 @@ export const useJournalføringState = (
             journalføringsaksjon === Journalføringsaksjon.OPPRETT_BEHANDLING
                 ? journalpost.datoMottatt
                 : undefined;
-
         const request: JournalføringRequestV2 = {
             fagsakId: fagsakId,
             oppgaveId: oppgaveId,

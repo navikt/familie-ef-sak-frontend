@@ -1,4 +1,8 @@
-import { DokumentTitler, IJournalpostResponse } from '../../../App/typer/journalføring';
+import {
+    DokumentTitler,
+    IJournalpostResponse,
+    LogiskVedlegg,
+} from '../../../App/typer/journalføring';
 import {
     Behandlingstema,
     behandlingstemaTilTekst,
@@ -105,9 +109,9 @@ export const mapDokumentTittelTilMultiselectValue = (tittel: string) => {
     return { value: tittel, label: tittel };
 };
 
-export const mapLogiskeVedleggTilMultiselectValue = (logiskeVedlegg: string[]) => {
+export const mapLogiskeVedleggTilMultiselectValue = (logiskeVedlegg: LogiskVedlegg[]) => {
     return logiskeVedlegg.map((vedlegg) => {
-        return { label: vedlegg, value: vedlegg };
+        return { label: vedlegg.tittel, value: vedlegg.tittel };
     });
 };
 
