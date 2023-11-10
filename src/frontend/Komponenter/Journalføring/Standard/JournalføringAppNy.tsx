@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { RessursStatus } from '../../../App/typer/ressurs';
+import { erAvTypeFeil, RessursStatus } from '../../../App/typer/ressurs';
 import styled from 'styled-components';
 import {
     JournalføringStateRequest,
@@ -31,6 +31,9 @@ import { journalføringGjelderKlage, skalViseBekreftelsesmodal } from '../Felles
 import Klagebehandlinger from './Klagebehandlinger';
 import { validerJournalføring } from '../Felles/journalføringValidering';
 import { UstrukturertDokumentasjonType } from './VelgUstrukturertDokumentasjonType';
+// import EttersendingMedNyeBarn from './EttersendingMedNyeBarn';
+import BarnSomSkalFødes from './BarnSomSkalFødes';
+import NyeBarnPåBehandlingen from './NyeBarnPåBehandlingen';
 
 const InnerContainer = styled.div`
     display: flex;
@@ -65,6 +68,12 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
     } = journalpostState;
 
     const [feilmelding, settFeilmelding] = useState<string>('');
+
+    useEffect(() => {
+        if (erAvTypeFeil(innsending)) {
+            settFeilmelding(innsending.frontendFeilmelding);
+        }
+    }, [innsending]);
 
     useEffect(() => {
         if (innsending.status === RessursStatus.SUKSESS) {
@@ -160,6 +169,13 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
                                 settFeilmelding={settFeilmelding}
                             />
                         )}
+                    </section>
+                    <section>
+                        <BarnSomSkalFødes journalpostState={journalpostState} />
+                        <NyeBarnPåBehandlingen
+                            journalpostState={journalpostState}
+                            fagsak={fagsak}
+                        />
                     </section>
                     {feilmelding && <AlertError>{feilmelding}</AlertError>}
                     <HStack gap="4" justify="end">

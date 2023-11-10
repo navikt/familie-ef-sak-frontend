@@ -1,4 +1,4 @@
-import { BodyShort, Label, Radio, RadioGroup } from '@navikt/ds-react';
+import { BodyShort, Heading, Radio, RadioGroup } from '@navikt/ds-react';
 import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import { BarnForRevurdering } from '../../App/typer/revurderingstype';
@@ -7,10 +7,11 @@ import { EVilkårsbehandleBarnValg } from '../../App/typer/vilkårsbehandleBarnV
 
 const StyledNyeBarn = styled.div`
     margin-top: 2rem;
+    max-width: 43.5rem;
 `;
 
 const StyledRadioGroup = styled(RadioGroup)`
-    margin-top: 2rem;
+    margin-top: 1rem;
 `;
 
 interface IProps {
@@ -29,7 +30,9 @@ export const NyeBarn = ({
     if (måTaStillingTilBarn)
         return (
             <StyledNyeBarn>
-                <Label>Barn som ikke tidligere er behandlet</Label>
+                <Heading size={'small'} level={'2'}>
+                    Barn som ikke tidligere er behandlet
+                </Heading>
                 <BodyShort>
                     Da dette er en migrert sak er brukerens barn ikke tidligere vilkårsbehandlet i
                     EF Sak. Vurder om det er behov for å vilkårsbehandle barna i EF Sak, eller om
@@ -64,7 +67,9 @@ export const NyeBarn = ({
     else {
         return (
             <StyledNyeBarn>
-                <Label>Barn som ikke tidligere er behandlet</Label>
+                <Heading size={'small'} level={'2'}>
+                    Barn som ikke tidligere er behandlet
+                </Heading>
                 <BodyShort>
                     Barna listet opp nedenfor har blitt lagt til i Folkeregisteret etter at saken
                     sist ble vurdert. De blir nå tatt med inn i behandlingen og saksbehandler må
