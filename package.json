@@ -89,7 +89,7 @@
     "snyk": "^1.1221.0",
     "styled-components": "^6.0.8",
     "svg-inline-loader": "^0.8.2",
-    "use-debounce": "^9.0.4",
+    "use-debounce": "^10.0.0",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
