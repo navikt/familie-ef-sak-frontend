@@ -31,7 +31,6 @@ import { journalføringGjelderKlage, skalViseBekreftelsesmodal } from '../Felles
 import Klagebehandlinger from './Klagebehandlinger';
 import { validerJournalføring } from '../Felles/journalføringValidering';
 import { UstrukturertDokumentasjonType } from './VelgUstrukturertDokumentasjonType';
-// import EttersendingMedNyeBarn from './EttersendingMedNyeBarn';
 import BarnSomSkalFødes from './BarnSomSkalFødes';
 import NyeBarnPåBehandlingen from './NyeBarnPåBehandlingen';
 
