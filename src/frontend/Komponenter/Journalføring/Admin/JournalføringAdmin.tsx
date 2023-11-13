@@ -143,7 +143,9 @@ export const JournalføringAdmin: React.FC = () => {
                             </BodyShortSmall>
                             <BodyShortSmall>
                                 Dato mottatt:{' '}
-                                {formaterIsoDatoTid(journalResponse.journalpost.datoMottatt)}
+                                {journalResponse.journalpost.datoMottatt
+                                    ? formaterIsoDatoTid(journalResponse.journalpost.datoMottatt)
+                                    : 'Mangler mottattdato'}
                             </BodyShortSmall>
                         </Blokk>
                         <Blokk>
