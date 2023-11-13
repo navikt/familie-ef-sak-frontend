@@ -1,4 +1,8 @@
-import { DokumentTitler, IJournalpostResponse } from '../../../App/typer/journalføring';
+import {
+    DokumentTitler,
+    IJournalpostResponse,
+    LogiskVedlegg,
+} from '../../../App/typer/journalføring';
 import {
     Behandlingstema,
     behandlingstemaTilTekst,
@@ -6,7 +10,7 @@ import {
 } from '../../../App/typer/behandlingstema';
 import { Behandling, BehandlingResultat } from '../../../App/typer/fagsak';
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
-import { BehandlingRequest } from '../../../App/hooks/useJournalføringState';
+import { BehandlingRequest, Journalføringsaksjon } from '../../../App/hooks/useJournalføringState';
 import { BehandlingKlageRequest } from '../../../App/hooks/useJournalføringKlageState';
 import { ISelectOption, MultiValue, SingleValue } from '@navikt/familie-form-elements';
 import { Klagebehandlinger } from '../../../App/typer/klage';
@@ -105,9 +109,9 @@ export const mapDokumentTittelTilMultiselectValue = (tittel: string) => {
     return { value: tittel, label: tittel };
 };
 
-export const mapLogiskeVedleggTilMultiselectValue = (logiskeVedlegg: string[]) => {
+export const mapLogiskeVedleggTilMultiselectValue = (logiskeVedlegg: LogiskVedlegg[]) => {
     return logiskeVedlegg.map((vedlegg) => {
-        return { label: vedlegg, value: vedlegg };
+        return { label: vedlegg.tittel, value: vedlegg.tittel };
     });
 };
 
@@ -123,27 +127,26 @@ export const mapMultiselectValueTilLogiskeVedlegg = (
 };
 
 export enum Journalføringsårsak {
-    PAPIRSØKNAD = 'PAPIRSØKNAD',
-    ETTERSENDING = 'ETTERSENDING',
-    KLAGE = 'KLAGE',
     DIGITAL_SØKNAD = 'DIGITAL_SØKNAD',
+    ETTERSENDING = 'ETTERSENDING',
     IKKE_VALGT = 'IKKE_VALGT',
+    KLAGE = 'KLAGE',
+    KLAGE_TILBAKEKREVING = 'KLAGE_TILBAKEKREVING',
+    PAPIRSØKNAD = 'PAPIRSØKNAD',
 }
 
 export const journalføringsårsakTilTekst: Record<Journalføringsårsak, string> = {
-    PAPIRSØKNAD: 'Papirsøknad',
-    ETTERSENDING: 'Ettersending',
-    KLAGE: 'Klage',
     DIGITAL_SØKNAD: 'Digital søknad',
+    ETTERSENDING: 'Ettersending',
     IKKE_VALGT: 'Ikke valgt',
+    KLAGE: 'Klage',
+    KLAGE_TILBAKEKREVING: 'Klage',
+    PAPIRSØKNAD: 'Papirsøknad',
 };
 
-export const valgbareJournalføringsårsaker = [
-    Journalføringsårsak.IKKE_VALGT,
-    Journalføringsårsak.ETTERSENDING,
-    Journalføringsårsak.KLAGE,
-    Journalføringsårsak.PAPIRSØKNAD,
-];
+export const journalføringGjelderKlage = (journalføringsårsak: Journalføringsårsak) =>
+    journalføringsårsak === Journalføringsårsak.KLAGE ||
+    journalføringsårsak === Journalføringsårsak.KLAGE_TILBAKEKREVING;
 
 export const stønadstypeTilKey = (
     stønadstype: Stønadstype | undefined
@@ -159,3 +162,12 @@ export const stønadstypeTilKey = (
             return undefined;
     }
 };
+
+export const skalViseBekreftelsesmodal = (
+    journalResponse: IJournalpostResponse,
+    journalføringsaksjon: Journalføringsaksjon,
+    erPapirSøknad: boolean
+) =>
+    journalføringsaksjon === Journalføringsaksjon.OPPRETT_BEHANDLING
+        ? false
+        : journalResponse.harStrukturertSøknad || erPapirSøknad;

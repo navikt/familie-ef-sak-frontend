@@ -38,7 +38,7 @@ import { Button, Fieldset, Heading } from '@navikt/ds-react';
 import { ÅpneKlager } from '../../Personoversikt/Klage/ÅpneKlager';
 import KlageGjelderTilbakekreving from '../../Personoversikt/Klage/KlageGjelderTilbakekreving';
 import { Datovelger } from '../../../Felles/Datovelger/Datovelger';
-import { validerJournalføringKlageState } from '../Felles/JournalføringValidering';
+import { validerJournalføringKlageState } from '../Felles/JournalføringValideringDeprecated';
 
 const KlageMottatt = styled.div`
     margin-top: 1rem;

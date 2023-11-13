@@ -5,10 +5,10 @@ import { Behandlingstype } from '../typer/behandlingstype';
 import { UstrukturertDokumentasjonType } from '../../Komponenter/Journalføring/Standard/VelgUstrukturertDokumentasjonType';
 import { EVilkårsbehandleBarnValg } from '../typer/vilkårsbehandleBarnValg';
 import {
-    LogiskeVedleggPåDokument,
+    DokumentInfo,
     DokumentTitler,
     IJournalpostResponse,
-    DokumentInfo,
+    LogiskeVedleggPåDokument,
 } from '../typer/journalføring';
 import { Journalføringsårsak } from '../../Komponenter/Journalføring/Felles/utils';
 import { behandlingstemaTilStønadstype, Stønadstype } from '../typer/behandlingstema';
@@ -22,6 +22,11 @@ export interface BehandlingRequest {
     ustrukturertDokumentasjonType?: UstrukturertDokumentasjonType;
 }
 
+export enum Journalføringsaksjon {
+    OPPRETT_BEHANDLING = 'OPPRETT_BEHANDLING',
+    JOURNALFØR_PÅ_FAGSAK = 'JOURNALFØR_PÅ_FAGSAK',
+}
+
 interface JournalføringRequest {
     dokumentTitler?: DokumentTitler;
     fagsakId: string;
@@ -32,8 +37,28 @@ interface JournalføringRequest {
     vilkårsbehandleNyeBarn: EVilkårsbehandleBarnValg;
 }
 
+interface JournalføringRequestV2 {
+    fagsakId: string;
+    oppgaveId: string;
+    avsender: NyAvsender | undefined;
+    dokumentTitler: DokumentTitler | undefined;
+    logiskeVedlegg: LogiskeVedleggPåDokument | undefined;
+    journalførendeEnhet: string;
+    årsak: Journalføringsårsak;
+    aksjon: Journalføringsaksjon;
+    mottattDato: string | undefined;
+    barnSomSkalFødes: BarnSomSkalFødes[];
+    vilkårsbehandleNyeBarn: EVilkårsbehandleBarnValg;
+}
+
+interface NyAvsender {
+    erBruker: boolean;
+    navn?: string;
+    personIdent?: string;
+}
+
 export interface BarnSomSkalFødes {
-    _id: string; // brukes kun i frontend for å oppdatere å rendere barn
+    _id: string; // brukes kun i frontend for å oppdatere og rendere barn
     fødselTerminDato?: string;
 }
 
@@ -46,10 +71,10 @@ export interface JournalføringStateRequest {
     dokumentTitler?: DokumentTitler;
     settDokumentTitler: Dispatch<SetStateAction<DokumentTitler | undefined>>;
     logiskeVedleggPåDokument?: LogiskeVedleggPåDokument;
-    settLogiskeVedleggPåDokument: Dispatch<SetStateAction<LogiskeVedleggPåDokument | undefined>>;
+    settLogiskeVedleggPåDokument: Dispatch<SetStateAction<LogiskeVedleggPåDokument>>;
     innsending: Ressurs<string>;
-    settInnsending: Dispatch<SetStateAction<Ressurs<string>>>;
     fullførJournalføring: () => void;
+    fullførJournalføringV2: () => void;
     visBekreftelsesModal: boolean;
     settVisBekreftelsesModal: Dispatch<SetStateAction<boolean>>;
     barnSomSkalFødes: BarnSomSkalFødes[];
@@ -65,22 +90,32 @@ export interface JournalføringStateRequest {
     valgtDokumentPanel: string;
     settValgtDokumentPanel: Dispatch<SetStateAction<string>>;
     hentDokumentResponse: HentDokumentResponse;
-    skalOppretteNyBehandling: boolean;
-    settSkalOppretteNyBehandling: Dispatch<SetStateAction<boolean>>;
-    nyAvsender: string;
-    settNyAvsender: Dispatch<SetStateAction<string>>;
-    klageGjelderTilbakekreving: boolean;
-    settKlageGjelderTilbakekreving: Dispatch<SetStateAction<boolean>>;
+    nyAvsender: NyAvsender | undefined;
+    settNyAvsender: Dispatch<SetStateAction<NyAvsender | undefined>>;
+    journalføringsaksjon: Journalføringsaksjon;
+    settJournalføringsaksjon: Dispatch<SetStateAction<Journalføringsaksjon>>;
+    mottattDato: string | undefined;
+    settMottattDato: Dispatch<SetStateAction<string | undefined>>;
 }
 
 export const useJournalføringState = (
     journalResponse: IJournalpostResponse,
     oppgaveId: string
 ): JournalføringStateRequest => {
+    const { harStrukturertSøknad, journalpost, personIdent } = journalResponse;
+
+    const initielleLogiskeVedlegg = journalResponse.journalpost.dokumenter.reduce(
+        (acc, { dokumentInfoId, logiskeVedlegg }) => ({
+            ...acc,
+            [dokumentInfoId]: logiskeVedlegg,
+        }),
+        {} as LogiskeVedleggPåDokument
+    );
+
     const utledJournalføringsårsak = () => {
-        if (journalResponse.harStrukturertSøknad) {
+        if (harStrukturertSøknad) {
             return Journalføringsårsak.DIGITAL_SØKNAD;
-        } else if (journalResponse.journalpost.tittel.includes('Ettersending')) {
+        } else if (journalpost.tittel.includes('Ettersending')) {
             return Journalføringsårsak.ETTERSENDING;
         } else {
             return Journalføringsårsak.IKKE_VALGT;
@@ -92,13 +127,13 @@ export const useJournalføringState = (
 
     const { axiosRequest, innloggetSaksbehandler } = useApp();
     const { fagsak, hentFagsak } = useHentFagsak();
-    const hentDokumentResponse = useHentDokument(journalResponse.journalpost);
+    const hentDokumentResponse = useHentDokument(journalpost);
 
     const [fagsakId, settFagsakId] = useState<string>('');
     const [behandling, settBehandling] = useState<BehandlingRequest>();
     const [dokumentTitler, settDokumentTitler] = useState<DokumentTitler>();
     const [logiskeVedleggPåDokument, settLogiskeVedleggPåDokument] =
-        useState<LogiskeVedleggPåDokument>(); // TODO: Denne må sendes med til backend for å bli satt
+        useState<LogiskeVedleggPåDokument>(initielleLogiskeVedlegg);
     const [innsending, settInnsending] = useState<Ressurs<string>>(byggTomRessurs());
     const [visBekreftelsesModal, settVisBekreftelsesModal] = useState<boolean>(false);
     const [barnSomSkalFødes, settBarnSomSkalFødes] = useState<BarnSomSkalFødes[]>([]);
@@ -111,20 +146,24 @@ export const useJournalføringState = (
         utledJournalføringsårsak()
     );
     const [stønadstype, settStønadstype] = useState<Stønadstype | undefined>(
-        behandlingstemaTilStønadstype(journalResponse.journalpost.behandlingstema)
+        behandlingstemaTilStønadstype(journalpost.behandlingstema)
     );
     const [valgtDokumentPanel, settValgtDokumentPanel] = useState<string>(
-        utledFørsteDokument(journalResponse.journalpost.dokumenter)
+        utledFørsteDokument(journalpost.dokumenter)
     );
-    const [skalOppretteNyBehandling, settSkalOppretteNyBehandling] = useState<boolean>(false); // TODO: Denne må sendes med til backend for å bli utført
-    const [nyAvsender, settNyAvsender] = useState<string>(''); // TODO: Denne må sendes med til backend for å bli satt
-    const [klageGjelderTilbakekreving, settKlageGjelderTilbakekreving] = useState<boolean>(false); // TODO: Denne må sendes med til backend for å bli satt
+    const [nyAvsender, settNyAvsender] = useState<NyAvsender>();
+    const [journalføringsaksjon, settJournalføringsaksjon] = useState<Journalføringsaksjon>(
+        Journalføringsaksjon.JOURNALFØR_PÅ_FAGSAK
+    );
+    const [mottattDato, settMottattDato] = useState<string | undefined>(
+        journalResponse.journalpost.datoMottatt
+    );
 
     useEffect(() => {
         if (stønadstype) {
-            hentFagsak(journalResponse.personIdent, stønadstype);
+            hentFagsak(personIdent, stønadstype);
         }
-    }, [journalResponse.personIdent, stønadstype, hentFagsak]);
+    }, [personIdent, stønadstype, hentFagsak]);
 
     useEffect(() => {
         settBehandling(undefined);
@@ -152,9 +191,35 @@ export const useJournalføringState = (
         settInnsending(byggHenterRessurs());
         axiosRequest<string, JournalføringRequest>({
             method: 'POST',
-            url: `/familie-ef-sak/api/journalpost/${journalResponse.journalpost.journalpostId}/fullfor`,
+            url: `/familie-ef-sak/api/journalpost/${journalpost.journalpostId}/fullfor`,
             data,
         }).then((resp) => settInnsending(resp));
+    };
+
+    const fullførJournalføringV2 = () => {
+        if (innsending.status === RessursStatus.HENTER) {
+            return;
+        }
+
+        const request: JournalføringRequestV2 = {
+            fagsakId: fagsakId,
+            oppgaveId: oppgaveId,
+            avsender: nyAvsender,
+            dokumentTitler: dokumentTitler,
+            logiskeVedlegg: logiskeVedleggPåDokument,
+            journalførendeEnhet: innloggetSaksbehandler.enhet || '9999',
+            årsak: journalføringsårsak,
+            aksjon: journalføringsaksjon,
+            mottattDato: mottattDato,
+            barnSomSkalFødes: barnSomSkalFødes,
+            vilkårsbehandleNyeBarn: vilkårsbehandleNyeBarn,
+        };
+        settInnsending(byggHenterRessurs());
+        axiosRequest<string, JournalføringRequestV2>({
+            method: 'POST',
+            url: `/familie-ef-sak/api/journalpost/${journalpost.journalpostId}/fullfor/v2`,
+            data: request,
+        }).then((res) => settInnsending(res));
     };
 
     return {
@@ -168,8 +233,8 @@ export const useJournalføringState = (
         logiskeVedleggPåDokument,
         settLogiskeVedleggPåDokument,
         innsending,
-        settInnsending,
         fullførJournalføring,
+        fullførJournalføringV2,
         visBekreftelsesModal,
         settVisBekreftelsesModal,
         barnSomSkalFødes,
@@ -185,11 +250,11 @@ export const useJournalføringState = (
         valgtDokumentPanel,
         settValgtDokumentPanel,
         hentDokumentResponse,
-        skalOppretteNyBehandling,
-        settSkalOppretteNyBehandling,
         nyAvsender,
         settNyAvsender,
-        klageGjelderTilbakekreving,
-        settKlageGjelderTilbakekreving,
+        journalføringsaksjon,
+        settJournalføringsaksjon,
+        mottattDato,
+        settMottattDato,
     };
 };

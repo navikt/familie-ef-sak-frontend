@@ -1,45 +1,36 @@
 import React, { useEffect } from 'react';
-import LeggtilMedSirkel from '../../../Felles/Ikoner/LeggtilMedSirkel';
-import SlettSøppelkasse from '../../../Felles/Ikoner/SlettSøppelkasse';
 import { BarnSomSkalFødes } from '../../../App/hooks/useJournalføringState';
-import { Button, Heading } from '@navikt/ds-react';
+import { BodyShort, Heading } from '@navikt/ds-react';
 import styled from 'styled-components';
 import { ABlue300 } from '@navikt/ds-tokens/dist/tokens';
 import { v4 as uuidv4 } from 'uuid';
 import { erGyldigDato } from '../../../App/utils/dato';
 import { Datovelger } from '../../../Felles/Datovelger/Datovelger';
+import LeggTilKnapp from '../../../Felles/Knapper/LeggTilKnapp';
+import FjernKnapp from '../../../Felles/Knapper/FjernKnapp';
 
 const Tittel = styled(Heading)`
     color: ${ABlue300};
 `;
 
-const Container = styled.div`
-    margin: 0.5rem 0;
-`;
-
-const InlineContent = styled.div`
+const FlexColumn = styled.div`
+    display: flex;
+    flex-direction: column;
     border-left: 2px solid ${ABlue300};
-    padding-left: 1rem;
+    padding-left: 2rem;
     margin-left: 1rem;
+    gap: 0.5rem;
 `;
 
-const TerminbarnMedDatovelger = styled.div`
+const Grid = styled.div`
     display: grid;
-    grid-auto-columns: minmax(auto, 12rem);
-    grid-auto-flow: column;
+    grid-template-columns: repeat(3, max-content);
+    column-gap: 1rem;
+    align-items: center;
 
-    > * {
-        align-self: flex-end;
-        padding: 0.5rem 0.5rem;
+    .navds-form-field {
+        gap: 0;
     }
-`;
-
-const FjernBarnKnapp = styled(Button)`
-    width: 4rem;
-    margin-bottom: 0.5rem;
-`;
-const LeggTilBarnKnapp = styled(Button)`
-    margin-top: 1rem;
 `;
 
 const LeggTilBarnSomSkalFødes: React.FC<{
@@ -69,18 +60,19 @@ const LeggTilBarnSomSkalFødes: React.FC<{
         );
 
     return (
-        <Container>
+        <div>
             <Tittel spacing size="xsmall" level="6">
                 {tittel}
             </Tittel>
-            <InlineContent>
+            <FlexColumn>
                 Dersom søkeren har terminbarn i søknaden må disse legges til her.
                 {barnSomSkalFødes.map((barn, index) => (
-                    <TerminbarnMedDatovelger key={barn._id}>
-                        <div>Terminbarn {index + 1}</div>
+                    <Grid key={barn._id}>
+                        <BodyShort>Terminbarn {index + 1}</BodyShort>
                         <Datovelger
                             id={'Termindato'}
-                            label={'Termindato'}
+                            label={''}
+                            placeholder={'Termindato'}
                             settVerdi={(dato) => oppdaterTermindato(barn._id, dato as string)}
                             verdi={barn.fødselTerminDato}
                             feil={
@@ -89,26 +81,17 @@ const LeggTilBarnSomSkalFødes: React.FC<{
                                     : undefined
                             }
                         />
-                        <FjernBarnKnapp
-                            variant="tertiary"
-                            size="small"
-                            onClick={() => fjernBarn(barn)}
-                            icon={<SlettSøppelkasse withDefaultStroke={false} />}
-                        />
-                    </TerminbarnMedDatovelger>
+                        <FjernKnapp onClick={() => fjernBarn(barn)} />
+                    </Grid>
                 ))}
-                <div>
-                    <LeggTilBarnKnapp
-                        variant="tertiary"
-                        size="small"
-                        onClick={leggTilBarn}
-                        icon={<LeggtilMedSirkel width={24} heigth={24} />}
-                    >
-                        <span>Legg til termindato</span>
-                    </LeggTilBarnKnapp>
-                </div>
-            </InlineContent>
-        </Container>
+                <LeggTilKnapp
+                    variant={'tertiary'}
+                    size={'small'}
+                    onClick={leggTilBarn}
+                    knappetekst={'Legg til termindato'}
+                />
+            </FlexColumn>
+        </div>
     );
 };
 

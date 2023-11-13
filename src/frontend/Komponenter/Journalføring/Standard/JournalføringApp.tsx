@@ -39,7 +39,7 @@ import JournalføringPdfVisning from '../Felles/JournalføringPdfVisning';
 import JournalpostTittelOgLenke from '../Felles/JournalpostTittelOgLenke';
 import { ÅpneKlager } from '../../Personoversikt/Klage/ÅpneKlager';
 import { alleBehandlingerErFerdigstiltEllerSattPåVent } from '../../Personoversikt/utils';
-import { validerJournalføringState } from '../Felles/JournalføringValidering';
+import { validerJournalføringState } from '../Felles/JournalføringValideringDeprecated';
 
 const ModalTekst = styled(BodyLong)`
     margin-top: 2rem;
