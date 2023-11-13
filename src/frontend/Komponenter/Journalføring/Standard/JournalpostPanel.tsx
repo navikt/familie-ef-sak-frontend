@@ -71,7 +71,9 @@ const JournalpostPanel: React.FC<Props> = ({ journalpost, journalpostState }) =>
     const [erPanelEkspandert, settErPanelEkspandert] = useState<boolean>(false);
 
     const tema = behandlingstemaTilTemaTekst(journalpost.behandlingstema);
-    const datoMottatt = formaterIsoDato(journalpost.datoMottatt);
+    const datoMottatt = journalpostState.mottattDato
+        ? formaterIsoDato(journalpostState.mottattDato)
+        : 'Ikke satt';
     const kanRedigere = journalføringsårsak !== Journalføringsårsak.DIGITAL_SØKNAD;
     const klageGjelderTilbakekreving =
         journalføringsårsak === Journalføringsårsak.KLAGE_TILBAKEKREVING;
