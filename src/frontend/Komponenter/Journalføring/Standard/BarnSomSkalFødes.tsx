@@ -6,24 +6,26 @@ import {
 import LeggTilBarnSomSkalFødes from '../../Behandling/Førstegangsbehandling/LeggTilBarnSomSkalFødes';
 import { Journalføringsårsak } from '../Felles/utils';
 
-const BarnSomSkalFødes: React.FC<{
-    journalpostState: JournalføringStateRequest;
-}> = ({ journalpostState }) => {
-    return (
-        kanLeggeTilBarnSomSkalFødes(journalpostState) && (
-            <LeggTilBarnSomSkalFødes
-                barnSomSkalFødes={journalpostState.barnSomSkalFødes}
-                oppdaterBarnSomSkalFødes={journalpostState.settBarnSomSkalFødes}
-            />
-        )
-    );
-};
-
 const kanLeggeTilBarnSomSkalFødes = (journalpostState: JournalføringStateRequest) => {
     const erNyBehandling =
         journalpostState.journalføringsaksjon == Journalføringsaksjon.OPPRETT_BEHANDLING;
     const erPapirsøknad = journalpostState.journalføringsårsak === Journalføringsårsak.PAPIRSØKNAD;
     return erNyBehandling && erPapirsøknad;
+};
+
+const BarnSomSkalFødes: React.FC<{
+    journalpostState: JournalføringStateRequest;
+}> = ({ journalpostState }) => {
+    if (kanLeggeTilBarnSomSkalFødes(journalpostState)) {
+        return (
+            <LeggTilBarnSomSkalFødes
+                barnSomSkalFødes={journalpostState.barnSomSkalFødes}
+                oppdaterBarnSomSkalFødes={journalpostState.settBarnSomSkalFødes}
+            />
+        );
+    }
+
+    return <></>;
 };
 
 export default BarnSomSkalFødes;

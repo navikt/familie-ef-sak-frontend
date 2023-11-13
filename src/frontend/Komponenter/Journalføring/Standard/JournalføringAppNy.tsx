@@ -171,10 +171,7 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
                     </section>
                     <section>
                         <BarnSomSkalFødes journalpostState={journalpostState} />
-                        <NyeBarnPåBehandlingen
-                            journalpostState={journalpostState}
-                            fagsak={fagsak}
-                        />
+                        <NyeBarnPåBehandlingen journalpostState={journalpostState} />
                     </section>
                     {feilmelding && <AlertError>{feilmelding}</AlertError>}
                     <HStack gap="4" justify="end">

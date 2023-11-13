@@ -4,19 +4,24 @@ import {
     JournalføringStateRequest,
 } from '../../../App/hooks/useJournalføringState';
 import { Journalføringsårsak } from '../Felles/utils';
-import { Fagsak } from '../../../App/typer/fagsak';
-import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
+import { RessursStatus } from '../../../App/typer/ressurs';
 import EttersendingMedNyeBarn from './EttersendingMedNyeBarn';
 
 const NyeBarnPåBehandlingen: React.FC<{
     journalpostState: JournalføringStateRequest;
-    fagsak: Ressurs<Fagsak>;
-}> = ({ journalpostState, fagsak }) => {
-    const erEttersending =
-        journalpostState.journalføringsårsak === Journalføringsårsak.ETTERSENDING;
+}> = ({ journalpostState }) => {
+    const {
+        fagsak,
+        journalføringsaksjon,
+        journalføringsårsak,
+        settVilkårsbehandleNyeBarn,
+        vilkårsbehandleNyeBarn,
+    } = journalpostState;
+
+    const erEttersending = journalføringsårsak === Journalføringsårsak.ETTERSENDING;
     const harHentetFagsak = fagsak.status === RessursStatus.SUKSESS;
     const skalOppretteNyBehandling =
-        journalpostState.journalføringsaksjon === Journalføringsaksjon.OPPRETT_BEHANDLING;
+        journalføringsaksjon === Journalføringsaksjon.OPPRETT_BEHANDLING;
 
     return (
         skalOppretteNyBehandling &&
@@ -24,8 +29,8 @@ const NyeBarnPåBehandlingen: React.FC<{
         harHentetFagsak && (
             <EttersendingMedNyeBarn
                 fagsak={fagsak.data}
-                vilkårsbehandleNyeBarn={journalpostState.vilkårsbehandleNyeBarn}
-                settVilkårsbehandleNyeBarn={journalpostState.settVilkårsbehandleNyeBarn}
+                vilkårsbehandleNyeBarn={vilkårsbehandleNyeBarn}
+                settVilkårsbehandleNyeBarn={settVilkårsbehandleNyeBarn}
             />
         )
     );
