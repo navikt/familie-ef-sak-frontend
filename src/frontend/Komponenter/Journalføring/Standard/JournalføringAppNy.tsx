@@ -33,6 +33,7 @@ import { validerJournalføring } from '../Felles/journalføringValidering';
 import { UstrukturertDokumentasjonType } from './VelgUstrukturertDokumentasjonType';
 import BarnSomSkalFødes from './BarnSomSkalFødes';
 import NyeBarnPåBehandlingen from './NyeBarnPåBehandlingen';
+import { KlageMottatt } from '../Klage/KlageMottatt';
 
 const InnerContainer = styled.div`
     display: flex;
@@ -172,6 +173,10 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
                     <section>
                         <BarnSomSkalFødes journalpostState={journalpostState} />
                         <NyeBarnPåBehandlingen journalpostState={journalpostState} />
+                        <KlageMottatt
+                            journalpostState={journalpostState}
+                            journalResponse={journalResponse}
+                        />
                     </section>
                     {feilmelding && <AlertError>{feilmelding}</AlertError>}
                     <HStack gap="4" justify="end">

@@ -6,7 +6,7 @@ import { datoTilAlder } from '../../App/utils/dato';
 import { EVilkårsbehandleBarnValg } from '../../App/typer/vilkårsbehandleBarnValg';
 
 const StyledNyeBarn = styled.div`
-    margin-top: 2rem;
+    margin-top: 1rem;
     max-width: 43.5rem;
 `;
 

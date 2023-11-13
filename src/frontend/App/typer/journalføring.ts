@@ -74,7 +74,7 @@ export interface IJournalpost {
     kanal?: string;
     dokumenter: DokumentInfo[];
     relevanteDatoer: RelevantDato[];
-    datoMottatt: string;
+    datoMottatt?: string;
     avsenderMottaker: IJournalpostAvsenderMottaker | undefined;
 }
 

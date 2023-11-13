@@ -10,10 +10,7 @@ import {
     IJournalpostResponse,
     LogiskeVedleggPåDokument,
 } from '../typer/journalføring';
-import {
-    journalføringGjelderKlage,
-    Journalføringsårsak,
-} from '../../Komponenter/Journalføring/Felles/utils';
+import { Journalføringsårsak } from '../../Komponenter/Journalføring/Felles/utils';
 import { behandlingstemaTilStønadstype, Stønadstype } from '../typer/behandlingstema';
 import { HentDokumentResponse, useHentDokument } from './useHentDokument';
 import { useHentFagsak } from './useHentFagsak';
@@ -97,6 +94,8 @@ export interface JournalføringStateRequest {
     settNyAvsender: Dispatch<SetStateAction<NyAvsender | undefined>>;
     journalføringsaksjon: Journalføringsaksjon;
     settJournalføringsaksjon: Dispatch<SetStateAction<Journalføringsaksjon>>;
+    mottattDato: string | undefined;
+    settMottattDato: Dispatch<SetStateAction<string | undefined>>;
 }
 
 export const useJournalføringState = (
@@ -156,6 +155,9 @@ export const useJournalføringState = (
     const [journalføringsaksjon, settJournalføringsaksjon] = useState<Journalføringsaksjon>(
         Journalføringsaksjon.JOURNALFØR_PÅ_FAGSAK
     );
+    const [mottattDato, settMottattDato] = useState<string | undefined>(
+        journalResponse.journalpost.datoMottatt
+    );
 
     useEffect(() => {
         if (stønadstype) {
@@ -199,11 +201,6 @@ export const useJournalføringState = (
             return;
         }
 
-        const mottattDato =
-            journalføringGjelderKlage(journalføringsårsak) &&
-            journalføringsaksjon === Journalføringsaksjon.OPPRETT_BEHANDLING
-                ? journalpost.datoMottatt
-                : undefined;
         const request: JournalføringRequestV2 = {
             fagsakId: fagsakId,
             oppgaveId: oppgaveId,
@@ -257,5 +254,7 @@ export const useJournalføringState = (
         settNyAvsender,
         journalføringsaksjon,
         settJournalføringsaksjon,
+        mottattDato,
+        settMottattDato,
     };
 };
