@@ -4,7 +4,7 @@ import {
     JournalføringStateRequest,
 } from '../../../App/hooks/useJournalføringState';
 import LeggTilBarnSomSkalFødes from '../../Behandling/Førstegangsbehandling/LeggTilBarnSomSkalFødes';
-import { Journalføringsårsak } from '../Felles/utils';
+import { Journalføringsårsak } from './utils';
 
 const kanLeggeTilBarnSomSkalFødes = (journalpostState: JournalføringStateRequest) => {
     const erNyBehandling =

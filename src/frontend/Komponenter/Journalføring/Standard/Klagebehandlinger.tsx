@@ -3,7 +3,7 @@ import { BodyShort, Button, HStack, Table, VStack } from '@navikt/ds-react';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { formaterNullableIsoDato } from '../../../App/utils/formatter';
 import LeggTilKnapp from '../../../Felles/Knapper/LeggTilKnapp';
-import { stønadstypeTilKey } from '../Felles/utils';
+import { stønadstypeTilKey } from './utils';
 import { TrashIcon } from '@navikt/aksel-icons';
 import styled from 'styled-components';
 import {

@@ -9,7 +9,7 @@ import {
     mapLogiskeVedleggTilMultiselectValue,
     mapDokumentTittelTilMultiselectValue,
     mapMultiselectValueTilLogiskeVedlegg,
-} from '../Felles/utils';
+} from './utils';
 import { ExternalLinkIcon } from '@navikt/aksel-icons';
 import { åpneFilIEgenTab } from '../../../App/utils/utils';
 import { JournalføringStateRequest } from '../../../App/hooks/useJournalføringState';

@@ -7,8 +7,6 @@ import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { IJournalpostResponse } from '../../../App/typer/journalføring';
 import styled from 'styled-components';
 
-export const SideLayout = styled.div``;
-
 export const Kolonner = styled.div`
     display: flex;
     flex-wrap: wrap;
@@ -30,22 +28,16 @@ export const Høyrekolonne = styled.div`
     height: calc(100vh - 4rem);
 `;
 
-export const FlexKnapper = styled.div`
-    margin: 1rem;
-    display: flex;
-    justify-content: space-between;
-`;
-
 export interface JournalføringAppProps {
     oppgaveId: string;
     journalResponse: IJournalpostResponse;
 }
 
-interface JournalføringAppSide {
+interface Props {
     komponent: FunctionComponent<JournalføringAppProps>;
 }
 
-const JournalføringWrapper: React.FC<JournalføringAppSide> = ({ komponent }) => {
+const JournalføringWrapper: React.FC<Props> = ({ komponent }) => {
     const query: URLSearchParams = useQueryParams();
     const oppgaveId = query.get(OPPGAVEID_QUERY_STRING);
     const journalpostId = query.get(JOURNALPOST_QUERY_STRING);

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
 import styled from 'styled-components';
-import Brukerinfo from '../Felles/Brukerinfo';
+import Brukerinfo from './Brukerinfo';
 import { stønadstypeTilTekst } from '../../../App/typer/behandlingstema';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { useHentJournalpost } from '../../../App/hooks/useHentJournalpost';
@@ -16,11 +16,11 @@ import {
 } from '../../Oppgavebenk/oppgavefilterStorage';
 import { IJournalpostResponse, journalstatusTilTekst } from '../../../App/typer/journalføring';
 import { formaterIsoDatoTid } from '../../../App/utils/formatter';
-import { UtledEllerVelgFagsak } from '../Felles/UtledEllerVelgFagsak';
+import { UtledEllerVelgFagsak } from './UtledEllerVelgFagsak';
 import { AlertError, AlertWarning } from '../../../Felles/Visningskomponenter/Alerts';
 import { Button, Heading } from '@navikt/ds-react';
 import { BodyLongSmall, BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
-import { utledRiktigBehandlingstype } from '../Felles/utils';
+import { utledRiktigBehandlingstype } from '../Standard/utils';
 
 const Blokk = styled.div`
     margin-bottom: 1rem;
