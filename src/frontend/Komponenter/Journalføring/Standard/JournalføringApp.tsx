@@ -61,7 +61,7 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
     );
     const {
         fagsak,
-        fullførJournalføringV2,
+        fullførJournalføring,
         hentDokumentResponse,
         innsending,
         journalføringsaksjon,
@@ -112,7 +112,7 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
         ) {
             settVisBekreftelsesModal(true);
         } else {
-            fullførJournalføringV2();
+            fullførJournalføring();
         }
     };
 
