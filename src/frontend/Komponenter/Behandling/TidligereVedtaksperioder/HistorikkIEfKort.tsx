@@ -24,15 +24,12 @@ const HistorikkIEfKort: React.FC<{
     periodeHistorikkData: IGrunnlagsdataPeriodeHistorikk[] | undefined;
     stønadstype: string;
 }> = ({ periodeHistorikkData, stønadstype }) => {
-    const erOvergansstønadMedData =
-        stønadstype === Stønadstype.OVERGANGSSTØNAD &&
-        periodeHistorikkData &&
-        periodeHistorikkData?.length > 0;
+    const harPeriodehistorikk = periodeHistorikkData && periodeHistorikkData?.length > 0;
 
-    const erBarnetilsynMedData =
-        stønadstype === Stønadstype.BARNETILSYN &&
-        periodeHistorikkData &&
-        periodeHistorikkData?.length > 0;
+    const erOvergansstønadMedData =
+        stønadstype === Stønadstype.OVERGANGSSTØNAD && harPeriodehistorikk;
+
+    const erBarnetilsynMedData = stønadstype === Stønadstype.BARNETILSYN && harPeriodehistorikk;
 
     return (
         <>
