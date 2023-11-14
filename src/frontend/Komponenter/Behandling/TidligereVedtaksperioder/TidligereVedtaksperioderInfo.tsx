@@ -61,7 +61,6 @@ const TidligereVedtaksperioderInfo: FC<{ tidligereVedtaksperioder: ITidligereVed
         <Container>
             <FlexDiv>
                 <Registergrunnlag />
-
                 <Label size="small" className="tittel" as="h3">
                     Har bruker tidligere vedtaksperioder i EF Sak eller Infotrygd
                 </Label>

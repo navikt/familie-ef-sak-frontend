@@ -11,12 +11,13 @@ export interface ITidligereInnvilgetVedtak {
     harTidligereBarnetilsyn: boolean;
     harTidligereSkolepenger: boolean;
     periodeHistorikkOvergangsstønad: IGrunnlagsdataPeriodeHistorikk[];
+    periodeHistorikkBarnetilsyn: IGrunnlagsdataPeriodeHistorikk[];
 }
 
 export interface IGrunnlagsdataPeriodeHistorikk {
-    antallMåneder: number;
-    antallMånederUtenBeløp: number;
-    vedtaksperiodeType: EPeriodetype;
+    antallMåneder?: number;
+    antallMånederUtenBeløp?: number;
+    vedtaksperiodeType?: EPeriodetype;
     fom: string;
     tom: string;
 }

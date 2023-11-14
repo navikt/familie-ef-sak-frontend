@@ -1,9 +1,10 @@
 import React from 'react';
-import { IGrunnlagsdataPeriodeHistorikk } from './typer';
 import styled from 'styled-components';
-import { BodyShort, Heading, Label } from '@navikt/ds-react';
+import { BodyShort, Heading } from '@navikt/ds-react';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
-import HistorikkRadIOvergangsstønad from './HistorikkRadIOvergangsstønad';
+import { IGrunnlagsdataPeriodeHistorikk } from './typer';
+import KortInnholdBarnetilsyn from './barnetilsyn/KortInnholdBarnetilsyn';
+import KortInnholdOvergangsstønad from './overgangsstønad/KortInnholdOvergangsstønad';
 
 const Container = styled.div`
     display: flex;
@@ -19,17 +20,6 @@ const Container = styled.div`
 const Tittel = styled(Heading)`
     text-decoration: underline;
 `;
-
-const Grid = styled.div`
-    display: grid;
-    grid-template-columns: auto auto auto auto;
-    gap: 0.2rem;
-`;
-
-const Row = styled.div`
-    display: contents;
-`;
-
 const HistorikkIEfKort: React.FC<{
     periodeHistorikkData: IGrunnlagsdataPeriodeHistorikk[] | undefined;
     stønadstype: string;
@@ -39,27 +29,28 @@ const HistorikkIEfKort: React.FC<{
         periodeHistorikkData &&
         periodeHistorikkData?.length > 0;
 
+    const erBarnetilsynMedData =
+        stønadstype === Stønadstype.BARNETILSYN &&
+        periodeHistorikkData &&
+        periodeHistorikkData?.length > 0;
+
     return (
         <>
             <Container>
                 <Tittel level="3" size="small">
                     Historikk i EF Sak
                 </Tittel>
-                {erOvergansstønadMedData ? (
-                    <Grid>
-                        <Row>
-                            <Label>Periode</Label>
-                            <Label>Periodetype</Label>
-                            <Label>Måneder med utbet.</Label>
-                            <Label>Måneder uten utbet.</Label>
-                        </Row>
-                        {periodeHistorikkData?.map((rad, i) => (
-                            <HistorikkRadIOvergangsstønad key={i} rad={rad} indeks={i} />
-                        ))}
-                    </Grid>
-                ) : (
-                    <BodyShort size="small">Kan ikke vise tidligere historikk.</BodyShort>
-                )}
+                <div>
+                    {erOvergansstønadMedData && (
+                        <KortInnholdOvergangsstønad periodeHistorikkData={periodeHistorikkData} />
+                    )}
+                    {erBarnetilsynMedData && (
+                        <KortInnholdBarnetilsyn periodeHistorikkData={periodeHistorikkData} />
+                    )}
+                    {!erOvergansstønadMedData && !erBarnetilsynMedData && (
+                        <BodyShort size="small">Kan ikke vise tidligere historikk.</BodyShort>
+                    )}
+                </div>
             </Container>
         </>
     );
