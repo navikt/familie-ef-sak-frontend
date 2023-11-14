@@ -33,11 +33,11 @@ export interface JournalføringAppProps {
     journalResponse: IJournalpostResponse;
 }
 
-interface JournalføringAppSide {
+interface Props {
     komponent: FunctionComponent<JournalføringAppProps>;
 }
 
-const JournalføringWrapper: React.FC<JournalføringAppSide> = ({ komponent }) => {
+const JournalføringWrapper: React.FC<Props> = ({ komponent }) => {
     const query: URLSearchParams = useQueryParams();
     const oppgaveId = query.get(OPPGAVEID_QUERY_STRING);
     const journalpostId = query.get(JOURNALPOST_QUERY_STRING);

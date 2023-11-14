@@ -7,7 +7,7 @@ import { behandlingStatusTilTekst } from '../../../App/typer/behandlingstatus';
 import { behandlingstypeTilTekst } from '../../../App/typer/behandlingstype';
 import LeggTilKnapp from '../../../Felles/Knapper/LeggTilKnapp';
 import { alleBehandlingerErFerdigstiltEllerSattPåVent } from '../../Personoversikt/utils';
-import { utledRiktigBehandlingstype } from '../Felles/utils';
+import { utledRiktigBehandlingstype } from './utils';
 import { TrashIcon } from '@navikt/aksel-icons';
 import styled from 'styled-components';
 import {

@@ -5,7 +5,7 @@ import {
     JournalføringStateRequest,
 } from '../../../App/hooks/useJournalføringState';
 import { IJournalpostResponse } from '../../../App/typer/journalføring';
-import { journalføringGjelderKlage } from '../Felles/utils';
+import { journalføringGjelderKlage } from './utils';
 
 export const KlageMottatt: React.FC<{
     journalpostState: JournalføringStateRequest;

@@ -3,7 +3,7 @@ import {
     Journalføringsaksjon,
     JournalføringStateRequest,
 } from '../../../App/hooks/useJournalføringState';
-import { Journalføringsårsak } from '../Felles/utils';
+import { Journalføringsårsak } from './utils';
 import { RessursStatus } from '../../../App/typer/ressurs';
 import EttersendingMedNyeBarn from './EttersendingMedNyeBarn';
 

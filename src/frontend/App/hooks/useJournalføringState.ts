@@ -12,7 +12,7 @@ import {
 import {
     Journalføringsårsak,
     UstrukturertDokumentasjonType,
-} from '../../Komponenter/Journalføring/Felles/utils';
+} from '../../Komponenter/Journalføring/Standard/utils';
 import { behandlingstemaTilStønadstype, Stønadstype } from '../typer/behandlingstema';
 import { HentDokumentResponse, useHentDokument } from './useHentDokument';
 import { useHentFagsak } from './useHentFagsak';

@@ -18,8 +18,8 @@ import JournalføringWrapper, {
     JournalføringAppProps,
     Kolonner,
     Venstrekolonne,
-} from '../Felles/JournalføringWrapper';
-import JournalføringPdfVisning from '../Felles/JournalføringPdfVisning';
+} from './JournalføringWrapper';
+import JournalføringPdfVisning from './JournalføringPdfVisning';
 import JournalpostPanel from './JournalpostPanel';
 import BrukerPanel from './BrukerPanel';
 import AvsenderPanel from './AvsenderPanel';
@@ -31,12 +31,12 @@ import {
     journalføringGjelderKlage,
     skalViseBekreftelsesmodal,
     UstrukturertDokumentasjonType,
-} from '../Felles/utils';
+} from './utils';
 import Klagebehandlinger from './Klagebehandlinger';
-import { validerJournalføring } from '../Felles/journalføringValidering';
+import { validerJournalføring } from './journalføringValidering';
 import BarnSomSkalFødes from './BarnSomSkalFødes';
 import NyeBarnPåBehandlingen from './NyeBarnPåBehandlingen';
-import { KlageMottatt } from '../Klage/KlageMottatt';
+import { KlageMottatt } from './KlageMottatt';
 
 const InnerContainer = styled.div`
     display: flex;
@@ -48,7 +48,7 @@ const Tittel = styled(Heading)`
     margin-bottom: 0.5rem;
 `;
 
-export const JournalføringAppNy: React.FC = () => {
+export const JournalføringApp: React.FC = () => {
     return <JournalføringWrapper komponent={JournalføringSide} />;
 };
 

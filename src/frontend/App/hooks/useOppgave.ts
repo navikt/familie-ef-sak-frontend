@@ -4,7 +4,7 @@ import { IOppgave } from '../../Komponenter/Oppgavebenk/typer/oppgave';
 import { useEffect, useState } from 'react';
 import { useHentFagsak } from './useHentFagsak';
 import { Stønadstype } from '../typer/behandlingstema';
-import { lagJournalføringUrl } from '../../Komponenter/Journalføring/Felles/utils';
+import { lagJournalføringUrl } from '../../Komponenter/Journalføring/Standard/utils';
 import { useNavigate } from 'react-router-dom';
 
 interface OppgaveDto {

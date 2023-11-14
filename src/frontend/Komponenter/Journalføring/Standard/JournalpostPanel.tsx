@@ -22,7 +22,7 @@ import {
     journalføringGjelderKlage,
     Journalføringsårsak,
     journalføringsårsakTilTekst,
-} from '../Felles/utils';
+} from './utils';
 import {
     Journalføringsaksjon,
     JournalføringStateRequest,

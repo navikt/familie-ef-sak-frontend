@@ -34,7 +34,7 @@ import UlagretDataModal from './Felles/Visningskomponenter/UlagretDataModal';
 import { loggBesøkEvent } from './App/utils/amplitude/amplitudeLoggEvents';
 import { BesøkEvent } from './App/utils/amplitude/typer';
 import Innloggingsfeilmelding from './Felles/Varsel/Innloggingsfeilmelding';
-import { JournalføringAppNy } from './Komponenter/Journalføring/Standard/JournalføringAppNy';
+import { JournalføringApp } from './Komponenter/Journalføring/Standard/JournalføringApp';
 
 const Innhold = styled(BodyLong)`
     margin-top: 2rem;
@@ -91,7 +91,7 @@ const AppRoutes: React.FC<{ innloggetSaksbehandler: ISaksbehandler }> = ({
                     />
                     <Route path="/behandling/:behandlingId/*" element={<BehandlingContainer />} />
                     <Route path="/oppgavebenk" element={<OppgavebenkApp />} />
-                    <Route path="/journalfor" element={<JournalføringAppNy />} />
+                    <Route path="/journalfor" element={<JournalføringApp />} />
                     <Route path="/admin/*" element={<AdminApp />} />
                     <Route path="/fagsak/:fagsakId" element={<FagsakTilFagsakPersonRedirect />} />
                     <Route path="/person/:fagsakPersonId/*" element={<Personoversikt />} />
