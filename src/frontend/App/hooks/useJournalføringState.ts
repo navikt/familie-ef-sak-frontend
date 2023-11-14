@@ -2,7 +2,6 @@ import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { byggHenterRessurs, byggTomRessurs, Ressurs, RessursStatus } from '../typer/ressurs';
 import { useApp } from '../context/AppContext';
 import { Behandlingstype } from '../typer/behandlingstype';
-import { UstrukturertDokumentasjonType } from '../../Komponenter/Journalføring/Standard/VelgUstrukturertDokumentasjonType';
 import { EVilkårsbehandleBarnValg } from '../typer/vilkårsbehandleBarnValg';
 import {
     DokumentInfo,
@@ -10,7 +9,10 @@ import {
     IJournalpostResponse,
     LogiskeVedleggPåDokument,
 } from '../typer/journalføring';
-import { Journalføringsårsak } from '../../Komponenter/Journalføring/Felles/utils';
+import {
+    Journalføringsårsak,
+    UstrukturertDokumentasjonType,
+} from '../../Komponenter/Journalføring/Felles/utils';
 import { behandlingstemaTilStønadstype, Stønadstype } from '../typer/behandlingstema';
 import { HentDokumentResponse, useHentDokument } from './useHentDokument';
 import { useHentFagsak } from './useHentFagsak';

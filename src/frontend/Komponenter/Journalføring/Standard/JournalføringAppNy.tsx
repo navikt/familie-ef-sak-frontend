@@ -27,10 +27,13 @@ import Dokumenter from './Dokumenter';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 import Behandlinger from './Behandlinger';
 import { Knapp } from '../../../Felles/Knapper/HovedKnapp';
-import { journalføringGjelderKlage, skalViseBekreftelsesmodal } from '../Felles/utils';
+import {
+    journalføringGjelderKlage,
+    skalViseBekreftelsesmodal,
+    UstrukturertDokumentasjonType,
+} from '../Felles/utils';
 import Klagebehandlinger from './Klagebehandlinger';
 import { validerJournalføring } from '../Felles/journalføringValidering';
-import { UstrukturertDokumentasjonType } from './VelgUstrukturertDokumentasjonType';
 import BarnSomSkalFødes from './BarnSomSkalFødes';
 import NyeBarnPåBehandlingen from './NyeBarnPåBehandlingen';
 import { KlageMottatt } from '../Klage/KlageMottatt';

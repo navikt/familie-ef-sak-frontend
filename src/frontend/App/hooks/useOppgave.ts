@@ -4,10 +4,7 @@ import { IOppgave } from '../../Komponenter/Oppgavebenk/typer/oppgave';
 import { useEffect, useState } from 'react';
 import { useHentFagsak } from './useHentFagsak';
 import { Stønadstype } from '../typer/behandlingstema';
-import {
-    lagJournalføringKlageUrl,
-    lagJournalføringUrl,
-} from '../../Komponenter/Journalføring/Felles/utils';
+import { lagJournalføringUrl } from '../../Komponenter/Journalføring/Felles/utils';
 import { useNavigate } from 'react-router-dom';
 
 interface OppgaveDto {
@@ -68,15 +65,11 @@ export const useOppgave = (oppgave: IOppgave) => {
             .finally(() => settLaster(false));
     };
 
-    const gåTilJournalføring = (type: 'klage' | 'stønad') => {
+    const gåTilJournalføring = () => {
         const journalpostId = oppgave.journalpostId || '';
         const oppgaveId = oppgave.id || '';
 
-        navigate(
-            type === 'klage'
-                ? lagJournalføringKlageUrl(journalpostId, oppgaveId)
-                : lagJournalføringUrl(journalpostId, oppgaveId)
-        );
+        navigate(lagJournalføringUrl(journalpostId, oppgaveId));
     };
 
     const hentFagsakOgTriggRedirectTilBehandlingsoversikt = (personIdent: string) => {

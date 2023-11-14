@@ -56,10 +56,8 @@ export const OppgaveKnapp: React.FC<{
     const gåTilOppgaveUtførelse = () => {
         if (oppgaveErSaksbehandling(oppgave)) {
             gåTilBehandleSakOppgave();
-        } else if (oppgaveErJournalførKlage(oppgave)) {
-            gåTilJournalføring('klage');
-        } else if (oppgaveKanJournalføres(oppgave)) {
-            gåTilJournalføring('stønad');
+        } else if (oppgaveKanJournalføres(oppgave) || oppgaveErJournalførKlage(oppgave)) {
+            gåTilJournalføring();
         } else {
             hentFagsakOgTriggRedirectTilBehandlingsoversikt(utledetFolkeregisterIdent(oppgave));
         }

@@ -7,8 +7,6 @@ import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { IJournalpostResponse } from '../../../App/typer/journalføring';
 import styled from 'styled-components';
 
-export const SideLayout = styled.div``;
-
 export const Kolonner = styled.div`
     display: flex;
     flex-wrap: wrap;
@@ -28,12 +26,6 @@ export const Høyrekolonne = styled.div`
     flex: 1 1 auto;
     min-width: 450px;
     height: calc(100vh - 4rem);
-`;
-
-export const FlexKnapper = styled.div`
-    margin: 1rem;
-    display: flex;
-    justify-content: space-between;
 `;
 
 export interface JournalføringAppProps {
