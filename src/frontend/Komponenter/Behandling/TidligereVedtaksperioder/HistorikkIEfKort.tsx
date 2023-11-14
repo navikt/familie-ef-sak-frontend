@@ -26,10 +26,11 @@ const HistorikkIEfKort: React.FC<{
 }> = ({ periodeHistorikkData, stønadstype }) => {
     const harPeriodehistorikk = periodeHistorikkData && periodeHistorikkData?.length > 0;
 
-    const erOvergansstønadMedData =
+    const erOvergansstønadMedHistorikk =
         stønadstype === Stønadstype.OVERGANGSSTØNAD && harPeriodehistorikk;
 
-    const erBarnetilsynMedData = stønadstype === Stønadstype.BARNETILSYN && harPeriodehistorikk;
+    const erBarnetilsynMedHistorikk =
+        stønadstype === Stønadstype.BARNETILSYN && harPeriodehistorikk;
 
     return (
         <>
@@ -38,13 +39,13 @@ const HistorikkIEfKort: React.FC<{
                     Historikk i EF Sak
                 </Tittel>
                 <div>
-                    {erOvergansstønadMedData && (
+                    {erOvergansstønadMedHistorikk && (
                         <KortInnholdOvergangsstønad periodeHistorikkData={periodeHistorikkData} />
                     )}
-                    {erBarnetilsynMedData && (
+                    {erBarnetilsynMedHistorikk && (
                         <KortInnholdBarnetilsyn periodeHistorikkData={periodeHistorikkData} />
                     )}
-                    {!erOvergansstønadMedData && !erBarnetilsynMedData && (
+                    {!erOvergansstønadMedHistorikk && !erBarnetilsynMedHistorikk && (
                         <BodyShort size="small">Kan ikke vise tidligere historikk.</BodyShort>
                     )}
                 </div>
