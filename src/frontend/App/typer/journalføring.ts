@@ -49,7 +49,7 @@ type BrukerId = 'AKTOERID' | 'FNR';
 
 type Dokumentstatus = 'FERDIGSTILT' | 'AVBRUTT' | 'UNDER_REDIGERING' | 'KASSERT';
 type Dokumentvariant = { variantformat: string };
-type LogiskVedlegg = { logiskVedleggId: string; tittel: string };
+export type LogiskVedlegg = { logiskVedleggId: string; tittel: string };
 type RelevantDato = { dato: string; datotype: string };
 
 export interface DokumentInfo {
@@ -74,7 +74,8 @@ export interface IJournalpost {
     kanal?: string;
     dokumenter: DokumentInfo[];
     relevanteDatoer: RelevantDato[];
-    datoMottatt: string;
+    datoMottatt?: string;
+    avsenderMottaker: IJournalpostAvsenderMottaker | undefined;
 }
 
 export interface IJournalpostAvsenderMottaker {
@@ -116,4 +117,4 @@ export interface BrukerInfo {
 }
 
 export type DokumentTitler = Record<string, string>;
-export type LogiskeVedleggPåDokument = Record<string, string[]>;
+export type LogiskeVedleggPåDokument = Record<string, LogiskVedlegg[]>;

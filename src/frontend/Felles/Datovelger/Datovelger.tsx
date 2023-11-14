@@ -13,7 +13,8 @@ export const Datovelger: FC<{
     feil?: string;
     maksDato?: Date;
     minDato?: Date;
-}> = ({ settVerdi, erLesevisning, verdi, label, id, feil, minDato, maksDato }) => {
+    placeholder?: string;
+}> = ({ settVerdi, erLesevisning, verdi, label, id, feil, minDato, maksDato, placeholder }) => {
     const { datepickerProps, inputProps } = useDatepicker({
         defaultSelected: nullableTilDato(verdi),
         onDateChange: (dato) => settVerdi(dato && tilLocaleDateString(dato)),
@@ -31,7 +32,13 @@ export const Datovelger: FC<{
                 />
             ) : (
                 <DatePicker id={id} {...datepickerProps}>
-                    <DatePicker.Input label={label} {...inputProps} error={feil} size={'medium'} />
+                    <DatePicker.Input
+                        label={label}
+                        placeholder={placeholder}
+                        {...inputProps}
+                        error={feil}
+                        size={'medium'}
+                    />
                 </DatePicker>
             )}
         </div>

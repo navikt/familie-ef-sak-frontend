@@ -19,11 +19,14 @@ import {
 import { IJournalpost } from '../../../App/typer/journalføring';
 import { formaterIsoDato } from '../../../App/utils/formatter';
 import {
+    journalføringGjelderKlage,
     Journalføringsårsak,
     journalføringsårsakTilTekst,
-    valgbareJournalføringsårsaker,
 } from '../Felles/utils';
-import { JournalføringStateRequest } from '../../../App/hooks/useJournalføringState';
+import {
+    Journalføringsaksjon,
+    JournalføringStateRequest,
+} from '../../../App/hooks/useJournalføringState';
 
 const IkonContainer = styled.div`
     color: ${ABlue500};
@@ -62,20 +65,34 @@ const JournalpostPanel: React.FC<Props> = ({ journalpost, journalpostState }) =>
         settJournalføringsårsak,
         stønadstype,
         settStønadstype,
-        settSkalOppretteNyBehandling,
-        klageGjelderTilbakekreving,
-        settKlageGjelderTilbakekreving,
+        settJournalføringsaksjon,
     } = journalpostState;
 
     const [erPanelEkspandert, settErPanelEkspandert] = useState<boolean>(false);
 
     const tema = behandlingstemaTilTemaTekst(journalpost.behandlingstema);
-    const datoMottatt = formaterIsoDato(journalpost.datoMottatt);
+    const datoMottatt = journalpostState.mottattDato
+        ? formaterIsoDato(journalpostState.mottattDato)
+        : 'Ikke satt';
     const kanRedigere = journalføringsårsak !== Journalføringsårsak.DIGITAL_SØKNAD;
+    const klageGjelderTilbakekreving =
+        journalføringsårsak === Journalføringsårsak.KLAGE_TILBAKEKREVING;
+    const utledNesteJournalføringsårsak = (prevState: Journalføringsårsak) =>
+        prevState === Journalføringsårsak.KLAGE
+            ? Journalføringsårsak.KLAGE_TILBAKEKREVING
+            : Journalføringsårsak.KLAGE;
     const valgbareStønadstyper = [
         Stønadstype.OVERGANGSSTØNAD,
         Stønadstype.BARNETILSYN,
         Stønadstype.SKOLEPENGER,
+    ];
+    const valgbareJournalføringsårsaker = (årsak: Journalføringsårsak) => [
+        Journalføringsårsak.IKKE_VALGT,
+        Journalføringsårsak.ETTERSENDING,
+        årsak === Journalføringsårsak.KLAGE_TILBAKEKREVING
+            ? Journalføringsårsak.KLAGE_TILBAKEKREVING
+            : Journalføringsårsak.KLAGE,
+        Journalføringsårsak.PAPIRSØKNAD,
     ];
 
     return (
@@ -123,7 +140,7 @@ const JournalpostPanel: React.FC<Props> = ({ journalpost, journalpostState }) =>
                         size="small"
                         value={stønadstype}
                         onChange={(event) => {
-                            settSkalOppretteNyBehandling(false);
+                            settJournalføringsaksjon(Journalføringsaksjon.JOURNALFØR_PÅ_FAGSAK);
                             settStønadstype(event.target.value as Stønadstype);
                         }}
                         disabled={!kanRedigere}
@@ -144,23 +161,25 @@ const JournalpostPanel: React.FC<Props> = ({ journalpost, journalpostState }) =>
                         size="small"
                         value={journalføringsårsak}
                         onChange={(event) => {
-                            settSkalOppretteNyBehandling(false);
+                            settJournalføringsaksjon(Journalføringsaksjon.JOURNALFØR_PÅ_FAGSAK);
                             settJournalføringsårsak(event.target.value as Journalføringsårsak);
                         }}
                         disabled={!kanRedigere}
                     >
-                        {valgbareJournalføringsårsaker.map((type) => (
+                        {valgbareJournalføringsårsaker(journalføringsårsak).map((type) => (
                             <option key={type} value={type}>
                                 {journalføringsårsakTilTekst[type]}
                             </option>
                         ))}
                     </StyledSelect>
-                    {journalføringsårsak === Journalføringsårsak.KLAGE && (
+                    {journalføringGjelderKlage(journalføringsårsak) && (
                         <StyledCheckbox
                             size="small"
                             checked={klageGjelderTilbakekreving}
                             onChange={() => {
-                                settKlageGjelderTilbakekreving((prevState) => !prevState);
+                                settJournalføringsårsak((prevState) =>
+                                    utledNesteJournalføringsårsak(prevState)
+                                );
                             }}
                         >
                             Klagen gjelder tilbakekreving

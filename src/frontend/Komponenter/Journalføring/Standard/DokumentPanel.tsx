@@ -13,6 +13,7 @@ import {
 import { ExternalLinkIcon } from '@navikt/aksel-icons';
 import { åpneFilIEgenTab } from '../../../App/utils/utils';
 import { JournalføringStateRequest } from '../../../App/hooks/useJournalføringState';
+import { v4 as uuidv4 } from 'uuid';
 
 const ExpansionCardHeader = styled(ExpansionCard.Header)`
     padding-bottom: 0.35rem;
@@ -61,9 +62,11 @@ const DokumentPanel: React.FC<Props> = ({ journalpost, journalpostState, dokumen
     };
 
     const endreLogiskeVedlegg = (dokumentInfoId: string, nyeLogiskeVedlegg: string[]) => {
-        settLogiskeVedleggPåDokument((prevState: Record<string, string[]> | undefined) => ({
+        settLogiskeVedleggPåDokument((prevState) => ({
             ...prevState,
-            [dokumentInfoId]: nyeLogiskeVedlegg,
+            [dokumentInfoId]: nyeLogiskeVedlegg.map((tittel) => {
+                return { logiskVedleggId: uuidv4(), tittel: tittel };
+            }),
         }));
     };
 

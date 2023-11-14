@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { RessursStatus } from '../../../App/typer/ressurs';
+import { erAvTypeFeil, RessursStatus } from '../../../App/typer/ressurs';
 import styled from 'styled-components';
 import {
     JournalføringStateRequest,
@@ -27,8 +27,13 @@ import Dokumenter from './Dokumenter';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 import Behandlinger from './Behandlinger';
 import { Knapp } from '../../../Felles/Knapper/HovedKnapp';
-import { Journalføringsårsak } from '../Felles/utils';
+import { journalføringGjelderKlage, skalViseBekreftelsesmodal } from '../Felles/utils';
 import Klagebehandlinger from './Klagebehandlinger';
+import { validerJournalføring } from '../Felles/journalføringValidering';
+import { UstrukturertDokumentasjonType } from './VelgUstrukturertDokumentasjonType';
+import BarnSomSkalFødes from './BarnSomSkalFødes';
+import NyeBarnPåBehandlingen from './NyeBarnPåBehandlingen';
+import { KlageMottatt } from '../Klage/KlageMottatt';
 
 const InnerContainer = styled.div`
     display: flex;
@@ -51,11 +56,27 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
         journalResponse,
         oppgaveId
     );
+    const {
+        fagsak,
+        fullførJournalføringV2,
+        hentDokumentResponse,
+        innsending,
+        journalføringsaksjon,
+        journalføringsårsak,
+        settVisBekreftelsesModal,
+        ustrukturertDokumentasjonType,
+    } = journalpostState;
 
     const [feilmelding, settFeilmelding] = useState<string>('');
 
     useEffect(() => {
-        if (journalpostState.innsending.status === RessursStatus.SUKSESS) {
+        if (erAvTypeFeil(innsending)) {
+            settFeilmelding(innsending.frontendFeilmelding);
+        }
+    }, [innsending]);
+
+    useEffect(() => {
+        if (innsending.status === RessursStatus.SUKSESS) {
             const lagredeOppgaveFiltreringer = hentFraLocalStorage(
                 oppgaveRequestKey(innloggetSaksbehandler.navIdent),
                 {}
@@ -67,10 +88,34 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
             });
             navigate('/oppgavebenk');
         }
-    }, [innloggetSaksbehandler, journalResponse, journalpostState, navigate]);
+    }, [innloggetSaksbehandler, journalResponse, innsending, navigate]);
 
-    const skalViseKlagebehandlinger =
-        journalpostState.journalføringsårsak === Journalføringsårsak.KLAGE;
+    const validerOgJournalfør = () => {
+        settFeilmelding('');
+        if (fagsak.status !== RessursStatus.SUKSESS) {
+            settFeilmelding('Henting av fagsak feilet. Last inn siden på nytt.');
+            return;
+        }
+        const valideringsfeil = validerJournalføring(
+            journalResponse,
+            journalpostState,
+            fagsak.data
+        );
+
+        if (valideringsfeil) {
+            settFeilmelding(valideringsfeil);
+        } else if (
+            skalViseBekreftelsesmodal(journalResponse, journalføringsaksjon, erPapirSøknad)
+        ) {
+            settVisBekreftelsesModal(true);
+        } else {
+            fullførJournalføringV2();
+        }
+    };
+
+    const skalViseKlagebehandlinger = journalføringGjelderKlage(journalføringsårsak);
+    const erPapirSøknad =
+        ustrukturertDokumentasjonType === UstrukturertDokumentasjonType.PAPIRSØKNAD;
 
     return (
         <Kolonner>
@@ -125,6 +170,15 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
                             />
                         )}
                     </section>
+                    <section>
+                        <BarnSomSkalFødes journalpostState={journalpostState} />
+                        <NyeBarnPåBehandlingen journalpostState={journalpostState} />
+                        <KlageMottatt
+                            journalpostState={journalpostState}
+                            journalResponse={journalResponse}
+                        />
+                    </section>
+                    {feilmelding && <AlertError>{feilmelding}</AlertError>}
                     <HStack gap="4" justify="end">
                         <Knapp
                             size={'small'}
@@ -133,17 +187,14 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
                         >
                             Avbryt
                         </Knapp>
-                        <Knapp size={'small'} variant={'primary'} onClick={() => {}}>
+                        <Knapp size={'small'} variant={'primary'} onClick={validerOgJournalfør}>
                             Journalfør
                         </Knapp>
                     </HStack>
-                    {feilmelding && <AlertError>{feilmelding}</AlertError>}
                 </InnerContainer>
             </Venstrekolonne>
             <Høyrekolonne>
-                <JournalføringPdfVisning
-                    hentDokumentResponse={journalpostState.hentDokumentResponse}
-                />
+                <JournalføringPdfVisning hentDokumentResponse={hentDokumentResponse} />
             </Høyrekolonne>
         </Kolonner>
     );

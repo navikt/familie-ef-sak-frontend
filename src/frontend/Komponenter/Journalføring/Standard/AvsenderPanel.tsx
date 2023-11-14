@@ -1,10 +1,19 @@
 import React, { useState } from 'react';
-import { Checkbox, CopyButton, ExpansionCard, HStack, Label, TextField } from '@navikt/ds-react';
+import {
+    Checkbox,
+    CopyButton,
+    ExpansionCard,
+    HStack,
+    Label,
+    Panel,
+    TextField,
+} from '@navikt/ds-react';
 import styled from 'styled-components';
 import { IJournalpostResponse } from '../../../App/typer/journalføring';
 import { EnvelopeClosedFillIcon, EnvelopeClosedIcon } from '@navikt/aksel-icons';
 import { ABlue500 } from '@navikt/ds-tokens/dist/tokens';
 import { JournalføringStateRequest } from '../../../App/hooks/useJournalføringState';
+import { PanelHeader, PanelHeaderType } from './PanelHeader';
 
 const ExpansionCardHeader = styled(ExpansionCard.Header)`
     padding-bottom: 0.35rem;
@@ -25,18 +34,6 @@ const KopierPersonIdent = styled(CopyButton)`
     z-index: 2;
 `;
 
-const utledAvsender = (
-    erAvsenderBruker: boolean,
-    harRedigertAvsender: boolean,
-    nyAvsender: string,
-    gammelAvsender: string
-): string => {
-    if (erAvsenderBruker) return gammelAvsender;
-    else if (nyAvsender !== '') return nyAvsender;
-    else if (gammelAvsender !== '' && !harRedigertAvsender) return gammelAvsender;
-    return harRedigertAvsender ? '' : 'Ukjent avsender';
-};
-
 interface Props {
     journalpostResponse: IJournalpostResponse;
     journalpostState: JournalføringStateRequest;
@@ -45,76 +42,84 @@ interface Props {
 const AvsenderPanel: React.FC<Props> = ({ journalpostResponse, journalpostState }) => {
     const { journalpost, navn, personIdent } = journalpostResponse;
     const { nyAvsender, settNyAvsender } = journalpostState;
+    const { journalpostId, avsenderMottaker } = journalpost;
 
-    const [erPanelEkspandert, settErPanelEkspandert] = useState<boolean>(false);
-    const [erBrukerAvsender, settErBrukerAvsender] = useState<boolean>(navn !== '');
-    const [harRedigertAvsender, settHarRedigertAvsender] = useState<boolean>(false);
+    const [erPanelEkspandert, settErPanelEkspandert] = useState<boolean>(true);
 
-    const avsender = utledAvsender(erBrukerAvsender, harRedigertAvsender, nyAvsender, navn);
-    const brukerErAvsender = erBrukerAvsender || avsender === navn;
+    const harAvsender = !!avsenderMottaker && !!avsenderMottaker.navn && !!avsenderMottaker.id;
+    const erBrukerAvsender = !!nyAvsender?.erBruker;
 
     return (
-        <ExpansionCard
-            id={journalpost.journalpostId}
-            size="small"
-            aria-label="journalpost"
-            defaultOpen={avsender === 'Ukjent avsender'}
-            onToggle={() => settErPanelEkspandert((prevState) => !prevState)}
-        >
-            <ExpansionCardHeader>
-                <HStack gap="4">
-                    <IkonContainer>
-                        {erPanelEkspandert ? (
-                            <EnvelopeClosedFillIcon fontSize={'3.5rem'} />
-                        ) : (
-                            <EnvelopeClosedIcon fontSize={'3.5rem'} />
-                        )}
-                    </IkonContainer>
-                    <HStack align="center">
-                        {brukerErAvsender ? (
-                            <>
-                                <Label as={'p'}>{`${avsender} - ${personIdent}`}</Label>
-                                <KopierPersonIdent copyText={personIdent} variant="action" />
-                            </>
-                        ) : (
-                            <Label as={'p'}>{avsender}</Label>
-                        )}
-                    </HStack>
-                </HStack>
-            </ExpansionCardHeader>
-            <ExpansionCard.Content>
-                <ExpansionCardContent>
-                    <Checkbox
-                        onChange={() => {
-                            settErBrukerAvsender((prevState) => !prevState);
-                            if (harRedigertAvsender) settHarRedigertAvsender(false);
-                            settNyAvsender(
-                                utledAvsender(
-                                    erBrukerAvsender,
-                                    harRedigertAvsender,
-                                    nyAvsender,
-                                    navn
-                                )
-                            );
-                        }}
-                        value={erBrukerAvsender}
-                        checked={erBrukerAvsender}
-                    >
-                        Avsender er bruker
-                    </Checkbox>
-                    <TextField
-                        disabled={erBrukerAvsender}
-                        label={'Navn'}
-                        onChange={(event) => {
-                            settNyAvsender(event.target.value);
-                            if (!harRedigertAvsender) settHarRedigertAvsender(true);
-                        }}
-                        size={'small'}
-                        value={avsender}
+        <>
+            {harAvsender ? (
+                <Panel border>
+                    <PanelHeader
+                        navn={avsenderMottaker?.navn || 'Ukjent navn'}
+                        personIdent={avsenderMottaker?.id || 'Ukjent ident'}
+                        type={PanelHeaderType.Avsender}
                     />
-                </ExpansionCardContent>
-            </ExpansionCard.Content>
-        </ExpansionCard>
+                </Panel>
+            ) : (
+                <ExpansionCard
+                    id={journalpostId}
+                    size="small"
+                    aria-label="journalpost"
+                    defaultOpen={erPanelEkspandert}
+                    onToggle={() => settErPanelEkspandert((prevState) => !prevState)}
+                >
+                    <ExpansionCardHeader>
+                        <HStack gap="4">
+                            <IkonContainer>
+                                {erPanelEkspandert ? (
+                                    <EnvelopeClosedFillIcon fontSize={'3.5rem'} />
+                                ) : (
+                                    <EnvelopeClosedIcon fontSize={'3.5rem'} />
+                                )}
+                            </IkonContainer>
+                            <HStack align="center">
+                                {erBrukerAvsender ? (
+                                    <>
+                                        <Label as={'p'}>{`${navn} - ${personIdent}`}</Label>
+                                        <KopierPersonIdent
+                                            copyText={personIdent}
+                                            variant="action"
+                                        />
+                                    </>
+                                ) : (
+                                    <Label as={'p'}>{nyAvsender?.navn ?? 'Ukjent avsender'}</Label>
+                                )}
+                            </HStack>
+                        </HStack>
+                    </ExpansionCardHeader>
+                    <ExpansionCard.Content>
+                        <ExpansionCardContent>
+                            <Checkbox
+                                onChange={(event) => {
+                                    settNyAvsender({
+                                        erBruker: event.target.checked,
+                                        navn: navn,
+                                        personIdent: personIdent,
+                                    });
+                                }}
+                                value={erBrukerAvsender}
+                                checked={erBrukerAvsender}
+                            >
+                                Avsender er bruker
+                            </Checkbox>
+                            <TextField
+                                disabled={erBrukerAvsender}
+                                label={'Navn'}
+                                onChange={(event) => {
+                                    settNyAvsender({ erBruker: false, navn: event.target.value });
+                                }}
+                                size={'small'}
+                                value={nyAvsender?.navn || ''}
+                            />
+                        </ExpansionCardContent>
+                    </ExpansionCard.Content>
+                </ExpansionCard>
+            )}
+        </>
     );
 };
 

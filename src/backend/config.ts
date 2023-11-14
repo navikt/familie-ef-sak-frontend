@@ -17,6 +17,7 @@ interface IEnvironment {
     aInntekt: string;
     gosys: string;
     modia: string;
+    drek: string;
     historiskPensjon: string;
     roller: Roller;
 }
@@ -51,6 +52,7 @@ const Environment = (): IEnvironment => {
             modia: 'https://app-q1.adeo.no/modiapersonoversikt',
             historiskPensjon: 'https://historisk-pensjon.intern.dev.nav.no',
             endringsloggProxyUrl: 'https://familie-endringslogg.intern.dev.nav.no',
+            drek: 'https://pdl-web.dev.intern.nav.no/rekvirerdnummer',
             roller: rollerDev,
         };
     } else if (process.env.ENV === 'e2e') {
@@ -64,6 +66,7 @@ const Environment = (): IEnvironment => {
             modia: 'https://app-q1.adeo.no/modiapersonoversikt',
             historiskPensjon: 'https://historisk-pensjon.intern.dev.nav.no',
             endringsloggProxyUrl: 'https://familie-endringslogg.intern.dev.nav.no',
+            drek: 'https://pdl-web.dev.intern.nav.no/rekvirerdnummer',
             roller: rollerDev,
             //Har ikke satt opp redis
         };
@@ -78,6 +81,7 @@ const Environment = (): IEnvironment => {
             modia: 'https://app-q1.adeo.no/modiapersonoversikt',
             historiskPensjon: 'https://historisk-pensjon.intern.dev.nav.no',
             endringsloggProxyUrl: 'http://familie-endringslogg',
+            drek: 'https://pdl-web.dev.intern.nav.no/rekvirerdnummer',
             roller: rollerDev,
         };
     } else if (process.env.ENV === 'lokalt-mot-preprod') {
@@ -92,6 +96,7 @@ const Environment = (): IEnvironment => {
             historiskPensjon: 'https://historisk-pensjon.intern.dev.nav.no',
             endringsloggProxyUrl: 'https://familie-endringslogg.intern.dev.nav.no',
             // endringsloggProxyUrl: 'http://localhost:8080',
+            drek: 'https://pdl-web.dev.intern.nav.no/rekvirerdnummer',
             roller: rollerDev,
         };
     }
@@ -106,6 +111,7 @@ const Environment = (): IEnvironment => {
         modia: 'https://app.adeo.no/modiapersonoversikt',
         historiskPensjon: 'https://historisk-pensjon.intern.nav.no',
         endringsloggProxyUrl: 'http://familie-endringslogg',
+        drek: 'https://pdl-web.intern.nav.no/rekvirerdnummer',
         roller: rollerProd,
     };
 };
@@ -143,4 +149,5 @@ export const urlAInntekt = env.aInntekt;
 export const urlGosys = env.gosys;
 export const urlModia = env.modia;
 export const urlHistoriskPensjon = env.historiskPensjon;
+export const urlDrek = env.drek;
 export const roller = env.roller;
