@@ -169,6 +169,12 @@ export const useJournalføringState = (
         settBehandling(undefined);
     }, [fagsakId]);
 
+    useEffect(() => {
+        if (fagsak.status === RessursStatus.SUKSESS) {
+            settFagsakId(fagsak.data.id);
+        }
+    }, [fagsak]);
+
     const fullførJournalføring = () => {
         if (!behandling || innsending.status === RessursStatus.HENTER) {
             return;
