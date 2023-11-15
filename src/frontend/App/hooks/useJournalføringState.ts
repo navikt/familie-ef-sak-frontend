@@ -40,7 +40,7 @@ interface JournalføringRequest {
 interface JournalføringRequestV2 {
     fagsakId: string;
     oppgaveId: string;
-    avsender: NyAvsender | undefined;
+    nyAvsender: NyAvsender | undefined;
     dokumentTitler: DokumentTitler | undefined;
     logiskeVedlegg: LogiskeVedleggPåDokument | undefined;
     journalførendeEnhet: string;
@@ -210,7 +210,7 @@ export const useJournalføringState = (
         const request: JournalføringRequestV2 = {
             fagsakId: fagsakId,
             oppgaveId: oppgaveId,
-            avsender: nyAvsender,
+            nyAvsender: nyAvsender,
             dokumentTitler: dokumentTitler,
             logiskeVedlegg: logiskeVedleggPåDokument,
             journalførendeEnhet: innloggetSaksbehandler.enhet || '9999',
