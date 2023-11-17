@@ -126,6 +126,7 @@ const DokumentPanel: React.FC<Props> = ({ journalpost, journalpostState, dokumen
                         placeholder={'Velg innhold'}
                         label={'Annet innhold'}
                         creatable={true}
+                        options={dokumentTitlerMultiSelect}
                         menuPortalTarget={document.querySelector('body')}
                         isMulti={true}
                         isDisabled={false}
