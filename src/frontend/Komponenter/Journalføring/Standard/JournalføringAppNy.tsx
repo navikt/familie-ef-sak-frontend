@@ -35,6 +35,7 @@ import BarnSomSkalFødes from './BarnSomSkalFødes';
 import NyeBarnPåBehandlingen from './NyeBarnPåBehandlingen';
 import { KlageMottatt } from '../Klage/KlageMottatt';
 import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
+import { EToast } from '../../../App/typer/toast';
 
 const InnerContainer = styled.div`
     display: flex;
@@ -51,7 +52,7 @@ export const JournalføringAppNy: React.FC = () => {
 };
 
 const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journalResponse }) => {
-    const { innloggetSaksbehandler } = useApp();
+    const { innloggetSaksbehandler, settToast } = useApp();
     const navigate = useNavigate();
     const journalpostState: JournalføringStateRequest = useJournalføringState(
         journalResponse,
@@ -87,9 +88,10 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
                 ...lagredeOppgaveFiltreringer,
                 ident: journalResponse.personIdent,
             });
+            settToast(EToast.JOURNALFØRING_VELLYKKET);
             navigate('/oppgavebenk');
         }
-    }, [innloggetSaksbehandler, journalResponse, innsending, navigate]);
+    }, [innloggetSaksbehandler, journalResponse, innsending, navigate, settToast]);
 
     const validerOgJournalfør = () => {
         settFeilmelding('');
