@@ -117,6 +117,7 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
     const skalViseKlagebehandlinger = journalføringGjelderKlage(journalføringsårsak);
     const erPapirSøknad =
         ustrukturertDokumentasjonType === UstrukturertDokumentasjonType.PAPIRSØKNAD;
+    const senderInn = journalpostState.innsending.status == RessursStatus.HENTER;
 
     return (
         <>
@@ -189,7 +190,13 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
                             >
                                 Avbryt
                             </Knapp>
-                            <Knapp size={'small'} variant={'primary'} onClick={validerOgJournalfør}>
+                            <Knapp
+                                size={'small'}
+                                variant={'primary'}
+                                onClick={validerOgJournalfør}
+                                loading={senderInn}
+                                disabled={senderInn}
+                            >
                                 Journalfør
                             </Knapp>
                         </HStack>
@@ -207,6 +214,7 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
 const BekreftJournalføringModal: React.FC<{
     journalpostState: JournalføringStateRequest;
 }> = ({ journalpostState }) => {
+    const senderInn = journalpostState.innsending.status == RessursStatus.HENTER;
     return (
         <ModalWrapper
             tittel={'Journalfør uten behandling'}
@@ -218,6 +226,8 @@ const BekreftJournalføringModal: React.FC<{
                         journalpostState.settVisBekreftelsesModal(false);
                         journalpostState.fullførJournalføringV2();
                     },
+                    loading: senderInn,
+                    disabled: senderInn,
                     tekst: 'Journalfør allikevel',
                 },
                 lukkKnapp: {
