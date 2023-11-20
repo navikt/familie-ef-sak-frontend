@@ -12,7 +12,7 @@ import {
     lagreTilLocalStorage,
     oppgaveRequestKey,
 } from '../../Oppgavebenk/oppgavefilterStorage';
-import { Heading, HStack } from '@navikt/ds-react';
+import { BodyShort, Heading, HStack } from '@navikt/ds-react';
 import JournalføringWrapper, {
     Høyrekolonne,
     JournalføringAppProps,
@@ -34,6 +34,7 @@ import { UstrukturertDokumentasjonType } from './VelgUstrukturertDokumentasjonTy
 import BarnSomSkalFødes from './BarnSomSkalFødes';
 import NyeBarnPåBehandlingen from './NyeBarnPåBehandlingen';
 import { KlageMottatt } from '../Klage/KlageMottatt';
+import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
 
 const InnerContainer = styled.div`
     display: flex;
@@ -118,84 +119,118 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
         ustrukturertDokumentasjonType === UstrukturertDokumentasjonType.PAPIRSØKNAD;
 
     return (
-        <Kolonner>
-            <Venstrekolonne>
-                <InnerContainer>
-                    <section>
-                        <Tittel size={'medium'} level={'1'}>
-                            Journalføring
-                        </Tittel>
-                        <JournalpostPanel
-                            journalpost={journalResponse.journalpost}
-                            journalpostState={journalpostState}
-                        />
-                    </section>
-                    <section>
-                        <Tittel size={'small'} level={'2'}>
-                            Dokumenter
-                        </Tittel>
-                        <Dokumenter
-                            journalpost={journalResponse.journalpost}
-                            journalpostState={journalpostState}
-                        />
-                    </section>
-                    <section>
-                        <Tittel size={'small'} level={'2'}>
-                            Bruker
-                        </Tittel>
-                        <BrukerPanel journalpostResponse={journalResponse} />
-                    </section>
-                    <section>
-                        <Tittel size={'small'} level={'2'}>
-                            Avsender
-                        </Tittel>
-                        <AvsenderPanel
-                            journalpostResponse={journalResponse}
-                            journalpostState={journalpostState}
-                        />
-                    </section>
-                    <section>
-                        <Tittel size={'small'} level={'2'}>
-                            Behandling
-                        </Tittel>
-                        {skalViseKlagebehandlinger ? (
-                            <Klagebehandlinger
+        <>
+            <Kolonner>
+                <Venstrekolonne>
+                    <InnerContainer>
+                        <section>
+                            <Tittel size={'medium'} level={'1'}>
+                                Journalføring
+                            </Tittel>
+                            <JournalpostPanel
+                                journalpost={journalResponse.journalpost}
                                 journalpostState={journalpostState}
-                                settFeilmelding={settFeilmelding}
                             />
-                        ) : (
-                            <Behandlinger
+                        </section>
+                        <section>
+                            <Tittel size={'small'} level={'2'}>
+                                Dokumenter
+                            </Tittel>
+                            <Dokumenter
+                                journalpost={journalResponse.journalpost}
                                 journalpostState={journalpostState}
-                                settFeilmelding={settFeilmelding}
                             />
-                        )}
-                    </section>
-                    <section>
-                        <BarnSomSkalFødes journalpostState={journalpostState} />
-                        <NyeBarnPåBehandlingen journalpostState={journalpostState} />
-                        <KlageMottatt
-                            journalpostState={journalpostState}
-                            journalResponse={journalResponse}
-                        />
-                    </section>
-                    {feilmelding && <AlertError>{feilmelding}</AlertError>}
-                    <HStack gap="4" justify="end">
-                        <Knapp
-                            size={'small'}
-                            variant={'tertiary'}
-                            onClick={() => navigate('/oppgavebenk')}
-                        >
-                            Avbryt
-                        </Knapp>
-                        <Knapp size={'small'} variant={'primary'} onClick={validerOgJournalfør}>
-                            Journalfør
-                        </Knapp>
-                    </HStack>
-                </InnerContainer>
-            </Venstrekolonne>
-            <Høyrekolonne>
-                <JournalføringPdfVisning hentDokumentResponse={hentDokumentResponse} />
-            </Høyrekolonne>
-        </Kolonner>
+                        </section>
+                        <section>
+                            <Tittel size={'small'} level={'2'}>
+                                Bruker
+                            </Tittel>
+                            <BrukerPanel journalpostResponse={journalResponse} />
+                        </section>
+                        <section>
+                            <Tittel size={'small'} level={'2'}>
+                                Avsender
+                            </Tittel>
+                            <AvsenderPanel
+                                journalpostResponse={journalResponse}
+                                journalpostState={journalpostState}
+                            />
+                        </section>
+                        <section>
+                            <Tittel size={'small'} level={'2'}>
+                                Behandling
+                            </Tittel>
+                            {skalViseKlagebehandlinger ? (
+                                <Klagebehandlinger
+                                    journalpostState={journalpostState}
+                                    settFeilmelding={settFeilmelding}
+                                />
+                            ) : (
+                                <Behandlinger
+                                    journalpostState={journalpostState}
+                                    settFeilmelding={settFeilmelding}
+                                />
+                            )}
+                        </section>
+                        <section>
+                            <BarnSomSkalFødes journalpostState={journalpostState} />
+                            <NyeBarnPåBehandlingen journalpostState={journalpostState} />
+                            <KlageMottatt
+                                journalpostState={journalpostState}
+                                journalResponse={journalResponse}
+                            />
+                        </section>
+                        {feilmelding && <AlertError>{feilmelding}</AlertError>}
+                        <HStack gap="4" justify="end">
+                            <Knapp
+                                size={'small'}
+                                variant={'tertiary'}
+                                onClick={() => navigate('/oppgavebenk')}
+                            >
+                                Avbryt
+                            </Knapp>
+                            <Knapp size={'small'} variant={'primary'} onClick={validerOgJournalfør}>
+                                Journalfør
+                            </Knapp>
+                        </HStack>
+                    </InnerContainer>
+                </Venstrekolonne>
+                <Høyrekolonne>
+                    <JournalføringPdfVisning hentDokumentResponse={hentDokumentResponse} />
+                </Høyrekolonne>
+            </Kolonner>
+            <BekreftJournalføringModal journalpostState={journalpostState} />
+        </>
+    );
+};
+
+const BekreftJournalføringModal: React.FC<{
+    journalpostState: JournalføringStateRequest;
+}> = ({ journalpostState }) => {
+    return (
+        <ModalWrapper
+            tittel={'Journalfør uten behandling'}
+            visModal={journalpostState.visBekreftelsesModal}
+            onClose={() => journalpostState.settVisBekreftelsesModal(false)}
+            aksjonsknapper={{
+                hovedKnapp: {
+                    onClick: () => {
+                        journalpostState.settVisBekreftelsesModal(false);
+                        journalpostState.fullførJournalføringV2();
+                    },
+                    tekst: 'Journalfør allikevel',
+                },
+                lukkKnapp: {
+                    onClick: () => journalpostState.settVisBekreftelsesModal(false),
+                    tekst: 'Tilbake',
+                },
+            }}
+            ariaLabel={'Bekreft journalføring av oppgave, eller avbryt'}
+        >
+            <BodyShort>
+                Journalposten har en søknad tilknyttet seg. Er du sikker på at du vil journalføre
+                uten å lage en ny behandling?
+            </BodyShort>
+        </ModalWrapper>
     );
 };
