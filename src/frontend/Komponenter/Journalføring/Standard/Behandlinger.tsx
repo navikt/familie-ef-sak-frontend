@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { BodyShort, Button, HStack, Table, VStack } from '@navikt/ds-react';
-import { Fagsak } from '../../../App/typer/fagsak';
+import { BehandlingResultat, behandlingResultatTilTekst, Fagsak } from '../../../App/typer/fagsak';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { formaterIsoDatoTid } from '../../../App/utils/formatter';
 import { behandlingStatusTilTekst } from '../../../App/typer/behandlingstatus';
@@ -111,7 +111,9 @@ const Behandlinger: React.FC<Props> = ({ journalpostState, settFeilmelding }) =>
                                             {behandlingstypeTilTekst[behandling.type]}
                                         </Table.DataCell>
                                         <Table.DataCell>
-                                            {behandlingStatusTilTekst[behandling.status]}
+                                            {behandling.resultat === BehandlingResultat.HENLAGT
+                                                ? behandlingResultatTilTekst[behandling.resultat]
+                                                : behandlingStatusTilTekst[behandling.status]}
                                         </Table.DataCell>
                                         <Table.DataCell>
                                             {formaterIsoDatoTid(behandling.sistEndret)}

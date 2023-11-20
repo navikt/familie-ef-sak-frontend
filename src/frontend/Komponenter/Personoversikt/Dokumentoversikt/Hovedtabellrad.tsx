@@ -101,12 +101,12 @@ const utledAvsenderMottakerDetaljer = (dokument: Dokumentinfo): string => {
     if (avsenderMottaker.navn) {
         avsender += avsenderMottaker.navn;
     }
-    const type = avsenderMottaker.type;
+    const type = avsenderMottaker.type ? avsenderMottakerIdTypeTilTekst[avsenderMottaker.type] : '';
     const id = avsenderMottaker.id;
     if (!avsenderMottaker.erLikBruker && (type || id)) {
         avsender += ' (';
-        if (type && avsenderMottakerIdTypeTilTekst[type]) {
-            avsender += avsenderMottakerIdTypeTilTekst[type];
+        if (type) {
+            avsender += type;
             if (id) {
                 avsender += ': ';
             }

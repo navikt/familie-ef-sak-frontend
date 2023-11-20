@@ -95,7 +95,7 @@ const validerFellesFelter = (
         return 'Kan ikke velge at ny avsender er bruker uten å sende inn verdier for navn og personident';
 
     if (nyAvsender?.erBruker === false && (nyAvsender.navn === undefined || nyAvsender.navn === ''))
-        return 'Kan ikke sende inn ny avsender uten å fylle inn et nytt navn';
+        return 'Kan ikke sende inn uten avsender';
 
     return undefined;
 };

@@ -11,6 +11,7 @@ export enum EToast {
     REDIRECT_ANNEN_RELASJON_FEILET = 'REDIRECT_ANNEN_RELASJON_FEILET',
     BEHANDLING_SATT_PÅ_VENT = 'BEHANDLING_SATT_PÅ_VENT',
     BEHANDLING_TATT_AV_VENT = 'BEHANDLING_TATT_AV_VENT',
+    JOURNALFØRING_VELLYKKET = 'JOURNALFØRING_VELLYKKET',
 }
 
 export const toastTilTekst: Record<EToast, string> = {
@@ -28,4 +29,5 @@ export const toastTilTekst: Record<EToast, string> = {
         'Kan ikke åpne personopplysninger for denne personen. En uventet feil oppstod',
     BEHANDLING_SATT_PÅ_VENT: 'Oppgaven er oppdatert og behandlingen er satt på vent',
     BEHANDLING_TATT_AV_VENT: 'Behandlingen er tatt av vent. Du er satt som ansvarlig saksbehandler',
+    JOURNALFØRING_VELLYKKET: 'Journalføring vellykket',
 };
