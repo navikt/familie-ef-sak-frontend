@@ -147,9 +147,9 @@ const Skoleårsperiode: React.FC<Props> = ({
             return (
                 <ContainerDashedBorder>
                     <HorisontalScroll
-                        synligVedLukketMeny={'1035px'}
-                        synligVedÅpenMeny={'1330px'}
-                        åpenHøyremeny={åpenHøyremeny}
+                        $synligVedLukketMeny={'1035px'}
+                        $synligVedÅpenMeny={'1330px'}
+                        $åpenHøyremeny={åpenHøyremeny}
                     >
                         <SkoleårsperiodeHeader
                             fjernSkoleårsperiode={fjernSkoleårsperiode}
@@ -190,9 +190,9 @@ const Skoleårsperiode: React.FC<Props> = ({
             return (
                 <Container>
                     <HorisontalScroll
-                        synligVedLukketMeny={'1035px'}
-                        synligVedÅpenMeny={'1330px'}
-                        åpenHøyremeny={åpenHøyremeny}
+                        $synligVedLukketMeny={'1035px'}
+                        $synligVedÅpenMeny={'1330px'}
+                        $åpenHøyremeny={åpenHøyremeny}
                     >
                         <SkoleårsperiodeHeader
                             fjernSkoleårsperiode={fjernSkoleårsperiode}

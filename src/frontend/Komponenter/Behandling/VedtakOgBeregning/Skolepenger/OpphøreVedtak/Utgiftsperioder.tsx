@@ -89,7 +89,7 @@ const Utgiftsperioder: React.FC<Props> = ({
         <FlexRow>
             <VertikalStrek />
             <FlexColumn>
-                <Utgiftsrad erHeader={true} lesevisning={erLesevisning}>
+                <Utgiftsrad $erHeader={true} $lesevisning={erLesevisning}>
                     <SmallTextLabel>Utbetalingsmåned</SmallTextLabel>
                     <SmallTextLabel>Stønadsbeløp</SmallTextLabel>
                 </Utgiftsrad>
@@ -106,7 +106,7 @@ const Utgiftsperioder: React.FC<Props> = ({
                     return (
                         <Utgiftsrad
                             $erFjernet={utgiftsperiodeErFjernet}
-                            $key={index}
+                            key={index}
                             $lesevisning={erLesevisning}
                         >
                             <SmallTextLabel>
