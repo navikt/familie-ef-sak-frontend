@@ -3,11 +3,11 @@ import { BodyShort, Tag } from '@navikt/ds-react';
 import { periodetypeTilTekst, EPeriodetype } from '../../../../App/typer/vedtak';
 import { formaterIsoDato } from '../../../../App/utils/formatter';
 import { etikettTypeOvergangsstønad } from '../../../Personoversikt/HistorikkVedtaksperioder/vedtakshistorikkUtil';
-import { IGrunnlagsdataPeriodeHistorikk } from '../typer';
+import { IGrunnlagsdataPeriodeHistorikkOvergangsstønad } from '../typer';
 import styled from 'styled-components';
 
 interface HistorikkRadProps {
-    rad: IGrunnlagsdataPeriodeHistorikk;
+    rad: IGrunnlagsdataPeriodeHistorikkOvergangsstønad;
     indeks: number;
 }
 

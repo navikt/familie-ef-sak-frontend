@@ -46,10 +46,18 @@ const HistorikkIEfKort: React.FC<{
                 </Tittel>
                 <div>
                     {erOvergansstønadMedHistorikk && (
-                        <KortInnholdOvergangsstønad periodeHistorikkData={periodeHistorikkData} />
+                        <KortInnholdOvergangsstønad
+                            periodeHistorikkData={
+                                periodeHistorikkData as IGrunnlagsdataPeriodeHistorikkOvergangsstønad[]
+                            }
+                        />
                     )}
                     {erBarnetilsynMedHistorikk && (
-                        <KortInnholdBarnetilsyn periodeHistorikkData={periodeHistorikkData} />
+                        <KortInnholdBarnetilsyn
+                            periodeHistorikkData={
+                                periodeHistorikkData as IGrunnlagsdataPeriodeHistorikkBarnetilsyn[]
+                            }
+                        />
                     )}
                     {!erOvergansstønadMedHistorikk && !erBarnetilsynMedHistorikk && (
                         <BodyShort size="small">Kan ikke vise tidligere historikk.</BodyShort>

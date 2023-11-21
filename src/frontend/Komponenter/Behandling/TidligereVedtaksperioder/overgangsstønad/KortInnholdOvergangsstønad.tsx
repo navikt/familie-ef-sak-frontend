@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Label } from '@navikt/ds-react';
-import { IGrunnlagsdataPeriodeHistorikk } from '../typer';
+import { IGrunnlagsdataPeriodeHistorikkOvergangsstønad } from '../typer';
 import HistorikkRadIOvergangsstønad from './HistorikkRadIOvergangsstønad';
 
 const Grid = styled.div`
@@ -14,7 +14,7 @@ const Row = styled.div`
     display: contents;
 `;
 const KortInnholdOvergangsstønad: React.FC<{
-    periodeHistorikkData: IGrunnlagsdataPeriodeHistorikk[] | undefined;
+    periodeHistorikkData: IGrunnlagsdataPeriodeHistorikkOvergangsstønad[] | undefined;
 }> = ({ periodeHistorikkData }) => {
     return (
         <Grid>

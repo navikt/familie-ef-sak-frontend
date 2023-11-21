@@ -2,10 +2,10 @@ import React from 'react';
 import { BodyShort } from '@navikt/ds-react';
 import { formaterIsoDato } from '../../../../App/utils/formatter';
 import styled from 'styled-components';
-import { IGrunnlagsdataPeriodeHistorikk } from '../typer';
+import { IGrunnlagsdataPeriodeHistorikkBarnetilsyn } from '../typer';
 
 interface HistorikkRadProps {
-    rad: IGrunnlagsdataPeriodeHistorikk;
+    rad: IGrunnlagsdataPeriodeHistorikkBarnetilsyn;
     indeks: number;
 }
 

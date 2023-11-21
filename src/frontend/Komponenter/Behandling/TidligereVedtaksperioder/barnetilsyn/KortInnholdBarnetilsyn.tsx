@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Label } from '@navikt/ds-react';
-import { IGrunnlagsdataPeriodeHistorikk } from '../typer';
+import { IGrunnlagsdataPeriodeHistorikkBarnetilsyn } from '../typer';
 import HistorikkRadIBarnetilsyn from './HistorikkRadIBarnetilsyn';
 
 const Grid = styled.div`
@@ -13,7 +13,7 @@ const Row = styled.div`
     display: contents;
 `;
 const KortInnholdBarnetilsyn: React.FC<{
-    periodeHistorikkData: IGrunnlagsdataPeriodeHistorikk[] | undefined;
+    periodeHistorikkData: IGrunnlagsdataPeriodeHistorikkBarnetilsyn[] | undefined;
 }> = ({ periodeHistorikkData }) => {
     return (
         <Grid>
