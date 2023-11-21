@@ -13,7 +13,7 @@ const Arbeidssøker: FC<{ arbeidssøker: IArbeidssøker }> = ({ arbeidssøker })
             undertittel={ArbeidssituasjonTilTekst[EArbeidssituasjon.erArbeidssøker]}
             ikon={<Søknadsgrunnlag />}
         >
-            <FlexColumnContainer gap={0.75}>
+            <FlexColumnContainer $gap={0.75}>
                 <Informasjonsrad
                     label="Registrert som arbeidssøker hos Nav"
                     verdi={mapTrueFalse(arbeidssøker.registrertSomArbeidssøkerNav)}

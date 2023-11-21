@@ -9,11 +9,11 @@ export const InformasjonContainer = styled.div`
 `;
 
 export const FlexColumnContainer = styled.div<{
-    gap?: number;
+    $gap?: number;
 }>`
     display: flex;
     flex-direction: column;
-    gap: ${(props) => (props.gap ? props.gap : 1.5)}rem;
+    gap: ${(props) => (props.$gap ? props.$gap : 1.5)}rem;
 `;
 
 export const TagMedTilpassetBredde = styled(Tag)`

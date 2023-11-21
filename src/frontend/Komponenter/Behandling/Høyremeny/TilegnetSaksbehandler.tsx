@@ -49,8 +49,8 @@ const GråBodyShort = styled(BodyShort)`
     color: ${ATextSubtle};
 `;
 
-const FontStyledBodyShort = styled(BodyShort)<{ fontStyle: string }>`
-    font-style: ${(props) => props.fontStyle};
+const FontStyledBodyShort = styled(BodyShort)<{ $fontStyle: string }>`
+    font-style: ${(props) => props.$fontStyle};
 `;
 
 const PersonIkon = styled(PersonHeadsetIcon)`
@@ -58,9 +58,9 @@ const PersonIkon = styled(PersonHeadsetIcon)`
     height: 3rem;
 `;
 
-const StatusBar = styled.span<{ color: string }>`
+const StatusBar = styled.span<{ $color: string }>`
     width: 100%;
-    border-top: 4px solid ${(props) => props.color};
+    border-top: 4px solid ${(props) => props.$color};
 `;
 
 const Grid = styled.div`
@@ -137,14 +137,14 @@ const TilegnetSaksbehandler: React.FC<Props> = ({ behandling }) => {
                                                 Ansvarlig saksbehandler
                                             </GråBodyShort>
                                             <FontStyledBodyShort
-                                                fontStyle={fontStyle}
+                                                $fontStyle={fontStyle}
                                                 size={'small'}
                                             >
                                                 {visingsnavn}
                                             </FontStyledBodyShort>
                                         </FlexBoxColumn>
                                     </FlexBoxRow>
-                                    <StatusBar color={statusBarFarge} />
+                                    <StatusBar $color={statusBarFarge} />
                                 </>
                             )}
                             <Grid>

@@ -3,7 +3,7 @@ import { MenuHamburgerIcon, MenuElipsisVerticalIcon } from '@navikt/aksel-icons'
 import styled from 'styled-components';
 
 interface HamburgerMenyInnholdProps {
-    åpen: boolean;
+    $åpen: boolean;
 }
 
 const HamburgerMenyIkon = styled(MenuHamburgerIcon)`
@@ -27,7 +27,7 @@ const HamburgerWrapper = styled.div`
 `;
 
 const HamburgerMenyInnhold = styled.div<HamburgerMenyInnholdProps>`
-    display: ${(props) => (props.åpen ? 'block' : 'none')};
+    display: ${(props) => (props.$åpen ? 'block' : 'none')};
 
     position: absolute;
 
@@ -118,7 +118,7 @@ export const Hamburgermeny: FC<Props> = ({ className, items, type = 'hamburger' 
                     }}
                 />
             )}
-            <HamburgerMenyInnhold åpen={åpenHamburgerMeny}>
+            <HamburgerMenyInnhold $åpen={åpenHamburgerMeny}>
                 <ul>
                     {items.map((p) => (
                         <li key={p.tekst}>

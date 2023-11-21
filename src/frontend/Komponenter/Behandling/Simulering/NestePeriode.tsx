@@ -29,7 +29,7 @@ export const NestePeriode: React.FC<{ nestePeriode: ISimuleringPeriode | undefin
                             </BodyShortSmall>
                         </RadTittel>
                         <RadVerdi>
-                            <ResultatVerdi verdi={resultat}>
+                            <ResultatVerdi $verdi={resultat}>
                                 <SmallTextLabel>
                                     {formaterTallMedTusenSkilleEllerStrek(resultat)} kr
                                 </SmallTextLabel>

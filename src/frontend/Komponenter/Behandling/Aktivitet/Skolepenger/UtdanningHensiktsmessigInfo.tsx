@@ -36,7 +36,7 @@ const UtdanningHensiktsmessigInfo: FC<Props> = ({ aktivitet, skalViseSøknadsdat
             {skalViseSøknadsdata ? (
                 <InformasjonContainer>
                     <Dokumentasjonsvisning aktivitet={aktivitet} />
-                    <FlexColumnContainer gap={0.75}>
+                    <FlexColumnContainer $gap={0.75}>
                         <Informasjonsrad
                             ikon={VilkårInfoIkon.SØKNAD}
                             label="Målet med utdanningen"
@@ -49,14 +49,14 @@ const UtdanningHensiktsmessigInfo: FC<Props> = ({ aktivitet, skalViseSøknadsdat
                             </BegrunnelseTekst>
                         </Flex>
                     </FlexColumnContainer>
-                    <FlexColumnContainer gap={1}>
+                    <FlexColumnContainer $gap={1}>
                         <Informasjonsrad
                             ikon={VilkårInfoIkon.SØKNAD}
                             label="Har tatt utdanning etter grunnskolen?"
                             verdi={underUtdanning?.utdanningEtterGrunnskolen ? 'Ja' : 'Nei'}
                         />
                         {underUtdanning?.utdanningEtterGrunnskolen && (
-                            <GridTabell kolonner={3} underTabellMargin={0}>
+                            <GridTabell $kolonner={3} $underTabellMargin={0}>
                                 <TidligereUtdanninger tidligereUtdanninger={tidligereUtdanninger} />
                             </GridTabell>
                         )}

@@ -22,7 +22,7 @@ const StyledIkonWrapper = styled.div`
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface IkonProps {
-    erAktiv: boolean;
+    $erAktiv: boolean;
 }
 const StyledIkon = styled.div<IkonProps>`
     flex: 1;
@@ -40,8 +40,8 @@ const StyledIkon = styled.div<IkonProps>`
         border-bottom: 5px solid ${ABlue400};
     }
 
-    background-color: ${(props) => (props.erAktiv ? AGray100 : 'white')};
-    border-bottom: 5px solid ${(props) => (props.erAktiv ? ABlue500 : 'white')};
+    background-color: ${(props) => (props.$erAktiv ? AGray100 : 'white')};
+    border-bottom: 5px solid ${(props) => (props.$erAktiv ? ABlue500 : 'white')};
 `;
 
 interface ValgvisningProps {
@@ -54,7 +54,7 @@ const Valgvisning: React.FC<ValgvisningProps> = ({ aktiv, settAktiv }) => {
         <StyledIkonWrapper>
             <StyledIkon
                 role={'button'}
-                erAktiv={aktiv === Høyremenyvalg.Logg}
+                $erAktiv={aktiv === Høyremenyvalg.Logg}
                 onClick={() => settAktiv(Høyremenyvalg.Logg)}
             >
                 <ClockFillIcon aria-label="Historikk" fontSize={'1.5em'} />
@@ -62,7 +62,7 @@ const Valgvisning: React.FC<ValgvisningProps> = ({ aktiv, settAktiv }) => {
             </StyledIkon>
             <StyledIkon
                 role={'button'}
-                erAktiv={aktiv === Høyremenyvalg.Mappe}
+                $erAktiv={aktiv === Høyremenyvalg.Mappe}
                 onClick={() => settAktiv(Høyremenyvalg.Mappe)}
             >
                 <FolderIcon fontSize={'1.5em'} />

@@ -29,9 +29,9 @@ const Grid = styled.div`
     }
 `;
 
-const AntallMåneder = styled(BodyShortSmall)<{ erLesevisning: boolean }>`
+const AntallMåneder = styled(BodyShortSmall)<{ $erLesevisning: boolean }>`
     display: flex;
-    padding-top: ${(props) => (props.erLesevisning ? '0rem' : '0.75rem')};
+    padding-top: ${(props) => (props.$erLesevisning ? '0rem' : '0.75rem')};
 `;
 
 const Input = styled(InputUtenSpinner)`
@@ -157,7 +157,7 @@ const Delårsperioder: React.FC<Props> = ({
                             feilmelding={valideringsfeil && valideringsfeil[index]?.årMånedFra}
                             erLesevisning={erLesevisning}
                         />
-                        <AntallMåneder erLesevisning={erLesevisning}>
+                        <AntallMåneder $erLesevisning={erLesevisning}>
                             {kalkulerAntallMåneder(årMånedFra, årMånedTil)}
                         </AntallMåneder>
                         {!erLesevisning && (

@@ -38,10 +38,10 @@ const Container = styled.div`
     gap: 1rem;
 `;
 
-const Grid = styled.div<{ lesevisning?: boolean }>`
+const Grid = styled.div<{ $lesevisning?: boolean }>`
     display: grid;
     grid-template-columns: ${(props) =>
-        props.lesevisning ? 'repeat(5, max-content)' : '12rem 12rem repeat(5, max-content)'};
+        props.$lesevisning ? 'repeat(5, max-content)' : '12rem 12rem repeat(5, max-content)'};
     grid-gap: 0.5rem 1rem;
     align-items: start;
 
@@ -169,11 +169,11 @@ const VedtaksperiodeValg: React.FC<Props> = ({
             )}
             <HorizontalScroll
                 className={className}
-                synligVedLukketMeny={'1160px'}
-                synligVedÅpenMeny={'1455px'}
-                åpenHøyremeny={åpenHøyremeny}
+                $synligVedLukketMeny={'1160px'}
+                $synligVedÅpenMeny={'1455px'}
+                $åpenHøyremeny={åpenHøyremeny}
             >
-                <Grid lesevisning={!behandlingErRedigerbar}>
+                <Grid $lesevisning={!behandlingErRedigerbar}>
                     <Label>Periodetype</Label>
                     <Label>Aktivitet</Label>
                     <Label>Fra og med</Label>

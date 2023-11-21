@@ -29,5 +29,5 @@ export interface HistorikkElementProps {
 }
 
 export interface StyledHistorikkElementProps {
-    første: boolean;
+    $første: boolean;
 }

@@ -34,7 +34,7 @@ const StyledHistorikkElement = styled.li<StyledHistorikkElementProps>`
 
     list-style: none;
 
-    padding: ${(props) => (props.første ? '0.75rem 2rem 0' : '0 2rem')};
+    padding: ${(props) => (props.$første ? '0.75rem 2rem 0' : '0 2rem')};
 
     .navds-body-short,
     .navds-label,
@@ -90,7 +90,7 @@ const HistorikkElement: React.FC<HistorikkElementProps> = ({
         vedtakIverksatt;
 
     return (
-        <StyledHistorikkElement første={første}>
+        <StyledHistorikkElement $første={første}>
             <IkonMedStipletLinje>
                 <HendelseIkon behandlingshistorikk={behandlingshistorikk} />
                 <Linje $siste={siste} $størreMellomrom={harMetadata} />

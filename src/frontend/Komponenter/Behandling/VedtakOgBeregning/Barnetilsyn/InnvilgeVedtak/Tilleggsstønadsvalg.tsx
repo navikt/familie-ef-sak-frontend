@@ -30,10 +30,10 @@ const Container = styled.div`
     background-color: ${AGray50};
 `;
 
-const Grid = styled.div<{ lesevisning: boolean }>`
+const Grid = styled.div<{ $lesevisning: boolean }>`
     display: grid;
     grid-template-columns: ${(props) =>
-        props.lesevisning
+        props.$lesevisning
             ? 'repeat(3, max-content)'
             : 'repeat(2, max-content) 6rem repeat(2, max-content)'};
     grid-gap: 0.5rem 1rem;
@@ -155,12 +155,12 @@ const TilleggsstønadValg: React.FC<Props> = ({
             )}
             {søktTilleggsstønad && stønadSkalReduseres && (
                 <HorizontalScroll
-                    synligVedLukketMeny={'785px'}
-                    synligVedÅpenMeny={'1115px'}
-                    åpenHøyremeny={åpenHøyremeny}
+                    $synligVedLukketMeny={'785px'}
+                    $synligVedÅpenMeny={'1115px'}
+                    $åpenHøyremeny={åpenHøyremeny}
                 >
                     {visGrid && (
-                        <Grid lesevisning={erLesevisning}>
+                        <Grid $lesevisning={erLesevisning}>
                             <SmallTextLabel>Periode fra og med</SmallTextLabel>
                             <SmallTextLabel>Periode til og med</SmallTextLabel>
                             <SmallTextLabel>Stønadsreduksjon</SmallTextLabel>

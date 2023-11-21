@@ -14,7 +14,7 @@ import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponente
 import { IPersonalia } from '../vilkår';
 
 interface BeboereTabellProps {
-    vis: boolean;
+    $vis: boolean;
 }
 
 interface BostedsadresseProps {
@@ -27,7 +27,7 @@ const BeboereTabell = styled.table<BeboereTabellProps>`
     background-color: #f9f9f9;
     margin-top: 2rem;
 
-    display: ${(props) => (props.vis ? 'block' : 'none')};
+    display: ${(props) => (props.$vis ? 'block' : 'none')};
 `;
 
 const KnappMedMarginTop = styled(Button)`
@@ -95,7 +95,7 @@ export const Bostedsadresse = ({ behandlingId, personalia }: BostedsadresseProps
                     {({ beboere }) => {
                         return (
                             <>
-                                <BeboereTabell vis={visBeboere} className="tabell">
+                                <BeboereTabell $vis={visBeboere} className="tabell">
                                     <thead>
                                         <Td>Navn</Td>
                                         <Td>Fødselsnummer</Td>

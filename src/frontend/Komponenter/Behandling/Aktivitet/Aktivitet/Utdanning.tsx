@@ -26,7 +26,7 @@ export const UnderUtdanning: FC<{
             undertittel={ArbeidssituasjonTilTekst[EArbeidssituasjon.tarUtdanning]}
             ikon={<Søknadsgrunnlag />}
         >
-            <FlexColumnContainer gap={0.75}>
+            <FlexColumnContainer $gap={0.75}>
                 <Informasjonsrad
                     label="Skole/Utdanningssted"
                     verdi={underUtdanning.skoleUtdanningssted}

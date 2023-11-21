@@ -21,7 +21,7 @@ export const ArbeidstakerLønnsmottakerSomFrilanser: FC<{
             }
             ikon={<Søknadsgrunnlag />}
         >
-            <FlexColumnContainer gap={0.75}>
+            <FlexColumnContainer $gap={0.75}>
                 <Informasjonsrad label="Arbeidssted" verdi={arbeidsforhold.arbeidsgivernavn} />
 
                 {stønadstype === Stønadstype.OVERGANGSSTØNAD && (

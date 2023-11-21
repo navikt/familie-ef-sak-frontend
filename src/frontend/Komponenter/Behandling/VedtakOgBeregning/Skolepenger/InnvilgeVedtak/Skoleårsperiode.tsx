@@ -47,11 +47,11 @@ const FlexRow = styled.div`
     gap: 1rem;
 `;
 
-const Grid = styled.div<{ skalSladdes: boolean; erKlikkbar: boolean }>`
+const Grid = styled.div<{ $skalSladdes: boolean; $erKlikkbar: boolean }>`
     display: grid;
     grid-template-columns: 1fr 1fr;
-    opacity: ${(props) => (props.skalSladdes ? '0.5' : '1')};
-    pointer-events: ${(props) => (props.erKlikkbar ? 'auto' : 'none')};
+    opacity: ${(props) => (props.$skalSladdes ? '0.5' : '1')};
+    pointer-events: ${(props) => (props.$erKlikkbar ? 'auto' : 'none')};
 `;
 
 const HorizontalDivider = styled.div`
@@ -214,8 +214,8 @@ const Skoleårsperiode: React.FC<Props> = ({
                         />
                         <HorizontalDivider />
                         <Grid
-                            skalSladdes={kanRedigereSkoleperiode}
-                            erKlikkbar={utgiftsperioderErKlikkbar}
+                            $skalSladdes={kanRedigereSkoleperiode}
+                            $erKlikkbar={utgiftsperioderErKlikkbar}
                         >
                             <Utgiftsperioder
                                 erLesevisning={erLesevisning}
