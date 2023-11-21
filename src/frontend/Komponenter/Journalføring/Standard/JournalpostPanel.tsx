@@ -11,11 +11,7 @@ import {
 import styled from 'styled-components';
 import { FolderFileFillIcon, FolderFileIcon } from '@navikt/aksel-icons';
 import { ABlue500 } from '@navikt/ds-tokens/dist/tokens';
-import {
-    behandlingstemaTilTemaTekst,
-    Stønadstype,
-    stønadstypeTilTekst,
-} from '../../../App/typer/behandlingstema';
+import { Stønadstype, stønadstypeTilTekst } from '../../../App/typer/behandlingstema';
 import { IJournalpost } from '../../../App/typer/journalføring';
 import { formaterIsoDato } from '../../../App/utils/formatter';
 import {
@@ -27,6 +23,7 @@ import {
     Journalføringsaksjon,
     JournalføringStateRequest,
 } from '../../../App/hooks/useJournalføringState';
+import { Arkivtema, arkivtemaerTilTekst } from '../../../App/typer/arkivtema';
 
 const IkonContainer = styled.div`
     color: ${ABlue500};
@@ -70,7 +67,9 @@ const JournalpostPanel: React.FC<Props> = ({ journalpost, journalpostState }) =>
 
     const [erPanelEkspandert, settErPanelEkspandert] = useState<boolean>(false);
 
-    const tema = behandlingstemaTilTemaTekst(journalpost.behandlingstema);
+    const tema = journalpost.tema
+        ? arkivtemaerTilTekst[journalpost.tema as Arkivtema]
+        : 'Tema ikke satt';
     const datoMottatt = journalpostState.mottattDato
         ? formaterIsoDato(journalpostState.mottattDato)
         : 'Ikke satt';

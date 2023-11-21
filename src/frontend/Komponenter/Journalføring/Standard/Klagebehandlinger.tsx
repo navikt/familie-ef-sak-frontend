@@ -85,7 +85,7 @@ const Klagebehandlinger: React.FC<Props> = ({ journalpostState, settFeilmelding 
                         </AlertInfo>
                         {fagsakHarÅpenKlagebehandling && (
                             <AlertInfo>
-                                Merk at det allerede finnes en åpen fagsak på denne fagsaken
+                                Merk at det allerede finnes en åpen behandling på denne fagsaken
                             </AlertInfo>
                         )}
                         <Table zebraStripes={true}>
