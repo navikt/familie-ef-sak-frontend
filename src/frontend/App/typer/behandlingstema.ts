@@ -48,21 +48,6 @@ export const behandlingstemaTilStønadstype = (
     }
 };
 
-// TODO: Usikker på denne - kan man få noe annet enn Enslig forsørger?
-export const behandlingstemaTilTemaTekst = (
-    behandlingstema: Behandlingstema | undefined
-): string | undefined => {
-    switch (behandlingstema) {
-        case 'ab0071':
-        case 'ab0177':
-        case 'ab0028':
-        case 'ab0007':
-            return 'Enslig forsørger';
-        default:
-            return undefined;
-    }
-};
-
 export const oppgaveBehandlingstypeTilTekst: Record<OppgaveBehandlingstype, string> = {
     ae0161: 'Tilbakekreving',
     ae0058: 'Klage',
