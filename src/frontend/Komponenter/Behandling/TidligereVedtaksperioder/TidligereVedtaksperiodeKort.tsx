@@ -55,7 +55,7 @@ export const TidligereVedtaksperiodeKort: React.FC<{
         },
         {
             stønadstype: Stønadstype.BARNETILSYN,
-            periodeHistorikkData: tidligereVedtaksperioder.sak?.periodeHistorikkOvergangsstønad,
+            periodeHistorikkData: tidligereVedtaksperioder.sak?.periodeHistorikkBarnetilsyn,
             harHistorikkISak: tidligereVedtaksperioder.sak?.harTidligereBarnetilsyn,
             harHistorikkIInfotrygd: tidligereVedtaksperioder.infotrygd?.harTidligereBarnetilsyn,
         },
