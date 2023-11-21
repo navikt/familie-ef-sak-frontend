@@ -8,14 +8,15 @@ import {
 } from './typer';
 import KortInnholdBarnetilsyn from './barnetilsyn/KortInnholdBarnetilsyn';
 import KortInnholdOvergangsstønad from './overgangsstønad/KortInnholdOvergangsstønad';
+import { AGray400, AGreen50 } from '@navikt/ds-tokens/dist/tokens';
 
 const Container = styled.div`
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    background: #f3fcf5;
+    background: ${AGreen50};
     padding: 1rem;
-    border: 1px solid rgba(0, 0, 0, 0.19);
+    border: 1px solid ${AGray400};
     border-radius: 6px;
     text-align: left;
 `;
