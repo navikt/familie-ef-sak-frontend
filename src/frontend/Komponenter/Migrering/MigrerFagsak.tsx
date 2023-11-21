@@ -100,9 +100,8 @@ const MigrerFagsak: React.FC<{
     fagsakPerson: IFagsakPerson;
 }> = ({ fagsakPerson }) => {
     const { axiosRequest } = useApp();
-    const [migreringInfo, settMigreringInfo] = useState<Ressurs<MigreringInfoResponse>>(
-        byggTomRessurs()
-    );
+    const [migreringInfo, settMigreringInfo] =
+        useState<Ressurs<MigreringInfoResponse>>(byggTomRessurs());
     const [migrertStatus, settMigrertStatus] = useState<Ressurs<string>>(byggTomRessurs());
     const [ignorerFeilISimulering, settIgnorerFeilISimulering] = useState<boolean>();
 

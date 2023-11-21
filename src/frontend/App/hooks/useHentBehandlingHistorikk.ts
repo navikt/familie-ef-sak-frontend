@@ -12,9 +12,8 @@ export const useHentBehandlingHistorikk = (
 } => {
     const { axiosRequest } = useApp();
 
-    const [behandlingHistorikk, settBehandlingHistorikk] = useState<
-        Ressurs<Behandlingshistorikk[]>
-    >(byggTomRessurs());
+    const [behandlingHistorikk, settBehandlingHistorikk] =
+        useState<Ressurs<Behandlingshistorikk[]>>(byggTomRessurs());
 
     const hentBehandlingshistorikkCallback = useCallback(() => {
         const behandlingConfig: AxiosRequestConfig = {

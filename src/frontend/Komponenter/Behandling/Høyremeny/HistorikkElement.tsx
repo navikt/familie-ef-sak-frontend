@@ -23,8 +23,8 @@ const Linje = styled.div<LinjeProps>`
     margin-right: 13px;
     border-right: 1px dashed #a0a0a0;
 
-    min-height: ${(props) => (props.siste ? '30px' : props.størreMellomrom ? '75px' : '60px')};
-    height: ${(props) => (props.siste ? '30px' : '100%')};
+    min-height: ${(props) => (props.$siste ? '30px' : props.$størreMellomrom ? '75px' : '60px')};
+    height: ${(props) => (props.$siste ? '30px' : '100%')};
 `;
 
 const Innhold = styled.div``;
@@ -93,7 +93,7 @@ const HistorikkElement: React.FC<HistorikkElementProps> = ({
         <StyledHistorikkElement første={første}>
             <IkonMedStipletLinje>
                 <HendelseIkon behandlingshistorikk={behandlingshistorikk} />
-                <Linje siste={siste} størreMellomrom={harMetadata} />
+                <Linje $siste={siste} $størreMellomrom={harMetadata} />
             </IkonMedStipletLinje>
             <Innhold>
                 <SmallTextLabel>

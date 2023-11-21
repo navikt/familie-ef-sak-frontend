@@ -126,9 +126,8 @@ export const InnvilgeBarnetilsyn: React.FC<{
     const [nullUtbetalingPgaKontantstøtte, settNullUtbetalingPgaKontantstøtte] = useState(
         initNullUtbetalingPgaKontantstøtte(lagretInnvilgetVedtak)
     ); // Trenger denne reset?
-    const [beregningsresultat, settBeregningsresultat] = useState(
-        byggTomRessurs<IBeregningsperiodeBarnetilsyn[]>()
-    );
+    const [beregningsresultat, settBeregningsresultat] =
+        useState(byggTomRessurs<IBeregningsperiodeBarnetilsyn[]>());
     const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
         useApp();
     const { utførRedirect } = useRedirectEtterLagring(`/behandling/${behandling.id}/simulering`);

@@ -84,9 +84,8 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
     const skalViseValgmulighetForKorrigering = toggles[ToggleName.visValgmulighetForKorrigering];
     const [feilmeldingModal, settFeilmeldingModal] = useState<string>();
 
-    const [nyeBarnSidenForrigeBehandling, settNyeBarnSidenForrigeBehandling] = useState<
-        Ressurs<NyeBarnSidenForrigeBehandling>
-    >(byggTomRessurs());
+    const [nyeBarnSidenForrigeBehandling, settNyeBarnSidenForrigeBehandling] =
+        useState<Ressurs<NyeBarnSidenForrigeBehandling>>(byggTomRessurs());
     const [valgtBehandlingsårsak, settValgtBehandlingsårsak] = useState<Behandlingsårsak>();
     const [valgtDato, settValgtDato] = useState<string>();
     const [vilkårsbehandleNyeBarn, settVilkårsbehandleNyeBarn] = useState<EVilkårsbehandleBarnValg>(
