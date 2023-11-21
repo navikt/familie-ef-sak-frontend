@@ -1933,13 +1933,21 @@
     "@sentry/utils" "7.60.0"
     tslib "^2.4.1 || ^1.9.3"
 
-"@sentry/core@7.80.1", "@sentry/core@^7.69.0":
+"@sentry/core@7.80.1":
   version "7.80.1"
   resolved "https://registry.yarnpkg.com/@sentry/core/-/core-7.80.1.tgz#ccb85e15495bf0c8b142ca1713408c64e38c9f4c"
   integrity sha512-3Yh+O9Q86MxwIuJFYtuSSoUCpdx99P1xDAqL0FIPTJ+ekaVMiUJq9NmyaNh9uN2myPSmxvEXW6q3z37zta9ZHg==
   dependencies:
     "@sentry/types" "7.80.1"
     "@sentry/utils" "7.80.1"
+
+"@sentry/core@^7.81.0":
+  version "7.81.0"
+  resolved "https://registry.yarnpkg.com/@sentry/core/-/core-7.81.0.tgz#e72e02dcb175ada154a71cf89599287f9393e787"
+  integrity sha512-FCAKlqo9Z6fku69bkahw1AN+eBfAgRgOL1RpBLZgyG7YBW12vtSkHb5SDvZZTkm541Fo3hhepUTLtX0qmpA4yw==
+  dependencies:
+    "@sentry/types" "7.81.0"
+    "@sentry/utils" "7.81.0"
 
 "@sentry/node@^7.36.0":
   version "7.60.0"
@@ -1975,6 +1983,11 @@
   resolved "https://registry.yarnpkg.com/@sentry/types/-/types-7.80.1.tgz#dc720d6f2da0b510d586814451a04a2cdd2f4a9d"
   integrity sha512-CVu4uPVTOI3U9kYiOdA085R7jX5H1oVODbs9y+A8opJ0dtJTMueCXgZyE8oXQ0NjGVs6HEeaLkOuiV0mj8X3yw==
 
+"@sentry/types@7.81.0":
+  version "7.81.0"
+  resolved "https://registry.yarnpkg.com/@sentry/types/-/types-7.81.0.tgz#a093286c4016a2ff58aa8408ff873b7952a9386f"
+  integrity sha512-rbYNYSSrrnwNndC7S+eVT84GRLEyCZNh9oXUQqzgSD6ngXCZ0xFJW6si75uv/XQBWIw4rkj9xfRcy8DU0Tj4fg==
+
 "@sentry/utils@7.60.0":
   version "7.60.0"
   resolved "https://registry.yarnpkg.com/@sentry/utils/-/utils-7.60.0.tgz#a96d772dcc2d007f73a5bcf67dcc66f6a7085736"
@@ -1989,6 +2002,13 @@
   integrity sha512-bfFm2e/nEn+b9++QwjNEYCbS7EqmteT8uf0XUs7PljusSimIqqxDtK1pfD9zjynPgC8kW/fVBKv0pe2LufomeA==
   dependencies:
     "@sentry/types" "7.80.1"
+
+"@sentry/utils@7.81.0":
+  version "7.81.0"
+  resolved "https://registry.yarnpkg.com/@sentry/utils/-/utils-7.81.0.tgz#b874664ebc5647eed2d3492ac4171819267262cb"
+  integrity sha512-yC9IvfeVbG4dygi4b+iUUMHp9xeHJfCn6XLbqjJVfq3xjAzBGHgfrpw6fYPNyTljXKb6CTiSXSqaNaQJE4CkPA==
+  dependencies:
+    "@sentry/types" "7.81.0"
 
 "@sinclair/typebox@^0.27.8":
   version "0.27.8"
