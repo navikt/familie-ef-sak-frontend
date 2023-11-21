@@ -83,7 +83,7 @@
     "react-dom": "^18.2.0",
     "react-is": "^18.2.0",
     "react-pdf": "7.5.1",
-    "react-router-dom": "^6.19.0",
+    "react-router-dom": "6.16.0",
     "react-router-prompt": "^0.5.4",
     "react-select": "^5.8.0",
     "snyk": "^1.1248.0",
