@@ -2,7 +2,10 @@ import React from 'react';
 import styled from 'styled-components';
 import { BodyShort, Heading } from '@navikt/ds-react';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
-import { IGrunnlagsdataPeriodeHistorikk } from './typer';
+import {
+    IGrunnlagsdataPeriodeHistorikkOvergangsstønad,
+    IGrunnlagsdataPeriodeHistorikkBarnetilsyn,
+} from './typer';
 import KortInnholdBarnetilsyn from './barnetilsyn/KortInnholdBarnetilsyn';
 import KortInnholdOvergangsstønad from './overgangsstønad/KortInnholdOvergangsstønad';
 
@@ -21,7 +24,10 @@ const Tittel = styled(Heading)`
     text-decoration: underline;
 `;
 const HistorikkIEfKort: React.FC<{
-    periodeHistorikkData: IGrunnlagsdataPeriodeHistorikk[] | undefined;
+    periodeHistorikkData:
+        | IGrunnlagsdataPeriodeHistorikkOvergangsstønad[]
+        | IGrunnlagsdataPeriodeHistorikkBarnetilsyn[]
+        | undefined;
     stønadstype: string;
 }> = ({ periodeHistorikkData, stønadstype }) => {
     const harPeriodehistorikk = periodeHistorikkData && periodeHistorikkData?.length > 0;
