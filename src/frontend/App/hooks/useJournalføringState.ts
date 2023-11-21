@@ -10,11 +10,15 @@ import {
     IJournalpostResponse,
     LogiskeVedleggPåDokument,
 } from '../typer/journalføring';
-import { Journalføringsårsak } from '../../Komponenter/Journalføring/Felles/utils';
+import {
+    Journalføringsårsak,
+    utledJournalføringEvent,
+} from '../../Komponenter/Journalføring/Felles/utils';
 import { behandlingstemaTilStønadstype, Stønadstype } from '../typer/behandlingstema';
 import { HentDokumentResponse, useHentDokument } from './useHentDokument';
 import { useHentFagsak } from './useHentFagsak';
 import { Fagsak } from '../typer/fagsak';
+import { loggJournalføring } from '../utils/amplitude/amplitudeLoggEvents';
 
 export interface BehandlingRequest {
     behandlingsId?: string;
@@ -37,7 +41,7 @@ interface JournalføringRequest {
     vilkårsbehandleNyeBarn: EVilkårsbehandleBarnValg;
 }
 
-interface JournalføringRequestV2 {
+export interface JournalføringRequestV2 {
     fagsakId: string;
     oppgaveId: string;
     nyAvsender: NyAvsender | undefined;
@@ -225,7 +229,12 @@ export const useJournalføringState = (
             method: 'POST',
             url: `/familie-ef-sak/api/journalpost/${journalpost.journalpostId}/fullfor/v2`,
             data: request,
-        }).then((res) => settInnsending(res));
+        }).then((res) => {
+            settInnsending(res);
+            if (res.status === RessursStatus.SUKSESS) {
+                loggJournalføring(utledJournalføringEvent(request, journalpost, stønadstype));
+            }
+        });
     };
 
     return {
