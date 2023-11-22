@@ -14,9 +14,8 @@ export const useHentJournalpost = (
     journalpostIdParam: OrNothing<string>
 ): HentJournalpostResponse => {
     const { axiosRequest } = useApp();
-    const [journalResponse, settJournalResponse] = useState<Ressurs<IJournalpostResponse>>(
-        byggTomRessurs()
-    );
+    const [journalResponse, settJournalResponse] =
+        useState<Ressurs<IJournalpostResponse>>(byggTomRessurs());
 
     const hentJournalpostConfig: AxiosRequestConfig = useMemo(
         () => ({

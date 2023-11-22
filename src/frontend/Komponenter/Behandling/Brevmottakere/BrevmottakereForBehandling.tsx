@@ -24,9 +24,8 @@ export const BrevmottakereForBehandling: FC<{
     const { hentAnsvarligSaksbehandler, behandlingErRedigerbar, settNyEierModalState } =
         useBehandling();
 
-    const [mottakere, settMottakere] = useState<Ressurs<IBrevmottakere | undefined>>(
-        byggTomRessurs()
-    );
+    const [mottakere, settMottakere] =
+        useState<Ressurs<IBrevmottakere | undefined>>(byggTomRessurs());
 
     const settBrevmottakere = (brevmottakere: IBrevmottakere) =>
         axiosRequest<string, IBrevmottakere>({

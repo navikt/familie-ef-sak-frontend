@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const DelvilkårContainer = styled.div<{ hjelpetekstMaxWidth?: number }>`
+export const DelvilkårContainer = styled.div`
     display: flex;
 
     .radiogruppe {
@@ -8,7 +8,7 @@ export const DelvilkårContainer = styled.div<{ hjelpetekstMaxWidth?: number }>`
     }
 
     .hjelpetekst__innhold {
-        max-width: ${(props) => props.hjelpetekstMaxWidth || 22}rem;
+        max-width: 22rem;
     }
 
     .knapp {

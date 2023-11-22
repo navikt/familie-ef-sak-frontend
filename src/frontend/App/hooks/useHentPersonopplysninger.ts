@@ -10,9 +10,8 @@ export const useHentPersonopplysninger = (
     personopplysningerResponse: Ressurs<IPersonopplysninger>;
 } => {
     const { axiosRequest } = useApp();
-    const [personopplysningerResponse, settPersonopplysningerResponse] = useState<
-        Ressurs<IPersonopplysninger>
-    >(byggTomRessurs());
+    const [personopplysningerResponse, settPersonopplysningerResponse] =
+        useState<Ressurs<IPersonopplysninger>>(byggTomRessurs());
 
     const hentPersonopplysninger = useCallback(() => {
         settPersonopplysningerResponse(byggHenterRessurs());

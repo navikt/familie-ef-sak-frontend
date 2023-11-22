@@ -21,7 +21,7 @@ const SelvstendigNæringsdrivendeEllerFrilanser: FC<{
             }
             ikon={<Søknadsgrunnlag />}
         >
-            <FlexColumnContainer gap={0.75}>
+            <FlexColumnContainer $gap={0.75}>
                 <Informasjonsrad label="Firma" verdi={firma.firmanavn} />
                 <Informasjonsrad label="Organisasjonsnummer" verdi={firma.organisasjonsnummer} />
                 <Informasjonsrad

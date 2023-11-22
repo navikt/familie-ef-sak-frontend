@@ -63,9 +63,8 @@ export const InnvilgeOvergangsstønad: React.FC<{
         useApp();
     const { utførRedirect } = useRedirectEtterLagring(`/behandling/${behandling.id}/simulering`);
     const [laster, settLaster] = useState<boolean>(false);
-    const [beregnetStønad, settBeregnetStønad] = useState<Ressurs<IBeløpsperiode[]>>(
-        byggTomRessurs()
-    );
+    const [beregnetStønad, settBeregnetStønad] =
+        useState<Ressurs<IBeløpsperiode[]>>(byggTomRessurs());
 
     const [feilmelding, settFeilmelding] = useState<string>();
 

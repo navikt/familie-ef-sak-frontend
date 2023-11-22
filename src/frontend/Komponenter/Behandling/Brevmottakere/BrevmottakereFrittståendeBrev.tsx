@@ -21,9 +21,8 @@ export const BrevmottakereFrittståendeBrev: FC<{
 }> = ({ personopplysninger, fagsakId, mottakere, settMottakere }) => {
     const { axiosRequest } = useApp();
 
-    const [mottakereRessurs, settMottakereRessurs] = useState(
-        byggTomRessurs<IBrevmottakere | undefined>()
-    );
+    const [mottakereRessurs, settMottakereRessurs] =
+        useState(byggTomRessurs<IBrevmottakere | undefined>());
 
     const settBrevmottakere = (brevmottakere: IBrevmottakere) =>
         axiosRequest<string, IBrevmottakere>({

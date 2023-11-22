@@ -13,13 +13,13 @@ interface Props {
     boldLabel?: boolean;
 }
 
-const InformasjonsradContainer = styled.div<{ harVerdi: boolean }>`
+const InformasjonsradContainer = styled.div<{ $harVerdi: boolean }>`
     display: grid;
     grid-template-columns: 21px min(200px, 250px) auto;
     grid-gap: 0.5rem;
 
     .label {
-        grid-column: 2 ${(props) => !props.harVerdi && '/ 4'};
+        grid-column: 2 ${(props) => !props.$harVerdi && '/ 4'};
     }
 `;
 
@@ -31,7 +31,7 @@ const Informasjonsrad: FC<Props> = ({
     boldLabel = true,
 }) => {
     return (
-        <InformasjonsradContainer harVerdi={!!verdi}>
+        <InformasjonsradContainer $harVerdi={!!verdi}>
             {ikon && mapIkon(ikon)}
             {boldLabel ? (
                 <Label size="small" as="h3" className="label">

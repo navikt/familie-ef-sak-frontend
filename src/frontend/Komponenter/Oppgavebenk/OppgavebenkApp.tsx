@@ -27,9 +27,8 @@ const TabellContainer = styled.div`
 
 export const OppgavebenkApp: React.FC = () => {
     const { axiosRequest, erSaksbehandler } = useApp();
-    const [oppgaveRessurs, settOppgaveRessurs] = useState<Ressurs<IOppgaverResponse>>(
-        byggTomRessurs()
-    );
+    const [oppgaveRessurs, settOppgaveRessurs] =
+        useState<Ressurs<IOppgaverResponse>>(byggTomRessurs());
 
     const [mapper, settMapper] = useState<IMappe[]>(tomMappeListe);
     const [feilmelding, settFeilmelding] = useState<string>('');

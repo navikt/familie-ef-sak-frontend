@@ -20,17 +20,17 @@ const BasisKolonne = styled.td`
     border-bottom: 1px solid ${ABorderDefault};
 `;
 
-const VerdiKolonne = styled(BasisKolonne)<{ gjelderNestePeriode: boolean }>`
+const VerdiKolonne = styled(BasisKolonne)<{ $gjelderNestePeriode: boolean }>`
     text-align: right;
-    border-left: ${(props) => props.gjelderNestePeriode && `1px dashed ${ABorderStrong}`};
+    border-left: ${(props) => props.$gjelderNestePeriode && `1px dashed ${ABorderStrong}`};
 `;
 
-const MånedHeader = styled(VerdiKolonne)<{ gjelderNestePeriode: boolean }>`
+const MånedHeader = styled(VerdiKolonne)<{ $gjelderNestePeriode: boolean }>`
     border-bottom: 1px solid ${ABorderStrong};
 `;
 
-const ResultatVerdi = styled(BodyShortSmall)<{ verdi: number }>`
-    color: ${(props) => (props.verdi > 0 ? AGreen500 : ARed500)};
+const ResultatVerdi = styled(BodyShortSmall)<{ $verdi: number }>`
+    color: ${(props) => (props.$verdi > 0 ? AGreen500 : ARed500)};
 `;
 
 const SimuleringTabell: React.FC<ISimuleringTabell> = (simuleringstabell) => {
@@ -44,7 +44,7 @@ const SimuleringTabell: React.FC<ISimuleringTabell> = (simuleringstabell) => {
                     </ÅrHeader>
                     {perioder.map((p) => {
                         return (
-                            <MånedHeader key={p.måned} gjelderNestePeriode={p.gjelderNestePeriode}>
+                            <MånedHeader key={p.måned} $gjelderNestePeriode={p.gjelderNestePeriode}>
                                 <SmallTextLabel>{p.måned}</SmallTextLabel>
                             </MånedHeader>
                         );
@@ -58,7 +58,10 @@ const SimuleringTabell: React.FC<ISimuleringTabell> = (simuleringstabell) => {
                     </BasisKolonne>
                     {perioder.map((p) => {
                         return (
-                            <VerdiKolonne key={p.måned} gjelderNestePeriode={p.gjelderNestePeriode}>
+                            <VerdiKolonne
+                                key={p.måned}
+                                $gjelderNestePeriode={p.gjelderNestePeriode}
+                            >
                                 <BodyShortSmall>
                                     {formaterTallMedTusenSkilleEllerStrek(p.nyttBeløp)}
                                 </BodyShortSmall>
@@ -72,7 +75,10 @@ const SimuleringTabell: React.FC<ISimuleringTabell> = (simuleringstabell) => {
                     </BasisKolonne>
                     {perioder.map((p) => {
                         return (
-                            <VerdiKolonne key={p.måned} gjelderNestePeriode={p.gjelderNestePeriode}>
+                            <VerdiKolonne
+                                key={p.måned}
+                                $gjelderNestePeriode={p.gjelderNestePeriode}
+                            >
                                 <BodyShortSmall>
                                     {formaterTallMedTusenSkilleEllerStrek(p.tidligereUtbetalt)}
                                 </BodyShortSmall>
@@ -86,8 +92,11 @@ const SimuleringTabell: React.FC<ISimuleringTabell> = (simuleringstabell) => {
                     </BasisKolonne>
                     {perioder.map((p) => {
                         return (
-                            <VerdiKolonne key={p.måned} gjelderNestePeriode={p.gjelderNestePeriode}>
-                                <ResultatVerdi verdi={p.resultat}>
+                            <VerdiKolonne
+                                key={p.måned}
+                                $gjelderNestePeriode={p.gjelderNestePeriode}
+                            >
+                                <ResultatVerdi $verdi={p.resultat}>
                                     {formaterTallMedTusenSkilleEllerStrek(p.resultat)}
                                 </ResultatVerdi>
                             </VerdiKolonne>

@@ -18,9 +18,10 @@ export const useHentBeløpsperioder = (
     beløpsperioder: Ressurs<IBeløpsperiode[] | IBeregningsperiodeBarnetilsyn[] | undefined>;
 } => {
     const { axiosRequest } = useApp();
-    const [beløpsperioder, settBeløpsperioder] = useState<
-        Ressurs<IBeløpsperiode[] | IBeregningsperiodeBarnetilsyn[] | undefined>
-    >(byggTomRessurs());
+    const [beløpsperioder, settBeløpsperioder] =
+        useState<Ressurs<IBeløpsperiode[] | IBeregningsperiodeBarnetilsyn[] | undefined>>(
+            byggTomRessurs()
+        );
 
     const lagBeløpsurl = useCallback(() => {
         switch (stønadstype) {

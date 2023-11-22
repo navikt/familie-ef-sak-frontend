@@ -18,12 +18,12 @@ import { BodyShortSmall } from '../../../../../Felles/Visningskomponenter/Tekste
 import LeggTilKnapp from '../../../../../Felles/Knapper/LeggTilKnapp';
 
 const Grid = styled.div<{
-    skoleårErFjernet?: boolean;
+    $skoleårErFjernet?: boolean;
 }>`
     display: grid;
     grid-template-columns: repeat(6, max-content);
     gap: 0.25rem 1rem;
-    text-decoration: ${(props) => (props.skoleårErFjernet ? 'line-through' : 'inherit')};
+    text-decoration: ${(props) => (props.$skoleårErFjernet ? 'line-through' : 'inherit')};
     align-items: start;
 
     .ny-rad {
@@ -86,7 +86,7 @@ const Delårsperioder: React.FC<ValideringsPropsMedOppdatering<IPeriodeSkolepeng
 
     return (
         <>
-            <Grid skoleårErFjernet={erSkoleårOpphørt}>
+            <Grid $skoleårErFjernet={erSkoleårOpphørt}>
                 <Label>Studietype</Label>
                 <Label>Periode fra og med</Label>
                 <Label>Periode til og med</Label>

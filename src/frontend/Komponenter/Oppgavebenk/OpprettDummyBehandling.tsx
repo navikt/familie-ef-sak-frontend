@@ -18,9 +18,8 @@ const StyledOpprettDummyBehandling = styled.div`
 
 export const OpprettDummyBehandling: React.FC = () => {
     const { axiosRequest } = useApp();
-    const [nyBehandlingRessurs, settNyBehandlingRessurs] = useState<Ressurs<string>>(
-        byggTomRessurs()
-    );
+    const [nyBehandlingRessurs, settNyBehandlingRessurs] =
+        useState<Ressurs<string>>(byggTomRessurs());
     const [feilmelding, settFeilmelding] = useState<string | undefined>(undefined);
     const [personIdent, settPersonIdent] = useState<string>('');
     const [behandlingsType, settBehandlingstype] = useState<string>('FØRSTEGANGSBEHANDLING');

@@ -50,10 +50,10 @@ const AdvarselVisning = styled(AlertWarning)`
     max-width: 50rem;
 `;
 
-const Grid = styled.div<{ lesevisning?: boolean }>`
+const Grid = styled.div<{ $lesevisning?: boolean }>`
     display: grid;
     grid-template-columns: ${(props) =>
-        props.lesevisning ? 'repeat(4, max-content)' : ' repeat(8, max-content)'};
+        props.$lesevisning ? 'repeat(4, max-content)' : ' repeat(8, max-content)'};
     grid-gap: 0.5rem 1rem;
     align-items: start;
 
@@ -211,9 +211,9 @@ const InntektsperiodeValg: React.FC<Props> = ({
             )}
             <HorizontalScroll
                 className={className}
-                synligVedLukketMeny={'1080px'}
-                synligVedÅpenMeny={'1320px'}
-                åpenHøyremeny={åpenHøyremeny}
+                $synligVedLukketMeny={'1080px'}
+                $synligVedÅpenMeny={'1320px'}
+                $åpenHøyremeny={åpenHøyremeny}
             >
                 {behandlingErRedigerbar && (
                     <CheckboxGroupRow
@@ -236,7 +236,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                 </ReadMoreMedMarginBottom>
                 {valgteInntektstyper.length ? (
                     <>
-                        <Grid lesevisning={!behandlingErRedigerbar}>
+                        <Grid $lesevisning={!behandlingErRedigerbar}>
                             <TextLabel>Fra</TextLabel>
                             {valgteInntektstyper.includes(EInntektstype.DAGSATS) && (
                                 <TextLabel>Dagsats</TextLabel>

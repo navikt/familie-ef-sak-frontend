@@ -28,8 +28,8 @@ export const RadVerdi = styled.td`
     text-align: right;
 `;
 
-export const ResultatVerdi = styled(BodyShortSmall)<{ verdi: number }>`
-    color: ${(props) => (props.verdi > 0 ? AGreen500 : ARed500)};
+export const ResultatVerdi = styled(BodyShortSmall)<{ $verdi: number }>`
+    color: ${(props) => (props.$verdi > 0 ? AGreen500 : ARed500)};
 `;
 
 export const SimuleringOversiktTabell = styled.table`

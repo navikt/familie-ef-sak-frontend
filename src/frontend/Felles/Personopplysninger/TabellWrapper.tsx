@@ -15,13 +15,13 @@ export const Td = styled.td`
     padding-left: 0;
 `;
 
-export const TabellWrapper = styled.div<{ erDobbelTabell?: boolean }>`
+export const TabellWrapper = styled.div<{ $erDobbelTabell?: boolean }>`
     display: grid;
     padding-top: 1rem;
     grid-template-columns: 32px 40px auto 72px;
-    grid-template-rows: repeat(${(props) => (props.erDobbelTabell ? 3 : 2)}, max-content);
+    grid-template-rows: repeat(${(props) => (props.$erDobbelTabell ? 3 : 2)}, max-content);
     grid-template-areas: ${(props) =>
-        props.erDobbelTabell
+        props.$erDobbelTabell
             ? "'. ikon tittel .' '. . første-tabell .' '. . andre-tabell .'"
             : "'. ikon tittel .' '. . innhold .'"};
     .tabell {

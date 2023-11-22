@@ -48,7 +48,7 @@ const historikkRad = (andel: AndelHistorikk, index: number) => {
     };
 
     return (
-        <HistorikkRad type={andel.endring?.type} key={index}>
+        <HistorikkRad $type={andel.endring?.type} key={index}>
             <td>{datoAndelHistorikk(andel)}</td>
             <td>
                 {erOpphør ? (

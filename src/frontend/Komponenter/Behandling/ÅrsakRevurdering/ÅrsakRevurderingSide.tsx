@@ -24,9 +24,8 @@ export const ÅrsakRevurderingSide: React.FC<Props> = ({ behandlingId }) => {
     const { behandling } = useBehandling();
     const { axiosRequest } = useApp();
 
-    const [revurderingsinformasjon, settRevurderingsinformasjon] = useState<
-        Ressurs<Revurderingsinformasjon>
-    >(byggTomRessurs());
+    const [revurderingsinformasjon, settRevurderingsinformasjon] =
+        useState<Ressurs<Revurderingsinformasjon>>(byggTomRessurs());
 
     const [vurderingUtfylt, settVurderingUtfylt] = useState(false);
 

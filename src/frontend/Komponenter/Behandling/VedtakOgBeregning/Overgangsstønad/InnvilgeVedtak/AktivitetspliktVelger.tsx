@@ -25,9 +25,9 @@ interface Props {
     aktivitetfeil: OrNothing<string>;
 }
 
-const AktivitetKolonne = styled.div<{ medPadding?: boolean }>`
+const AktivitetKolonne = styled.div<{ $medPadding?: boolean }>`
     .navds-body-short {
-        padding: ${(props) => (props.medPadding ? '0.5rem 0 1rem 0' : '0rem')};
+        padding: ${(props) => (props.$medPadding ? '0.5rem 0 1rem 0' : '0rem')};
     }
 `;
 
@@ -143,13 +143,13 @@ const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
             );
         case EPeriodetype.PERIODE_FØR_FØDSEL:
             return (
-                <AktivitetKolonne medPadding={!erLesevisning}>
+                <AktivitetKolonne $medPadding={!erLesevisning}>
                     <BodyShort>Ikke aktivitetsplikt</BodyShort>
                 </AktivitetKolonne>
             );
         default:
             return (
-                <AktivitetKolonne medPadding={!erLesevisning}>
+                <AktivitetKolonne $medPadding={!erLesevisning}>
                     <BodyShort>-</BodyShort>
                 </AktivitetKolonne>
             );

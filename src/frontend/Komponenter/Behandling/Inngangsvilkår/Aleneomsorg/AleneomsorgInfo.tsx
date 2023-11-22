@@ -46,8 +46,8 @@ const AleneomsorgInfo: FC<{
               registergrunnlag.dødsdato
           )
         : søknadsgrunnlag.navn
-        ? 'Ikke utfylt'
-        : 'Ikke født';
+          ? 'Ikke utfylt'
+          : 'Ikke født';
 
     return (
         <BarneInfoWrapper

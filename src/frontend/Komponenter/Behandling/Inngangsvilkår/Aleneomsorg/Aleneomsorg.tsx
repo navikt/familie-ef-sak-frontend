@@ -23,9 +23,8 @@ export const Aleneomsorg: React.FC<VilkårPropsMedStønadstype> = ({
     stønadstype,
     behandlingId,
 }) => {
-    const [barnMedLøpendeStønad, settBarnMedLøpendeStønad] = useState<
-        Ressurs<IBarnMedLøpendeStønad>
-    >(byggTomRessurs());
+    const [barnMedLøpendeStønad, settBarnMedLøpendeStønad] =
+        useState<Ressurs<IBarnMedLøpendeStønad>>(byggTomRessurs());
     const { axiosRequest } = useApp();
 
     useEffect(() => {

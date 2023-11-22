@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Container = styled.div<{ skillelinje?: boolean }>`
+const Container = styled.div<{ $skillelinje?: boolean }>`
     display: flex;
     margin: 2rem;
-    border-bottom: ${(props) => (props.skillelinje ? '3px solid var(--a-border-subtle)' : 'none')};
+    border-bottom: ${(props) => (props.$skillelinje ? '3px solid var(--a-border-subtle)' : 'none')};
 
     @media (max-width: 1600px) {
         flex-direction: column;
@@ -40,7 +40,7 @@ const ToKolonnerLayout: React.FC<Props> = ({
     children: { venstre, høyre },
 }) => {
     return (
-        <Container skillelinje={skillelinje}>
+        <Container $skillelinje={skillelinje}>
             <div className="venstreKolonne">{venstre}</div>
             <div className="høyreKolonne">{høyre}</div>
         </Container>
