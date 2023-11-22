@@ -13,7 +13,6 @@
     "build": "yarn lint && yarn build:prod",
     "build:dev": "tsc & NODE_ENV=development webpack --config ./build_n_deploy/webpack/webpack.dev.js",
     "build:prod": "tsc & NODE_ENV=production webpack --config ./build_n_deploy/webpack/webpack.prod.js",
-    "snyk-protect": "snyk protect",
     "lint": "tsc --project ./src/frontend/tsconfig.json --noEmit && eslint './src/**/*.{js,ts,tsx}'",
     "lint:fix": "eslint './src/**/*.{js,ts,tsx}' --fix",
     "postinstall": "husky install"
@@ -26,8 +25,7 @@
   },
   "dependencyComments": {
     "color-string": "Overrider versjon som brukes av winston, som kommer fra familie-frontend-backend",
-    "body-parser": "Overrider versjon som  kommer fra familie-frontend backend",
-    "react-collapse": "Trengs for datovelgeren, overrider versjonen som ligger der"
+    "body-parser": "Overrider versjon som  kommer fra familie-frontend backend"
   },
   "dependencies": {
     "@navikt/aksel-icons": "^5.10.3",
@@ -63,30 +61,22 @@
     "color-string": "^1.9.1",
     "constate": "^3.3.2",
     "date-fns": "^2.30.0",
-    "dayjs": "^1.11.10",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "file-loader": "^6.2.0",
-    "file-saver": "^2.0.5",
     "http-proxy-middleware": "^2.0.6",
     "https-proxy-agent": "^7.0.2",
-    "lodash.throttle": "^4.1.1",
     "loglevel": "^1.8.1",
-    "namecase": "^1.1.2",
     "passport": "^0.6.0",
     "passport-azure-ad": "^4.3.5",
     "prom-client": "^14.2.0",
-    "prop-types": "^15.8.1",
     "react": "^18.2.0",
-    "react-collapse": "^5.1.1",
     "react-day-picker": "^8.8.2",
     "react-dom": "^18.2.0",
-    "react-is": "^18.2.0",
     "react-pdf": "7.5.1",
     "react-router-dom": "6.16.0",
     "react-router-prompt": "^0.5.4",
     "react-select": "^5.8.0",
-    "snyk": "^1.1248.0",
     "styled-components": "^6.1.1",
     "svg-inline-loader": "^0.8.2",
     "use-debounce": "^9.0.4",
@@ -98,6 +88,7 @@
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@babel/preset-env": "^7.23.3",
     "@babel/preset-react": "^7.23.3",
+    "@babel/preset-typescript": "^7.23.3",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.11",
     "@types/axe-core": "^2.0.7",
     "@types/webpack": "^5.28.5",
@@ -108,7 +99,6 @@
     "@typescript-eslint/parser": "^6.11.0",
     "@typescript-eslint/typescript-estree": "^6.7.0",
     "babel-polyfill": "^6.26.0",
-    "babel-preset-react-app": "^10.0.1",
     "compression-webpack-plugin": "^10.0.0",
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.8.1",
@@ -147,6 +137,5 @@
   "resolutions": {
     "@types/react": "^18.x",
     "@types/react-select": "^5.x"
-  },
-  "snyk": true
+  }
 }

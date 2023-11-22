@@ -28,9 +28,6 @@ const config = mergeWithCustomize({
                 test: /\.(jsx|tsx|ts|js)?$/,
                 exclude: /node_modules/,
                 loader: 'babel-loader',
-                options: {
-                    presets: ['react-app'],
-                },
             },
             {
                 test: /\.(css|less)$/,
