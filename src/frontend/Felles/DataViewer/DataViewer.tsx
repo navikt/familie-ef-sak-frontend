@@ -34,7 +34,7 @@ const renderFeil = (responses: Ressurs<any>[], alertOption: AlertStripeVariant) 
                 feilet.status === RessursStatus.FEILET
             ) {
                 return (
-                    <AlertStripeFeilPreWrap key={index} alertvariant={alertOption}>
+                    <AlertStripeFeilPreWrap key={index} $alertvariant={alertOption}>
                         {feilet.frontendFeilmelding}
                     </AlertStripeFeilPreWrap>
                 );

@@ -6,8 +6,8 @@ import { BreakWordBodyLongSmall } from '../../../Felles/Visningskomponenter/Brea
 import { ABlue300 } from '@navikt/ds-tokens/dist/tokens';
 import { BodyLongSmall } from '../../../Felles/Visningskomponenter/Tekster';
 
-const EkspanderbarContainer = styled(BreakWordBodyLongSmall)<{ ekspandert: boolean }>`
-    max-height: ${(props) => (props.ekspandert ? 'none' : '15rem')};
+const EkspanderbarContainer = styled(BreakWordBodyLongSmall)<{ $ekspandert: boolean }>`
+    max-height: ${(props) => (props.$ekspandert ? 'none' : '15rem')};
     overflow: hidden;
 `;
 
@@ -37,7 +37,7 @@ export const EksisterendeBeskrivelse: React.FC<{ beskrivelse?: string }> = ({ be
             <BeskrivelseContainser>
                 <Label size={'small'}>Beskrivelseshistorikk</Label>
                 <LeftBorder>
-                    <EkspanderbarContainer ref={refCallback} ekspandert={ekspandert}>
+                    <EkspanderbarContainer ref={refCallback} $ekspandert={ekspandert}>
                         <BodyLongSmall>{beskrivelse}</BodyLongSmall>
                     </EkspanderbarContainer>
                     {(harOverflow || ekspandert) && (

@@ -14,8 +14,8 @@ interface Props {
     settVurdering: (nyttSvar: Vurdering) => void;
 }
 
-const FontStyle = styled.div<{ italic: boolean }>`
-    font-style: ${(props) => (props.italic ? 'italic' : 'normal')};
+const FontStyle = styled.div<{ $italic: boolean }>`
+    font-style: ${(props) => (props.$italic ? 'italic' : 'normal')};
 `;
 
 const Delvilkår: FC<Props> = ({ regel, vurdering, settVurdering }) => {
@@ -41,7 +41,7 @@ const Delvilkår: FC<Props> = ({ regel, vurdering, settVurdering }) => {
                                     })
                                 }
                             >
-                                <FontStyle italic={erTekstKursiv}>
+                                <FontStyle $italic={erTekstKursiv}>
                                     {svarTypeTilTekst[svarId]}
                                 </FontStyle>
                             </Radio>

@@ -12,9 +12,8 @@ import { useApp } from '../../../App/context/AppContext';
 export const Simulering: FC<{ behandlingId: string }> = ({ behandlingId }) => {
     const { axiosRequest } = useApp();
     const { vedtak, hentVedtak, vedtaksresultat } = useHentVedtak(behandlingId);
-    const [simuleringsresultat, settSimuleringsresultat] = useState<Ressurs<ISimulering>>(
-        byggTomRessurs()
-    );
+    const [simuleringsresultat, settSimuleringsresultat] =
+        useState<Ressurs<ISimulering>>(byggTomRessurs());
 
     useEffect(() => {
         if (harVedtaksresultatMedTilkjentYtelse(vedtaksresultat)) {

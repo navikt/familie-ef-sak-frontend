@@ -2,9 +2,9 @@ import styled from 'styled-components';
 import { Button, Modal } from '@navikt/ds-react';
 import React from 'react';
 
-const ModalContainer = styled(Modal)<{ maxWidth?: number }>`
+const ModalContainer = styled(Modal)<{ $maxWidth?: number }>`
     min-width: 30rem;
-    max-width: ${(props) => (props.maxWidth ? `${props.maxWidth}rem` : '40rem')};
+    max-width: ${(props) => (props.$maxWidth ? `${props.$maxWidth}rem` : '40rem')};
 `;
 
 const Innhold = styled.div`
@@ -12,10 +12,10 @@ const Innhold = styled.div`
     margin-left: 2rem;
 `;
 
-const ButtonContainer = styled.div<{ marginTop?: number }>`
+const ButtonContainer = styled.div<{ $marginTop?: number }>`
     display: flex;
     justify-content: flex-end;
-    margin-top: ${(props) => (props.marginTop ? `${props.marginTop}rem` : '1rem')};
+    margin-top: ${(props) => (props.$marginTop ? `${props.$marginTop}rem` : '1rem')};
     margin-right: 2rem;
     margin-bottom: 0.5rem;
 `;
@@ -57,14 +57,14 @@ export const ModalWrapper: React.FC<ModalProps> = ({
             <ModalContainer
                 open={visModal}
                 onClose={onClose ? () => onClose() : () => null}
-                maxWidth={maxWidth}
+                $maxWidth={maxWidth}
                 aria-label={ariaLabel ? ariaLabel : tittel}
                 header={{ heading: tittel, closeButton: !!onClose }}
             >
                 <Modal.Body>
                     <Innhold>{children}</Innhold>
                     {aksjonsknapper && (
-                        <ButtonContainer marginTop={aksjonsknapper.marginTop}>
+                        <ButtonContainer $marginTop={aksjonsknapper.marginTop}>
                             <ModalKnapp
                                 variant="tertiary"
                                 onClick={aksjonsknapper.lukkKnapp.onClick}

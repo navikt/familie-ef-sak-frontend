@@ -15,8 +15,8 @@ export interface Behandlingshistorikk {
 }
 
 export interface LinjeProps {
-    siste: boolean;
-    størreMellomrom: boolean;
+    $siste: boolean;
+    $størreMellomrom: boolean;
 }
 
 export interface HistorikkElementProps {
@@ -29,5 +29,5 @@ export interface HistorikkElementProps {
 }
 
 export interface StyledHistorikkElementProps {
-    første: boolean;
+    $første: boolean;
 }

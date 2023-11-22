@@ -5,8 +5,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { ATextSubtle } from '@navikt/ds-tokens/dist/tokens';
 
-export const StyledDiv = styled.div<{ historisk?: boolean }>`
-    ${(props) => props.historisk && `color : ${ATextSubtle}`};
+export const StyledDiv = styled.div<{ $historisk?: boolean }>`
+    ${(props) => props.$historisk && `color : ${ATextSubtle}`};
 `;
 
 export const VenstreMargin = styled(StyledDiv)`
@@ -43,21 +43,21 @@ export const popoverContentDeltBosted = (deltBostedPerioder: IDeltBostedPeriode[
                     return (
                         <Table.Row key={deltBostedPeriodeKey(deltBostedPeriode)}>
                             <Table.DataCell>
-                                <StyledDiv historisk={deltBostedPeriode.historisk}>
+                                <StyledDiv $historisk={deltBostedPeriode.historisk}>
                                     {formaterNullableIsoDato(
                                         deltBostedPeriode.startdatoForKontrakt
                                     )}
                                 </StyledDiv>
                             </Table.DataCell>
                             <Table.DataCell>
-                                <VenstreMargin historisk={deltBostedPeriode.historisk}>
+                                <VenstreMargin $historisk={deltBostedPeriode.historisk}>
                                     {formaterNullableIsoDato(
                                         deltBostedPeriode.sluttdatoForKontrakt
                                     )}
                                 </VenstreMargin>
                             </Table.DataCell>
                             <Table.DataCell>
-                                <VenstreMargin historisk={deltBostedPeriode.historisk}>
+                                <VenstreMargin $historisk={deltBostedPeriode.historisk}>
                                     {utledHistoriskTag(deltBostedPeriode.historisk)}
                                 </VenstreMargin>
                             </Table.DataCell>

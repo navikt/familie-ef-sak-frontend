@@ -18,9 +18,8 @@ export const useMellomlagringFrittståendeSanitybrev = (
     settMellomlagretBrev: Dispatch<SetStateAction<Ressurs<MellomlagerRespons | undefined>>>;
 } => {
     const { axiosRequest } = useApp();
-    const [mellomlagretBrevRessurs, settMellomlagretBrevRessurs] = useState<
-        Ressurs<MellomlagerRespons | undefined>
-    >(byggTomRessurs());
+    const [mellomlagretBrevRessurs, settMellomlagretBrevRessurs] =
+        useState<Ressurs<MellomlagerRespons | undefined>>(byggTomRessurs());
 
     const sanityVersjon = '1';
 

@@ -16,9 +16,8 @@ export const SøkOrganisasjon: React.FC<Props> = ({ settValgteMottakere }) => {
 
     const [organisasjonsnummer, settOrganisasjonsnummer] = useState('');
     const [navnHosOrganisasjon, settNavnHosOrganisasjon] = useState('');
-    const [organisasjonRessurs, settOrganisasjonRessurs] = useState(
-        byggTomRessurs<IOrganisasjon>()
-    );
+    const [organisasjonRessurs, settOrganisasjonRessurs] =
+        useState(byggTomRessurs<IOrganisasjon>());
     const [feil, settFeil] = useState('');
 
     useEffect(() => {

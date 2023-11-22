@@ -94,9 +94,8 @@ export const SettPåVent: FC<{ behandling: Behandling }> = ({ behandling }) => {
     const [oppgaverMotLokalkontor, settOppgaverMotLokalkontor] = useState<
         VurderHenvendelseOppgavetype[]
     >([]);
-    const [sendteOppgaver, settSendteOppgaver] = useState<Ressurs<SendtOppgave[]>>(
-        byggTomRessurs<SendtOppgave[]>()
-    );
+    const [sendteOppgaver, settSendteOppgaver] =
+        useState<Ressurs<SendtOppgave[]>>(byggTomRessurs<SendtOppgave[]>());
     const [taAvVentStatus, settTaAvVentStatus] = useState<ETaAvVentStatus>();
     const [låsKnapp, settLåsKnapp] = useState<boolean>(false);
     const [visBekreftTaAvVentModal, settVisBekreftTaAvVentModal] = useState<boolean>(false);

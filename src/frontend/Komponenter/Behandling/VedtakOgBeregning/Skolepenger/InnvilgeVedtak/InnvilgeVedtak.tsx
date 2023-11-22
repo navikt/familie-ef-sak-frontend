@@ -95,9 +95,8 @@ export const InnvilgeVedtak: React.FC<{
     const [harUtførtBeregning, settHarUtførtBeregning] = useState<boolean>(false);
     const [visFeilmelding, settVisFeilmelding] = useState<boolean>(false);
 
-    const [beregningsresultat, settBeregningsresultat] = useState(
-        byggTomRessurs<IBeregningSkolepengerResponse>()
-    );
+    const [beregningsresultat, settBeregningsresultat] =
+        useState(byggTomRessurs<IBeregningSkolepengerResponse>());
     const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
         useApp();
     const { utførRedirect } = useRedirectEtterLagring(`/behandling/${behandling.id}/simulering`);

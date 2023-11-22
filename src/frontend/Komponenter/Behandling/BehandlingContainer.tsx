@@ -25,11 +25,11 @@ const Container = styled.div`
 `;
 
 interface InnholdWrapperProps {
-    åpenHøyremeny: boolean;
+    $åpenHøyremeny: boolean;
 }
 
 interface HøyreMenyWrapperProps {
-    åpenHøyremeny: boolean;
+    $åpenHøyremeny: boolean;
 }
 
 const HøyreMenyWrapper = styled.div<HøyreMenyWrapperProps>`
@@ -40,8 +40,8 @@ const HøyreMenyWrapper = styled.div<HøyreMenyWrapperProps>`
     flex-shrink: 1;
     flex-grow: 0;
 
-    width: ${(p) => (p.åpenHøyremeny ? '20rem' : '1.5rem')};
-    min-width: ${(p) => (p.åpenHøyremeny ? '20rem' : '1.5rem')};
+    width: ${(p) => (p.$åpenHøyremeny ? '20rem' : '1.5rem')};
+    min-width: ${(p) => (p.$åpenHøyremeny ? '20rem' : '1.5rem')};
 
     transition: all 0.25s;
 
@@ -54,7 +54,7 @@ const InnholdWrapper = styled.div<InnholdWrapperProps>`
     flex-basis: 0;
     min-width: 0;
 
-    max-width: ${(p) => (p.åpenHøyremeny ? 'calc(100% - 20rem)' : '100%')};
+    max-width: ${(p) => (p.$åpenHøyremeny ? 'calc(100% - 20rem)' : '100%')};
 `;
 
 export const BehandlingContainer: FC = () => {
@@ -77,7 +77,7 @@ const BehandlingContent: FC<{
         <>
             <PersonHeaderComponent data={personopplysninger} behandling={behandling} />
             <Container>
-                <InnholdWrapper åpenHøyremeny={åpenHøyremeny}>
+                <InnholdWrapper $åpenHøyremeny={åpenHøyremeny}>
                     <Fanemeny />
                     <SettPåVent behandling={behandling} />
                     <InfostripeUtestengelse utestengelser={utestengelser} />
@@ -88,7 +88,7 @@ const BehandlingContent: FC<{
                     <HenleggModal behandling={behandling} />
                     <NyEierModal />
                 </InnholdWrapper>
-                <HøyreMenyWrapper åpenHøyremeny={åpenHøyremeny}>
+                <HøyreMenyWrapper $åpenHøyremeny={åpenHøyremeny}>
                     <Høyremeny behandling={behandling} åpenHøyremeny={åpenHøyremeny} />
                 </HøyreMenyWrapper>
             </Container>

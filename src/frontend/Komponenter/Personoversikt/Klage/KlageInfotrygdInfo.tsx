@@ -18,9 +18,8 @@ export const KlageInfotrygdInfo: React.FunctionComponent<{ fagsakPersonId: strin
     fagsakPersonId,
 }) => {
     const { axiosRequest } = useApp();
-    const [åpneKlager, settÅpneKlager] = useState<Ressurs<ÅpneInfotrygdKlagerResponse>>(
-        byggTomRessurs()
-    );
+    const [åpneKlager, settÅpneKlager] =
+        useState<Ressurs<ÅpneInfotrygdKlagerResponse>>(byggTomRessurs());
 
     useEffect(() => {
         axiosRequest<ÅpneInfotrygdKlagerResponse, null>({

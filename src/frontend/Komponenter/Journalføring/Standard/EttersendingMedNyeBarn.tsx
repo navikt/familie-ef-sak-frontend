@@ -24,9 +24,8 @@ const EttersendingMedNyeBarn: React.FC<{
 }> = ({ fagsak, vilkårsbehandleNyeBarn, settVilkårsbehandleNyeBarn }) => {
     const { axiosRequest } = useApp();
 
-    const [nyeBarnSidenForrigeBehandling, settNyeBarnSidenForrigeBehandling] = useState<
-        Ressurs<NyeBarnSidenForrigeBehandling>
-    >(byggTomRessurs());
+    const [nyeBarnSidenForrigeBehandling, settNyeBarnSidenForrigeBehandling] =
+        useState<Ressurs<NyeBarnSidenForrigeBehandling>>(byggTomRessurs());
 
     useEffect(() => {
         if (harBehandlingOgAlleErFerdigstilteEllerSattPåVent(fagsak)) {

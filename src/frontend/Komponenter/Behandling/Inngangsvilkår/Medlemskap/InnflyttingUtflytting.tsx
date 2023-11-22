@@ -16,7 +16,7 @@ interface Props {
 
 const InnflyttingUtflytting: React.FC<Props> = ({ innflytting, utflytting }) => {
     return (
-        <FlexColumnContainer gap={1}>
+        <FlexColumnContainer $gap={1}>
             <TabellVisning
                 tittel="Innflytting og utflytting"
                 ikon={VilkårInfoIkon.REGISTER}

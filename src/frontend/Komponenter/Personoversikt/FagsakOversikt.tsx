@@ -40,9 +40,8 @@ export const FagsakOversikt: React.FC<Props> = ({
 
     const kanStarteRevurdering = kanOppretteRevurdering(fagsak);
     const [visLagBehandlingModal, settVisLagBehandlingModal] = useState<boolean>(false);
-    const [tilbakekrevingBehandlinger, settTilbakekrevingbehandlinger] = useState<
-        Ressurs<TilbakekrevingBehandling[]>
-    >(byggTomRessurs());
+    const [tilbakekrevingBehandlinger, settTilbakekrevingbehandlinger] =
+        useState<Ressurs<TilbakekrevingBehandling[]>>(byggTomRessurs());
 
     useEffect(() => {
         hentTilbakekrevingBehandlinger();

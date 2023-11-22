@@ -46,8 +46,8 @@ const BrevMenyTittel = styled.div`
     margin-bottom: 1rem;
 `;
 
-const BrevMenyDelmalWrapper = styled.div<{ førsteElement?: boolean }>`
-    margin-top: ${(props) => (props.førsteElement ? '0' : '1rem')};
+const BrevMenyDelmalWrapper = styled.div<{ $førsteElement?: boolean }>`
+    margin-top: ${(props) => (props.$førsteElement ? '0' : '1rem')};
 `;
 
 export type BrevmenyVisningProps = {
@@ -261,7 +261,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                             )}
                             {gruppe.delmaler.map((delmal: Delmal, index: number) => (
                                 <BrevMenyDelmalWrapper
-                                    førsteElement={index === 0}
+                                    $førsteElement={index === 0}
                                     key={`${delmal.delmalApiNavn}_wrapper`}
                                 >
                                     <BrevMenyDelmal

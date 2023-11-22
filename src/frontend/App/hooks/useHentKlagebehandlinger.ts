@@ -10,9 +10,8 @@ interface IProps {
 
 export const useHentKlagebehandlinger = (): IProps => {
     const { axiosRequest } = useApp();
-    const [klagebehandlinger, settKlagebehandlinger] = useState<Ressurs<Klagebehandlinger>>(
-        byggTomRessurs()
-    );
+    const [klagebehandlinger, settKlagebehandlinger] =
+        useState<Ressurs<Klagebehandlinger>>(byggTomRessurs());
     const hentKlagebehandlinger = useCallback(
         (fagsakPersonid: string) => {
             settKlagebehandlinger(byggHenterRessurs());
