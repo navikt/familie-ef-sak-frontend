@@ -15,8 +15,8 @@ export const HistorikkTabell = styled.table`
     margin-top: 2rem;
 `;
 
-export const HistorikkRad = styled.tr<{ type?: AndelEndringType }>`
-    opacity: ${(props) => (skalMarkeresSomFjernet(props.type) ? '50%' : '100%')};
+export const HistorikkRad = styled.tr<{ $type?: AndelEndringType }>`
+    opacity: ${(props) => (skalMarkeresSomFjernet(props.$type) ? '50%' : '100%')};
 `;
 
 export const skalMarkeresSomFjernet = (type?: AndelEndringType) =>

@@ -29,31 +29,31 @@ const breddeKolonner = (antallKolonner: number) => {
 };
 
 const GridTabell = styled.div<{
-    kolonner: number;
-    ikonVisning: boolean;
-    minimerKolonnebredde: boolean;
+    $kolonner: number;
+    $ikonVisning: boolean;
+    $minimerKolonnebredde: boolean;
 }>`
     display: grid;
     grid-template-columns:
-        ${(props) => props.ikonVisning && '21px'}
+        ${(props) => props.$ikonVisning && '21px'}
         ${(props) =>
-            props.minimerKolonnebredde
-                ? `repeat(${props.kolonner - 1}, minmax(max-content, 7rem))`
-                : `min(200px, 250px) repeat(${props.kolonner - 1}, ${breddeKolonner(
-                      props.kolonner
+            props.$minimerKolonnebredde
+                ? `repeat(${props.$kolonner - 1}, minmax(max-content, 7rem))`
+                : `min(200px, 250px) repeat(${props.$kolonner - 1}, ${breddeKolonner(
+                      props.$kolonner
                   )})`};
     grid-gap: 0.5rem;
 
     .tittel {
         padding-bottom: 0.25rem;
-        grid-column: ${(props) => (props.ikonVisning ? 2 : 1)} / ${(props) => props.kolonner + 1};
+        grid-column: ${(props) => (props.$ikonVisning ? 2 : 1)} / ${(props) => props.$kolonner + 1};
 
         display: flex;
         align-items: center;
     }
 
     .førsteDataKolonne {
-        grid-column: ${(props) => (props.ikonVisning ? '2/3' : '1/2')};
+        grid-column: ${(props) => (props.$ikonVisning ? '2/3' : '1/2')};
     }
 `;
 
@@ -73,9 +73,9 @@ function TabellVisning<T>(props: Kolonnedata<T>): React.ReactElement<Kolonnedata
     } = props;
     return (
         <GridTabell
-            kolonner={kolonner.length + 1}
-            ikonVisning={ikonVisning}
-            minimerKolonnebredde={minimerKolonnebredde}
+            $kolonner={kolonner.length + 1}
+            $ikonVisning={ikonVisning}
+            $minimerKolonnebredde={minimerKolonnebredde}
         >
             {ikon && mapIkon(ikon)}
             {tittel && (

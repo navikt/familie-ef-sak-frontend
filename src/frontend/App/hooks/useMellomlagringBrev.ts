@@ -49,9 +49,8 @@ export const useMellomlagringBrev = (
     mellomlagretBrev: Ressurs<MellomlagerRespons | undefined>;
 } => {
     const { axiosRequest } = useApp();
-    const [mellomlagretBrevRessurs, settMellomlagretBrevRessurs] = useState<
-        Ressurs<MellomlagerRespons | undefined>
-    >(byggTomRessurs());
+    const [mellomlagretBrevRessurs, settMellomlagretBrevRessurs] =
+        useState<Ressurs<MellomlagerRespons | undefined>>(byggTomRessurs());
 
     const sanityVersjon = '1';
 

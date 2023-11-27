@@ -6,9 +6,8 @@ import { useApp } from '../context/AppContext';
 // eslint-disable-next-line
 export const useHentTotrinnskontroll = (behandlingId: string) => {
     const { axiosRequest } = useApp();
-    const [totrinnskontroll, settTotrinnskontroll] = useState<Ressurs<TotrinnskontrollResponse>>(
-        byggTomRessurs()
-    );
+    const [totrinnskontroll, settTotrinnskontroll] =
+        useState<Ressurs<TotrinnskontrollResponse>>(byggTomRessurs());
 
     const hentTotrinnskontrollCallback = useCallback(() => {
         axiosRequest<TotrinnskontrollResponse, null>({

@@ -39,10 +39,10 @@ const Container = styled.div`
     background-color: ${AGray50};
 `;
 
-const Grid = styled.div<{ lesevisning?: boolean }>`
+const Grid = styled.div<{ $lesevisning?: boolean }>`
     display: grid;
     grid-template-columns: ${(props) =>
-        props.lesevisning
+        props.$lesevisning
             ? 'repeat(7, max-content)'
             : '9rem 9rem repeat(2, max-content) 20rem 2rem 4rem repeat(2, max-content)'};
     grid-gap: 0.5rem 1rem;
@@ -181,14 +181,14 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
     return (
         <Container>
             <HorizontalScroll
-                synligVedLukketMeny={'1460px'}
-                synligVedÅpenMeny={'1765px'}
-                åpenHøyremeny={åpenHøyremeny}
+                $synligVedLukketMeny={'1460px'}
+                $synligVedÅpenMeny={'1765px'}
+                $åpenHøyremeny={åpenHøyremeny}
             >
                 <Heading spacing size="small" level="5">
                     Utgifter til barnetilsyn
                 </Heading>
-                <Grid lesevisning={!behandlingErRedigerbar}>
+                <Grid $lesevisning={!behandlingErRedigerbar}>
                     <Label>Periodetype</Label>
                     <Label>Aktivitet</Label>
                     <Label>Periode fra og med</Label>

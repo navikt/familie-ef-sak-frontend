@@ -17,9 +17,8 @@ const StyledHeading = styled(Heading)`
 
 const GamleBehandlinger = () => {
     const { axiosRequest } = useApp();
-    const [gamleBehandlinger, settGamleBehandlinger] = useState<Ressurs<Behandling[]>>(
-        byggTomRessurs()
-    );
+    const [gamleBehandlinger, settGamleBehandlinger] =
+        useState<Ressurs<Behandling[]>>(byggTomRessurs());
 
     useEffect(() => {
         axiosRequest<Behandling[], null>({

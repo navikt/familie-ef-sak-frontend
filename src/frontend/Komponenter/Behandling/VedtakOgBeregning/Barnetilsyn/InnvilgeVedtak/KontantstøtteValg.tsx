@@ -34,10 +34,10 @@ const AlertOgRadioknappWrapper = styled.div`
     width: max-content;
 `;
 
-const Grid = styled.div<{ lesevisning: boolean }>`
+const Grid = styled.div<{ $lesevisning: boolean }>`
     display: grid;
     grid-template-columns: ${(props) =>
-        props.lesevisning
+        props.$lesevisning
             ? 'repeat(3, max-content)'
             : 'repeat(2, max-content) 6rem repeat(2, max-content)'};
     grid-gap: 0.5rem 1rem;
@@ -138,12 +138,12 @@ const KontantstøtteValg: React.FC<Props> = ({
             </AlertOgRadioknappWrapper>
             {kontantstøtte.value === ERadioValg.JA && (
                 <HorizontalScroll
-                    synligVedLukketMeny={'795px'}
-                    synligVedÅpenMeny={'1115'}
-                    åpenHøyremeny={åpenHøyremeny}
+                    $synligVedLukketMeny={'795px'}
+                    $synligVedÅpenMeny={'1115'}
+                    $åpenHøyremeny={åpenHøyremeny}
                 >
                     {visGrid && (
-                        <Grid lesevisning={erLesevisning}>
+                        <Grid $lesevisning={erLesevisning}>
                             <Label>Periode fra og med</Label>
                             <Label>Periode til og med</Label>
                             <Label>Kontantstøtte</Label>

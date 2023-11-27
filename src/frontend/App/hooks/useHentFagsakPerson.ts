@@ -31,9 +31,8 @@ export const useHentFagsakPerson = (): HentFagsakPersonResponse<IFagsakPerson> =
 export const useHentFagsakPersonUtvidet =
     (): HentFagsakPersonResponse<IFagsakPersonMedBehandlinger> => {
         const { axiosRequest } = useApp();
-        const [fagsakPerson, settFagsakPerson] = useState<Ressurs<IFagsakPersonMedBehandlinger>>(
-            byggTomRessurs()
-        );
+        const [fagsakPerson, settFagsakPerson] =
+            useState<Ressurs<IFagsakPersonMedBehandlinger>>(byggTomRessurs());
 
         const hentFagsakPerson = useCallback(
             (fagsakPersonid: string) => {

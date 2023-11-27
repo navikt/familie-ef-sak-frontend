@@ -67,7 +67,7 @@ export interface IJournalpost {
     journalstatus: Journalstatus;
     tema: string; // 'EF?'
     behandlingstema?: Behandlingstema;
-    tittel: string;
+    tittel?: string;
     sak?: string;
     bruker: BrukerInfo;
     journalforendeEnhet?: string;

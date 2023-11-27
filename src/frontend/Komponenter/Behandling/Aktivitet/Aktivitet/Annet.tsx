@@ -69,7 +69,7 @@ const Annet: FC<Props> = ({ dinSituasjon, særligTilsynsbehov }) => {
                         </StyledList>
                     }
                 />
-                <FlexColumnContainer gap={1}>
+                <FlexColumnContainer $gap={1}>
                     <Informasjonsrad label="Om tilsynsbehov for: " />
                     {særligTilsynsbehov.map((barnetsBehov) => (
                         <Informasjonsrad

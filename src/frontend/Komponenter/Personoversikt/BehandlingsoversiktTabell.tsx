@@ -162,8 +162,8 @@ export const BehandlingsoversiktTabell: React.FC<{
         behandling.type === TilbakekrevingBehandlingstype.TILBAKEKREVING
             ? 'Feilutbetaling'
             : behandling.årsak
-            ? behandlingOgTilbakekrevingsårsakTilTekst[behandling.årsak]
-            : '-';
+              ? behandlingOgTilbakekrevingsårsakTilTekst[behandling.årsak]
+              : '-';
 
     const finnHenlagtÅrsak = (behandling: BehandlingsoversiktTabellBehandling): string =>
         behandling.henlagtÅrsak ? ` (${henlagtÅrsakTilTekst[behandling.henlagtÅrsak]})` : '';

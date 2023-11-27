@@ -12,15 +12,15 @@ import { SmallTextLabel } from '../../../../../Felles/Visningskomponenter/Tekste
 import { ABorderStrong } from '@navikt/ds-tokens/dist/tokens';
 
 const Utgiftsrad = styled.div<{
-    lesevisning?: boolean;
-    erHeader?: boolean;
-    erFjernet?: boolean;
+    $lesevisning?: boolean;
+    $erHeader?: boolean;
+    $erFjernet?: boolean;
 }>`
     display: grid;
-    grid-template-columns: ${(props) => (props.lesevisning ? '9rem 4rem' : '12rem 5rem 4rem')};
+    grid-template-columns: ${(props) => (props.$lesevisning ? '9rem 4rem' : '12rem 5rem 4rem')};
     grid-gap: 0.5rem;
-    margin-bottom: ${(props) => (props.erHeader ? '0rem' : '0.5rem')};
-    text-decoration: ${(props) => (props.erFjernet ? 'line-through' : 'inherit')};
+    margin-bottom: ${(props) => (props.$erHeader ? '0rem' : '0.5rem')};
+    text-decoration: ${(props) => (props.$erFjernet ? 'line-through' : 'inherit')};
     align-items: center;
 `;
 
@@ -89,7 +89,7 @@ const Utgiftsperioder: React.FC<Props> = ({
         <FlexRow>
             <VertikalStrek />
             <FlexColumn>
-                <Utgiftsrad erHeader={true} lesevisning={erLesevisning}>
+                <Utgiftsrad $erHeader={true} $lesevisning={erLesevisning}>
                     <SmallTextLabel>Utbetalingsmåned</SmallTextLabel>
                     <SmallTextLabel>Stønadsbeløp</SmallTextLabel>
                 </Utgiftsrad>
@@ -105,9 +105,9 @@ const Utgiftsperioder: React.FC<Props> = ({
 
                     return (
                         <Utgiftsrad
-                            erFjernet={utgiftsperiodeErFjernet}
+                            $erFjernet={utgiftsperiodeErFjernet}
                             key={index}
-                            lesevisning={erLesevisning}
+                            $lesevisning={erLesevisning}
                         >
                             <SmallTextLabel>
                                 {formaterIsoMånedÅrFull(utgift.årMånedFra)}

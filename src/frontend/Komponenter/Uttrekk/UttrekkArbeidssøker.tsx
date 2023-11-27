@@ -65,9 +65,8 @@ const settArbeidssøkereTilKontrollert = (
 
 const UttrekkArbeidssøker: React.FC = () => {
     const { axiosRequest } = useApp();
-    const [arbeidssøkere, settArbeidssøkere] = useState<Ressurs<IUttrekkArbeidssøkere>>(
-        byggTomRessurs()
-    );
+    const [arbeidssøkere, settArbeidssøkere] =
+        useState<Ressurs<IUttrekkArbeidssøkere>>(byggTomRessurs());
     const [feilmelding, settFeilmelding] = useState<string>();
     const [visKontrollerte, settVisKontrollerte] = useState<boolean>(false);
 

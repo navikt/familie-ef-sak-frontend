@@ -12,9 +12,9 @@ export interface UtvidPanelProps {
     position?: 'left' | 'right' | 'center';
 }
 
-const StyledUtvidPanel = styled.div<{ position?: string }>`
+const StyledUtvidPanel = styled.div<{ $position?: string }>`
     display: flex;
-    justify-content: ${(props) => props.position || 'center'};
+    justify-content: ${(props) => props.$position || 'center'};
 `;
 
 const UtvidPanel: React.FC<UtvidPanelProps> = ({
@@ -29,7 +29,7 @@ const UtvidPanel: React.FC<UtvidPanelProps> = ({
         <div>
             <>{intro}</>
             {åpen && <>{children}</>}
-            <StyledUtvidPanel position={position}>
+            <StyledUtvidPanel $position={position}>
                 <Button
                     size={'small'}
                     variant={'tertiary'}

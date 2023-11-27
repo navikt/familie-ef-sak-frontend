@@ -16,7 +16,7 @@ const Aksjeselskap: FC<{ aksjeselskap: IAksjeselskap; stønadstype: Stønadstype
             undertittel={ArbeidssituasjonTilTekst[EArbeidssituasjon.erAnsattIEgetAS]}
             ikon={<Søknadsgrunnlag />}
         >
-            <FlexColumnContainer gap={0.75}>
+            <FlexColumnContainer $gap={0.75}>
                 <Informasjonsrad label="Aksjeselskap" verdi={aksjeselskap.navn} />
                 {stønadstype === Stønadstype.OVERGANGSSTØNAD && (
                     <Informasjonsrad

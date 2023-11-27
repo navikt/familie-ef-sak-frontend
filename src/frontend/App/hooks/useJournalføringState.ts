@@ -119,7 +119,7 @@ export const useJournalføringState = (
     const utledJournalføringsårsak = () => {
         if (harStrukturertSøknad) {
             return Journalføringsårsak.DIGITAL_SØKNAD;
-        } else if (journalpost.tittel.includes('Ettersending')) {
+        } else if (journalpost.tittel && journalpost.tittel.includes('Ettersending')) {
             return Journalføringsårsak.ETTERSENDING;
         } else {
             return Journalføringsårsak.IKKE_VALGT;

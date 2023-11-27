@@ -53,9 +53,8 @@ export const OpphøreVedtak: React.FC<{
 
     const [laster, settLaster] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState('');
-    const [beregningsresultat, settBeregningsresultat] = useState(
-        byggTomRessurs<IBeregningSkolepengerResponse>()
-    );
+    const [beregningsresultat, settBeregningsresultat] =
+        useState(byggTomRessurs<IBeregningSkolepengerResponse>());
 
     const formState = useFormState<InnvilgeVedtakForm>(
         {

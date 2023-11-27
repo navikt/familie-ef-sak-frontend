@@ -136,10 +136,10 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({
         oppgaveRequest.tildeltRessurs === undefined && oppgaveRequest.tilordnetRessurs === undefined
             ? 'Alle'
             : oppgaveRequest.tilordnetRessurs
-            ? oppgaveRequest.tilordnetRessurs
-            : oppgaveRequest.tildeltRessurs
-            ? 'Fordelte'
-            : 'Ufordelte';
+              ? oppgaveRequest.tilordnetRessurs
+              : oppgaveRequest.tildeltRessurs
+                ? 'Fordelte'
+                : 'Ufordelte';
 
     const sjekkFeilOgHentOppgaver = () => {
         if (Object.values(periodeFeil).some((val?: string) => val)) {

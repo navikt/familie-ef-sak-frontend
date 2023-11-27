@@ -46,9 +46,8 @@ export const InngangsvilkårHeader: React.FC<Props> = ({
     behandling,
     gjenbrukInngangsvilkår,
 }) => {
-    const [behandlingerForVilkårsgjenbruk, settbehandlingerForVilkårsgjenbruk] = useState<
-        Ressurs<Behandling[]>
-    >(byggTomRessurs());
+    const [behandlingerForVilkårsgjenbruk, settbehandlingerForVilkårsgjenbruk] =
+        useState<Ressurs<Behandling[]>>(byggTomRessurs());
     const { axiosRequest } = useApp();
 
     const { lukkAlle, åpneAlle } = useEkspanderbareVilkårpanelContext();

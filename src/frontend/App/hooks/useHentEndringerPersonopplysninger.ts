@@ -16,9 +16,8 @@ interface Props {
 }
 
 export const useHentEndringerPersonopplysninger = (): Props => {
-    const [endringerPersonopplysninger, settGrunnlagsendringer] = useState<
-        Ressurs<IEndringerPersonopplysninger | undefined>
-    >(byggTomRessurs());
+    const [endringerPersonopplysninger, settGrunnlagsendringer] =
+        useState<Ressurs<IEndringerPersonopplysninger | undefined>>(byggTomRessurs());
 
     const { axiosRequest } = useApp();
 

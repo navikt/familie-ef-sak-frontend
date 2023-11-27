@@ -5,9 +5,8 @@ import { AnsvarligSaksbehandler } from '../typer/saksbehandler';
 
 export const useHentAnsvarligSaksbehandler = (behandlingId: string) => {
     const { axiosRequest } = useApp();
-    const [ansvarligSaksbehandler, settAnsvarligSaksbehandler] = useState<
-        Ressurs<AnsvarligSaksbehandler>
-    >(byggTomRessurs());
+    const [ansvarligSaksbehandler, settAnsvarligSaksbehandler] =
+        useState<Ressurs<AnsvarligSaksbehandler>>(byggTomRessurs());
 
     const hentAnsvarligSaksbehandlerCallback = useCallback(() => {
         settAnsvarligSaksbehandler(byggHenterRessurs());
