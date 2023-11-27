@@ -10,21 +10,28 @@ export interface ITidligereInnvilgetVedtak {
     harTidligereOvergangsstønad: boolean;
     harTidligereBarnetilsyn: boolean;
     harTidligereSkolepenger: boolean;
-    periodeHistorikkOvergangsstønad: IGrunnlagsdataPeriodeHistorikk[];
+    periodeHistorikkOvergangsstønad: IGrunnlagsdataPeriodeHistorikkOvergangsstønad[];
+    periodeHistorikkBarnetilsyn: IGrunnlagsdataPeriodeHistorikkBarnetilsyn[];
 }
 
-export interface IGrunnlagsdataPeriodeHistorikk {
+export interface IGrunnlagsdataPeriodeHistorikkOvergangsstønad {
     antallMåneder: number;
     antallMånederUtenBeløp: number;
     vedtaksperiodeType: EPeriodetype;
     fom: string;
     tom: string;
 }
-
+export interface IGrunnlagsdataPeriodeHistorikkBarnetilsyn {
+    fom: string;
+    tom: string;
+}
 export interface IHistorikkForStønad {
     stønadstype: string;
     skalViseInfotrygdKort?: boolean;
-    periodeHistorikkData?: IGrunnlagsdataPeriodeHistorikk[] | undefined;
+    periodeHistorikkData?:
+        | IGrunnlagsdataPeriodeHistorikkOvergangsstønad[]
+        | IGrunnlagsdataPeriodeHistorikkBarnetilsyn[]
+        | undefined;
     harHistorikkISak: boolean | undefined;
     harHistorikkIInfotrygd: boolean | undefined;
 }

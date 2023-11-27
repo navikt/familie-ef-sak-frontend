@@ -1,13 +1,13 @@
 import React from 'react';
 import { BodyShort, Tag } from '@navikt/ds-react';
-import { periodetypeTilTekst, EPeriodetype } from '../../../App/typer/vedtak';
-import { formaterIsoDato } from '../../../App/utils/formatter';
-import { etikettTypeOvergangsstønad } from '../../Personoversikt/HistorikkVedtaksperioder/vedtakshistorikkUtil';
-import { IGrunnlagsdataPeriodeHistorikk } from './typer';
+import { periodetypeTilTekst, EPeriodetype } from '../../../../App/typer/vedtak';
+import { formaterIsoDato } from '../../../../App/utils/formatter';
+import { etikettTypeOvergangsstønad } from '../../../Personoversikt/HistorikkVedtaksperioder/vedtakshistorikkUtil';
+import { IGrunnlagsdataPeriodeHistorikkOvergangsstønad } from '../typer';
 import styled from 'styled-components';
 
 interface HistorikkRadProps {
-    rad: IGrunnlagsdataPeriodeHistorikk;
+    rad: IGrunnlagsdataPeriodeHistorikkOvergangsstønad;
     indeks: number;
 }
 
@@ -30,7 +30,9 @@ const HistorikkRadIOvergangsstønad: React.FC<HistorikkRadProps> = ({ rad, indek
             </div>
             <BodyShort size="small">{rad.antallMåneder}</BodyShort>
             <BodyShort size="small">
-                {rad.antallMånederUtenBeløp >= 1 && rad.vedtaksperiodeType !== EPeriodetype.SANKSJON
+                {rad.antallMånederUtenBeløp !== undefined &&
+                rad.antallMånederUtenBeløp >= 1 &&
+                rad.vedtaksperiodeType !== EPeriodetype.SANKSJON
                     ? rad.antallMånederUtenBeløp
                     : '-'}
             </BodyShort>

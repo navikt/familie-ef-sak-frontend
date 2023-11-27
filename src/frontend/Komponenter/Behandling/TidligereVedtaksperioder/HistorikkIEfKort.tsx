@@ -1,17 +1,22 @@
 import React from 'react';
-import { IGrunnlagsdataPeriodeHistorikk } from './typer';
 import styled from 'styled-components';
-import { BodyShort, Heading, Label } from '@navikt/ds-react';
+import { BodyShort, Heading } from '@navikt/ds-react';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
-import HistorikkRadIOvergangsstønad from './HistorikkRadIOvergangsstønad';
+import {
+    IGrunnlagsdataPeriodeHistorikkOvergangsstønad,
+    IGrunnlagsdataPeriodeHistorikkBarnetilsyn,
+} from './typer';
+import KortInnholdBarnetilsyn from './barnetilsyn/KortInnholdBarnetilsyn';
+import KortInnholdOvergangsstønad from './overgangsstønad/KortInnholdOvergangsstønad';
+import { AGray400, AGreen50 } from '@navikt/ds-tokens/dist/tokens';
 
 const Container = styled.div`
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    background: #f3fcf5;
+    background: ${AGreen50};
     padding: 1rem;
-    border: 1px solid rgba(0, 0, 0, 0.19);
+    border: 1px solid ${AGray400};
     border-radius: 6px;
     text-align: left;
 `;
@@ -19,25 +24,20 @@ const Container = styled.div`
 const Tittel = styled(Heading)`
     text-decoration: underline;
 `;
-
-const Grid = styled.div`
-    display: grid;
-    grid-template-columns: auto auto auto auto;
-    gap: 0.2rem;
-`;
-
-const Row = styled.div`
-    display: contents;
-`;
-
 const HistorikkIEfKort: React.FC<{
-    periodeHistorikkData: IGrunnlagsdataPeriodeHistorikk[] | undefined;
+    periodeHistorikkData:
+        | IGrunnlagsdataPeriodeHistorikkOvergangsstønad[]
+        | IGrunnlagsdataPeriodeHistorikkBarnetilsyn[]
+        | undefined;
     stønadstype: string;
 }> = ({ periodeHistorikkData, stønadstype }) => {
-    const erOvergansstønadMedData =
-        stønadstype === Stønadstype.OVERGANGSSTØNAD &&
-        periodeHistorikkData &&
-        periodeHistorikkData?.length > 0;
+    const harPeriodehistorikk = periodeHistorikkData && periodeHistorikkData?.length > 0;
+
+    const erOvergansstønadMedHistorikk =
+        stønadstype === Stønadstype.OVERGANGSSTØNAD && harPeriodehistorikk;
+
+    const erBarnetilsynMedHistorikk =
+        stønadstype === Stønadstype.BARNETILSYN && harPeriodehistorikk;
 
     return (
         <>
@@ -45,21 +45,25 @@ const HistorikkIEfKort: React.FC<{
                 <Tittel level="3" size="small">
                     Historikk i EF Sak
                 </Tittel>
-                {erOvergansstønadMedData ? (
-                    <Grid>
-                        <Row>
-                            <Label>Periode</Label>
-                            <Label>Periodetype</Label>
-                            <Label>Måneder med utbet.</Label>
-                            <Label>Måneder uten utbet.</Label>
-                        </Row>
-                        {periodeHistorikkData?.map((rad, i) => (
-                            <HistorikkRadIOvergangsstønad key={i} rad={rad} indeks={i} />
-                        ))}
-                    </Grid>
-                ) : (
-                    <BodyShort size="small">Kan ikke vise tidligere historikk.</BodyShort>
-                )}
+                <div>
+                    {erOvergansstønadMedHistorikk && (
+                        <KortInnholdOvergangsstønad
+                            periodeHistorikkData={
+                                periodeHistorikkData as IGrunnlagsdataPeriodeHistorikkOvergangsstønad[]
+                            }
+                        />
+                    )}
+                    {erBarnetilsynMedHistorikk && (
+                        <KortInnholdBarnetilsyn
+                            periodeHistorikkData={
+                                periodeHistorikkData as IGrunnlagsdataPeriodeHistorikkBarnetilsyn[]
+                            }
+                        />
+                    )}
+                    {!erOvergansstønadMedHistorikk && !erBarnetilsynMedHistorikk && (
+                        <BodyShort size="small">Kan ikke vise tidligere historikk.</BodyShort>
+                    )}
+                </div>
             </Container>
         </>
     );
