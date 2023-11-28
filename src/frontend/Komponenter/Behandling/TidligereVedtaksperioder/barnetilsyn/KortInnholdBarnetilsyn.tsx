@@ -20,7 +20,7 @@ const KortInnholdBarnetilsyn: React.FC<{
         <Grid>
             <Row>
                 <Label>Periode</Label>
-                <Label>Overlapp</Label>
+                <Label>Overlapper med overgangsstønad</Label>
             </Row>
             {periodeHistorikkData?.map((rad, i) => (
                 <HistorikkRadIBarnetilsyn key={i} rad={rad} indeks={i} />
