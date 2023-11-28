@@ -7,6 +7,7 @@ import VisEllerEndreVurdering from '../Vurdering/VisEllerEndreVurdering';
 import ToKolonnerLayout from '../../../Felles/Visningskomponenter/ToKolonnerLayout';
 import TidligereVedtaksperioderInfo from './TidligereVedtaksperioderInfo';
 import { useBehandling } from '../../../App/context/BehandlingContext';
+import VilkårIkkeOpprettetAlert from '../Vurdering/VilkårIkkeOpprettet';
 
 const TidligereVedtaksperioder: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
     const { vilkårState } = useBehandling();
@@ -30,6 +31,9 @@ const TidligereVedtaksperioder: React.FC<{ behandlingId: string }> = ({ behandli
                 const vurdering = vilkår.vurderinger.find(
                     (v) => v.vilkårType === TidligereVedtaksperioderType.TIDLIGERE_VEDTAKSPERIODER
                 );
+                if (vilkår.vurderinger.length === 0) {
+                    return <VilkårIkkeOpprettetAlert />;
+                }
                 if (!vurdering) {
                     return <div>Mangler vurdering for tidligere vedtaksperioder</div>;
                 }

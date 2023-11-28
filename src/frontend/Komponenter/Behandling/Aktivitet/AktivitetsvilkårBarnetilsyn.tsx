@@ -7,6 +7,7 @@ import { AlderPåBarn } from './AlderPåBarn/AlderPåBarn';
 import { Behandling } from '../../../App/typer/fagsak';
 import { DokumentasjonsTilsynsutgifter } from './DokumentasjonTilsynsutgifter/DokumentasjonsTilsynsutgifter';
 import { useBehandling } from '../../../App/context/BehandlingContext';
+import VilkårIkkeOpprettetAlert from '../Vurdering/VilkårIkkeOpprettet';
 
 const AktivitetsVilkårBarnetilsyn: FC<{
     behandling: Behandling;
@@ -31,7 +32,9 @@ const AktivitetsVilkårBarnetilsyn: FC<{
     return (
         <DataViewer response={{ vilkår }}>
             {({ vilkår }) => {
-                return (
+                return vilkår.vurderinger.length === 0 ? (
+                    <VilkårIkkeOpprettetAlert />
+                ) : (
                     <>
                         <AktivitetArbeid
                             ikkeVurderVilkår={ikkeVurderVilkår}
