@@ -64,6 +64,13 @@ export const etikettTypeBarnetilsyn = (periodeType?: EUtgiftsperiodetype): TagPr
     }
 };
 
+export const etikettTypeOverlappBarnetilsyn = (overlapp: boolean): TagProps['variant'] => {
+    if (overlapp) {
+        return 'success';
+    }
+    return 'warning';
+};
+
 export const datoAndelHistorikk = (andel: AndelHistorikk) => {
     const fra = formaterNullableIsoDato(andel.andel.stønadFra);
     if (andel.erOpphør) {
