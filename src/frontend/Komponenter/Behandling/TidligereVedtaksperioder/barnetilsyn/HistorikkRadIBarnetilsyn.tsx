@@ -25,8 +25,7 @@ const HistorikkRadIBarnetilsyn: React.FC<HistorikkRadProps> = ({ rad, indeks }) 
             </BodyShort>
             <BodyShort size="small">
                 <Tag variant={etikettTypeOverlappBarnetilsyn(rad.overlapp)} size={'small'}>
-                    {rad.overlapp && 'Ja'}
-                    {!rad.overlapp && 'Nei'}
+                    {rad.overlapp ? 'Ja' : 'Nei'}
                 </Tag>
             </BodyShort>
         </Row>
