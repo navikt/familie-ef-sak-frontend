@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import { IGrunnlagsdataPeriodeHistorikkBarnetilsyn } from '../typer';
 import { Tag } from '@navikt/ds-react';
 import { etikettTypeOverlappBarnetilsyn } from '../../../Personoversikt/HistorikkVedtaksperioder/vedtakshistorikkUtil';
+import { overlappMedOvergangsstønadTilTekst } from '../../../../App/typer/vedtak';
 
 interface HistorikkRadProps {
     rad: IGrunnlagsdataPeriodeHistorikkBarnetilsyn;
@@ -28,7 +29,7 @@ const HistorikkRadIBarnetilsyn: React.FC<HistorikkRadProps> = ({ rad, indeks }) 
                     variant={etikettTypeOverlappBarnetilsyn(rad.overlappMedOvergangsstønad)}
                     size={'small'}
                 >
-                    {rad.overlappMedOvergangsstønad}
+                    {overlappMedOvergangsstønadTilTekst[rad.overlappMedOvergangsstønad || '']}
                 </Tag>
             </BodyShort>
         </Row>
