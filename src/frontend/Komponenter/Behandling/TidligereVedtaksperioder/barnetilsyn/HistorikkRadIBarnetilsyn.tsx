@@ -2,7 +2,7 @@ import React from 'react';
 import { BodyShort } from '@navikt/ds-react';
 import { formaterIsoDato } from '../../../../App/utils/formatter';
 import styled from 'styled-components';
-import { IGrunnlagsdataPeriodeHistorikkBarnetilsyn, OverlappMedOvergangsstønad } from '../typer';
+import { IGrunnlagsdataPeriodeHistorikkBarnetilsyn } from '../typer';
 import { Tag } from '@navikt/ds-react';
 import { etikettTypeOverlappBarnetilsyn } from '../../../Personoversikt/HistorikkVedtaksperioder/vedtakshistorikkUtil';
 
@@ -28,7 +28,7 @@ const HistorikkRadIBarnetilsyn: React.FC<HistorikkRadProps> = ({ rad, indeks }) 
                     variant={etikettTypeOverlappBarnetilsyn(rad.overlappMedOvergangsstønad)}
                     size={'small'}
                 >
-                    {OverlappMedOvergangsstønad[rad.overlappMedOvergangsstønad]}
+                    {rad.overlappMedOvergangsstønad}
                 </Tag>
             </BodyShort>
         </Row>
