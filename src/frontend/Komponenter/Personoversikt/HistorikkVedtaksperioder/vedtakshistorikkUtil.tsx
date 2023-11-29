@@ -10,6 +10,7 @@ import { EPeriodetype, EUtgiftsperiodetype } from '../../../App/typer/vedtak';
 import React from 'react';
 import styled from 'styled-components';
 import { TagProps } from '@navikt/ds-react';
+import { OverlappMedOvergangsstønad } from '../../Behandling/TidligereVedtaksperioder/typer';
 
 export const HistorikkTabell = styled.table`
     margin-top: 2rem;
@@ -64,8 +65,10 @@ export const etikettTypeBarnetilsyn = (periodeType?: EUtgiftsperiodetype): TagPr
     }
 };
 
-export const etikettTypeOverlappBarnetilsyn = (overlapp: boolean): TagProps['variant'] => {
-    if (overlapp) {
+export const etikettTypeOverlappBarnetilsyn = (
+    overlappMedOvergangsstønad: OverlappMedOvergangsstønad
+): TagProps['variant'] => {
+    if (overlappMedOvergangsstønad === OverlappMedOvergangsstønad.JA) {
         return 'success';
     }
     return 'warning';
