@@ -5,6 +5,7 @@ import { SagtOppEllerRedusert } from './SagtOppEllerRedusert/SagtOppEllerReduser
 import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
 import { Behandling } from '../../../App/typer/fagsak';
 import { useBehandling } from '../../../App/context/BehandlingContext';
+import VilkårIkkeOpprettetAlert from '../Vurdering/VilkårIkkeOpprettet';
 
 const AktivitetsVilkårOvergangsstønad: FC<{ behandling: Behandling }> = ({ behandling }) => {
     const { vilkårState } = useBehandling();
@@ -27,7 +28,9 @@ const AktivitetsVilkårOvergangsstønad: FC<{ behandling: Behandling }> = ({ beh
     return (
         <DataViewer response={{ vilkår }}>
             {({ vilkår }) => {
-                return (
+                return vilkår.vurderinger.length === 0 ? (
+                    <VilkårIkkeOpprettetAlert />
+                ) : (
                     <>
                         <Aktivitet
                             ikkeVurderVilkår={ikkeVurderVilkår}
