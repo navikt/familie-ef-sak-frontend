@@ -13,6 +13,7 @@ import { formaterIsoDatoTidMedSekunder } from '../../../App/utils/formatter';
 import { InngangsvilkårHeader } from './InngangsvilkårHeader/InngangsvilkårHeader';
 import { useApp } from '../../../App/context/AppContext';
 import { FyllUtVilkårKnapp } from './FyllUtVilkårKnapp';
+import VilkårIkkeOpprettetAlert from '../Vurdering/VilkårIkkeOpprettet';
 
 interface Props {
     behandlingId: string;
@@ -46,7 +47,9 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                     vilkår.grunnlag.registeropplysningerOpprettetTid
                 );
 
-                return (
+                return vilkår.vurderinger.length === 0 ? (
+                    <VilkårIkkeOpprettetAlert />
+                ) : (
                     <>
                         <FyllUtVilkårKnapp
                             behandling={behandling}

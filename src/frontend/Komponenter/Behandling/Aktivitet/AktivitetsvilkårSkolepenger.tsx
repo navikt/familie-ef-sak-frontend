@@ -6,6 +6,7 @@ import { RettTilOvergangsstønad } from './Skolepenger/RettTilOvergangsstønad';
 import { DokumentasjonUtdanning } from './Skolepenger/DokumentasjonUtdanning';
 import { UtdanningHensiktsmessig } from './Skolepenger/UtdanningHensiktsmessig';
 import { useBehandling } from '../../../App/context/BehandlingContext';
+import VilkårIkkeOpprettetAlert from '../Vurdering/VilkårIkkeOpprettet';
 
 const AktivitetsVilkårSkolepenger: FC<{
     behandling: Behandling;
@@ -30,7 +31,9 @@ const AktivitetsVilkårSkolepenger: FC<{
     return (
         <DataViewer response={{ vilkår }}>
             {({ vilkår }) => {
-                return (
+                return vilkår.vurderinger.length === 0 ? (
+                    <VilkårIkkeOpprettetAlert />
+                ) : (
                     <>
                         <RettTilOvergangsstønad
                             ikkeVurderVilkår={ikkeVurderVilkår}
