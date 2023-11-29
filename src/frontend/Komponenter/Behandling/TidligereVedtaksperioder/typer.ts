@@ -22,9 +22,9 @@ export interface IGrunnlagsdataPeriodeHistorikkOvergangsstønad {
     tom: string;
 }
 export enum OverlappMedOvergangsstønad {
-    JA = 'Ja',
-    NEI = 'Nei',
-    DELVIS = 'Delvis',
+    JA = 'JA',
+    NEI = 'NEI',
+    DELVIS = 'DELVIS',
 }
 export interface IGrunnlagsdataPeriodeHistorikkBarnetilsyn {
     fom: string;
