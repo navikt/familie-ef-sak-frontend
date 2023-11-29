@@ -66,9 +66,9 @@ export const etikettTypeBarnetilsyn = (periodeType?: EUtgiftsperiodetype): TagPr
 };
 
 export const etikettTypeOverlappBarnetilsyn = (
-    overlappMedOvergangsstønad: OverlappMedOvergangsstønad
+    overlapperMedOvergangsstønad: OverlappMedOvergangsstønad
 ): TagProps['variant'] => {
-    if (overlappMedOvergangsstønad === OverlappMedOvergangsstønad.JA) {
+    if (overlapperMedOvergangsstønad === OverlappMedOvergangsstønad.JA) {
         return 'success';
     }
     return 'warning';

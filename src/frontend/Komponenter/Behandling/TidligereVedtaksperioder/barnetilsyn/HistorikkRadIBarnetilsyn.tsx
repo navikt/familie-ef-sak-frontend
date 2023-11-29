@@ -26,10 +26,10 @@ const HistorikkRadIBarnetilsyn: React.FC<HistorikkRadProps> = ({ rad, indeks }) 
             </BodyShort>
             <BodyShort size="small">
                 <Tag
-                    variant={etikettTypeOverlappBarnetilsyn(rad.overlappMedOvergangsstønad)}
+                    variant={etikettTypeOverlappBarnetilsyn(rad.overlapperMedOvergangsstønad)}
                     size={'small'}
                 >
-                    {overlappMedOvergangsstønadTilTekst[rad.overlappMedOvergangsstønad || '']}
+                    {overlappMedOvergangsstønadTilTekst[rad.overlapperMedOvergangsstønad || '']}
                 </Tag>
             </BodyShort>
         </Row>
