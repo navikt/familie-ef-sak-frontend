@@ -1,4 +1,5 @@
 import { Sanksjonsårsak } from './Sanksjonsårsak';
+import { OverlappMedOvergangsstønad } from '../../Komponenter/Behandling/TidligereVedtaksperioder/typer';
 
 export enum IVedtakType {
     InnvilgelseOvergangsstønad = 'InnvilgelseOvergangsstønad',
@@ -395,6 +396,13 @@ export const periodetypeTilTekst: Record<EPeriodetype | '', string> = {
     UTVIDELSE: 'Utvidelse',
     MIGRERING: 'Migrering',
     NY_PERIODE_FOR_NYTT_BARN: 'Ny periode for nytt barn',
+    '': '',
+};
+
+export const overlappMedOvergangsstønadTilTekst: Record<OverlappMedOvergangsstønad | '', string> = {
+    JA: 'Ja, hele perioden',
+    DELVIS: 'Ja, deler av perioden',
+    NEI: 'Nei',
     '': '',
 };
 

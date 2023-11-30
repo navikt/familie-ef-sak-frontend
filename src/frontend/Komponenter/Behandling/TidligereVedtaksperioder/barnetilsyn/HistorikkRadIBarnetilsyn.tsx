@@ -3,6 +3,9 @@ import { BodyShort } from '@navikt/ds-react';
 import { formaterIsoDato } from '../../../../App/utils/formatter';
 import styled from 'styled-components';
 import { IGrunnlagsdataPeriodeHistorikkBarnetilsyn } from '../typer';
+import { Tag } from '@navikt/ds-react';
+import { etikettTypeOverlappBarnetilsyn } from '../../../Personoversikt/HistorikkVedtaksperioder/vedtakshistorikkUtil';
+import { overlappMedOvergangsstønadTilTekst } from '../../../../App/typer/vedtak';
 
 interface HistorikkRadProps {
     rad: IGrunnlagsdataPeriodeHistorikkBarnetilsyn;
@@ -20,6 +23,14 @@ const HistorikkRadIBarnetilsyn: React.FC<HistorikkRadProps> = ({ rad, indeks }) 
                 {`${formaterIsoDato(rad.fom)} 
             - 
             ${formaterIsoDato(rad.tom)}`}
+            </BodyShort>
+            <BodyShort size="small">
+                <Tag
+                    variant={etikettTypeOverlappBarnetilsyn(rad.overlapperMedOvergangsstønad)}
+                    size={'small'}
+                >
+                    {overlappMedOvergangsstønadTilTekst[rad.overlapperMedOvergangsstønad || '']}
+                </Tag>
             </BodyShort>
         </Row>
     );
