@@ -172,11 +172,12 @@ export const stønadstypeTilKey = (
 export const skalViseBekreftelsesmodal = (
     journalResponse: IJournalpostResponse,
     journalføringsaksjon: Journalføringsaksjon,
-    erPapirSøknad: boolean
+    erPapirSøknad: boolean,
+    erKlage: boolean
 ) =>
     journalføringsaksjon === Journalføringsaksjon.OPPRETT_BEHANDLING
         ? false
-        : journalResponse.harStrukturertSøknad || erPapirSøknad;
+        : journalResponse.harStrukturertSøknad || erPapirSøknad || erKlage;
 
 export const utledJournalføringEvent = (
     request: JournalføringRequestV2,
