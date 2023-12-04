@@ -108,7 +108,12 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
         if (valideringsfeil) {
             settFeilmelding(valideringsfeil);
         } else if (
-            skalViseBekreftelsesmodal(journalResponse, journalføringsaksjon, erPapirSøknad)
+            skalViseBekreftelsesmodal(
+                journalResponse,
+                journalføringsaksjon,
+                erPapirSøknad,
+                journalføringGjelderKlage(journalføringsårsak)
+            )
         ) {
             settVisBekreftelsesModal(true);
         } else {
