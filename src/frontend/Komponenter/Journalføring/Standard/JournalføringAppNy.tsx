@@ -51,12 +51,17 @@ export const JournalføringAppNy: React.FC = () => {
     return <JournalføringWrapper komponent={JournalføringSide} />;
 };
 
-const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journalResponse }) => {
+const JournalføringSide: React.FC<JournalføringAppProps> = ({
+    oppgaveId,
+    journalResponse,
+    gjelderKlage,
+}) => {
     const { innloggetSaksbehandler, settToast } = useApp();
     const navigate = useNavigate();
     const journalpostState: JournalføringStateRequest = useJournalføringState(
         journalResponse,
-        oppgaveId
+        oppgaveId,
+        gjelderKlage
     );
     const {
         fagsak,

@@ -104,7 +104,8 @@ export interface JournalføringStateRequest {
 
 export const useJournalføringState = (
     journalResponse: IJournalpostResponse,
-    oppgaveId: string
+    oppgaveId: string,
+    gjelderKlage?: boolean
 ): JournalføringStateRequest => {
     const { harStrukturertSøknad, journalpost, personIdent } = journalResponse;
 
@@ -121,6 +122,8 @@ export const useJournalføringState = (
             return Journalføringsårsak.DIGITAL_SØKNAD;
         } else if (journalpost.tittel && journalpost.tittel.includes('Ettersending')) {
             return Journalføringsårsak.ETTERSENDING;
+        } else if (gjelderKlage) {
+            return Journalføringsårsak.KLAGE;
         } else {
             return Journalføringsårsak.IKKE_VALGT;
         }
