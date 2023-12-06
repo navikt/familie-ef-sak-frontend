@@ -22,6 +22,7 @@ import { Klagebehandlinger } from '../../../App/typer/klage';
 import { JournalføringEvent } from '../../../App/utils/amplitude/typer';
 
 export const JOURNALPOST_QUERY_STRING = 'journalpostId';
+export const GJELDER_KLAGE_QUERY_STRING = 'gjelderKlage';
 export const OPPGAVEID_QUERY_STRING = 'oppgaveId';
 export type MultiSelectValue = { label: string; value: string };
 
@@ -32,8 +33,12 @@ export const lagJournalføringKlageUrl = (
     return `/journalfor-klage?${JOURNALPOST_QUERY_STRING}=${journalpostId}&${OPPGAVEID_QUERY_STRING}=${oppgaveId}`;
 };
 
-export const lagJournalføringUrl = (journalpostId: string, oppgaveId: string | number): string => {
-    return `/journalfor?${JOURNALPOST_QUERY_STRING}=${journalpostId}&${OPPGAVEID_QUERY_STRING}=${oppgaveId}`;
+export const lagJournalføringUrl = (
+    journalpostId: string,
+    oppgaveId: string | number,
+    gjelderKlage?: boolean
+): string => {
+    return `/journalfor?${JOURNALPOST_QUERY_STRING}=${journalpostId}&${OPPGAVEID_QUERY_STRING}=${oppgaveId}&gjelderKlage=${gjelderKlage}`;
 };
 
 export const harTittelForAlleDokumenter = (

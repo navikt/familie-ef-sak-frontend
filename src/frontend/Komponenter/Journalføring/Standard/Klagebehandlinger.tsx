@@ -145,6 +145,11 @@ const Klagebehandlinger: React.FC<Props> = ({ journalpostState, settFeilmelding 
                             size={'small'}
                             disabled={skalOppretteNyBehandling}
                         />
+                        {skalOppretteNyBehandling && (
+                            <AlertInfo>
+                                Ny behandling opprettes når journalføring er utført
+                            </AlertInfo>
+                        )}
                     </VStack>
                 );
             }}
