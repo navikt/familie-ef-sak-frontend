@@ -40,7 +40,10 @@ const SelvstendigNæringsdrivendeEllerFrilanser: FC<{
                     />
                 )}
                 {harTallverdi(firma.overskudd) && (
-                    <Informasjonsrad label="Overskudd" verdi={firma.overskudd + ' kroner'} />
+                    <Informasjonsrad
+                        label={`Overskudd ${firma.overskuddGjelderÅr}`}
+                        verdi={firma.overskudd + ' kroner'}
+                    />
                 )}
             </FlexColumnContainer>
         </InfoSeksjonWrapper>

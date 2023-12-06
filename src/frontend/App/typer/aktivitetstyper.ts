@@ -47,6 +47,7 @@ export interface ISelvstendig {
     arbeidsmengde: number;
     hvordanSerArbeidsukenUt: string;
     overskudd?: number;
+    overskuddGjelderÅr?: number;
 }
 
 export interface IAksjeselskap {
