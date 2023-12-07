@@ -17,7 +17,7 @@ import {
     Journalføringsaksjon,
 } from '../../../App/hooks/useJournalføringState';
 import { BehandlingKlageRequest } from '../../../App/hooks/useJournalføringKlageState';
-import { ISelectOption, MultiValue, SingleValue } from '@navikt/familie-form-elements';
+import { ISelectOption, MultiValue, PropsValue, SingleValue } from '@navikt/familie-form-elements';
 import { Klagebehandlinger } from '../../../App/typer/klage';
 import { JournalføringEvent } from '../../../App/utils/amplitude/typer';
 
@@ -120,7 +120,9 @@ export const mapDokumentTittelTilMultiselectValue = (tittel: string) => {
     return { value: tittel, label: tittel };
 };
 
-export const mapLogiskeVedleggTilMultiselectValue = (logiskeVedlegg: LogiskVedlegg[]) => {
+export const mapLogiskeVedleggTilMultiselectValue = (
+    logiskeVedlegg: LogiskVedlegg[]
+): PropsValue<{ label: string; value: string }> => {
     return logiskeVedlegg.map((vedlegg) => {
         return { label: vedlegg.tittel, value: vedlegg.tittel };
     });
