@@ -1,7 +1,11 @@
 import React, { FunctionComponent, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useQueryParams } from '../../../App/hooks/felles/useQueryParams';
-import { JOURNALPOST_QUERY_STRING, OPPGAVEID_QUERY_STRING } from './utils';
+import {
+    GJELDER_KLAGE_QUERY_STRING,
+    JOURNALPOST_QUERY_STRING,
+    OPPGAVEID_QUERY_STRING,
+} from './utils';
 import { useHentJournalpost } from '../../../App/hooks/useHentJournalpost';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { IJournalpostResponse } from '../../../App/typer/journalføring';
@@ -38,6 +42,7 @@ export const FlexKnapper = styled.div`
 
 export interface JournalføringAppProps {
     oppgaveId: string;
+    gjelderKlage: boolean;
     journalResponse: IJournalpostResponse;
 }
 
@@ -49,6 +54,7 @@ const JournalføringWrapper: React.FC<JournalføringAppSide> = ({ komponent }) =
     const query: URLSearchParams = useQueryParams();
     const oppgaveId = query.get(OPPGAVEID_QUERY_STRING);
     const journalpostId = query.get(JOURNALPOST_QUERY_STRING);
+    const gjelderKlage = query.get(GJELDER_KLAGE_QUERY_STRING) === 'true';
 
     const { hentJournalPost, journalResponse } = useHentJournalpost(journalpostId);
 
@@ -72,6 +78,7 @@ const JournalføringWrapper: React.FC<JournalføringAppSide> = ({ komponent }) =
                         {React.createElement(komponent, {
                             oppgaveId,
                             journalResponse,
+                            gjelderKlage,
                         })}
                     </>
                 );

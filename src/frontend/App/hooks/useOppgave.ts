@@ -74,11 +74,12 @@ export const useOppgave = (oppgave: IOppgave) => {
     const gåTilJournalføring = (type: 'klage' | 'stønad') => {
         const journalpostId = oppgave.journalpostId || '';
         const oppgaveId = oppgave.id || '';
+        const gjelderKlage = type === 'klage';
         if (toggles[ToggleName.visNyJournalføring]) {
-            navigate(lagJournalføringUrl(journalpostId, oppgaveId));
+            navigate(lagJournalføringUrl(journalpostId, oppgaveId, gjelderKlage));
         } else {
             navigate(
-                type === 'klage'
+                gjelderKlage
                     ? lagJournalføringKlageUrl(journalpostId, oppgaveId)
                     : lagJournalføringUrl(journalpostId, oppgaveId)
             );
