@@ -7,6 +7,7 @@ import { Stønadstype } from '../../../../App/typer/behandlingstema';
 import { InfoSeksjonWrapper } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 import { FlexColumnContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
 import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
+import { harTallverdi } from '../../../../App/utils/utils';
 
 const SelvstendigNæringsdrivendeEllerFrilanser: FC<{
     firma: ISelvstendig;
@@ -36,6 +37,12 @@ const SelvstendigNæringsdrivendeEllerFrilanser: FC<{
                     <Informasjonsrad
                         label="Beskrivelse av arbeidsuke"
                         verdi={firma.hvordanSerArbeidsukenUt}
+                    />
+                )}
+                {harTallverdi(firma.overskudd) && (
+                    <Informasjonsrad
+                        label={`Overskudd ${firma.overskuddGjelderÅr}`}
+                        verdi={firma.overskudd + ' kroner'}
                     />
                 )}
             </FlexColumnContainer>
