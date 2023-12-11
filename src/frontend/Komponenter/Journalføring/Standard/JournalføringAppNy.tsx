@@ -51,12 +51,17 @@ export const JournalføringAppNy: React.FC = () => {
     return <JournalføringWrapper komponent={JournalføringSide} />;
 };
 
-const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journalResponse }) => {
+const JournalføringSide: React.FC<JournalføringAppProps> = ({
+    oppgaveId,
+    journalResponse,
+    gjelderKlage,
+}) => {
     const { innloggetSaksbehandler, settToast } = useApp();
     const navigate = useNavigate();
     const journalpostState: JournalføringStateRequest = useJournalføringState(
         journalResponse,
-        oppgaveId
+        oppgaveId,
+        gjelderKlage
     );
     const {
         fagsak,
@@ -108,7 +113,12 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({ oppgaveId, journ
         if (valideringsfeil) {
             settFeilmelding(valideringsfeil);
         } else if (
-            skalViseBekreftelsesmodal(journalResponse, journalføringsaksjon, erPapirSøknad)
+            skalViseBekreftelsesmodal(
+                journalResponse,
+                journalføringsaksjon,
+                erPapirSøknad,
+                journalføringGjelderKlage(journalføringsårsak)
+            )
         ) {
             settVisBekreftelsesModal(true);
         } else {

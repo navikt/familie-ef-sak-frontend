@@ -64,8 +64,9 @@ const JournalpostPanel: React.FC<Props> = ({ journalpost, journalpostState }) =>
         settStønadstype,
         settJournalføringsaksjon,
     } = journalpostState;
-
-    const [erPanelEkspandert, settErPanelEkspandert] = useState<boolean>(false);
+    const [erPanelEkspandert, settErPanelEkspandert] = useState<boolean>(
+        journalføringsårsak === Journalføringsårsak.IKKE_VALGT || stønadstype === undefined
+    );
 
     const tema = journalpost.tema
         ? arkivtemaerTilTekst[journalpost.tema as Arkivtema]
@@ -99,6 +100,7 @@ const JournalpostPanel: React.FC<Props> = ({ journalpost, journalpostState }) =>
             id={journalpost.journalpostId}
             size="small"
             aria-label="journalpost"
+            open={erPanelEkspandert}
             onToggle={() => settErPanelEkspandert((prevState) => !prevState)}
         >
             <ExpansionCardHeader>
@@ -170,6 +172,14 @@ const JournalpostPanel: React.FC<Props> = ({ journalpost, journalpostState }) =>
                                 {journalføringsårsakTilTekst[type]}
                             </option>
                         ))}
+                        {!kanRedigere && (
+                            <option
+                                key={'digitalsøknad'}
+                                value={Journalføringsårsak.DIGITAL_SØKNAD}
+                            >
+                                {journalføringsårsakTilTekst[Journalføringsårsak.DIGITAL_SØKNAD]}
+                            </option>
+                        )}
                     </StyledSelect>
                     {journalføringGjelderKlage(journalføringsårsak) && (
                         <StyledCheckbox

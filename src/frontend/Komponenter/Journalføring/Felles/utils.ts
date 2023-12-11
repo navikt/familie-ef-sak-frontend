@@ -17,11 +17,12 @@ import {
     Journalføringsaksjon,
 } from '../../../App/hooks/useJournalføringState';
 import { BehandlingKlageRequest } from '../../../App/hooks/useJournalføringKlageState';
-import { ISelectOption, MultiValue, SingleValue } from '@navikt/familie-form-elements';
+import { ISelectOption, MultiValue, PropsValue, SingleValue } from '@navikt/familie-form-elements';
 import { Klagebehandlinger } from '../../../App/typer/klage';
 import { JournalføringEvent } from '../../../App/utils/amplitude/typer';
 
 export const JOURNALPOST_QUERY_STRING = 'journalpostId';
+export const GJELDER_KLAGE_QUERY_STRING = 'gjelderKlage';
 export const OPPGAVEID_QUERY_STRING = 'oppgaveId';
 export type MultiSelectValue = { label: string; value: string };
 
@@ -32,8 +33,12 @@ export const lagJournalføringKlageUrl = (
     return `/journalfor-klage?${JOURNALPOST_QUERY_STRING}=${journalpostId}&${OPPGAVEID_QUERY_STRING}=${oppgaveId}`;
 };
 
-export const lagJournalføringUrl = (journalpostId: string, oppgaveId: string | number): string => {
-    return `/journalfor?${JOURNALPOST_QUERY_STRING}=${journalpostId}&${OPPGAVEID_QUERY_STRING}=${oppgaveId}`;
+export const lagJournalføringUrl = (
+    journalpostId: string,
+    oppgaveId: string | number,
+    gjelderKlage?: boolean
+): string => {
+    return `/journalfor?${JOURNALPOST_QUERY_STRING}=${journalpostId}&${OPPGAVEID_QUERY_STRING}=${oppgaveId}&gjelderKlage=${gjelderKlage}`;
 };
 
 export const harTittelForAlleDokumenter = (
@@ -115,7 +120,9 @@ export const mapDokumentTittelTilMultiselectValue = (tittel: string) => {
     return { value: tittel, label: tittel };
 };
 
-export const mapLogiskeVedleggTilMultiselectValue = (logiskeVedlegg: LogiskVedlegg[]) => {
+export const mapLogiskeVedleggTilMultiselectValue = (
+    logiskeVedlegg: LogiskVedlegg[]
+): PropsValue<{ label: string; value: string }> => {
     return logiskeVedlegg.map((vedlegg) => {
         return { label: vedlegg.tittel, value: vedlegg.tittel };
     });
@@ -172,11 +179,12 @@ export const stønadstypeTilKey = (
 export const skalViseBekreftelsesmodal = (
     journalResponse: IJournalpostResponse,
     journalføringsaksjon: Journalføringsaksjon,
-    erPapirSøknad: boolean
+    erPapirSøknad: boolean,
+    erKlage: boolean
 ) =>
     journalføringsaksjon === Journalføringsaksjon.OPPRETT_BEHANDLING
         ? false
-        : journalResponse.harStrukturertSøknad || erPapirSøknad;
+        : journalResponse.harStrukturertSøknad || erPapirSøknad || erKlage;
 
 export const utledJournalføringEvent = (
     request: JournalføringRequestV2,
