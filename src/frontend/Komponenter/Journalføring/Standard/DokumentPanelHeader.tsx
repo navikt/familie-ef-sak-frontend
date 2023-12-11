@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { BodyShort, Label, VStack } from '@navikt/ds-react';
 import { FileTextFillIcon, FileTextIcon } from '@navikt/aksel-icons';
-import { DokumentInfo } from '../../../App/typer/journalføring';
+import { LogiskVedlegg } from '../../../App/typer/journalføring';
 import { ABlue500 } from '@navikt/ds-tokens/dist/tokens';
 
 const Container = styled.div`
@@ -22,12 +22,16 @@ const IkonContainer = styled.div`
 `;
 
 interface Props {
-    dokument: DokumentInfo;
     dokumentTittel: string;
     erValgt: boolean;
+    logiskeVedlegg: LogiskVedlegg[] | undefined;
 }
 
-export const DokumentPanelHeader: React.FC<Props> = ({ dokument, dokumentTittel, erValgt }) => {
+export const DokumentPanelHeader: React.FC<Props> = ({
+    dokumentTittel,
+    erValgt,
+    logiskeVedlegg,
+}) => {
     return (
         <Container>
             <IkonContainer>
@@ -39,13 +43,15 @@ export const DokumentPanelHeader: React.FC<Props> = ({ dokument, dokumentTittel,
             </IkonContainer>
             <DokumentTitler>
                 <Label as={'p'}>{dokumentTittel}</Label>
-                {dokument.logiskeVedlegg.length > 0 && (
-                    <VStack gap={'0'}>
-                        {dokument.logiskeVedlegg.map((it) => (
-                            <BodyShort key={it.logiskVedleggId}>{it.tittel}</BodyShort>
-                        ))}
-                    </VStack>
-                )}
+                {logiskeVedlegg !== undefined &&
+                    logiskeVedlegg !== null &&
+                    logiskeVedlegg.length > 0 && (
+                        <VStack gap={'0'}>
+                            {logiskeVedlegg.map((it) => (
+                                <BodyShort key={it.logiskVedleggId}>{it.tittel}</BodyShort>
+                            ))}
+                        </VStack>
+                    )}
             </DokumentTitler>
         </Container>
     );

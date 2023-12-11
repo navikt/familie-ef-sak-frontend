@@ -98,9 +98,9 @@ const DokumentPanel: React.FC<Props> = ({ journalpost, journalpostState, dokumen
         >
             <ExpansionCardHeader>
                 <DokumentPanelHeader
-                    dokument={dokument}
                     dokumentTittel={dokumentTittel}
                     erValgt={dokumentPanelErValgt}
+                    logiskeVedlegg={logiskeVedlegg}
                 />
             </ExpansionCardHeader>
             <ExpansionCard.Content>
