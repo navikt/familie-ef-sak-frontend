@@ -1,4 +1,4 @@
-import { format, parseISO } from 'date-fns';
+import { format, parseISO, lastDayOfMonth } from 'date-fns';
 import { harTallverdi } from './utils';
 
 export const datoFormat = {
@@ -53,6 +53,10 @@ export const formaterIsoMånedÅr = (dato: string): string => {
 
 export const formaterIsoMånedÅrFull = (dato: string): string => {
     return parseISO(dato).toLocaleDateString('no-NO', datoMånedÅrFormatFull);
+};
+
+export const formaterIsoSisteDagIMåneden = (årMåned: string): string => {
+    return lastDayOfMonth(parseISO(årMåned)).toLocaleDateString('no-NO', datoFormat);
 };
 
 export const formaterIsoMåned = (dato: string): string => {
