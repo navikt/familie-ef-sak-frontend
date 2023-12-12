@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import { Button, Heading, Table } from '@navikt/ds-react';
-import { formaterIsoDato } from '../../../App/utils/formatter';
+import { formaterIsoDato, formaterIsoSisteDagIMåneden } from '../../../App/utils/formatter';
 import styled from 'styled-components';
 import { useApp } from '../../../App/context/AppContext';
 import { UtestengelseModal } from './UtestengelseModal';
@@ -51,7 +51,7 @@ const UtestengelseTabell: FC<{
                                             {formaterIsoDato(utestengelse.periode.fom)}
                                         </Table.DataCell>
                                         <Table.DataCell>
-                                            {formaterIsoDato(utestengelse.periode.tom)}
+                                            {formaterIsoSisteDagIMåneden(utestengelse.periode.tom)}
                                         </Table.DataCell>
                                         <Table.DataCell>
                                             {erSaksbehandler && (

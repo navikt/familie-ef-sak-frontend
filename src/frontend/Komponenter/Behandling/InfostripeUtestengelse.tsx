@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { IUtestengelse } from '../../App/typer/utestengelse';
 import { Ressurs } from '../../App/typer/ressurs';
-import { formaterIsoDato } from '../../App/utils/formatter';
+import { formaterIsoDato, formaterIsoSisteDagIMåneden } from '../../App/utils/formatter';
 
 const AdvarselVisning = styled(Alert)`
     margin: 0.5rem 0.5rem 0 0.5rem;
@@ -29,7 +29,7 @@ export const InfostripeUtestengelse: FC<{ utestengelser: Ressurs<IUtestengelse[]
                             {utestengelser.map((utestengelse) => (
                                 <li key={utestengelse.id}>
                                     {formaterIsoDato(utestengelse.periode.fom)} -{' '}
-                                    {formaterIsoDato(utestengelse.periode.tom)}
+                                    {formaterIsoSisteDagIMåneden(utestengelse.periode.tom)}
                                 </li>
                             ))}
                         </ul>
