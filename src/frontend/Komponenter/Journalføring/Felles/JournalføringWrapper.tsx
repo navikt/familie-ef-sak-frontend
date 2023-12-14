@@ -25,6 +25,7 @@ export const Venstrekolonne = styled.div`
     overflow: auto;
     @media (min-width: 1225px) {
         height: calc(100vh - 4rem);
+        max-width: 750px;
     }
 `;
 export const Høyrekolonne = styled.div`
