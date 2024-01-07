@@ -1141,6 +1141,11 @@
   resolved "https://registry.yarnpkg.com/@colors/colors/-/colors-1.5.0.tgz#bb504579c1cae923e6576a4f5da43d25f97bdbd9"
   integrity sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==
 
+"@colors/colors@^1.6.0":
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/@colors/colors/-/colors-1.6.0.tgz#ec6cd237440700bc23ca23087f513c75508958b0"
+  integrity sha512-Ir+AOibqzrIsL6ajt3Rz3LskB7OiMVHqltZmspbW/TJuTVuyOMirVqAkjfY6JISiLHgyNqicAC8AyHHGzNd/dA==
+
 "@dabh/diagnostics@^2.0.2":
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/@dabh/diagnostics/-/diagnostics-2.0.3.tgz#7f7e97ee9a725dffc7808d93668cc984e1dc477a"
@@ -1477,45 +1482,44 @@
     prom-client "^14.2.0"
     redis "^4.6.10"
 
-"@navikt/familie-dokumentliste@^9.0.1":
-  version "9.0.1"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-dokumentliste/9.0.1/c7ac27e0b4c651e3f1b0974e72f7f22d5ec18f1a#c7ac27e0b4c651e3f1b0974e72f7f22d5ec18f1a"
-  integrity sha512-R2OxZQlG7RHeEuirGNSoJ4UMIDnKw7n2zRP6ODqwejSYpt9o4tuHOC6DBMGHDtjZbwmkrmlOESWqTMuECtTiBg==
+"@navikt/familie-dokumentliste@^11.0.0":
+  version "11.0.0"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-dokumentliste/11.0.0/f220d1bf35b5eda179c637255994e68212daeb2e#f220d1bf35b5eda179c637255994e68212daeb2e"
+  integrity sha512-TP+mbAbbWtJsAsR1DItQowWJCZb0ewXaN/0uldD71lclo6dTfLnT/fqOEFzf1J65KrQWQcj0hwIWfWJG08++Vg==
   dependencies:
-    "@navikt/familie-ikoner" "^7.0.1"
+    "@navikt/familie-ikoner" "^8.0.0"
     "@navikt/familie-typer" "^8.0.1"
 
-"@navikt/familie-endringslogg@^10.0.0":
-  version "10.0.0"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-endringslogg/10.0.0/a85a44073c816ec36daaaa8d20c44ab8dff0ccaa#a85a44073c816ec36daaaa8d20c44ab8dff0ccaa"
-  integrity sha512-uCyWfVXfEYGscmarSxa5PSMzQsEWdff9Ky3mRkR6cmEYjkJi6gMFS/i5wpkY3NmlEJtq/83bJVcfj8HpuIseJQ==
+"@navikt/familie-endringslogg@^11.0.0":
+  version "11.0.0"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-endringslogg/11.0.0/d50201e34031ee99803728763ba5769cc31af07a#d50201e34031ee99803728763ba5769cc31af07a"
+  integrity sha512-NdbrrI3VCwH4NxfDPMguJOBXQe1m6L+jh4NMBAHWFmAiSaY3G2WG8FSAH2p9vCZtizO9nrvC89xt47kpu6t7RA==
   dependencies:
-    "@portabletext/react" "^3.0.7"
-    classnames "^2.3.2"
+    "@portabletext/react" "^3.0.11"
+    classnames "^2.5.1"
     react-transition-group "^4.4.5"
 
-"@navikt/familie-form-elements@^13.0.0":
+"@navikt/familie-form-elements@^14.0.0":
+  version "14.0.0"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-form-elements/14.0.0/2e7b6e26fde5e677096fcf1c523ed25159926bb1#2e7b6e26fde5e677096fcf1c523ed25159926bb1"
+  integrity sha512-P5cMOmDkC2UEshd4P7RmMwfzGq9Lj1z5hRyuHMOtw4KDXaiaNpY6x6CKuP9dxu/MgsOPbuy5vxMNCRBpMHALyA==
+  dependencies:
+    classnames "^2.5.1"
+    react-select "^5.8.0"
+
+"@navikt/familie-header@^13.0.0":
   version "13.0.0"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-form-elements/13.0.0/c3ec85621cb87c35cece49ce4a0d59d17ab0ad7c#c3ec85621cb87c35cece49ce4a0d59d17ab0ad7c"
-  integrity sha512-C7Co3jFGad7TdS7P2QM1l58rb4T82lE31Gx6gOC7MXRaBKTDnd9MJCf8AXazUyjmxUASmWepdSoGo/bgZjtJdA==
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-header/13.0.0/da0c7a5643209bc285273a018406925831cc6743#da0c7a5643209bc285273a018406925831cc6743"
+  integrity sha512-l9iDl2eRQub+I9tLNTPns/iwELOkU4W9/BlXOnaFT0J0C85m3/fMrtylYy3Qya/riL0W+C1suYCIAczti4u1CQ==
   dependencies:
-    "@types/classnames" "^2.3.1"
-    classnames "^2.3.2"
-    react-select "^5.7.0"
-
-"@navikt/familie-header@^12.0.0":
-  version "12.0.0"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-header/12.0.0/4f96471ee373b3b2a21794abff348ae41e0755e9#4f96471ee373b3b2a21794abff348ae41e0755e9"
-  integrity sha512-nP5qsKQFZCEILVrvQHV2pd0Nlkgi2bCUfSMqReZ05ZwUe5N4eMu8Gx4PfGs2lmLb73vBIzgUOlx3WfpupCZ+tw==
-  dependencies:
-    "@navikt/familie-ikoner" "^7.0.1"
+    "@navikt/familie-ikoner" "^8.0.0"
     "@navikt/familie-typer" "^8.0.1"
-    "@navikt/familie-validering" "^5.0.2"
+    "@navikt/familie-validering" "^6.0.0"
 
-"@navikt/familie-ikoner@^7.0.1":
-  version "7.0.1"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-ikoner/7.0.1/548ee43f1d104947a45b11978b4f8429ab600629#548ee43f1d104947a45b11978b4f8429ab600629"
-  integrity sha512-kNCcEic8DS2jNGKVWFguKEFM0Y8j154ofXVBRNBT5PfQcR61DYioZLz6knSmXPGWrQQqYxAGNSdKqDUpO8jn5Q==
+"@navikt/familie-ikoner@^8.0.0":
+  version "8.0.0"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-ikoner/8.0.0/9e988ea65ef3246c57637ecb99491e0d56dd7694#9e988ea65ef3246c57637ecb99491e0d56dd7694"
+  integrity sha512-M7iJtyq9uKCd+9sqIgNg18oFMsyfRZmYs021sQkc4idmo4lX/Gy5ye7GOBoUtxPFY3PAf73QDfc4e0qcemIRzQ==
   dependencies:
     "@navikt/familie-typer" "^8.0.1"
 
@@ -1526,25 +1530,31 @@
   dependencies:
     winston "^3.8.1"
 
+"@navikt/familie-logging@^7.0.0":
+  version "7.0.0"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-logging/7.0.0/04cf21c20ff7617168fa6cac2e7bab884f33e660#04cf21c20ff7617168fa6cac2e7bab884f33e660"
+  integrity sha512-GbQT+UyhUA0vj1SmDhZobk0bXBaoIl7QaFvTzAAaD6fSkudqp5CGstOha4U0v4+idUHORBJg16FArwx1Odf/qA==
+  dependencies:
+    winston "^3.11.0"
+
 "@navikt/familie-typer@^8.0.1":
   version "8.0.1"
   resolved "https://npm.pkg.github.com/download/@navikt/familie-typer/8.0.1/75574867acea945c485ce14faaa3d1d8a6232f02#75574867acea945c485ce14faaa3d1d8a6232f02"
   integrity sha512-zlOxNLT3fVW9EmQq4n0CtIAdCRMDfJUwhhXuYWkxnFvaa61MCBnMBC52W6+kv+MUwo8DN/8jNkKZkjvWPVxdpA==
 
-"@navikt/familie-validering@^5.0.2":
-  version "5.0.2"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-validering/5.0.2/b890a334ca5f5aa5aeba6873f3fb00aff30be759#b890a334ca5f5aa5aeba6873f3fb00aff30be759"
-  integrity sha512-S8C3egFMHC97auVFOlWMmG2Z84X1mwtVAvmp3ACEpFFRtzKQ2CD25ZJV7Sqf3IqHZLLAzGEaYCeMtYIAPwp3ag==
+"@navikt/familie-validering@^6.0.0":
+  version "6.0.0"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-validering/6.0.0/19f4b7104e61b3e3cc2251c03c33d1b3c7fe6356#19f4b7104e61b3e3cc2251c03c33d1b3c7fe6356"
+  integrity sha512-IvySSdyKPeLVOLjgKpWlIdDxdLsmxebyn5gHw+wdxxLWhO6tJ4IWK939cjqSRItEJtrYCQVSM/Kb1lz6ScvRMA==
 
-"@navikt/familie-visittkort@^12.0.0":
-  version "12.0.0"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-visittkort/12.0.0/2fbf0c4ef0e9fcdde0c0021af58c7e689cf5bc3a#2fbf0c4ef0e9fcdde0c0021af58c7e689cf5bc3a"
-  integrity sha512-f8PBgdgVJSELAQnQw0OOrVjhhcxi5NTU3qqJIlyNwlziyqEZUVM+QmDaYkTEQU9FduJDamBoqvKQUzW4B7V/uw==
+"@navikt/familie-visittkort@^13.0.0":
+  version "13.0.0"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-visittkort/13.0.0/70d2bf5c2d6074ae4b4fe6df469c3260377a3480#70d2bf5c2d6074ae4b4fe6df469c3260377a3480"
+  integrity sha512-yCBrMMHtabfNba90hNsoGnRKAoWzxQoUg1V1bCRpG2FZEwQxU9W23qoGliZXOjNw/Tja156e052fxTWluXzcwg==
   dependencies:
-    "@navikt/familie-ikoner" "^7.0.1"
+    "@navikt/familie-ikoner" "^8.0.0"
     "@navikt/familie-typer" "^8.0.1"
-    classnames "^2.3.2"
-    prop-types "^15.8.1"
+    classnames "^2.5.1"
 
 "@navikt/fnrvalidator@^1.3.3":
   version "1.3.3"
@@ -1597,25 +1607,25 @@
     schema-utils "^3.0.0"
     source-map "^0.7.3"
 
-"@portabletext/react@^3.0.7":
-  version "3.0.7"
-  resolved "https://registry.yarnpkg.com/@portabletext/react/-/react-3.0.7.tgz#a5f5e9b9fde6ae09409fb70769db7612b7bdecb6"
-  integrity sha512-Hx4rohr3rul/IQMDl07nRhdXLeey2fZPE/3Nbn0I+k8Zr5DsqKdkqMgkla3iBNS8h0a0LTSclS5GKVXoQlzrWg==
+"@portabletext/react@^3.0.11":
+  version "3.0.11"
+  resolved "https://registry.yarnpkg.com/@portabletext/react/-/react-3.0.11.tgz#c5f31d9ea990391a3850ba4dfd685373107d9a21"
+  integrity sha512-LATQQRxvP3TlAnFayjYt7kPJcnpAtWH6XHl4RFU31pKb1G6gZlTWTB+chXXAv0uQG6Be7OEdRzCmsz9XFEVNew==
   dependencies:
-    "@portabletext/toolkit" "^2.0.8"
-    "@portabletext/types" "^2.0.6"
+    "@portabletext/toolkit" "^2.0.10"
+    "@portabletext/types" "^2.0.8"
 
-"@portabletext/toolkit@^2.0.8":
+"@portabletext/toolkit@^2.0.10":
+  version "2.0.10"
+  resolved "https://registry.yarnpkg.com/@portabletext/toolkit/-/toolkit-2.0.10.tgz#ddcf88cb76b287ff9d5c94f69a6b370a9c9aba9c"
+  integrity sha512-d+F9JvpnMEx7kd6saZ9OWA4U1Iwuokh6TOht7iqkfWU+0ivh9yM4v+b0Kpu+iiPcElicoabhtXol+yTvWJ1jDw==
+  dependencies:
+    "@portabletext/types" "^2.0.8"
+
+"@portabletext/types@^2.0.8":
   version "2.0.8"
-  resolved "https://registry.yarnpkg.com/@portabletext/toolkit/-/toolkit-2.0.8.tgz#15e6382120892ec40e6145e6736633f3e94c3c81"
-  integrity sha512-MI3FKYZiL+/dYsClkkTDRjSvNS7K4j+U2LNZ5XIEoq67qCY0l7CYjvT0fn+lFBEUxjegtEmbxLk6T9nV/iXA+Q==
-  dependencies:
-    "@portabletext/types" "^2.0.6"
-
-"@portabletext/types@^2.0.6":
-  version "2.0.6"
-  resolved "https://registry.yarnpkg.com/@portabletext/types/-/types-2.0.6.tgz#334ef469346b168924ce7c2215c88a30d5e778c8"
-  integrity sha512-6iqorcsQ0Z1/4Y7PWLvoknyiUv0DngSPao+q5UIE0+0gT2cZwFdItUyLZRheG85AisSEvacHEEnvN+TT8mxXVg==
+  resolved "https://registry.yarnpkg.com/@portabletext/types/-/types-2.0.8.tgz#34aec838701482f838bdd0ee07a9e31dc01a9230"
+  integrity sha512-eiq9/kMX2bYezS4/kLFk3xNnruCFjCDdw6aYEv5ECHVKkYROiuLd3/AsP5d7tWF3+kPPy6tB0Wq8aqDG/URHGA==
 
 "@radix-ui/primitive@1.0.0":
   version "1.0.0"
@@ -2575,6 +2585,11 @@ are-we-there-yet@^2.0.0:
     delegates "^1.0.0"
     readable-stream "^3.6.0"
 
+arg@^5.0.2:
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/arg/-/arg-5.0.2.tgz#c81433cc427c92c4dcf4865142dbca6f15acd59c"
+  integrity sha512-PYjyFOLKQ9y57JvQ6QLo8dAgNqswh8M1RMJYdQduT6xbWSgK36P/Z/v+p888pM69jMMfS8Xd8F6I1kQ/I9HUGg==
+
 argparse@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/argparse/-/argparse-2.0.1.tgz#246f50f3ca78a3240f6c997e8a9bd1eac49e4b38"
@@ -3068,7 +3083,7 @@ ci-info@^3.2.0:
   resolved "https://registry.yarnpkg.com/ci-info/-/ci-info-3.8.0.tgz#81408265a5380c929f0bc665d62256628ce9ef91"
   integrity sha512-eXTggHWSooYhq49F2opQhuHWgzucfF2YgODK4e1566GQs5BIfP30B0oenwBJHfWxAs2fyPB1s7Mg949zLf61Yw==
 
-classnames@*, classnames@^2.3.2, classnames@^2.5.1:
+classnames@*, classnames@^2.5.1:
   version "2.5.1"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.5.1.tgz#ba774c614be0f016da105c858e7159eae8e7687b"
   integrity sha512-saHYOzhIQs6wy2sVxTM6bUDsQO4F50V9RQ22qBpEdCW+I+/Wmke2HOl6lS6dTpdxVhb88/I6+Hs+438c3lfUow==
@@ -3428,6 +3443,11 @@ date-fns@^2.30.0:
   integrity sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw==
   dependencies:
     "@babel/runtime" "^7.21.0"
+
+date-fns@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-3.1.0.tgz#576df8df93202942aeebd49ecc042218feb40426"
+  integrity sha512-ZO7yefXV/wCWzd3I9haCHmfzlfA3i1a2HHO7ZXjtJrRjXt8FULKJ2Vl8wji3XYF4dQ0ZJ/tokXDZeYlFvgms9Q==
 
 debug@2.6.9:
   version "2.6.9"
@@ -4822,6 +4842,11 @@ husky@^8.0.3:
   resolved "https://registry.yarnpkg.com/husky/-/husky-8.0.3.tgz#4936d7212e46d1dea28fef29bb3a108872cd9184"
   integrity sha512-+dQSyqPh4x1hlO1swXBiNb2HzTDN1I2IGLQx1GrBuiqFJfoMrnZWwVmatvSiO+Iz8fBUnf+lekwNo4c2LlXItg==
 
+hyperdyperid@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/hyperdyperid/-/hyperdyperid-1.2.0.tgz#59668d323ada92228d2a869d3e474d5a33b69e6b"
+  integrity sha512-Y93lCzHYgGWdrJ66yIktxiaGULYc6oGiABxhcO5AufBeOyoIdZF7bIfLaOrbM0iGIOXQQgxxRrFEnb+Y6w1n4A==
+
 iconv-lite@0.4.24:
   version "0.4.24"
   resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.4.24.tgz#2022b4b25fbddc21d2f524974a474aafe733908b"
@@ -5223,6 +5248,14 @@ jsesc@~0.5.0:
   resolved "https://registry.yarnpkg.com/jsesc/-/jsesc-0.5.0.tgz#e7dee66e35d6fc16f710fe91d5cf69f70f08911d"
   integrity sha512-uZz5UnB7u4T9LvwmFqXii7pZSouaRPorGs5who1Ip7VO0wxanFvBL7GkM6dTHlgX+jhBApRetaWpnDabOeTcnA==
 
+json-joy@^9.2.0:
+  version "9.9.1"
+  resolved "https://registry.yarnpkg.com/json-joy/-/json-joy-9.9.1.tgz#add8f8bdf4f7066894f5ec4817a5a43066a3757f"
+  integrity sha512-/d7th2nbQRBQ/nqTkBe6KjjvDciSwn9UICmndwk3Ed/Bk9AqkTRm4PnLVfXG4DKbT0rEY0nKnwE7NqZlqKE6kg==
+  dependencies:
+    arg "^5.0.2"
+    hyperdyperid "^1.2.0"
+
 json-parse-even-better-errors@^2.3.0, json-parse-even-better-errors@^2.3.1:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/json-parse-even-better-errors/-/json-parse-even-better-errors-2.3.1.tgz#7c47805a94319928e05777405dc12e1f7a4ee02d"
@@ -5536,12 +5569,20 @@ media-typer@0.3.0:
   resolved "https://registry.yarnpkg.com/media-typer/-/media-typer-0.3.0.tgz#8710d7af0aa626f8fffa1ce00168545263255748"
   integrity sha512-dq+qelQ9akHpcOl/gUVRTxVIOkAJ1wR3QAvb4RsVjS8oVoFjDGTc679wJYmUmknUF5HwMLOgb5O+a3KxfWapPQ==
 
-memfs@^3.4.1, memfs@^3.4.12:
+memfs@^3.4.1:
   version "3.6.0"
   resolved "https://registry.yarnpkg.com/memfs/-/memfs-3.6.0.tgz#d7a2110f86f79dd950a8b6df6d57bc984aa185f6"
   integrity sha512-EGowvkkgbMcIChjMTMkESFDbZeSh8xZ7kNSF0hAiAN4Jh6jgHCRS0Ga/+C8y6Au+oqpezRHCfPsmJ2+DwAgiwQ==
   dependencies:
     fs-monkey "^1.0.4"
+
+memfs@^4.6.0:
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/memfs/-/memfs-4.6.0.tgz#e812d438f73482a7110420d13d381c730b9a4de5"
+  integrity sha512-I6mhA1//KEZfKRQT9LujyW6lRbX7RkC24xKododIDO3AGShcaFAMKElv1yFGWX8fD4UaSiwasr3NeQ5TdtHY1A==
+  dependencies:
+    json-joy "^9.2.0"
+    thingies "^1.11.1"
 
 memoize-one@^6.0.0:
   version "6.0.0"
@@ -6511,7 +6552,7 @@ react-router@6.21.1:
   dependencies:
     "@remix-run/router" "1.14.1"
 
-react-select@*, react-select@^5.7.0, react-select@^5.8.0:
+react-select@*, react-select@^5.8.0:
   version "5.8.0"
   resolved "https://registry.yarnpkg.com/react-select/-/react-select-5.8.0.tgz#bd5c467a4df223f079dd720be9498076a3f085b5"
   integrity sha512-TfjLDo58XrhP6VG5M/Mi56Us0Yt8X7xD6cDybC7yoRMUNm7BGO7qk8J0TLQOua/prb8vUOtsfnXZwfm30HGsAA==
@@ -7330,6 +7371,11 @@ text-table@^0.2.0:
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
   integrity sha512-N+8UisAXDGk8PFXP4HAzVR9nbfmVJ3zYLAWiTIoqC5v5isinhr+r5uaO8+7r3BMfuNIufIsA7RdpVgacC2cSpw==
 
+thingies@^1.11.1:
+  version "1.15.0"
+  resolved "https://registry.yarnpkg.com/thingies/-/thingies-1.15.0.tgz#bd186213bed5105b11eda0ce749fa475c5d4d6e3"
+  integrity sha512-ZSJlvEpD8QllYim0VSGlbAoob/iPrTWNlV/m8ltizMvMmzzU2gVJvHfH9ijLstyciWF70ZiQXqz+BCXWJq+ZQw==
+
 tiny-invariant@^1.0.0:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/tiny-invariant/-/tiny-invariant-1.3.1.tgz#8560808c916ef02ecfd55e66090df23a4b7aa642"
@@ -7641,13 +7687,13 @@ webpack-cli@^5.1.4:
     rechoir "^0.8.0"
     webpack-merge "^5.7.3"
 
-webpack-dev-middleware@*, webpack-dev-middleware@^6.1.1:
-  version "6.1.1"
-  resolved "https://registry.yarnpkg.com/webpack-dev-middleware/-/webpack-dev-middleware-6.1.1.tgz#6bbc257ec83ae15522de7a62f995630efde7cc3d"
-  integrity sha512-y51HrHaFeeWir0YO4f0g+9GwZawuigzcAdRNon6jErXy/SqV/+O6eaVAzDqE6t3e3NpGeR5CS+cCDaTC+V3yEQ==
+webpack-dev-middleware@*, webpack-dev-middleware@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/webpack-dev-middleware/-/webpack-dev-middleware-7.0.0.tgz#13595dc038a400e3ac9c76f0c9a8c75a59a7d4da"
+  integrity sha512-tZ5hqsWwww/8DislmrzXE3x+4f+v10H1z57mA2dWFrILb4i3xX+dPhTkcdR0DLyQztrhF2AUmO5nN085UYjd/Q==
   dependencies:
     colorette "^2.0.10"
-    memfs "^3.4.12"
+    memfs "^4.6.0"
     mime-types "^2.1.31"
     range-parser "^1.2.1"
     schema-utils "^4.0.0"
@@ -7791,12 +7837,12 @@ winston-transport@^4.5.0:
     readable-stream "^3.6.0"
     triple-beam "^1.3.0"
 
-winston@^3.8.1:
-  version "3.10.0"
-  resolved "https://registry.yarnpkg.com/winston/-/winston-3.10.0.tgz#d033cb7bd3ced026fed13bf9d92c55b903116803"
-  integrity sha512-nT6SIDaE9B7ZRO0u3UvdrimG0HkB7dSTAgInQnNR2SOPJ4bvq5q79+pXLftKmP52lJGW15+H5MCK0nM9D3KB/g==
+winston@^3.11.0, winston@^3.8.1:
+  version "3.11.0"
+  resolved "https://registry.yarnpkg.com/winston/-/winston-3.11.0.tgz#2d50b0a695a2758bb1c95279f0a88e858163ed91"
+  integrity sha512-L3yR6/MzZAOl0DsysUXHVjOwv8mKZ71TrA/41EIduGpOOV5LQVodqN+QdQ6BS6PJ/RdIshZhq84P/fStEZkk7g==
   dependencies:
-    "@colors/colors" "1.5.0"
+    "@colors/colors" "^1.6.0"
     "@dabh/diagnostics" "^2.0.2"
     async "^3.2.3"
     is-stream "^2.0.0"
