@@ -77,11 +77,7 @@ Appen bygges på github actions, og gir beskjed til nais deploy om å deployere 
 
 # Henvendelser
 
-Spørsmål knyttet til koden eller prosjektet kan rettes til:
-
-* Mattis Janitz, `mattis.janitz@nav.no`
-
-Prosjektet er laget med utgangspunkt i familie-ba-sak-frontend 
+Spørsmål knyttet til koden eller prosjektet kan stilles som issues her på GitHub
 
 ## For NAV-ansatte
 
