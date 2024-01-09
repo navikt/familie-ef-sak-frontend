@@ -72,7 +72,7 @@ Ta gjerne en titt på Team Familie sin [readme](https://github.com/navikt/famili
 
 
 # Bygg og deploy
-Appen bygges på github actions, og gir beskjed til nais deploy om å deployere appen i fss området. Alle pull requester går til dev miljøet og master går til produksjon og dev-miljøet.
+Appen bygges på github actions, og gir beskjed til nais deploy om å deployere appen i fss området. Alle pull requester går til dev miljøet og main går til produksjon og dev-miljøet.
 
 
 # Henvendelser
