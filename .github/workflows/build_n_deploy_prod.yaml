@@ -9,12 +9,15 @@ env:
   IMAGE: ghcr.io/navikt/familie-ef-sak-frontend:${{ github.sha }}
   IMAGE_LATEST: ghcr.io/navikt/familie-ef-sak-frontend:latest
 
+permissions:
+  packages: write
+  id-token: write
+  contents: read
+
 jobs:
   build:
     name: Build and push Docker container
     runs-on: ubuntu-latest
-    permissions:
-      packages: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -51,13 +54,11 @@ jobs:
       - name: Deploy til dev-gcp
         uses: nais/deploy/actions/deploy@v2
         env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
           RESOURCE: build_n_deploy/naiserator/dev.yaml
       - name: Deploy til prod-gcp
         uses: nais/deploy/actions/deploy@v2
         env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: prod-gcp
           RESOURCE: build_n_deploy/naiserator/prod.yaml
       - name: Post deploy failures to Slack
