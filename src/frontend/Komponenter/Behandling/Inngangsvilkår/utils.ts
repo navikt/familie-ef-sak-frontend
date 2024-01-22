@@ -37,10 +37,6 @@ export const utledBegrunnelseFraVilkårOgRegel = (
         ?.delvilkårsvurderinger.flatMap((delvilkårsvurdering) => delvilkårsvurdering.vurderinger)
         ?.find((vurdering) => vurdering.regelId === regelId)?.begrunnelse;
 
-export const utledVilkårsgjenbruk = (behandlingErRedigerbar: boolean): boolean => {
-    return behandlingErRedigerbar;
-};
-
 export const utledNavnOgAlder = (
     registerNavn?: string,
     registerFødselsdato?: string,

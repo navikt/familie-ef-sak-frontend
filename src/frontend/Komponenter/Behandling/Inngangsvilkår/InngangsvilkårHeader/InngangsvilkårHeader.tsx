@@ -6,7 +6,6 @@ import { byggTomRessurs, Ressurs } from '../../../../App/typer/ressurs';
 import { Behandling } from '../../../../App/typer/fagsak';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 import { useApp } from '../../../../App/context/AppContext';
-import { utledVilkårsgjenbruk } from '../utils';
 import { ÅpneOgLukkePanelKnapper } from './ÅpneOgLukkePanelKnapper';
 import {
     EVilkårstyper,
@@ -68,8 +67,6 @@ export const InngangsvilkårHeader: React.FC<Props> = ({
         finnBehandlingForGjenbrukAvVilkår(behandling.id);
     }, [behandling, finnBehandlingForGjenbrukAvVilkår]);
 
-    const skalViseGjenbrukVilkår = utledVilkårsgjenbruk(behandlingErRedigerbar, behandling);
-
     return (
         <FlexRow>
             <FlexColumn>
@@ -79,7 +76,7 @@ export const InngangsvilkårHeader: React.FC<Props> = ({
                     oppdaterGrunnlagsdata={oppdaterGrunnlagsdata}
                     behandlingId={behandlingId}
                 />
-                {skalViseGjenbrukVilkår && (
+                {behandlingErRedigerbar && (
                     <DataViewer response={{ behandlingerForVilkårsgjenbruk }}>
                         {({ behandlingerForVilkårsgjenbruk }) =>
                             behandlingerForVilkårsgjenbruk.length > 0 ? (
