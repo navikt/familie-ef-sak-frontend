@@ -3,9 +3,6 @@ import { formaterNullableIsoDato } from '../../../App/utils/formatter';
 import { IUnderUtdanning } from '../../../App/typer/aktivitetstyper';
 import { EStudieandel, StudieandelTilTekst } from '../Aktivitet/Aktivitet/typer';
 import { IVurdering, RegelIdDDokumentasjonUtdanning, VilkårType } from './vilkår';
-import { Behandling } from '../../../App/typer/fagsak';
-import { Behandlingstype } from '../../../App/typer/behandlingstype';
-import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
 import { IBarnMedSamværRegistergrunnlag, IBarnMedSamværSøknadsgrunnlag } from './Aleneomsorg/typer';
 import { nullableDatoTilAlder, årMellomDatoer } from '../../../App/utils/dato';
 import { harVerdi } from '../../../App/utils/utils';
@@ -39,18 +36,6 @@ export const utledBegrunnelseFraVilkårOgRegel = (
         .find((vurdering) => vurdering.vilkårType === vilkårType)
         ?.delvilkårsvurderinger.flatMap((delvilkårsvurdering) => delvilkårsvurdering.vurderinger)
         ?.find((vurdering) => vurdering.regelId === regelId)?.begrunnelse;
-
-export const utledVilkårsgjenbruk = (
-    behandlingErRedigerbar: boolean,
-    behandling: Behandling
-): boolean => {
-    const behandlingErRevurdering = behandling.type === Behandlingstype.REVURDERING;
-    const behandlingsårsakErSøknad =
-        behandling.behandlingsårsak === Behandlingsårsak.SØKNAD ||
-        behandling.behandlingsårsak === Behandlingsårsak.PAPIRSØKNAD;
-    const vilkårForRevurderingErOppfylt = behandlingErRevurdering ? behandlingsårsakErSøknad : true;
-    return behandlingErRedigerbar && vilkårForRevurderingErOppfylt;
-};
 
 export const utledNavnOgAlder = (
     registerNavn?: string,
