@@ -9,7 +9,6 @@ const Grid = styled.div`
     grid-template-columns: repeat(4, minmax(auto, max-content));
     row-gap: 0.2rem;
     column-gap: 1rem;
-    text-overflow: ellipsis;
 `;
 
 const Row = styled.div`
