@@ -6,7 +6,7 @@ import HistorikkRadIOvergangsstønad from './HistorikkRadIOvergangsstønad';
 
 const Grid = styled.div`
     display: grid;
-    grid-template-columns: repeat(4, max-content);
+    grid-template-columns: repeat(4, minmax(auto, max-content));
     row-gap: 0.2rem;
     column-gap: 1rem;
     text-overflow: ellipsis;
