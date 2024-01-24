@@ -10,7 +10,7 @@ const Grid = styled.div`
     row-gap: 0.2rem;
     column-gap: 1rem;
 
-    @media (max-width: 1024px) {
+    @media (max-width: 900px) {
         grid-template-columns: repeat(3, max-content);
     }
 
@@ -19,7 +19,7 @@ const Grid = styled.div`
     }
 
     @media (max-width: 480px) {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(1, max-content);
     }
 `;
 const Row = styled.div`
