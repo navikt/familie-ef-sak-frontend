@@ -10,15 +10,15 @@ const Grid = styled.div`
     row-gap: 0.2rem;
     column-gap: 1rem;
 
-    @media (max-width: 900px) {
+    @media (max-width: 1300px) {
         grid-template-columns: repeat(3, max-content);
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 1000px) {
         grid-template-columns: repeat(2, max-content);
     }
 
-    @media (max-width: 480px) {
+    @media (max-width: 500px) {
         grid-template-columns: repeat(1, max-content);
     }
 `;
