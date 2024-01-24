@@ -18,7 +18,7 @@ const Grid = styled.div`
         grid-template-columns: repeat(2, max-content);
     }
 
-    @media (max-width: 500px) {
+    @media (max-width: 700px) {
         grid-template-columns: repeat(1, max-content);
     }
 `;
