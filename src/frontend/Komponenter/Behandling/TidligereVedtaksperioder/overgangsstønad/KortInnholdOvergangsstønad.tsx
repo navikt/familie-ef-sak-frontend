@@ -9,19 +9,9 @@ const Grid = styled.div`
     grid-template-columns: repeat(4, max-content);
     row-gap: 0.2rem;
     column-gap: 1rem;
-
-    @media (max-width: 1300px) {
-        grid-template-columns: repeat(3, max-content);
-    }
-
-    @media (max-width: 1000px) {
-        grid-template-columns: repeat(2, max-content);
-    }
-
-    @media (max-width: 700px) {
-        grid-template-columns: repeat(1, max-content);
-    }
+    text-overflow: ellipsis;
 `;
+
 const Row = styled.div`
     display: contents;
 `;
