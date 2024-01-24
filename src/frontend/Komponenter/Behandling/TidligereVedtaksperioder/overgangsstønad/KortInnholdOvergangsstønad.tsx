@@ -9,6 +9,18 @@ const Grid = styled.div`
     grid-template-columns: repeat(4, max-content);
     row-gap: 0.2rem;
     column-gap: 1rem;
+
+    @media (max-width: 1024px) {
+        grid-template-columns: repeat(3, max-content);
+    }
+
+    @media (max-width: 768px) {
+        grid-template-columns: repeat(2, max-content);
+    }
+
+    @media (max-width: 480px) {
+        grid-template-columns: 1fr;
+    }
 `;
 const Row = styled.div`
     display: contents;
