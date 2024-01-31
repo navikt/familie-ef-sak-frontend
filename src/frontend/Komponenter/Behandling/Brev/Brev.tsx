@@ -18,6 +18,7 @@ import {
     OppgaveTypeForOpprettelse,
 } from '../Totrinnskontroll/oppgaveForOpprettelseTyper';
 import { HøyreKolonne, StyledBrev, VenstreKolonne } from './StyledBrev';
+import { useMellomlagringBrev } from '../../../App/hooks/useMellomlagringBrev';
 
 const InfostripeGruppe = styled.div`
     display: flex;
@@ -51,7 +52,7 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
     }, [hentVedtak]);
 
     const oppdaterBrevmal = useCallback(
-        () => (brevmal: string) => {
+        (brevmal: string) => {
             settBrevmal(brevmal);
             if (brevMal === 'avslagIkkeTiProsentEndringInntekt') {
                 settOppgaveForOpprettelseBrevmal(
@@ -63,6 +64,16 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
         },
         [brevMal]
     );
+
+    const { mellomlagreSanitybrev, mellomlagretBrev } = useMellomlagringBrev(behandlingId);
+
+    useEffect(() => {
+        if (mellomlagretBrev.status === RessursStatus.SUKSESS && mellomlagretBrev.data) {
+            oppdaterBrevmal(mellomlagretBrev.data.brevmal);
+        }
+        // @ts-ignore
+    }, [mellomlagretBrev, oppdaterBrevmal]);
+
     const lagBeslutterBrev = () => {
         axiosRequest<string, null>({
             method: 'POST',
@@ -97,8 +108,8 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
     }, [behandlingErRedigerbar, totrinnskontroll]);
 
     return (
-        <DataViewer response={{ personopplysningerResponse, behandling, vedtak }}>
-            {({ personopplysningerResponse, behandling, vedtak }) => (
+        <DataViewer response={{ personopplysningerResponse, behandling, vedtak, mellomlagretBrev }}>
+            {({ personopplysningerResponse, behandling, vedtak, mellomlagretBrev }) => (
                 <>
                     <StyledBrev>
                         <VenstreKolonne>
@@ -127,6 +138,8 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
                                     vedtaksresultat={vedtak?.resultatType}
                                     brevMal={brevMal}
                                     oppdaterBrevmal={oppdaterBrevmal}
+                                    mellomlagreSanitybrev={mellomlagreSanitybrev}
+                                    mellomlagretBrev={mellomlagretBrev}
                                 />
                             )}
                         </VenstreKolonne>

@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
-import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
+import { Ressurs } from '../../../App/typer/ressurs';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import BrevmenyVisning from './BrevmenyVisning';
 import styled from 'styled-components';
 import {
     IMellomlagretBrevResponse,
-    useMellomlagringBrev,
+    MellomlagreSanitybrev,
 } from '../../../App/hooks/useMellomlagringBrev';
 import { Behandling } from '../../../App/typer/fagsak';
 import { useHentBeløpsperioder } from '../../../App/hooks/useHentBeløpsperioder';
@@ -22,6 +22,8 @@ export interface BrevmenyProps {
     behandlingId: string;
     personopplysninger: IPersonopplysninger;
     settKanSendesTilBeslutter: (kanSendesTilBeslutter: boolean) => void;
+    mellomlagreSanitybrev: MellomlagreSanitybrev;
+    mellomlagretBrev: IMellomlagretBrevResponse | undefined;
     behandling: Behandling;
     vedtaksresultat?: EBehandlingResultat;
     brevMal: string | undefined;
@@ -45,6 +47,8 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
         settKanSendesTilBeslutter,
         brevMal,
         oppdaterBrevmal,
+        mellomlagreSanitybrev,
+        mellomlagretBrev,
     } = props;
     const { hentBeløpsperioder, beløpsperioder } = useHentBeløpsperioder(
         behandling.id,
@@ -57,13 +61,6 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
     useEffect(() => {
         hentBeløpsperioder(vedtaksresultat);
     }, [vedtaksresultat, hentBeløpsperioder]);
-
-    const { mellomlagreSanitybrev, mellomlagretBrev } = useMellomlagringBrev(behandlingId);
-    useEffect(() => {
-        if (mellomlagretBrev.status === RessursStatus.SUKSESS && mellomlagretBrev.data) {
-            oppdaterBrevmal(mellomlagretBrev.data.brevmal);
-        }
-    }, [mellomlagretBrev, oppdaterBrevmal]);
 
     const brevverdier = useVerdierForBrev(beløpsperioder, behandling);
 
@@ -78,11 +75,10 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
             <DataViewer
                 response={{
                     brevStruktur,
-                    mellomlagretBrev,
                     beløpsperioder,
                 }}
             >
-                {({ brevStruktur, mellomlagretBrev }) =>
+                {({ brevStruktur }) =>
                     brevMal ? (
                         <BrevmenyVisning
                             behandlingId={behandlingId}
