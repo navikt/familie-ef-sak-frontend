@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import PdfVisning from '../../../Felles/Pdf/PdfVisning';
 import styled from 'styled-components';
@@ -13,7 +13,10 @@ import { useHentVedtak } from '../../../App/hooks/useHentVedtak';
 import { skalFerdigstilleUtenBeslutter } from '../VedtakOgBeregning/Felles/utils';
 import { useHentOppgaverForOpprettelse } from '../../../App/hooks/useHentOppgaverForOpprettelse';
 import { AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
-import { oppgaveSomSkalOpprettesTilTekst } from '../Totrinnskontroll/oppgaveForOpprettelseTyper';
+import {
+    oppgaveSomSkalOpprettesTilTekst,
+    OppgaveTypeForOpprettelse,
+} from '../Totrinnskontroll/oppgaveForOpprettelseTyper';
 import { HøyreKolonne, StyledBrev, VenstreKolonne } from './StyledBrev';
 
 const InfostripeGruppe = styled.div`
@@ -40,11 +43,26 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
     const [kanSendesTilBeslutter, settKanSendesTilBeslutter] = useState<boolean>(false);
     const { hentVedtak, vedtak } = useHentVedtak(behandlingId);
     const oppgaverForOpprettelse = useHentOppgaverForOpprettelse(behandlingId);
-
+    const [brevMal, settBrevmal] = useState<string>();
+    const [oppgaveForOpprettelseBrevmal, settOppgaveForOpprettelseBrevmal] =
+        useState<OppgaveTypeForOpprettelse>();
     useEffect(() => {
         hentVedtak();
     }, [hentVedtak]);
 
+    const oppdaterBrevmal = useCallback(
+        () => (brevmal: string) => {
+            settBrevmal(brevmal);
+            if (brevMal === 'avslagIkkeTiProsentEndringInntekt') {
+                settOppgaveForOpprettelseBrevmal(
+                    OppgaveTypeForOpprettelse.INNTEKTSKONTROLL_1_ÅR_FREM_I_TID
+                );
+            } else {
+                settOppgaveForOpprettelseBrevmal(undefined);
+            }
+        },
+        [brevMal]
+    );
     const lagBeslutterBrev = () => {
         axiosRequest<string, null>({
             method: 'POST',
@@ -107,6 +125,8 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
                                     settKanSendesTilBeslutter={settKanSendesTilBeslutter}
                                     behandling={behandling}
                                     vedtaksresultat={vedtak?.resultatType}
+                                    brevMal={brevMal}
+                                    oppdaterBrevmal={oppdaterBrevmal}
                                 />
                             )}
                         </VenstreKolonne>
@@ -120,6 +140,7 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
                         ferdigstillUtenBeslutter={skalFerdigstilleUtenBeslutter(vedtak)}
                         behandlingErRedigerbar={behandlingErRedigerbar}
                         oppgaverForOpprettelse={oppgaverForOpprettelse}
+                        oppgaveForOpprettelseBrevmal={oppgaveForOpprettelseBrevmal}
                     />
                 </>
             )}

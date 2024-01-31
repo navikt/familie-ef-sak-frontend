@@ -1,6 +1,6 @@
 import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { DokumentNavn } from './BrevTyper';
-import React, { Dispatch, SetStateAction } from 'react';
+import React from 'react';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { Select } from '@navikt/ds-react';
 import { visBrevmal } from './BrevUtils';
@@ -8,14 +8,14 @@ import { Stønadstype } from '../../../App/typer/behandlingstema';
 
 type BrevmalSelectProps = {
     dokumentnavn: Ressurs<DokumentNavn[]>;
-    settBrevmal: Dispatch<SetStateAction<string | undefined>>;
+    oppdaterBrevmal: (brevmal: string) => void;
     brevmal: string | undefined;
     stønanadstype?: Stønadstype;
     frittstående?: boolean;
 };
 export const BrevmalSelect: React.FC<BrevmalSelectProps> = ({
     dokumentnavn,
-    settBrevmal,
+    oppdaterBrevmal,
     brevmal,
     stønanadstype,
     frittstående,
@@ -52,7 +52,7 @@ export const BrevmalSelect: React.FC<BrevmalSelectProps> = ({
             <Select
                 label="Velg dokument"
                 onChange={(e) => {
-                    settBrevmal(e.target.value);
+                    oppdaterBrevmal(e.target.value);
                 }}
                 value={brevmal}
             >

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import BrevmenyVisning from './BrevmenyVisning';
@@ -24,6 +24,8 @@ export interface BrevmenyProps {
     settKanSendesTilBeslutter: (kanSendesTilBeslutter: boolean) => void;
     behandling: Behandling;
     vedtaksresultat?: EBehandlingResultat;
+    brevMal: string | undefined;
+    oppdaterBrevmal: (brevmal: string) => void;
 }
 
 const StyledBrevMeny = styled.div`
@@ -41,12 +43,13 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
         behandlingId,
         personopplysninger,
         settKanSendesTilBeslutter,
+        brevMal,
+        oppdaterBrevmal,
     } = props;
     const { hentBeløpsperioder, beløpsperioder } = useHentBeløpsperioder(
         behandling.id,
         behandling.stønadstype
     );
-    const [brevMal, settBrevmal] = useState<string>();
 
     const { brevmaler } = useHentBrevmaler();
     const { brevStruktur } = useHentBrevStruktur(brevMal);
@@ -58,9 +61,9 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
     const { mellomlagreSanitybrev, mellomlagretBrev } = useMellomlagringBrev(behandlingId);
     useEffect(() => {
         if (mellomlagretBrev.status === RessursStatus.SUKSESS && mellomlagretBrev.data) {
-            settBrevmal(mellomlagretBrev.data.brevmal);
+            oppdaterBrevmal(mellomlagretBrev.data.brevmal);
         }
-    }, [mellomlagretBrev]);
+    }, [mellomlagretBrev, oppdaterBrevmal]);
 
     const brevverdier = useVerdierForBrev(beløpsperioder, behandling);
 
@@ -68,7 +71,7 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
         <StyledBrevMeny>
             <BrevmalSelect
                 brevmal={brevMal}
-                settBrevmal={settBrevmal}
+                oppdaterBrevmal={oppdaterBrevmal}
                 dokumentnavn={brevmaler}
                 stønanadstype={behandling.stønadstype}
             />

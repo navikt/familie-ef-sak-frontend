@@ -51,12 +51,14 @@ const SendTilBeslutterFooter: React.FC<{
     behandlingErRedigerbar: boolean;
     ferdigstillUtenBeslutter: boolean;
     oppgaverForOpprettelse?: IOppgaverForOpprettelse;
+    oppgaveForOpprettelseBrevmal?: OppgaveTypeForOpprettelse;
 }> = ({
     behandling,
     kanSendesTilBeslutter,
     behandlingErRedigerbar,
     ferdigstillUtenBeslutter,
     oppgaverForOpprettelse,
+    oppgaveForOpprettelseBrevmal,
 }) => {
     const { axiosRequest } = useApp();
     const navigate = useNavigate();
@@ -78,9 +80,10 @@ const SendTilBeslutterFooter: React.FC<{
             method: 'POST',
             url: `/familie-ef-sak/api/vedtak/${behandlingId}/send-til-beslutter`,
             data: {
-                oppgavetyperSomSkalOpprettes: oppgaverForOpprettelse
-                    ? oppgaverForOpprettelse.oppgavetyperSomSkalOpprettes
-                    : [],
+                oppgavetyperSomSkalOpprettes: [
+                    ...(oppgaverForOpprettelse?.oppgavetyperSomKanOpprettes || []),
+                    ...(oppgaveForOpprettelseBrevmal ? [oppgaveForOpprettelseBrevmal] : []),
+                ],
             },
         })
             .then((res: RessursSuksess<string> | RessursFeilet) => {
