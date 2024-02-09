@@ -70,7 +70,7 @@ export const BarneInfoWrapper: FC<BarneInfoWrapperProps> = ({
             undertittel={
                 <>
                     {navnOgAlderPåBarn}
-                    {dødsdato && <EtikettDød dødsdato={'01-01-2022'} />}
+                    {dødsdato && <EtikettDød dødsdato={dødsdato} />}
                 </>
             }
         >
