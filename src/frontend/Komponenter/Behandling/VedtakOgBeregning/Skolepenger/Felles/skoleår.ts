@@ -105,7 +105,11 @@ export const validerSkoleår = (
 };
 
 const mapSkoleårsperiodeTilSkoleår = (skoleårsperiode: ISkoleårsperiodeSkolepenger) => {
-    const fomDato = månedÅrTilDate(skoleårsperiode.perioder[0].årMånedFra);
+    const periodeStart = skoleårsperiode.perioder[0].årMånedFra;
+    if (!periodeStart) {
+        return 0; // Kan ikke utlede skoleårsperiode før årMånedFra-verdien er satt
+    }
+    const fomDato = månedÅrTilDate(periodeStart);
 
     const fomMåned = getMonth(fomDato);
     const fomÅr = getYear(fomDato);
