@@ -7,7 +7,6 @@ export enum ToggleName {
     visValgmulighetForKorrigering = 'familie.ef.sak.behandling-korrigering',
     opprettBehandlingForFerdigstiltJournalpost = 'familie.ef.sak.opprett-behandling-for-ferdigstilt-journalpost',
     kanMigrereBarnetilsyn = 'familie.ef.sak.migrering.barnetilsyn',
-    papirsoknadTerminbarnRevurdering = 'familie.ef.sak.papirsoknad-og-terminbarn-paa-revurdering',
     henleggBehandlingUtenÅHenleggeOppgave = 'familie.ef.sak.henlegg-behandling-uten-oppgave',
 
     // Miljø-toggles - la stå

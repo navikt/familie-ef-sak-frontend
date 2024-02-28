@@ -129,8 +129,6 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                 );
             case Behandlingsårsak.IVERKSETTE_KA_VEDTAK:
                 return toggles[ToggleName.visKAVedtakAlternativ];
-            case Behandlingsårsak.PAPIRSØKNAD:
-                return toggles[ToggleName.papirsoknadTerminbarnRevurdering];
             default:
                 return true;
         }
@@ -217,8 +215,7 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                                     settVilkårsbehandleNyeBarn={settVilkårsbehandleNyeBarn}
                                 />
                             )}
-                            {toggles[ToggleName.papirsoknadTerminbarnRevurdering] &&
-                                fagsak.stønadstype !== Stønadstype.BARNETILSYN &&
+                            {fagsak.stønadstype !== Stønadstype.BARNETILSYN &&
                                 valgtBehandlingsårsak === Behandlingsårsak.PAPIRSØKNAD && (
                                     <LeggTilBarnSomSkalFødes
                                         barnSomSkalFødes={barnSomSkalFødes}
