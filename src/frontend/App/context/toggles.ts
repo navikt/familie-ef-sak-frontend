@@ -8,6 +8,7 @@ export enum ToggleName {
     opprettBehandlingForFerdigstiltJournalpost = 'familie.ef.sak.opprett-behandling-for-ferdigstilt-journalpost',
     kanMigrereBarnetilsyn = 'familie.ef.sak.migrering.barnetilsyn',
     henleggBehandlingUtenÅHenleggeOppgave = 'familie.ef.sak.henlegg-behandling-uten-oppgave',
+    visSatsendring = 'familie.ef.sak.frontend-vis-satsendring',
 
     // Miljø-toggles - la stå
     visIkkePubliserteBrevmaler = 'familie.ef.sak.frontend-vis-ikke-publiserte-brevmaler',
@@ -15,8 +16,4 @@ export enum ToggleName {
 
     // Release-toggles
     // Midlertidige toggles - kan fjernes etterhvert
-    visSatsendring = 'familie.ef.sak.frontend-vis-satsendring',
-    visInntektPersonoversikt = 'familie.ef.sak.frontend.vis-inntekt-personoversikt',
-    visNyJournalføring = 'familie.ef.sak-ny-journalforing',
-    visKAVedtakAlternativ = 'familie.ef.sak.frontend.vis-ka-uten-brev',
 }
