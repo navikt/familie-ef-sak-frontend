@@ -4,13 +4,8 @@ import { IOppgave } from '../../Komponenter/Oppgavebenk/typer/oppgave';
 import { useEffect, useState } from 'react';
 import { useHentFagsak } from './useHentFagsak';
 import { Stønadstype } from '../typer/behandlingstema';
-import {
-    lagJournalføringKlageUrl,
-    lagJournalføringUrl,
-} from '../../Komponenter/Journalføring/Felles/utils';
+import { lagJournalføringUrl } from '../../Komponenter/Journalføring/Felles/utils';
 import { useNavigate } from 'react-router-dom';
-import { ToggleName } from '../context/toggles';
-import { useToggles } from '../context/TogglesContext';
 
 interface OppgaveDto {
     behandlingId: string;
@@ -20,7 +15,6 @@ interface OppgaveDto {
 export const useOppgave = (oppgave: IOppgave) => {
     const { axiosRequest, innloggetSaksbehandler } = useApp();
     const navigate = useNavigate();
-    const { toggles } = useToggles();
     const [feilmelding, settFeilmelding] = useState<string>('');
     const [laster, settLaster] = useState<boolean>(false);
     const { fagsak, hentFagsak } = useHentFagsak();
@@ -75,15 +69,7 @@ export const useOppgave = (oppgave: IOppgave) => {
         const journalpostId = oppgave.journalpostId || '';
         const oppgaveId = oppgave.id || '';
         const gjelderKlage = type === 'klage';
-        if (toggles[ToggleName.visNyJournalføring]) {
-            navigate(lagJournalføringUrl(journalpostId, oppgaveId, gjelderKlage));
-        } else {
-            navigate(
-                gjelderKlage
-                    ? lagJournalføringKlageUrl(journalpostId, oppgaveId)
-                    : lagJournalføringUrl(journalpostId, oppgaveId)
-            );
-        }
+        navigate(lagJournalføringUrl(journalpostId, oppgaveId, gjelderKlage));
     };
 
     const hentFagsakOgTriggRedirectTilBehandlingsoversikt = (personIdent: string) => {
