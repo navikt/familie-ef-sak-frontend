@@ -9,6 +9,7 @@ export type FormState<T> = {
 export type InternalFormState<T> = { [P in keyof T]: FieldState | ListState<unknown> };
 export type FormHook<T extends Record<string, any>> = {
     getProps(key: keyof T): FieldState | ListState<unknown>;
+    isValid: () => boolean;
     errors: FormErrors<T>;
     setErrors: Dispatch<SetStateAction<FormErrors<T>>>;
     validateForm: () => boolean;
@@ -60,6 +61,9 @@ export default function useFormState<T extends Record<string, unknown>>(
 
     return {
         getProps: (key: keyof T) => formState[key],
+        isValid: () => {
+            return isValid(errors);
+        },
         validateForm: () => {
             const errors = valideringsfunksjon(tilFormstate);
             setErrors(errors);

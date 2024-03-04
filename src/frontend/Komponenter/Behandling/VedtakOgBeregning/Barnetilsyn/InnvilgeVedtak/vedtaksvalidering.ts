@@ -6,7 +6,11 @@ import {
     IPeriodeMedBeløp,
     IUtgiftsperiode,
 } from '../../../../../App/typer/vedtak';
-import { erMånedÅrEtter, erMånedÅrEtterEllerLik } from '../../../../../App/utils/dato';
+import {
+    erMånedÅrEtter,
+    erMånedÅrEtterEllerLik,
+    erPåfølgendeÅrMåned,
+} from '../../../../../App/utils/dato';
 import { erOpphørEllerSanksjon } from '../Felles/utils';
 import { validerGyldigTallverdi } from '../../Felles/utils';
 
@@ -79,7 +83,7 @@ export const validerPerioder = ({
     };
 };
 
-const validerUtgiftsperioder = ({
+export const validerUtgiftsperioder = ({
     utgiftsperioder,
 }: {
     utgiftsperioder: IUtgiftsperiode[];
@@ -131,13 +135,20 @@ const validerUtgiftsperioder = ({
             };
         }
 
-        const forrige = index > 0 && utgiftsperioder[index - 1];
+        const forrigePeriode = index > 0 && utgiftsperioder[index - 1];
 
-        if (forrige && forrige.årMånedTil) {
-            if (!erMånedÅrEtter(forrige.årMånedTil, årMånedFra)) {
+        if (forrigePeriode && forrigePeriode.årMånedTil) {
+            if (!erMånedÅrEtter(forrigePeriode.årMånedTil, årMånedFra)) {
                 return {
                     ...utgiftsperiodeFeil,
-                    årMånedFra: `Ugyldig etterfølgende periode - fra (${årMånedFra}) må være etter til (${forrige.årMånedTil})`,
+                    årMånedFra: `Ugyldig etterfølgende periode - fra (${årMånedFra}) må være etter til (${forrigePeriode.årMånedTil})`,
+                };
+            }
+
+            if (!erPåfølgendeÅrMåned(forrigePeriode.årMånedTil, årMånedFra)) {
+                return {
+                    ...utgiftsperiodeFeil,
+                    årMånedFra: `Periodene er ikke sammenhengende`,
                 };
             }
         }
