@@ -183,6 +183,21 @@ export const InnvilgeBarnetilsyn: React.FC<{
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [finnesKontantstøtteUtbetaling]);
 
+    useEffect(() => {
+        if (!formState.isValid()) {
+            formState.validateForm();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [
+        utgiftsperiodeState.value,
+        kontantstøtteState.value,
+        tilleggsstønadState.value,
+        tilleggsstønadBegrunnelseState.value,
+        stønadsreduksjonState.value,
+        tilleggsstønadsperiodeState.value,
+        begrunnelseState.value,
+    ]);
+
     const lagreVedtak = (vedtaksRequest: IInnvilgeVedtakForBarnetilsyn) => {
         settLaster(true);
         nullstillIkkePersisterteKomponenter();

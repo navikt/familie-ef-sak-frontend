@@ -44,6 +44,9 @@ export const erMånedÅrEtter = (årMånedFra: string, årMånedTil: string): bo
     return isAfter(til, fra);
 };
 
+export const erPåfølgendeÅrMåned = (årMånedFra: string, årMånedTil: string): boolean =>
+    differenceInMonths(månedÅrTilDate(årMånedTil), månedÅrTilDate(årMånedFra)) === 1;
+
 export const månederMellom = (fra: Date, til: Date): number => {
     return differenceInMonths(addMonths(til, 1), fra);
 };

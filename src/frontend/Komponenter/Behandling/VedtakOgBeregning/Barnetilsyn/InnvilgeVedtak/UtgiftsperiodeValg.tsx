@@ -96,6 +96,13 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
         visModal: false,
     });
 
+    const slettValideringsfeil = (index: number) => {
+        settValideringsFeil((prevState: FormErrors<InnvilgeVedtakForm>) => {
+            const utgiftsperioder = (prevState.utgiftsperioder ?? []).filter((_, i) => i !== index);
+            return { ...prevState, utgiftsperioder };
+        });
+    };
+
     const oppdaterUtgiftsperiode = (
         index: number,
         property: EUtgiftsperiodeProperty,
@@ -159,10 +166,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
             lukkSanksjonsmodal();
         }
         utgiftsperioderState.remove(index);
-        settValideringsFeil((prevState: FormErrors<InnvilgeVedtakForm>) => {
-            const utgiftsperioder = (prevState.utgiftsperioder ?? []).filter((_, i) => i !== index);
-            return { ...prevState, utgiftsperioder };
-        });
+        slettValideringsfeil(index);
     };
 
     const slettPeriodeModalHvisSanksjon = (index: number) => {
