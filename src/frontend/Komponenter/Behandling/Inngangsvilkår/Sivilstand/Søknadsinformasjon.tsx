@@ -17,6 +17,9 @@ const Søknadsinformasjon: FC<Props> = ({ sivilstandtype, søknad }) => {
     switch (sivilstandtype) {
         case SivilstandType.UGIFT:
         case SivilstandType.UOPPGITT:
+        case SivilstandType.ENKE_ELLER_ENKEMANN:
+        case SivilstandType.SKILT:
+        case SivilstandType.SKILT_PARTNER:
             return (
                 <>
                     <Informasjonsrad
@@ -62,6 +65,19 @@ const Søknadsinformasjon: FC<Props> = ({ sivilstandtype, søknad }) => {
         case SivilstandType.SEPARERT_PARTNER:
             return (
                 <>
+                    <Informasjonsrad
+                        ikon={VilkårInfoIkon.SØKNAD}
+                        label="Gift uten at det er registrert i folkeregisteret"
+                        verdi={erUformeltGift !== undefined && mapTrueFalse(erUformeltGift)}
+                    />
+                    <Informasjonsrad
+                        ikon={VilkårInfoIkon.SØKNAD}
+                        label="Separert eller skilt uten at det er registrert i folkeregisteret"
+                        verdi={
+                            erUformeltSeparertEllerSkilt !== undefined &&
+                            mapTrueFalse(erUformeltSeparertEllerSkilt)
+                        }
+                    />
                     <Informasjonsrad
                         ikon={VilkårInfoIkon.SØKNAD}
                         label="Alene med barn fordi"
