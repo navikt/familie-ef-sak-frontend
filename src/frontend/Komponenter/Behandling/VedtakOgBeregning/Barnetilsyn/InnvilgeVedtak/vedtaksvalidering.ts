@@ -12,7 +12,7 @@ import {
     erPåfølgendeÅrMåned,
 } from '../../../../../App/utils/dato';
 import { erOpphørEllerSanksjon } from '../Felles/utils';
-import { ugyldigEtterfølgendePeriodeFeilmelding, validerGyldigTallverdi } from '../../Felles/utils';
+import { validerGyldigTallverdi } from '../../Felles/utils';
 
 export const validerInnvilgetVedtakForm = ({
     utgiftsperioder,
@@ -141,10 +141,7 @@ export const validerUtgiftsperioder = ({
             if (!erMånedÅrEtter(forrigePeriode.årMånedTil, årMånedFra)) {
                 return {
                     ...utgiftsperiodeFeil,
-                    årMånedFra: ugyldigEtterfølgendePeriodeFeilmelding(
-                        årMånedFra,
-                        forrigePeriode.årMånedTil
-                    ),
+                    årMånedFra: `Ugyldig etterfølgende periode - fra (${årMånedFra}) må være etter til (${forrigePeriode.årMånedTil})`,
                 };
             }
 
@@ -219,10 +216,7 @@ const validerKontantstøttePerioder = (
             if (!erMånedÅrEtter(forrige.årMånedTil, årMånedFra)) {
                 return {
                     ...kontantstøtteperiodeFeil,
-                    årMånedFra: ugyldigEtterfølgendePeriodeFeilmelding(
-                        årMånedFra,
-                        forrige.årMånedTil
-                    ),
+                    årMånedFra: `Ugyldig etterfølgende periode - fra (${årMånedFra}) må være etter til (${forrige.årMånedTil})`,
                 };
             }
         }
@@ -280,10 +274,7 @@ const validerTilleggsstønadPerioder = (
             if (!erMånedÅrEtter(forrige.årMånedTil, årMånedFra)) {
                 return {
                     ...tilleggsstønadPeriodeFeil,
-                    årMånedFra: ugyldigEtterfølgendePeriodeFeilmelding(
-                        årMånedFra,
-                        forrige.årMånedTil
-                    ),
+                    årMånedFra: `Ugyldig etterfølgende periode - fra (${årMånedFra}) må være etter til (${forrige.årMånedTil})`,
                 };
             }
         }

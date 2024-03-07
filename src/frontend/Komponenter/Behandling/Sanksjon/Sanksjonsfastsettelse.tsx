@@ -22,10 +22,17 @@ import {
 } from '../../../App/typer/vedtak';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
 import useFormState, { FormState } from '../../../App/hooks/felles/useFormState';
+
 import { FieldState } from '../../../App/hooks/felles/useFieldState';
 import { EnsligTextArea } from '../../../Felles/Input/TekstInput/EnsligTextArea';
 import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
-import { SANKSJONERE_VEDTAK, validerSanksjonereVedtakForm } from './utils';
+import {
+    antallDagerIgjenAvNåværendeMåned,
+    nesteMånedOgNesteMånedsÅrFormatert,
+    nåværendeÅrOgMånedFormatert,
+    SANKSJONERE_VEDTAK,
+    validerSanksjonereVedtakForm,
+} from './utils';
 import { useHentVedtak } from '../../../App/hooks/useHentVedtak';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { Behandling } from '../../../App/typer/fagsak';
@@ -37,11 +44,6 @@ import { Button, Heading } from '@navikt/ds-react';
 import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 import { useRedirectEtterLagring } from '../../../App/hooks/felles/useRedirectEtterLagring';
 import { v4 as uuidv4 } from 'uuid';
-import {
-    nesteMånedOgNesteMånedsÅrFormatert,
-    antallDagerIgjenAvNåværendeMåned,
-    nåværendeÅrOgMånedFormatert,
-} from '../../../App/utils/formatter';
 
 export type SanksjonereVedtakForm = ISanksjonereVedtakDto;
 
