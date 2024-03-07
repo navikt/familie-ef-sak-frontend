@@ -9,6 +9,7 @@ import {
     erMånedÅrEtter,
     erMånedÅrEtterEllerLik,
     erMånedÅrLik,
+    erPåfølgendeÅrMåned,
     plusMåneder,
     tilDato,
     tilÅrMåned,
@@ -139,12 +140,21 @@ export const validerVedtaksperioder = ({
                 årMånedFra: `Ugyldig periode - fra (${årMånedFra}) må være før til (${årMånedTil})`,
             };
         }
-        const forrige = index > 0 && perioder[index - 1];
-        if (forrige && forrige.årMånedTil) {
-            if (!erMånedÅrLik(tilÅrMåned(plusMåneder(forrige.årMånedTil, 1)), årMånedFra)) {
+
+        const forrigePeriode = index > 0 && perioder[index - 1];
+
+        if (forrigePeriode && forrigePeriode.årMånedTil) {
+            if (!erMånedÅrEtter(forrigePeriode.årMånedTil, årMånedFra)) {
                 return {
                     ...vedtaksperiodeFeil,
-                    årMånedFra: `Ugyldig etterfølgende periode - fra (${årMånedFra}) må være etter til (${forrige.årMånedTil})`,
+                    årMånedFra: `Ugyldig etterfølgende periode - fra (${årMånedFra}) må være etter til (${forrigePeriode.årMånedTil})`,
+                };
+            }
+
+            if (!erPåfølgendeÅrMåned(forrigePeriode.årMånedTil, årMånedFra)) {
+                return {
+                    ...vedtaksperiodeFeil,
+                    årMånedFra: `Periodene er ikke sammenhengende`,
                 };
             }
         }
