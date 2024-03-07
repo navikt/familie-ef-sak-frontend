@@ -16,7 +16,7 @@ import {
 } from '../../../../../App/utils/dato';
 import { InnvilgeVedtakForm } from './InnvilgeOvergangsstønad';
 import { FormErrors } from '../../../../../App/hooks/felles/useFormState';
-import { validerGyldigTallverdi } from '../../Felles/utils';
+import { ugyldigEtterfølgendePeriodeFeilmelding, validerGyldigTallverdi } from '../../Felles/utils';
 
 const attenMånederFremITiden = tilÅrMåned(plusMåneder(new Date(), 18));
 const syvMånederFremITiden = tilÅrMåned(plusMåneder(new Date(), 7));
@@ -89,6 +89,7 @@ export const validerVedtaksperioder = ({
 
     const feilIVedtaksPerioder = perioder.map((vedtaksperiode, index) => {
         const { årMånedFra, årMånedTil, aktivitet, periodeType } = vedtaksperiode;
+
         let vedtaksperiodeFeil: FormErrors<IVedtaksperiode> = {
             aktivitet: undefined,
             periodeType: undefined,
@@ -147,7 +148,10 @@ export const validerVedtaksperioder = ({
             if (!erMånedÅrEtter(forrigePeriode.årMånedTil, årMånedFra)) {
                 return {
                     ...vedtaksperiodeFeil,
-                    årMånedFra: `Ugyldig etterfølgende periode - fra (${årMånedFra}) må være etter til (${forrigePeriode.årMånedTil})`,
+                    årMånedFra: ugyldigEtterfølgendePeriodeFeilmelding(
+                        årMånedFra,
+                        forrigePeriode.årMånedTil
+                    ),
                 };
             }
 
@@ -219,7 +223,7 @@ const validerInntektsperiode = (
     const forrige = index > 0 && inntekter[index - 1];
     if (forrige && forrige.årMånedFra) {
         if (!erMånedÅrEtter(forrige.årMånedFra, årMånedFra)) {
-            return `Ugyldig etterfølgende periode - fra (${forrige.årMånedFra}) må være etter til (${årMånedFra})`;
+            return ugyldigEtterfølgendePeriodeFeilmelding(årMånedFra, forrige.årMånedFra);
         }
     }
     if (erMånedÅrEtter(attenMånederFremITiden, årMånedFra)) {
