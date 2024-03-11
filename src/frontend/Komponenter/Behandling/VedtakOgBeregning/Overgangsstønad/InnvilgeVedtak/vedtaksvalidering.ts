@@ -219,7 +219,7 @@ const validerInntektsperiode = (
     const forrige = index > 0 && inntekter[index - 1];
     if (forrige && forrige.årMånedFra) {
         if (!erMånedÅrEtter(forrige.årMånedFra, årMånedFra)) {
-            return `Ugyldig etterfølgende periode - fra (${forrige.årMånedFra}) må være etter til (${årMånedFra})`;
+            return `Ugyldig etterfølgende periode - fra (${årMånedFra}) må være etter til (${forrige.årMånedFra})`;
         }
     }
     if (erMånedÅrEtter(attenMånederFremITiden, årMånedFra)) {
