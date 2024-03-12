@@ -11,7 +11,7 @@ import {
     overlapper,
 } from '../../../../../App/utils/dato';
 import { beregnSkoleår, validerSkoleår } from './skoleår';
-import { validerGyldigTallverdi } from '../../Felles/utils';
+import { fraPeriodeErEtterTilPeriode, validerGyldigTallverdi } from '../../Felles/utils';
 import { InnvilgeVedtakForm } from './typer';
 
 const periodeSkolepengerFeil: FormErrors<IPeriodeSkolepenger> = {
@@ -134,7 +134,7 @@ const validerDelårsperioder = (
         if (!erMånedÅrEtterEllerLik(årMånedFra, årMånedTil)) {
             return {
                 ...periodeSkolepengerFeil,
-                årMånedFra: `Ugyldig periode - fra (${årMånedFra}) må være før til (${årMånedTil})`,
+                årMånedFra: fraPeriodeErEtterTilPeriode,
             };
         }
         const intervall: Intervall = {
