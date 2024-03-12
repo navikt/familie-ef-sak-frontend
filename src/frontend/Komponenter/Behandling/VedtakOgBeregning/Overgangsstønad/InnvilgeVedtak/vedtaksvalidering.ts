@@ -16,7 +16,11 @@ import {
 } from '../../../../../App/utils/dato';
 import { InnvilgeVedtakForm } from './InnvilgeOvergangsstønad';
 import { FormErrors } from '../../../../../App/hooks/felles/useFormState';
-import { ugyldigEtterfølgendePeriodeFeilmelding, validerGyldigTallverdi } from '../../Felles/utils';
+import {
+    fraPeriodeErEtterTilPeriode,
+    ugyldigEtterfølgendePeriodeFeilmelding,
+    validerGyldigTallverdi,
+} from '../../Felles/utils';
 
 const attenMånederFremITiden = tilÅrMåned(plusMåneder(new Date(), 18));
 const syvMånederFremITiden = tilÅrMåned(plusMåneder(new Date(), 7));
@@ -138,7 +142,7 @@ export const validerVedtaksperioder = ({
         if (!erMånedÅrEtterEllerLik(årMånedFra, årMånedTil)) {
             return {
                 ...vedtaksperiodeFeil,
-                årMånedFra: `Ugyldig periode - fra (${årMånedFra}) må være før til (${årMånedTil})`,
+                årMånedFra: fraPeriodeErEtterTilPeriode,
             };
         }
 

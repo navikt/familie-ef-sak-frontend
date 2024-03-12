@@ -206,3 +206,5 @@ export const validerGyldigTallverdi = (verdi: string | number | undefined | null
 export const ugyldigEtterfølgendePeriodeFeilmelding = (årMånedFra: string, årMånedTil: string) => {
     return `Periodene er ikke sammenhengende: ${genererÅrOgMånedFraStreng(årMånedFra)} må være etter ${genererÅrOgMånedFraStreng(årMånedTil)}`;
 };
+
+export const fraPeriodeErEtterTilPeriode = 'Til og med dato må være etter fra og med dato';

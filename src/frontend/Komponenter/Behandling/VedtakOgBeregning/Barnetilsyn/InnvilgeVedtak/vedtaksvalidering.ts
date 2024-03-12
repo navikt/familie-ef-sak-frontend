@@ -12,7 +12,11 @@ import {
     erPåfølgendeÅrMåned,
 } from '../../../../../App/utils/dato';
 import { erOpphørEllerSanksjon } from '../Felles/utils';
-import { ugyldigEtterfølgendePeriodeFeilmelding, validerGyldigTallverdi } from '../../Felles/utils';
+import {
+    fraPeriodeErEtterTilPeriode,
+    ugyldigEtterfølgendePeriodeFeilmelding,
+    validerGyldigTallverdi,
+} from '../../Felles/utils';
 
 export const validerInnvilgetVedtakForm = ({
     utgiftsperioder,
@@ -137,7 +141,7 @@ export const validerUtgiftsperioder = ({
         if (!erMånedÅrEtterEllerLik(årMånedFra, årMånedTil)) {
             return {
                 ...utgiftsperiodeFeil,
-                årMånedFra: `Ugyldig periode - fra (${årMånedFra}) må være før til (${årMånedTil})`,
+                årMånedFra: fraPeriodeErEtterTilPeriode,
             };
         }
 
@@ -217,7 +221,7 @@ const validerKontantstøttePerioder = (
         if (!erMånedÅrEtterEllerLik(årMånedFra, årMånedTil)) {
             return {
                 ...kontantstøtteperiodeFeil,
-                årMånedFra: `Ugyldig periode - fra (${årMånedFra}) må være før til (${årMånedTil})`,
+                årMånedFra: fraPeriodeErEtterTilPeriode,
             };
         }
         const forrige = index > 0 && kontantstøtteperioder[index - 1];
@@ -278,7 +282,7 @@ const validerTilleggsstønadPerioder = (
         if (!erMånedÅrEtterEllerLik(årMånedFra, årMånedTil)) {
             return {
                 ...tilleggsstønadPeriodeFeil,
-                årMånedFra: `Ugyldig periode - fra (${årMånedFra}) må være før til (${årMånedTil})`,
+                årMånedFra: fraPeriodeErEtterTilPeriode,
             };
         }
         const forrige = index > 0 && tilleggsstønadsperioder[index - 1];
