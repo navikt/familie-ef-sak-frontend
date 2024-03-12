@@ -231,7 +231,7 @@ describe('validering av utgiftsperioder for innvilget barnetilsyn', () => {
 
         expect(validering.utgiftsperioder.length).toBe(1);
         expect(validering.utgiftsperioder[0].årMånedFra).toBe(
-            'Ugyldig periode - fra (2024-05) må være før til (2024-01)'
+            'Til og med dato må være etter fra og med dato'
         );
     });
 
@@ -340,7 +340,7 @@ describe('validering av kontantstøtteperioder for innvilget barnetilsyn', () =>
         expect(validering.kontantstøtteperioder).toBeDefined;
         expect(validering.kontantstøtteperioder).toHaveLength(1);
         expect(validering.kontantstøtteperioder[0].årMånedFra).toBe(
-            'Ugyldig periode - fra (2024-03) må være før til (2024-02)'
+            'Til og med dato må være etter fra og med dato'
         );
     });
 
@@ -426,7 +426,7 @@ describe('validering av kontantstøtteperioder for innvilget barnetilsyn', () =>
             expect(validering.tilleggsstønadsperioder).toBeDefined;
             expect(validering.tilleggsstønadsperioder.length).toBe(1);
             expect(validering.tilleggsstønadsperioder[0].årMånedFra).toBe(
-                'Ugyldig periode - fra (2024-03) må være før til (2024-02)'
+                'Til og med dato må være etter fra og med dato'
             );
         });
 

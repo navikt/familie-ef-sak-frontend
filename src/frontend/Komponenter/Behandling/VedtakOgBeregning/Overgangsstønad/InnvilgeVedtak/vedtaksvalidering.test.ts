@@ -191,7 +191,7 @@ describe('skal feile validering av vedtaksperioder', () => {
 
         expect(vedtaksvalidering.perioder).toHaveLength(1);
         expect(vedtaksvalidering.perioder[0].årMånedFra).toBe(
-            'Ugyldig periode - fra (2024-05) må være før til (2024-01)'
+            'Til og med dato må være etter fra og med dato'
         );
     });
 
