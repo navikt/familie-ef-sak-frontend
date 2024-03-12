@@ -11,8 +11,8 @@ import { Sanksjonsårsak } from '../../../../../App/typer/Sanksjonsårsak';
 
 describe('validering av innvilget overgangsstønad', () => {
     test('skal feile validering for periodebegrunnelse', () => {
-        const vedtaksform = lagInnvilgeVedtakForm([], []);
-        const vedtaksform2 = lagInnvilgeVedtakForm([], [], '');
+        const vedtaksform = lagForm();
+        const vedtaksform2 = { ...lagForm(), periodeBegrunnelse: '' };
 
         const vedtaksvalidering = validerInnvilgetVedtakForm(vedtaksform);
         const vedtaksvalidering2 = validerInnvilgetVedtakForm(vedtaksform2);
@@ -26,8 +26,12 @@ describe('validering av innvilget overgangsstønad', () => {
     });
 
     test('skal feile validering for inntektsbegrunnelse', () => {
-        const vedtaksform = lagInnvilgeVedtakForm([], [], 'begrunnelse');
-        const vedtaksform2 = lagInnvilgeVedtakForm([], [], 'begrunnelse', '');
+        const vedtaksform = { ...lagForm(), periodeBegrunnelse: 'begrunnelse' };
+        const vedtaksform2 = {
+            ...lagForm(),
+            periodeBegrunnelse: 'begrunnelse',
+            inntektBegrunnelse: '',
+        };
 
         const vedtaksvalidering = validerInnvilgetVedtakForm(vedtaksform);
         const vedtaksvalidering2 = validerInnvilgetVedtakForm(vedtaksform2);
@@ -41,8 +45,8 @@ describe('validering av innvilget overgangsstønad', () => {
     });
 
     test('skal feile validering for samordningsfradrag', () => {
-        const inntektsperioder = [lagInntektsperiode('', '', '', '', '100')];
-        const vedtaksform = lagInnvilgeVedtakForm([], inntektsperioder);
+        const inntektsperioder = [{ ...lagInntektsperiode(), samordningsfradrag: 10 }];
+        const vedtaksform = { ...lagForm(), inntekter: inntektsperioder };
 
         const vedtaksvalidering = validerInnvilgetVedtakForm(vedtaksform);
 
@@ -69,7 +73,11 @@ describe('skal feile validering av vedtaksperioder', () => {
             ),
         ];
 
-        const vedtaksform = lagInnvilgeVedtakForm(vedtaksperioder, [], '', '', '', '2015-03-03');
+        const vedtaksform = {
+            ...lagForm(),
+            perioder: vedtaksperioder,
+            yngsteBarnFødselsdato: '2015-03-03',
+        };
 
         const vedtaksvalidering = validerInnvilgetVedtakForm(vedtaksform);
 
@@ -84,7 +92,7 @@ describe('skal feile validering av vedtaksperioder', () => {
 
     test('Manglende periodetype.', () => {
         const vedtaksperioder = [lagVedtaksperiode(), lagVedtaksperiode('')];
-        const vedtaksform = lagInnvilgeVedtakForm(vedtaksperioder, []);
+        const vedtaksform = lagForm(vedtaksperioder);
 
         const vedtaksvalidering = validerInnvilgetVedtakForm(vedtaksform);
 
@@ -98,7 +106,7 @@ describe('skal feile validering av vedtaksperioder', () => {
             lagVedtaksperiode(EPeriodetype.MIDLERTIDIG_OPPHØR),
             lagVedtaksperiode(EPeriodetype.MIDLERTIDIG_OPPHØR),
         ];
-        const vedtaksform = lagInnvilgeVedtakForm(vedtaksperioder, []);
+        const vedtaksform = lagForm(vedtaksperioder);
 
         const vedtaksvalidering = validerInnvilgetVedtakForm(vedtaksform);
 
@@ -112,9 +120,9 @@ describe('skal feile validering av vedtaksperioder', () => {
     test('Manglende aktivitet.', () => {
         const vedtaksperioder = [
             lagVedtaksperiode(EPeriodetype.HOVEDPERIODE),
-            lagVedtaksperiode(EPeriodetype.HOVEDPERIODE, ''),
+            lagVedtaksperiode(EPeriodetype.HOVEDPERIODE),
         ];
-        const vedtaksform = lagInnvilgeVedtakForm(vedtaksperioder, []);
+        const vedtaksform = lagForm(vedtaksperioder);
 
         const vedtaksvalidering = validerInnvilgetVedtakForm(vedtaksform);
 
@@ -128,7 +136,7 @@ describe('skal feile validering av vedtaksperioder', () => {
             lagVedtaksperiode(EPeriodetype.PERIODE_FØR_FØDSEL, EAktivitet.IKKE_AKTIVITETSPLIKT),
             lagVedtaksperiode(EPeriodetype.PERIODE_FØR_FØDSEL, EAktivitet.FORSØRGER_I_UTDANNING),
         ];
-        const vedtaksform = lagInnvilgeVedtakForm(vedtaksperioder, []);
+        const vedtaksform = lagForm(vedtaksperioder);
 
         const vedtaksvalidering = validerInnvilgetVedtakForm(vedtaksform);
 
@@ -149,7 +157,7 @@ describe('skal feile validering av vedtaksperioder', () => {
                 ''
             ),
         ];
-        const vedtaksform = lagInnvilgeVedtakForm(vedtaksperioder, []);
+        const vedtaksform = lagForm(vedtaksperioder, []);
 
         const vedtaksvalidering = validerInnvilgetVedtakForm(vedtaksform);
 
@@ -177,7 +185,7 @@ describe('skal feile validering av vedtaksperioder', () => {
                 '2024-01'
             ),
         ];
-        const vedtaksform = lagInnvilgeVedtakForm(vedtaksperioder, []);
+        const vedtaksform = lagForm(vedtaksperioder, []);
 
         const vedtaksvalidering = validerInnvilgetVedtakForm(vedtaksform);
 
@@ -202,7 +210,7 @@ describe('skal feile validering av vedtaksperioder', () => {
                 '2024-06'
             ),
         ];
-        const vedtaksform = lagInnvilgeVedtakForm(vedtaksperioder, []);
+        const vedtaksform = lagForm(vedtaksperioder, []);
 
         const vedtaksvalidering = validerInnvilgetVedtakForm(vedtaksform);
 
@@ -228,7 +236,7 @@ describe('skal feile validering av vedtaksperioder', () => {
                 '2024-05'
             ),
         ];
-        const vedtaksform = lagInnvilgeVedtakForm(vedtaksperioder, []);
+        const vedtaksform = lagForm(vedtaksperioder, []);
 
         const vedtaksvalidering = validerInnvilgetVedtakForm(vedtaksform);
 
@@ -246,7 +254,7 @@ describe('skal feile validering av vedtaksperioder', () => {
                 '2024-11'
             ),
         ];
-        const vedtaksform = lagInnvilgeVedtakForm(vedtaksperioder, []);
+        const vedtaksform = lagForm(vedtaksperioder, []);
 
         const vedtaksvalidering = validerInnvilgetVedtakForm(vedtaksform);
 
@@ -277,7 +285,7 @@ describe('skal feile validering av vedtaksperioder', () => {
                 '2026-08'
             ),
         ];
-        const vedtaksform = lagInnvilgeVedtakForm(vedtaksperioder, []);
+        const vedtaksform = lagForm(vedtaksperioder, []);
 
         const vedtaksvalidering = validerInnvilgetVedtakForm(vedtaksform);
 
@@ -297,7 +305,7 @@ describe('skal feile validering av inntektsperioder', () => {
             lagInntektsperiode('2024-02', 10.1, 10.1, 10.1, 10.1),
         ];
 
-        const vedtaksform = lagInnvilgeVedtakForm([], inntektsperioder, '', '', '', '2015-03-03');
+        const vedtaksform = lagForm([], inntektsperioder, '', '', '', '2015-03-03');
 
         const vedtaksvalidering = validerInnvilgetVedtakForm(vedtaksform);
 
@@ -327,7 +335,7 @@ describe('skal feile validering av inntektsperioder', () => {
     test('mangelfull inntektsperiode', () => {
         const inntektsperioder = [lagInntektsperiode(), lagInntektsperiode('')];
 
-        const vedtaksform = lagInnvilgeVedtakForm([], inntektsperioder);
+        const vedtaksform = lagForm([], inntektsperioder);
 
         const vedtaksvalidering = validerInnvilgetVedtakForm(vedtaksform);
 
@@ -347,7 +355,7 @@ describe('skal feile validering av inntektsperioder', () => {
         ];
         const inntektsperioder = [lagInntektsperiode('2024-02'), lagInntektsperiode('2024-03')];
 
-        const vedtaksform = lagInnvilgeVedtakForm(vedtaksperioder, inntektsperioder);
+        const vedtaksform = lagForm(vedtaksperioder, inntektsperioder);
 
         const vedtaksvalidering = validerInnvilgetVedtakForm(vedtaksform);
 
@@ -360,7 +368,7 @@ describe('skal feile validering av inntektsperioder', () => {
 
     test('Fradato på etterfølgende inntektsperiode må være etter tildato på forrige periode.', () => {
         const inntektsperioder = [lagInntektsperiode('2024-01'), lagInntektsperiode('2023-12')];
-        const vedtaksform = lagInnvilgeVedtakForm([], inntektsperioder);
+        const vedtaksform = lagForm([], inntektsperioder);
 
         const vedtaksvalidering = validerInnvilgetVedtakForm(vedtaksform);
 
@@ -373,7 +381,7 @@ describe('skal feile validering av inntektsperioder', () => {
 
     test('Inntektsperiode kan ikke starte mer enn 18 måneder frem i tid.', () => {
         const inntektsperioder = [lagInntektsperiode('2024-02'), lagInntektsperiode('2025-10')];
-        const vedtaksform = lagInnvilgeVedtakForm([], inntektsperioder);
+        const vedtaksform = lagForm([], inntektsperioder);
 
         const vedtaksvalidering = validerInnvilgetVedtakForm(vedtaksform);
 
@@ -387,7 +395,7 @@ describe('skal feile validering av inntektsperioder', () => {
     test('Siste inntektsperiode kan ikke starte etter sluttdato på den siste vedtaksperioden.', () => {
         const vedtaksperioder = [lagVedtaksperiode('', '', '2024-02', '2024-08')];
         const inntektsperioder = [lagInntektsperiode('2024-01'), lagInntektsperiode('2024-09')];
-        const vedtaksform = lagInnvilgeVedtakForm(vedtaksperioder, inntektsperioder);
+        const vedtaksform = lagForm(vedtaksperioder, inntektsperioder);
 
         const vedtaksvalidering = validerInnvilgetVedtakForm(vedtaksform);
 
@@ -433,17 +441,17 @@ const lagInntektsperiode = (
     };
 };
 
-const lagInnvilgeVedtakForm = (
-    vedtaksperioder: IVedtaksperiode[],
-    inntektsperiode: IInntektsperiode[],
+const lagForm = (
+    perioder?: IVedtaksperiode[],
+    inntekter?: IInntektsperiode[],
     periodeBegrunnelse?: string,
     inntektBegrunnelse?: string,
     samordningsfradragType?: string,
     yngsteBarnFødselsdato?: string
 ): InnvilgeVedtakForm => {
     return {
-        perioder: vedtaksperioder,
-        inntekter: inntektsperiode,
+        perioder: perioder ?? [],
+        inntekter: inntekter ?? [],
         periodeBegrunnelse: periodeBegrunnelse,
         inntektBegrunnelse: inntektBegrunnelse,
         samordningsfradragType: samordningsfradragType,

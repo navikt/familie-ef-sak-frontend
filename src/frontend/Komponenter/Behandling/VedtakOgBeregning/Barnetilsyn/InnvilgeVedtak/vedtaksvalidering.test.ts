@@ -11,17 +11,23 @@ import { validerInnvilgetVedtakForm } from './vedtaksvalidering';
 
 describe('validering av innvilget barnetilsyn', () => {
     test('skal validere begrunnelsesfelt for tilleggsstønad', () => {
-        const underkjentForm = lagForm([], ERadioValg.JA, ERadioValg.JA, ERadioValg.JA);
-        const underkjentForm2 = lagForm([], ERadioValg.JA, ERadioValg.JA, ERadioValg.JA, '');
-        const godkjentForm = lagForm([], ERadioValg.JA, ERadioValg.NEI, ERadioValg.JA);
-        const godkjentForm2 = lagForm([], ERadioValg.JA, ERadioValg.NEI, ERadioValg.JA, '');
-        const godkjentForm3 = lagForm(
-            [],
-            ERadioValg.JA,
-            ERadioValg.JA,
-            ERadioValg.JA,
-            'Begrunnelse'
-        );
+        const underkjentForm = { ...lagForm(), harTilleggsstønad: ERadioValg.JA };
+        const underkjentForm2 = {
+            ...lagForm(),
+            harTilleggsstønad: ERadioValg.JA,
+            tilleggsstønadBegrunnelse: '',
+        };
+        const godkjentForm = { ...lagForm(), harTilleggsstønad: ERadioValg.NEI };
+        const godkjentForm2 = {
+            ...lagForm(),
+            harTilleggsstønad: ERadioValg.NEI,
+            tilleggsstønadBegrunnelse: '',
+        };
+        const godkjentForm3 = {
+            ...lagForm(),
+            harTilleggsstønad: ERadioValg.JA,
+            tilleggsstønadBegrunnelse: 'Begrunnelse',
+        };
 
         const underkjentValidering = validerInnvilgetVedtakForm(underkjentForm);
         const underkjentValidering2 = validerInnvilgetVedtakForm(underkjentForm2);
@@ -41,27 +47,9 @@ describe('validering av innvilget barnetilsyn', () => {
     });
 
     test('skal validere begrunnelsesfelt', () => {
-        const underkjentForm = lagForm([], ERadioValg.JA, ERadioValg.JA, ERadioValg.JA, '', [], []);
-        const underkjentForm2 = lagForm(
-            [],
-            ERadioValg.JA,
-            ERadioValg.JA,
-            ERadioValg.JA,
-            '',
-            [],
-            [],
-            ''
-        );
-        const godkjentForm = lagForm(
-            [],
-            ERadioValg.JA,
-            ERadioValg.JA,
-            ERadioValg.JA,
-            '',
-            [],
-            [],
-            'Begrunnelse'
-        );
+        const underkjentForm = { ...lagForm() };
+        const underkjentForm2 = { ...lagForm(), begrunnelse: '' };
+        const godkjentForm = { ...lagForm(), begrunnelse: 'Begrunnelse' };
 
         const underkjentValidering = validerInnvilgetVedtakForm(underkjentForm);
         const underkjentValidering2 = validerInnvilgetVedtakForm(underkjentForm2);
@@ -73,9 +61,9 @@ describe('validering av innvilget barnetilsyn', () => {
     });
 
     test('skal validere valg av kontantstøtte', () => {
-        const underkjentForm = lagForm([], ERadioValg.IKKE_SATT);
-        const godkjentForm = lagForm([], ERadioValg.NEI);
-        const godkjentForm2 = lagForm([], ERadioValg.JA);
+        const underkjentForm = { ...lagForm(), harKontantstøtte: ERadioValg.IKKE_SATT };
+        const godkjentForm = { ...lagForm(), harKontantstøtte: ERadioValg.NEI };
+        const godkjentForm2 = { ...lagForm(), harKontantstøtte: ERadioValg.JA };
 
         const underkjentValidering = validerInnvilgetVedtakForm(underkjentForm);
         const godkjentValidering = validerInnvilgetVedtakForm(godkjentForm);
@@ -87,9 +75,9 @@ describe('validering av innvilget barnetilsyn', () => {
     });
 
     test('skal validere valg av tilleggsstønad', () => {
-        const underkjentForm = lagForm([], ERadioValg.JA, ERadioValg.IKKE_SATT);
-        const godkjentForm = lagForm([], ERadioValg.JA, ERadioValg.NEI);
-        const godkjentForm2 = lagForm([], ERadioValg.JA, ERadioValg.JA);
+        const underkjentForm = { ...lagForm(), harTilleggsstønad: ERadioValg.IKKE_SATT };
+        const godkjentForm = { ...lagForm(), harTilleggsstønad: ERadioValg.NEI };
+        const godkjentForm2 = { ...lagForm(), harTilleggsstønad: ERadioValg.JA };
 
         const underkjentValidering = validerInnvilgetVedtakForm(underkjentForm);
         const godkjentValidering = validerInnvilgetVedtakForm(godkjentForm);
@@ -101,10 +89,14 @@ describe('validering av innvilget barnetilsyn', () => {
     });
 
     test('skal validere valg av stønadsreduksjon', () => {
-        const underkjentForm = lagForm([], ERadioValg.JA, ERadioValg.JA, ERadioValg.IKKE_SATT);
-        const godkjentForm = lagForm([], ERadioValg.JA, ERadioValg.JA, ERadioValg.NEI);
-        const godkjentForm2 = lagForm([], ERadioValg.JA, ERadioValg.JA, ERadioValg.JA);
-        const godkjentForm3 = lagForm([], ERadioValg.JA, ERadioValg.NEI, ERadioValg.IKKE_SATT);
+        const underkjentForm = { ...lagForm(), skalStønadReduseres: ERadioValg.IKKE_SATT };
+        const godkjentForm = { ...lagForm(), skalStønadReduseres: ERadioValg.NEI };
+        const godkjentForm2 = { ...lagForm(), skalStønadReduseres: ERadioValg.JA };
+        const godkjentForm3 = {
+            ...lagForm(),
+            harTilleggsstønad: ERadioValg.NEI,
+            skalStønadReduseres: ERadioValg.NEI,
+        };
 
         const underkjentValidering = validerInnvilgetVedtakForm(underkjentForm);
         const godkjentValidering = validerInnvilgetVedtakForm(godkjentForm);
@@ -121,10 +113,10 @@ describe('validering av innvilget barnetilsyn', () => {
 describe('validering av utgiftsperioder for innvilget barnetilsyn', () => {
     test('skal validere valg av periodetype', () => {
         const utgiftsperioder: IUtgiftsperiode[] = [
-            lagUtgiftsperiode('', '', [], 0, undefined),
-            lagUtgiftsperiode('', '', [], 0, EUtgiftsperiodetype.ORDINÆR),
-            lagUtgiftsperiode('', '', [], 0, EUtgiftsperiodetype.OPPHØR),
-            lagUtgiftsperiode('', '', [], 0, EUtgiftsperiodetype.SANKSJON_1_MND),
+            { ...lagUtgiftsperiode() },
+            { ...lagUtgiftsperiode(), periodetype: EUtgiftsperiodetype.ORDINÆR },
+            { ...lagUtgiftsperiode(), periodetype: EUtgiftsperiodetype.OPPHØR },
+            { ...lagUtgiftsperiode(), periodetype: EUtgiftsperiodetype.SANKSJON_1_MND },
         ];
         const vedtaksform = lagForm(utgiftsperioder);
         const validering = validerInnvilgetVedtakForm(vedtaksform);
@@ -138,9 +130,9 @@ describe('validering av utgiftsperioder for innvilget barnetilsyn', () => {
 
     test('siste periode kan ikke være et opphør', () => {
         const utgiftsperioder: IUtgiftsperiode[] = [
-            lagUtgiftsperiode('', '', [], 0, EUtgiftsperiodetype.ORDINÆR),
-            lagUtgiftsperiode('', '', [], 0, EUtgiftsperiodetype.ORDINÆR),
-            lagUtgiftsperiode('', '', [], 0, EUtgiftsperiodetype.OPPHØR),
+            { ...lagUtgiftsperiode(), periodetype: EUtgiftsperiodetype.ORDINÆR },
+            { ...lagUtgiftsperiode(), periodetype: EUtgiftsperiodetype.ORDINÆR },
+            { ...lagUtgiftsperiode(), periodetype: EUtgiftsperiodetype.OPPHØR },
         ];
         const vedtaksform = lagForm(utgiftsperioder);
         const validering = validerInnvilgetVedtakForm(vedtaksform);
@@ -155,30 +147,21 @@ describe('validering av utgiftsperioder for innvilget barnetilsyn', () => {
 
     test('kan ikke velge aktivitet ved opphør eller sanksjon', () => {
         const utgiftsperioder: IUtgiftsperiode[] = [
-            lagUtgiftsperiode(
-                '',
-                '',
-                [],
-                0,
-                EUtgiftsperiodetype.SANKSJON_1_MND,
-                EUtgiftsperiodeAktivitet.I_ARBEID
-            ),
-            lagUtgiftsperiode(
-                '',
-                '',
-                [],
-                0,
-                EUtgiftsperiodetype.OPPHØR,
-                EUtgiftsperiodeAktivitet.I_ARBEID
-            ),
-            lagUtgiftsperiode(
-                '',
-                '',
-                [],
-                0,
-                EUtgiftsperiodetype.ORDINÆR,
-                EUtgiftsperiodeAktivitet.I_ARBEID
-            ),
+            {
+                ...lagUtgiftsperiode(),
+                periodetype: EUtgiftsperiodetype.SANKSJON_1_MND,
+                aktivitetstype: EUtgiftsperiodeAktivitet.I_ARBEID,
+            },
+            {
+                ...lagUtgiftsperiode(),
+                periodetype: EUtgiftsperiodetype.OPPHØR,
+                aktivitetstype: EUtgiftsperiodeAktivitet.I_ARBEID,
+            },
+            {
+                ...lagUtgiftsperiode(),
+                periodetype: EUtgiftsperiodetype.ORDINÆR,
+                aktivitetstype: EUtgiftsperiodeAktivitet.I_ARBEID,
+            },
         ];
         const vedtaksform = lagForm(utgiftsperioder);
         const validering = validerInnvilgetVedtakForm(vedtaksform);
@@ -195,16 +178,13 @@ describe('validering av utgiftsperioder for innvilget barnetilsyn', () => {
 
     test('må velge aktivitetstype dersom periodetypen ikke er opphør eller sanksjon', () => {
         const utgiftsperioder: IUtgiftsperiode[] = [
-            lagUtgiftsperiode('', '', [], 0),
-            lagUtgiftsperiode('', '', [], 0, EUtgiftsperiodetype.ORDINÆR, undefined),
-            lagUtgiftsperiode(
-                '',
-                '',
-                [],
-                0,
-                EUtgiftsperiodetype.ORDINÆR,
-                EUtgiftsperiodeAktivitet.I_ARBEID
-            ),
+            { ...lagUtgiftsperiode() },
+            { ...lagUtgiftsperiode(), periodetype: EUtgiftsperiodetype.ORDINÆR },
+            {
+                ...lagUtgiftsperiode(),
+                periodetype: EUtgiftsperiodetype.ORDINÆR,
+                aktivitetstype: EUtgiftsperiodeAktivitet.I_ARBEID,
+            },
         ];
         const vedtaksform = lagForm(utgiftsperioder);
         const validering = validerInnvilgetVedtakForm(vedtaksform);
@@ -221,10 +201,10 @@ describe('validering av utgiftsperioder for innvilget barnetilsyn', () => {
 
     test('må velge fra og til dato', () => {
         const utgiftsperioder: IUtgiftsperiode[] = [
-            lagUtgiftsperiode('', '', []),
-            lagUtgiftsperiode('2024-01', '', []),
-            lagUtgiftsperiode('', '2024-02', []),
-            lagUtgiftsperiode('2024-01', '2024-02', []),
+            { ...lagUtgiftsperiode() },
+            { ...lagUtgiftsperiode(), årMånedFra: '2024-01' },
+            { ...lagUtgiftsperiode(), årMånedFra: '', årMånedTil: '2024-02' },
+            { ...lagUtgiftsperiode(), årMånedFra: '2024-01', årMånedTil: '2024-02' },
         ];
         const vedtaksform = lagForm(utgiftsperioder);
         const validering = validerInnvilgetVedtakForm(vedtaksform);
@@ -243,7 +223,9 @@ describe('validering av utgiftsperioder for innvilget barnetilsyn', () => {
     });
 
     test('utgiftsperiode sin fradato må komme før tildato', () => {
-        const utgiftsperioder: IUtgiftsperiode[] = [lagUtgiftsperiode('2024-05', '2024-01', [])];
+        const utgiftsperioder: IUtgiftsperiode[] = [
+            { ...lagUtgiftsperiode(), årMånedFra: '2024-05', årMånedTil: '2024-01' },
+        ];
         const vedtaksform = lagForm(utgiftsperioder);
         const validering = validerInnvilgetVedtakForm(vedtaksform);
 
@@ -255,8 +237,8 @@ describe('validering av utgiftsperioder for innvilget barnetilsyn', () => {
 
     test('utgiftsperiode sin fradato må starte etter den forrige utgiftsperioden sin tildato', () => {
         const utgiftsperioder: IUtgiftsperiode[] = [
-            lagUtgiftsperiode('2024-01', '2024-04', []),
-            lagUtgiftsperiode('2024-02', '2024-07', []),
+            { ...lagUtgiftsperiode(), årMånedFra: '2024-01', årMånedTil: '2024-04' },
+            { ...lagUtgiftsperiode(), årMånedFra: '2024-02', årMånedTil: '2024-07' },
         ];
         const vedtaksform = lagForm(utgiftsperioder);
         const validering = validerInnvilgetVedtakForm(vedtaksform);
@@ -270,8 +252,8 @@ describe('validering av utgiftsperioder for innvilget barnetilsyn', () => {
 
     test('utgiftsperiodene må være sammenhengende', () => {
         const utgiftsperioder: IUtgiftsperiode[] = [
-            lagUtgiftsperiode('2024-01', '2024-03', []),
-            lagUtgiftsperiode('2024-05', '2024-07', []),
+            { ...lagUtgiftsperiode(), årMånedFra: '2024-01', årMånedTil: '2024-03' },
+            { ...lagUtgiftsperiode(), årMånedFra: '2024-05', årMånedTil: '2024-07' },
         ];
         const vedtaksform = lagForm(utgiftsperioder);
         const validering = validerInnvilgetVedtakForm(vedtaksform);
@@ -311,15 +293,12 @@ describe('validering av utgiftsperioder for innvilget barnetilsyn', () => {
 
 describe('validering av kontantstøtteperioder for innvilget barnetilsyn', () => {
     test('Skal ikke valideres dersom ingen ingen kontantstøtte', () => {
-        const kontantPerioder = [lagBeløpsperiode('2024-01', '2024-02', 10)];
-        const vedtaksform = lagForm(
-            [],
-            ERadioValg.JA,
-            ERadioValg.JA,
-            ERadioValg.NEI,
-            '',
-            kontantPerioder
-        );
+        const kontantPerioder = [lagBeløpsperiode('2024-01', '2024-02')];
+        const vedtaksform = {
+            ...lagForm(),
+            skalStønadReduseres: ERadioValg.NEI,
+            kontantstøtteperioder: kontantPerioder,
+        };
         const validering = validerInnvilgetVedtakForm(vedtaksform);
 
         expect(validering.kontantstøtteperioder).toBeDefined;
@@ -331,19 +310,12 @@ describe('validering av kontantstøtteperioder for innvilget barnetilsyn', () =>
 
     test('Må velge fra og til dato ', () => {
         const kontantPerioder = [
-            lagBeløpsperiode('', '', 10),
-            lagBeløpsperiode('2024-01', '', 10),
-            lagBeløpsperiode('', '2024-02', 10),
-            lagBeløpsperiode('2024-01', '2024-02', 10),
+            lagBeløpsperiode('', ''),
+            lagBeløpsperiode('2024-01', ''),
+            lagBeløpsperiode('', '2024-02'),
+            lagBeløpsperiode('2024-01', '2024-02'),
         ];
-        const vedtaksform = lagForm(
-            [],
-            ERadioValg.JA,
-            ERadioValg.JA,
-            ERadioValg.JA,
-            '',
-            kontantPerioder
-        );
+        const vedtaksform = { ...lagForm(), kontantstøtteperioder: kontantPerioder };
         const validering = validerInnvilgetVedtakForm(vedtaksform);
 
         expect(validering.kontantstøtteperioder).toBeDefined;
@@ -361,15 +333,8 @@ describe('validering av kontantstøtteperioder for innvilget barnetilsyn', () =>
     });
 
     test('fraDato må komme før tilDato', () => {
-        const kontantPerioder = [lagBeløpsperiode('2024-03', '2024-02', 10)];
-        const vedtaksform = lagForm(
-            [],
-            ERadioValg.JA,
-            ERadioValg.JA,
-            ERadioValg.JA,
-            '',
-            kontantPerioder
-        );
+        const kontantPerioder = [lagBeløpsperiode('2024-03', '2024-02')];
+        const vedtaksform = { ...lagForm(), kontantstøtteperioder: kontantPerioder };
         const validering = validerInnvilgetVedtakForm(vedtaksform);
 
         expect(validering.kontantstøtteperioder).toBeDefined;
@@ -384,14 +349,7 @@ describe('validering av kontantstøtteperioder for innvilget barnetilsyn', () =>
             lagBeløpsperiode('2024-01', '2024-05', 10),
             lagBeløpsperiode('2024-03', '2024-08', 10),
         ];
-        const vedtaksform = lagForm(
-            [],
-            ERadioValg.JA,
-            ERadioValg.JA,
-            ERadioValg.JA,
-            '',
-            kontantPerioder
-        );
+        const vedtaksform = { ...lagForm(), kontantstøtteperioder: kontantPerioder };
         const validering = validerInnvilgetVedtakForm(vedtaksform);
 
         expect(validering.kontantstøtteperioder).toBeDefined;
@@ -408,24 +366,18 @@ describe('validering av kontantstøtteperioder for innvilget barnetilsyn', () =>
                 lagBeløpsperiode('2024-01', '2024-02', 10),
                 lagBeløpsperiode('2024-03', '2024-04', 10),
             ];
-            const vedtaksform = lagForm(
-                [],
-                ERadioValg.JA,
-                ERadioValg.NEI,
-                ERadioValg.JA,
-                '',
-                [],
-                tilleggsstønadPerioder
-            );
-            const vedtaksform2 = lagForm(
-                [],
-                ERadioValg.JA,
-                ERadioValg.JA,
-                ERadioValg.NEI,
-                '',
-                [],
-                tilleggsstønadPerioder
-            );
+            const vedtaksform = {
+                ...lagForm(),
+                harTilleggsstønad: ERadioValg.NEI,
+                skalStønadReduseres: ERadioValg.JA,
+                tilleggsstønadsperioder: tilleggsstønadPerioder,
+            };
+            const vedtaksform2 = {
+                ...lagForm(),
+                harTilleggsstønad: ERadioValg.JA,
+                skalStønadReduseres: ERadioValg.NEI,
+                tilleggsstønadsperioder: tilleggsstønadPerioder,
+            };
             const validering = validerInnvilgetVedtakForm(vedtaksform);
             const validering2 = validerInnvilgetVedtakForm(vedtaksform2);
 
@@ -449,15 +401,7 @@ describe('validering av kontantstøtteperioder for innvilget barnetilsyn', () =>
                 lagBeløpsperiode('', '2024-04', 10),
                 lagBeløpsperiode('2024-05', '2024-06', 10),
             ];
-            const vedtaksform = lagForm(
-                [],
-                ERadioValg.JA,
-                ERadioValg.JA,
-                ERadioValg.JA,
-                '',
-                [],
-                tilleggsstønadPerioder
-            );
+            const vedtaksform = { ...lagForm(), tilleggsstønadsperioder: tilleggsstønadPerioder };
             const validering = validerInnvilgetVedtakForm(vedtaksform);
 
             expect(validering.tilleggsstønadsperioder).toBeDefined;
@@ -476,15 +420,7 @@ describe('validering av kontantstøtteperioder for innvilget barnetilsyn', () =>
 
         test('fradato må komme før tildato', () => {
             const tilleggsstønadPerioder = [lagBeløpsperiode('2024-03', '2024-02', 10)];
-            const vedtaksform = lagForm(
-                [],
-                ERadioValg.JA,
-                ERadioValg.JA,
-                ERadioValg.JA,
-                '',
-                [],
-                tilleggsstønadPerioder
-            );
+            const vedtaksform = { ...lagForm(), tilleggsstønadsperioder: tilleggsstønadPerioder };
             const validering = validerInnvilgetVedtakForm(vedtaksform);
 
             expect(validering.tilleggsstønadsperioder).toBeDefined;
@@ -499,15 +435,7 @@ describe('validering av kontantstøtteperioder for innvilget barnetilsyn', () =>
                 lagBeløpsperiode('2024-01', '2024-04', 10),
                 lagBeløpsperiode('2024-03', '2024-08', 10),
             ];
-            const vedtaksform = lagForm(
-                [],
-                ERadioValg.JA,
-                ERadioValg.JA,
-                ERadioValg.JA,
-                '',
-                [],
-                tilleggsstønadPerioder
-            );
+            const vedtaksform = { ...lagForm(), tilleggsstønadsperioder: tilleggsstønadPerioder };
             const validering = validerInnvilgetVedtakForm(vedtaksform);
 
             expect(validering.tilleggsstønadsperioder).toBeDefined;
@@ -521,17 +449,17 @@ describe('validering av kontantstøtteperioder for innvilget barnetilsyn', () =>
 });
 
 const lagUtgiftsperiode = (
-    årMånedFra: string,
-    årMånedTil: string,
-    barn: string[],
+    årMånedFra?: string,
+    årMånedTil?: string,
+    barn?: string[],
     utgifter?: number,
     periodetype?: EUtgiftsperiodetype,
     aktivitetstype?: EUtgiftsperiodeAktivitet
 ): IUtgiftsperiode => {
     return {
-        årMånedFra: årMånedFra,
-        årMånedTil: årMånedTil,
-        barn: barn,
+        årMånedFra: årMånedFra ?? '',
+        årMånedTil: årMånedTil ?? '',
+        barn: barn ?? [],
         utgifter: utgifter,
         periodetype: periodetype,
         aktivitetstype: aktivitetstype,
@@ -551,7 +479,7 @@ const lagBeløpsperiode = (
 };
 
 const lagForm = (
-    utgiftsperioder: IUtgiftsperiode[],
+    utgiftsperioder?: IUtgiftsperiode[],
     harKontantstøtte?: ERadioValg,
     harTilleggsstønad?: ERadioValg,
     skalStønadReduseres?: ERadioValg,
@@ -561,7 +489,7 @@ const lagForm = (
     begrunnelse?: string
 ): InnvilgeVedtakForm => {
     return {
-        utgiftsperioder: utgiftsperioder,
+        utgiftsperioder: utgiftsperioder ?? [],
         kontantstøtteperioder: kontantstøtteperioder,
         harKontantstøtte: harKontantstøtte ?? ERadioValg.JA,
         harTilleggsstønad: harTilleggsstønad ?? ERadioValg.JA,
