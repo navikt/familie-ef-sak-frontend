@@ -18,6 +18,7 @@ import {
 } from '../../../../App/typer/vedtak';
 import { Ressurs, RessursStatus } from '../../../../App/typer/ressurs';
 import { erDesimaltall } from '../../../../App/utils/utils';
+import { genererÅrOgMånedFraStreng } from '../../../../App/utils/formatter';
 
 export const mapVilkårtypeTilResultat = (
     vurderinger: IVurdering[]
@@ -200,4 +201,8 @@ export const validerGyldigTallverdi = (verdi: string | number | undefined | null
     if (typeof verdi === 'string') {
         return !/^[0-9]+$/.test(verdi) ? ugyldigVerdiFeilmelding : undefined;
     }
+};
+
+export const ugyldigEtterfølgendePeriodeFeilmelding = (årMånedFra: string, årMånedTil: string) => {
+    return `Periodene er ikke sammenhengende. ${genererÅrOgMånedFraStreng(årMånedFra)} må være etter ${genererÅrOgMånedFraStreng(årMånedTil)}`;
 };
