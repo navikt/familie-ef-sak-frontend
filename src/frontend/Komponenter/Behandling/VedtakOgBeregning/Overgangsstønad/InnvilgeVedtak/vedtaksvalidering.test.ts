@@ -209,7 +209,7 @@ describe('skal feile validering av vedtaksperioder', () => {
         expect(vedtaksvalidering.perioder).toHaveLength(2);
         expect(vedtaksvalidering.perioder[0].årMånedFra).toBeUndefined;
         expect(vedtaksvalidering.perioder[1].årMånedFra).toBe(
-            'Ugyldig etterfølgende periode - fra (2024-02) må være etter til (2024-05)'
+            'Periodene er ikke sammenhengende: februar 2024 må være etter mai 2024'
         );
     });
 
@@ -367,7 +367,7 @@ describe('skal feile validering av inntektsperioder', () => {
         expect(vedtaksvalidering.inntekter).toHaveLength(2);
         expect(vedtaksvalidering.inntekter[0].årMånedFra).toBeUndefined;
         expect(vedtaksvalidering.inntekter[1].årMånedFra).toBe(
-            'Ugyldig etterfølgende periode - fra (2023-12) må være etter til (2024-01)'
+            'Periodene er ikke sammenhengende: desember 2023 må være etter januar 2024'
         );
     });
 

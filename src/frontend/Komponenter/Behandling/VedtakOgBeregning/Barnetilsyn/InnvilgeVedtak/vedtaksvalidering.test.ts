@@ -264,7 +264,7 @@ describe('validering av utgiftsperioder for innvilget barnetilsyn', () => {
         expect(validering.utgiftsperioder.length).toBe(2);
         expect(validering.utgiftsperioder[0].årMånedFra).toBeUndefined;
         expect(validering.utgiftsperioder[1].årMånedFra).toBe(
-            'Ugyldig etterfølgende periode - fra (2024-02) må være etter til (2024-04)'
+            'Periodene er ikke sammenhengende: februar 2024 må være etter april 2024'
         );
     });
 
@@ -398,7 +398,7 @@ describe('validering av kontantstøtteperioder for innvilget barnetilsyn', () =>
         expect(validering.kontantstøtteperioder).toHaveLength(2);
         expect(validering.kontantstøtteperioder[0].årMånedFra).toBeUndefined;
         expect(validering.kontantstøtteperioder[1].årMånedFra).toBe(
-            'Ugyldig etterfølgende periode - fra (2024-03) må være etter til (2024-05)'
+            'Periodene er ikke sammenhengende: mars 2024 må være etter mai 2024'
         );
     });
 
@@ -514,7 +514,7 @@ describe('validering av kontantstøtteperioder for innvilget barnetilsyn', () =>
             expect(validering.tilleggsstønadsperioder.length).toBe(2);
             expect(validering.tilleggsstønadsperioder[0].årMånedFra).toBeUndefined;
             expect(validering.tilleggsstønadsperioder[1].årMånedFra).toBe(
-                'Ugyldig etterfølgende periode - fra (2024-03) må være etter til (2024-04)'
+                'Periodene er ikke sammenhengende: mars 2024 må være etter april 2024'
             );
         });
     });
