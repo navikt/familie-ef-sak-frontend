@@ -49,7 +49,7 @@ For å installere @navikt-scopede pakker må du autentisere deg med et PAT.
 
 ## Testing
 Appen benytter [vitest](https://vitest.dev/) til enhetstesting. Legg gjerne til nye tester etter oppdateringer av appen.
-For å kjøre opp tester lokalt kan man kjøre `npm run test`. For å kjøre opp testene i interaktiv modus kan man kjøre `vitest`.
+For å kjøre opp tester lokalt kan man kjøre `yarn test`. For å kjøre opp testene i interaktiv modus kan man kjøre `vitest`.
 
 ### Kjøre lokalt mot preprod
 
