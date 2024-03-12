@@ -1443,34 +1443,34 @@
     semver "^7.3.5"
     tar "^6.1.11"
 
-"@navikt/aksel-icons@^5.18.1":
-  version "5.18.1"
-  resolved "https://npm.pkg.github.com/download/@navikt/aksel-icons/5.18.1/9442e7fd4b4bdce1dc574ce5b699f1ab6debcd65#9442e7fd4b4bdce1dc574ce5b699f1ab6debcd65"
-  integrity sha512-5gxw5FvdVY6CG5ObD8SRTeEFk6Uc8/FfsYNQue5a0Qes3yyzZsob56vL30pqKiEbIp+WXadXtmtdU5oI3JtK4Q==
+"@navikt/aksel-icons@^6.1.1":
+  version "6.1.1"
+  resolved "https://npm.pkg.github.com/download/@navikt/aksel-icons/6.1.1/0ae4f2c1220ccec1018dcadc0ecb798fb30726c8#0ae4f2c1220ccec1018dcadc0ecb798fb30726c8"
+  integrity sha512-gWPr+AH/N/Jcty4FGY7OnMv8hgGyf8KS0q8y1mbAyIeRY9GhuTVuFA153Pvpyyafp6t9FyilsJUkcMkrJvFySA==
 
-"@navikt/ds-css@5.18.1":
-  version "5.18.1"
-  resolved "https://npm.pkg.github.com/download/@navikt/ds-css/5.18.1/8cf08f747939024ad7aa3a708368704cbb40debc#8cf08f747939024ad7aa3a708368704cbb40debc"
-  integrity sha512-GcrP7jTnpn16eITkN8QnnMuj401ocEIWm90MHOES7GDRfmGkx7NEfXo3Ktw7/Cc/0odRNf+lNP01Xon0cdiPmw==
+"@navikt/ds-css@6.1.1":
+  version "6.1.1"
+  resolved "https://npm.pkg.github.com/download/@navikt/ds-css/6.1.1/62b6cc286e73e7aef7a9608dd3a3eb576536dac9#62b6cc286e73e7aef7a9608dd3a3eb576536dac9"
+  integrity sha512-PrMu7BqZKoTczWfnhxb5XA923WFxG0vN6n4BU6IJ4xVsMkdlDKaSvEA2Y58IFSRGsQEB9TrRc4ChGHRjK7rG5g==
 
-"@navikt/ds-react@5.18.1":
-  version "5.18.1"
-  resolved "https://npm.pkg.github.com/download/@navikt/ds-react/5.18.1/471f681269f248cdb12b9b80f487cbcedba13443#471f681269f248cdb12b9b80f487cbcedba13443"
-  integrity sha512-HhiGNVFbJO25sIZncMufaNlcui5tIx5JkmMQTaOeYWP2/jk3V6Lpgnr4UsZ9gUD5/xWbzdAOJ4sgfE8nbEMnEQ==
+"@navikt/ds-react@6.1.1":
+  version "6.1.1"
+  resolved "https://npm.pkg.github.com/download/@navikt/ds-react/6.1.1/78cd84ba40932cdea85073b9ddc53e2b8a0b7562#78cd84ba40932cdea85073b9ddc53e2b8a0b7562"
+  integrity sha512-u2ycWzZi/DI/T64UrLPz37ApHweMm8PJpyTaa1H86jTo/jHdjLelwprF0bzMMVYuSz9O0YlXHSB7y8TeY+TDgQ==
   dependencies:
     "@floating-ui/react" "0.25.4"
-    "@navikt/aksel-icons" "^5.18.1"
-    "@navikt/ds-tokens" "^5.18.1"
+    "@navikt/aksel-icons" "^6.1.1"
+    "@navikt/ds-tokens" "^6.1.1"
     "@radix-ui/react-tabs" "1.0.0"
     "@radix-ui/react-toggle-group" "1.0.0"
-    clsx "^1.2.1"
-    date-fns "^2.30.0"
-    react-day-picker "8.3.4"
+    clsx "^2.1.0"
+    date-fns "^3.0.0"
+    react-day-picker "8.10.0"
 
-"@navikt/ds-tokens@5.18.1", "@navikt/ds-tokens@^5.18.1":
-  version "5.18.1"
-  resolved "https://npm.pkg.github.com/download/@navikt/ds-tokens/5.18.1/9a1bb632be16e5fe87172997759b776a9120b112#9a1bb632be16e5fe87172997759b776a9120b112"
-  integrity sha512-IxpTIKl/471HyqeCOPV3/Z8n7yNqcFoV+fK3luAApFIttBFFdiS8YgiraVBlz5vxPdFHGRbufOR2g8S+q5CWxw==
+"@navikt/ds-tokens@6.1.1", "@navikt/ds-tokens@^6.1.1":
+  version "6.1.1"
+  resolved "https://npm.pkg.github.com/download/@navikt/ds-tokens/6.1.1/1376ccdcc9d7a1e72016803adaf4e6548bb684d5#1376ccdcc9d7a1e72016803adaf4e6548bb684d5"
+  integrity sha512-OHFj34cK23k55v/RQ4YEssx68RYYP8YfR/gstZmZLX93Y4REQjtJujOjmv6QILxSzQWSrdPFWB96i8rY8zrGVA==
 
 "@navikt/familie-backend@10.0.15":
   version "10.0.15"
@@ -1494,35 +1494,35 @@
     prom-client "^15.1.0"
     redis "^4.6.13"
 
-"@navikt/familie-dokumentliste@^11.0.2":
-  version "11.0.2"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-dokumentliste/11.0.2/d5cd947b2b420732588995cb0d4c826c7f451b32#d5cd947b2b420732588995cb0d4c826c7f451b32"
-  integrity sha512-4xuMUjinqgw0eOKlNXeqe7sJZhzFl1jc0xywQZB0Qn32WfHUaz0A+1yIl+KWxnHGbs8f1Uqj4s3LqdTiYF/y/A==
+"@navikt/familie-dokumentliste@^12.0.0":
+  version "12.0.0"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-dokumentliste/12.0.0/48a391b8365dd40b6abaee4124f7588e4bff0ca1#48a391b8365dd40b6abaee4124f7588e4bff0ca1"
+  integrity sha512-OMan+enwh+vbyUJ6hPXueuRpCAAHsd9SNsiEOSyLAL8i+HAUuAcR07elZ05wg9gjq4Ehj7MnH+zydGTIg8530A==
   dependencies:
     "@navikt/familie-ikoner" "^9.0.1"
     "@navikt/familie-typer" "^8.0.2"
 
-"@navikt/familie-endringslogg@^11.0.0":
-  version "11.0.0"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-endringslogg/11.0.0/d50201e34031ee99803728763ba5769cc31af07a#d50201e34031ee99803728763ba5769cc31af07a"
-  integrity sha512-NdbrrI3VCwH4NxfDPMguJOBXQe1m6L+jh4NMBAHWFmAiSaY3G2WG8FSAH2p9vCZtizO9nrvC89xt47kpu6t7RA==
+"@navikt/familie-endringslogg@^12.0.0":
+  version "12.0.0"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-endringslogg/12.0.0/d3a44bb8bc01c3274505023b094476a9c3659e6f#d3a44bb8bc01c3274505023b094476a9c3659e6f"
+  integrity sha512-Txic80ZM8n3C0pGj2L6V+yeBBniTkXTler8arKf+LHpHUJnY90Zrrb9JzIiE9XumgQrEt3BEgguuxoAplLnwfw==
   dependencies:
     "@portabletext/react" "^3.0.11"
     classnames "^2.5.1"
     react-transition-group "^4.4.5"
 
-"@navikt/familie-form-elements@^14.0.0":
-  version "14.0.0"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-form-elements/14.0.0/2e7b6e26fde5e677096fcf1c523ed25159926bb1#2e7b6e26fde5e677096fcf1c523ed25159926bb1"
-  integrity sha512-P5cMOmDkC2UEshd4P7RmMwfzGq9Lj1z5hRyuHMOtw4KDXaiaNpY6x6CKuP9dxu/MgsOPbuy5vxMNCRBpMHALyA==
+"@navikt/familie-form-elements@^15.0.0":
+  version "15.0.0"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-form-elements/15.0.0/e57b16e473f85e3bddaf809644c1412be886ed6e#e57b16e473f85e3bddaf809644c1412be886ed6e"
+  integrity sha512-NGcIgqJL4/mARhHMUI2VENh9xyPzJfzzw8gP/7t85I7kAFaWbREZYqIOWXdCb4tr630Jo7Lp0f+HP+qkzI10DQ==
   dependencies:
     classnames "^2.5.1"
     react-select "^5.8.0"
 
-"@navikt/familie-header@^13.1.0":
-  version "13.1.0"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-header/13.1.0/a09491252ae6f0391d4284d7f7b0385af405e729#a09491252ae6f0391d4284d7f7b0385af405e729"
-  integrity sha512-2ZT/9yoF012oknjpbVp0RgzXP3lBDkV13CrpMHOgeJuRVpBhY3tNRqIvlO3o68LU664U6GqzRqykZ4ZTocH2ww==
+"@navikt/familie-header@^14.0.0":
+  version "14.0.0"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-header/14.0.0/ffc65218c212b44938a5f04ba9babf9e9d919806#ffc65218c212b44938a5f04ba9babf9e9d919806"
+  integrity sha512-Zwz730wMagg3vxyIGTDobAPbefyQ7FI8jOmSjPA8EqmwaQeVziaOr05xdX+U7QujRFNHLpmLFhEv2dYQfkOsSg==
   dependencies:
     "@navikt/familie-ikoner" "^9.0.1"
     "@navikt/familie-typer" "^8.0.2"
@@ -1547,19 +1547,26 @@
   resolved "https://npm.pkg.github.com/download/@navikt/familie-typer/8.0.2/21bcc780c35b6a8699d1c52b54e61d83580736f7#21bcc780c35b6a8699d1c52b54e61d83580736f7"
   integrity sha512-pKSpCzryJE6eiN/Ssox1oLLKPW5ezsT+/gTHbhgxOtM/frFSZLguSjwhgiDp2kovckJ84nxhnQurK6igw8GEHw==
 
-"@navikt/familie-visittkort@^14.0.1":
-  version "14.0.1"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-visittkort/14.0.1/d68ebeba064f2de4f6bc4c939ca8a1abb0517a16#d68ebeba064f2de4f6bc4c939ca8a1abb0517a16"
-  integrity sha512-VMvv8LYm3fDOfIZbtxhi9EtKQWA6mjV6D9FjOscm+cQQo4+GhK2sC9W5eA3DpQI6Zr3lilQ5S8YgtAiKFG7kgw==
+"@navikt/familie-visittkort@^15.0.0":
+  version "15.0.0"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-visittkort/15.0.0/2843b0b58deacd9b41ae17dec52753eebf16b9ae#2843b0b58deacd9b41ae17dec52753eebf16b9ae"
+  integrity sha512-AYtp8fW5VxsKqHwli2JIRDnM07DAQA8nHhqvayJ259p1kBAMJd4ntLtsmH2wP0GYAa8RsibaSoOwEiRw3vQxNA==
   dependencies:
     "@navikt/familie-ikoner" "^9.0.1"
     "@navikt/familie-typer" "^8.0.2"
     classnames "^2.5.1"
 
-"@navikt/fnrvalidator@^1.3.1", "@navikt/fnrvalidator@^1.3.3":
+"@navikt/fnrvalidator@^1.3.1":
   version "1.3.3"
   resolved "https://npm.pkg.github.com/download/@navikt/fnrvalidator/1.3.3/8414963a30e59e3056c9befea7bb022498a2a742#8414963a30e59e3056c9befea7bb022498a2a742"
   integrity sha512-GsLa9ioYPGsDMBHcgKUNoYbZor09KyFIqSaWy8jy1I7f06q6DgUhdpZuRTHLVRCPjWqF2aLzKtvAfrw5dSeakg==
+
+"@navikt/fnrvalidator@^2.0.7":
+  version "2.0.7"
+  resolved "https://npm.pkg.github.com/download/@navikt/fnrvalidator/2.0.7/89ceb6a448fbd068e4ad8ff7a414705bd0ea6315#89ceb6a448fbd068e4ad8ff7a414705bd0ea6315"
+  integrity sha512-3TQ2NLUk1rstZEoF65r9dr4RZxvmBEcXNKfA1dcZNpLw0SAb89WwcRpUrZMhd+7UdrfmKvfoTBvsfBwMoP9cyw==
+  dependencies:
+    typescript "^5.4.2"
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
@@ -3120,15 +3127,10 @@ clone-deep@^4.0.1:
     kind-of "^6.0.2"
     shallow-clone "^3.0.0"
 
-clsx@^1.2.1:
-  version "1.2.1"
-  resolved "https://registry.yarnpkg.com/clsx/-/clsx-1.2.1.tgz#0ddc4a20a549b59c93a4116bb26f5294ca17dc12"
-  integrity sha512-EcR6r5a8bj6pu3ycsa/E/cKVGuTgZJZdsyUYHOksG/UHIiKfjxzRxYJpyVBwYaQeOvghal9fcc4PidlgzugAQg==
-
-clsx@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/clsx/-/clsx-2.0.0.tgz#12658f3fd98fafe62075595a5c30e43d18f3d00b"
-  integrity sha512-rQ1+kcj+ttHG0MKVGBUXwayCCF1oh39BF5COIpRzuCEv8Mwjv0XucrI2ExNTOn9IlLifGClWQcU9BrZORvtw6Q==
+clsx@^2.0.0, clsx@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/clsx/-/clsx-2.1.0.tgz#e851283bcb5c80ee7608db18487433f7b23f77cb"
+  integrity sha512-m3iNNWpd9rl3jvvcBnu70ylMdrXt8Vlq4HYadnU5fwcOtvkSQWPmj7amUcDT2qYI7risszBjI5AUIUox9D16pg==
 
 cluster-key-slot@1.1.2:
   version "1.1.2"
@@ -3453,14 +3455,7 @@ data-uri-to-buffer@^4.0.0:
   resolved "https://registry.yarnpkg.com/data-uri-to-buffer/-/data-uri-to-buffer-4.0.1.tgz#d8feb2b2881e6a4f58c2e08acfd0e2834e26222e"
   integrity sha512-0R9ikRb668HB7QDxT1vkpuUBtqc53YyAwMwGeUFKRojY/NWKvdZ+9UYtRfGmhqNbRkTSVpMbmyhXipFFv2cb/A==
 
-date-fns@^2.30.0:
-  version "2.30.0"
-  resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.30.0.tgz#f367e644839ff57894ec6ac480de40cae4b0f4d0"
-  integrity sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw==
-  dependencies:
-    "@babel/runtime" "^7.21.0"
-
-date-fns@^3.3.1:
+date-fns@^3.0.0, date-fns@^3.3.1:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-3.3.1.tgz#7581daca0892d139736697717a168afbb908cfed"
   integrity sha512-y8e109LYGgoQDveiEBD3DYXKba1jWf5BA8YU1FL5Tvm0BTdEfy54WLCwnuYWZNnzzvALy/QQ4Hov+Q9RVRv+Zw==
@@ -6482,15 +6477,10 @@ raw-body@2.5.2, raw-body@^2.3.0:
     iconv-lite "0.4.24"
     unpipe "1.0.0"
 
-react-day-picker@8.3.4:
-  version "8.3.4"
-  resolved "https://registry.yarnpkg.com/react-day-picker/-/react-day-picker-8.3.4.tgz#0942d66266c58cd815d393ec0d142372b0d42f4f"
-  integrity sha512-UuCbfZ69DhQmd+UhEv8nCPp5PxMk7ioNTuOLMlU0X7q3wd7o8TKDdsjduQoeBYTPTMS3LFdbA1qqbrIpRHo/Vg==
-
-react-day-picker@^8.8.2:
-  version "8.8.2"
-  resolved "https://registry.yarnpkg.com/react-day-picker/-/react-day-picker-8.8.2.tgz#1f778ad73fecf44105d2a02f5d15ec0eaa1afcc1"
-  integrity sha512-sK5M5PNZaLiszmACUKUpVu1eX3eFDVV+WLdWQ3BxTPbEC9jhuawmlgpbSXX5dIIQQwJpZ4wwP5+vsMVOwa1IRw==
+react-day-picker@8.10.0, react-day-picker@^8.8.2:
+  version "8.10.0"
+  resolved "https://registry.yarnpkg.com/react-day-picker/-/react-day-picker-8.10.0.tgz#729c5b9564967a924213978fb9c0751884a60595"
+  integrity sha512-mz+qeyrOM7++1NCb1ARXmkjMkzWVh2GL9YiPbRjKe0zHccvekk4HE+0MPOZOrosn8r8zTHIIeOUXTmXRqmkRmg==
 
 react-dom@^18.2.0:
   version "18.2.0"
@@ -7547,10 +7537,10 @@ typed-array-length@^1.0.4:
     for-each "^0.3.3"
     is-typed-array "^1.1.9"
 
-typescript@^5.3.3:
-  version "5.3.3"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.3.3.tgz#b3ce6ba258e72e6305ba66f5c9b452aaee3ffe37"
-  integrity sha512-pXWcraxM0uxAS+tN0AG/BF2TyqmHO014Z070UsJ+pFvYuRSq8KH8DmWpnbXe0pEPDHXZV3FcAbJkijJ5oNEnWw==
+typescript@^5.3.3, typescript@^5.4.2:
+  version "5.4.2"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.4.2.tgz#0ae9cebcfae970718474fe0da2c090cad6577372"
+  integrity sha512-+2/g0Fds1ERlP6JsakQQDXjZdZMM+rqpamFZJEKh4kwTIn3iDkgKtby0CeNd5ATNZ4Ry1ax15TMx0W2V+miizQ==
 
 uid-safe@~2.1.5:
   version "2.1.5"
