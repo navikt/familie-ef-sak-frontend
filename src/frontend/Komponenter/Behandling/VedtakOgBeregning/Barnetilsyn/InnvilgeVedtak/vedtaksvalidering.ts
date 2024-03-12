@@ -95,7 +95,7 @@ export const validerUtgiftsperioder = ({
     const feilIUtgiftsperioder = utgiftsperioder.map((utgiftsperiode, index) => {
         const { periodetype, aktivitetstype, årMånedFra, årMånedTil, barn, utgifter } =
             utgiftsperiode;
-        const utgiftsperiodeFeil: FormErrors<IUtgiftsperiode> = {
+        let utgiftsperiodeFeil: FormErrors<IUtgiftsperiode> = {
             periodetype: undefined,
             aktivitetstype: undefined,
             årMånedFra: undefined,
@@ -106,10 +106,13 @@ export const validerUtgiftsperioder = ({
         const erSistePeriode = index === utgiftsperioder.length - 1;
 
         if (!periodetype) {
-            return { ...utgiftsperiodeFeil, periodetype: 'Mangler valg for periodetype' };
+            utgiftsperiodeFeil = {
+                ...utgiftsperiodeFeil,
+                periodetype: 'Mangler valg for periodetype',
+            };
         }
         if (periodetype === EUtgiftsperiodetype.OPPHØR && erSistePeriode) {
-            return {
+            utgiftsperiodeFeil = {
                 ...utgiftsperiodeFeil,
                 periodetype: 'Siste periode kan ikke være opphør/ingen stønad',
             };
@@ -118,14 +121,17 @@ export const validerUtgiftsperioder = ({
         const opphørEllerSanksjon = erOpphørEllerSanksjon(periodetype);
 
         if (opphørEllerSanksjon && aktivitetstype) {
-            return {
+            utgiftsperiodeFeil = {
                 ...utgiftsperiodeFeil,
                 aktivitetstype: 'Skal ikke kunne velge aktivitetstype ved opphør eller sanksjon',
             };
         }
 
         if (!aktivitetstype && !opphørEllerSanksjon) {
-            return { ...utgiftsperiodeFeil, aktivitetstype: 'Mangler valg for aktivitetstype' };
+            utgiftsperiodeFeil = {
+                ...utgiftsperiodeFeil,
+                aktivitetstype: 'Mangler valg for aktivitetstype',
+            };
         }
 
         if (!årMånedTil || !årMånedFra) {
