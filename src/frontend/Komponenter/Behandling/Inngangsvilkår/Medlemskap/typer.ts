@@ -40,8 +40,8 @@ export interface IUtenlandsopphold {
     tilDato: string;
     land?: string;
     årsak: string;
-    personidentUtland?: string;
-    adresseUtland?: string;
+    personidentEøsLand?: string;
+    adresseEøsLand?: string;
 }
 
 export interface IOppholdstatus {
