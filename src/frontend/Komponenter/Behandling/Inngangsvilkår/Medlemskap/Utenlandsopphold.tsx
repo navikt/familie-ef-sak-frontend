@@ -37,7 +37,11 @@ const Utenlandsopphold: FC<Props> = ({ utenlandsopphold }) => (
                     <Label size="small">Land</Label>
                     <BodyShort size="small">{opphold.land}</BodyShort>
                     <Label size="small">ID-nummer</Label>
-                    <BodyShort size="small">{opphold.personidentEøsLand}</BodyShort>
+                    <BodyShort size="small">
+                        {opphold.kanIkkeOppgiPersonIdent
+                            ? 'Har ikke id-nummer i aktuelt land'
+                            : opphold.personidentEøsLand}
+                    </BodyShort>
                     <Label size="small">Adresse</Label>
                     <BodyShort size="small">{opphold.adresseEøsLand}</BodyShort>
                     <Label size="small">Årsak</Label>
