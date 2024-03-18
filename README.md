@@ -47,6 +47,10 @@ For å installere @navikt-scopede pakker må du autentisere deg med et PAT.
 2. Skriv `npm login --scope=@navikt --registry=https://npm.pkg.github.com` i terminalen (obs, windows-syntaksen er litt annerledes - mellomrom heller enn =)
 3. Skriv inn eposten din og brukernavnet ditt. Passordet er tokenet fra github
 
+## Testing
+Appen benytter [vitest](https://vitest.dev/) til enhetstesting. Legg gjerne til nye tester etter oppdateringer av appen.
+For å kjøre opp tester lokalt kan man kjøre `yarn test`. For å kjøre opp testene i interaktiv modus kan man kjøre `vitest`.
+
 ### Kjøre lokalt mot preprod
 
 ```

@@ -44,7 +44,11 @@ export const NullstillVedtakModal: React.FC<{
     };
     return (
         visModal && (
-            <Modal onClose={() => settVisModal(false)} open={visModal}>
+            <Modal
+                onClose={() => settVisModal(false)}
+                open={visModal}
+                aria-labelledby="modal-heading"
+            >
                 <Modal.Body>
                     <Container>
                         <BodyLong>
