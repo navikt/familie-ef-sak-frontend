@@ -123,11 +123,8 @@ const KontantstøtteValg: React.FC<Props> = ({
                 Kontantstøtte
             </Heading>
             <AlertOgRadioknappWrapper>
-                {!erLesevisning && (
-                    <KontantstøtteAlert
-                        finnesKontantstøtteUtbetaling={finnesKontantstøtteUtbetaling}
-                    />
-                )}
+                <KontantstøtteAlert finnesKontantstøtteUtbetaling={finnesKontantstøtteUtbetaling} />
+
                 <JaNeiRadioGruppe
                     error={valideringsfeil?.harKontantstøtte}
                     legend={radioGruppeTekst}
