@@ -40,6 +40,9 @@ export interface IUtenlandsopphold {
     tilDato: string;
     land?: string;
     årsak: string;
+    personidentEøsLand?: string;
+    adresseEøsLand?: string;
+    kanIkkeOppgiPersonIdent?: boolean;
 }
 
 export interface IOppholdstatus {
