@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import { ISimulering, ISimuleringTabellRad } from './SimuleringTyper';
 import SimuleringTabell from './SimuleringTabell';
-import { formaterIsoMåned, formaterIsoÅr } from '../../../App/utils/formatter';
+import {
+    formaterIsoMåned,
+    formaterIsoÅr,
+    nåværendeÅrOgMånedFormatert,
+} from '../../../App/utils/formatter';
 import { gjelderÅr } from '../../../App/utils/dato';
 import styled from 'styled-components';
 import SimuleringOversikt from './SimuleringOversikt';
@@ -11,7 +15,6 @@ import {
     IVedtak,
     IVedtakType,
 } from '../../../App/typer/vedtak';
-import { nåværendeÅrOgMånedFormatert } from '../Sanksjon/utils';
 import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 import { Heading, Alert } from '@navikt/ds-react';
 

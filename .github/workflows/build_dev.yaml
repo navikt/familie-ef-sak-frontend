@@ -17,5 +17,7 @@ jobs:
         run: yarn --prefer-offline --frozen-lockfile
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
+      - name: Yarn test
+        run: yarn test
       - name: Yarn build
         run: yarn build

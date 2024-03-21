@@ -37,9 +37,10 @@ spec:
           - id: "9ec6487d-f37a-4aad-a027-cd221c1ac32b" # 0000-GA-Fortrolig_Adresse
   resources:
     limits:
-      memory: 1024Mi
+      memory: 768Mi
     requests:
-      memory: 512Mi
+      memory: 256Mi
+      cpu: 100m
   accessPolicy:
     outbound:
       rules:

@@ -5,11 +5,10 @@ import { AppProvider, useApp } from './App/context/AppContext';
 import { hentInnloggetBruker } from './App/api/saksbehandler';
 import { ISaksbehandler } from './App/typer/saksbehandler';
 import ErrorBoundary from './Felles/ErrorBoundary/ErrorBoundary';
-import { TogglesProvider, useToggles } from './App/context/TogglesContext';
+import { TogglesProvider } from './App/context/TogglesContext';
 import { HeaderMedSøk } from './Felles/HeaderMedSøk/HeaderMedSøk';
 import { BehandlingContainer } from './Komponenter/Behandling/BehandlingContainer';
 import { OppgavebenkApp } from './Komponenter/Oppgavebenk/OppgavebenkApp';
-import { JournalføringApp } from './Komponenter/Journalføring/Standard/JournalføringApp';
 import Personoversikt from './Komponenter/Personoversikt/Personoversikt';
 import EksternRedirectContainer from './Komponenter/EksternRedirect/EksternRedirectContainer';
 import UttrekkArbeidssøker from './Komponenter/Uttrekk/UttrekkArbeidssøker';
@@ -36,7 +35,6 @@ import UlagretDataModal from './Felles/Visningskomponenter/UlagretDataModal';
 import { loggBesøkEvent } from './App/utils/amplitude/amplitudeLoggEvents';
 import { BesøkEvent } from './App/utils/amplitude/typer';
 import Innloggingsfeilmelding from './Felles/Varsel/Innloggingsfeilmelding';
-import { ToggleName } from './App/context/toggles';
 import { JournalføringAppNy } from './Komponenter/Journalføring/Standard/JournalføringAppNy';
 
 const Innhold = styled(BodyLong)`
@@ -80,7 +78,6 @@ const AppRoutes: React.FC<{ innloggetSaksbehandler: ISaksbehandler }> = ({
     innloggetSaksbehandler,
 }) => {
     const { autentisert } = useApp();
-    const { toggles } = useToggles();
 
     const router = createBrowserRouter(
         createRoutesFromElements(
@@ -95,16 +92,7 @@ const AppRoutes: React.FC<{ innloggetSaksbehandler: ISaksbehandler }> = ({
                     />
                     <Route path="/behandling/:behandlingId/*" element={<BehandlingContainer />} />
                     <Route path="/oppgavebenk" element={<OppgavebenkApp />} />
-                    <Route
-                        path="/journalfor"
-                        element={
-                            toggles[ToggleName.visNyJournalføring] ? (
-                                <JournalføringAppNy />
-                            ) : (
-                                <JournalføringApp />
-                            )
-                        }
-                    />
+                    <Route path="/journalfor" element={<JournalføringAppNy />} />
                     <Route path="/journalfor-klage" element={<JournalføringKlageApp />} />
                     <Route path="/admin/*" element={<AdminApp />} />
                     <Route path="/fagsak/:fagsakId" element={<FagsakTilFagsakPersonRedirect />} />

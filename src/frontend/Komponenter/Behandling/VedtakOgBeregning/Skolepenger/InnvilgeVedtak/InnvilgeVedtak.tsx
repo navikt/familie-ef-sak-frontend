@@ -118,6 +118,13 @@ export const InnvilgeVedtak: React.FC<{
         ? forrigeVedtak.skoleårsperioder.flatMap((p) => p.utgiftsperioder.map((u) => u.id))
         : [];
 
+    useEffect(() => {
+        if (!formState.isValid()) {
+            formState.validateForm();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [skoleårsPerioderState.value, begrunnelseState.value]);
+
     const lagreVedtak = (vedtaksRequest: IVedtakForSkolepenger) => {
         settLaster(true);
         nullstillIkkePersisterteKomponenter();

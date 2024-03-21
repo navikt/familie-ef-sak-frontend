@@ -116,6 +116,21 @@ export const InnvilgeOvergangsstønad: React.FC<{
     }, [vedtaksperioder, inntektsperioder]);
 
     useEffect(() => {
+        if (!formState.isValid()) {
+            formState.validateForm();
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [
+        vedtaksperioder,
+        inntektsperioder,
+        typeSamordningsfradag.value,
+        inntektBegrunnelse.value,
+        periodeBegrunnelse.value,
+        vedtaksperiodeState.value,
+        inntektsperiodeState.value,
+    ]);
+
+    useEffect(() => {
         if (lagretVedtak?.inntekter) {
             inntektsperiodeState.setValue(lagretVedtak?.inntekter);
         }

@@ -6,9 +6,17 @@ import {
     IPeriodeMedBeløp,
     IUtgiftsperiode,
 } from '../../../../../App/typer/vedtak';
-import { erMånedÅrEtter, erMånedÅrEtterEllerLik } from '../../../../../App/utils/dato';
+import {
+    erMånedÅrEtter,
+    erMånedÅrEtterEllerLik,
+    erPåfølgendeÅrMåned,
+} from '../../../../../App/utils/dato';
 import { erOpphørEllerSanksjon } from '../Felles/utils';
-import { validerGyldigTallverdi } from '../../Felles/utils';
+import {
+    fraPeriodeErEtterTilPeriode,
+    ugyldigEtterfølgendePeriodeFeilmelding,
+    validerGyldigTallverdi,
+} from '../../Felles/utils';
 
 export const validerInnvilgetVedtakForm = ({
     utgiftsperioder,
@@ -79,7 +87,7 @@ export const validerPerioder = ({
     };
 };
 
-const validerUtgiftsperioder = ({
+export const validerUtgiftsperioder = ({
     utgiftsperioder,
 }: {
     utgiftsperioder: IUtgiftsperiode[];
@@ -87,7 +95,7 @@ const validerUtgiftsperioder = ({
     const feilIUtgiftsperioder = utgiftsperioder.map((utgiftsperiode, index) => {
         const { periodetype, aktivitetstype, årMånedFra, årMånedTil, barn, utgifter } =
             utgiftsperiode;
-        const utgiftsperiodeFeil: FormErrors<IUtgiftsperiode> = {
+        let utgiftsperiodeFeil: FormErrors<IUtgiftsperiode> = {
             periodetype: undefined,
             aktivitetstype: undefined,
             årMånedFra: undefined,
@@ -98,10 +106,13 @@ const validerUtgiftsperioder = ({
         const erSistePeriode = index === utgiftsperioder.length - 1;
 
         if (!periodetype) {
-            return { ...utgiftsperiodeFeil, periodetype: 'Mangler valg for periodetype' };
+            utgiftsperiodeFeil = {
+                ...utgiftsperiodeFeil,
+                periodetype: 'Mangler valg for periodetype',
+            };
         }
         if (periodetype === EUtgiftsperiodetype.OPPHØR && erSistePeriode) {
-            return {
+            utgiftsperiodeFeil = {
                 ...utgiftsperiodeFeil,
                 periodetype: 'Siste periode kan ikke være opphør/ingen stønad',
             };
@@ -110,14 +121,17 @@ const validerUtgiftsperioder = ({
         const opphørEllerSanksjon = erOpphørEllerSanksjon(periodetype);
 
         if (opphørEllerSanksjon && aktivitetstype) {
-            return {
+            utgiftsperiodeFeil = {
                 ...utgiftsperiodeFeil,
                 aktivitetstype: 'Skal ikke kunne velge aktivitetstype ved opphør eller sanksjon',
             };
         }
 
         if (!aktivitetstype && !opphørEllerSanksjon) {
-            return { ...utgiftsperiodeFeil, aktivitetstype: 'Mangler valg for aktivitetstype' };
+            utgiftsperiodeFeil = {
+                ...utgiftsperiodeFeil,
+                aktivitetstype: 'Mangler valg for aktivitetstype',
+            };
         }
 
         if (!årMånedTil || !årMånedFra) {
@@ -127,17 +141,27 @@ const validerUtgiftsperioder = ({
         if (!erMånedÅrEtterEllerLik(årMånedFra, årMånedTil)) {
             return {
                 ...utgiftsperiodeFeil,
-                årMånedFra: `Ugyldig periode - fra (${årMånedFra}) må være før til (${årMånedTil})`,
+                årMånedFra: fraPeriodeErEtterTilPeriode,
             };
         }
 
-        const forrige = index > 0 && utgiftsperioder[index - 1];
+        const forrigePeriode = index > 0 && utgiftsperioder[index - 1];
 
-        if (forrige && forrige.årMånedTil) {
-            if (!erMånedÅrEtter(forrige.årMånedTil, årMånedFra)) {
+        if (forrigePeriode && forrigePeriode.årMånedTil) {
+            if (!erMånedÅrEtter(forrigePeriode.årMånedTil, årMånedFra)) {
                 return {
                     ...utgiftsperiodeFeil,
-                    årMånedFra: `Ugyldig etterfølgende periode - fra (${årMånedFra}) må være etter til (${forrige.årMånedTil})`,
+                    årMånedFra: ugyldigEtterfølgendePeriodeFeilmelding(
+                        årMånedFra,
+                        forrigePeriode.årMånedTil
+                    ),
+                };
+            }
+
+            if (!erPåfølgendeÅrMåned(forrigePeriode.årMånedTil, årMånedFra)) {
+                return {
+                    ...utgiftsperiodeFeil,
+                    årMånedFra: `Periodene er ikke sammenhengende`,
                 };
             }
         }
@@ -197,7 +221,7 @@ const validerKontantstøttePerioder = (
         if (!erMånedÅrEtterEllerLik(årMånedFra, årMånedTil)) {
             return {
                 ...kontantstøtteperiodeFeil,
-                årMånedFra: `Ugyldig periode - fra (${årMånedFra}) må være før til (${årMånedTil})`,
+                årMånedFra: fraPeriodeErEtterTilPeriode,
             };
         }
         const forrige = index > 0 && kontantstøtteperioder[index - 1];
@@ -205,7 +229,10 @@ const validerKontantstøttePerioder = (
             if (!erMånedÅrEtter(forrige.årMånedTil, årMånedFra)) {
                 return {
                     ...kontantstøtteperiodeFeil,
-                    årMånedFra: `Ugyldig etterfølgende periode - fra (${årMånedFra}) må være etter til (${forrige.årMånedTil})`,
+                    årMånedFra: ugyldigEtterfølgendePeriodeFeilmelding(
+                        årMånedFra,
+                        forrige.årMånedTil
+                    ),
                 };
             }
         }
@@ -255,7 +282,7 @@ const validerTilleggsstønadPerioder = (
         if (!erMånedÅrEtterEllerLik(årMånedFra, årMånedTil)) {
             return {
                 ...tilleggsstønadPeriodeFeil,
-                årMånedFra: `Ugyldig periode - fra (${årMånedFra}) må være før til (${årMånedTil})`,
+                årMånedFra: fraPeriodeErEtterTilPeriode,
             };
         }
         const forrige = index > 0 && tilleggsstønadsperioder[index - 1];
@@ -263,7 +290,10 @@ const validerTilleggsstønadPerioder = (
             if (!erMånedÅrEtter(forrige.årMånedTil, årMånedFra)) {
                 return {
                     ...tilleggsstønadPeriodeFeil,
-                    årMånedFra: `Ugyldig etterfølgende periode - fra (${årMånedFra}) må være etter til (${forrige.årMånedTil})`,
+                    årMånedFra: ugyldigEtterfølgendePeriodeFeilmelding(
+                        årMånedFra,
+                        forrige.årMånedTil
+                    ),
                 };
             }
         }
