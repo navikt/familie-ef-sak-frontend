@@ -27,10 +27,13 @@ import Dokumenter from './Dokumenter';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 import Behandlinger from './Behandlinger';
 import { Knapp } from '../../../Felles/Knapper/HovedKnapp';
-import { journalføringGjelderKlage, skalViseBekreftelsesmodal } from '../Felles/utils';
+import {
+    journalføringGjelderKlage,
+    Journalføringsårsak,
+    skalViseBekreftelsesmodal,
+} from '../Felles/utils';
 import Klagebehandlinger from './Klagebehandlinger';
 import { validerJournalføring } from '../Felles/journalføringValidering';
-import { UstrukturertDokumentasjonType } from './VelgUstrukturertDokumentasjonType';
 import BarnSomSkalFødes from './BarnSomSkalFødes';
 import NyeBarnPåBehandlingen from './NyeBarnPåBehandlingen';
 import { KlageMottatt } from '../Klage/KlageMottatt';
@@ -71,7 +74,6 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({
         journalføringsaksjon,
         journalføringsårsak,
         settVisBekreftelsesModal,
-        ustrukturertDokumentasjonType,
     } = journalpostState;
 
     const [feilmelding, settFeilmelding] = useState<string>('');
@@ -127,8 +129,7 @@ const JournalføringSide: React.FC<JournalføringAppProps> = ({
     };
 
     const skalViseKlagebehandlinger = journalføringGjelderKlage(journalføringsårsak);
-    const erPapirSøknad =
-        ustrukturertDokumentasjonType === UstrukturertDokumentasjonType.PAPIRSØKNAD;
+    const erPapirSøknad = journalføringsårsak === Journalføringsårsak.PAPIRSØKNAD;
     const senderInn = journalpostState.innsending.status == RessursStatus.HENTER;
 
     return (
