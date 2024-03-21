@@ -49,6 +49,7 @@ spec:
         - application: familie-endringslogg
       external:
         - host: familie-ef-sak.prod-fss-pub.nais.io
+        - host: familie-endringslogg.intern.nav.no
   envFrom:
     - secret: familie                       # Henter ut EF_SAK_SCOPE
     - secret: familie-ef-sak-frontend       # Ulike secrets
