@@ -13,6 +13,7 @@ import {
     oppdaterVedtakMedEndretKey,
     oppdaterVedtakMedInitPeriodeOgOpphørshulll,
 } from '../Felles/utils';
+import { IVilkår } from '../../../Inngangsvilkår/vilkår';
 
 // TODO backend må returnere InnvilgelseBarnetilsynUtenUtbetaling ?
 export const InnvilgeVedtak: FC<{
@@ -20,7 +21,8 @@ export const InnvilgeVedtak: FC<{
     lagretVedtak?: IvedtakForBarnetilsyn;
     barn: IBarnMedSamvær[];
     settResultatType: (val: EBehandlingResultat | undefined) => void;
-}> = ({ behandling, lagretVedtak, barn, settResultatType }) => {
+    vilkår: IVilkår;
+}> = ({ behandling, lagretVedtak, barn, settResultatType, vilkår }) => {
     const { axiosRequest, settIkkePersistertKomponent } = useApp();
     const { behandlingErRedigerbar } = useBehandling();
 
@@ -83,6 +85,7 @@ export const InnvilgeVedtak: FC<{
                     barn={barn}
                     settResultatType={settResultatType}
                     låsFraDatoFørsteRad={!!revurderesFra}
+                    vilkår={vilkår}
                 />
             )}
         </>

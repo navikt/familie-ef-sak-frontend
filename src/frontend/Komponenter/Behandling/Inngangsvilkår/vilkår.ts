@@ -27,6 +27,7 @@ export interface IVilkårGrunnlag {
     adresseopplysninger?: IAdresseopplysninger;
     dokumentasjon?: IDokumentasjonGrunnlag;
     harAvsluttetArbeidsforhold: boolean;
+    harKontantstøttePerioder?: boolean;
 }
 
 export interface IPersonalia {
