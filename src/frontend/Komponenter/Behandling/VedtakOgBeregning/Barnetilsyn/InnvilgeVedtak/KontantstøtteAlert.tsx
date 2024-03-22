@@ -11,6 +11,10 @@ interface Props {
     harKontantstøttePerioder?: boolean;
 }
 export const KontantstøtteAlert: React.FC<Props> = ({ harKontantstøttePerioder }) => {
+    if (harKontantstøttePerioder === null || harKontantstøttePerioder === undefined) {
+        return null;
+    }
+
     return (
         <>
             <AlertStripe variant={harKontantstøttePerioder ? 'warning' : 'info'} size={'small'}>
