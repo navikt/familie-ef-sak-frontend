@@ -1,8 +1,6 @@
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { byggHenterRessurs, byggTomRessurs, Ressurs, RessursStatus } from '../typer/ressurs';
 import { useApp } from '../context/AppContext';
-import { Behandlingstype } from '../typer/behandlingstype';
-import { UstrukturertDokumentasjonType } from '../../Komponenter/Journalføring/Standard/VelgUstrukturertDokumentasjonType';
 import { EVilkårsbehandleBarnValg } from '../typer/vilkårsbehandleBarnValg';
 import {
     DokumentInfo,
@@ -20,25 +18,9 @@ import { useHentFagsak } from './useHentFagsak';
 import { Fagsak } from '../typer/fagsak';
 import { loggJournalføring } from '../utils/amplitude/amplitudeLoggEvents';
 
-export interface BehandlingRequest {
-    behandlingsId?: string;
-    behandlingstype?: Behandlingstype;
-    ustrukturertDokumentasjonType?: UstrukturertDokumentasjonType;
-}
-
 export enum Journalføringsaksjon {
     OPPRETT_BEHANDLING = 'OPPRETT_BEHANDLING',
     JOURNALFØR_PÅ_FAGSAK = 'JOURNALFØR_PÅ_FAGSAK',
-}
-
-interface JournalføringRequest {
-    dokumentTitler?: DokumentTitler;
-    fagsakId: string;
-    oppgaveId: string;
-    behandling?: BehandlingRequest;
-    journalførendeEnhet: string;
-    barnSomSkalFødes: BarnSomSkalFødes[];
-    vilkårsbehandleNyeBarn: EVilkårsbehandleBarnValg;
 }
 
 export interface JournalføringRequestV2 {
@@ -70,21 +52,16 @@ export interface JournalføringStateRequest {
     fagsak: Ressurs<Fagsak>;
     fagsakId: string;
     settFagsakId: Dispatch<SetStateAction<string>>;
-    behandling?: BehandlingRequest;
-    settBehandling: Dispatch<SetStateAction<BehandlingRequest | undefined>>;
     dokumentTitler?: DokumentTitler;
     settDokumentTitler: Dispatch<SetStateAction<DokumentTitler | undefined>>;
     logiskeVedleggPåDokument?: LogiskeVedleggPåDokument;
     settLogiskeVedleggPåDokument: Dispatch<SetStateAction<LogiskeVedleggPåDokument>>;
     innsending: Ressurs<string>;
-    fullførJournalføring: () => void;
     fullførJournalføringV2: () => void;
     visBekreftelsesModal: boolean;
     settVisBekreftelsesModal: Dispatch<SetStateAction<boolean>>;
     barnSomSkalFødes: BarnSomSkalFødes[];
     settBarnSomSkalFødes: Dispatch<SetStateAction<BarnSomSkalFødes[]>>;
-    ustrukturertDokumentasjonType: UstrukturertDokumentasjonType | undefined;
-    settUstrukturertDokumentasjonType: Dispatch<SetStateAction<UstrukturertDokumentasjonType>>;
     vilkårsbehandleNyeBarn: EVilkårsbehandleBarnValg;
     settVilkårsbehandleNyeBarn: Dispatch<SetStateAction<EVilkårsbehandleBarnValg>>;
     journalføringsårsak: Journalføringsårsak;
@@ -137,15 +114,12 @@ export const useJournalføringState = (
     const hentDokumentResponse = useHentDokument(journalpost);
 
     const [fagsakId, settFagsakId] = useState<string>('');
-    const [behandling, settBehandling] = useState<BehandlingRequest>();
     const [dokumentTitler, settDokumentTitler] = useState<DokumentTitler>();
     const [logiskeVedleggPåDokument, settLogiskeVedleggPåDokument] =
         useState<LogiskeVedleggPåDokument>(initielleLogiskeVedlegg);
     const [innsending, settInnsending] = useState<Ressurs<string>>(byggTomRessurs());
     const [visBekreftelsesModal, settVisBekreftelsesModal] = useState<boolean>(false);
     const [barnSomSkalFødes, settBarnSomSkalFødes] = useState<BarnSomSkalFødes[]>([]);
-    const [ustrukturertDokumentasjonType, settUstrukturertDokumentasjonType] =
-        useState<UstrukturertDokumentasjonType>(UstrukturertDokumentasjonType.IKKE_VALGT);
     const [vilkårsbehandleNyeBarn, settVilkårsbehandleNyeBarn] = useState<EVilkårsbehandleBarnValg>(
         EVilkårsbehandleBarnValg.IKKE_VALGT
     );
@@ -173,41 +147,10 @@ export const useJournalføringState = (
     }, [personIdent, stønadstype, hentFagsak]);
 
     useEffect(() => {
-        settBehandling(undefined);
-    }, [fagsakId]);
-
-    useEffect(() => {
         if (fagsak.status === RessursStatus.SUKSESS) {
             settFagsakId(fagsak.data.id);
         }
     }, [fagsak]);
-
-    const fullførJournalføring = () => {
-        if (!behandling || innsending.status === RessursStatus.HENTER) {
-            return;
-        }
-
-        const nyBehandling: BehandlingRequest = {
-            ...behandling,
-            ustrukturertDokumentasjonType,
-        };
-
-        const data: JournalføringRequest = {
-            oppgaveId,
-            fagsakId,
-            behandling: nyBehandling,
-            dokumentTitler,
-            journalførendeEnhet: innloggetSaksbehandler.enhet || '9999',
-            barnSomSkalFødes,
-            vilkårsbehandleNyeBarn,
-        };
-        settInnsending(byggHenterRessurs());
-        axiosRequest<string, JournalføringRequest>({
-            method: 'POST',
-            url: `/familie-ef-sak/api/journalpost/${journalpost.journalpostId}/fullfor`,
-            data,
-        }).then((resp) => settInnsending(resp));
-    };
 
     const fullførJournalføringV2 = () => {
         if (innsending.status === RessursStatus.HENTER) {
@@ -244,21 +187,16 @@ export const useJournalføringState = (
         fagsak,
         fagsakId,
         settFagsakId,
-        behandling,
-        settBehandling,
         dokumentTitler,
         settDokumentTitler,
         logiskeVedleggPåDokument,
         settLogiskeVedleggPåDokument,
         innsending,
-        fullførJournalføring,
         fullførJournalføringV2,
         visBekreftelsesModal,
         settVisBekreftelsesModal,
         barnSomSkalFødes,
         settBarnSomSkalFødes,
-        ustrukturertDokumentasjonType,
-        settUstrukturertDokumentasjonType,
         vilkårsbehandleNyeBarn,
         settVilkårsbehandleNyeBarn,
         journalføringsårsak,

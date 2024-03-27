@@ -4,19 +4,13 @@ import {
     IJournalpostResponse,
     LogiskVedlegg,
 } from '../../../App/typer/journalføring';
-import {
-    Behandlingstema,
-    behandlingstemaTilTekst,
-    Stønadstype,
-} from '../../../App/typer/behandlingstema';
+import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { Behandling, BehandlingResultat } from '../../../App/typer/fagsak';
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
 import {
-    BehandlingRequest,
     JournalføringRequestV2,
     Journalføringsaksjon,
 } from '../../../App/hooks/useJournalføringState';
-import { BehandlingKlageRequest } from '../../../App/hooks/useJournalføringKlageState';
 import { ISelectOption, MultiValue, PropsValue, SingleValue } from '@navikt/familie-form-elements';
 import { Klagebehandlinger } from '../../../App/typer/klage';
 import { JournalføringEvent } from '../../../App/utils/amplitude/typer';
@@ -25,13 +19,6 @@ export const JOURNALPOST_QUERY_STRING = 'journalpostId';
 export const GJELDER_KLAGE_QUERY_STRING = 'gjelderKlage';
 export const OPPGAVEID_QUERY_STRING = 'oppgaveId';
 export type MultiSelectValue = { label: string; value: string };
-
-export const lagJournalføringKlageUrl = (
-    journalpostId: string,
-    oppgaveId: string | number
-): string => {
-    return `/journalfor-klage?${JOURNALPOST_QUERY_STRING}=${journalpostId}&${OPPGAVEID_QUERY_STRING}=${oppgaveId}`;
-};
 
 export const lagJournalføringUrl = (
     journalpostId: string,
@@ -49,16 +36,6 @@ export const harTittelForAlleDokumenter = (
         .map((d) => d.tittel || (dokumentTitler && dokumentTitler[d.dokumentInfoId]))
         .every((tittel) => tittel && tittel.trim());
 
-export const utledKolonneTittel = (
-    behandlingsTema: Behandlingstema | undefined,
-    fra: 'klage' | 'vanlig'
-) => {
-    const prefix = 'Registrere journalpost';
-    const type = fra === 'klage' ? ' for klage' : '';
-    const stønadstype = behandlingsTema ? ': ' + behandlingstemaTilTekst[behandlingsTema] : '';
-    return `${prefix}${type}${stønadstype}`;
-};
-
 export const utledRiktigBehandlingstype = (
     tidligereBehandlinger: Behandling[]
 ): Behandlingstype => {
@@ -70,13 +47,6 @@ export const utledRiktigBehandlingstype = (
         ? Behandlingstype.REVURDERING
         : Behandlingstype.FØRSTEGANGSBEHANDLING;
 };
-
-export const harValgtNyBehandling = (behandling: BehandlingRequest | undefined): boolean =>
-    behandling !== undefined && behandling.behandlingsId === undefined;
-
-export const harValgtNyKlageBehandling = (
-    behandling: BehandlingKlageRequest | undefined
-): boolean => behandling !== undefined && behandling.behandlingId === undefined;
 
 const dokumentTitler: string[] = [
     'Anke på tilbakekreving',

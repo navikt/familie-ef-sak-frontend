@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
 import styled from 'styled-components';
-import Brukerinfo from '../Felles/Brukerinfo';
+import Brukerinfo from './Brukerinfo';
 import { stønadstypeTilTekst } from '../../../App/typer/behandlingstema';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { useHentJournalpost } from '../../../App/hooks/useHentJournalpost';
