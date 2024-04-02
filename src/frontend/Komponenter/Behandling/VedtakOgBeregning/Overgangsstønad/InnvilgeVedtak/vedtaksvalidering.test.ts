@@ -8,7 +8,7 @@ import {
 } from '../../../../../App/typer/vedtak';
 import { validerInnvilgetVedtakForm } from './vedtaksvalidering';
 import { Sanksjonsårsak } from '../../../../../App/typer/Sanksjonsårsak';
-import { formaterDateTilÅrMåned } from '../../../../../App/utils/formatter';
+import { datoÅrMånedFrem } from '../../../../../App/utils/formatter';
 
 describe('validering av innvilget overgangsstønad', () => {
     test('skal feile validering for periodebegrunnelse', () => {
@@ -247,16 +247,14 @@ describe('skal feile validering av vedtaksperioder', () => {
     });
 
     test('Første fradato kan ikke være mer enn 7mnd frem i tid.', () => {
-        const dato = new Date();
-        dato.setMonth(dato.getMonth() + 9);
-        const datoÅrMånedNiMånederFrem = formaterDateTilÅrMåned(dato);
+        const datoÅrMånedÅtteMånederFrem = datoÅrMånedFrem(8);
 
         const vedtaksperioder = [
             lagVedtaksperiode(
                 EPeriodetype.HOVEDPERIODE,
                 EAktivitet.FORSØRGER_I_ARBEID,
-                datoÅrMånedNiMånederFrem,
-                datoÅrMånedNiMånederFrem
+                datoÅrMånedÅtteMånederFrem,
+                datoÅrMånedÅtteMånederFrem
             ),
         ];
         const vedtaksform = lagForm(vedtaksperioder, []);
@@ -265,7 +263,7 @@ describe('skal feile validering av vedtaksperioder', () => {
 
         expect(vedtaksvalidering.perioder).toHaveLength(1);
         expect(vedtaksvalidering.perioder[0].årMånedFra).toBe(
-            `Startdato (${datoÅrMånedNiMånederFrem}) mer enn 7mnd frem i tid`
+            `Startdato (${datoÅrMånedÅtteMånederFrem}) mer enn 7mnd frem i tid`
         );
     });
 
@@ -385,10 +383,8 @@ describe('skal feile validering av inntektsperioder', () => {
     });
 
     test('Inntektsperiode kan ikke starte mer enn 18 måneder frem i tid.', () => {
-        const dato = new Date();
-        const datoÅrMåned = formaterDateTilÅrMåned(dato);
-        dato.setMonth(dato.getMonth() + 19);
-        const datoÅrMånedNittenMånederFrem = formaterDateTilÅrMåned(dato);
+        const datoÅrMåned = datoÅrMånedFrem();
+        const datoÅrMånedNittenMånederFrem = datoÅrMånedFrem(19);
 
         const inntektsperioder = [
             lagInntektsperiode(datoÅrMåned),
