@@ -8,6 +8,7 @@ import {
 } from '../../../../../App/typer/vedtak';
 import { validerInnvilgetVedtakForm } from './vedtaksvalidering';
 import { Sanksjonsårsak } from '../../../../../App/typer/Sanksjonsårsak';
+import { formaterDateTilÅrMåned } from '../../../../../App/utils/formatter';
 
 describe('validering av innvilget overgangsstønad', () => {
     test('skal feile validering for periodebegrunnelse', () => {
@@ -246,12 +247,16 @@ describe('skal feile validering av vedtaksperioder', () => {
     });
 
     test('Første fradato kan ikke være mer enn 7mnd frem i tid.', () => {
+        const dato = new Date();
+        dato.setMonth(dato.getMonth() + 9);
+        const datoÅrMånedNiMånederFrem = formaterDateTilÅrMåned(dato);
+
         const vedtaksperioder = [
             lagVedtaksperiode(
                 EPeriodetype.HOVEDPERIODE,
                 EAktivitet.FORSØRGER_I_ARBEID,
-                '2024-11',
-                '2024-11'
+                datoÅrMånedNiMånederFrem,
+                datoÅrMånedNiMånederFrem
             ),
         ];
         const vedtaksform = lagForm(vedtaksperioder, []);
@@ -260,7 +265,7 @@ describe('skal feile validering av vedtaksperioder', () => {
 
         expect(vedtaksvalidering.perioder).toHaveLength(1);
         expect(vedtaksvalidering.perioder[0].årMånedFra).toBe(
-            'Startdato (2024-11) mer enn 7mnd frem i tid'
+            `Startdato (${datoÅrMånedNiMånederFrem}) mer enn 7mnd frem i tid`
         );
     });
 
@@ -380,7 +385,15 @@ describe('skal feile validering av inntektsperioder', () => {
     });
 
     test('Inntektsperiode kan ikke starte mer enn 18 måneder frem i tid.', () => {
-        const inntektsperioder = [lagInntektsperiode('2024-02'), lagInntektsperiode('2025-10')];
+        const dato = new Date();
+        const datoÅrMåned = formaterDateTilÅrMåned(dato);
+        dato.setMonth(dato.getMonth() + 19);
+        const datoÅrMånedNittenMånederFrem = formaterDateTilÅrMåned(dato);
+
+        const inntektsperioder = [
+            lagInntektsperiode(datoÅrMåned),
+            lagInntektsperiode(datoÅrMånedNittenMånederFrem),
+        ];
         const vedtaksform = lagForm([], inntektsperioder);
 
         const vedtaksvalidering = validerInnvilgetVedtakForm(vedtaksform);
@@ -388,7 +401,7 @@ describe('skal feile validering av inntektsperioder', () => {
         expect(vedtaksvalidering.inntekter).toHaveLength(2);
         expect(vedtaksvalidering.inntekter[0].årMånedFra).toBeUndefined;
         expect(vedtaksvalidering.inntekter[1].årMånedFra).toBe(
-            'Startdato (2025-10) mer enn 18mnd frem i tid'
+            `Startdato (${datoÅrMånedNittenMånederFrem}) mer enn 18mnd frem i tid`
         );
     });
 

@@ -163,3 +163,9 @@ export const antallDagerIgjenAvNåværendeMåned = (): number => {
 
     return antallDagerINåværendeMåned - dagensDato.getDate();
 };
+
+export const formaterDateTilÅrMåned = (dato: Date) => {
+    const måned = dato.getMonth() + 1;
+    const formatertMåned = måned < 10 ? '0' + måned : måned;
+    return `${dato.getFullYear()}-${formatertMåned}`;
+};
