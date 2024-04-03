@@ -19,7 +19,6 @@ import { AdminApp } from './Komponenter/Admin/AdminApp';
 import ScrollToTop from './Felles/ScrollToTop/ScrollToTop';
 import styled from 'styled-components';
 import { ModalWrapper } from './Felles/Modal/ModalWrapper';
-import { JournalføringKlageApp } from './Komponenter/Journalføring/Klage/JournalføringKlageApp';
 import VelgPersonOgStønadstype from './Komponenter/Behandling/Førstegangsbehandling/VelgPersonOgStønadstype';
 import OpprettFørstegangsbehandling from './Komponenter/Behandling/Førstegangsbehandling/OpprettFørstegangsbehandling';
 import {
@@ -93,7 +92,6 @@ const AppRoutes: React.FC<{ innloggetSaksbehandler: ISaksbehandler }> = ({
                     <Route path="/behandling/:behandlingId/*" element={<BehandlingContainer />} />
                     <Route path="/oppgavebenk" element={<OppgavebenkApp />} />
                     <Route path="/journalfor" element={<JournalføringAppNy />} />
-                    <Route path="/journalfor-klage" element={<JournalføringKlageApp />} />
                     <Route path="/admin/*" element={<AdminApp />} />
                     <Route path="/fagsak/:fagsakId" element={<FagsakTilFagsakPersonRedirect />} />
                     <Route path="/person/:fagsakPersonId/*" element={<Personoversikt />} />
