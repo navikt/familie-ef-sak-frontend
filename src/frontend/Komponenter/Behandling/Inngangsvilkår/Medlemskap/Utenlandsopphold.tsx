@@ -24,6 +24,11 @@ const Grid = styled.div`
     padding-left: 2rem;
 `;
 
+const harPersonidentInformasjonForEøsLand = (opphold: IUtenlandsopphold): boolean => {
+    return (
+        opphold.kanIkkeOppgiPersonIdent !== undefined || opphold.personidentEøsLand !== undefined
+    );
+};
 const ikon = VilkårInfoIkon.SØKNAD;
 const Utenlandsopphold: FC<Props> = ({ utenlandsopphold }) => (
     <VStack gap="4">
@@ -37,13 +42,17 @@ const Utenlandsopphold: FC<Props> = ({ utenlandsopphold }) => (
                     <Label size="small">Land</Label>
                     <BodyShort size="small">{opphold.land}</BodyShort>
                     <Label size="small">ID-nummer</Label>
-                    <BodyShort size="small">
-                        {opphold.kanIkkeOppgiPersonIdent
-                            ? 'Har ikke id-nummer i aktuelt land'
-                            : opphold.personidentEøsLand}
-                    </BodyShort>
+                    {harPersonidentInformasjonForEøsLand(opphold) && (
+                        <BodyShort size="small">
+                            {opphold.kanIkkeOppgiPersonIdent
+                                ? 'Har ikke id-nummer i aktuelt land'
+                                : opphold.personidentEøsLand}
+                        </BodyShort>
+                    )}
                     <Label size="small">Adresse</Label>
-                    <BodyShort size="small">{opphold.adresseEøsLand}</BodyShort>
+                    {harPersonidentInformasjonForEøsLand(opphold) && (
+                        <BodyShort size="small">{opphold.adresseEøsLand}</BodyShort>
+                    )}
                     <Label size="small">Årsak</Label>
                     <BodyShort size="small">{opphold.årsak}</BodyShort>
                 </Grid>
