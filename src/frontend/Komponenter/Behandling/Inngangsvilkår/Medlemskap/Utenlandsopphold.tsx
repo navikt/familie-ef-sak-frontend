@@ -45,7 +45,7 @@ const Utenlandsopphold: FC<Props> = ({ utenlandsopphold }) => (
                     {harPersonidentInformasjonForEøsLand(opphold) && (
                         <BodyShort size="small">
                             {opphold.kanIkkeOppgiPersonIdent
-                                ? 'Har ikke id-nummer i aktuelt land'
+                                ? 'Jeg har ikke id-nummer'
                                 : opphold.personidentEøsLand}
                         </BodyShort>
                     )}
