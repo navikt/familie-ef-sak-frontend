@@ -25,9 +25,7 @@ const Grid = styled.div`
 `;
 
 const harPersonidentInformasjonForEøsLand = (opphold: IUtenlandsopphold): boolean => {
-    return (
-        opphold.kanIkkeOppgiPersonIdent !== undefined || opphold.personidentEøsLand !== undefined
-    );
+    return opphold.kanIkkeOppgiPersonIdent !== null || opphold.personidentEøsLand !== null;
 };
 const ikon = VilkårInfoIkon.SØKNAD;
 const Utenlandsopphold: FC<Props> = ({ utenlandsopphold }) => (
