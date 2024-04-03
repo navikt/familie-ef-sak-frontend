@@ -39,7 +39,9 @@ const Utenlandsopphold: FC<Props> = ({ utenlandsopphold }) => (
                 <Grid>
                     <Label size="small">Land</Label>
                     <BodyShort size="small">{opphold.land}</BodyShort>
-                    <Label size="small">ID-nummer</Label>
+                    {harPersonidentInformasjonForEøsLand(opphold) && (
+                        <Label size="small">ID-nummer</Label>
+                    )}
                     {harPersonidentInformasjonForEøsLand(opphold) && (
                         <BodyShort size="small">
                             {opphold.kanIkkeOppgiPersonIdent
@@ -47,7 +49,9 @@ const Utenlandsopphold: FC<Props> = ({ utenlandsopphold }) => (
                                 : opphold.personidentEøsLand}
                         </BodyShort>
                     )}
-                    <Label size="small">Adresse</Label>
+                    {harPersonidentInformasjonForEøsLand(opphold) && (
+                        <Label size="small">Adresse</Label>
+                    )}
                     {harPersonidentInformasjonForEøsLand(opphold) && (
                         <BodyShort size="small">{opphold.adresseEøsLand}</BodyShort>
                     )}
