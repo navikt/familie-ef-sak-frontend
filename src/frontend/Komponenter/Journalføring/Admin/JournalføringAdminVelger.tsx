@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { FamilieInput } from '@navikt/familie-form-elements';
 import { useNavigate } from 'react-router-dom';
-import validator from '@navikt/fnrvalidator';
+import { idnr } from '@navikt/fnrvalidator';
 import { Button, Heading } from '@navikt/ds-react';
 
 const SideLayout = styled.div`
@@ -42,7 +42,7 @@ export const JournalføringAdminVelger: React.FC = () => {
                     value={journalpostId}
                     onChange={(e) => {
                         settJournalpostId(e.target.value);
-                        settErGyldigFnr(validator.fnr(e.target.value).status === 'valid');
+                        settErGyldigFnr(idnr(e.target.value).status === 'valid');
                     }}
                 />
             </Blokk>
