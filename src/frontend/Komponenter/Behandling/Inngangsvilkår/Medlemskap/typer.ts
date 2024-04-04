@@ -43,6 +43,7 @@ export interface IUtenlandsopphold {
     personidentEøsLand?: string;
     adresseEøsLand?: string;
     kanIkkeOppgiPersonIdent?: boolean;
+    erEøsLand?: boolean;
 }
 
 export interface IOppholdstatus {
