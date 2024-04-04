@@ -5,6 +5,7 @@ import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
 import { BodyShort, Label, VStack } from '@navikt/ds-react';
 import styled from 'styled-components';
 import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
+import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
 
 interface Props {
     utenlandsopphold: IUtenlandsopphold[];
@@ -34,7 +35,8 @@ const Utenlandsopphold: FC<Props> = ({ utenlandsopphold }) => (
         {utenlandsopphold.map((opphold) => (
             <>
                 <PeriodeStyling>
-                    Periode {opphold.fraDato} - {opphold.tilDato}
+                    Periode {formaterNullableIsoDato(opphold.fraDato)} -{' '}
+                    {formaterNullableIsoDato(opphold.tilDato)}
                 </PeriodeStyling>
                 <Grid>
                     <Label size="small">Land</Label>
