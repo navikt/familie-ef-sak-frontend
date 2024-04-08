@@ -20,7 +20,7 @@ export const KontantstøtteAlert: React.FC<Props> = ({ harKontantstøttePerioder
             <AlertStripe variant={harKontantstøttePerioder ? 'warning' : 'info'} size={'small'}>
                 {harKontantstøttePerioder
                     ? 'Bruker har eller har fått kontantstøtte.'
-                    : 'Bruker verken mottar eller har mottatt kontantstøtte.'}
+                    : 'Bruker har verken fått eller får kontantstøtte.'}
             </AlertStripe>
         </>
     );
