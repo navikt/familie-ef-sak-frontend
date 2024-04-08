@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import { skalViseLenke } from '../utils';
 import { IkkeTilgang } from './Hovedtabellrad';
 import { PadlockLockedIcon } from '@navikt/aksel-icons';
+import { tittelMedUrlGodkjenteTegn } from '../../../App/utils/utils';
 
 const LenkeVenstreMargin = styled.a`
     margin-left: 2rem;
@@ -27,7 +28,7 @@ export const Tabellrad: React.FC<{ dokument: Dokumentinfo; erKlikketId: string }
                 {skalViseLenke(dokument) ? (
                     <>
                         <LenkeVenstreMargin
-                            href={`/dokument/journalpost/${dokument.journalpostId}/dokument-pdf/${dokument.dokumentinfoId}`}
+                            href={`/dokument/journalpost/${dokument.journalpostId}/dokument-pdf/${dokument.dokumentinfoId}/${tittelMedUrlGodkjenteTegn(dokument.tittel)}`}
                             target={'_blank'}
                             rel={'noreferrer'}
                         >

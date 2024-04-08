@@ -16,6 +16,7 @@ import { Journalposttype } from '@navikt/familie-typer';
 import { ArrowDownIcon, ArrowLeftIcon, ArrowRightIcon } from '@navikt/aksel-icons';
 import { skalViseLenke } from '../utils';
 import { PadlockLockedIcon } from '@navikt/aksel-icons';
+import { tittelMedUrlGodkjenteTegn } from '../../../App/utils/utils';
 
 const TrHoveddokument = styled.tr`
     background-color: #f7f7f7;
@@ -63,7 +64,7 @@ export const HovedTabellrad: React.FC<{ dokument: Dokumentinfo; erKlikketId: str
                     <>
                         <HovedLenke
                             key={dokument.journalpostId}
-                            href={`/dokument/journalpost/${dokument.journalpostId}/dokument-pdf/${dokument.dokumentinfoId}`}
+                            href={`/dokument/journalpost/${dokument.journalpostId}/dokument-pdf/${dokument.dokumentinfoId}/${tittelMedUrlGodkjenteTegn(dokument.tittel)}`}
                             target={'_blank'}
                             rel={'noreferrer'}
                         >
