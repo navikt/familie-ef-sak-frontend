@@ -136,17 +136,12 @@ export const åpnePdfIEgenTab = (blob: Blob, filnavn: string): void => {
 export const åpneFilIEgenTab = (
     journalpostId: string,
     dokumentinfoId: string,
-    filnavn: string
+    dokumenttittel: string
 ): void => {
-    const newWindow = window.open(
-        `/dokument/journalpost/${journalpostId}/dokument-pdf/${dokumentinfoId}`,
+    window.open(
+        `/dokument/journalpost/${journalpostId}/dokument-pdf/${dokumentinfoId}/${tittelMedUrlGodkjenteTegn(dokumenttittel)}`,
         '_blank'
     );
-    setTimeout(function () {
-        if (newWindow) {
-            newWindow.document.title = filnavn;
-        }
-    }, 500);
 };
 
 // eslint-disable-next-line
@@ -164,3 +159,10 @@ export const groupBy = <T, K extends keyof any>(list: T[], getKey: (item: T) => 
 export const isUUID = (value: string): boolean => validate(value);
 
 export const nonNull = <T>(list: (T | undefined | null)[]) => list.filter((t) => t) as T[];
+
+export const tittelMedUrlGodkjenteTegn = (tittel?: string) => {
+    if (!tittel) {
+        return 'uten_tittel';
+    }
+    return encodeURIComponent(tittel);
+};
