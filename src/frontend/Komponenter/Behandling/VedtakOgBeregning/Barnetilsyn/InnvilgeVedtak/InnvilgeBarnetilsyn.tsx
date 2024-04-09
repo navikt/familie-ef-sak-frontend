@@ -29,10 +29,6 @@ import { useRedirectEtterLagring } from '../../../../../App/hooks/felles/useRedi
 import { v4 as uuidv4 } from 'uuid';
 import { AlertError } from '../../../../../Felles/Visningskomponenter/Alerts';
 import HovedKnapp, { Knapp } from '../../../../../Felles/Knapper/HovedKnapp';
-import {
-    FinnesKontantstøtteUtbetaling,
-    useHentKontantstøtteUtbetaling,
-} from '../../../../../App/hooks/useHentKontantstøtteUtbetalinger';
 import { CalculatorIcon } from '@navikt/aksel-icons';
 import { ModalState } from '../../../Modal/NyEierModal';
 
@@ -108,7 +104,15 @@ export const InnvilgeBarnetilsyn: React.FC<{
     barn: IBarnMedSamvær[];
     settResultatType: (val: EBehandlingResultat | undefined) => void;
     låsFraDatoFørsteRad: boolean;
-}> = ({ lagretVedtak, behandling, barn, settResultatType, låsFraDatoFørsteRad }) => {
+    harKontantstøttePerioder: boolean | undefined;
+}> = ({
+    lagretVedtak,
+    behandling,
+    barn,
+    settResultatType,
+    låsFraDatoFørsteRad,
+    harKontantstøttePerioder,
+}) => {
     const lagretInnvilgetVedtak =
         lagretVedtak?._type === IVedtakType.InnvilgelseBarnetilsyn ||
         lagretVedtak?._type === IVedtakType.InnvilgelseBarnetilsynUtenUtbetaling
@@ -120,7 +124,6 @@ export const InnvilgeBarnetilsyn: React.FC<{
         hentBehandling,
         settNyEierModalState,
     } = useBehandling();
-    const { finnesKontantstøtteUtbetaling } = useHentKontantstøtteUtbetaling(behandling.id);
     const [laster, settLaster] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState('');
     const [nullUtbetalingPgaKontantstøtte, settNullUtbetalingPgaKontantstøtte] = useState(
@@ -175,13 +178,13 @@ export const InnvilgeBarnetilsyn: React.FC<{
     useEffect(() => {
         if (
             behandlingErRedigerbar &&
-            finnesKontantstøtteUtbetaling === FinnesKontantstøtteUtbetaling.NEI &&
+            harKontantstøttePerioder === false &&
             kontantstøtteState.value === ERadioValg.IKKE_SATT
         ) {
             kontantstøtteState.setValue(ERadioValg.NEI);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [finnesKontantstøtteUtbetaling]);
+    }, [harKontantstøttePerioder]);
 
     useEffect(() => {
         if (!formState.isValid()) {
@@ -319,7 +322,7 @@ export const InnvilgeBarnetilsyn: React.FC<{
                 kontantstøttePerioder={kontantstøttePeriodeState}
                 settValideringsFeil={formState.setErrors}
                 valideringsfeil={formState.errors}
-                finnesKontantstøtteUtbetaling={finnesKontantstøtteUtbetaling}
+                harKontantstøttePerioder={harKontantstøttePerioder}
             />
             <TilleggsstønadValg
                 erLesevisning={!behandlingErRedigerbar}

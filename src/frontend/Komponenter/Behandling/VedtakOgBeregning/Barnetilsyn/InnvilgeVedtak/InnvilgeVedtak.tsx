@@ -20,7 +20,8 @@ export const InnvilgeVedtak: FC<{
     lagretVedtak?: IvedtakForBarnetilsyn;
     barn: IBarnMedSamvær[];
     settResultatType: (val: EBehandlingResultat | undefined) => void;
-}> = ({ behandling, lagretVedtak, barn, settResultatType }) => {
+    harKontantstøttePerioder: boolean | undefined;
+}> = ({ behandling, lagretVedtak, barn, settResultatType, harKontantstøttePerioder }) => {
     const { axiosRequest, settIkkePersistertKomponent } = useApp();
     const { behandlingErRedigerbar } = useBehandling();
 
@@ -83,6 +84,7 @@ export const InnvilgeVedtak: FC<{
                     barn={barn}
                     settResultatType={settResultatType}
                     låsFraDatoFørsteRad={!!revurderesFra}
+                    harKontantstøttePerioder={harKontantstøttePerioder}
                 />
             )}
         </>
