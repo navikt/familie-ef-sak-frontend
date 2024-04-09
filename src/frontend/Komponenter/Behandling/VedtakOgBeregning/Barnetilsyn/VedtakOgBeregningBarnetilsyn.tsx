@@ -60,7 +60,9 @@ const VedtakOgBeregningBarnetilsyn: FC<Props> = ({ behandling, vilkår }) => {
                                     }
                                     barn={barnSomOppfyllerAlleVilkår(vilkår)}
                                     settResultatType={settResultatType}
-                                    vilkår={vilkår}
+                                    harKontantstøttePerioder={
+                                        vilkår.grunnlag.harKontantstøttePerioder
+                                    }
                                 />
                             );
                         case EBehandlingResultat.AVSLÅ:

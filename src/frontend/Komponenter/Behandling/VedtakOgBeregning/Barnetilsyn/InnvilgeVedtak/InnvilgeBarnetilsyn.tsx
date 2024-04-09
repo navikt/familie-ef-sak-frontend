@@ -31,7 +31,6 @@ import { AlertError } from '../../../../../Felles/Visningskomponenter/Alerts';
 import HovedKnapp, { Knapp } from '../../../../../Felles/Knapper/HovedKnapp';
 import { CalculatorIcon } from '@navikt/aksel-icons';
 import { ModalState } from '../../../Modal/NyEierModal';
-import { IVilkår } from '../../../Inngangsvilkår/vilkår';
 
 export type InnvilgeVedtakForm = {
     utgiftsperioder: IUtgiftsperiode[];
@@ -105,8 +104,15 @@ export const InnvilgeBarnetilsyn: React.FC<{
     barn: IBarnMedSamvær[];
     settResultatType: (val: EBehandlingResultat | undefined) => void;
     låsFraDatoFørsteRad: boolean;
-    vilkår: IVilkår;
-}> = ({ lagretVedtak, behandling, barn, settResultatType, låsFraDatoFørsteRad, vilkår }) => {
+    harKontantstøttePerioder: boolean | undefined;
+}> = ({
+    lagretVedtak,
+    behandling,
+    barn,
+    settResultatType,
+    låsFraDatoFørsteRad,
+    harKontantstøttePerioder,
+}) => {
     const lagretInnvilgetVedtak =
         lagretVedtak?._type === IVedtakType.InnvilgelseBarnetilsyn ||
         lagretVedtak?._type === IVedtakType.InnvilgelseBarnetilsynUtenUtbetaling
@@ -118,7 +124,6 @@ export const InnvilgeBarnetilsyn: React.FC<{
         hentBehandling,
         settNyEierModalState,
     } = useBehandling();
-    const { harKontantstøttePerioder } = vilkår.grunnlag;
     const [laster, settLaster] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState('');
     const [nullUtbetalingPgaKontantstøtte, settNullUtbetalingPgaKontantstøtte] = useState(
