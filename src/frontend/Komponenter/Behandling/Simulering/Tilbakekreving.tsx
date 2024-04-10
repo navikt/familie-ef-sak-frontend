@@ -14,6 +14,7 @@ import { v4 as uuidv4 } from 'uuid';
 export enum ITilbakekrevingsvalg {
     OPPRETT_MED_VARSEL = 'OPPRETT_MED_VARSEL',
     OPPRETT_UTEN_VARSEL = 'OPPRETT_UTEN_VARSEL',
+    OPPRETT_AUTOMATISK = 'OPPRETT_AUTOMATISK',
     AVVENT = 'AVVENT',
 }
 
@@ -26,6 +27,8 @@ export interface ITilbakekreving {
 export const TilbakekrevingsvalgTilTekst: Record<ITilbakekrevingsvalg, string> = {
     OPPRETT_MED_VARSEL: 'Opprett med varsel',
     OPPRETT_UTEN_VARSEL: 'Opprett uten varsel',
+    OPPRETT_AUTOMATISK:
+        'Opprett automatisk behandling av tilbakekreving under 4 ganger rettsgebyret',
     AVVENT: 'Avvent',
 };
 
@@ -37,9 +40,13 @@ const enum ÅpenTilbakekrevingStatus {
 
 export interface TilbakekrevingProps {
     behandlingId: string;
+    erUnder4xRettsgebyr: boolean;
 }
 
-export const Tilbakekreving: React.FC<TilbakekrevingProps> = ({ behandlingId }) => {
+export const Tilbakekreving: React.FC<TilbakekrevingProps> = ({
+    behandlingId,
+    erUnder4xRettsgebyr,
+}) => {
     const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
         useApp();
     const { behandlingErRedigerbar, behandling } = useBehandling();
@@ -123,6 +130,14 @@ export const Tilbakekreving: React.FC<TilbakekrevingProps> = ({ behandlingId }) 
             settValideringsfeil('Mangelfull utfylling av tilbakekrevingsvalg');
             return;
         }
+
+        if (tilbakekrevingsvalg == ITilbakekrevingsvalg.OPPRETT_AUTOMATISK && begrunnelse == '') {
+            settValideringsfeil(
+                'Begrunnelse må fylles ut dersom automatisk opprettelse av tilbakekreving er valgt'
+            );
+            return;
+        }
+
         settFeilmelding('');
         settLåsKnapp(true);
         nullstillIkkePersisterteKomponenter();
@@ -190,6 +205,7 @@ export const Tilbakekreving: React.FC<TilbakekrevingProps> = ({ behandlingId }) 
                             låsKnapp={låsKnapp}
                             behandlingId={behandlingId}
                             valideringsfeil={valideringsfeil}
+                            erUnder4xRettsgebyr={erUnder4xRettsgebyr}
                         />
                     )}
                     {!behandlingErRedigerbar && (

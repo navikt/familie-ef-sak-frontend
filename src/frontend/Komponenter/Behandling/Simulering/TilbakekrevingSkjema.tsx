@@ -35,6 +35,7 @@ interface Props {
     låsKnapp: boolean;
     behandlingId: string;
     valideringsfeil: string;
+    erUnder4xRettsgebyr: boolean;
 }
 
 export const TilbakekrevingSkjema: React.FC<Props> = ({
@@ -48,6 +49,7 @@ export const TilbakekrevingSkjema: React.FC<Props> = ({
     låsKnapp,
     behandlingId,
     valideringsfeil,
+    erUnder4xRettsgebyr,
 }) => {
     const { settIkkePersistertKomponent, axiosRequest } = useApp();
 
@@ -95,7 +97,16 @@ export const TilbakekrevingSkjema: React.FC<Props> = ({
                         endreBegrunnelse(e.target.value);
                     }}
                 />
-                <InfostripeTilbakekrevingsvalg />
+                <InfostripeTilbakekrevingsvalg erUnder4xRettsgebyr={erUnder4xRettsgebyr} />
+                {erUnder4xRettsgebyr && (
+                    <Radio
+                        value={ITilbakekrevingsvalg.OPPRETT_AUTOMATISK}
+                        name="tilbakekrevingRadio"
+                    >
+                        Opprett automatisk behandling av tilbakekreving under 4 ganger rettsgebyret
+                    </Radio>
+                )}
+
                 <Radio value={ITilbakekrevingsvalg.OPPRETT_MED_VARSEL} name="tilbakekrevingRadio">
                     Opprett tilbakekreving, send varsel
                 </Radio>

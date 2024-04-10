@@ -9,6 +9,7 @@ export enum ToggleName {
     kanMigrereBarnetilsyn = 'familie.ef.sak.migrering.barnetilsyn',
     henleggBehandlingUtenÅHenleggeOppgave = 'familie.ef.sak.henlegg-behandling-uten-oppgave',
     visSatsendring = 'familie.ef.sak.frontend-vis-satsendring',
+    visAutomatiskBehandlingAvTilbakekrevingValg = 'familie.ef.sak.frontend.tilbakekreving-under-4x-rettsgebyr',
 
     // Miljø-toggles - la stå
     visIkkePubliserteBrevmaler = 'familie.ef.sak.frontend-vis-ikke-publiserte-brevmaler',

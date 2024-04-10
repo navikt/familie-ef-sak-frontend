@@ -17,6 +17,8 @@ import {
 } from '../../../App/typer/vedtak';
 import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 import { Heading, Alert } from '@navikt/ds-react';
+import { useToggles } from '../../../App/context/TogglesContext';
+import { ToggleName } from '../../../App/context/toggles';
 
 const SimuleringsContainer = styled.div`
     margin: 2rem;
@@ -62,6 +64,7 @@ const SimuleringTabellWrapper: React.FC<{
     behandlingId: string;
     lagretVedtak?: IVedtak;
 }> = ({ simuleringsresultat, behandlingId, lagretVedtak }) => {
+    const { toggles } = useToggles();
     const muligeÅr = [...new Set(simuleringsresultat.perioder.map((p) => formaterIsoÅr(p.fom)))];
 
     const [år, settÅr] = useState(
@@ -77,6 +80,13 @@ const SimuleringTabellWrapper: React.FC<{
 
     function harFeilutbetaling() {
         return simuleringsresultat.feilutbetaling > 0;
+    }
+
+    function erUnder4xRettsgebyr() {
+        return (
+            simuleringsresultat.feilutbetaling < 5108 &&
+            toggles[ToggleName.visAutomatiskBehandlingAvTilbakekrevingValg]
+        );
     }
 
     function positivSumAvManuellePosteringer(simuleringsresultat: ISimulering) {
@@ -117,7 +127,12 @@ const SimuleringTabellWrapper: React.FC<{
                     </TekstMedMargin>
                 </Seksjon>
             )}
-            {harFeilutbetaling() && <Tilbakekreving behandlingId={behandlingId} />}
+            {harFeilutbetaling() && (
+                <Tilbakekreving
+                    behandlingId={behandlingId}
+                    erUnder4xRettsgebyr={erUnder4xRettsgebyr()}
+                />
+            )}
         </SimuleringsContainer>
     );
 };
