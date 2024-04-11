@@ -39,7 +39,7 @@ const TekstMedMargin = styled(BodyShortSmall)`
 const StyledAlert = styled(Alert)`
     max-width: 60rem;
 `;
-
+const RETTSGEBYR_BELOP = 1277;
 const mapSimuleringstabellRader = (
     simuleringsresultat: ISimulering,
     år: number
@@ -84,7 +84,7 @@ const SimuleringTabellWrapper: React.FC<{
 
     function erUnder4xRettsgebyr() {
         return (
-            simuleringsresultat.feilutbetaling < 5108 &&
+            simuleringsresultat.feilutbetaling < RETTSGEBYR_BELOP * 4 &&
             toggles[ToggleName.visAutomatiskBehandlingAvTilbakekrevingValg]
         );
     }
