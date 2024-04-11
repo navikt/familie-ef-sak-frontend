@@ -20,7 +20,7 @@ const PeriodeStyling = styled(BodyShort)`
 const Grid = styled.div`
     font-size: var(--a-font-size-medium);
     display: grid;
-    grid-template-columns: repeat(2, max-content);
+    grid-template-columns: auto 1fr;
     gap: 1rem;
     padding-left: 2rem;
 `;
