@@ -10,6 +10,7 @@ import { Loader } from '@navikt/ds-react';
 import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 import { useRedirectEtterLagring } from '../../../App/hooks/felles/useRedirectEtterLagring';
 import { v4 as uuidv4 } from 'uuid';
+import { harVerdi } from '../../../App/utils/utils';
 
 export enum ITilbakekrevingsvalg {
     OPPRETT_MED_VARSEL = 'OPPRETT_MED_VARSEL',
@@ -25,10 +26,10 @@ export interface ITilbakekreving {
 }
 
 export const TilbakekrevingsvalgTilTekst: Record<ITilbakekrevingsvalg, string> = {
-    OPPRETT_MED_VARSEL: 'Opprett med varsel',
-    OPPRETT_UTEN_VARSEL: 'Opprett uten varsel',
+    OPPRETT_MED_VARSEL: 'Opprett tilbakekreving, send varsel',
+    OPPRETT_UTEN_VARSEL: 'Opprett tilbakekreving, ikke send varsel',
     OPPRETT_AUTOMATISK:
-        'Opprett automatisk behandling av tilbakekreving under 4 ganger rettsgebyret',
+        'Opprett automatisk behandling av tilbakekreving under 4 ganger rettsgebyret (ingen tilbakekreving)',
     AVVENT: 'Avvent',
 };
 
@@ -131,7 +132,10 @@ export const Tilbakekreving: React.FC<TilbakekrevingProps> = ({
             return;
         }
 
-        if (tilbakekrevingsvalg == ITilbakekrevingsvalg.OPPRETT_AUTOMATISK && begrunnelse == '') {
+        if (
+            tilbakekrevingsvalg == ITilbakekrevingsvalg.OPPRETT_AUTOMATISK &&
+            !harVerdi(begrunnelse)
+        ) {
             settValideringsfeil(
                 'Begrunnelse må fylles ut dersom automatisk opprettelse av tilbakekreving er valgt'
             );

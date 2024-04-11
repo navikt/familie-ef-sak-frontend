@@ -11,10 +11,10 @@ const StyledAlert = styled(Alert)`
     margin: 1rem 0 0.25rem 0;
 `;
 
-const Liste = styled.ul`
+const Liste = styled.ol`
     display: flex;
     flex-direction: column;
-    list-style: none;
+    list-style-type: disc;
     padding-bottom: 1rem;
     margin: 0;
 `;
@@ -34,9 +34,9 @@ export const InfostripeTilbakekrevingsvalg: React.FC<{ erUnder4xRettsgebyr: bool
                 <DivMedMargin>
                     Dette valget kan du bruke når alle punktene er oppfylt:
                     <Liste>
-                        <li>- Bruker har ikke handlet forsettlig eller grovt uaktsomt</li>
-                        <li>- Beløpet er under 4 ganger rettsgebyr</li>
-                        <li>- Beløpet skal ikke betales tilbake</li>
+                        <li>Bruker har ikke handlet forsettlig eller grovt uaktsomt</li>
+                        <li>Beløpet er under 4 ganger rettsgebyr</li>
+                        <li>Beløpet skal ikke betales tilbake</li>
                     </Liste>
                     Saken blir automatisk behandlet og bruker får et vedtak om ikke tilbakebetaling.
                 </DivMedMargin>

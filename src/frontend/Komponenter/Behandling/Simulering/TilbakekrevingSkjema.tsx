@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { EnsligTextArea } from '../../../Felles/Input/TekstInput/EnsligTextArea';
 import styled from 'styled-components';
-import { ITilbakekrevingsvalg } from './Tilbakekreving';
+import { ITilbakekrevingsvalg, TilbakekrevingsvalgTilTekst } from './Tilbakekreving';
 import { useApp } from '../../../App/context/AppContext';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
 import { base64toBlob, åpnePdfIEgenTab } from '../../../App/utils/utils';
@@ -103,12 +103,12 @@ export const TilbakekrevingSkjema: React.FC<Props> = ({
                         value={ITilbakekrevingsvalg.OPPRETT_AUTOMATISK}
                         name="tilbakekrevingRadio"
                     >
-                        Opprett automatisk behandling av tilbakekreving under 4 ganger rettsgebyret
+                        {TilbakekrevingsvalgTilTekst[ITilbakekrevingsvalg.OPPRETT_AUTOMATISK]}
                     </Radio>
                 )}
 
                 <Radio value={ITilbakekrevingsvalg.OPPRETT_MED_VARSEL} name="tilbakekrevingRadio">
-                    Opprett tilbakekreving, send varsel
+                    {TilbakekrevingsvalgTilTekst[ITilbakekrevingsvalg.OPPRETT_MED_VARSEL]}
                 </Radio>
                 {tilbakekrevingsvalg === ITilbakekrevingsvalg.OPPRETT_MED_VARSEL && (
                     <VarselValg>
@@ -135,10 +135,10 @@ export const TilbakekrevingSkjema: React.FC<Props> = ({
                     </VarselValg>
                 )}
                 <Radio value={ITilbakekrevingsvalg.OPPRETT_UTEN_VARSEL} name="tilbakekrevingRadio">
-                    Opprett tilbakekreving, ikke send varsel
+                    {TilbakekrevingsvalgTilTekst[ITilbakekrevingsvalg.OPPRETT_UTEN_VARSEL]}
                 </Radio>
                 <Radio value={ITilbakekrevingsvalg.AVVENT} name="tilbakekrevingRadio">
-                    Avvent
+                    {TilbakekrevingsvalgTilTekst[ITilbakekrevingsvalg.AVVENT]}
                 </Radio>
             </RadioGroup>
             {valideringsfeil && <ErrorTekst>{valideringsfeil}</ErrorTekst>}
