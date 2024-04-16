@@ -43,7 +43,7 @@
     "@navikt/familie-typer": "^8.0.1",
     "@navikt/familie-visittkort": "^15.0.0",
     "@navikt/fnrvalidator": "^2.0.7",
-    "@sentry/browser": "^7.110.0",
+    "@sentry/browser": "^7.110.1",
     "@sentry/core": "^7.69.0",
     "@types/amplitude-js": "^8.16.5",
     "@types/classnames": "^2.3.1",
