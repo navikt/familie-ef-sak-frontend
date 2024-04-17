@@ -151,10 +151,7 @@ export const validerUtgiftsperioder = ({
             if (!erMånedÅrEtter(forrigePeriode.årMånedTil, årMånedFra)) {
                 return {
                     ...utgiftsperiodeFeil,
-                    årMånedFra: ugyldigEtterfølgendePeriodeFeilmelding(
-                        årMånedFra,
-                        forrigePeriode.årMånedTil
-                    ),
+                    årMånedFra: ugyldigEtterfølgendePeriodeFeilmelding(),
                 };
             }
 
@@ -229,10 +226,7 @@ const validerKontantstøttePerioder = (
             if (!erMånedÅrEtter(forrige.årMånedTil, årMånedFra)) {
                 return {
                     ...kontantstøtteperiodeFeil,
-                    årMånedFra: ugyldigEtterfølgendePeriodeFeilmelding(
-                        årMånedFra,
-                        forrige.årMånedTil
-                    ),
+                    årMånedFra: ugyldigEtterfølgendePeriodeFeilmelding(),
                 };
             }
         }
@@ -290,10 +284,7 @@ const validerTilleggsstønadPerioder = (
             if (!erMånedÅrEtter(forrige.årMånedTil, årMånedFra)) {
                 return {
                     ...tilleggsstønadPeriodeFeil,
-                    årMånedFra: ugyldigEtterfølgendePeriodeFeilmelding(
-                        årMånedFra,
-                        forrige.årMånedTil
-                    ),
+                    årMånedFra: ugyldigEtterfølgendePeriodeFeilmelding(),
                 };
             }
         }

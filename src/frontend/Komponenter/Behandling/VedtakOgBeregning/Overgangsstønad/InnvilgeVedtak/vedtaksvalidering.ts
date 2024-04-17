@@ -152,10 +152,7 @@ export const validerVedtaksperioder = ({
             if (!erMånedÅrEtter(forrigePeriode.årMånedTil, årMånedFra)) {
                 return {
                     ...vedtaksperiodeFeil,
-                    årMånedFra: ugyldigEtterfølgendePeriodeFeilmelding(
-                        årMånedFra,
-                        forrigePeriode.årMånedTil
-                    ),
+                    årMånedFra: ugyldigEtterfølgendePeriodeFeilmelding(),
                 };
             }
 
@@ -227,7 +224,7 @@ const validerInntektsperiode = (
     const forrige = index > 0 && inntekter[index - 1];
     if (forrige && forrige.årMånedFra) {
         if (!erMånedÅrEtter(forrige.årMånedFra, årMånedFra)) {
-            return ugyldigEtterfølgendePeriodeFeilmelding(årMånedFra, forrige.årMånedFra);
+            return ugyldigEtterfølgendePeriodeFeilmelding();
         }
     }
     if (erMånedÅrEtter(attenMånederFremITiden, årMånedFra)) {
