@@ -245,9 +245,7 @@ describe('validering av utgiftsperioder for innvilget barnetilsyn', () => {
 
         expect(validering.utgiftsperioder.length).toBe(2);
         expect(validering.utgiftsperioder[0].årMånedFra).toBeUndefined;
-        expect(validering.utgiftsperioder[1].årMånedFra).toBe(
-            'Periodene er ikke sammenhengende: februar 2024 må være etter april 2024'
-        );
+        expect(validering.utgiftsperioder[1].årMånedFra).toBe('Ugyldig periode');
     });
 
     test('utgiftsperiodene må være sammenhengende', () => {
@@ -320,7 +318,7 @@ describe('validering av kontantstøtteperioder for innvilget barnetilsyn', () =>
 
         expect(validering.kontantstøtteperioder).toBeDefined;
         expect(validering.kontantstøtteperioder).toHaveLength(4);
-        expect(validering.kontantstøtteperioder[0].årMånedFra).toBe(
+        expect(validering?.kontantstøtteperioder[0]?.årMånedFra)?.toBe(
             'Mangelfull utfylling av periode'
         );
         expect(validering.kontantstøtteperioder[1].årMånedFra).toBe(
@@ -355,9 +353,7 @@ describe('validering av kontantstøtteperioder for innvilget barnetilsyn', () =>
         expect(validering.kontantstøtteperioder).toBeDefined;
         expect(validering.kontantstøtteperioder).toHaveLength(2);
         expect(validering.kontantstøtteperioder[0].årMånedFra).toBeUndefined;
-        expect(validering.kontantstøtteperioder[1].årMånedFra).toBe(
-            'Periodene er ikke sammenhengende: mars 2024 må være etter mai 2024'
-        );
+        expect(validering.kontantstøtteperioder[1].årMånedFra).toBe('Ugyldig periode');
     });
 
     describe('validering av tilleggsstøndadsperioder', () => {
@@ -441,9 +437,7 @@ describe('validering av kontantstøtteperioder for innvilget barnetilsyn', () =>
             expect(validering.tilleggsstønadsperioder).toBeDefined;
             expect(validering.tilleggsstønadsperioder.length).toBe(2);
             expect(validering.tilleggsstønadsperioder[0].årMånedFra).toBeUndefined;
-            expect(validering.tilleggsstønadsperioder[1].årMånedFra).toBe(
-                'Periodene er ikke sammenhengende: mars 2024 må være etter april 2024'
-            );
+            expect(validering.tilleggsstønadsperioder[1].årMånedFra).toBe('Ugyldig periode');
         });
     });
 });

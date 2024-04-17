@@ -217,9 +217,7 @@ describe('skal feile validering av vedtaksperioder', () => {
 
         expect(vedtaksvalidering.perioder).toHaveLength(2);
         expect(vedtaksvalidering.perioder[0].årMånedFra).toBeUndefined;
-        expect(vedtaksvalidering.perioder[1].årMånedFra).toBe(
-            'Periodene er ikke sammenhengende: februar 2024 må være etter mai 2024'
-        );
+        expect(vedtaksvalidering.perioder[1].årMånedFra).toBe('Ugyldig periode');
     });
 
     test('Etterfølgende perioder henger ikke sammen.', () => {
@@ -377,9 +375,7 @@ describe('skal feile validering av inntektsperioder', () => {
 
         expect(vedtaksvalidering.inntekter).toHaveLength(2);
         expect(vedtaksvalidering.inntekter[0].årMånedFra).toBeUndefined;
-        expect(vedtaksvalidering.inntekter[1].årMånedFra).toBe(
-            'Periodene er ikke sammenhengende: desember 2023 må være etter januar 2024'
-        );
+        expect(vedtaksvalidering.inntekter[1].årMånedFra).toBe('Ugyldig periode');
     });
 
     test('Inntektsperiode kan ikke starte mer enn 18 måneder frem i tid.', () => {
