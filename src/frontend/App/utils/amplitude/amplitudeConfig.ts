@@ -1,5 +1,6 @@
-import amplitude from 'amplitude-js';
 import { erProd } from '../miljø';
+import * as amplitude from '@amplitude/analytics-browser';
+import { BesøkEvent, JournalføringEvent, NavigereTabEvent } from './typer';
 
 const getApiKey = () => {
     if (erProd()) {
@@ -8,12 +9,17 @@ const getApiKey = () => {
     return '84389e45c7a84638cbd753b471db5fb7'; // dev
 };
 
-export const amplitudeInstance = amplitude.getInstance();
-
-amplitudeInstance.init(getApiKey(), '', {
-    apiEndpoint: 'amplitude.nav.no/collect',
-    saveEvents: false,
-    includeUtm: true,
-    batchEvents: false,
-    includeReferrer: true,
+amplitude.init(getApiKey(), undefined, {
+    serverUrl: 'https://amplitude.nav.no/collect',
+    defaultTracking: false,
+    ingestionMetadata: {
+        sourceName: window.location.toString(),
+    },
 });
+
+export function logEvent(
+    eventName: string,
+    eventProperties: NavigereTabEvent | BesøkEvent | JournalføringEvent
+) {
+    amplitude.track(eventName, eventProperties);
+}

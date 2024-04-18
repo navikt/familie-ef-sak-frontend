@@ -1,18 +1,14 @@
-import { amplitudeInstance } from './amplitudeConfig';
 import { BesøkEvent, JournalføringEvent, NavigereTabEvent } from './typer';
-
-function loggEvent(eventName: string, eventProperties: unknown) {
-    amplitudeInstance.logEvent(eventName, eventProperties);
-}
+import { logEvent } from './amplitudeConfig';
 
 export const loggNavigereTabEvent = (navigereTabEvent: NavigereTabEvent) => {
-    loggEvent('navigere-tab', navigereTabEvent);
+    logEvent('navigere-tab', navigereTabEvent);
 };
 
 export const loggBesøkEvent = (besøkEvent: BesøkEvent) => {
-    loggEvent('besøk', besøkEvent);
+    logEvent('besøk', besøkEvent);
 };
 
 export const loggJournalføring = (journalføringEvent: JournalføringEvent) => {
-    loggEvent('journalføring', journalføringEvent);
+    logEvent('journalføring', journalføringEvent);
 };
