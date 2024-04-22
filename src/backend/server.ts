@@ -72,7 +72,7 @@ backend(sessionConfig, prometheusTellere).then(({ app, azureAuthClient, router }
         '/endringslogg',
         addRequestInfo(),
         ensureAuthenticated(azureAuthClient, true),
-        doProxy('/endringslogg', endringsloggProxyUrl, '')
+        doProxy('/endringslogg', endringsloggProxyUrl)
     );
 
     // Sett opp bodyParser og router etter proxy. Spesielt viktig med tanke på større payloads som blir parset av bodyParser
