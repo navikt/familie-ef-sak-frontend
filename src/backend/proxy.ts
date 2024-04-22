@@ -21,13 +21,12 @@ export const doProxy = (
     targetUrl: string,
     pathPrefix = '/api'
 ): RequestHandler => {
-    return createProxyMiddleware(context, {
+    return createProxyMiddleware({
         changeOrigin: true,
-        logLevel: 'info',
-        logProvider: () => {
-            return stdoutLogger;
+        logger: stdoutLogger,
+        on: {
+            proxyReq: restream,
         },
-        onProxyReq: restream,
         pathRewrite: (path: string) => {
             const newPath = path.replace(context, '');
             return `${pathPrefix}${newPath}`;
