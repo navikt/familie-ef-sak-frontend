@@ -30,7 +30,7 @@ const Container = styled.div`
 `;
 
 const AlertOgRadioknappWrapper = styled.div`
-    width: max-content;
+    width: fit-content;
 `;
 
 const Grid = styled.div<{ $lesevisning: boolean }>`
