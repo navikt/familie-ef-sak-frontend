@@ -16,11 +16,7 @@ const restream = (proxyReq: ClientRequest, req: IncomingMessage) => {
     }
 };
 
-export const doProxy = (
-    context: string,
-    targetUrl: string,
-    pathPrefix = '/api'
-): RequestHandler => {
+export const doProxy = (targetUrl: string, pathPrefix = '/api'): RequestHandler => {
     return createProxyMiddleware({
         changeOrigin: true,
         logger: stdoutLogger,
@@ -28,8 +24,7 @@ export const doProxy = (
             proxyReq: restream,
         },
         pathRewrite: (path: string) => {
-            const newPath = path.replace(context, '');
-            return `${pathPrefix}${newPath}`;
+            return `${pathPrefix}${path}`;
         },
         secure: true,
         target: `${targetUrl}`,
