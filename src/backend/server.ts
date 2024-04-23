@@ -50,7 +50,7 @@ backend(sessionConfig, prometheusTellere).then(({ app, azureAuthClient, router }
         addRequestInfo(),
         ensureAuthenticated(azureAuthClient, true),
         attachToken(azureAuthClient),
-        doProxy('/familie-ef-sak/api', sakProxyUrl)
+        doProxy(sakProxyUrl)
     );
 
     app.use(
@@ -58,21 +58,21 @@ backend(sessionConfig, prometheusTellere).then(({ app, azureAuthClient, router }
         addRequestInfo(),
         ensureAuthenticated(azureAuthClient, false),
         attachToken(azureAuthClient),
-        doProxy('/dokument', sakProxyUrl)
+        doProxy(sakProxyUrl)
     );
 
     app.use(
         '/familie-brev/api',
         addRequestInfo(),
         ensureAuthenticated(azureAuthClient, true),
-        doProxy('/familie-brev/api', brevProxyUrl)
+        doProxy(brevProxyUrl)
     );
 
     app.use(
         '/familie-endringslogg',
         addRequestInfo(),
         ensureAuthenticated(azureAuthClient, true),
-        doProxy('/familie-endringslogg', endringsloggProxyUrl, '')
+        doProxy(endringsloggProxyUrl, '')
     );
 
     // Sett opp bodyParser og router etter proxy. Spesielt viktig med tanke på større payloads som blir parset av bodyParser
