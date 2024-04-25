@@ -103,6 +103,7 @@ const PersonHeaderComponent: FC<{ data: IPersonopplysninger; behandling?: Behand
                     kjønn={kjønn}
                     ident={personIdent}
                     visningsnavn={visningsnavn}
+                    borderBottom={false}
                 />
                 <PersonTags
                     adressebeskyttelse={adressebeskyttelse}
