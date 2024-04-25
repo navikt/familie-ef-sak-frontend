@@ -22,6 +22,9 @@ import { NyEierModal } from './Modal/NyEierModal';
 const Container = styled.div`
     display: flex;
     flex-shrink: 2;
+    max-height: calc(
+        100vh - ${110}px
+    ); // Magisk tall som er høyden på header pluss PersonHeaderComponent og litt til
 `;
 
 interface InnholdWrapperProps {
@@ -46,6 +49,8 @@ const HøyreMenyWrapper = styled.div<HøyreMenyWrapperProps>`
     transition: all 0.25s;
 
     z-index: 10;
+
+    overflow-y: auto;
 `;
 
 const InnholdWrapper = styled.div<InnholdWrapperProps>`
@@ -55,6 +60,8 @@ const InnholdWrapper = styled.div<InnholdWrapperProps>`
     min-width: 0;
 
     max-width: ${(p) => (p.$åpenHøyremeny ? 'calc(100% - 20rem)' : '100%')};
+
+    overflow-y: auto;
 `;
 
 export const BehandlingContainer: FC = () => {
