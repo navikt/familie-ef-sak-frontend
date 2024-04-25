@@ -70,7 +70,7 @@ export interface IAnnenForelder {
 }
 
 export interface IAvstandTilSøker {
-    avstandIKm?: number;
+    avstand?: number;
     langAvstandTilSøker: EAvstandTilSøker;
 }
 
