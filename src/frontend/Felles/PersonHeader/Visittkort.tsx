@@ -28,9 +28,16 @@ interface Props {
     kjønn: kjønnType;
     ident: string;
     visningsnavn: string;
+    borderBottom?: boolean;
 }
 
-const Visittkort: React.FC<Props> = ({ fagsakPersonId, kjønn, ident, visningsnavn }) => {
+const Visittkort: React.FC<Props> = ({
+    fagsakPersonId,
+    kjønn,
+    ident,
+    visningsnavn,
+    borderBottom = true,
+}) => {
     return (
         <VisittKortContainer>
             <VisittKort
@@ -45,6 +52,7 @@ const Visittkort: React.FC<Props> = ({ fagsakPersonId, kjønn, ident, visningsna
                         <Visningsnavn>{visningsnavn}</Visningsnavn>
                     </ResponsivLenke>
                 }
+                borderBottom={borderBottom}
             />
         </VisittKortContainer>
     );

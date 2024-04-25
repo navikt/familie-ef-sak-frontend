@@ -1742,10 +1742,10 @@
   resolved "https://npm.pkg.github.com/download/@navikt/familie-typer/8.0.2/21bcc780c35b6a8699d1c52b54e61d83580736f7#21bcc780c35b6a8699d1c52b54e61d83580736f7"
   integrity sha512-pKSpCzryJE6eiN/Ssox1oLLKPW5ezsT+/gTHbhgxOtM/frFSZLguSjwhgiDp2kovckJ84nxhnQurK6igw8GEHw==
 
-"@navikt/familie-visittkort@^15.0.0":
-  version "15.0.0"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-visittkort/15.0.0/2843b0b58deacd9b41ae17dec52753eebf16b9ae#2843b0b58deacd9b41ae17dec52753eebf16b9ae"
-  integrity sha512-AYtp8fW5VxsKqHwli2JIRDnM07DAQA8nHhqvayJ259p1kBAMJd4ntLtsmH2wP0GYAa8RsibaSoOwEiRw3vQxNA==
+"@navikt/familie-visittkort@^15.0.1":
+  version "15.0.1"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-visittkort/15.0.1/f092ca69364e5b2cdb06e763071c8364dfcc4d42#f092ca69364e5b2cdb06e763071c8364dfcc4d42"
+  integrity sha512-J/Xi4AVlBYInAPEzFDhuAJbv7vr30W3YLHriXjFeT8ikj1QPCUfY8uzPauJiEMW1I28udICjHE2Ic1RJsBlwrQ==
   dependencies:
     "@navikt/familie-ikoner" "^9.0.1"
     "@navikt/familie-typer" "^8.0.2"
