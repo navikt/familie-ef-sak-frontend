@@ -42,7 +42,13 @@ const AnnenForelderOpplysninger: FC<Props> = ({ forelderRegister, søknadsgrunnl
     const utledAvstandTilSøkerTekst = (avstandTilSøker: IAvstandTilSøker): string => {
         switch (avstandTilSøker.langAvstandTilSøker) {
             case EAvstandTilSøker.JA:
-                return avstandTilSøker.avstandIKm + ' km';
+                if (!avstandTilSøker.avstand) {
+                    return 'Ukjent';
+                }
+                if (avstandTilSøker.avstand > 1000) {
+                    return Math.floor(avstandTilSøker.avstand / 1000) + ' km';
+                }
+                return Math.floor(avstandTilSøker.avstand) + ' meter';
             default:
                 return avstandTilSøkerTekst[avstandTilSøker.langAvstandTilSøker];
         }
