@@ -13,7 +13,7 @@ import {
 } from '../../../../App/context/EkspanderbareVilkårpanelContext';
 
 const FlexRow = styled.div`
-    margin: 1rem 2rem;
+    margin: 2rem;
     display: flex;
     justify-content: space-between;
 `;
