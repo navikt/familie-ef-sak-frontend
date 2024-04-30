@@ -5,10 +5,10 @@ import {
     formaterTallMedTusenSkilleEllerStrek,
 } from '../../../App/utils/formatter';
 import { RadTittel, RadVerdi, ResultatVerdi, SimuleringOversiktTabell } from './SimuleringOversikt';
-import { ISimuleringPeriode } from './SimuleringTyper';
+import { SimuleringPeriode } from './SimuleringTyper';
 import { BodyShortSmall, SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
 
-export const NestePeriode: React.FC<{ nestePeriode: ISimuleringPeriode | undefined }> = ({
+export const NestePeriode: React.FC<{ nestePeriode: SimuleringPeriode | undefined }> = ({
     nestePeriode,
 }) => {
     if (!nestePeriode) {

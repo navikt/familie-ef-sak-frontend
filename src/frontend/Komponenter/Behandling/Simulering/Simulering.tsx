@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
-import SimuleringTabellWrapper from './SimuleringTabellWrapper';
-import { ISimulering } from './SimuleringTyper';
+import SimuleringSide from './SimuleringSide';
+import { Simulering as ISimulering } from './SimuleringTyper';
 import {
     harVedtaksresultatMedTilkjentYtelse,
     useHentVedtak,
@@ -33,7 +33,7 @@ export const Simulering: FC<{ behandlingId: string }> = ({ behandlingId }) => {
     return (
         <DataViewer response={{ simuleringsresultat, vedtak }}>
             {({ simuleringsresultat, vedtak }) => (
-                <SimuleringTabellWrapper
+                <SimuleringSide
                     simuleringsresultat={simuleringsresultat}
                     behandlingId={behandlingId}
                     lagretVedtak={vedtak}
