@@ -7168,10 +7168,10 @@ react-lifecycles-compat@^3.0.4:
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
-react-pdf@7.7.1:
-  version "7.7.1"
-  resolved "https://registry.yarnpkg.com/react-pdf/-/react-pdf-7.7.1.tgz#8f5c4716a8ca65a0889825ef01e3a37956291334"
-  integrity sha512-cbbf/PuRtGcPPw+HLhMI1f6NSka8OJgg+j/yPWTe95Owf0fK6gmVY7OXpTxMeh92O3T3K3EzfE0ML0eXPGwR5g==
+react-pdf@8.0.0:
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/react-pdf/-/react-pdf-8.0.0.tgz#5b947836d7f5a6cd205ed15ab4d25ed1407d3eb8"
+  integrity sha512-0aAQjdXeiAFTCGa607reLwPCrjpwH3MM2t0Lpq5Eju6ss17tNDIdhYiyvw/sZg9/ZrmL9aC0I4ztGiFeWz3zOQ==
   dependencies:
     clsx "^2.0.0"
     dequal "^2.0.3"
@@ -7179,7 +7179,6 @@ react-pdf@7.7.1:
     make-event-props "^1.6.0"
     merge-refs "^1.2.1"
     pdfjs-dist "3.11.174"
-    prop-types "^15.6.2"
     tiny-invariant "^1.0.0"
     warning "^4.0.0"
 
