@@ -6,9 +6,9 @@ import { useApp } from '../../../App/context/AppContext';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
 import { base64toBlob, åpnePdfIEgenTab } from '../../../App/utils/utils';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
-import { Button, Heading, Radio, RadioGroup } from '@navikt/ds-react';
+import { BodyLong, Button, Heading, Radio, RadioGroup } from '@navikt/ds-react';
 import { FileTextIcon } from '@navikt/aksel-icons';
-import { ARed500 } from '@navikt/ds-tokens/dist/tokens';
+import { ABlue50, ARed500 } from '@navikt/ds-tokens/dist/tokens';
 import { HeaderBegrunnelse } from './HeaderBegrunnelse';
 
 const VarselValg = styled.div`
@@ -21,6 +21,23 @@ const ErrorTekst = styled.div`
     line-height: 1.375rem;
     font-weight: 600;
     color: ${ARed500};
+    margin-bottom: 1rem;
+`;
+
+const RadioButton = styled(Radio)`
+    padding: 1rem;
+    margin-bottom: 1rem;
+    width: 100%;
+    background-color: ${ABlue50};
+`;
+
+const Liste = styled.ul`
+    list-style: none;
+    margin: 0 0 1rem 0;
+    padding: 0;
+`;
+
+const BodyLongMarginBottom = styled(BodyLong)`
     margin-bottom: 1rem;
 `;
 
@@ -101,17 +118,20 @@ export const TilbakekrevingSkjema: React.FC<Props> = ({
                 legend={'Valg for tilbakekreving'}
             >
                 {erUnder4xRettsgebyr && (
-                    <Radio
+                    <RadioButton
                         value={ITilbakekrevingsvalg.OPPRETT_AUTOMATISK}
                         name="tilbakekrevingRadio"
                     >
-                        {TilbakekrevingsvalgTilTekst[ITilbakekrevingsvalg.OPPRETT_AUTOMATISK]}
-                    </Radio>
+                        <FireGangerRettsgebyr />
+                    </RadioButton>
                 )}
 
-                <Radio value={ITilbakekrevingsvalg.OPPRETT_MED_VARSEL} name="tilbakekrevingRadio">
-                    {TilbakekrevingsvalgTilTekst[ITilbakekrevingsvalg.OPPRETT_MED_VARSEL]}
-                </Radio>
+                <RadioButton
+                    value={ITilbakekrevingsvalg.OPPRETT_MED_VARSEL}
+                    name="tilbakekrevingRadio"
+                >
+                    <OpprettMedVarsel />
+                </RadioButton>
                 {tilbakekrevingsvalg === ITilbakekrevingsvalg.OPPRETT_MED_VARSEL && (
                     <VarselValg>
                         <EnsligTextArea
@@ -136,12 +156,15 @@ export const TilbakekrevingSkjema: React.FC<Props> = ({
                         {forhåndsvisningsFeil && <AlertError>{forhåndsvisningsFeil}</AlertError>}
                     </VarselValg>
                 )}
-                <Radio value={ITilbakekrevingsvalg.OPPRETT_UTEN_VARSEL} name="tilbakekrevingRadio">
-                    {TilbakekrevingsvalgTilTekst[ITilbakekrevingsvalg.OPPRETT_UTEN_VARSEL]}
-                </Radio>
-                <Radio value={ITilbakekrevingsvalg.AVVENT} name="tilbakekrevingRadio">
-                    {TilbakekrevingsvalgTilTekst[ITilbakekrevingsvalg.AVVENT]}
-                </Radio>
+                <RadioButton
+                    value={ITilbakekrevingsvalg.OPPRETT_UTEN_VARSEL}
+                    name="tilbakekrevingRadio"
+                >
+                    <OpprettUtenVarsel />
+                </RadioButton>
+                <RadioButton value={ITilbakekrevingsvalg.AVVENT} name="tilbakekrevingRadio">
+                    <Avvent />
+                </RadioButton>
             </RadioGroup>
             {valideringsfeil && <ErrorTekst>{valideringsfeil}</ErrorTekst>}
             <Button type={'submit'} onClick={lagreTilbakekrevingsValg} disabled={låsKnapp}>
@@ -150,3 +173,63 @@ export const TilbakekrevingSkjema: React.FC<Props> = ({
         </>
     );
 };
+
+const FireGangerRettsgebyr = () => (
+    <>
+        <BodyLongMarginBottom size="large">
+            {TilbakekrevingsvalgTilTekst[ITilbakekrevingsvalg.OPPRETT_AUTOMATISK]}
+        </BodyLongMarginBottom>
+        <BodyLong size="small">Det er vurdert at</BodyLong>
+        <Liste>
+            <li>
+                <BodyLong size="small">
+                    - bruker ikke har handlet forsettlig eller grovt uaktsomt
+                </BodyLong>
+            </li>
+            <li>
+                <BodyLong size="small">- beløpet er under 4 ganger rettsgebyret</BodyLong>
+            </li>
+            <li>
+                <BodyLong size="small">- beløpet ikke skal betales tilbake</BodyLong>
+            </li>
+        </Liste>
+        <BodyLong size="small">
+            Saken blir automatisk behandlet og bruker får et vedtak om ikke tilbakebetaling.
+        </BodyLong>
+    </>
+);
+
+const OpprettMedVarsel = () => (
+    <>
+        <BodyLongMarginBottom size="large">
+            {TilbakekrevingsvalgTilTekst[ITilbakekrevingsvalg.OPPRETT_MED_VARSEL]}
+        </BodyLongMarginBottom>
+        <BodyLong size="small">
+            Dette valget bruker du når du vet at det blir en feilutbetaling.
+        </BodyLong>
+    </>
+);
+
+const OpprettUtenVarsel = () => (
+    <>
+        <BodyLongMarginBottom size="large">
+            {TilbakekrevingsvalgTilTekst[ITilbakekrevingsvalg.OPPRETT_UTEN_VARSEL]}
+        </BodyLongMarginBottom>
+        <BodyLong size="small">
+            Dette valget bruker du når du vet at det blir feilutbetaling tilbake i tid, men du må
+            vente på riktig beløp.
+        </BodyLong>
+    </>
+);
+
+const Avvent = () => (
+    <>
+        <BodyLongMarginBottom size="large">
+            {TilbakekrevingsvalgTilTekst[ITilbakekrevingsvalg.AVVENT]}
+        </BodyLongMarginBottom>
+        <BodyLong size="small">
+            Dette valget bruker du i tilfeller hvor du ikke tror det blir en feilutbetaling i det
+            hele tatt.
+        </BodyLong>
+    </>
+);
