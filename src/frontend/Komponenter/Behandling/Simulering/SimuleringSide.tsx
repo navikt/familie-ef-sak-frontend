@@ -10,7 +10,7 @@ import {
     IVedtak,
     IVedtakType,
 } from '../../../App/typer/vedtak';
-import { Alert } from '@navikt/ds-react';
+import { Alert, VStack } from '@navikt/ds-react';
 import { useToggles } from '../../../App/context/TogglesContext';
 import { ToggleName } from '../../../App/context/toggles';
 import { mapSimuleringstabellRader } from './utils';
@@ -20,7 +20,7 @@ const Container = styled.div`
     padding: 2rem;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 3rem;
     width: fit-content;
 `;
 
@@ -62,17 +62,19 @@ const SimuleringSide: React.FC<{
 
     return (
         <Container>
-            <SimuleringOversikt simulering={simuleringsresultat} />
-            {erPositivSum && (
-                <AlertWarning variant={'warning'}>
-                    Det finnes manuelle posteringer tilknyttet tidligere behandling.
-                    Simuleringsbildet kan derfor være ufullstendig.
-                </AlertWarning>
-            )}
-            <SimuleringTabell
-                perioder={simuleringTabellRader}
-                årsvelger={{ valgtÅr: år, settÅr: settÅr, muligeÅr: muligeÅr }}
-            />
+            <VStack gap="4">
+                <SimuleringOversikt simulering={simuleringsresultat} />
+                {erPositivSum && (
+                    <AlertWarning variant={'warning'}>
+                        Det finnes manuelle posteringer tilknyttet tidligere behandling.
+                        Simuleringsbildet kan derfor være ufullstendig.
+                    </AlertWarning>
+                )}
+                <SimuleringTabell
+                    perioder={simuleringTabellRader}
+                    årsvelger={{ valgtÅr: år, settÅr: settÅr, muligeÅr: muligeÅr }}
+                />
+            </VStack>
             <Sanksjonsperiode sanksjonertVedtak={lagretSanksjonertVedtak} />
             {harFeilutbetaling && (
                 <Tilbakekreving

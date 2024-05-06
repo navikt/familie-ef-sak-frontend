@@ -6,10 +6,16 @@ import { useApp } from '../../../App/context/AppContext';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
 import { base64toBlob, åpnePdfIEgenTab } from '../../../App/utils/utils';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
-import { BodyLong, Button, Heading, Radio, RadioGroup } from '@navikt/ds-react';
+import { BodyLong, Button, Heading, Radio, RadioGroup, VStack } from '@navikt/ds-react';
 import { FileTextIcon } from '@navikt/aksel-icons';
 import { ABlue50, ARed500 } from '@navikt/ds-tokens/dist/tokens';
 import { HeaderBegrunnelse } from './HeaderBegrunnelse';
+
+const Container = styled(VStack)`
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    padding-left: 1rem;
+`;
 
 const VarselValg = styled.div`
     margin-bottom: 1rem;
@@ -39,6 +45,10 @@ const Liste = styled.ul`
 
 const BodyLongMarginBottom = styled(BodyLong)`
     margin-bottom: 1rem;
+`;
+
+const HovedKnapp = styled(Button)`
+    width: fit-content;
 `;
 
 interface Props {
@@ -99,77 +109,81 @@ export const TilbakekrevingSkjema: React.FC<Props> = ({
             <Heading size={'medium'} level={'2'}>
                 Tilbakekreving
             </Heading>
-            <EnsligTextArea
-                label={<HeaderBegrunnelse />}
-                erLesevisning={false}
-                value={begrunnelse}
-                maxLength={0}
-                onChange={(e) => {
-                    settIkkePersistertKomponent('tilbakekreving');
-                    endreBegrunnelse(e.target.value);
-                }}
-            />
-            <RadioGroup
-                value={tilbakekrevingsvalg}
-                onChange={(tilbakekrevingsvalg: ITilbakekrevingsvalg) => {
-                    settIkkePersistertKomponent('tilbakekreving');
-                    endreTilbakekrevingsvalg(tilbakekrevingsvalg);
-                }}
-                legend={'Valg for tilbakekreving'}
-            >
-                {erUnder4xRettsgebyr && (
+            <Container gap="8">
+                <EnsligTextArea
+                    label={<HeaderBegrunnelse />}
+                    erLesevisning={false}
+                    value={begrunnelse}
+                    maxLength={0}
+                    onChange={(e) => {
+                        settIkkePersistertKomponent('tilbakekreving');
+                        endreBegrunnelse(e.target.value);
+                    }}
+                />
+                <RadioGroup
+                    value={tilbakekrevingsvalg}
+                    onChange={(tilbakekrevingsvalg: ITilbakekrevingsvalg) => {
+                        settIkkePersistertKomponent('tilbakekreving');
+                        endreTilbakekrevingsvalg(tilbakekrevingsvalg);
+                    }}
+                    legend={'Valg for tilbakekreving'}
+                >
+                    {erUnder4xRettsgebyr && (
+                        <RadioButton
+                            value={ITilbakekrevingsvalg.OPPRETT_AUTOMATISK}
+                            name="tilbakekrevingRadio"
+                        >
+                            <FireGangerRettsgebyr />
+                        </RadioButton>
+                    )}
+
                     <RadioButton
-                        value={ITilbakekrevingsvalg.OPPRETT_AUTOMATISK}
+                        value={ITilbakekrevingsvalg.OPPRETT_MED_VARSEL}
                         name="tilbakekrevingRadio"
                     >
-                        <FireGangerRettsgebyr />
+                        <OpprettMedVarsel />
                     </RadioButton>
-                )}
-
-                <RadioButton
-                    value={ITilbakekrevingsvalg.OPPRETT_MED_VARSEL}
-                    name="tilbakekrevingRadio"
-                >
-                    <OpprettMedVarsel />
-                </RadioButton>
-                {tilbakekrevingsvalg === ITilbakekrevingsvalg.OPPRETT_MED_VARSEL && (
-                    <VarselValg>
-                        <EnsligTextArea
-                            label={'Fritekst i varselet'}
-                            erLesevisning={false}
-                            value={varseltekst}
-                            maxLength={0}
-                            onChange={(e) => {
-                                settIkkePersistertKomponent('tilbakekreving');
-                                endreVarseltekst(e.target.value);
-                            }}
-                        />
-                        <Button
-                            type={'button'}
-                            variant={'tertiary'}
-                            icon={<FileTextIcon />}
-                            size={'xsmall'}
-                            onClick={åpneBrevINyFane}
-                        >
-                            Forhåndsvis varselbrev
-                        </Button>
-                        {forhåndsvisningsFeil && <AlertError>{forhåndsvisningsFeil}</AlertError>}
-                    </VarselValg>
-                )}
-                <RadioButton
-                    value={ITilbakekrevingsvalg.OPPRETT_UTEN_VARSEL}
-                    name="tilbakekrevingRadio"
-                >
-                    <OpprettUtenVarsel />
-                </RadioButton>
-                <RadioButton value={ITilbakekrevingsvalg.AVVENT} name="tilbakekrevingRadio">
-                    <Avvent />
-                </RadioButton>
-            </RadioGroup>
+                    {tilbakekrevingsvalg === ITilbakekrevingsvalg.OPPRETT_MED_VARSEL && (
+                        <VarselValg>
+                            <EnsligTextArea
+                                label={'Fritekst i varselet'}
+                                erLesevisning={false}
+                                value={varseltekst}
+                                maxLength={0}
+                                onChange={(e) => {
+                                    settIkkePersistertKomponent('tilbakekreving');
+                                    endreVarseltekst(e.target.value);
+                                }}
+                            />
+                            <Button
+                                type={'button'}
+                                variant={'tertiary'}
+                                icon={<FileTextIcon />}
+                                size={'xsmall'}
+                                onClick={åpneBrevINyFane}
+                            >
+                                Forhåndsvis varselbrev
+                            </Button>
+                            {forhåndsvisningsFeil && (
+                                <AlertError>{forhåndsvisningsFeil}</AlertError>
+                            )}
+                        </VarselValg>
+                    )}
+                    <RadioButton
+                        value={ITilbakekrevingsvalg.OPPRETT_UTEN_VARSEL}
+                        name="tilbakekrevingRadio"
+                    >
+                        <OpprettUtenVarsel />
+                    </RadioButton>
+                    <RadioButton value={ITilbakekrevingsvalg.AVVENT} name="tilbakekrevingRadio">
+                        <Avvent />
+                    </RadioButton>
+                </RadioGroup>
+            </Container>
             {valideringsfeil && <ErrorTekst>{valideringsfeil}</ErrorTekst>}
-            <Button type={'submit'} onClick={lagreTilbakekrevingsValg} disabled={låsKnapp}>
+            <HovedKnapp type={'submit'} onClick={lagreTilbakekrevingsValg} disabled={låsKnapp}>
                 Lagre tilbakekrevingsvalg
-            </Button>
+            </HovedKnapp>
         </>
     );
 };

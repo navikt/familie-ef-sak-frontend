@@ -5,7 +5,7 @@ import { ATextSubtle } from '@navikt/ds-tokens/dist/tokens';
 
 const Liste = styled.ul`
     padding-left: 1rem;
-    margin: 0 0 1rem 0;
+    margin: 0;
 
     li::marker {
         color: ${ATextSubtle};
@@ -46,10 +46,5 @@ export const HeaderBegrunnelse: React.FC = () => (
                 </Tekst>
             </li>
         </Liste>
-        <BodyLong textColor="subtle">
-            Hvis det feilutbetalte beløpet er under 4 ganger rettsgebyret og du ikke skal kreve det
-            tilbake, må du i tillegg ha vurdert at bruker ikke har handlet forsettlig eller grovt
-            uaktsomt.
-        </BodyLong>
     </>
 );
