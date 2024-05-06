@@ -24,6 +24,8 @@ export const Tabellrad: React.FC<{ dokument: Dokumentinfo; erKlikketId: string }
         <tr>
             <Td></Td>
             <Td></Td>
+            <Td></Td>
+            <Td></Td>
             <Td>
                 {skalViseLenke(dokument) ? (
                     <>
@@ -43,8 +45,6 @@ export const Tabellrad: React.FC<{ dokument: Dokumentinfo; erKlikketId: string }
                     </IkkeTilgang>
                 )}
             </Td>
-            <Td></Td>
-            <Td></Td>
             <Td></Td>
             <Td></Td>
         </tr>
