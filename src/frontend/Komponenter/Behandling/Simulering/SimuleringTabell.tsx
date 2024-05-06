@@ -32,6 +32,10 @@ const ResultatVerdi = styled(BodyShortSmall)<{ $verdi: number }>`
     color: ${(props) => (props.$verdi > 0 ? AGreen500 : ARed500)};
 `;
 
+const ÅrVelgerMargin = styled(ÅrVelger)`
+    margin: 0.25rem 0 0.25rem 0;
+`;
+
 interface Props {
     perioder: SimuleringTabellRad[];
     årsvelger: SimuleringÅrsvelger;
@@ -44,7 +48,7 @@ const SimuleringTabell: React.FC<Props> = (simuleringstabell) => {
             <thead>
                 <tr>
                     <TabellHeader>
-                        <ÅrVelger årsvelger={årsvelger} />
+                        <ÅrVelgerMargin årsvelger={årsvelger} />
                     </TabellHeader>
                     {perioder.map((p) => {
                         return (

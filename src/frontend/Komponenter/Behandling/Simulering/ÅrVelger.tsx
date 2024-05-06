@@ -3,12 +3,15 @@ import { SimuleringÅrsvelger } from './SimuleringTyper';
 import { Button, HStack, Label } from '@navikt/ds-react';
 import { ArrowLeftIcon, ArrowRightIcon } from '@navikt/aksel-icons';
 
-const ÅrVelger: React.FC<{ årsvelger: SimuleringÅrsvelger }> = ({ årsvelger }) => {
+const ÅrVelger: React.FC<{ årsvelger: SimuleringÅrsvelger; className?: string }> = ({
+    årsvelger,
+    className,
+}) => {
     const { settÅr, muligeÅr, valgtÅr } = årsvelger;
     const kanVelgeForrigeÅr = muligeÅr.some((muligÅr) => muligÅr < valgtÅr);
     const kanVelgeNesteÅr = muligeÅr.some((muligÅr) => muligÅr > valgtÅr);
     return (
-        <HStack align="center" gap="4">
+        <HStack align="center" gap="4" className={className}>
             <Button
                 icon={<ArrowLeftIcon />}
                 disabled={!kanVelgeForrigeÅr}

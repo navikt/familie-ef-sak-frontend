@@ -13,7 +13,7 @@ export const Simulering: FC<{ behandlingId: string }> = ({ behandlingId }) => {
     const { axiosRequest } = useApp();
     const { vedtak, hentVedtak, vedtaksresultat } = useHentVedtak(behandlingId);
     const [simuleringsresultat, settSimuleringsresultat] =
-        useState<Ressurs<ISimulering>>(byggTomRessurs());
+        useState<Ressurs<ISimulering>>(byggTomRessurs<ISimulering>());
 
     useEffect(() => {
         if (harVedtaksresultatMedTilkjentYtelse(vedtaksresultat)) {

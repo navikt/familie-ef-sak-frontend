@@ -6,10 +6,10 @@ import { useApp } from '../../../App/context/AppContext';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
 import { base64toBlob, åpnePdfIEgenTab } from '../../../App/utils/utils';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
-import { Button, Radio, RadioGroup } from '@navikt/ds-react';
+import { Button, Heading, Radio, RadioGroup } from '@navikt/ds-react';
 import { FileTextIcon } from '@navikt/aksel-icons';
 import { ARed500 } from '@navikt/ds-tokens/dist/tokens';
-import { InfostripeTilbakekrevingsvalg } from './InfostripeTilbakekrevingsvalg';
+import { HeaderBegrunnelse } from './HeaderBegrunnelse';
 
 const VarselValg = styled.div`
     margin-bottom: 1rem;
@@ -79,25 +79,27 @@ export const TilbakekrevingSkjema: React.FC<Props> = ({
 
     return (
         <>
+            <Heading size={'medium'} level={'2'}>
+                Tilbakekreving
+            </Heading>
+            <EnsligTextArea
+                label={<HeaderBegrunnelse />}
+                erLesevisning={false}
+                value={begrunnelse}
+                maxLength={0}
+                onChange={(e) => {
+                    settIkkePersistertKomponent('tilbakekreving');
+                    endreBegrunnelse(e.target.value);
+                }}
+            />
             <RadioGroup
                 value={tilbakekrevingsvalg}
                 onChange={(tilbakekrevingsvalg: ITilbakekrevingsvalg) => {
                     settIkkePersistertKomponent('tilbakekreving');
                     endreTilbakekrevingsvalg(tilbakekrevingsvalg);
                 }}
-                legend={<h2>Tilbakekreving</h2>}
+                legend={'Valg for tilbakekreving'}
             >
-                <EnsligTextArea
-                    label={'Begrunnelse (internt notat)'}
-                    erLesevisning={false}
-                    value={begrunnelse}
-                    maxLength={0}
-                    onChange={(e) => {
-                        settIkkePersistertKomponent('tilbakekreving');
-                        endreBegrunnelse(e.target.value);
-                    }}
-                />
-                <InfostripeTilbakekrevingsvalg erUnder4xRettsgebyr={erUnder4xRettsgebyr} />
                 {erUnder4xRettsgebyr && (
                     <Radio
                         value={ITilbakekrevingsvalg.OPPRETT_AUTOMATISK}
