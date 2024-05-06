@@ -7,7 +7,6 @@ import { Dokumentinfo } from '../../App/typer/dokumentliste';
 import { groupBy } from '../../App/utils/utils';
 import { IFagsakPerson } from '../../App/typer/fagsak';
 import { Journalstatus } from '@navikt/familie-typer';
-
 import {
     gyldigeJournalstatuserTilTekst,
     journalposttypeTilTekst,
@@ -17,7 +16,7 @@ import { Arkivtema, arkivtemaerMedENFFørst, arkivtemaerTilTekst } from '../../A
 import CustomSelect from '../Oppgavebenk/CustomSelect';
 import { FamilieReactSelect, MultiValue, SingleValue } from '@navikt/familie-form-elements';
 import { oppdaterVedleggFilter } from './utils';
-import { Checkbox, Heading, Label } from '@navikt/ds-react';
+import { Checkbox, Label } from '@navikt/ds-react';
 import { Kolonnetittel } from './Dokumentoversikt/Kolonnetittel';
 import { HovedTabellrad } from './Dokumentoversikt/Hovedtabellrad';
 import { Tabellrad } from './Dokumentoversikt/Tabellrad';
@@ -58,7 +57,7 @@ const Container = styled.div`
         }
         th,
         td {
-            padding: 0.25rem 0.25rem 0.25rem 0;
+            padding: 0.5rem;
         }
         table-layout: fixed;
     }
@@ -111,9 +110,6 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
 
     return (
         <Container>
-            <Heading size={'large'} level={'1'}>
-                Dokumenter
-            </Heading>
             <FiltreringGrid>
                 <Label>Velg tema(er)</Label>
                 <Label>Velg dokumenttype</Label>
@@ -175,11 +171,11 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
             <table className={'tabell'}>
                 <thead>
                     <tr>
-                        <Kolonnetittel text={'Dato'} width={12} />
+                        <Kolonnetittel text={'Dato'} width={15} />
                         <Kolonnetittel text={'Inn/ut'} width={5} />
-                        <Kolonnetittel text={'Tittel'} width={43} />
+                        <Kolonnetittel text={'Tema'} width={17} />
                         <Kolonnetittel text={'Avsender/mottaker'} width={20} />
-                        <Kolonnetittel text={'Tema'} width={20} />
+                        <Kolonnetittel text={'Tittel'} width={43} />
                         <Kolonnetittel text={'Status'} width={10} />
                         <Kolonnetittel text={'Distribusjon'} width={10} />
                     </tr>

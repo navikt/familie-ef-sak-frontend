@@ -12,15 +12,9 @@ import {
 } from '../../../App/typer/journalføring';
 import { Utsendingsinfo } from '../Utsendingsinfo';
 import styled from 'styled-components';
-import { Journalposttype } from '@navikt/familie-typer';
-import { ArrowDownIcon, ArrowLeftIcon, ArrowRightIcon } from '@navikt/aksel-icons';
 import { skalViseLenke } from '../utils';
 import { PadlockLockedIcon } from '@navikt/aksel-icons';
 import { tittelMedUrlGodkjenteTegn } from '../../../App/utils/utils';
-
-const TrHoveddokument = styled.tr`
-    background-color: #f7f7f7;
-`;
 
 const HovedLenke = styled.a`
     &:visited {
@@ -41,24 +35,19 @@ export const IkkeTilgang = styled.div`
     gap: 0.5rem;
 `;
 
-const ikonForJournalposttype: Record<Journalposttype, React.ReactElement> = {
-    I: <ArrowLeftIcon />,
-    N: <ArrowDownIcon />,
-    U: <ArrowRightIcon />,
-};
-
 export const HovedTabellrad: React.FC<{ dokument: Dokumentinfo; erKlikketId: string }> = ({
     dokument,
 }) => {
     return (
-        <TrHoveddokument>
+        <tr>
             <Td>{formaterNullableIsoDatoTid(dokument.dato)}</Td>
             <Td>
                 <InnUt>
-                    {ikonForJournalposttype[dokument.journalposttype]}
                     <strong>{dokument.journalposttype}</strong>
                 </InnUt>
             </Td>
+            <Td>{arkivtemaerTilTekst[dokument.tema as Arkivtema]}</Td>
+            <Td>{utledAvsenderMottakerDetaljer(dokument)}</Td>
             <Td>
                 {skalViseLenke(dokument) ? (
                     <>
@@ -79,8 +68,6 @@ export const HovedTabellrad: React.FC<{ dokument: Dokumentinfo; erKlikketId: str
                     </IkkeTilgang>
                 )}
             </Td>
-            <Td>{utledAvsenderMottakerDetaljer(dokument)}</Td>
-            <Td>{arkivtemaerTilTekst[dokument.tema as Arkivtema]}</Td>
             <Td>
                 <BodyShortSmall>
                     {tekstMapping(dokument.journalstatus, journalstatusTilTekst)}
@@ -89,7 +76,7 @@ export const HovedTabellrad: React.FC<{ dokument: Dokumentinfo; erKlikketId: str
             <Td>
                 <Utsendingsinfo utsendingsinfo={dokument.utsendingsinfo} />
             </Td>
-        </TrHoveddokument>
+        </tr>
     );
 };
 
