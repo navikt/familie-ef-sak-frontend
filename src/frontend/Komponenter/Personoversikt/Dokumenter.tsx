@@ -46,7 +46,8 @@ const ArkivtemaVelger = styled(FamilieReactSelect)`
 `;
 
 const Container = styled.div`
-    margin: 1rem;
+    max-width: 1350px;
+    margin: 1rem auto 1rem 1rem;
     gap: 1rem;
     display: flex;
     flex-direction: column;
@@ -57,7 +58,7 @@ const Container = styled.div`
         }
         th,
         td {
-            padding: 0.5rem;
+            padding: 0.35rem;
         }
         table-layout: fixed;
     }
@@ -177,7 +178,7 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
                         <Kolonnetittel text={'Avsender/mottaker'} width={20} />
                         <Kolonnetittel text={'Tittel'} width={43} />
                         <Kolonnetittel text={'Status'} width={10} />
-                        <Kolonnetittel text={'Distribusjon'} width={10} />
+                        <Kolonnetittel text={'Distribusjon'} width={15} />
                     </tr>
                 </thead>
                 <DataViewer response={{ dokumentResponse }}>
