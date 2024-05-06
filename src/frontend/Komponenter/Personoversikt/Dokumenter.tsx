@@ -16,8 +16,7 @@ import { Arkivtema, arkivtemaerMedENFFørst, arkivtemaerTilTekst } from '../../A
 import CustomSelect from '../Oppgavebenk/CustomSelect';
 import { FamilieReactSelect, MultiValue, SingleValue } from '@navikt/familie-form-elements';
 import { oppdaterVedleggFilter } from './utils';
-import { Checkbox, Label } from '@navikt/ds-react';
-import { Kolonnetittel } from './Dokumentoversikt/Kolonnetittel';
+import { Checkbox, Label, Table } from '@navikt/ds-react';
 import { HovedTabellrad } from './Dokumentoversikt/Hovedtabellrad';
 import { Tabellrad } from './Dokumentoversikt/Tabellrad';
 
@@ -169,18 +168,19 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
                     Vis feilregistrerte/avbrutte
                 </Checkbox>
             </FiltreringGrid>
-            <table className={'tabell'}>
-                <thead>
-                    <tr>
-                        <Kolonnetittel text={'Dato'} width={15} />
-                        <Kolonnetittel text={'Inn/ut'} width={5} />
-                        <Kolonnetittel text={'Tema'} width={17} />
-                        <Kolonnetittel text={'Avsender/mottaker'} width={20} />
-                        <Kolonnetittel text={'Tittel'} width={43} />
-                        <Kolonnetittel text={'Status'} width={10} />
-                        <Kolonnetittel text={'Distribusjon'} width={15} />
-                    </tr>
-                </thead>
+
+            <Table size="small">
+                <Table.Header>
+                    <Table.Row>
+                        <Table.HeaderCell scope="col">Dato</Table.HeaderCell>
+                        <Table.HeaderCell scope="col">Inn/ut</Table.HeaderCell>
+                        <Table.HeaderCell scope="col">Tema</Table.HeaderCell>
+                        <Table.HeaderCell scope="col">Avsender/mottaker</Table.HeaderCell>
+                        <Table.HeaderCell scope="col">Tittel</Table.HeaderCell>
+                        <Table.HeaderCell scope="col">Status</Table.HeaderCell>
+                        <Table.HeaderCell scope="col">Distribusjon</Table.HeaderCell>
+                    </Table.Row>
+                </Table.Header>
                 <DataViewer response={{ dokumentResponse }}>
                     {({ dokumentResponse }) => {
                         const grupperteDokumenter = groupBy(
@@ -188,7 +188,7 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
                             (i) => i.journalpostId
                         );
                         return (
-                            <tbody>
+                            <Table.Body>
                                 {Object.keys(grupperteDokumenter)
                                     .sort(function (a, b) {
                                         const datoA = grupperteDokumenter[a][0].dato;
@@ -225,11 +225,11 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
                                             }
                                         );
                                     })}
-                            </tbody>
+                            </Table.Body>
                         );
                     }}
                 </DataViewer>
-            </table>
+            </Table>
         </Container>
     );
 };

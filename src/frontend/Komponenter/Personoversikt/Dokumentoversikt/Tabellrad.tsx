@@ -1,13 +1,12 @@
 import React from 'react';
 import { Dokumentinfo } from '../../../App/typer/dokumentliste';
-import { Td } from '../../../Felles/Personopplysninger/TabellWrapper';
 import { LogiskeVedlegg } from './LogiskeVedlegg';
-import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 import styled from 'styled-components';
 import { skalViseLenke } from '../utils';
 import { IkkeTilgang } from './Hovedtabellrad';
 import { PadlockLockedIcon } from '@navikt/aksel-icons';
 import { tittelMedUrlGodkjenteTegn } from '../../../App/utils/utils';
+import { Table } from '@navikt/ds-react';
 
 const LenkeVenstreMargin = styled.a`
     margin-left: 2rem;
@@ -21,12 +20,12 @@ export const Tabellrad: React.FC<{ dokument: Dokumentinfo; erKlikketId: string }
     dokument,
 }) => {
     return (
-        <tr>
-            <Td></Td>
-            <Td></Td>
-            <Td></Td>
-            <Td></Td>
-            <Td>
+        <Table.Row>
+            <Table.DataCell></Table.DataCell>
+            <Table.DataCell></Table.DataCell>
+            <Table.DataCell></Table.DataCell>
+            <Table.DataCell></Table.DataCell>
+            <Table.DataCell>
                 {skalViseLenke(dokument) ? (
                     <>
                         <LenkeVenstreMargin
@@ -41,12 +40,12 @@ export const Tabellrad: React.FC<{ dokument: Dokumentinfo; erKlikketId: string }
                 ) : (
                     <IkkeTilgang>
                         <PadlockLockedIcon title="Mangler tilgang til dokument" />
-                        <BodyShortSmall>{dokument.tittel}</BodyShortSmall>
+                        {dokument.tittel}
                     </IkkeTilgang>
                 )}
-            </Td>
-            <Td></Td>
-            <Td></Td>
-        </tr>
+            </Table.DataCell>
+            <Table.DataCell></Table.DataCell>
+            <Table.DataCell></Table.DataCell>
+        </Table.Row>
     );
 };

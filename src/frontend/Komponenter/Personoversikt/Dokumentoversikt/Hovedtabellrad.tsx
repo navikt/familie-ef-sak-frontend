@@ -1,20 +1,18 @@
 import React from 'react';
 import { Dokumentinfo } from '../../../App/typer/dokumentliste';
-import { Td } from '../../../Felles/Personopplysninger/TabellWrapper';
 import { formaterNullableIsoDatoTid } from '../../../App/utils/formatter';
 import { LogiskeVedlegg } from './LogiskeVedlegg';
-import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 import { Arkivtema, arkivtemaerTilTekst } from '../../../App/typer/arkivtema';
 import { tekstMapping } from '../../../App/utils/tekstmapping';
 import {
     avsenderMottakerIdTypeTilTekst,
     journalstatusTilTekst,
 } from '../../../App/typer/journalføring';
-import { Utsendingsinfo } from '../Utsendingsinfo';
 import styled from 'styled-components';
 import { skalViseLenke } from '../utils';
 import { PadlockLockedIcon } from '@navikt/aksel-icons';
 import { tittelMedUrlGodkjenteTegn } from '../../../App/utils/utils';
+import { Table } from '@navikt/ds-react';
 
 const HovedLenke = styled.a`
     &:visited {
@@ -22,12 +20,12 @@ const HovedLenke = styled.a`
     }
 `;
 
-const InnUt = styled.div`
-    svg {
-        vertical-align: -0.2em;
-        margin-right: 0.5rem;
-    }
-`;
+// const InnUt = styled.div`
+//     svg {
+//         vertical-align: -0.2em;
+//         margin-right: 0.5rem;
+//     }
+// `;
 
 export const IkkeTilgang = styled.div`
     display: flex;
@@ -39,16 +37,13 @@ export const HovedTabellrad: React.FC<{ dokument: Dokumentinfo; erKlikketId: str
     dokument,
 }) => {
     return (
-        <tr>
-            <Td>{formaterNullableIsoDatoTid(dokument.dato)}</Td>
-            <Td>
-                <InnUt>
-                    <strong>{dokument.journalposttype}</strong>
-                </InnUt>
-            </Td>
-            <Td>{arkivtemaerTilTekst[dokument.tema as Arkivtema]}</Td>
-            <Td>{utledAvsenderMottakerDetaljer(dokument)}</Td>
-            <Td>
+        <Table.Row>
+            <Table.DataCell>{formaterNullableIsoDatoTid(dokument.dato)}</Table.DataCell>
+            <Table.DataCell>{dokument.journalposttype}</Table.DataCell>
+            <Table.DataCell>{arkivtemaerTilTekst[dokument.tema as Arkivtema]}</Table.DataCell>
+
+            <Table.DataCell>{utledAvsenderMottakerDetaljer(dokument)}</Table.DataCell>
+            <Table.DataCell>
                 {skalViseLenke(dokument) ? (
                     <>
                         <HovedLenke
@@ -62,21 +57,23 @@ export const HovedTabellrad: React.FC<{ dokument: Dokumentinfo; erKlikketId: str
                         <LogiskeVedlegg logiskeVedlegg={dokument.logiskeVedlegg} />
                     </>
                 ) : (
-                    <IkkeTilgang>
+                    <>
                         <PadlockLockedIcon title="Mangler tilgang til dokument" />
-                        <BodyShortSmall>{dokument.tittel}</BodyShortSmall>
-                    </IkkeTilgang>
+                        {dokument.tittel}
+                    </>
                 )}
-            </Td>
-            <Td>
-                <BodyShortSmall>
-                    {tekstMapping(dokument.journalstatus, journalstatusTilTekst)}
-                </BodyShortSmall>
-            </Td>
-            <Td>
-                <Utsendingsinfo utsendingsinfo={dokument.utsendingsinfo} />
-            </Td>
-        </tr>
+            </Table.DataCell>
+            <Table.DataCell>
+                {tekstMapping(dokument.journalstatus, journalstatusTilTekst)}
+            </Table.DataCell>
+            <Table.DataCell>
+                {dokument.utsendingsinfo
+                    ? dokument.utsendingsinfo.digitalpostSendt
+                        ? 'Digital post sendt'
+                        : 'Fysisk post sendt'
+                    : ''}
+            </Table.DataCell>
+        </Table.Row>
     );
 };
 
