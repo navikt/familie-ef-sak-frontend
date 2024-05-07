@@ -29,7 +29,7 @@ export const TilbakekrevingsvalgTilTekst: Record<ITilbakekrevingsvalg, string> =
     OPPRETT_MED_VARSEL: 'Opprett tilbakekreving, send varsel',
     OPPRETT_UTEN_VARSEL: 'Opprett tilbakekreving, ikke send varsel',
     OPPRETT_AUTOMATISK:
-        'Opprett automatisk behandling av tilbakekreving under 4 ganger rettsgebyret (ingen tilbakekreving)',
+        'Opprett automatisk behandling av tilbakekreving under 4 ganger rettsgebyret',
     AVVENT: 'Avvent',
 };
 
@@ -132,13 +132,8 @@ export const Tilbakekreving: React.FC<TilbakekrevingProps> = ({
             return;
         }
 
-        if (
-            tilbakekrevingsvalg == ITilbakekrevingsvalg.OPPRETT_AUTOMATISK &&
-            !harVerdi(begrunnelse)
-        ) {
-            settValideringsfeil(
-                'Begrunnelse må fylles ut dersom automatisk opprettelse av tilbakekreving er valgt'
-            );
+        if (!harVerdi(begrunnelse)) {
+            settValideringsfeil('Begrunnelse for tilbakekreving må fylles ut');
             return;
         }
 

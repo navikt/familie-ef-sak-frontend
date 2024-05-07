@@ -1,4 +1,4 @@
-import { ISimulering } from './SimuleringTyper';
+import { Simulering } from './SimuleringTyper';
 import React from 'react';
 import styled from 'styled-components';
 import { TotaltForPeriode } from './TotaltForPeriode';
@@ -8,7 +8,7 @@ import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 import { AGreen500, ARed500 } from '@navikt/ds-tokens/dist/tokens';
 
 interface ISimuleringOversikt {
-    simulering: ISimulering;
+    simulering: Simulering;
 }
 
 const BoksMedBorder = styled.div`
@@ -17,7 +17,6 @@ const BoksMedBorder = styled.div`
     border-radius: 4px;
     border: 1px solid;
     padding: 2rem;
-    margin: 2rem 0 2rem 0;
 `;
 
 export const RadTittel = styled.th`

@@ -1,5 +1,5 @@
-export interface ISimulering {
-    perioder: ISimuleringPeriode[];
+export interface Simulering {
+    perioder: SimuleringPeriode[];
     fomDatoNestePeriode: string;
     etterbetaling: number;
     feilutbetaling: number;
@@ -11,7 +11,7 @@ export interface ISimulering {
     sumManuellePosteringer?: number;
 }
 
-export interface ISimuleringPeriode {
+export interface SimuleringPeriode {
     fom: string;
     tom: string;
     forfalldato: string;
@@ -21,20 +21,15 @@ export interface ISimuleringPeriode {
     feilutbetaling: number;
 }
 
-export interface ISimuleringTabellRad {
+export interface SimuleringTabellRad {
     måned: string;
     nyttBeløp: number;
     tidligereUtbetalt: number;
     resultat: number;
     gjelderNestePeriode: boolean;
 }
-export interface ISimuleringÅrsvelger {
+export interface SimuleringÅrsvelger {
     valgtÅr: number;
     settÅr: (år: number) => void;
     muligeÅr: number[];
-}
-
-export interface ISimuleringTabell {
-    perioder: ISimuleringTabellRad[];
-    årsvelger: ISimuleringÅrsvelger;
 }
