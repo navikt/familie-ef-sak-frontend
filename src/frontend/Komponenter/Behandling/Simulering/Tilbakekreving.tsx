@@ -132,13 +132,8 @@ export const Tilbakekreving: React.FC<TilbakekrevingProps> = ({
             return;
         }
 
-        if (
-            tilbakekrevingsvalg == ITilbakekrevingsvalg.OPPRETT_AUTOMATISK &&
-            !harVerdi(begrunnelse)
-        ) {
-            settValideringsfeil(
-                'Begrunnelse må fylles ut dersom automatisk opprettelse av tilbakekreving er valgt'
-            );
+        if (!harVerdi(begrunnelse)) {
+            settValideringsfeil('Begrunnelse for tilbakekreving må fylles ut');
             return;
         }
 
