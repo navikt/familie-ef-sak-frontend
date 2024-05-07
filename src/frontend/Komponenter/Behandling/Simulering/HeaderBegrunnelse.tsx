@@ -40,9 +40,7 @@ export const HeaderBegrunnelse: React.FC = () => (
             <li>
                 <Tekst textColor="subtle">
                     Andre relevante opplysninger, for eksempel hva slags informasjon bruker har fått
-                    eller tidligere feilutbetalingssaker Hvis det feilutbetalte beløpet er under 4
-                    ganger rettsgebyret og du ikke skal kreve det tilbake, må du i tillegg ha
-                    vurdert at bruker ikke har handlet forsettlig eller grovt uaktsomt.
+                    eller tidligere feilutbetalingssaker
                 </Tekst>
             </li>
         </Liste>
