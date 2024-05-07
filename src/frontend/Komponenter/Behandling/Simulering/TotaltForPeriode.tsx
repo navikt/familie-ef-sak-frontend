@@ -6,9 +6,10 @@ import {
 import styled from 'styled-components';
 import { RadTittel, RadVerdi, SimuleringOversiktTabell } from './SimuleringOversikt';
 import { BodyShortSmall, SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
+import { ABorderDefault } from '@navikt/ds-tokens/dist/tokens';
 
-const BoksMedBottomBorder = styled.div`
-    border-bottom: 1px solid #a0a0a0;
+const Container = styled.div`
+    border-bottom: 1px solid ${ABorderDefault};
     padding-bottom: 0.5rem;
     margin-bottom: 0.5rem;
 `;
@@ -19,7 +20,7 @@ export const TotaltForPeriode: React.FC<{
     feilutbetaling: number;
     etterbetaling: number;
 }> = ({ fom, tomSisteUtbetaling, feilutbetaling, etterbetaling }) => (
-    <BoksMedBottomBorder>
+    <Container>
         <div>
             <SmallTextLabel>
                 Totalt for periode {formaterNullableMånedÅr(fom)} til og med{' '}
@@ -50,5 +51,5 @@ export const TotaltForPeriode: React.FC<{
                 </tr>
             </tbody>
         </SimuleringOversiktTabell>
-    </BoksMedBottomBorder>
+    </Container>
 );

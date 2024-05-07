@@ -1,8 +1,8 @@
-import { ISimuleringTabell } from './SimuleringTyper';
+import { SimuleringTabellRad, SimuleringÅrsvelger } from './SimuleringTyper';
 import React from 'react';
 import styled from 'styled-components';
 import { formaterTallMedTusenSkilleEllerStrek } from '../../../App/utils/formatter';
-import SimuleringÅrvelger from './SimuleringÅrvelger';
+import ÅrVelger from './ÅrVelger';
 import { BodyShortSmall, SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
 import { AGreen500, ARed500, ABorderStrong, ABorderDefault } from '@navikt/ds-tokens/dist/tokens';
 
@@ -10,8 +10,7 @@ const Tabell = styled.table`
     border-collapse: collapse;
 `;
 
-const ÅrHeader = styled.th`
-    padding: 0.75rem;
+const TabellHeader = styled.th`
     border-bottom: 1px solid ${ABorderStrong};
 `;
 
@@ -33,15 +32,24 @@ const ResultatVerdi = styled(BodyShortSmall)<{ $verdi: number }>`
     color: ${(props) => (props.$verdi > 0 ? AGreen500 : ARed500)};
 `;
 
-const SimuleringTabell: React.FC<ISimuleringTabell> = (simuleringstabell) => {
+const ÅrVelgerMargin = styled(ÅrVelger)`
+    margin: 0.25rem 0 0.25rem 0;
+`;
+
+interface Props {
+    perioder: SimuleringTabellRad[];
+    årsvelger: SimuleringÅrsvelger;
+}
+
+const SimuleringTabell: React.FC<Props> = (simuleringstabell) => {
     const { perioder, årsvelger } = simuleringstabell;
     return (
         <Tabell>
             <thead>
                 <tr>
-                    <ÅrHeader>
-                        <SimuleringÅrvelger årsvelger={årsvelger} />
-                    </ÅrHeader>
+                    <TabellHeader>
+                        <ÅrVelgerMargin årsvelger={årsvelger} />
+                    </TabellHeader>
                     {perioder.map((p) => {
                         return (
                             <MånedHeader key={p.måned} $gjelderNestePeriode={p.gjelderNestePeriode}>
