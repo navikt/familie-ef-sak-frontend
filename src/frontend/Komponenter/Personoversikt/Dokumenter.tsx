@@ -19,6 +19,7 @@ import { oppdaterVedleggFilter } from './utils';
 import { Checkbox, Label, Table } from '@navikt/ds-react';
 import { HovedTabellrad } from './Dokumentoversikt/Hovedtabellrad';
 import { Tabellrad } from './Dokumentoversikt/Tabellrad';
+import { KolonneTitler } from '../../Felles/Personopplysninger/TabellWrapper';
 
 const FiltreringGrid = styled.div`
     display: grid;
@@ -45,8 +46,6 @@ const ArkivtemaVelger = styled(FamilieReactSelect)`
 `;
 
 const Container = styled.div`
-    // max-width: 1350px;
-    // margin: 1rem auto 1rem 1rem;
     margin: 1rem;
     gap: 1rem;
     display: flex;
@@ -108,6 +107,16 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
         setVisFeilregistrerteOgAvbruttValgt(false);
         settVedlegg('journalpostStatus')(verdi);
     };
+
+    const titler = [
+        'Dato',
+        'Inn/ut',
+        'Tema',
+        'Avsender/mottaker',
+        'Tittel',
+        'Status',
+        'Distribusjon',
+    ];
 
     return (
         <Container>
@@ -171,17 +180,7 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
             </FiltreringGrid>
 
             <Table size="small">
-                <Table.Header>
-                    <Table.Row>
-                        <Table.HeaderCell scope="col">Dato</Table.HeaderCell>
-                        <Table.HeaderCell scope="col">Inn/ut</Table.HeaderCell>
-                        <Table.HeaderCell scope="col">Tema</Table.HeaderCell>
-                        <Table.HeaderCell scope="col">Avsender/mottaker</Table.HeaderCell>
-                        <Table.HeaderCell scope="col">Tittel</Table.HeaderCell>
-                        <Table.HeaderCell scope="col">Status</Table.HeaderCell>
-                        <Table.HeaderCell scope="col">Distribusjon</Table.HeaderCell>
-                    </Table.Row>
-                </Table.Header>
+                <KolonneTitler titler={titler} />
                 <DataViewer response={{ dokumentResponse }}>
                     {({ dokumentResponse }) => {
                         const grupperteDokumenter = groupBy(

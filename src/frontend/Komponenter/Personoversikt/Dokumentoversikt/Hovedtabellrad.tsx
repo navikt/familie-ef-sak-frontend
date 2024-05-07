@@ -20,13 +20,6 @@ const HovedLenke = styled.a`
     }
 `;
 
-// const InnUt = styled.div`
-//     svg {
-//         vertical-align: -0.2em;
-//         margin-right: 0.5rem;
-//     }
-// `;
-
 export const IkkeTilgang = styled.div`
     display: flex;
     align-items: center;
