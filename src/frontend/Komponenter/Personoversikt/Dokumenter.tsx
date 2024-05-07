@@ -45,8 +45,9 @@ const ArkivtemaVelger = styled(FamilieReactSelect)`
 `;
 
 const Container = styled.div`
-    max-width: 1350px;
-    margin: 1rem auto 1rem 1rem;
+    // max-width: 1350px;
+    // margin: 1rem auto 1rem 1rem;
+    margin: 1rem;
     gap: 1rem;
     display: flex;
     flex-direction: column;
