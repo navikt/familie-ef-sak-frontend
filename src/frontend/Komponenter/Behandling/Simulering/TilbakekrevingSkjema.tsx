@@ -62,7 +62,7 @@ interface Props {
     låsKnapp: boolean;
     behandlingId: string;
     valideringsfeil: string;
-    erUnder4xRettsgebyr: boolean;
+    skalViseValgForAutomatiskBehandlingUnder4xRettsgebyr: boolean;
 }
 
 export const TilbakekrevingSkjema: React.FC<Props> = ({
@@ -76,7 +76,7 @@ export const TilbakekrevingSkjema: React.FC<Props> = ({
     låsKnapp,
     behandlingId,
     valideringsfeil,
-    erUnder4xRettsgebyr,
+    skalViseValgForAutomatiskBehandlingUnder4xRettsgebyr,
 }) => {
     const { settIkkePersistertKomponent, axiosRequest } = useApp();
 
@@ -128,7 +128,7 @@ export const TilbakekrevingSkjema: React.FC<Props> = ({
                     }}
                     legend={'Valg for tilbakekreving'}
                 >
-                    {erUnder4xRettsgebyr && (
+                    {skalViseValgForAutomatiskBehandlingUnder4xRettsgebyr && (
                         <RadioButton
                             value={ITilbakekrevingsvalg.OPPRETT_AUTOMATISK}
                             name="tilbakekrevingRadio"
