@@ -7,7 +7,6 @@ import { Dokumentinfo } from '../../App/typer/dokumentliste';
 import { groupBy } from '../../App/utils/utils';
 import { IFagsakPerson } from '../../App/typer/fagsak';
 import { Journalstatus } from '@navikt/familie-typer';
-
 import {
     gyldigeJournalstatuserTilTekst,
     journalposttypeTilTekst,
@@ -17,10 +16,10 @@ import { Arkivtema, arkivtemaerMedENFFørst, arkivtemaerTilTekst } from '../../A
 import CustomSelect from '../Oppgavebenk/CustomSelect';
 import { FamilieReactSelect, MultiValue, SingleValue } from '@navikt/familie-form-elements';
 import { oppdaterVedleggFilter } from './utils';
-import { Checkbox, Heading, Label } from '@navikt/ds-react';
-import { Kolonnetittel } from './Dokumentoversikt/Kolonnetittel';
+import { Checkbox, Label, Table } from '@navikt/ds-react';
 import { HovedTabellrad } from './Dokumentoversikt/Hovedtabellrad';
 import { Tabellrad } from './Dokumentoversikt/Tabellrad';
+import { KolonneTitler } from '../../Felles/Personopplysninger/TabellWrapper';
 
 const FiltreringGrid = styled.div`
     display: grid;
@@ -58,7 +57,7 @@ const Container = styled.div`
         }
         th,
         td {
-            padding: 0.25rem 0.25rem 0.25rem 0;
+            padding: 0.35rem;
         }
         table-layout: fixed;
     }
@@ -109,11 +108,18 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
         settVedlegg('journalpostStatus')(verdi);
     };
 
+    const titler = [
+        'Dato',
+        'Inn/ut',
+        'Tema',
+        'Avsender/mottaker',
+        'Tittel',
+        'Status',
+        'Distribusjon',
+    ];
+
     return (
         <Container>
-            <Heading size={'large'} level={'1'}>
-                Dokumenter
-            </Heading>
             <FiltreringGrid>
                 <Label>Velg tema(er)</Label>
                 <Label>Velg dokumenttype</Label>
@@ -172,18 +178,9 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
                     Vis feilregistrerte/avbrutte
                 </Checkbox>
             </FiltreringGrid>
-            <table className={'tabell'}>
-                <thead>
-                    <tr>
-                        <Kolonnetittel text={'Dato'} width={12} />
-                        <Kolonnetittel text={'Inn/ut'} width={5} />
-                        <Kolonnetittel text={'Tittel'} width={43} />
-                        <Kolonnetittel text={'Avsender/mottaker'} width={20} />
-                        <Kolonnetittel text={'Tema'} width={20} />
-                        <Kolonnetittel text={'Status'} width={10} />
-                        <Kolonnetittel text={'Distribusjon'} width={10} />
-                    </tr>
-                </thead>
+
+            <Table size="small">
+                <KolonneTitler titler={titler} />
                 <DataViewer response={{ dokumentResponse }}>
                     {({ dokumentResponse }) => {
                         const grupperteDokumenter = groupBy(
@@ -191,7 +188,7 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
                             (i) => i.journalpostId
                         );
                         return (
-                            <tbody>
+                            <Table.Body>
                                 {Object.keys(grupperteDokumenter)
                                     .sort(function (a, b) {
                                         const datoA = grupperteDokumenter[a][0].dato;
@@ -228,11 +225,11 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
                                             }
                                         );
                                     })}
-                            </tbody>
+                            </Table.Body>
                         );
                     }}
                 </DataViewer>
-            </table>
+            </Table>
         </Container>
     );
 };
