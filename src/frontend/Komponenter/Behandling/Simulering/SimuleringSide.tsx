@@ -51,8 +51,9 @@ const SimuleringSide: React.FC<{
 
     const harFeilutbetaling = simuleringsresultat.feilutbetaling > 0;
 
-    const erUnder4xRettsgebyr =
+    const skalViseValgForAutomatiskBehandlingUnder4xRettsgebyr =
         simuleringsresultat.feilutbetaling < RETTSGEBYR_BELØP * 4 &&
+        simuleringsresultat.etterbetaling === 0 &&
         toggles[ToggleName.visAutomatiskBehandlingAvTilbakekrevingValg];
 
     const erPositivSum =
@@ -79,7 +80,9 @@ const SimuleringSide: React.FC<{
             {harFeilutbetaling && (
                 <Tilbakekreving
                     behandlingId={behandlingId}
-                    erUnder4xRettsgebyr={erUnder4xRettsgebyr}
+                    skalViseValgForAutomatiskBehandlingUnder4xRettsgebyr={
+                        skalViseValgForAutomatiskBehandlingUnder4xRettsgebyr
+                    }
                 />
             )}
         </Container>
