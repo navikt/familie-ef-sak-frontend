@@ -22,6 +22,7 @@ spec:
     path: /metrics
   ingresses:
     - https://ensligmorellerfar.intern.dev.nav.no
+    - https://ensligmorellerfar.ansatt.dev.nav.no
   azure:
     application:
       enabled: true
