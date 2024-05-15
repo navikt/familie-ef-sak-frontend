@@ -1,5 +1,5 @@
 import { Client, ensureAuthenticated, logRequest } from '@navikt/familie-backend';
-import { Request, Response, Router } from 'express';
+import { NextFunction, Request, Response, Router } from 'express';
 import path from 'path';
 import {
     buildPath,
@@ -12,6 +12,19 @@ import {
 } from './config';
 import { prometheusTellere } from './metrikker';
 import { LOG_LEVEL } from '@navikt/familie-logging';
+
+export const redirectHvisInternUrlIPreprod = () => {
+    return async (req: Request, res: Response, next: NextFunction) => {
+        if (
+            process.env.ENV === 'preprod' &&
+            req.headers.host === 'ensligmorellerfar.intern.dev.nav.no'
+        ) {
+            res.redirect(`https://ensligmorellerfar.ansatt.dev.nav.no${req.url}`);
+        } else {
+            next();
+        }
+    };
+};
 
 export default (authClient: Client, router: Router): Router => {
     router.get('/version', (_req: Request, res: Response) => {
@@ -40,11 +53,16 @@ export default (authClient: Client, router: Router): Router => {
         res.status(200).send();
     });
 
-    router.get('*', ensureAuthenticated(authClient, false), (_req: Request, res: Response) => {
-        prometheusTellere.appLoad.inc();
+    router.get(
+        '*',
+        redirectHvisInternUrlIPreprod(),
+        ensureAuthenticated(authClient, false),
+        (_req: Request, res: Response) => {
+            prometheusTellere.appLoad.inc();
 
-        res.sendFile('index.html', { root: path.join(process.cwd(), buildPath) });
-    });
+            res.sendFile('index.html', { root: path.join(process.cwd(), buildPath) });
+        }
+    );
 
     return router;
 };
