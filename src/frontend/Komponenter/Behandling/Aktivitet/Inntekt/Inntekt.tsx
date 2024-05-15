@@ -5,7 +5,7 @@ import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import { AlertError } from '../../../../Felles/Visningskomponenter/Alerts';
 import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';
 import { VilkårpanelInnhold } from '../../Vilkårpanel/VilkårpanelInnhold';
-import { GrunnbeløpInfo } from './GrunnbeløpInfo';
+import { GrunnbeløpInfoOgSistePeriodeOS } from './GrunnbeløpInfoOgSistePeriodeOS';
 
 export const Inntekt: React.FC<VilkårProps> = ({
     vurderinger,
@@ -13,6 +13,7 @@ export const Inntekt: React.FC<VilkårProps> = ({
     nullstillVurdering,
     ikkeVurderVilkår,
     feilmeldinger,
+    grunnlag,
 }) => {
     const vurdering = vurderinger.find((v) => v.vilkårType === AktivitetsvilkårType.INNTEKT);
 
@@ -33,7 +34,11 @@ export const Inntekt: React.FC<VilkårProps> = ({
         >
             <VilkårpanelInnhold>
                 {{
-                    venstre: <GrunnbeløpInfo />,
+                    venstre: (
+                        <GrunnbeløpInfoOgSistePeriodeOS
+                            personIdent={grunnlag.personalia.personIdent}
+                        />
+                    ),
                     høyre: (
                         <VisEllerEndreVurdering
                             ikkeVurderVilkår={ikkeVurderVilkår}

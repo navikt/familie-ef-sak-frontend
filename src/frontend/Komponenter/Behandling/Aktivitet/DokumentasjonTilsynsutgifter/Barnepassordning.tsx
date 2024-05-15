@@ -3,7 +3,7 @@ import {
     BarnepassordningDto,
     typeBarnepassordningTilTekst,
 } from '../../Inngangsvilkår/Aleneomsorg/typer';
-import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
+import { formaterTilIsoDatoFraTilStreng } from '../../../../App/utils/formatter';
 import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
 import styled from 'styled-components';
@@ -37,9 +37,7 @@ const Barnepassordning: FC<{
             />
             <Informasjonsrad
                 label="Periode passordning"
-                verdi={`${formaterNullableIsoDato(
-                    barnepassordning.fra
-                )} - ${formaterNullableIsoDato(barnepassordning.til)}`}
+                verdi={formaterTilIsoDatoFraTilStreng(barnepassordning.fra, barnepassordning.til)}
                 boldLabel={false}
             />
             <Informasjonsrad
