@@ -8,10 +8,8 @@ import {
 import TabellVisning from '../../Tabell/TabellVisning';
 import { useHentNyesteGrunnbeløpOgAntallGrunnbeløpsperioderTilbakeITid } from '../../../../App/hooks/felles/useHentGrunnbeløpsperioder';
 import { styled } from 'styled-components';
-import DataViewer from '../../../../Felles/DataViewer/DataViewer';
-import { useHentAndelHistorikkPerioder } from '../../../../App/hooks/useHentAndelHistorikkPerioder';
 import { aktivitetTilTekst, periodetypeTilTekst } from '../../../../App/typer/vedtak';
-import { useHentFagsakIder } from '../../../../App/hooks/useHentFagsakIder';
+import { IVilkårGrunnlag } from '../../Inngangsvilkår/vilkår';
 
 const Container = styled.div`
     & > *:not(:last-child) {
@@ -20,11 +18,10 @@ const Container = styled.div`
 `;
 
 export const GrunnbeløpInfoOgSistePeriodeOS: FC<{
-    personIdent: string;
-}> = ({ personIdent }) => {
-    const { fagsakOvergangsstønad } = useHentFagsakIder(personIdent);
-
-    const { perioder } = useHentAndelHistorikkPerioder(fagsakOvergangsstønad);
+    grunnlag: IVilkårGrunnlag;
+}> = ({ grunnlag }) => {
+    const periodeHistorikkOvergangsstønad =
+        grunnlag.tidligereVedtaksperioder.sak?.periodeHistorikkOvergangsstønad;
 
     const { grunnbeløpsperioder, hentGrunnbeløpsperioderCallback } =
         useHentNyesteGrunnbeløpOgAntallGrunnbeløpsperioderTilbakeITid(2);
@@ -60,39 +57,34 @@ export const GrunnbeløpInfoOgSistePeriodeOS: FC<{
                 ]}
             />
 
-            <DataViewer response={{ perioder }}>
-                {({ perioder }) => (
-                    <TabellVisning
-                        tittel="Siste periode med overgangsstønad"
-                        verdier={[perioder[0]]}
-                        minimerKolonnebredde={true}
-                        kolonner={[
-                            {
-                                overskrift: 'Periode',
-                                tekstVerdi: (d) =>
-                                    formaterStrengMedStorForbokstav(
-                                        formaterTilIsoDatoFraTilStreng(
-                                            d.andel.stønadFra,
-                                            d.andel.stønadTil
-                                        )
-                                    ),
-                            },
-                            {
-                                overskrift: 'Type',
-                                tekstVerdi: (d) => periodetypeTilTekst[d.periodeType || ''],
-                            },
-                            {
-                                overskrift: 'Aktivitet',
-                                tekstVerdi: (d) => aktivitetTilTekst[d.aktivitet || ''],
-                            },
-                            {
-                                overskrift: 'Inntekt',
-                                tekstVerdi: (d) => `${formaterTallMedTusenSkille(d.andel.inntekt)}`,
-                            },
-                        ]}
-                    />
-                )}
-            </DataViewer>
+            {periodeHistorikkOvergangsstønad && periodeHistorikkOvergangsstønad.length > 0 && (
+                <TabellVisning
+                    tittel="Siste periode med overgangsstønad"
+                    verdier={[periodeHistorikkOvergangsstønad[0]]}
+                    minimerKolonnebredde={true}
+                    kolonner={[
+                        {
+                            overskrift: 'Periode',
+                            tekstVerdi: (d) =>
+                                formaterStrengMedStorForbokstav(
+                                    formaterTilIsoDatoFraTilStreng(d.fom, d.tom)
+                                ),
+                        },
+                        {
+                            overskrift: 'Type',
+                            tekstVerdi: (d) => periodetypeTilTekst[d.vedtaksperiodeType || ''],
+                        },
+                        {
+                            overskrift: 'Aktivitet',
+                            tekstVerdi: (d) => aktivitetTilTekst[d.aktivitet ?? ''],
+                        },
+                        {
+                            overskrift: 'Inntekt',
+                            tekstVerdi: (d) => `${formaterTallMedTusenSkille(d.inntekt)}`,
+                        },
+                    ]}
+                />
+            )}
         </Container>
     );
 };

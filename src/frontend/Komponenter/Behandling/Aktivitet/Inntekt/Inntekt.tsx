@@ -34,11 +34,7 @@ export const Inntekt: React.FC<VilkårProps> = ({
         >
             <VilkårpanelInnhold>
                 {{
-                    venstre: (
-                        <GrunnbeløpInfoOgSistePeriodeOS
-                            personIdent={grunnlag.personalia.personIdent}
-                        />
-                    ),
+                    venstre: <GrunnbeløpInfoOgSistePeriodeOS grunnlag={grunnlag} />,
                     høyre: (
                         <VisEllerEndreVurdering
                             ikkeVurderVilkår={ikkeVurderVilkår}
