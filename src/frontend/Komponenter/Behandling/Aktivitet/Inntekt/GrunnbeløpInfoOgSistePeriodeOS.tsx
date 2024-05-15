@@ -20,8 +20,8 @@ const Container = styled.div`
 export const GrunnbeløpInfoOgSistePeriodeOS: FC<{
     grunnlag: IVilkårGrunnlag;
 }> = ({ grunnlag }) => {
-    const periodeHistorikkOvergangsstønad =
-        grunnlag.tidligereVedtaksperioder.sak?.periodeHistorikkOvergangsstønad;
+    const sistePeriodeMedOS =
+        grunnlag.tidligereVedtaksperioder.sak?.periodeHistorikkOvergangsstønad[0];
 
     const { grunnbeløpsperioder, hentGrunnbeløpsperioderCallback } =
         useHentNyesteGrunnbeløpOgAntallGrunnbeløpsperioderTilbakeITid(2);
@@ -57,10 +57,10 @@ export const GrunnbeløpInfoOgSistePeriodeOS: FC<{
                 ]}
             />
 
-            {periodeHistorikkOvergangsstønad && periodeHistorikkOvergangsstønad.length > 0 && (
+            {sistePeriodeMedOS && (
                 <TabellVisning
                     tittel="Siste periode med overgangsstønad"
-                    verdier={[periodeHistorikkOvergangsstønad[0]]}
+                    verdier={[sistePeriodeMedOS]}
                     minimerKolonnebredde={true}
                     kolonner={[
                         {
