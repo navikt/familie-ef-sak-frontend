@@ -22,11 +22,12 @@ spec:
     path: /metrics
   ingresses:
     - https://ensligmorellerfar.intern.dev.nav.no
+    - https://ensligmorellerfar.ansatt.dev.nav.no
   azure:
     application:
       enabled: true
       replyURLs:
-        - https://ensligmorellerfar.intern.dev.nav.no/auth/openid/callback
+        - https://ensligmorellerfar.ansatt.dev.nav.no/auth/openid/callback
       claims:
         groups:
           - id: "01166863-22f1-4e16-9785-d7a05a22df74" # 0000-GA-Enslig-Forsorger-Beslutter
