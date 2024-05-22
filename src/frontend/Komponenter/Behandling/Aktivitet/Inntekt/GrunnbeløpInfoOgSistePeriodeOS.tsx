@@ -80,7 +80,8 @@ export const GrunnbeløpInfoOgSistePeriodeOS: FC<{
                         },
                         {
                             overskrift: 'Inntekt',
-                            tekstVerdi: (d) => `${formaterTallMedTusenSkille(d.inntekt)}`,
+                            tekstVerdi: (d) =>
+                                d.inntekt ? `${formaterTallMedTusenSkille(d.inntekt)}` : 0,
                         },
                     ]}
                 />
