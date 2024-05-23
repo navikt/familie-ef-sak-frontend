@@ -62,6 +62,8 @@ const InnholdWrapper = styled.div<InnholdWrapperProps>`
     max-width: ${(p) => (p.$åpenHøyremeny ? 'calc(100% - 20rem)' : '100%')};
 
     overflow-y: auto;
+
+    position: relative;
 `;
 
 export const BehandlingContainer: FC = () => {
