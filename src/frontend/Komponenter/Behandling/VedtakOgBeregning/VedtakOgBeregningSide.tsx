@@ -48,16 +48,6 @@ export const VedtakOgBeregningSide: FC<{ behandlingId: string }> = ({ behandling
         // eslint-disable-next-line
     }, [behandlingId]);
 
-    // useEffect(() => {
-    //     // Skjuler overflow for å unngå buggy scrolling som oppstår når en dato er valgt i 'Vedtak og beregning'
-    //     document.body.style.overflowY = 'hidden';
-
-    //     // Resetter overflow når komponenten fjernes for å unngå at andre sider får overflow hidden
-    //     return () => {
-    //         document.body.style.overflowY = '';
-    //     };
-    // }, []);
-
     return (
         <NullstillVedtakModalContext.Provider
             value={{ visNullstillVedtakModal, settVisNullstillVedtakModal }}
