@@ -1,5 +1,6 @@
 import React, { FC, useEffect } from 'react';
 import {
+    formaterIsoDatoTid,
     formaterStrengMedStorForbokstav,
     formaterTallMedTusenSkille,
     formaterTilIsoDatoFraTilStreng,
@@ -8,8 +9,9 @@ import {
 import TabellVisning from '../../Tabell/TabellVisning';
 import { useHentNyesteGrunnbeløpOgAntallGrunnbeløpsperioderTilbakeITid } from '../../../../App/hooks/felles/useHentGrunnbeløpsperioder';
 import { styled } from 'styled-components';
-import { aktivitetTilTekst, periodetypeTilTekst } from '../../../../App/typer/vedtak';
+import { periodetypeTilTekst } from '../../../../App/typer/vedtak';
 import { IVilkårGrunnlag } from '../../Inngangsvilkår/vilkår';
+import { IGrunnlagsdataPeriodeHistorikkOvergangsstønad } from '../../TidligereVedtaksperioder/typer';
 
 const Container = styled.div`
     & > *:not(:last-child) {
@@ -19,8 +21,9 @@ const Container = styled.div`
 
 export const GrunnbeløpInfoOgSistePeriodeOS: FC<{
     grunnlag: IVilkårGrunnlag;
-}> = ({ grunnlag }) => {
-    const sistePeriodeMedOS =
+    behandlingOpprettet: string;
+}> = ({ grunnlag, behandlingOpprettet }) => {
+    const sistePeriodeMedOS: IGrunnlagsdataPeriodeHistorikkOvergangsstønad | undefined =
         grunnlag.tidligereVedtaksperioder.sak?.periodeHistorikkOvergangsstønad[0];
 
     const { grunnbeløpsperioder, hentGrunnbeløpsperioderCallback } =
@@ -59,7 +62,8 @@ export const GrunnbeløpInfoOgSistePeriodeOS: FC<{
 
             {sistePeriodeMedOS && (
                 <TabellVisning
-                    tittel="Siste periode med overgangsstønad"
+                    tittel={`Siste periode med overgangsstønad`}
+                    ekstraTekstTittel={`(sist oppdatert ${formaterIsoDatoTid(behandlingOpprettet)})`}
                     verdier={[sistePeriodeMedOS]}
                     minimerKolonnebredde={true}
                     kolonner={[
@@ -75,14 +79,21 @@ export const GrunnbeløpInfoOgSistePeriodeOS: FC<{
                             tekstVerdi: (d) => periodetypeTilTekst[d.vedtaksperiodeType || ''],
                         },
                         {
-                            overskrift: 'Aktivitet',
-                            tekstVerdi: (d) => aktivitetTilTekst[d.aktivitet ?? ''],
-                        },
-                        {
                             overskrift: 'Inntekt',
                             tekstVerdi: (d) =>
-                                d.inntekt ? `${formaterTallMedTusenSkille(d.inntekt)}` : 0,
+                                `${formaterTallMedTusenSkille(d.inntekt ? d.inntekt : 0)}`,
                         },
+                        ...(sistePeriodeMedOS.samordningsfradrag &&
+                        sistePeriodeMedOS.samordningsfradrag > 0
+                            ? [
+                                  {
+                                      overskrift: 'Samordning',
+                                      tekstVerdi: (
+                                          d: IGrunnlagsdataPeriodeHistorikkOvergangsstønad
+                                      ) => `${formaterTallMedTusenSkille(d.samordningsfradrag)}`,
+                                  },
+                              ]
+                            : []),
                     ]}
                 />
             )}

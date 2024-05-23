@@ -1,4 +1,4 @@
-import { EAktivitet, EPeriodetype } from '../../../App/typer/vedtak';
+import { EPeriodetype } from '../../../App/typer/vedtak';
 
 export interface ITidligereVedtaksperioder {
     infotrygd?: ITidligereInnvilgetVedtak;
@@ -21,7 +21,7 @@ export interface IGrunnlagsdataPeriodeHistorikkOvergangsstønad {
     fom: string;
     tom: string;
     inntekt?: number;
-    aktivitet?: EAktivitet;
+    samordningsfradrag?: number;
 }
 export enum OverlappMedOvergangsstønad {
     JA = 'JA',

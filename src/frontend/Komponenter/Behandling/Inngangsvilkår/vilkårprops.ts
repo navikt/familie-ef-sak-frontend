@@ -38,3 +38,7 @@ export interface VilkårPropsMedBehandlingsstatus extends VilkårProps {
     behandlingsstatus: BehandlingStatus;
     behandlingId: string;
 }
+
+export interface VilkårPropsMedBehandlingOpprettet extends VilkårProps {
+    behandlingOpprettet: string;
+}
