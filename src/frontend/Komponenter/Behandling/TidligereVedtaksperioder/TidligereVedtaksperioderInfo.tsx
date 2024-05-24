@@ -36,7 +36,7 @@ const HistoriskpensjonLenke: React.FC = () => {
         }
     }, [behandling, hentForFagsakId]);
 
-    return historiskPensjon.status === RessursStatus.SUKSESS ? (
+    return historiskPensjon.status === RessursStatus.SUKSESS && historiskPensjon.data.webAppUrl ? (
         <Link href={historiskPensjon.data.webAppUrl} target={'_blank'}>
             <Button
                 type={'button'}
