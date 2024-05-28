@@ -97,7 +97,7 @@ export const GrunnbeløpInfoOgSistePeriodeOS: FC<{
                     ]}
                 />
             ) : (
-                <SistePeriodeTittelTekst tekst="Bruker har ingen stønadshistorikk i EF Sak" />
+                <SistePeriodeTittelTekst />
             )}
         </Container>
     );

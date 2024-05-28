@@ -2,12 +2,12 @@ import { BodyShort } from '@navikt/ds-react';
 import React from 'react';
 
 interface SistePeriodeTittelTekstProps {
-    tekst: string;
+    tekst?: string;
     tittel?: string;
 }
 
 const SistePeriodeTittelTekst: React.FC<SistePeriodeTittelTekstProps> = ({
-    tekst,
+    tekst = 'Bruker har ingen stønadshistorikk i EF Sak',
     tittel = 'Siste periode med overgangsstønad',
 }) => {
     return (
