@@ -12,6 +12,7 @@ export interface ITidligereInnvilgetVedtak {
     harTidligereSkolepenger: boolean;
     periodeHistorikkOvergangsstønad: IGrunnlagsdataPeriodeHistorikkOvergangsstønad[];
     periodeHistorikkBarnetilsyn: IGrunnlagsdataPeriodeHistorikkBarnetilsyn[];
+    sistePeriodeMedOvergangsstønad: IGrunnlagsdataSistePeriodeOvergangsstønad;
 }
 
 export interface IGrunnlagsdataPeriodeHistorikkOvergangsstønad {
@@ -20,9 +21,15 @@ export interface IGrunnlagsdataPeriodeHistorikkOvergangsstønad {
     vedtaksperiodeType: EPeriodetype;
     fom: string;
     tom: string;
-    inntekt?: number;
-    samordningsfradrag?: number;
 }
+export interface IGrunnlagsdataSistePeriodeOvergangsstønad {
+    fom: string;
+    tom: string;
+    vedtaksperiodeType: EPeriodetype;
+    inntekt: number;
+    samordningsfradrag: number;
+}
+
 export enum OverlappMedOvergangsstønad {
     JA = 'JA',
     NEI = 'NEI',

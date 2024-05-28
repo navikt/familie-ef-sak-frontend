@@ -11,7 +11,7 @@ import { useHentNyesteGrunnbeløpOgAntallGrunnbeløpsperioderTilbakeITid } from 
 import { styled } from 'styled-components';
 import { periodetypeTilTekst } from '../../../../App/typer/vedtak';
 import { IVilkårGrunnlag } from '../../Inngangsvilkår/vilkår';
-import { IGrunnlagsdataPeriodeHistorikkOvergangsstønad } from '../../TidligereVedtaksperioder/typer';
+import { IGrunnlagsdataSistePeriodeOvergangsstønad } from '../../TidligereVedtaksperioder/typer';
 
 const Container = styled.div`
     & > *:not(:last-child) {
@@ -23,8 +23,8 @@ export const GrunnbeløpInfoOgSistePeriodeOS: FC<{
     grunnlag: IVilkårGrunnlag;
     behandlingOpprettet: string;
 }> = ({ grunnlag, behandlingOpprettet }) => {
-    const sistePeriodeMedOS: IGrunnlagsdataPeriodeHistorikkOvergangsstønad | undefined =
-        grunnlag.tidligereVedtaksperioder.sak?.periodeHistorikkOvergangsstønad[0];
+    const sistePeriodeMedOS: IGrunnlagsdataSistePeriodeOvergangsstønad | undefined =
+        grunnlag.tidligereVedtaksperioder.sak?.sistePeriodeMedOvergangsstønad;
 
     const { grunnbeløpsperioder, hentGrunnbeløpsperioderCallback } =
         useHentNyesteGrunnbeløpOgAntallGrunnbeløpsperioderTilbakeITid(2);
@@ -88,9 +88,8 @@ export const GrunnbeløpInfoOgSistePeriodeOS: FC<{
                             ? [
                                   {
                                       overskrift: 'Samordning',
-                                      tekstVerdi: (
-                                          d: IGrunnlagsdataPeriodeHistorikkOvergangsstønad
-                                      ) => `${formaterTallMedTusenSkille(d.samordningsfradrag)}`,
+                                      tekstVerdi: (d: IGrunnlagsdataSistePeriodeOvergangsstønad) =>
+                                          `${formaterTallMedTusenSkille(d.samordningsfradrag)}`,
                                   },
                               ]
                             : []),
