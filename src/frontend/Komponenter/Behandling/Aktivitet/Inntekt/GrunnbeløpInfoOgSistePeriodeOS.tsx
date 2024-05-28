@@ -12,6 +12,7 @@ import { styled } from 'styled-components';
 import { periodetypeTilTekst } from '../../../../App/typer/vedtak';
 import { IVilkårGrunnlag } from '../../Inngangsvilkår/vilkår';
 import { IGrunnlagsdataSistePeriodeOvergangsstønad } from '../../TidligereVedtaksperioder/typer';
+import SistePeriodeTittelTekst from './SistePeriodeTittelTekst';
 
 const Container = styled.div`
     & > *:not(:last-child) {
@@ -60,7 +61,7 @@ export const GrunnbeløpInfoOgSistePeriodeOS: FC<{
                 ]}
             />
 
-            {sistePeriodeMedOS && (
+            {sistePeriodeMedOS ? (
                 <TabellVisning
                     tittel={`Siste periode med overgangsstønad`}
                     ekstraTekstTittel={`(sist oppdatert ${formaterIsoDatoTid(behandlingOpprettet)})`}
@@ -95,6 +96,8 @@ export const GrunnbeløpInfoOgSistePeriodeOS: FC<{
                             : []),
                     ]}
                 />
+            ) : (
+                <SistePeriodeTittelTekst tekst="Bruker har ingen stønadshistorikk i EF Sak" />
             )}
         </Container>
     );
