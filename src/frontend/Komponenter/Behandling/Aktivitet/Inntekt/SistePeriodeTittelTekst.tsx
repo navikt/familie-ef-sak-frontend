@@ -13,6 +13,10 @@ const Container = styled.div`
     }
 `;
 
+const StyledBodyShort = styled(BodyShort)`
+    font-style: italic;
+`;
+
 const SistePeriodeTittelTekst: React.FC<SistePeriodeTittelTekstProps> = ({
     tekst = 'Bruker har ingen stønadshistorikk i EF Sak',
     tittel = 'Siste periode med overgangsstønad',
@@ -22,7 +26,7 @@ const SistePeriodeTittelTekst: React.FC<SistePeriodeTittelTekstProps> = ({
             <Label size="small" className="tittel" as="h3">
                 {tittel}
             </Label>
-            <BodyShort size="small">{tekst}</BodyShort>
+            <StyledBodyShort size="small">{tekst}</StyledBodyShort>
         </Container>
     );
 };
