@@ -457,7 +457,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                     <option value={ESamordningsfradragtype.GJENLEVENDEPENSJON}>
                                         Gjenlevendepensjon
                                     </option>
-                                    <option value={ESamordningsfradragtype.EØSFAMILIEYTELSE}>
+                                    <option value={ESamordningsfradragtype.EØS_FAMILIEYTELSE}>
                                         EØS-familieytelse
                                     </option>
                                 </EnsligFamilieSelectBegrensetWidth>
