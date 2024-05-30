@@ -7,7 +7,7 @@ import {
 import styled from 'styled-components';
 import { Heading } from '@navikt/ds-react';
 import { UtdanningsformTilTekst } from '../../Aktivitet/Aktivitet/typer';
-import { formaterNullableIsoDato, utledUtgiftsbeløp } from '../../../../App/utils/formatter';
+import { formaterTilIsoDatoFraTilStreng, utledUtgiftsbeløp } from '../../../../App/utils/formatter';
 import { IUnderUtdanning } from '../../../../App/typer/aktivitetstyper';
 import {
     utledBegrunnelseFraVilkårOgRegel,
@@ -90,9 +90,9 @@ export const SøknadsinformasjonUtdanning: React.FC<Props> = ({
                 </BodyShortSmall>
                 <Søknadsgrunnlag />
                 <BodyShortSmall>Studieperiode</BodyShortSmall>
-                <BodyShortSmall>{`${formaterNullableIsoDato(
-                    utdanning.fra
-                )} - ${formaterNullableIsoDato(utdanning.til)}`}</BodyShortSmall>
+                <BodyShortSmall>
+                    {formaterTilIsoDatoFraTilStreng(utdanning.fra, utdanning.til)}
+                </BodyShortSmall>
                 <Søknadsgrunnlag />
                 <BodyShortSmall>Studiebelastning</BodyShortSmall>
                 <BodyShortSmall>{utledVisningForStudiebelastning(utdanning)}</BodyShortSmall>

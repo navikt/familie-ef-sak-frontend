@@ -22,6 +22,7 @@ import VedtaksperioderSkolepenger from './HistorikkVedtaksperioder/Vedtaksperiod
 import { useHentFagsakPersonUtvidet } from '../../App/hooks/useHentFagsakPerson';
 import { Checkbox, Select } from '@navikt/ds-react';
 import { sorterBehandlinger } from '../../App/utils/behandlingutil';
+import { useHentAndelHistorikkPerioder } from '../../App/hooks/useHentAndelHistorikkPerioder';
 
 const StyledInputs = styled.div`
     display: flex;
@@ -72,17 +73,8 @@ const VedtaksperioderOSBT: React.FC<VedtaksperioderProps> = ({
     visUaktuelle,
 }) => {
     const { id: fagsakId } = fagsak;
-    const periodeHistorikkConfig: AxiosRequestConfig = useMemo(
-        () => ({
-            method: 'GET',
-            url: `/familie-ef-sak/api/perioder/fagsak/${fagsakId}/historikk`,
-            params: valgtBehandling && {
-                tilOgMedBehandlingId: valgtBehandling,
-            },
-        }),
-        [fagsakId, valgtBehandling]
-    );
-    const perioder = useDataHenter<AndelHistorikk[], null>(periodeHistorikkConfig);
+
+    const { perioder } = useHentAndelHistorikkPerioder(fagsakId, valgtBehandling);
     return (
         <DataViewer response={{ perioder }}>
             {({ perioder }) => {

@@ -1,18 +1,20 @@
 import React from 'react';
-import { VilkårProps } from '../../Inngangsvilkår/vilkårprops';
+import { VilkårPropsMedBehandlingOpprettet } from '../../Inngangsvilkår/vilkårprops';
 import { AktivitetsvilkårType } from '../../Inngangsvilkår/vilkår';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import { AlertError } from '../../../../Felles/Visningskomponenter/Alerts';
 import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';
 import { VilkårpanelInnhold } from '../../Vilkårpanel/VilkårpanelInnhold';
-import { GrunnbeløpInfo } from './GrunnbeløpInfo';
+import { GrunnbeløpInfoOgSistePeriodeOS } from './GrunnbeløpInfoOgSistePeriodeOS';
 
-export const Inntekt: React.FC<VilkårProps> = ({
+export const Inntekt: React.FC<VilkårPropsMedBehandlingOpprettet> = ({
     vurderinger,
     lagreVurdering,
     nullstillVurdering,
     ikkeVurderVilkår,
     feilmeldinger,
+    grunnlag,
+    behandlingOpprettet,
 }) => {
     const vurdering = vurderinger.find((v) => v.vilkårType === AktivitetsvilkårType.INNTEKT);
 
@@ -33,7 +35,12 @@ export const Inntekt: React.FC<VilkårProps> = ({
         >
             <VilkårpanelInnhold>
                 {{
-                    venstre: <GrunnbeløpInfo />,
+                    venstre: (
+                        <GrunnbeløpInfoOgSistePeriodeOS
+                            grunnlag={grunnlag}
+                            behandlingOpprettet={behandlingOpprettet}
+                        />
+                    ),
                     høyre: (
                         <VisEllerEndreVurdering
                             ikkeVurderVilkår={ikkeVurderVilkår}
