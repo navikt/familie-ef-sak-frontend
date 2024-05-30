@@ -451,11 +451,14 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                     }
                                 >
                                     <option value="">Velg</option>
+                                    <option value={ESamordningsfradragtype.UFØRETRYGD}>
+                                        Uføretrygd
+                                    </option>
                                     <option value={ESamordningsfradragtype.GJENLEVENDEPENSJON}>
                                         Gjenlevendepensjon
                                     </option>
-                                    <option value={ESamordningsfradragtype.UFØRETRYGD}>
-                                        Uføretrygd
+                                    <option value={ESamordningsfradragtype.EØS_FAMILIEYTELSE}>
+                                        EØS-familieytelse
                                     </option>
                                 </EnsligFamilieSelectBegrensetWidth>
                                 <EnsligErrorMessage>
