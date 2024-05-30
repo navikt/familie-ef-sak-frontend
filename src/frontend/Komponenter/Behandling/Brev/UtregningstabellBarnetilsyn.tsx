@@ -1,5 +1,8 @@
 import { IBeregningsperiodeBarnetilsyn } from '../../../App/typer/vedtak';
-import { formaterNullableIsoDato, formaterTallMedTusenSkille } from '../../../App/utils/formatter';
+import {
+    formaterTallMedTusenSkille,
+    formaterTilIsoDatoFraTilStreng,
+} from '../../../App/utils/formatter';
 
 export const delmalTilUtregningstabellBT = (beløpsperioder?: IBeregningsperiodeBarnetilsyn[]) => {
     return { inntektsperioderHtml: lagInntektsperioder(beløpsperioder ?? []) };
@@ -49,9 +52,10 @@ const lagRaderForVedtak = (
 ): string => {
     return beløpsperioder
         .map((beløpsperiode) => {
-            const andelsperiode = `${formaterNullableIsoDato(
-                beløpsperiode.periode.fradato
-            )} - ${formaterNullableIsoDato(beløpsperiode.periode.tildato)}`;
+            const andelsperiode = formaterTilIsoDatoFraTilStreng(
+                beløpsperiode.periode.fradato,
+                beløpsperiode.periode.tildato
+            );
             const utgifter = formaterTallMedTusenSkille(beløpsperiode.beregningsgrunnlag.utgifter);
             const kontantstøtte = formaterTallMedTusenSkille(
                 beløpsperiode.beregningsgrunnlag.kontantstøttebeløp

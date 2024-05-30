@@ -452,12 +452,6 @@ export const avslagÅrsakTilTekst: Record<EAvslagÅrsak, string> = {
     KORTVARIG_AVBRUDD_JOBB: 'Kortvarig avbrudd jobb',
 };
 
-export const samordningsfradragstypeTilTekst: Record<ESamordningsfradragtype, string> = {
-    UFØRETRYGD: 'Uføretrygd',
-    GJENLEVENDEPENSJON: 'Gjenlevendepensjon',
-    EØS_FAMILIEYTELSE: 'EØS-familieytelse',
-};
-
 export const samordningsfradagTilTekst: Record<ESamordningsfradragtype, string> = {
     UFØRETRYGD: 'Uføretrygd',
     GJENLEVENDEPENSJON: 'Gjenlevendepensjon',

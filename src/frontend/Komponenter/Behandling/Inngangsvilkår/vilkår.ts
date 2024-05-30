@@ -28,6 +28,7 @@ export interface IVilkårGrunnlag {
     dokumentasjon?: IDokumentasjonGrunnlag;
     harAvsluttetArbeidsforhold: boolean;
     harKontantstøttePerioder?: boolean;
+    behandlingOpprettet?: string;
 }
 
 export interface IPersonalia {

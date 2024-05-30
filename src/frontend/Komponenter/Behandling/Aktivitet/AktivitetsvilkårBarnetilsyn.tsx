@@ -23,6 +23,7 @@ const AktivitetsVilkårBarnetilsyn: FC<{
     } = vilkårState;
     const skalViseSøknadsdata = behandling.behandlingsårsak === Behandlingsårsak.SØKNAD;
     const behandlingId = behandling.id;
+    const behandlingOpprettet = behandling.opprettet;
 
     useEffect(() => {
         hentVilkår(behandlingId);
@@ -53,6 +54,7 @@ const AktivitetsVilkårBarnetilsyn: FC<{
                             lagreVurdering={lagreVurdering}
                             vurderinger={vilkår.vurderinger}
                             skalViseSøknadsdata={skalViseSøknadsdata}
+                            behandlingOpprettet={behandlingOpprettet}
                         />
                         <AlderPåBarn
                             ikkeVurderVilkår={ikkeVurderVilkår}
