@@ -354,6 +354,7 @@ export enum EAktivitet {
 export enum ESamordningsfradragtype {
     UFØRETRYGD = 'UFØRETRYGD',
     GJENLEVENDEPENSJON = 'GJENLEVENDEPENSJON',
+    EØS_FAMILIEYTELSE = 'EØS_FAMILIEYTELSE',
 }
 
 export const aktiviteterForlengelse: EAktivitet[] = [
@@ -451,14 +452,10 @@ export const avslagÅrsakTilTekst: Record<EAvslagÅrsak, string> = {
     KORTVARIG_AVBRUDD_JOBB: 'Kortvarig avbrudd jobb',
 };
 
-export const samordningsfradragstypeTilTekst: Record<ESamordningsfradragtype, string> = {
-    UFØRETRYGD: 'Uføretrygd',
-    GJENLEVENDEPENSJON: 'Gjenlevendepensjon',
-};
-
 export const samordningsfradagTilTekst: Record<ESamordningsfradragtype, string> = {
     UFØRETRYGD: 'Uføretrygd',
     GJENLEVENDEPENSJON: 'Gjenlevendepensjon',
+    EØS_FAMILIEYTELSE: 'EØS-familieytelse',
 };
 
 const sorterAktiviteterAlfabetisk = (a: EAktivitet, b: EAktivitet) =>

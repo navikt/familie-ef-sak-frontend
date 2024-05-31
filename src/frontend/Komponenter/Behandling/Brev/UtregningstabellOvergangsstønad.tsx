@@ -1,4 +1,7 @@
-import { formaterNullableIsoDato, formaterTallMedTusenSkille } from '../../../App/utils/formatter';
+import {
+    formaterTallMedTusenSkille,
+    formaterTilIsoDatoFraTilStreng,
+} from '../../../App/utils/formatter';
 import {
     ESamordningsfradragtype,
     IBeløpsperiode,
@@ -51,9 +54,10 @@ const lagRaderForVedtak = (
                 beløpsperiode.beregningsgrunnlag.samordningsfradrag
             );
             const beløp = formaterTallMedTusenSkille(beløpsperiode.beløp);
-            const andelsperiode = `${formaterNullableIsoDato(
-                beløpsperiode.periode.fradato
-            )} - ${formaterNullableIsoDato(beløpsperiode.periode.tildato)}`;
+            const andelsperiode = formaterTilIsoDatoFraTilStreng(
+                beløpsperiode.periode.fradato,
+                beløpsperiode.periode.tildato
+            );
 
             return `<tr style="text-align: right;">
                         <td style="text-align: left; ${borderStylingCompact}">${andelsperiode}</td>

@@ -10,7 +10,13 @@ export interface Kolonnedata<T> {
     kolonner: Kolonner<T>[];
     ikonVisning?: boolean;
     minimerKolonnebredde?: boolean;
+    ekstraTekstTittel?: string;
 }
+
+const StyledSpan = styled.span`
+    font-weight: normal;
+    margin-left: 0.3rem;
+`;
 
 export interface Kolonner<T> {
     overskrift: string;
@@ -70,6 +76,7 @@ function TabellVisning<T>(props: Kolonnedata<T>): React.ReactElement<Kolonnedata
         kolonner,
         ikonVisning = true,
         minimerKolonnebredde = false,
+        ekstraTekstTittel,
     } = props;
     return (
         <GridTabell
@@ -81,6 +88,7 @@ function TabellVisning<T>(props: Kolonnedata<T>): React.ReactElement<Kolonnedata
             {tittel && (
                 <Label size="small" className="tittel" as="h3">
                     {tittel}
+                    {ekstraTekstTittel && <StyledSpan>{ekstraTekstTittel}</StyledSpan>}
                 </Label>
             )}
             {kolonner.map((kolonne, index) => (
