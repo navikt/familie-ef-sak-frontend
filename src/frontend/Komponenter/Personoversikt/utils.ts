@@ -23,11 +23,13 @@ export function kanOppretteRevurdering(fagsak: Fagsak) {
             behandling.type === Behandlingstype.FØRSTEGANGSBEHANDLING
     );
 
-    return (
-        harMinstEnBehandlingSomIkkeErHenlagt &&
-        alleBehandlingerErFerdigstiltEllerSattPåVent(fagsak) &&
-        harBehandlingMedTypeFørstegangsbehandlingEllerRevurdering
-    );
+    return {
+        harKunHenlagteBehandlinger: !harMinstEnBehandlingSomIkkeErHenlagt,
+        kanStarteRevurdering:
+            harMinstEnBehandlingSomIkkeErHenlagt &&
+            alleBehandlingerErFerdigstiltEllerSattPåVent(fagsak) &&
+            harBehandlingMedTypeFørstegangsbehandlingEllerRevurdering,
+    };
 }
 
 export const oppdaterVedleggFilter = (
