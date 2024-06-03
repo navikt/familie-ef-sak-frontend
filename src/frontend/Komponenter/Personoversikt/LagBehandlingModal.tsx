@@ -12,6 +12,7 @@ import OpprettKlage, { OpprettKlageRequest } from './Klage/OpprettKlage';
 import { ModalWrapper } from '../../Felles/Modal/ModalWrapper';
 import { Alert, Button, Select } from '@navikt/ds-react';
 import { AlertError } from '../../Felles/Visningskomponenter/Alerts';
+import { kanOppretteRevurdering } from './utils';
 
 export const StyledSelect = styled(Select)`
     margin-top: 2rem;
@@ -43,7 +44,6 @@ interface IProps {
     fagsak: Fagsak;
     hentTilbakekrevinger: Dispatch<void>;
     hentKlageBehandlinger: Dispatch<void>;
-    kanStarteRevurdering: boolean;
     harÅpenKlage: boolean;
 }
 
@@ -53,7 +53,6 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
     fagsak,
     hentTilbakekrevinger,
     hentKlageBehandlinger,
-    kanStarteRevurdering,
     harÅpenKlage,
 }) => {
     const [feilmeldingModal, settFeilmeldingModal] = useState<string>();
@@ -62,6 +61,7 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
     const [senderInnBehandling, settSenderInnBehandling] = useState<boolean>(false);
     const { axiosRequest, settToast } = useApp();
     const navigate = useNavigate();
+    const { harKunHenlagteBehandlinger, kanStarteRevurdering } = kanOppretteRevurdering(fagsak);
 
     const opprettTilbakekrevingBehandling = () => {
         if (valgtBehandlingstype === Behandlingstype.TILBAKEKREVING && !senderInnBehandling) {
@@ -140,11 +140,17 @@ const LagBehandlingModal: React.FunctionComponent<IProps> = ({
             onClose={() => settVisModal(false)}
         >
             <Alerts>
-                {!kanStarteRevurdering && (
+                {!kanStarteRevurdering && !harKunHenlagteBehandlinger && (
                     <Alert variant={'info'}>
                         Merk at det er ikke mulig å opprette en revurdering da det allerede finnes
-                        en åpen behandling på fagsaken. Det er kun mulig å opprette en
-                        tilbakekreving.
+                        en åpen behandling for stønaden. Det er kun mulig å opprette tilbakekreving
+                        (dersom det foreligger et kravgrunnlag) eller klage.
+                    </Alert>
+                )}
+                {!kanStarteRevurdering && harKunHenlagteBehandlinger && (
+                    <Alert variant={'info'}>
+                        Merk at det er ikke mulig å opprette en revurdering da det ikke finnes en
+                        førstegangsbehandling for stønaden.
                     </Alert>
                 )}
                 {harÅpenKlage && (
