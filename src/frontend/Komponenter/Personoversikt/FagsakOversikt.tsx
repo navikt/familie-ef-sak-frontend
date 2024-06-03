@@ -8,7 +8,6 @@ import styled from 'styled-components';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { BehandlingsoversiktTabell } from './BehandlingsoversiktTabell';
 import { FagsakTittelLinje } from './FagsakTittelLinje';
-import { kanOppretteRevurdering } from './utils';
 import { KlageBehandling } from '../../App/typer/klage';
 import { Button } from '@navikt/ds-react';
 import { harÅpenKlage } from '../../App/utils/klage';
@@ -38,7 +37,6 @@ export const FagsakOversikt: React.FC<Props> = ({
             url: `/familie-ef-sak/api/tilbakekreving/behandlinger/${fagsak.id}`,
         }).then((response) => settTilbakekrevingbehandlinger(response));
 
-    const kanStarteRevurdering = kanOppretteRevurdering(fagsak);
     const [visLagBehandlingModal, settVisLagBehandlingModal] = useState<boolean>(false);
     const [tilbakekrevingBehandlinger, settTilbakekrevingbehandlinger] =
         useState<Ressurs<TilbakekrevingBehandling[]>>(byggTomRessurs());
@@ -67,7 +65,6 @@ export const FagsakOversikt: React.FC<Props> = ({
                                 fagsak={fagsak}
                                 hentTilbakekrevinger={hentTilbakekrevingBehandlinger}
                                 hentKlageBehandlinger={hentKlageBehandlinger}
-                                kanStarteRevurdering={kanStarteRevurdering}
                                 harÅpenKlage={harÅpenKlage(klageBehandlinger)}
                             />
 
