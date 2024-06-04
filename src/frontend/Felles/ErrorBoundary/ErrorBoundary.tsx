@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { captureException, configureScope, withScope } from '@sentry/core';
+import { captureException, getCurrentScope, withScope } from '@sentry/core';
 import { showReportDialog } from '@sentry/browser';
 import { ISaksbehandler } from '../../App/typer/saksbehandler';
 
@@ -18,10 +18,8 @@ class ErrorBoundary extends React.Component<IProps> {
         // eslint-disable-next-line no-console
         console.log(error, info);
         if (process.env.NODE_ENV !== 'development') {
-            configureScope((scope) => {
-                scope.setUser({
-                    username: this.props.innloggetSaksbehandler.displayName,
-                });
+            getCurrentScope().setUser({
+                username: this.props.innloggetSaksbehandler.displayName,
             });
 
             withScope((scope) => {
