@@ -96,7 +96,7 @@ export interface DokumentNavn {
     overgangsstonad?: boolean;
     barnetilsyn?: boolean;
     skolepenger?: boolean;
-    frittstaendeBrev?: { tittelDokumentoversikt: string };
+    frittstaendeBrev?: { tittelDokumentoversikt: string; valgtSomFrittstaendeBrev?: boolean };
 }
 
 export type FrittståendeSanitybrevDto = {
