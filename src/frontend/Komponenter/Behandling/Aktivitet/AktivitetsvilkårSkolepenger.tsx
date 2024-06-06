@@ -22,6 +22,7 @@ const AktivitetsVilkårSkolepenger: FC<{
     } = vilkårState;
     const skalViseSøknadsdata = behandling.behandlingsårsak === Behandlingsårsak.SØKNAD;
     const behandlingId = behandling.id;
+    const { opprettet: behandlingOpprettet, stønadstype } = behandling;
 
     useEffect(() => {
         hentVilkår(behandlingId);
@@ -43,6 +44,8 @@ const AktivitetsVilkårSkolepenger: FC<{
                             lagreVurdering={lagreVurdering}
                             vurderinger={vilkår.vurderinger}
                             skalViseSøknadsdata={false}
+                            behandlingOpprettet={behandlingOpprettet}
+                            stønadstype={stønadstype}
                         />
                         <DokumentasjonUtdanning
                             ikkeVurderVilkår={ikkeVurderVilkår}

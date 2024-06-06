@@ -1,5 +1,5 @@
 import React from 'react';
-import { VilkårPropsMedBehandlingOpprettet } from '../../Inngangsvilkår/vilkårprops';
+import { VilkårPropsMedBehandlingOpprettetOgStønadstype } from '../../Inngangsvilkår/vilkårprops';
 import { AktivitetsvilkårType } from '../../Inngangsvilkår/vilkår';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import { AlertError } from '../../../../Felles/Visningskomponenter/Alerts';
@@ -7,7 +7,7 @@ import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';
 import { VilkårpanelInnhold } from '../../Vilkårpanel/VilkårpanelInnhold';
 import { GrunnbeløpInfoOgSistePeriodeOS } from './GrunnbeløpInfoOgSistePeriodeOS';
 
-export const Inntekt: React.FC<VilkårPropsMedBehandlingOpprettet> = ({
+export const Inntekt: React.FC<VilkårPropsMedBehandlingOpprettetOgStønadstype> = ({
     vurderinger,
     lagreVurdering,
     nullstillVurdering,
@@ -15,6 +15,7 @@ export const Inntekt: React.FC<VilkårPropsMedBehandlingOpprettet> = ({
     feilmeldinger,
     grunnlag,
     behandlingOpprettet,
+    stønadstype,
 }) => {
     const vurdering = vurderinger.find((v) => v.vilkårType === AktivitetsvilkårType.INNTEKT);
 
@@ -39,6 +40,7 @@ export const Inntekt: React.FC<VilkårPropsMedBehandlingOpprettet> = ({
                         <GrunnbeløpInfoOgSistePeriodeOS
                             grunnlag={grunnlag}
                             behandlingOpprettet={behandlingOpprettet}
+                            stønadstype={stønadstype}
                         />
                     ),
                     høyre: (

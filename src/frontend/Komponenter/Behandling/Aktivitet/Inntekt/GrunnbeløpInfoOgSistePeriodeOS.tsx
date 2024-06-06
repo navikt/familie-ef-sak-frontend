@@ -1,18 +1,16 @@
 import React, { FC, useEffect } from 'react';
 import {
-    formaterIsoDatoTid,
     formaterStrengMedStorForbokstav,
     formaterTallMedTusenSkille,
-    formaterTilIsoDatoFraTilStreng,
     genererÅrOgMånedFraStreng,
 } from '../../../../App/utils/formatter';
 import TabellVisning from '../../Tabell/TabellVisning';
 import { useHentNyesteGrunnbeløpOgAntallGrunnbeløpsperioderTilbakeITid } from '../../../../App/hooks/felles/useHentGrunnbeløpsperioder';
 import { styled } from 'styled-components';
-import { periodetypeTilTekst } from '../../../../App/typer/vedtak';
 import { IVilkårGrunnlag } from '../../Inngangsvilkår/vilkår';
 import { IGrunnlagsdataSistePeriodeOvergangsstønad } from '../../TidligereVedtaksperioder/typer';
-import SistePeriodeTittelTekst from './SistePeriodeTittelTekst';
+import SistePeriodeMedOvergangsstønad from './SistePeriodeMedOvergangsstønad';
+import { Stønadstype } from '../../../../App/typer/behandlingstema';
 
 const Container = styled.div`
     & > *:not(:last-child) {
@@ -23,7 +21,8 @@ const Container = styled.div`
 export const GrunnbeløpInfoOgSistePeriodeOS: FC<{
     grunnlag: IVilkårGrunnlag;
     behandlingOpprettet: string;
-}> = ({ grunnlag, behandlingOpprettet }) => {
+    stønadstype: Stønadstype;
+}> = ({ grunnlag, behandlingOpprettet, stønadstype }) => {
     const sistePeriodeMedOS: IGrunnlagsdataSistePeriodeOvergangsstønad | undefined =
         grunnlag.tidligereVedtaksperioder.sak?.sistePeriodeMedOvergangsstønad;
 
@@ -61,44 +60,11 @@ export const GrunnbeløpInfoOgSistePeriodeOS: FC<{
                 ]}
             />
 
-            {sistePeriodeMedOS ? (
-                <TabellVisning
-                    tittel={`Siste periode med overgangsstønad`}
-                    ekstraTekstTittel={`(sist oppdatert ${formaterIsoDatoTid(behandlingOpprettet)})`}
-                    verdier={[sistePeriodeMedOS]}
-                    minimerKolonnebredde={true}
-                    kolonner={[
-                        {
-                            overskrift: 'Periode',
-                            tekstVerdi: (d) =>
-                                formaterStrengMedStorForbokstav(
-                                    formaterTilIsoDatoFraTilStreng(d.fom, d.tom)
-                                ),
-                        },
-                        {
-                            overskrift: 'Type',
-                            tekstVerdi: (d) => periodetypeTilTekst[d.vedtaksperiodeType || ''],
-                        },
-                        {
-                            overskrift: 'Inntekt',
-                            tekstVerdi: (d) =>
-                                `${formaterTallMedTusenSkille(d.inntekt ? d.inntekt : 0)}`,
-                        },
-                        ...(sistePeriodeMedOS.samordningsfradrag &&
-                        sistePeriodeMedOS.samordningsfradrag > 0
-                            ? [
-                                  {
-                                      overskrift: 'Samordning',
-                                      tekstVerdi: (d: IGrunnlagsdataSistePeriodeOvergangsstønad) =>
-                                          `${formaterTallMedTusenSkille(d.samordningsfradrag)}`,
-                                  },
-                              ]
-                            : []),
-                    ]}
-                />
-            ) : (
-                <SistePeriodeTittelTekst />
-            )}
+            <SistePeriodeMedOvergangsstønad
+                sistePeriodeMedOS={sistePeriodeMedOS}
+                behandlingOpprettet={behandlingOpprettet}
+                stønadstype={stønadstype}
+            />
         </Container>
     );
 };
