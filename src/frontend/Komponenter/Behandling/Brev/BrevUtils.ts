@@ -204,7 +204,9 @@ export function visBrevmal(
     frittstående: boolean | undefined
 ): boolean {
     if (frittstående) {
-        return !!mal.frittstaendeBrev;
+        return mal.frittstaendeBrev
+            ? mal.frittstaendeBrev.valgtSomFrittstaendeBrev === true
+            : false;
     }
     if (mal.overgangsstonad == null && mal.barnetilsyn == null && mal.skolepenger == null) {
         return true; // bakoverkompatibilitet ( valg er kanskje ikke utført på eksisterende maler, vises intil videre)
