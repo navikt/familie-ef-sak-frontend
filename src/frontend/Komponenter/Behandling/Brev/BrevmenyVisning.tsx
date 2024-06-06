@@ -251,7 +251,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                 if (erDelmalGruppe(gruppe)) {
                     if (skalSkjuleAlleDelmaler(gruppe, delmalStore)) return null;
                     return (
-                        <Panel key={gruppe.gruppeVisningsnavn}>
+                        <Panel key={`${gruppe.gruppeVisningsnavn}_${indeks}`}>
                             {gruppe.gruppeVisningsnavn !== 'undefined' && (
                                 <BrevMenyTittel>
                                     <Heading size={'small'} level={'5'}>
