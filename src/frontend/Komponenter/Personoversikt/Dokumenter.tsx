@@ -180,7 +180,7 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
             </FiltreringGrid>
 
             <Table size="small">
-                <KolonneTitler titler={titler} />
+                <KolonneTitler titler={titler} skalHaMinimumBreddePåKolonne={true} />
                 <DataViewer response={{ dokumentResponse }}>
                     {({ dokumentResponse }) => {
                         const grupperteDokumenter = groupBy(
