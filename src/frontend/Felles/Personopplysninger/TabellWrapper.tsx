@@ -50,12 +50,21 @@ export const SmallTable = styled(Table).attrs({ size: 'small' })`
 
 type Kolonnetittel = string | React.ReactNode;
 
-export const KolonneTitler: React.FC<{ titler: Kolonnetittel[] }> = ({ titler }) => {
+export const KolonneTitler: React.FC<{
+    titler: Kolonnetittel[];
+    skalHaMinimumBreddePåKolonne?: boolean;
+}> = ({ titler, skalHaMinimumBreddePåKolonne = false }) => {
+    const minimumBreddePåDatoStyle = (tittel: Kolonnetittel) => {
+        return tittel === 'Dato' && skalHaMinimumBreddePåKolonne ? { minWidth: '10rem' } : {};
+    };
+
     return (
         <Table.Header>
             <Table.Row>
                 {titler.map((tittel, indeks) => (
-                    <Table.HeaderCell key={indeks}>{tittel}</Table.HeaderCell>
+                    <Table.HeaderCell key={indeks} style={minimumBreddePåDatoStyle(tittel)}>
+                        {tittel}
+                    </Table.HeaderCell>
                 ))}
             </Table.Row>
         </Table.Header>
