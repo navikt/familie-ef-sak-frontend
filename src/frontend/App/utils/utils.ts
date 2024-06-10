@@ -164,5 +164,6 @@ export const tittelMedUrlGodkjenteTegn = (tittel?: string) => {
     if (!tittel) {
         return 'uten_tittel';
     }
-    return encodeURIComponent(tittel);
+    const tittelUtenTvilsommeTegn = tittel.replaceAll('/', '_').replaceAll('\\', '_');
+    return encodeURIComponent(tittelUtenTvilsommeTegn);
 };
