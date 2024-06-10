@@ -22,6 +22,7 @@ const Footer = styled.footer`
     position: fixed;
     bottom: 0;
     background-color: ${ABorderStrong};
+    z-index: 1;
 `;
 
 const MidtstiltInnhold = styled.div`
@@ -29,11 +30,6 @@ const MidtstiltInnhold = styled.div`
     align-items: center;
     margin-left: auto;
     margin-right: 50%;
-`;
-
-const HovedKnapp = styled(Button)`
-    margin-left: 1rem;
-    margin-right: 1rem;
 `;
 
 const FlexBox = styled.div`
@@ -126,7 +122,7 @@ const SendTilBeslutterFooter: React.FC<{
                             />
                         )}
                         <MidtstiltInnhold>
-                            <HovedKnapp
+                            <Button
                                 onClick={sendTilBeslutter}
                                 disabled={
                                     laster ||
@@ -136,7 +132,7 @@ const SendTilBeslutterFooter: React.FC<{
                                 type={'button'}
                             >
                                 {ferdigstillTittel}
-                            </HovedKnapp>
+                            </Button>
                         </MidtstiltInnhold>
                     </FlexBox>
                 </Footer>
