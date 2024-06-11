@@ -17,6 +17,10 @@ const UnderOverskrfit = styled(SmallTextLabel)`
     margin-top: 1rem;
 `;
 
+const StyledBodyShortSmall = styled(BodyShortSmall)`
+    white-space: pre-wrap;
+`;
+
 interface Props {
     tilbakekrevingsvalg: ITilbakekrevingsvalg;
     varseltekst: string;
@@ -80,7 +84,9 @@ export const VisTilbakekreving: React.FC<Props> = ({
                 </>
             )}
             <UnderOverskrfit>Begrunnelse (internt notat):</UnderOverskrfit>
-            <BodyShortSmall>{begrunnelse ? begrunnelse : 'Ingen begrunnelse'}</BodyShortSmall>
+            <StyledBodyShortSmall>
+                {begrunnelse ? begrunnelse : 'Ingen begrunnelse'}
+            </StyledBodyShortSmall>
         </VisningsContainer>
     );
 };
