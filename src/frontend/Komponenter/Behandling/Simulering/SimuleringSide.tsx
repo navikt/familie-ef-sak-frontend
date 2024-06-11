@@ -90,11 +90,12 @@ const SimuleringSide: React.FC<{
                         Simuleringsbildet kan derfor være ufullstendig.
                     </AlertWarning>
                 )}
-                {finnesFlereTilbakekrevingsvalgRegistrertSisteÅr && (
-                    <AlertWarning variant={'warning'}>
-                        Det er registrert feilutbetaling i flere behandlinger siste året
-                    </AlertWarning>
-                )}
+                {finnesFlereTilbakekrevingsvalgRegistrertSisteÅr &&
+                    skalViseValgForAutomatiskBehandlingUnder4xRettsgebyr && (
+                        <AlertWarning variant={'warning'}>
+                            Det er registrert feilutbetaling i flere behandlinger siste året
+                        </AlertWarning>
+                    )}
                 <SimuleringTabell
                     perioder={simuleringTabellRader}
                     årsvelger={{ valgtÅr: år, settÅr: settÅr, muligeÅr: muligeÅr }}
