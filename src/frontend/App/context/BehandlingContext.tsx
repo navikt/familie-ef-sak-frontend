@@ -98,20 +98,18 @@ const [BehandlingProvider, useBehandling] = constate(() => {
     }, [ansvarligSaksbehandler]);
 
     useEffect(() => {
-        const henter =
-            behandling.status === RessursStatus.HENTER ||
-            ansvarligSaksbehandler.status === RessursStatus.HENTER;
-
-        if (henter) {
-            return;
-        }
-
-        settBehandlingErRedigerbar(
+        const kanOppdatereOmBehandlingErRedigerbar =
             behandling.status === RessursStatus.SUKSESS &&
-                ansvarligSaksbehandler.status === RessursStatus.SUKSESS &&
-                erBehandlingRedigerbar(behandling.data) &&
-                innloggetSaksbehandlerKanRedigereBehandling(ansvarligSaksbehandler.data)
-        );
+            ansvarligSaksbehandler.status === RessursStatus.SUKSESS;
+
+        if (kanOppdatereOmBehandlingErRedigerbar) {
+            settBehandlingErRedigerbar(
+                behandling.status === RessursStatus.SUKSESS &&
+                    ansvarligSaksbehandler.status === RessursStatus.SUKSESS &&
+                    erBehandlingRedigerbar(behandling.data) &&
+                    innloggetSaksbehandlerKanRedigereBehandling(ansvarligSaksbehandler.data)
+            );
+        }
     }, [behandling, ansvarligSaksbehandler, innloggetSaksbehandler]);
 
     const vilkårState = useVilkår();

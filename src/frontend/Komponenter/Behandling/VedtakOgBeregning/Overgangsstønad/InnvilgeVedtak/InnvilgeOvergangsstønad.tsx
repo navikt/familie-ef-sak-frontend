@@ -31,6 +31,7 @@ import HovedKnapp, { Knapp } from '../../../../../Felles/Knapper/HovedKnapp';
 import { CalculatorIcon } from '@navikt/aksel-icons';
 import { tomInntektsperiodeRad, tomVedtaksperiodeRad } from '../Felles/utils';
 import { ModalState } from '../../../Modal/NyEierModal';
+import { VStack } from '@navikt/ds-react';
 
 export type InnvilgeVedtakForm = Omit<
     Omit<IInnvilgeVedtakForOvergangsstønad, 'resultatType'>,
@@ -45,12 +46,6 @@ const Form = styled.form`
 
 const Beregningstabell = styled(Utregningstabell)`
     margin-left: 1rem;
-`;
-
-const Container = styled.div`
-    & > :not(:last-child) {
-        margin-bottom: 1rem;
-    }
 `;
 
 export const InnvilgeOvergangsstønad: React.FC<{
@@ -250,7 +245,7 @@ export const InnvilgeOvergangsstønad: React.FC<{
                 skalVelgeSamordningstype={skalVelgeSamordningstype}
             />
             {behandlingErRedigerbar && (
-                <Container>
+                <VStack gap={'4'}>
                     <Knapp
                         onClick={beregnPerioder}
                         variant={'secondary'}
@@ -261,7 +256,7 @@ export const InnvilgeOvergangsstønad: React.FC<{
                         Beregn
                     </Knapp>
                     {feilmelding && <AlertStripeFeilPreWrap>{feilmelding}</AlertStripeFeilPreWrap>}
-                </Container>
+                </VStack>
             )}
             <Beregningstabell beregnetStønad={beregnetStønad} />
             {behandlingErRedigerbar && <HovedKnapp disabled={laster} knappetekst="Lagre vedtak" />}
