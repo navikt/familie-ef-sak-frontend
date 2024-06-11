@@ -47,6 +47,12 @@ const Beregningstabell = styled(Utregningstabell)`
     margin-left: 1rem;
 `;
 
+const Container = styled.div`
+    & > :not(:last-child) {
+        margin-bottom: 1rem;
+    }
+`;
+
 export const InnvilgeOvergangsstønad: React.FC<{
     behandling: Behandling;
     lagretVedtak?: IInnvilgeVedtakForOvergangsstønad;
@@ -244,7 +250,7 @@ export const InnvilgeOvergangsstønad: React.FC<{
                 skalVelgeSamordningstype={skalVelgeSamordningstype}
             />
             {behandlingErRedigerbar && (
-                <div>
+                <Container>
                     <Knapp
                         onClick={beregnPerioder}
                         variant={'secondary'}
@@ -255,7 +261,7 @@ export const InnvilgeOvergangsstønad: React.FC<{
                         Beregn
                     </Knapp>
                     {feilmelding && <AlertStripeFeilPreWrap>{feilmelding}</AlertStripeFeilPreWrap>}
-                </div>
+                </Container>
             )}
             <Beregningstabell beregnetStønad={beregnetStønad} />
             {behandlingErRedigerbar && <HovedKnapp disabled={laster} knappetekst="Lagre vedtak" />}

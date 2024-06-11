@@ -98,6 +98,14 @@ const [BehandlingProvider, useBehandling] = constate(() => {
     }, [ansvarligSaksbehandler]);
 
     useEffect(() => {
+        const henter =
+            behandling.status === RessursStatus.HENTER ||
+            ansvarligSaksbehandler.status === RessursStatus.HENTER;
+
+        if (henter) {
+            return;
+        }
+
         settBehandlingErRedigerbar(
             behandling.status === RessursStatus.SUKSESS &&
                 ansvarligSaksbehandler.status === RessursStatus.SUKSESS &&
