@@ -93,7 +93,8 @@ const SimuleringSide: React.FC<{
                 {finnesFlereTilbakekrevingsvalgRegistrertSisteÅr &&
                     skalViseValgForAutomatiskBehandlingUnder4xRettsgebyr && (
                         <AlertWarning variant={'warning'}>
-                            Det er registrert feilutbetaling i flere behandlinger siste året
+                            Det er opprettet automatisk behandling av tilbakekreving minst 2 ganger
+                            i løpet av de siste 12 månedene. Vurder om beløpet skal betales tilbake.
                         </AlertWarning>
                     )}
                 <SimuleringTabell
