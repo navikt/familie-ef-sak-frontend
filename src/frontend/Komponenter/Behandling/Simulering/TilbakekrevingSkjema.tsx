@@ -210,6 +210,10 @@ const FireGangerRettsgebyr = () => (
         <BodyLong size="small">
             Saken blir automatisk behandlet og bruker får et vedtak om ikke tilbakebetaling.
         </BodyLong>
+        <BodyLong size="small">
+            NB! Det er ikke mulig å endre brevmottaker på denne typen tilbakekrevingsbehandling.
+            Hvis du skal endre brevmottaker, må du velge et annet alternativ.
+        </BodyLong>
     </>
 );
 
