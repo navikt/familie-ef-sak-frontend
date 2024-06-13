@@ -17,6 +17,7 @@ import { mapSimuleringstabellRader } from './utils';
 import Sanksjonsperiode from './Sanksjonsperiode';
 import { useApp } from '../../../App/context/AppContext';
 import { byggTomRessurs, Ressurs } from '../../../App/typer/ressurs';
+import { useBehandling } from '../../../App/context/BehandlingContext';
 
 const Container = styled.div`
     padding: 2rem;
@@ -56,7 +57,7 @@ const SimuleringSide: React.FC<{
         hentFinnesFlereTilbakekrevingsvalgRegistrertSisteÅr();
         // eslint-disable-next-line
     }, [behandlingId]);
-
+    const { behandlingErRedigerbar } = useBehandling();
     const [år, settÅr] = useState(
         muligeÅr.length ? Math.max(...muligeÅr) : new Date().getFullYear()
     );
@@ -91,7 +92,8 @@ const SimuleringSide: React.FC<{
                     </AlertWarning>
                 )}
                 {finnesFlereTilbakekrevingsvalgRegistrertSisteÅr &&
-                    skalViseValgForAutomatiskBehandlingUnder4xRettsgebyr && (
+                    skalViseValgForAutomatiskBehandlingUnder4xRettsgebyr &&
+                    behandlingErRedigerbar && (
                         <AlertWarning variant={'warning'}>
                             Det er opprettet automatisk behandling av tilbakekreving minst 2 ganger
                             i løpet av de siste 12 månedene. Vurder om beløpet skal betales tilbake.
