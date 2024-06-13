@@ -16,7 +16,7 @@ import { ToggleName } from '../../../App/context/toggles';
 import { mapSimuleringstabellRader } from './utils';
 import Sanksjonsperiode from './Sanksjonsperiode';
 import { useApp } from '../../../App/context/AppContext';
-import { byggTomRessurs, Ressurs } from '../../../App/typer/ressurs';
+import { byggTomRessurs, Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 
 const Container = styled.div`
@@ -51,12 +51,14 @@ const SimuleringSide: React.FC<{
         axiosRequest<boolean, null>({
             method: 'GET',
             url: `/familie-ef-sak/api/tilbakekreving/${behandlingId}/finnes-flere-tilbakekrevinger-valgt-siste-aar`,
-        }).then((response) => settFinnesFlereTilbakekrevingsvalgRegistrertSisteÅr(response));
+        }).then((response: Ressurs<boolean>) =>
+            settFinnesFlereTilbakekrevingsvalgRegistrertSisteÅr(response)
+        );
 
     useEffect(() => {
         hentFinnesFlereTilbakekrevingsvalgRegistrertSisteÅr();
         // eslint-disable-next-line
-    }, [behandlingId]);
+    }, [axiosRequest, behandlingId]);
     const { behandlingErRedigerbar } = useBehandling();
     const [år, settÅr] = useState(
         muligeÅr.length ? Math.max(...muligeÅr) : new Date().getFullYear()
@@ -91,12 +93,14 @@ const SimuleringSide: React.FC<{
                         Simuleringsbildet kan derfor være ufullstendig.
                     </AlertWarning>
                 )}
-                {finnesFlereTilbakekrevingsvalgRegistrertSisteÅr &&
+                {finnesFlereTilbakekrevingsvalgRegistrertSisteÅr.status === RessursStatus.SUKSESS &&
+                    finnesFlereTilbakekrevingsvalgRegistrertSisteÅr.data &&
                     skalViseValgForAutomatiskBehandlingUnder4xRettsgebyr &&
                     behandlingErRedigerbar && (
                         <AlertWarning variant={'warning'}>
                             Det er opprettet automatisk behandling av tilbakekreving minst 2 ganger
                             i løpet av de siste 12 månedene. Vurder om beløpet skal betales tilbake.
+                            BehandlingId: {behandlingId}
                         </AlertWarning>
                     )}
                 <SimuleringTabell
