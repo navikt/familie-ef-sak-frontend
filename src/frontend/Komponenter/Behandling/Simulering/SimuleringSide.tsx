@@ -100,7 +100,6 @@ const SimuleringSide: React.FC<{
                         <AlertWarning variant={'warning'}>
                             Det er opprettet automatisk behandling av tilbakekreving minst 2 ganger
                             i løpet av de siste 12 månedene. Vurder om beløpet skal betales tilbake.
-                            BehandlingId: {behandlingId}
                         </AlertWarning>
                     )}
                 <SimuleringTabell
