@@ -16,7 +16,7 @@ import { ToggleName } from '../../../App/context/toggles';
 import { mapSimuleringstabellRader } from './utils';
 import Sanksjonsperiode from './Sanksjonsperiode';
 import { useApp } from '../../../App/context/AppContext';
-import { byggTomRessurs, Ressurs } from '../../../App/typer/ressurs';
+import { byggTomRessurs, Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 
 const Container = styled.div`
@@ -91,7 +91,8 @@ const SimuleringSide: React.FC<{
                         Simuleringsbildet kan derfor være ufullstendig.
                     </AlertWarning>
                 )}
-                {finnesFlereTilbakekrevingsvalgRegistrertSisteÅr &&
+                {finnesFlereTilbakekrevingsvalgRegistrertSisteÅr.status === RessursStatus.SUKSESS &&
+                    finnesFlereTilbakekrevingsvalgRegistrertSisteÅr.data &&
                     skalViseValgForAutomatiskBehandlingUnder4xRettsgebyr &&
                     behandlingErRedigerbar && (
                         <AlertWarning variant={'warning'}>
