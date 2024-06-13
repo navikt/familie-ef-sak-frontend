@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Simulering } from './SimuleringTyper';
 import SimuleringTabell from './SimuleringTabell';
 import { formaterIsoÅr } from '../../../App/utils/formatter';
@@ -15,6 +15,9 @@ import { useToggles } from '../../../App/context/TogglesContext';
 import { ToggleName } from '../../../App/context/toggles';
 import { mapSimuleringstabellRader } from './utils';
 import Sanksjonsperiode from './Sanksjonsperiode';
+import { useApp } from '../../../App/context/AppContext';
+import { byggTomRessurs, Ressurs } from '../../../App/typer/ressurs';
+import { useBehandling } from '../../../App/context/BehandlingContext';
 
 const Container = styled.div`
     padding: 2rem;
@@ -36,8 +39,25 @@ const SimuleringSide: React.FC<{
     lagretVedtak?: IVedtak;
 }> = ({ simuleringsresultat, behandlingId, lagretVedtak }) => {
     const { toggles } = useToggles();
+    const { axiosRequest } = useApp();
     const muligeÅr = [...new Set(simuleringsresultat.perioder.map((p) => formaterIsoÅr(p.fom)))];
 
+    const [
+        finnesFlereTilbakekrevingsvalgRegistrertSisteÅr,
+        settFinnesFlereTilbakekrevingsvalgRegistrertSisteÅr,
+    ] = useState<Ressurs<boolean>>(byggTomRessurs());
+
+    const hentFinnesFlereTilbakekrevingsvalgRegistrertSisteÅr = () =>
+        axiosRequest<boolean, null>({
+            method: 'GET',
+            url: `/familie-ef-sak/api/tilbakekreving/${behandlingId}/finnes-flere-tilbakekrevinger-valgt-siste-aar`,
+        }).then((response) => settFinnesFlereTilbakekrevingsvalgRegistrertSisteÅr(response));
+
+    useEffect(() => {
+        hentFinnesFlereTilbakekrevingsvalgRegistrertSisteÅr();
+        // eslint-disable-next-line
+    }, [behandlingId]);
+    const { behandlingErRedigerbar } = useBehandling();
     const [år, settÅr] = useState(
         muligeÅr.length ? Math.max(...muligeÅr) : new Date().getFullYear()
     );
@@ -71,6 +91,14 @@ const SimuleringSide: React.FC<{
                         Simuleringsbildet kan derfor være ufullstendig.
                     </AlertWarning>
                 )}
+                {finnesFlereTilbakekrevingsvalgRegistrertSisteÅr &&
+                    skalViseValgForAutomatiskBehandlingUnder4xRettsgebyr &&
+                    behandlingErRedigerbar && (
+                        <AlertWarning variant={'warning'}>
+                            Det er opprettet automatisk behandling av tilbakekreving minst 2 ganger
+                            i løpet av de siste 12 månedene. Vurder om beløpet skal betales tilbake.
+                        </AlertWarning>
+                    )}
                 <SimuleringTabell
                     perioder={simuleringTabellRader}
                     årsvelger={{ valgtÅr: år, settÅr: settÅr, muligeÅr: muligeÅr }}
