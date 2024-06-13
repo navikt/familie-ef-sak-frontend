@@ -49,7 +49,7 @@ const SimuleringSide: React.FC<{
     const hentFinnesFlereTilbakekrevingsvalgRegistrertSisteÅr = () =>
         axiosRequest<boolean, null>({
             method: 'GET',
-            url: `/familie-ef-sak/api/tilbakekreving/behandlinger/${behandlingId}/finnes-flere-tilbakekrevinger-valgt-siste-aar`,
+            url: `/familie-ef-sak/api/tilbakekreving/${behandlingId}/finnes-flere-tilbakekrevinger-valgt-siste-aar`,
         }).then((response) => settFinnesFlereTilbakekrevingsvalgRegistrertSisteÅr(response));
 
     useEffect(() => {
