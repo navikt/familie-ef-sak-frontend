@@ -28,8 +28,7 @@ export interface ITilbakekreving {
 export const TilbakekrevingsvalgTilTekst: Record<ITilbakekrevingsvalg, string> = {
     OPPRETT_MED_VARSEL: 'Opprett tilbakekreving, send varsel',
     OPPRETT_UTEN_VARSEL: 'Opprett tilbakekreving, ikke send varsel',
-    OPPRETT_AUTOMATISK:
-        'Opprett automatisk behandling av tilbakekreving under 4 ganger rettsgebyret',
+    OPPRETT_AUTOMATISK: 'Opprett automatisk behandling av tilbakekreving under 4 rettsgebyr',
     AVVENT: 'Avvent',
 };
 
