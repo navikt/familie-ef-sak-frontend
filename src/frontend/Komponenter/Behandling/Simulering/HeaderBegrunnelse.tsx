@@ -45,9 +45,8 @@ export const HeaderBegrunnelse: React.FC = () => (
             </li>
         </Liste>
         <Tekst textColor="subtle">
-            Hvis det feilutbetalte beløpet er under 4 ganger rettsgebyret og du ikke skal kreve det
-            tilbake, må du i tillegg ha vurdert at bruker ikke har handlet forsettlig eller grovt
-            uaktsomt.
+            Hvis det feilutbetalte beløpet er under 4 rettsgebyr og du ikke skal kreve det tilbake,
+            må du i tillegg ha vurdert at bruker ikke har handlet forsettlig eller grovt uaktsomt.
         </Tekst>
     </>
 );
