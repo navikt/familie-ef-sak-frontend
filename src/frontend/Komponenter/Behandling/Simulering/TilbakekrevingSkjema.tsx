@@ -201,7 +201,7 @@ const FireGangerRettsgebyr = () => (
                 </BodyLong>
             </li>
             <li>
-                <BodyLong size="small">- beløpet er under 4 ganger rettsgebyret</BodyLong>
+                <BodyLong size="small">- beløpet er under 4 rettsgebyr</BodyLong>
             </li>
             <li>
                 <BodyLong size="small">- beløpet ikke skal betales tilbake</BodyLong>
