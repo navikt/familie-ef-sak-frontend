@@ -13,6 +13,10 @@ const Liste = styled.ul`
     }
 `;
 
+const ListeTekst = styled(BodyLong)`
+    padding-left: 0.25rem;
+`;
+
 const Tekst = styled(BodyLong)`
     padding-top: 1.25rem;
 `;
@@ -24,24 +28,26 @@ export const HeaderBegrunnelse: React.FC = () => (
         <BodyLong textColor="subtle">Dette må være med i vurderingen:</BodyLong>
         <Liste>
             <li>
-                <Tekst textColor="subtle">Årsaken til feilutbetalingen</Tekst>
+                <ListeTekst textColor="subtle">Årsaken til feilutbetalingen</ListeTekst>
             </li>
             <li>
-                <Tekst textColor="subtle">Hvordan feilutbetalingen ble oppdaget </Tekst>
+                <ListeTekst textColor="subtle">Hvordan feilutbetalingen ble oppdaget </ListeTekst>
             </li>
             <li>
-                <Tekst textColor="subtle">
+                <ListeTekst textColor="subtle">
                     Hvem som oppdaget feilutbetalingen (bruker eller NAV)
-                </Tekst>
+                </ListeTekst>
             </li>
             <li>
-                <Tekst textColor="subtle">Dato for når feilutbetalingen ble oppdaget</Tekst>
+                <ListeTekst textColor="subtle">
+                    Dato for når feilutbetalingen ble oppdaget
+                </ListeTekst>
             </li>
             <li>
-                <Tekst textColor="subtle">
+                <ListeTekst textColor="subtle">
                     Andre relevante opplysninger, for eksempel hva slags informasjon bruker har fått
                     eller tidligere feilutbetalingssaker
-                </Tekst>
+                </ListeTekst>
             </li>
         </Liste>
         <Tekst textColor="subtle">
