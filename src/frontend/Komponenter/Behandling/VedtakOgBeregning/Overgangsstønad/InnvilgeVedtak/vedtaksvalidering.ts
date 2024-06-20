@@ -31,7 +31,7 @@ export const validerInnvilgetVedtakForm = ({
     periodeBegrunnelse,
     inntektBegrunnelse,
     samordningsfradragType,
-    yngsteBarnFødselsdato,
+    yngsteBarnFødselsdatoMedAleneOmsorgOppfylt,
 }: InnvilgeVedtakForm): FormErrors<InnvilgeVedtakForm> => {
     const periodeBegrunnelseFeil =
         periodeBegrunnelse === '' || periodeBegrunnelse === undefined
@@ -51,7 +51,11 @@ export const validerInnvilgetVedtakForm = ({
             : undefined;
 
     return {
-        ...validerVedtaksperioder({ perioder, inntekter, yngsteBarnFødselsdato }),
+        ...validerVedtaksperioder({
+            perioder,
+            inntekter,
+            yngsteBarnFødselsdatoMedAleneOmsorgOppfylt,
+        }),
         inntektBegrunnelse: inntektBegrunnelseFeil,
         periodeBegrunnelse: periodeBegrunnelseFeil,
         samordningsfradragType: typeSamordningFeil,
@@ -61,13 +65,13 @@ export const validerInnvilgetVedtakForm = ({
 const åtteÅrFremITiden = (barnDatoStreng: string) => plusMåneder(tilDato(barnDatoStreng), 96);
 
 const yngsteBarnErOver8FørTilOgMedMåned = (
-    yngsteBarnFødselsdato: string | undefined,
+    yngsteBarnFødselsdatoMedAleneOmsorgOppfylt: string | undefined,
     årMånedTil: string | undefined
 ): boolean => {
     return (
-        yngsteBarnFødselsdato !== undefined &&
+        yngsteBarnFødselsdatoMedAleneOmsorgOppfylt !== undefined &&
         årMånedTil !== undefined &&
-        erEtter(årMånedTil, åtteÅrFremITiden(yngsteBarnFødselsdato))
+        erEtter(årMånedTil, åtteÅrFremITiden(yngsteBarnFødselsdatoMedAleneOmsorgOppfylt))
     );
 };
 
@@ -83,11 +87,11 @@ const skalValidereOver8 = (
 export const validerVedtaksperioder = ({
     perioder,
     inntekter,
-    yngsteBarnFødselsdato,
+    yngsteBarnFødselsdatoMedAleneOmsorgOppfylt,
 }: {
     perioder: IVedtaksperiode[];
     inntekter: IInntektsperiode[];
-    yngsteBarnFødselsdato?: string | undefined;
+    yngsteBarnFødselsdatoMedAleneOmsorgOppfylt?: string | undefined;
 }): FormErrors<{
     perioder: IVedtaksperiode[];
     inntekter: IInntektsperiode[];
@@ -107,7 +111,10 @@ export const validerVedtaksperioder = ({
 
         if (
             skalValidereOver8(periodeType, aktivitet) &&
-            yngsteBarnErOver8FørTilOgMedMåned(yngsteBarnFødselsdato, årMånedTil)
+            yngsteBarnErOver8FørTilOgMedMåned(
+                yngsteBarnFødselsdatoMedAleneOmsorgOppfylt,
+                årMånedTil
+            )
         ) {
             vedtaksperiodeFeil = {
                 ...vedtaksperiodeFeil,

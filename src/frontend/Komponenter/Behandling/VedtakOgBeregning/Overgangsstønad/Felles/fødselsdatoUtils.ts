@@ -1,7 +1,9 @@
 import { erEtter, erGyldigDato, minusÅr } from '../../../../../App/utils/dato';
 import { IVilkår, InngangsvilkårType, Vilkårsresultat } from '../../../Inngangsvilkår/vilkår';
 
-export const utledYngsteBarnFødselsdato = (vilkår: IVilkår): string | undefined => {
+export const utledYngsteBarnFødselsdatoSomHarInngangsvilkåretAleneOmsorgOppfylt = (
+    vilkår: IVilkår
+): string | undefined => {
     const terminbarnFødselsdatoer = vilkår.grunnlag.barnMedSamvær
         .map((b) => b.søknadsgrunnlag.fødselTermindato)
         .filter(

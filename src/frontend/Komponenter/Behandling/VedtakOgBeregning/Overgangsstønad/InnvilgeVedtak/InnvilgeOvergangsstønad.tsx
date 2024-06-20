@@ -25,7 +25,7 @@ import { validerInnvilgetVedtakForm, validerVedtaksperioder } from './vedtaksval
 import AlertStripeFeilPreWrap from '../../../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import styled from 'styled-components';
 import { IVilkår } from '../../../Inngangsvilkår/vilkår';
-import { utledYngsteBarnFødselsdato } from '../Felles/fødselsdatoUtils';
+import { utledYngsteBarnFødselsdatoSomHarInngangsvilkåretAleneOmsorgOppfylt } from '../Felles/fødselsdatoUtils';
 import { useRedirectEtterLagring } from '../../../../../App/hooks/felles/useRedirectEtterLagring';
 import HovedKnapp, { Knapp } from '../../../../../Felles/Knapper/HovedKnapp';
 import { CalculatorIcon } from '@navikt/aksel-icons';
@@ -36,7 +36,7 @@ import { VStack } from '@navikt/ds-react';
 export type InnvilgeVedtakForm = Omit<
     Omit<IInnvilgeVedtakForOvergangsstønad, 'resultatType'>,
     '_type'
-> & { yngsteBarnFødselsdato?: string };
+> & { yngsteBarnFødselsdatoMedAleneOmsorgOppfylt?: string };
 
 const Form = styled.form`
     display: flex;
@@ -78,7 +78,8 @@ export const InnvilgeOvergangsstønad: React.FC<{
                 ? lagretVedtak?.inntekter
                 : [tomInntektsperiodeRad()],
             samordningsfradragType: lagretVedtak?.samordningsfradragType || '',
-            yngsteBarnFødselsdato: utledYngsteBarnFødselsdato(vilkår) || '',
+            yngsteBarnFødselsdatoMedAleneOmsorgOppfylt:
+                utledYngsteBarnFødselsdatoSomHarInngangsvilkåretAleneOmsorgOppfylt(vilkår) || '',
         },
         validerInnvilgetVedtakForm
     );
