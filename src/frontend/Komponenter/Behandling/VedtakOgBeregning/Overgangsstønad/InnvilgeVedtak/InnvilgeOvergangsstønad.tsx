@@ -25,7 +25,7 @@ import { validerInnvilgetVedtakForm, validerVedtaksperioder } from './vedtaksval
 import AlertStripeFeilPreWrap from '../../../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import styled from 'styled-components';
 import { IVilkår } from '../../../Inngangsvilkår/vilkår';
-import { utledYngsteBarnFødselsdatoSomHarInngangsvilkåretAleneOmsorgOppfylt } from '../Felles/fødselsdatoUtils';
+import { utledYngsteBarnFødselsdatoSomHarInngangsvilkåretAleneomsorgOppfylt } from '../Felles/fødselsdatoUtils';
 import { useRedirectEtterLagring } from '../../../../../App/hooks/felles/useRedirectEtterLagring';
 import HovedKnapp, { Knapp } from '../../../../../Felles/Knapper/HovedKnapp';
 import { CalculatorIcon } from '@navikt/aksel-icons';
@@ -79,7 +79,7 @@ export const InnvilgeOvergangsstønad: React.FC<{
                 : [tomInntektsperiodeRad()],
             samordningsfradragType: lagretVedtak?.samordningsfradragType || '',
             yngsteBarnFødselsdatoMedAleneOmsorgOppfylt:
-                utledYngsteBarnFødselsdatoSomHarInngangsvilkåretAleneOmsorgOppfylt(vilkår) || '',
+                utledYngsteBarnFødselsdatoSomHarInngangsvilkåretAleneomsorgOppfylt(vilkår) || '',
         },
         validerInnvilgetVedtakForm
     );
