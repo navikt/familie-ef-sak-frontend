@@ -63,10 +63,13 @@ const åtteÅrFremITiden = (barnDatoStreng: string) => plusMåneder(tilDato(barn
 const yngsteBarnErOver8FørTilOgMedMåned = (
     yngsteBarnFødselsdato: string | undefined,
     årMånedTil: string | undefined
-) =>
-    yngsteBarnFødselsdato &&
-    årMånedTil &&
-    erEtter(årMånedTil, åtteÅrFremITiden(yngsteBarnFødselsdato));
+): boolean => {
+    return (
+        yngsteBarnFødselsdato !== undefined &&
+        årMånedTil !== undefined &&
+        erEtter(årMånedTil, åtteÅrFremITiden(yngsteBarnFødselsdato))
+    );
+};
 
 const skalValidereOver8 = (
     periodeType: EPeriodetype | '' | undefined,

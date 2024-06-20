@@ -1,5 +1,5 @@
 import { erEtter, erGyldigDato, minusÅr } from '../../../../../App/utils/dato';
-import { IVilkår } from '../../../Inngangsvilkår/vilkår';
+import { IVilkår, InngangsvilkårType, Vilkårsresultat } from '../../../Inngangsvilkår/vilkår';
 
 export const utledYngsteBarnFødselsdato = (vilkår: IVilkår): string | undefined => {
     const terminbarnFødselsdatoer = vilkår.grunnlag.barnMedSamvær
@@ -11,8 +11,18 @@ export const utledYngsteBarnFødselsdato = (vilkår: IVilkår): string | undefin
                 erEtter(fødselTermindato, minusÅr(new Date(), 1))
         );
 
-    const datoer = vilkår.grunnlag.barnMedSamvær
-        .map((b) => b.registergrunnlag.fødselsdato)
+    const barnMedOppfyltAleneomsorg = vilkår.vurderinger
+        .filter(
+            (vurdering) =>
+                vurdering.vilkårType === InngangsvilkårType.ALENEOMSORG &&
+                vurdering.resultat === Vilkårsresultat.OPPFYLT
+        )
+        .map((vurdering) =>
+            vilkår.grunnlag.barnMedSamvær.find((barn) => barn.barnId === vurdering.barnId)
+        );
+
+    const datoer = barnMedOppfyltAleneomsorg
+        .map((b) => b?.registergrunnlag.fødselsdato)
         .filter((fødselsdato): fødselsdato is string => !!fødselsdato && erGyldigDato(fødselsdato))
         .concat(terminbarnFødselsdatoer);
     if (datoer.length === 0) {
