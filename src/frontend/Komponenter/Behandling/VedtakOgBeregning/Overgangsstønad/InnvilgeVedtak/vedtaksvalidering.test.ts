@@ -77,7 +77,7 @@ describe('skal feile validering av vedtaksperioder', () => {
         const vedtaksform = {
             ...lagForm(),
             perioder: vedtaksperioder,
-            yngsteBarnFødselsdato: '2015-03-03',
+            yngsteBarnFødselsdatoMedAleneOmsorgOppfylt: '2015-03-03',
         };
 
         const vedtaksvalidering = validerInnvilgetVedtakForm(vedtaksform);
@@ -452,7 +452,7 @@ const lagForm = (
     periodeBegrunnelse?: string,
     inntektBegrunnelse?: string,
     samordningsfradragType?: string,
-    yngsteBarnFødselsdato?: string
+    yngsteBarnFødselsdatoMedAleneOmsorgOppfylt?: string
 ): InnvilgeVedtakForm => {
     return {
         perioder: perioder ?? [],
@@ -460,6 +460,6 @@ const lagForm = (
         periodeBegrunnelse: periodeBegrunnelse,
         inntektBegrunnelse: inntektBegrunnelse,
         samordningsfradragType: samordningsfradragType,
-        yngsteBarnFødselsdato: yngsteBarnFødselsdato,
+        yngsteBarnFødselsdatoMedAleneOmsorgOppfylt: yngsteBarnFødselsdatoMedAleneOmsorgOppfylt,
     };
 };
