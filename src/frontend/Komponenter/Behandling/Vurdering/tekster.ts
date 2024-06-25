@@ -1,4 +1,4 @@
-export const teksterMedKursiv = [
+export const eldreUnntaksregler = [
     'MEDLEM_MER_ENN_7_ÅR_AVBRUDD_MER_ENN_10ÅR',
     'ANDRE_FORELDER_MEDLEM_MINST_7_ÅR_AVBRUDD_MER_ENN_10_ÅR',
     'I_LANDET_FOR_GJENFORENING_ELLER_GIFTE_SEG',
@@ -112,4 +112,4 @@ export const svarTypeTilTekst: Record<string, string> = {
 
 /* Alternativer som kun er aktuelle for vedtak før 1. september 2023 skal kursiveres - for å vise saksbehandler at de
  *  er utdaterte. Alternativene må fortsatt være tilgjengelige å velge for potensielle saker man ikke får migrert fra infotrygd */
-export const tekstSkalKursiveres = (tekst: string): boolean => teksterMedKursiv.includes(tekst);
+export const erUnntakForeldet = (tekst: string): boolean => eldreUnntaksregler.includes(tekst);

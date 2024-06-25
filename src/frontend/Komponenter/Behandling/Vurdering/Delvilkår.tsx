@@ -3,10 +3,20 @@ import { FC } from 'react';
 import { Regel } from './typer';
 import { DelvilkårContainer } from './DelvilkårContainer';
 import { hjelpeTekstConfig } from './hjelpetekstconfig';
-import { delvilkårTypeTilTekst, svarTypeTilTekst, tekstSkalKursiveres } from './tekster';
+import { delvilkårTypeTilTekst } from './tekster';
 import { Vurdering } from '../Inngangsvilkår/vilkår';
-import { Alert, HelpText, Radio, RadioGroup } from '@navikt/ds-react';
-import styled from 'styled-components';
+import { HelpText, RadioGroup } from '@navikt/ds-react';
+import { RadioKnapper } from './RadioKnapper';
+import { RadioKnapperMedlemskapUnntak } from './RadioKnapperMedlemskapUnntak';
+
+const utledRadioKnapper = (regel: Regel, settVurdering: (nyttSvar: Vurdering) => void) => {
+    switch (regel.regelId) {
+        case 'MEDLEMSKAP_UNNTAK':
+            return <RadioKnapperMedlemskapUnntak regel={regel} settVurdering={settVurdering} />;
+        default:
+            return <RadioKnapper regel={regel} settVurdering={settVurdering} />;
+    }
+};
 
 interface Props {
     regel: Regel;
@@ -14,40 +24,13 @@ interface Props {
     settVurdering: (nyttSvar: Vurdering) => void;
 }
 
-const FontStyle = styled.div<{ $italic: boolean }>`
-    font-style: ${(props) => (props.$italic ? 'italic' : 'normal')};
-`;
-
 const Delvilkår: FC<Props> = ({ regel, vurdering, settVurdering }) => {
     const hjelpetekst = hjelpeTekstConfig[regel.regelId];
 
     return (
         <DelvilkårContainer>
             <RadioGroup legend={delvilkårTypeTilTekst[regel.regelId]} value={vurdering.svar || ''}>
-                {Object.keys(regel.svarMapping).map((svarId, i) => {
-                    const erTekstKursiv = tekstSkalKursiveres(svarId);
-                    return (
-                        <>
-                            <InfoStripe indeks={i} regelId={regel.regelId} />
-
-                            <Radio
-                                key={`${regel.regelId}_${svarId}`}
-                                name={`${regel.regelId}_${svarId}`}
-                                value={svarId}
-                                onChange={() =>
-                                    settVurdering({
-                                        svar: svarId,
-                                        regelId: regel.regelId,
-                                    })
-                                }
-                            >
-                                <FontStyle $italic={erTekstKursiv}>
-                                    {svarTypeTilTekst[svarId]}
-                                </FontStyle>
-                            </Radio>
-                        </>
-                    );
-                })}
+                {utledRadioKnapper(regel, settVurdering)}
             </RadioGroup>
             {hjelpetekst && (
                 <HelpText placement={hjelpetekst.plassering}>
@@ -59,18 +42,3 @@ const Delvilkår: FC<Props> = ({ regel, vurdering, settVurdering }) => {
 };
 
 export default Delvilkår;
-
-const InfoStripe: FC<{ indeks: number; regelId: string }> = ({ indeks, regelId }) => {
-    const skalViseInfostripe = indeks === 0 && regelId === 'MEDLEMSKAP_UNNTAK';
-
-    if (!skalViseInfostripe) {
-        return <></>;
-    }
-
-    return (
-        <Alert size="small" variant="info">
-            Det er nye regler for unntak fra 1. september 2023. Du må vurdere om det er nye eller
-            gamle regler som gjelder for saken din.
-        </Alert>
-    );
-};
