@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { SivilstandType } from '../../../../App/typer/personopplysninger';
-import { EÅrsakEnslig, ISivilstandSøknadsgrunnlag, ÅrsakEnsligTilTekst } from './typer';
+import { EÅrsakEnslig, ISivilstandSøknadsgrunnlag } from './typer';
 import { hentBooleanTekst } from '../utils';
 import { formaterNullableIsoDato, mapTrueFalse } from '../../../../App/utils/formatter';
 import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
@@ -78,23 +78,6 @@ const Søknadsinformasjon: FC<Props> = ({ sivilstandtype, søknad }) => {
                             mapTrueFalse(erUformeltSeparertEllerSkilt)
                         }
                     />
-                    <Informasjonsrad
-                        ikon={VilkårInfoIkon.SØKNAD}
-                        label="Alene med barn fordi"
-                        verdi={søknad.årsakEnslig && ÅrsakEnsligTilTekst[søknad.årsakEnslig]}
-                    />
-
-                    {søknad.årsakEnslig === EÅrsakEnslig.samlivsbruddForeldre && (
-                        <Informasjonsrad
-                            ikon={VilkårInfoIkon.SØKNAD}
-                            label="Dato for samlivsbrudd"
-                            verdi={
-                                søknad.samlivsbruddsdato
-                                    ? formaterNullableIsoDato(søknad.samlivsbruddsdato)
-                                    : '-'
-                            }
-                        />
-                    )}
 
                     {søknad.årsakEnslig === EÅrsakEnslig.samlivsbruddAndre && (
                         <>
