@@ -34,6 +34,19 @@ export const oppdaterFilter = (
     };
 };
 
+/**
+ * Deler listen opp i to separate lister basert på filter-funksjonen.
+ * @param liste Listen som skal deles i to.
+ * @param filter Betingelsen som avgjør om elementet havner i pass- eller fail-listen.
+ */
+export const splittListe = <T>(liste: T[], filter: (verdi: T) => boolean): T[][] =>
+    liste.reduce(
+        ([pass, fail], val) => {
+            return filter(val) ? [[...pass, val], fail] : [pass, [...fail, val]];
+        },
+        [[], []] as T[][]
+    );
+
 export const base64toBlob = (b64Data: string, contentType = '', sliceSize = 512): Blob => {
     const byteCharacters = atob(b64Data);
     const byteArrays = [];
