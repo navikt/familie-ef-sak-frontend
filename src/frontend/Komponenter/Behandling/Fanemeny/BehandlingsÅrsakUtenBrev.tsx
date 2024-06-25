@@ -24,9 +24,9 @@ const BehandlingsÅrsakUtenBrev: React.FC<Props> = ({ behandlingId }) => {
             {({ behandling, vedtak }) => (
                 <>
                     <AlertInfo>
-                        {behandling.behandlingsårsak === Behandlingsårsak.KORRIGERING_UTEN_BREV
-                            ? 'Korrigering av vedtak uten brevutsendelse'
-                            : 'Iverksette KA-vedtak (uten brev)'}
+                        {behandling.behandlingsårsak === Behandlingsårsak.IVERKSETTE_KA_VEDTAK
+                            ? 'Iverksette KA-vedtak (uten brev)'
+                            : 'Korrigering av vedtak uten brevutsendelse'}
                     </AlertInfo>
                     <SendTilBeslutterFooter
                         behandling={behandling}
