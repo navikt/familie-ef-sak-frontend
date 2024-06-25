@@ -35,7 +35,7 @@ export const oppdaterFilter = (
 };
 
 /**
- * Deler listen opp i to separate lister basert på en filter-funksjonen.
+ * Deler listen opp i to separate lister basert på filter-funksjonen.
  * @param liste Listen som skal deles i to.
  * @param filter Betingelsen som avgjør om elementet havner i pass- eller fail-listen.
  */
