@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { Popover } from '@navikt/ds-react';
 import { InformationSquareIcon } from '@navikt/aksel-icons';
 import { popoverContentDeltBosted } from '../../../../Felles/Personopplysninger/BarnDeltBosted';
+import BostedMedReadMore from './ReadMoreMedAdresser';
 
 interface Props {
     harSammeAdresseSøknad?: boolean;
@@ -13,6 +14,7 @@ interface Props {
     erBarnetFødt: boolean;
     deltBostedPerioder: IDeltBostedPeriode[];
     harDeltBostedVedGrunnlagsdataopprettelse: boolean;
+    barnFødselsnummer?: string;
 }
 
 const FlexBox = styled.div`
@@ -38,13 +40,17 @@ const utledBostedTekst = (harDeltBosted: boolean, harSammeAdresse: boolean | und
     }
     return 'Ikke registrert på brukers adresse';
 };
+
 const Bosted: FC<Props> = ({
     harSammeAdresseSøknad,
     harSammeAdresseRegister,
     erBarnetFødt,
     deltBostedPerioder,
     harDeltBostedVedGrunnlagsdataopprettelse,
+    barnFødselsnummer,
 }) => {
+    const skalViseAdresser = !harDeltBostedVedGrunnlagsdataopprettelse && !harSammeAdresseRegister;
+
     const iconRef = useRef<SVGSVGElement>(null);
     const [openState, setOpenState] = useState(false);
     return (
@@ -55,10 +61,16 @@ const Bosted: FC<Props> = ({
                     <Informasjonsrad
                         ikon={VilkårInfoIkon.REGISTER}
                         label="Bosted"
-                        verdi={utledBostedTekst(
-                            harDeltBostedVedGrunnlagsdataopprettelse,
-                            harSammeAdresseRegister
-                        )}
+                        verdi={
+                            skalViseAdresser ? (
+                                <BostedMedReadMore barnIdent={barnFødselsnummer} />
+                            ) : (
+                                utledBostedTekst(
+                                    harDeltBostedVedGrunnlagsdataopprettelse,
+                                    harSammeAdresseRegister
+                                )
+                            )
+                        }
                     />
                     {deltBostedPerioder.length > 0 && (
                         <>

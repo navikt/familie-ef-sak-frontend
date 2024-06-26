@@ -80,6 +80,7 @@ const AleneomsorgInfo: FC<{
                 harDeltBostedVedGrunnlagsdataopprettelse={
                     registergrunnlag.harDeltBostedVedGrunnlagsdataopprettelse
                 }
+                barnFødselsnummer={registergrunnlag.fødselsnummer}
             />
             {skalViseSøknadsdata && søknadsgrunnlag.skalBoBorHosSøker && (
                 <Informasjonsrad
