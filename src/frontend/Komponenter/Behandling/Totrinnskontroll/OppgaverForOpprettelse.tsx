@@ -1,9 +1,8 @@
 import * as React from 'react';
-import { Checkbox } from '@navikt/ds-react';
+import { Checkbox, CheckboxGroup } from '@navikt/ds-react';
 import { Behandling } from '../../../App/typer/fagsak';
 import { IOppgaverForOpprettelse } from '../../../App/hooks/useHentOppgaverForOpprettelse';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
-import { FamilieCheckboxGroup } from '@navikt/familie-form-elements';
 import styled from 'styled-components';
 import { AGray800 } from '@navikt/ds-tokens/dist/tokens';
 import {
@@ -15,13 +14,14 @@ export const HvitTekst = styled.div`
     color: white;
 `;
 
-const CheckboxGruppe = styled(FamilieCheckboxGroup)`
+const CheckboxGruppe = styled(CheckboxGroup)`
     width: 30rem;
     margin: 0.5rem 1rem;
     padding: 0 1rem;
     background-color: ${AGray800};
     border-radius: 5px;
 `;
+
 const OppgaverForOpprettelse: React.FC<{
     behandling: Behandling;
     oppgaverForOpprettelse: IOppgaverForOpprettelse;
@@ -44,7 +44,6 @@ const OppgaverForOpprettelse: React.FC<{
     return (
         <CheckboxGruppe
             legend={''}
-            erLesevisning={false}
             value={oppgavetyperSomSkalOpprettes}
             onChange={(oppgavetyper: string[]) =>
                 settOppgavetyperSomSkalOpprettes(oppgavetyper as OppgaveTypeForOpprettelse[])
