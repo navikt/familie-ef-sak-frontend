@@ -12,10 +12,7 @@ const config = mergeWithCustomize({
 })(common, {
     mode: 'development',
     entry: {
-        'familie-ef-sak': [
-            'babel-polyfill',
-            'webpack-hot-middleware/client?reload=true&overlay=false',
-        ],
+        'familie-ef-sak': ['webpack-hot-middleware/client?reload=true&overlay=false'],
     },
     output: {
         path: path.join(process.cwd(), 'frontend_development'),
