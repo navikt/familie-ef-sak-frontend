@@ -192,7 +192,7 @@ const TilleggsstønadValg: React.FC<Props> = ({
                                             årMånedTilInitiell={årMånedTil}
                                         />
                                         <Input
-                                            erLesevisning={erLesevisning}
+                                            readOnly={erLesevisning}
                                             hideLabel
                                             label={'Stønadsreduksjon'}
                                             error={

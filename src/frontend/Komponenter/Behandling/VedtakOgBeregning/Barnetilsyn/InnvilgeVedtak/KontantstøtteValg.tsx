@@ -187,7 +187,7 @@ const KontantstøtteValg: React.FC<Props> = ({
                                                     tilTallverdi(e.target.value)
                                                 );
                                             }}
-                                            erLesevisning={erLesevisning}
+                                            readOnly={erLesevisning}
                                             label={'Utgifter kontantstøtte'}
                                             hideLabel
                                         />

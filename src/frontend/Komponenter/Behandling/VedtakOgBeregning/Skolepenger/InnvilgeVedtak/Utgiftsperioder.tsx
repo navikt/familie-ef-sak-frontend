@@ -119,7 +119,7 @@ const Utgiftsperioder: React.FC<Props> = ({
                                                 tilTallverdi(e.target.value)
                                             );
                                         }}
-                                        erLesevisning={erLesevisning}
+                                        readOnly={erLesevisning}
                                         disabled={erLåstFraForrigeBehandling}
                                     />
                                     <MånedÅrVelger
