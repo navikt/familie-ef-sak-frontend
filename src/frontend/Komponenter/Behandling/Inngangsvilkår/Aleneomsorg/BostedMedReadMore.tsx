@@ -16,7 +16,7 @@ const BostedMedReadMore: FC<{
         <StyledReadMore header="Ikke registrert på brukers adresse" size="small" defaultOpen>
             {gjeldendeBarn.registergrunnlag.adresse ? (
                 <>
-                    Dette er adressene vi har registrert på bruker og gjeldene barn:
+                    Bruker og barnets folkeregistrerte bostedsadresser:
                     <Table size="small" style={{ marginTop: '0.5rem' }}>
                         <Table.Header>
                             <Table.Row>
