@@ -141,7 +141,7 @@ const Delårsperioder: React.FC<Props> = ({
                                     tilTallverdi(e.target.value)
                                 )
                             }
-                            erLesevisning={erLesevisning}
+                            readOnly={erLesevisning}
                         />
                         <MånedÅrPeriode
                             årMånedFraInitiell={årMånedFra}

@@ -289,7 +289,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                                     errorState?.inntekter &&
                                                     errorState?.inntekter[index]?.dagsats
                                                 }
-                                                erLesevisning={!behandlingErRedigerbar}
+                                                readOnly={!behandlingErRedigerbar}
                                                 value={harTallverdi(rad.dagsats) ? rad.dagsats : ''}
                                                 onChange={(e) => {
                                                     oppdaterInntektslisteVerdier(index, {
@@ -305,7 +305,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                             <StyledInput
                                                 label={'Månedsinntekt'}
                                                 hideLabel
-                                                erLesevisning={!behandlingErRedigerbar}
+                                                readOnly={!behandlingErRedigerbar}
                                                 error={
                                                     errorState?.inntekter &&
                                                     errorState?.inntekter[index]?.månedsinntekt
@@ -352,7 +352,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                                             verdi,
                                                     });
                                                 }}
-                                                erLesevisning={!behandlingErRedigerbar}
+                                                readOnly={!behandlingErRedigerbar}
                                             />
                                         )}
                                         {valgteInntektstyper.includes(
@@ -379,7 +379,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                                                 tilTallverdi(e.target.value),
                                                         });
                                                     }}
-                                                    erLesevisning={!behandlingErRedigerbar}
+                                                    readOnly={!behandlingErRedigerbar}
                                                 />
                                             </>
                                         )}

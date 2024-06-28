@@ -326,7 +326,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                                 tilTallverdi(e.target.value)
                                             );
                                         }}
-                                        erLesevisning={!behandlingErRedigerbar}
+                                        readOnly={!behandlingErRedigerbar}
                                         label={'Utgifter'}
                                         hideLabel
                                     />
