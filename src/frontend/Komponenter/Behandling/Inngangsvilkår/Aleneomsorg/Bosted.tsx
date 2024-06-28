@@ -16,7 +16,6 @@ interface Props {
     erBarnetFødt: boolean;
     deltBostedPerioder: IDeltBostedPeriode[];
     harDeltBostedVedGrunnlagsdataopprettelse: boolean;
-    barnFødselsnummer?: string;
     personalia: IPersonalia;
     gjeldendeBarn: IBarnMedSamvær;
 }
@@ -67,7 +66,7 @@ const Bosted: FC<Props> = ({
                         ikon={VilkårInfoIkon.REGISTER}
                         label="Bosted"
                         verdi={
-                            !skalViseAdresser ? (
+                            skalViseAdresser ? (
                                 <BostedMedReadMore
                                     personalia={personalia}
                                     gjeldendeBarn={gjeldendeBarn}

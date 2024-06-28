@@ -82,7 +82,6 @@ const AleneomsorgInfo: FC<{
                 harDeltBostedVedGrunnlagsdataopprettelse={
                     registergrunnlag.harDeltBostedVedGrunnlagsdataopprettelse
                 }
-                barnFødselsnummer={registergrunnlag.fødselsnummer}
                 personalia={personalia}
                 gjeldendeBarn={gjeldendeBarn}
             />
