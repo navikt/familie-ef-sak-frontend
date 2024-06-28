@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { FamilieInput, IFamilieInputProps } from '@navikt/familie-form-elements';
 import { ASpacing12 } from '@navikt/ds-tokens/dist/tokens';
+import { BodyShort, TextField, TextFieldProps } from '@navikt/ds-react';
 
-export interface PropsInputUtenSpinner extends IFamilieInputProps {
+export interface PropsInputUtenSpinner extends TextFieldProps {
     value: number | string | undefined;
     formatValue?: (value: number | string | undefined) => number | string | undefined;
 }
 
-const StyledInputUtenSpinner = styled(FamilieInput)`
+const StyledInputUtenSpinner = styled(TextField)`
     text-align: right;
     input {
         text-align: right;
@@ -33,20 +33,14 @@ const StyledInputUtenSpinner = styled(FamilieInput)`
 
 const InputUtenSpinner: React.FC<PropsInputUtenSpinner> = ({ formatValue, ...props }) => {
     const [harFokus, settHarFokus] = useState(false);
-    if (!harFokus) {
-        return (
-            <StyledInputUtenSpinner
-                {...props}
-                type="text"
-                autoComplete="off"
-                value={formatValue ? formatValue(props.value) : props.value}
-                onWheel={(event) => event.currentTarget.blur()}
-                label={''}
-                onFocus={() => settHarFokus(true)}
-                hideLabel
-            />
-        );
-    } else {
+
+    const formatertVerdi = formatValue ? formatValue(props.value) : props.value;
+
+    if (props.readOnly) {
+        return <BodyShort>{formatertVerdi}</BodyShort>;
+    }
+
+    if (harFokus) {
         return (
             <StyledInputUtenSpinner
                 {...props}
@@ -60,6 +54,19 @@ const InputUtenSpinner: React.FC<PropsInputUtenSpinner> = ({ formatValue, ...pro
             />
         );
     }
+
+    return (
+        <StyledInputUtenSpinner
+            {...props}
+            type="text"
+            autoComplete="off"
+            value={formatertVerdi}
+            onWheel={(event) => event.currentTarget.blur()}
+            label={''}
+            onFocus={() => settHarFokus(true)}
+            hideLabel
+        />
+    );
 };
 
 export default InputUtenSpinner;

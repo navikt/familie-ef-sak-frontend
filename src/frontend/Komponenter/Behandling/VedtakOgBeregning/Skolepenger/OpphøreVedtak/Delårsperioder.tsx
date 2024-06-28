@@ -156,7 +156,7 @@ const Delårsperioder: React.FC<ValideringsPropsMedOppdatering<IPeriodeSkolepeng
                                         tilTallverdi(e.target.value)
                                     )
                                 }
-                                erLesevisning={erLesevisning}
+                                readOnly={erLesevisning}
                             />
                             {skalViseFjernKnapp && (
                                 <FjernKnapp

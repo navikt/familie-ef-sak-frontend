@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { FamilieInput } from '@navikt/familie-form-elements';
 import { useNavigate } from 'react-router-dom';
 import { idnr } from '@navikt/fnrvalidator';
-import { Button, Heading } from '@navikt/ds-react';
+import { Button, Heading, TextField } from '@navikt/ds-react';
 
 const SideLayout = styled.div`
     max-width: 50rem;
@@ -16,7 +15,7 @@ const Blokk = styled.div`
     max-width: 10rem;
 `;
 
-const StyledInput = styled(FamilieInput)`
+const StyledInput = styled(TextField)`
     width: max-content;
 `;
 
@@ -24,6 +23,7 @@ export const JournalføringAdminVelger: React.FC = () => {
     const [journalpostId, settJournalpostId] = useState<string>('');
     const [erGyligFnr, settErGyldigFnr] = useState<boolean>(false);
     const navigate = useNavigate();
+
     const gåVidere = () => {
         if (journalpostId) {
             navigate(`/admin/ny-behandling-for-ferdigstilt-journalpost/${journalpostId}`);

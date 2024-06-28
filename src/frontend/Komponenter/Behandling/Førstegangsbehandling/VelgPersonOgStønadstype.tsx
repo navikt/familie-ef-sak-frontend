@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Stønadstype, stønadstypeTilTekst } from '../../../App/typer/behandlingstema';
 import { useHentFagsak } from '../../../App/hooks/useHentFagsak';
-import { FamilieInput, FamilieSelect } from '@navikt/familie-form-elements';
+import { FamilieSelect } from '@navikt/familie-form-elements';
 import { fnr } from '@navikt/fnrvalidator';
 import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
-import { BodyLong, Button, Heading } from '@navikt/ds-react';
+import { BodyLong, Button, Heading, TextField } from '@navikt/ds-react';
 import { erAvTypeFeil, RessursStatus } from '../../../App/typer/ressurs';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -48,6 +48,14 @@ const VelgPersonOgStønadstype = () => {
         }
     };
 
+    const oppdaterFødselsnummer = (personIdent: string) => {
+        const feilmelding =
+            fnr(personIdent).status === 'invalid' ? 'Ugyldig fødselsnummer' : undefined;
+
+        settPersonIdent(personIdent);
+        settFeilmelding(feilmelding);
+    };
+
     useEffect(() => {
         if (fagsak.status === RessursStatus.SUKSESS) {
             navigate(`/opprett-forstegangsbehandling/${fagsak.data.id}`);
@@ -87,16 +95,11 @@ const VelgPersonOgStønadstype = () => {
                         </option>
                     ))}
                 </FamilieSelect>
-                <FamilieInput
-                    label={'Fødselsnummer'}
+                <TextField
+                    label="Fødselsnummer"
                     autoComplete="off"
-                    onChange={(e) => {
-                        const verdi = e.target.value;
-                        settPersonIdent(verdi);
-                        settFeilmelding(
-                            fnr(verdi).status === 'invalid' ? 'Ugyldig fødselsnummer' : undefined
-                        );
-                    }}
+                    value={personIdent}
+                    onChange={(e) => oppdaterFødselsnummer(e.target.value)}
                 />
                 <WrapperMedMargin>
                     <Button onClick={bekreftValg} type="button">
