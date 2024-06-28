@@ -13,13 +13,15 @@ import { Tag } from '@navikt/ds-react';
 import { utledNavnOgAlder } from '../utils';
 import { BarneInfoWrapper, VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
+import { IPersonalia } from '../vilkår';
 
 const AleneomsorgInfo: FC<{
     gjeldendeBarn: IBarnMedSamvær;
     skalViseSøknadsdata?: boolean;
     barnMedLøpendeStønad: Ressurs<IBarnMedLøpendeStønad>;
     stønadstype: Stønadstype;
-}> = ({ gjeldendeBarn, skalViseSøknadsdata, barnMedLøpendeStønad, stønadstype }) => {
+    personalia: IPersonalia;
+}> = ({ gjeldendeBarn, skalViseSøknadsdata, barnMedLøpendeStønad, stønadstype, personalia }) => {
     const { barnId, registergrunnlag, søknadsgrunnlag, barnepass } = gjeldendeBarn;
     const ikkeOppgittAnnenForelderBegrunnelse = søknadsgrunnlag.ikkeOppgittAnnenForelderBegrunnelse;
 
@@ -81,6 +83,8 @@ const AleneomsorgInfo: FC<{
                     registergrunnlag.harDeltBostedVedGrunnlagsdataopprettelse
                 }
                 barnFødselsnummer={registergrunnlag.fødselsnummer}
+                personalia={personalia}
+                gjeldendeBarn={gjeldendeBarn}
             />
             {skalViseSøknadsdata && søknadsgrunnlag.skalBoBorHosSøker && (
                 <Informasjonsrad

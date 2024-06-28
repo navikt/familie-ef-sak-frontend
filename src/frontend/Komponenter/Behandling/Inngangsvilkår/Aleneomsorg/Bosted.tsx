@@ -6,7 +6,9 @@ import styled from 'styled-components';
 import { Popover } from '@navikt/ds-react';
 import { InformationSquareIcon } from '@navikt/aksel-icons';
 import { popoverContentDeltBosted } from '../../../../Felles/Personopplysninger/BarnDeltBosted';
-import BostedMedReadMore from './ReadMoreMedAdresser';
+import BostedMedReadMore from './BostedMedReadMore';
+import { IPersonalia } from '../vilkår';
+import { IBarnMedSamvær } from './typer';
 
 interface Props {
     harSammeAdresseSøknad?: boolean;
@@ -15,6 +17,8 @@ interface Props {
     deltBostedPerioder: IDeltBostedPeriode[];
     harDeltBostedVedGrunnlagsdataopprettelse: boolean;
     barnFødselsnummer?: string;
+    personalia: IPersonalia;
+    gjeldendeBarn: IBarnMedSamvær;
 }
 
 const FlexBox = styled.div`
@@ -47,7 +51,8 @@ const Bosted: FC<Props> = ({
     erBarnetFødt,
     deltBostedPerioder,
     harDeltBostedVedGrunnlagsdataopprettelse,
-    barnFødselsnummer,
+    personalia,
+    gjeldendeBarn,
 }) => {
     const skalViseAdresser = !harDeltBostedVedGrunnlagsdataopprettelse && !harSammeAdresseRegister;
 
@@ -62,8 +67,11 @@ const Bosted: FC<Props> = ({
                         ikon={VilkårInfoIkon.REGISTER}
                         label="Bosted"
                         verdi={
-                            skalViseAdresser ? (
-                                <BostedMedReadMore barnIdent={barnFødselsnummer} />
+                            !skalViseAdresser ? (
+                                <BostedMedReadMore
+                                    personalia={personalia}
+                                    gjeldendeBarn={gjeldendeBarn}
+                                />
                             ) : (
                                 utledBostedTekst(
                                     harDeltBostedVedGrunnlagsdataopprettelse,
