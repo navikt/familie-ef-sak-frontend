@@ -74,6 +74,7 @@ export const Aleneomsorg: React.FC<VilkårPropsMedStønadstype> = ({
                                         skalViseSøknadsdata={skalViseSøknadsdata}
                                         barnMedLøpendeStønad={barnMedLøpendeStønad}
                                         stønadstype={stønadstype}
+                                        personalia={grunnlag.personalia}
                                     />
                                     {erSisteBarn && skalViseSøknadsdata && (
                                         <>

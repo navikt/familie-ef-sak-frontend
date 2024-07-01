@@ -95,6 +95,7 @@ export interface IBarnMedSamværRegistergrunnlag {
     forelder?: IAnnenForelder;
     dødsdato?: string;
     fødselsdato?: string;
+    adresse?: string;
 }
 
 export enum EHarSamværMedBarn {
