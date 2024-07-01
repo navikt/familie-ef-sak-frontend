@@ -1707,14 +1707,6 @@
     prom-client "^15.1.2"
     redis "^4.6.14"
 
-"@navikt/familie-dokumentliste@^12.0.0":
-  version "12.0.0"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-dokumentliste/12.0.0/48a391b8365dd40b6abaee4124f7588e4bff0ca1#48a391b8365dd40b6abaee4124f7588e4bff0ca1"
-  integrity sha512-OMan+enwh+vbyUJ6hPXueuRpCAAHsd9SNsiEOSyLAL8i+HAUuAcR07elZ05wg9gjq4Ehj7MnH+zydGTIg8530A==
-  dependencies:
-    "@navikt/familie-ikoner" "^9.0.1"
-    "@navikt/familie-typer" "^8.0.2"
-
 "@navikt/familie-endringslogg@^12.0.2":
   version "12.0.2"
   resolved "https://npm.pkg.github.com/download/@navikt/familie-endringslogg/12.0.2/4036173993d27265340ae9febbc0a4205b992b73#4036173993d27265340ae9febbc0a4205b992b73"
