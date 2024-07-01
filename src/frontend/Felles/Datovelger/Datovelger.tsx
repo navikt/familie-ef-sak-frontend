@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
-import { useDatepicker, DatePicker } from '@navikt/ds-react';
-import { FamilieLesefelt } from '@navikt/familie-form-elements';
+import { useDatepicker, DatePicker, BodyShort, Label } from '@navikt/ds-react';
 import { nullableTilDato, tilLocaleDateString } from '../../App/utils/dato';
 import { formaterNullableIsoDato } from '../../App/utils/formatter';
 
@@ -22,14 +21,15 @@ export const Datovelger: FC<{
         fromDate: minDato,
     });
 
+    const formatertDato = formaterNullableIsoDato(verdi);
+
     return (
         <div>
             {erLesevisning ? (
-                <FamilieLesefelt
-                    size={'small'}
-                    label={label}
-                    verdi={formaterNullableIsoDato(verdi)}
-                />
+                <div>
+                    <Label size={'small'}>{label}</Label>
+                    <BodyShort size={'small'}>{formatertDato}</BodyShort>
+                </div>
             ) : (
                 <DatePicker id={id} {...datepickerProps}>
                     <DatePicker.Input

@@ -1,8 +1,7 @@
 import React, { FC } from 'react';
 import { IOppgave } from '../../Oppgavebenk/typer/oppgave';
-import { useDatepicker, DatePicker } from '@navikt/ds-react';
+import { useDatepicker, DatePicker, Label, BodyShort } from '@navikt/ds-react';
 import { nullableTilDato, tilLocaleDateString } from '../../../App/utils/dato';
-import { FamilieLesefelt } from '@navikt/familie-form-elements';
 import { formaterNullableIsoDato } from '../../../App/utils/formatter';
 
 export const FristVelger: FC<{
@@ -15,14 +14,15 @@ export const FristVelger: FC<{
         onDateChange: (dato) => settFrist(dato && tilLocaleDateString(dato)),
     });
 
+    const formatertFristDato = formaterNullableIsoDato(oppgave.fristFerdigstillelse);
+
     return (
         <div>
             {erLesevisning ? (
-                <FamilieLesefelt
-                    size={'small'}
-                    label={'Frist'}
-                    verdi={formaterNullableIsoDato(oppgave.fristFerdigstillelse)}
-                />
+                <div>
+                    <Label size="small">Frist</Label>
+                    <BodyShort size="small">{formatertFristDato}</BodyShort>
+                </div>
             ) : (
                 <DatePicker {...datepickerProps}>
                     <DatePicker.Input label={'Frist'} {...inputProps} size={'small'} />

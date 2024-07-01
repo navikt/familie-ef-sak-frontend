@@ -6,8 +6,7 @@ import {
 import React, { useState } from 'react';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { BrukerMedBlyantIkon } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
-import { FamilieLesefelt } from '@navikt/familie-form-elements';
-import { Alert, Button, Detail, Heading } from '@navikt/ds-react';
+import { Alert, BodyShort, Button, Detail, Heading, Label } from '@navikt/ds-react';
 import {
     formaterIsoDatoTidMedSekunder,
     formaterNullableIsoDato,
@@ -33,7 +32,7 @@ interface Props {
     oppdaterRevurderingsinformasjon: (revurderingsinformasjon: Revurderingsinformasjon) => void;
 }
 
-const BreakWordFamilieLesefelt = styled(FamilieLesefelt)`
+const BreakWordDiv = styled.div`
     white-space: pre-wrap;
     word-wrap: break-word;
 `;
@@ -55,6 +54,16 @@ export const VisÅrsakRevurdering: React.FC<Props> = ({
     const [laster, settLaster] = useState(false);
 
     const årsakRevurdering = revurderingsinformasjon.årsakRevurdering;
+
+    const formatertKravMottattDato =
+        formaterNullableIsoDato(revurderingsinformasjon.kravMottatt) || 'Ingen data';
+
+    const opplysningskilde =
+        årsakRevurdering?.opplysningskilde &&
+        opplysningskildeTilTekst[årsakRevurdering.opplysningskilde];
+
+    const årsakTilRevurdering =
+        årsakRevurdering?.årsak && årsakRevuderingTilTekst[årsakRevurdering.årsak];
 
     const slettÅrsakRevurdering = () => {
         if (laster) {
@@ -116,33 +125,25 @@ export const VisÅrsakRevurdering: React.FC<Props> = ({
                         {formaterIsoDatoTidMedSekunder(revurderingsinformasjon.endretTid)}
                     </Detail>
                 )}
-                <FamilieLesefelt
-                    label={'Krav mottatt'}
-                    verdi={
-                        formaterNullableIsoDato(revurderingsinformasjon.kravMottatt) || 'Ingen data'
-                    }
-                />
+                <div>
+                    <Label>Krav mottatt</Label>
+                    <BodyShort>{formatertKravMottattDato}</BodyShort>
+                </div>
                 {årsakRevurdering && (
                     <>
-                        <FamilieLesefelt
-                            label={'Hvordan har vi fått opplysningene?'}
-                            verdi={
-                                årsakRevurdering.opplysningskilde &&
-                                opplysningskildeTilTekst[årsakRevurdering.opplysningskilde]
-                            }
-                        />
-                        <FamilieLesefelt
-                            label={'Årsak til revurdering'}
-                            verdi={
-                                årsakRevurdering.årsak &&
-                                årsakRevuderingTilTekst[årsakRevurdering.årsak]
-                            }
-                        />
+                        <div>
+                            <Label>Hvordan har vi fått opplysningene?</Label>
+                            <BodyShort>{opplysningskilde}</BodyShort>
+                        </div>
+                        <div>
+                            <Label>Årsak til revurdering</Label>
+                            <BodyShort>{årsakTilRevurdering}</BodyShort>
+                        </div>
                         {årsakRevurdering.beskrivelse && (
-                            <BreakWordFamilieLesefelt
-                                label={'Beskrivelse av årsak'}
-                                verdi={årsakRevurdering.beskrivelse}
-                            />
+                            <BreakWordDiv>
+                                <Label>Beskrivelse av årsak</Label>
+                                <BodyShort>{årsakRevurdering.beskrivelse}</BodyShort>
+                            </BreakWordDiv>
                         )}
                     </>
                 )}
