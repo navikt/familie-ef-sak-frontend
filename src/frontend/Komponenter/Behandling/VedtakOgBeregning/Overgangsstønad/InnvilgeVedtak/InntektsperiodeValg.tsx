@@ -205,7 +205,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                     }}
                     label="Begrunnelse for inntektsfastsettelse"
                     maxLength={0}
-                    erLesevisning={!behandlingErRedigerbar}
+                    readOnly={!behandlingErRedigerbar}
                     feilmelding={errorState?.inntektBegrunnelse}
                 />
             )}

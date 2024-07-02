@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { EnsligTextArea } from '../../../Felles/Input/TekstInput/EnsligTextArea';
 import styled from 'styled-components';
 import { ITilbakekrevingsvalg, TilbakekrevingsvalgTilTekst } from './Tilbakekreving';
 import { useApp } from '../../../App/context/AppContext';
@@ -10,6 +9,7 @@ import { BodyLong, Button, Heading, Radio, RadioGroup, VStack } from '@navikt/ds
 import { FileTextIcon } from '@navikt/aksel-icons';
 import { ABlue50, ARed500 } from '@navikt/ds-tokens/dist/tokens';
 import { HeaderBegrunnelse } from './HeaderBegrunnelse';
+import { EnsligTextArea } from '../../../Felles/Input/TekstInput/EnsligTextArea';
 
 const Container = styled(VStack)`
     margin-top: 1.5rem;
@@ -112,7 +112,7 @@ export const TilbakekrevingSkjema: React.FC<Props> = ({
             <Container gap="8">
                 <EnsligTextArea
                     label={<HeaderBegrunnelse />}
-                    erLesevisning={false}
+                    readOnly={false}
                     value={begrunnelse}
                     maxLength={0}
                     onChange={(e) => {
@@ -147,7 +147,7 @@ export const TilbakekrevingSkjema: React.FC<Props> = ({
                         <VarselValg>
                             <EnsligTextArea
                                 label={'Fritekst i varselet'}
-                                erLesevisning={false}
+                                readOnly={false}
                                 value={varseltekst}
                                 maxLength={0}
                                 onChange={(e) => {

@@ -15,7 +15,6 @@ import InputMedTusenSkille from '../../../../../Felles/Visningskomponenter/Input
 import { harTallverdi, tilHeltall, tilTallverdi } from '../../../../../App/utils/utils';
 import LeggTilKnapp from '../../../../../Felles/Knapper/LeggTilKnapp';
 import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
-import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
 import { Heading, Tooltip } from '@navikt/ds-react';
 import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 import { SmallTextLabel } from '../../../../../Felles/Visningskomponenter/Tekster';
@@ -24,6 +23,7 @@ import JaNeiRadioGruppe from '../../Felles/JaNeiRadioGruppe';
 import { HorizontalScroll } from '../../Felles/HorizontalScroll';
 import { useBehandling } from '../../../../../App/context/BehandlingContext';
 import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
+import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
 
 const Container = styled.div`
     padding: 1rem;
@@ -49,7 +49,7 @@ const Input = styled(InputMedTusenSkille)`
     text-align: right;
 `;
 
-const TekstFelt = styled(EnsligTextArea)`
+const TextArea = styled(EnsligTextArea)`
     margin-top: 1rem;
 `;
 
@@ -260,8 +260,8 @@ const TilleggsstønadValg: React.FC<Props> = ({
                 </HorizontalScroll>
             )}
             {søktTilleggsstønad && (
-                <TekstFelt
-                    erLesevisning={erLesevisning}
+                <TextArea
+                    readOnly={erLesevisning}
                     feilmelding={valideringsfeil.tilleggsstønadBegrunnelse}
                     label="Begrunnelse"
                     maxLength={0}

@@ -23,7 +23,6 @@ import {
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
 import useFormState, { FormState } from '../../../App/hooks/felles/useFormState';
 import { FieldState } from '../../../App/hooks/felles/useFieldState';
-import { EnsligTextArea } from '../../../Felles/Input/TekstInput/EnsligTextArea';
 import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import { SANKSJONERE_VEDTAK, validerSanksjonereVedtakForm } from './utils';
 import { useHentVedtak } from '../../../App/hooks/useHentVedtak';
@@ -42,6 +41,7 @@ import {
     antallDagerIgjenAvNåværendeMåned,
     nåværendeÅrOgMånedFormatert,
 } from '../../../App/utils/formatter';
+import { EnsligTextArea } from '../../../Felles/Input/TekstInput/EnsligTextArea';
 
 export type SanksjonereVedtakForm = ISanksjonereVedtakDto;
 
@@ -252,7 +252,7 @@ const SanksjonsvedtakVisning: FC<{
                                     settIkkePersistertKomponent(SANKSJONERE_VEDTAK);
                                     internBegrunnelse.onChange(event);
                                 }}
-                                erLesevisning={!behandlingErRedigerbar}
+                                readOnly={!behandlingErRedigerbar}
                                 feilmelding={formState.errors.internBegrunnelse}
                             />
                         </Seksjon>

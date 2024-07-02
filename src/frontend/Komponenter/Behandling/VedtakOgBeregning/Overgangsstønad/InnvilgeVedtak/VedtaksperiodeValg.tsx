@@ -26,9 +26,9 @@ import {
 import { HorizontalScroll } from '../../Felles/HorizontalScroll';
 import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
 import { IngenBegrunnelseOppgitt } from './IngenBegrunnelseOppgitt';
-import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
 import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
 import { tomVedtaksperiodeRad } from '../Felles/utils';
+import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
 
 const Container = styled.div`
     padding: 1rem;
@@ -163,7 +163,7 @@ const VedtaksperiodeValg: React.FC<Props> = ({
                     }}
                     label="Begrunnelse for vedtaksperiode"
                     maxLength={0}
-                    erLesevisning={!behandlingErRedigerbar}
+                    readOnly={!behandlingErRedigerbar}
                     feilmelding={errorState?.periodeBegrunnelse}
                 />
             )}

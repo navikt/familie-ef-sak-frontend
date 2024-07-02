@@ -5,7 +5,6 @@ import { useApp } from '../../../../../App/context/AppContext';
 import { EBehandlingResultat, IOpphørtVedtak, IVedtakType } from '../../../../../App/typer/vedtak';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../../../App/typer/ressurs';
 import styled from 'styled-components';
-import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
 import { VEDTAK_OG_BEREGNING } from '../konstanter';
 import { AlertError } from '../../../../../Felles/Visningskomponenter/Alerts';
 import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
@@ -13,6 +12,7 @@ import { useRedirectEtterLagring } from '../../../../../App/hooks/felles/useRedi
 import { v4 as uuidv4 } from 'uuid';
 import HovedKnapp from '../../../../../Felles/Knapper/HovedKnapp';
 import { ModalState } from '../../../Modal/NyEierModal';
+import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
 
 const Form = styled.form`
     padding: 1rem;
@@ -97,7 +97,7 @@ export const OpphøreVedtak: React.FC<{
             <EnsligTextArea
                 label={'Begrunnelse for opphør'}
                 maxLength={0}
-                erLesevisning={!behandlingErRedigerbar}
+                readOnly={!behandlingErRedigerbar}
                 value={opphørtBegrunnelse}
                 onChange={(begrunnelse) => {
                     settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
