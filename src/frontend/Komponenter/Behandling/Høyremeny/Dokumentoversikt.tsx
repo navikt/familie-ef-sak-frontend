@@ -1,22 +1,14 @@
 import * as React from 'react';
 import { useMemo } from 'react';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
-import Dokumentliste, { DokumentProps } from '@navikt/familie-dokumentliste';
 import { AxiosRequestConfig } from 'axios';
 import { useDataHenter } from '../../../App/hooks/felles/useDataHenter';
 import { useParams } from 'react-router-dom';
 import { IBehandlingParams } from '../../../App/typer/routing';
-import styled from 'styled-components';
 import { formaterNullableIsoDatoTid } from '../../../App/utils/formatter';
 import { compareDesc } from 'date-fns';
 import { åpneFilIEgenTab } from '../../../App/utils/utils';
-import { Heading } from '@navikt/ds-react';
-import { AGray800 } from '@navikt/ds-tokens/dist/tokens';
-
-const Tittel = styled.div`
-    padding: 0.5rem 1rem;
-    color: ${AGray800};
-`;
+import Dokumentliste, { DokumentProps } from './Dokumentliste';
 
 type AlleDokument = {
     dokumenterKnyttetTilBehandlingen: DokumentProps[];
@@ -67,17 +59,10 @@ const Dokumentoversikt: React.FC = () => {
                 {({ dokumentResponse }) => {
                     const sortertDokumentliste = sorterDokumentlisten(dokumentResponse);
                     return (
-                        <>
-                            <Tittel>
-                                <Heading size={'small'} level={'5'}>
-                                    Dokumentoversikt
-                                </Heading>
-                            </Tittel>
-                            <Dokumentliste
-                                dokumenter={sortertDokumentliste}
-                                onClick={lastNedDokument}
-                            />
-                        </>
+                        <Dokumentliste
+                            dokumenter={sortertDokumentliste}
+                            onClick={lastNedDokument}
+                        />
                     );
                 }}
             </DataViewer>
