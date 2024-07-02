@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import { Heading } from '@navikt/ds-react';
-import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
 import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import styled from 'styled-components';
 import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
@@ -9,6 +8,7 @@ import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
 import { useApp } from '../../../../../App/context/AppContext';
 import { InnvilgeVedtakForm } from './typer';
 import { FormErrors } from '../../../../../App/hooks/felles/useFormState';
+import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
 
 interface Props {
     begrunnelseState: FieldState;
@@ -30,15 +30,15 @@ export const BegrunnelsesFelt: FC<Props> = ({ begrunnelseState, errorState }) =>
                 Utgifter til skolepenger
             </Heading>
             <EnsligTextArea
-                erLesevisning={!behandlingErRedigerbar}
+                label={'Begrunnelse'}
+                maxLength={0}
+                feilmelding={errorState.begrunnelse}
+                readOnly={!behandlingErRedigerbar}
                 value={begrunnelseState.value}
                 onChange={(event) => {
                     settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
                     begrunnelseState.onChange(event);
                 }}
-                label={'Begrunnelse'}
-                maxLength={0}
-                feilmelding={errorState.begrunnelse}
             />
         </Container>
     );

@@ -31,8 +31,8 @@ import {
 import { HorizontalScroll } from '../../Felles/HorizontalScroll';
 import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
 import { IngenBegrunnelseOppgitt } from '../../Overgangsstønad/InnvilgeVedtak/IngenBegrunnelseOppgitt';
-import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
 import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
+import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
 
 const Container = styled.div`
     padding: 1rem;
@@ -368,7 +368,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                 <IngenBegrunnelseOppgitt />
             ) : (
                 <TextArea
-                    erLesevisning={!behandlingErRedigerbar}
+                    readOnly={!behandlingErRedigerbar}
                     value={begrunnelseState.value}
                     onChange={(event) => {
                         settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
