@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { formaterIsoDatoTidKort } from '../../../App/utils/formatter';
 import { Hendelse, HendelseIkon, hendelseTilHistorikkTekst } from './Historikk';
-import { HistorikkElementProps, LinjeProps, StyledHistorikkElementProps } from './typer';
+import { HistorikkElementProps, LinjeProps } from './typer';
 import { useApp } from '../../../App/context/AppContext';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
 import { base64toBlob, winUrl, åpnePdfIEgenTab } from '../../../App/utils/utils';
@@ -29,12 +29,10 @@ const Linje = styled.div<LinjeProps>`
 
 const Innhold = styled.div``;
 
-const StyledHistorikkElement = styled.li<StyledHistorikkElementProps>`
+const StyledHistorikkElement = styled.li`
     display: flex;
-
     list-style: none;
-
-    padding: ${(props) => (props.$første ? '0.75rem 2rem 0' : '0 2rem')};
+    padding: 0;
 
     .navds-body-short,
     .navds-label,
@@ -45,7 +43,6 @@ const StyledHistorikkElement = styled.li<StyledHistorikkElementProps>`
 
 const HistorikkElement: React.FC<HistorikkElementProps> = ({
     behandlingshistorikk,
-    første,
     siste,
     behandlingId,
     behandling,
@@ -90,7 +87,7 @@ const HistorikkElement: React.FC<HistorikkElementProps> = ({
         vedtakIverksatt;
 
     return (
-        <StyledHistorikkElement $første={første}>
+        <StyledHistorikkElement>
             <IkonMedStipletLinje>
                 <HendelseIkon behandlingshistorikk={behandlingshistorikk} />
                 <Linje $siste={siste} $størreMellomrom={harMetadata} />

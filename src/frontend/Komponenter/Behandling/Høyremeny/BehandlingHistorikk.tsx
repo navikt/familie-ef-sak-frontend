@@ -12,8 +12,8 @@ interface Props {
 }
 
 const HistorikkListe = styled.ul`
-    padding: 0 0.5rem 2rem 0.5rem;
-    margin: 0;
+    padding: 0;
+    margin: 0.5rem 1rem;
 `;
 
 const BehandlingHistorikk: React.FC<Props> = ({ behandling, behandlingId }) => {
@@ -28,12 +28,10 @@ const BehandlingHistorikk: React.FC<Props> = ({ behandling, behandlingId }) => {
                 return (
                     <HistorikkListe>
                         {behandlingHistorikkResponse.map((behandlingshistorikk, idx) => {
-                            const første = idx === 0;
                             const siste = idx === behandlingHistorikkResponse.length - 1;
 
                             return (
                                 <HistorikkElement
-                                    første={første}
                                     siste={siste}
                                     behandlingshistorikk={behandlingshistorikk}
                                     key={idx}

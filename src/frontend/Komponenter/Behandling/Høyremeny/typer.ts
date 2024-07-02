@@ -20,14 +20,9 @@ export interface LinjeProps {
 }
 
 export interface HistorikkElementProps {
-    første: boolean;
     siste: boolean;
     behandlingshistorikk: Behandlingshistorikk;
     behandlingId: string;
     behandling: Behandling;
     skalViseBegrunnelse: boolean;
-}
-
-export interface StyledHistorikkElementProps {
-    $første: boolean;
 }
