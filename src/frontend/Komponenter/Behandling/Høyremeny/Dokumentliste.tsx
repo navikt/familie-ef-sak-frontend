@@ -14,18 +14,16 @@ const StyledDokumentListe = styled.ul`
 `;
 
 const StyledLi = styled.li`
-    margin: 1rem 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(2rem, max-content));
+    gap: 0.5rem;
+    margin: 0.5rem 0;
 `;
 
 const StyledButton = styled(Button)`
     margin: 0;
     padding: 0;
     text-align: left;
-`;
-
-const Container = styled.div`
-    display: flex;
-    gap: 0.5rem;
 `;
 
 interface JournalpostTagProps {
@@ -37,19 +35,19 @@ const JournalpostTag: React.FC<JournalpostTagProps> = ({ journalposttype }) => {
         case 'I':
             return (
                 <Tag variant="info-moderate" size="small">
-                    Inn
+                    I
                 </Tag>
             );
         case 'N':
             return (
                 <Tag variant="neutral-moderate" size="small">
-                    Notat
+                    N
                 </Tag>
             );
         case 'U':
             return (
                 <Tag variant="alt1-moderate" size="small">
-                    Ut
+                    U
                 </Tag>
             );
     }
@@ -79,14 +77,16 @@ export interface DokumentlisteProps {
 export const DokumentElement: React.FC<DokumentElementProps> = ({ dokument, onClick }) => {
     return (
         <StyledLi>
-            <StyledButton variant="tertiary" size="small" onClick={() => onClick(dokument)}>
-                {dokument.tittel}
-            </StyledButton>
-            <LogiskeVedlegg logiskeVedlegg={dokument.logiskeVedlegg} />
-            <Container>
+            <div>
                 <JournalpostTag journalposttype={dokument.journalposttype} />
+            </div>
+            <div>
+                <StyledButton variant="tertiary" size="small" onClick={() => onClick(dokument)}>
+                    {dokument.tittel}
+                </StyledButton>
                 <BodyShort size="small">{dokument.dato}</BodyShort>
-            </Container>
+                <LogiskeVedlegg logiskeVedlegg={dokument.logiskeVedlegg} />
+            </div>
         </StyledLi>
     );
 };
