@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { useApp } from '../../../App/context/AppContext';
 import { IOppgave } from '../../Oppgavebenk/typer/oppgave';
-import { FamilieSelect } from '@navikt/familie-form-elements';
+import { FamilieSelect } from '../../../Felles/Input/FamilieSelect';
 
 export const SaksbehandlerVelger: FC<{
     oppgave: IOppgave;

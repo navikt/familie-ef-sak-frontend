@@ -1,5 +1,5 @@
 import React from 'react';
-import { FamilieSelect } from '@navikt/familie-form-elements';
+import { FamilieSelect } from '../FamilieSelect';
 
 export type FamilieSelectSize = 'small' | 'medium';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { range } from '../../../App/utils/utils';
-import { FamilieSelect } from '@navikt/familie-form-elements';
+import { FamilieSelect } from '../FamilieSelect';
 
 interface ÅrProps {
     år: number | undefined;

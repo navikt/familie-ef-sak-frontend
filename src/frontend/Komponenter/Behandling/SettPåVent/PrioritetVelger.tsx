@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Prioritet, prioritetTilTekst } from '../../Oppgavebenk/typer/oppgavetema';
-import { FamilieSelect } from '@navikt/familie-form-elements';
+import { FamilieSelect } from '../../../Felles/Input/FamilieSelect';
 
 export const PrioritetVelger: FC<{
     prioritet: Prioritet | undefined;
