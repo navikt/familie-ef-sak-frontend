@@ -4,7 +4,7 @@ import { byggTomRessurs, Ressurs } from '../../../App/typer/ressurs';
 import { useApp } from '../../../App/context/AppContext';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { sorterMapperPåNavn } from '../../Oppgavebenk/utils';
-import { FamilieSelect } from '@navikt/familie-form-elements';
+import { FamilieSelect } from '../../../Felles/Input/FamilieSelect';
 
 export const MappeVelger: FC<{
     oppgaveEnhet: string | undefined;
