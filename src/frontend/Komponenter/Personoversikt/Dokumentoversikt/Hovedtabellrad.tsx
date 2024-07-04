@@ -13,6 +13,7 @@ import { skalViseLenke } from '../utils';
 import { PadlockLockedIcon } from '@navikt/aksel-icons';
 import { tittelMedUrlGodkjenteTegn } from '../../../App/utils/utils';
 import { Table } from '@navikt/ds-react';
+import { JournalpostTag } from '../../Behandling/Høyremeny/Dokumentliste';
 
 const HovedLenke = styled.a`
     &:visited {
@@ -32,7 +33,9 @@ export const HovedTabellrad: React.FC<{ dokument: Dokumentinfo; erKlikketId: str
     return (
         <Table.Row>
             <Table.DataCell>{formaterNullableIsoDatoTid(dokument.dato)}</Table.DataCell>
-            <Table.DataCell>{dokument.journalposttype}</Table.DataCell>
+            <Table.DataCell>
+                {<JournalpostTag journalposttype={dokument.journalposttype} />}
+            </Table.DataCell>
             <Table.DataCell>{arkivtemaerTilTekst[dokument.tema as Arkivtema]}</Table.DataCell>
 
             <Table.DataCell>{utledAvsenderMottakerDetaljer(dokument)}</Table.DataCell>

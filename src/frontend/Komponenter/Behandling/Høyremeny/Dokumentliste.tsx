@@ -30,7 +30,7 @@ interface JournalpostTagProps {
     journalposttype: Journalposttype;
 }
 
-const JournalpostTag: React.FC<JournalpostTagProps> = ({ journalposttype }) => {
+export const JournalpostTag: React.FC<JournalpostTagProps> = ({ journalposttype }) => {
     switch (journalposttype) {
         case 'I':
             return (
