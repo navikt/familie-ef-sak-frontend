@@ -12,10 +12,11 @@ import {
 import { ISøkPerson } from '../../App/typer/personsøk';
 import { useApp } from '../../App/context/AppContext';
 import { kjønnType } from '@navikt/familie-typer';
-import { KvinneIkon, MannIkon } from '@navikt/familie-ikoner';
 import { IPersonIdent } from '../../App/typer/felles';
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
+import { MannIkon } from '../Ikoner/MannIkon';
+import { KvinneIkon } from '../Ikoner/KvinneIkon';
 
 const tilSøkeresultatListe = (resultat: ISøkPerson): ISøkeresultat[] => {
     return resultat.fagsakPersonId
