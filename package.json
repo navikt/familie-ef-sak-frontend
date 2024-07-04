@@ -38,7 +38,6 @@
     "@navikt/familie-endringslogg": "^12.0.2",
     "@navikt/familie-form-elements": "^15.0.0",
     "@navikt/familie-header": "^14.0.3",
-    "@navikt/familie-ikoner": "^9.0.1",
     "@navikt/familie-logging": "^7.0.0",
     "@navikt/familie-typer": "^8.0.1",
     "@navikt/familie-visittkort": "^15.0.1",
