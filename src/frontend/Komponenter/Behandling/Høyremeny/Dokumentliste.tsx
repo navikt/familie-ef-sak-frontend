@@ -26,6 +26,10 @@ const StyledButton = styled(Button)`
     text-align: left;
 `;
 
+const StyledTag = styled(Tag)`
+    width: 1.5rem;
+`;
+
 interface JournalpostTagProps {
     journalposttype: Journalposttype;
 }
@@ -34,21 +38,21 @@ export const JournalpostTag: React.FC<JournalpostTagProps> = ({ journalposttype 
     switch (journalposttype) {
         case 'I':
             return (
-                <Tag variant="info-moderate" size="small">
+                <StyledTag variant="info-moderate" size="small">
                     I
-                </Tag>
+                </StyledTag>
             );
         case 'N':
             return (
-                <Tag variant="neutral-moderate" size="small">
+                <StyledTag variant="neutral-moderate" size="small">
                     N
-                </Tag>
+                </StyledTag>
             );
         case 'U':
             return (
-                <Tag variant="alt1-moderate" size="small">
+                <StyledTag variant="alt1-moderate" size="small">
                     U
-                </Tag>
+                </StyledTag>
             );
     }
 };
