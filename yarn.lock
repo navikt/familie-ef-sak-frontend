@@ -1747,7 +1747,7 @@
   dependencies:
     winston "^3.13.0"
 
-"@navikt/familie-typer@^8.0.1", "@navikt/familie-typer@^8.0.2":
+"@navikt/familie-typer@^8.0.2":
   version "8.0.2"
   resolved "https://npm.pkg.github.com/download/@navikt/familie-typer/8.0.2/21bcc780c35b6a8699d1c52b54e61d83580736f7#21bcc780c35b6a8699d1c52b54e61d83580736f7"
   integrity sha512-pKSpCzryJE6eiN/Ssox1oLLKPW5ezsT+/gTHbhgxOtM/frFSZLguSjwhgiDp2kovckJ84nxhnQurK6igw8GEHw==

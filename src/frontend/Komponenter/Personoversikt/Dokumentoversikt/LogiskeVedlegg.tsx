@@ -1,12 +1,12 @@
 import React from 'react';
-import { ILogiskVedlegg } from '../../../App/typer/dokumentliste';
+import { LogiskVedlegg } from '../../../App/typer/dokumentliste';
 import styled from 'styled-components';
 
 const DivMedVenstreMargin = styled.div`
     margin-left: 2rem;
 `;
 
-export const LogiskeVedlegg: React.FC<{ logiskeVedlegg: ILogiskVedlegg[] }> = ({
+export const LogiskeVedlegg: React.FC<{ logiskeVedlegg: LogiskVedlegg[] }> = ({
     logiskeVedlegg,
 }) => {
     return (

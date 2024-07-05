@@ -6,7 +6,6 @@ import styled from 'styled-components';
 import { Dokumentinfo } from '../../App/typer/dokumentliste';
 import { groupBy } from '../../App/utils/utils';
 import { IFagsakPerson } from '../../App/typer/fagsak';
-import { Journalstatus } from '@navikt/familie-typer';
 import {
     gyldigeJournalstatuserTilTekst,
     journalposttypeTilTekst,
@@ -55,10 +54,12 @@ const Container = styled.div`
         .columnHeader {
             font-weight: bold;
         }
+
         th,
         td {
             padding: 0.35rem;
         }
+
         table-layout: fixed;
     }
 `;
@@ -94,8 +95,9 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
     };
 
     const dokumentGruppeSkalVises = (dokumenter: Dokumentinfo[]): boolean => {
-        const harFeilregistrerteEllerAvbrutte = dokumenter.some((dokument) =>
-            [Journalstatus.FEILREGISTRERT, Journalstatus.AVBRUTT].includes(dokument.journalstatus)
+        const harFeilregistrerteEllerAvbrutte = dokumenter.some(
+            (dokument) =>
+                dokument.journalstatus === 'FEILREGISTRERT' || dokument.journalstatus === 'AVBRUTT'
         );
 
         return visFeilregistrerteOgAvbruttValgt
