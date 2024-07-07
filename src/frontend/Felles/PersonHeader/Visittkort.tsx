@@ -43,7 +43,7 @@ const Visittkort: React.FC<Props> = ({
             <VisittKort
                 alder={20}
                 ident={ident}
-                kjønn={kjønn} // TODO: How to fix?
+                kjønn={kjønn}
                 navn={
                     <ResponsivLenke
                         role={'link'}
