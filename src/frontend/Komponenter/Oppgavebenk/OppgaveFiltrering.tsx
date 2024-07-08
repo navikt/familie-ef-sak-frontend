@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { oppgaveTypeTilTekst } from './typer/oppgavetema';
+import { oppgaveTypeTilTekst } from './typer/oppgavetype';
 import { behandlingstemaStønadstypeTilTekst } from '../../App/typer/behandlingstema';
 import { useApp } from '../../App/context/AppContext';
 import CustomSelect from './CustomSelect';

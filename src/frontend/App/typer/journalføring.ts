@@ -8,7 +8,7 @@ export const journalposttypeTilTekst: Record<Journalposttype, string> = {
     U: 'Utgående',
 };
 
-type Journalstatus =
+export type Journalstatus =
     | 'MOTTATT'
     | 'JOURNALFOERT'
     | 'FERDIGSTILT'

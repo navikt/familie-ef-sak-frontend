@@ -1,7 +1,5 @@
-// Interface
-
-import { kjønnType } from '@navikt/familie-typer';
 import { Stønadstype } from './behandlingstema';
+import { Kjønn } from './personopplysninger';
 
 export interface ISøkPerson {
     fagsaker: {
@@ -13,5 +11,5 @@ export interface ISøkPerson {
     fagsakPersonId?: string;
     visningsnavn: string;
     personIdent: string;
-    kjønn: kjønnType;
+    kjønn: Kjønn;
 }

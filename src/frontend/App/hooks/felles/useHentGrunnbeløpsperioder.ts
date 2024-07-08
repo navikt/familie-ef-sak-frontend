@@ -1,7 +1,6 @@
-import { Ressurs } from '@navikt/familie-typer';
 import { useCallback, useState } from 'react';
 import { useApp } from '../../context/AppContext';
-import { RessursStatus } from '../../typer/ressurs';
+import { Ressurs, RessursStatus } from '../../typer/ressurs';
 
 type GrunnbeløpData = {
     periode: { fom: string; tom: string };

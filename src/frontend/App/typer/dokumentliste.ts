@@ -1,5 +1,4 @@
-import { Journalposttype, Journalstatus } from '@navikt/familie-typer';
-import { IJournalpostAvsenderMottaker } from './journalføring';
+import { IJournalpostAvsenderMottaker, Journalposttype, Journalstatus } from './journalføring';
 import { Utsendingsinfo } from './utsendingsinfo';
 
 export interface Dokumentinfo {
@@ -12,11 +11,11 @@ export interface Dokumentinfo {
     journalposttype: Journalposttype;
     journalstatus: Journalstatus;
     harSaksbehandlerTilgang: boolean;
-    logiskeVedlegg: ILogiskVedlegg[];
+    logiskeVedlegg: LogiskVedlegg[];
     avsenderMottaker?: IJournalpostAvsenderMottaker;
     utsendingsinfo?: Utsendingsinfo;
 }
 
-export interface ILogiskVedlegg {
+export interface LogiskVedlegg {
     tittel: string;
 }

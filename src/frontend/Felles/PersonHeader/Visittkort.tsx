@@ -1,10 +1,10 @@
 import VisittKort from '@navikt/familie-visittkort';
 import React from 'react';
 import styled from 'styled-components';
-import { kjønnType } from '@navikt/familie-typer';
 import { Link } from '@navikt/ds-react';
 import { BodyShortSmall } from '../Visningskomponenter/Tekster';
 import { AFontWeightBold } from '@navikt/ds-tokens/dist/tokens';
+import { Kjønn } from '../../App/typer/personopplysninger';
 
 const ResponsivLenke = styled(Link)`
     text-overflow: ellipsis;
@@ -25,7 +25,7 @@ const Visningsnavn = styled(BodyShortSmall)`
 
 interface Props {
     fagsakPersonId: string;
-    kjønn: kjønnType;
+    kjønn: Kjønn;
     ident: string;
     visningsnavn: string;
     borderBottom?: boolean;

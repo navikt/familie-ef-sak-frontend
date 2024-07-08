@@ -1,6 +1,6 @@
-import { Oppgavetype, Prioritet } from './oppgavetema';
+import { Oppgavetype, Prioritet } from './oppgavetype';
 import { Behandlingstema } from '../../../App/typer/behandlingstema';
-import { IOppgaveIdent } from '@navikt/familie-typer/dist/oppgave';
+import { IOppgaveIdent } from './oppgaveIdent';
 
 export interface IOppgave {
     id: number;
