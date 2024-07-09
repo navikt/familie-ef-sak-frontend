@@ -1,11 +1,13 @@
 import styled from 'styled-components';
 import * as React from 'react';
-import { FormEvent, useState } from 'react';
+import { FormEvent, useState, useCallback, useEffect } from 'react';
 import { useApp } from '../../../App/context/AppContext';
 import { BorderBox } from './Totrinnskontroll';
 import { RessursStatus } from '@navikt/familie-typer';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
+import { AlertWarning } from '../../../Felles/Visningskomponenter/Alerts';
+
 import { EToast } from '../../../App/typer/toast';
 import {
     Button,
@@ -19,6 +21,7 @@ import {
 import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 import { ÅrsakUnderkjent, årsakUnderkjentTilTekst } from '../../../App/typer/totrinnskontroll';
 import { useNavigate } from 'react-router-dom';
+import { Ressurs } from '../../../App/typer/ressurs';
 
 const WrapperMedMargin = styled.div`
     display: block;
@@ -59,8 +62,11 @@ const FatterVedtak: React.FC<{
     const [begrunnelse, settBegrunnelse] = useState<string>();
     const [feil, settFeil] = useState<string>();
     const [laster, settLaster] = useState<boolean>(false);
+    const [simuleringStatusFeil, settSimuleringStatusFeil] = useState<boolean>(false);
+
     const { axiosRequest, settToast } = useApp();
     const { hentBehandlingshistorikk, hentTotrinnskontroll } = useBehandling();
+
     const navigate = useNavigate();
 
     const erUtfylt =
@@ -68,6 +74,20 @@ const FatterVedtak: React.FC<{
         (godkjent === Totrinnsresultat.UNDERKJENT &&
             (begrunnelse || '').length > 0 &&
             årsakerUnderkjent.length > 0);
+
+    const hentSimuleringStatus = useCallback(
+        (behandlingId: string) => {
+            axiosRequest<boolean, null>({
+                method: 'GET',
+                url: `/familie-ef-sak/api/simulering/resultatstatus/` + behandlingId,
+            }).then((res: Ressurs<boolean>) => settSimuleringStatusFeil(res.data));
+        },
+        [axiosRequest]
+    );
+
+    useEffect(() => {
+        hentSimuleringStatus(behandlingId);
+    }, [hentSimuleringStatus, behandlingId]);
 
     const fatteTotrinnsKontroll = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -106,8 +126,15 @@ const FatterVedtak: React.FC<{
         <form onSubmit={fatteTotrinnsKontroll}>
             <BorderBox>
                 <TittelContainer>
+                    {simuleringStatusFeil && (
+                        <AlertWarning>
+                            Det har skjedd endringer i simulering mot oppdrag etter at vedtaket ble
+                            sendt til godkjenning. Underkjenn derfor vedtaket slik at saksbehandler
+                            kan ta stilling til om endringene påvirker vedtaket.
+                        </AlertWarning>
+                    )}
                     <Heading size={'small'} level={'3'}>
-                        Totrinnskontroll
+                        Totrinnskondtroll
                     </Heading>
                 </TittelContainer>
                 <BodyShortSmall>
