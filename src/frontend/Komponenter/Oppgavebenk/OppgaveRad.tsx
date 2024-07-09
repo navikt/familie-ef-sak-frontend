@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { IOppgave } from './typer/oppgave';
-import { oppgaveTypeTilTekst, prioritetTilTekst } from './typer/oppgavetema';
+import { oppgaveTypeTilTekst, prioritetTilTekst } from './typer/oppgavetype';
 import {
     Behandlingstema,
     behandlingstemaTilTekst,

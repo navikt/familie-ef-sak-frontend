@@ -11,12 +11,12 @@ import {
 } from '../../App/typer/ressurs';
 import { ISøkPerson } from '../../App/typer/personsøk';
 import { useApp } from '../../App/context/AppContext';
-import { kjønnType } from '@navikt/familie-typer';
 import { IPersonIdent } from '../../App/typer/felles';
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom';
 import { MannIkon } from '../Ikoner/MannIkon';
 import { KvinneIkon } from '../Ikoner/KvinneIkon';
+import { Kjønn } from '../../App/typer/personopplysninger';
 
 const tilSøkeresultatListe = (resultat: ISøkPerson): ISøkeresultat[] => {
     return resultat.fagsakPersonId
@@ -26,7 +26,7 @@ const tilSøkeresultatListe = (resultat: ISøkPerson): ISøkeresultat[] => {
                   ident: resultat.personIdent,
                   fagsakId: resultat.fagsakPersonId, // hak for å få Søk til å virke riktig med fagsakPersonId
                   navn: resultat.visningsnavn,
-                  ikon: resultat.kjønn === kjønnType.MANN ? <MannIkon /> : <KvinneIkon />,
+                  ikon: resultat.kjønn === Kjønn.MANN ? <MannIkon /> : <KvinneIkon />,
               },
           ]
         : [];

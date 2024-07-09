@@ -1,6 +1,6 @@
 import { IOppgave } from './typer/oppgave';
-import { IdentGruppe } from '@navikt/familie-typer/dist/oppgave';
 import { IMappe } from './typer/mappe';
+import { IdentGruppe } from './typer/oppgaveIdent';
 
 export const oppgaveErSaksbehandling = (oppgave: IOppgave) => {
     const { behandlesAvApplikasjon, oppgavetype } = oppgave;

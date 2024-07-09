@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useApp } from '../../../../App/context/AppContext';
-import { RessursStatus } from '@navikt/familie-typer';
 import { Alert, BodyLong, Button, Modal } from '@navikt/ds-react';
 import styled from 'styled-components';
 import { EToast } from '../../../../App/typer/toast';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
+import { RessursStatus } from '../../../../App/typer/ressurs';
 
 const MidtstiltDiv = styled.div`
     display: flex;

@@ -13,7 +13,7 @@ import styled from 'styled-components';
 import { ADeepblue50 } from '@navikt/ds-tokens/dist/tokens';
 import { IOppgave } from '../../Oppgavebenk/typer/oppgave';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
-import { Prioritet } from '../../Oppgavebenk/typer/oppgavetema';
+import { Prioritet } from '../../Oppgavebenk/typer/oppgavetype';
 import { FristVelger } from './FristVelger';
 import { MappeVelger } from './MappeVelger';
 import { SaksbehandlerVelger } from './SaksbehandlerVelger';

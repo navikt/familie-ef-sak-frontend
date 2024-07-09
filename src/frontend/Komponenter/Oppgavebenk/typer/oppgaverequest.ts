@@ -1,5 +1,5 @@
 import { Behandlingstema } from '../../../App/typer/behandlingstema';
-import { Oppgavetype } from './oppgavetema';
+import { Oppgavetype } from './oppgavetype';
 import { FortroligEnhet, IkkeFortroligEnhet } from './enhet';
 
 export interface IOppgaveRequest {

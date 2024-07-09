@@ -3,7 +3,6 @@ import * as React from 'react';
 import { FormEvent, useState, useCallback, useEffect } from 'react';
 import { useApp } from '../../../App/context/AppContext';
 import { BorderBox } from './Totrinnskontroll';
-import { RessursStatus } from '@navikt/familie-typer';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import { AlertWarning } from '../../../Felles/Visningskomponenter/Alerts';
@@ -21,6 +20,7 @@ import {
 import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 import { ÅrsakUnderkjent, årsakUnderkjentTilTekst } from '../../../App/typer/totrinnskontroll';
 import { useNavigate } from 'react-router-dom';
+import { RessursStatus } from '../../../App/typer/ressurs';
 import { Ressurs } from '../../../App/typer/ressurs';
 import { Behandling } from '../../../App/typer/fagsak';
 import { Steg } from '../Høyremeny/Steg';

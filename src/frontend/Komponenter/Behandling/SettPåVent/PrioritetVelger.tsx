@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { Prioritet, prioritetTilTekst } from '../../Oppgavebenk/typer/oppgavetema';
+import { Prioritet, prioritetTilTekst } from '../../Oppgavebenk/typer/oppgavetype';
 import { FamilieSelect } from '../../../Felles/Input/FamilieSelect';
 
 export const PrioritetVelger: FC<{
