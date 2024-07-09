@@ -22,6 +22,8 @@ import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 import { ÅrsakUnderkjent, årsakUnderkjentTilTekst } from '../../../App/typer/totrinnskontroll';
 import { useNavigate } from 'react-router-dom';
 import { Ressurs } from '../../../App/typer/ressurs';
+import { Behandling } from '../../../App/typer/fagsak';
+import { Steg } from '../Høyremeny/Steg';
 
 const WrapperMedMargin = styled.div`
     display: block;
@@ -54,9 +56,9 @@ enum Totrinnsresultat {
 }
 
 const FatterVedtak: React.FC<{
-    behandlingId: string;
+    behandling: Behandling;
     settVisGodkjentModal: (vis: boolean) => void;
-}> = ({ behandlingId, settVisGodkjentModal }) => {
+}> = ({ behandling, settVisGodkjentModal }) => {
     const [godkjent, settGodkjent] = useState<Totrinnsresultat>(Totrinnsresultat.IKKE_VALGT);
     const [årsakerUnderkjent, settÅrsakerUnderkjent] = useState<ÅrsakUnderkjent[]>([]);
     const [begrunnelse, settBegrunnelse] = useState<string>();
@@ -79,15 +81,19 @@ const FatterVedtak: React.FC<{
         (behandlingId: string) => {
             axiosRequest<boolean, null>({
                 method: 'GET',
-                url: `/familie-ef-sak/api/simulering/resultatstatus/` + behandlingId,
+                url: `/familie-ef-sak/api/simulering/resultatstatus/${behandlingId}`,
             }).then((res: Ressurs<boolean>) => settSimuleringStatusFeil(res.data));
         },
         [axiosRequest]
     );
 
     useEffect(() => {
-        hentSimuleringStatus(behandlingId);
-    }, [hentSimuleringStatus, behandlingId]);
+        if (behandling.steg === Steg.BESLUTTE_VEDTAK) {
+            hentSimuleringStatus(behandling.id);
+        } else {
+            settSimuleringStatusFeil(false);
+        }
+    }, [hentSimuleringStatus, behandling.id, behandling.steg]);
 
     const fatteTotrinnsKontroll = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -98,7 +104,7 @@ const FatterVedtak: React.FC<{
         settFeil(undefined);
         axiosRequest<never, TotrinnskontrollForm>({
             method: 'POST',
-            url: `/familie-ef-sak/api/vedtak/${behandlingId}/beslutte-vedtak`,
+            url: `/familie-ef-sak/api/vedtak/${behandling.id}/beslutte-vedtak`,
             data: {
                 godkjent: godkjent === Totrinnsresultat.GODKJENT,
                 begrunnelse,

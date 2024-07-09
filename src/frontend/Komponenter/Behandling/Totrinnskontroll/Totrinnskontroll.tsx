@@ -99,7 +99,7 @@ const TotrinnskontrollSwitch: FC<{ settVisGodkjentModal: (vis: boolean) => void 
         case TotrinnskontrollStatus.KAN_FATTE_VEDTAK:
             return (
                 <FatterVedtak
-                    behandlingId={behandling.data.id}
+                    behandling={behandling.data}
                     settVisGodkjentModal={settVisGodkjentModal}
                 />
             );
