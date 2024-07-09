@@ -134,7 +134,7 @@ const FatterVedtak: React.FC<{
                         </AlertWarning>
                     )}
                     <Heading size={'small'} level={'3'}>
-                        Totrinnskondtroll
+                        Totrinnskontroll
                     </Heading>
                 </TittelContainer>
                 <BodyShortSmall>
