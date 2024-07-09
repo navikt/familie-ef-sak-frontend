@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { ISivilstandInngangsvilkår } from './typer';
 import { sivilstandTilTekst } from '../../../../App/typer/personopplysninger';
-import Søknadsinformasjon from './Søknadsinformasjon';
+import { Søknadsinformasjon } from './Søknadsinformasjon';
 import { formaterIsoDato } from '../../../../App/utils/formatter';
 import DokumentasjonSendtInn from '../DokumentasjonSendtInn';
 import { IDokumentasjonGrunnlag } from '../vilkår';
