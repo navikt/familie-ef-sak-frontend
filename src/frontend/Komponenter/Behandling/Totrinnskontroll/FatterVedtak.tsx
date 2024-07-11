@@ -64,7 +64,7 @@ const FatterVedtak: React.FC<{
     const [begrunnelse, settBegrunnelse] = useState<string>();
     const [feil, settFeil] = useState<string>();
     const [laster, settLaster] = useState<boolean>(false);
-    const [simuleringStatusFeil, settSimuleringStatusFeil] = useState<boolean>(false);
+    const [erSimuleringsresultatEndret, settErSimuleringsresultatEndret] = useState<boolean>(false);
 
     const { axiosRequest, settToast } = useApp();
     const { hentBehandlingshistorikk, hentTotrinnskontroll } = useBehandling();
@@ -81,8 +81,8 @@ const FatterVedtak: React.FC<{
         (behandlingId: string) => {
             axiosRequest<boolean, null>({
                 method: 'GET',
-                url: `/familie-ef-sak/api/simulering/resultatstatus/${behandlingId}`,
-            }).then((res: Ressurs<boolean>) => settSimuleringStatusFeil(res.data));
+                url: `/familie-ef-sak/api/simulering/simuleringsresultat-er-endret/${behandlingId}`,
+            }).then((res: Ressurs<boolean>) => settErSimuleringsresultatEndret(res.data));
         },
         [axiosRequest]
     );
@@ -90,8 +90,6 @@ const FatterVedtak: React.FC<{
     useEffect(() => {
         if (behandling.steg === Steg.BESLUTTE_VEDTAK) {
             hentSimuleringStatus(behandling.id);
-        } else {
-            settSimuleringStatusFeil(false);
         }
     }, [hentSimuleringStatus, behandling.id, behandling.steg]);
 
@@ -132,7 +130,7 @@ const FatterVedtak: React.FC<{
         <form onSubmit={fatteTotrinnsKontroll}>
             <BorderBox>
                 <TittelContainer>
-                    {simuleringStatusFeil && (
+                    {erSimuleringsresultatEndret && (
                         <AlertWarning>
                             Det har skjedd endringer i simulering mot oppdrag etter at vedtaket ble
                             sendt til godkjenning. Underkjenn derfor vedtaket slik at saksbehandler
