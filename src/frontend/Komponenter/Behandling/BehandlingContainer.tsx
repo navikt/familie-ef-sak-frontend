@@ -22,9 +22,9 @@ import { NyEierModal } from './Modal/NyEierModal';
 const Container = styled.div`
     display: flex;
     flex-shrink: 2;
-    max-height: calc(
-        100vh - ${110}px
-    ); // Magisk tall som er høyden på header pluss PersonHeaderComponent og litt til
+    height: calc(
+        100vh - ${105}px
+    ); // Magisk tall som er høyden på header pluss PersonHeaderComponent
 `;
 
 interface InnholdWrapperProps {
