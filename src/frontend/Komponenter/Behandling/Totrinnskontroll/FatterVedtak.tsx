@@ -20,7 +20,6 @@ import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 import { ÅrsakUnderkjent, årsakUnderkjentTilTekst } from '../../../App/typer/totrinnskontroll';
 import { useNavigate } from 'react-router-dom';
 import { RessursStatus } from '../../../App/typer/ressurs';
-import { Ressurs } from '../../../App/typer/ressurs';
 import { Behandling } from '../../../App/typer/fagsak';
 import { Steg } from '../Høyremeny/Steg';
 
@@ -81,7 +80,7 @@ const FatterVedtak: React.FC<{
             axiosRequest<boolean, null>({
                 method: 'GET',
                 url: `/familie-ef-sak/api/simulering/simuleringsresultat-er-endret/${behandlingId}`,
-            }).then((res: Ressurs<boolean>) => settErSimuleringsresultatEndret(res.data));
+            }).then((response) => settErSimuleringsresultatEndret(response.data));
         },
         [axiosRequest]
     );
