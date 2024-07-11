@@ -49,10 +49,7 @@ const SivilstandInfo: FC<Props> = ({ sivilstand, skalViseSøknadsdata, dokumenta
                 }
             />
             {skalViseSøknadsdata && søknadsgrunnlag && (
-                <Søknadsinformasjon
-                    sivilstandtype={registergrunnlag.type}
-                    søknad={søknadsgrunnlag}
-                />
+                <Søknadsinformasjon søknad={søknadsgrunnlag} />
             )}
             {skalViseSøknadsdata && (
                 <>
