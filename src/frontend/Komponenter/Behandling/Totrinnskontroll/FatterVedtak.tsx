@@ -19,7 +19,7 @@ import {
 import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 import { ÅrsakUnderkjent, årsakUnderkjentTilTekst } from '../../../App/typer/totrinnskontroll';
 import { useNavigate } from 'react-router-dom';
-import { RessursStatus } from '../../../App/typer/ressurs';
+import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { Behandling } from '../../../App/typer/fagsak';
 import { Steg } from '../Høyremeny/Steg';
 
@@ -62,7 +62,8 @@ const FatterVedtak: React.FC<{
     const [begrunnelse, settBegrunnelse] = useState<string>();
     const [feil, settFeil] = useState<string>();
     const [laster, settLaster] = useState<boolean>(false);
-    const [erSimuleringsresultatEndret, settErSimuleringsresultatEndret] = useState<boolean>(false);
+    const [erSimuleringsresultatEndret, settErSimuleringsresultatEndret] =
+        useState<Ressurs<boolean>>(false);
 
     const { axiosRequest, settToast } = useApp();
     const { hentBehandlingshistorikk, hentTotrinnskontroll } = useBehandling();
