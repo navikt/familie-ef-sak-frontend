@@ -77,7 +77,7 @@ const FatterVedtak: React.FC<{
             (begrunnelse || '').length > 0 &&
             årsakerUnderkjent.length > 0);
 
-    const hentSimuleringStatus = useCallback(
+    const hentSammenlignSimuleringsresultater = useCallback(
         (behandlingId: string) => {
             axiosRequest<boolean, null>({
                 method: 'GET',
@@ -89,9 +89,9 @@ const FatterVedtak: React.FC<{
 
     useEffect(() => {
         if (behandling.steg === Steg.BESLUTTE_VEDTAK) {
-            hentSimuleringStatus(behandling.id);
+            hentSammenlignSimuleringsresultater(behandling.id);
         }
-    }, [hentSimuleringStatus, behandling.id, behandling.steg]);
+    }, [hentSammenlignSimuleringsresultater, behandling.id, behandling.steg]);
 
     const fatteTotrinnsKontroll = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
