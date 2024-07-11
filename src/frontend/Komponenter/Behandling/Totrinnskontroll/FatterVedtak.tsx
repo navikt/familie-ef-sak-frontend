@@ -6,7 +6,6 @@ import { BorderBox } from './Totrinnskontroll';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import { AlertWarning } from '../../../Felles/Visningskomponenter/Alerts';
-
 import { EToast } from '../../../App/typer/toast';
 import {
     Button,
@@ -35,7 +34,7 @@ const SubmitButtonWrapper = styled.div`
     justify-content: center;
 `;
 
-const TittelContainer = styled.div`
+const Container = styled.div`
     margin: 0.5rem 0;
 `;
 
@@ -129,7 +128,7 @@ const FatterVedtak: React.FC<{
     return (
         <form onSubmit={fatteTotrinnsKontroll}>
             <BorderBox>
-                <TittelContainer>
+                <Container>
                     {erSimuleringsresultatEndret && (
                         <AlertWarning>
                             Det har skjedd endringer i simulering mot oppdrag etter at vedtaket ble
@@ -140,7 +139,7 @@ const FatterVedtak: React.FC<{
                     <Heading size={'small'} level={'3'}>
                         Totrinnskontroll
                     </Heading>
-                </TittelContainer>
+                </Container>
                 <BodyShortSmall>
                     Kontroller opplysninger og faglige vurderinger gjort under behandlingen
                 </BodyShortSmall>
