@@ -137,7 +137,7 @@ const TilleggsstønadValg: React.FC<Props> = ({
             </Heading>
             <JaNeiRadioGruppe
                 className={'spacing'}
-                error={valideringsfeil?.harKontantstøtte}
+                error={valideringsfeil?.harTilleggsstønad}
                 legend={erDetSøktOmTekst}
                 lesevisning={erLesevisning}
                 onChange={(event) => tilleggsstønad.onChange(event)}
