@@ -81,7 +81,11 @@ const FatterVedtak: React.FC<{
             axiosRequest<boolean, null>({
                 method: 'GET',
                 url: `/familie-ef-sak/api/simulering/simuleringsresultat-er-endret/${behandlingId}`,
-            }).then((response) => settErSimuleringsresultatEndret(response.data));
+            }).then((respons) => {
+                if (respons.status === RessursStatus.SUKSESS) {
+                    settErSimuleringsresultatEndret(respons.data);
+                }
+            });
         },
         [axiosRequest]
     );
