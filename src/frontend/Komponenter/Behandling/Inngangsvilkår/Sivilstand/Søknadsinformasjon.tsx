@@ -1,120 +1,107 @@
 import React, { FC } from 'react';
-import { SivilstandType } from '../../../../App/typer/personopplysninger';
-import { EÅrsakEnslig, ISivilstandSøknadsgrunnlag } from './typer';
+import { EÅrsakEnslig, IPersonDetaljer, ISivilstandSøknadsgrunnlag } from './typer';
 import { hentBooleanTekst } from '../utils';
 import { formaterNullableIsoDato, mapTrueFalse } from '../../../../App/utils/formatter';
 import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
 import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 
 interface Props {
-    sivilstandtype: SivilstandType;
     søknad: ISivilstandSøknadsgrunnlag;
 }
 
-const Søknadsinformasjon: FC<Props> = ({ sivilstandtype, søknad }) => {
-    const { tidligereSamboer, erUformeltSeparertEllerSkilt, erUformeltGift } = søknad;
+export const Søknadsinformasjon: FC<Props> = ({ søknad }) => {
+    const {
+        erUformeltGift,
+        erUformeltSeparertEllerSkilt,
+        søktOmSkilsmisseSeparasjon,
+        fraflytningsdato,
+        datoSøktSeparasjon,
+        årsakEnslig,
+        tidligereSamboer,
+    } = søknad;
 
-    switch (sivilstandtype) {
-        case SivilstandType.UGIFT:
-        case SivilstandType.UOPPGITT:
-        case SivilstandType.ENKE_ELLER_ENKEMANN:
-        case SivilstandType.SKILT:
-        case SivilstandType.SKILT_PARTNER:
-            return (
-                <>
-                    <Informasjonsrad
-                        ikon={VilkårInfoIkon.SØKNAD}
-                        label="Gift uten at det er registrert i folkeregisteret"
-                        verdi={erUformeltGift !== undefined && mapTrueFalse(erUformeltGift)}
-                    />
-                    <Informasjonsrad
-                        ikon={VilkårInfoIkon.SØKNAD}
-                        label="Separert eller skilt uten at det er registrert i folkeregisteret"
-                        verdi={
-                            erUformeltSeparertEllerSkilt !== undefined &&
-                            mapTrueFalse(erUformeltSeparertEllerSkilt)
-                        }
-                    />
-                </>
-            );
-        case SivilstandType.GIFT:
-        case SivilstandType.REGISTRERT_PARTNER:
-            return (
-                <>
-                    <Informasjonsrad
-                        ikon={VilkårInfoIkon.SØKNAD}
-                        label="Søkt separasjon, skilsmisse eller reist sak"
-                        verdi={
-                            søknad.søktOmSkilsmisseSeparasjon !== undefined &&
-                            (søknad.søktOmSkilsmisseSeparasjon
-                                ? `${hentBooleanTekst(søknad.søktOmSkilsmisseSeparasjon)}, 
-                            ${formaterNullableIsoDato(søknad.datoSøktSeparasjon)}`
-                                : hentBooleanTekst(søknad.søktOmSkilsmisseSeparasjon))
-                        }
-                    />
-                    {søknad.fraflytningsdato && (
-                        <Informasjonsrad
-                            ikon={VilkårInfoIkon.SØKNAD}
-                            label="Dato for fraflytting"
-                            verdi={formaterNullableIsoDato(søknad.fraflytningsdato)}
-                        />
-                    )}
-                </>
-            );
-        case SivilstandType.SEPARERT:
-        case SivilstandType.SEPARERT_PARTNER:
-            return (
-                <>
-                    <Informasjonsrad
-                        ikon={VilkårInfoIkon.SØKNAD}
-                        label="Gift uten at det er registrert i folkeregisteret"
-                        verdi={erUformeltGift !== undefined && mapTrueFalse(erUformeltGift)}
-                    />
-                    <Informasjonsrad
-                        ikon={VilkårInfoIkon.SØKNAD}
-                        label="Separert eller skilt uten at det er registrert i folkeregisteret"
-                        verdi={
-                            erUformeltSeparertEllerSkilt !== undefined &&
-                            mapTrueFalse(erUformeltSeparertEllerSkilt)
-                        }
-                    />
+    const harBesvartErUformeltGiftSpørsmål =
+        erUformeltGift !== undefined && erUformeltGift !== null;
 
-                    {søknad.årsakEnslig === EÅrsakEnslig.samlivsbruddAndre && (
-                        <>
-                            <Informasjonsrad
-                                ikon={VilkårInfoIkon.SØKNAD}
-                                label="Tidligere samboer"
-                                verdi={`${tidligereSamboer?.navn} - ${
-                                    tidligereSamboer?.personIdent
-                                        ? tidligereSamboer?.personIdent
-                                        : formaterNullableIsoDato(tidligereSamboer?.fødselsdato)
-                                }`}
-                            />
-                            <Informasjonsrad
-                                ikon={VilkårInfoIkon.SØKNAD}
-                                label="Dato for fraflytting"
-                                verdi={formaterNullableIsoDato(søknad.fraflytningsdato)}
-                            />
-                        </>
-                    )}
+    const harBesvartErUformeltSeparertEllerSkiltSpørsmål =
+        erUformeltSeparertEllerSkilt !== undefined && erUformeltSeparertEllerSkilt !== null;
 
-                    {søknad.årsakEnslig === EÅrsakEnslig.endringISamværsordning && (
-                        <Informasjonsrad
-                            ikon={VilkårInfoIkon.SØKNAD}
-                            label="Endringen skjedde"
-                            verdi={
-                                søknad.endringSamværsordningDato
-                                    ? formaterNullableIsoDato(søknad.endringSamværsordningDato)
-                                    : '-'
-                            }
-                        />
-                    )}
-                </>
-            );
+    const harBesvartSøktSkillsmisseSpørsmål =
+        søktOmSkilsmisseSeparasjon !== undefined && søktOmSkilsmisseSeparasjon !== null;
 
-        default:
-            return <></>;
-    }
+    const erEnsligPåGrunnAvSamlivsbruddMedNoenAndre =
+        årsakEnslig === EÅrsakEnslig.samlivsbruddAndre;
+
+    const erEnsligPåGrunnAvEndringISamværsordning =
+        årsakEnslig === EÅrsakEnslig.endringISamværsordning;
+
+    const tidligereSamboerInfo = utledTidligereSamboerInformasjon(tidligereSamboer);
+
+    return (
+        <>
+            {harBesvartErUformeltGiftSpørsmål && (
+                <Informasjonsrad
+                    ikon={VilkårInfoIkon.SØKNAD}
+                    label="Gift uten at det er registrert i folkeregisteret"
+                    verdi={mapTrueFalse(erUformeltGift)}
+                />
+            )}
+            {harBesvartErUformeltSeparertEllerSkiltSpørsmål && (
+                <Informasjonsrad
+                    ikon={VilkårInfoIkon.SØKNAD}
+                    label="Separert eller skilt uten at det er registrert i folkeregisteret"
+                    verdi={mapTrueFalse(erUformeltSeparertEllerSkilt)}
+                />
+            )}
+            {harBesvartSøktSkillsmisseSpørsmål && (
+                <Informasjonsrad
+                    ikon={VilkårInfoIkon.SØKNAD}
+                    label="Søkt separasjon, skilsmisse eller reist sak"
+                    verdi={
+                        søktOmSkilsmisseSeparasjon
+                            ? `${hentBooleanTekst(søktOmSkilsmisseSeparasjon)}, 
+                            ${formaterNullableIsoDato(datoSøktSeparasjon)}`
+                            : hentBooleanTekst(søktOmSkilsmisseSeparasjon)
+                    }
+                />
+            )}
+            {erEnsligPåGrunnAvSamlivsbruddMedNoenAndre && (
+                <Informasjonsrad
+                    ikon={VilkårInfoIkon.SØKNAD}
+                    label="Tidligere samboer"
+                    verdi={tidligereSamboerInfo}
+                />
+            )}
+            {erEnsligPåGrunnAvEndringISamværsordning && (
+                <Informasjonsrad
+                    ikon={VilkårInfoIkon.SØKNAD}
+                    label="Endringen skjedde"
+                    verdi={
+                        søknad.endringSamværsordningDato
+                            ? formaterNullableIsoDato(søknad.endringSamværsordningDato)
+                            : '-'
+                    }
+                />
+            )}
+            {fraflytningsdato && (
+                <Informasjonsrad
+                    ikon={VilkårInfoIkon.SØKNAD}
+                    label="Dato for fraflytting"
+                    verdi={formaterNullableIsoDato(fraflytningsdato)}
+                />
+            )}
+        </>
+    );
 };
 
-export default Søknadsinformasjon;
+const utledTidligereSamboerInformasjon = (samboer: IPersonDetaljer | undefined) => {
+    if (!samboer) {
+        return 'ukjent samboer';
+    }
+
+    const personIdentEllerFødselsdato = samboer.personIdent
+        ? samboer.personIdent
+        : formaterNullableIsoDato(samboer.fødselsdato);
+
+    return `${samboer.navn} - ${personIdentEllerFødselsdato ?? 'ukjent fødselsdato'}`;
+};
