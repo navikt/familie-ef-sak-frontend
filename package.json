@@ -36,7 +36,7 @@
     "@navikt/ds-tokens": "6.13.0",
     "@navikt/familie-backend": "10.0.21",
     "@navikt/familie-endringslogg": "^12.0.2",
-    "@navikt/familie-form-elements": "^15.0.0",
+    "@navikt/familie-form-elements": "^20.0.0",
     "@navikt/familie-header": "^14.0.3",
     "@navikt/familie-logging": "^7.0.0",
     "@navikt/familie-visittkort": "^15.1.0",
@@ -98,7 +98,7 @@
     "compression-webpack-plugin": "^11.1.0",
     "copy-webpack-plugin": "^12.0.2",
     "css-loader": "^7.1.2",
-    "eslint": "^8.57.0",
+    "eslint": "^9.7.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-import": "^2.29.1",
@@ -124,12 +124,12 @@
     "ts-loader": "^9.4.4",
     "tsconfig-paths-webpack-plugin": "^4.1.0",
     "typescript": "^5.5.2",
-    "vitest": "^1.6.0",
+    "vitest": "^2.0.2",
     "webpack": "^5.92.1",
     "webpack-cli": "^5.1.4",
     "webpack-dev-middleware": "^7.2.1",
     "webpack-hot-middleware": "^2.26.1",
-    "webpack-merge": "^5.10.0"
+    "webpack-merge": "^6.0.1"
   },
   "resolutions": {
     "@types/react": "^18.x",
