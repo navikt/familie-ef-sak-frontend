@@ -1,4 +1,4 @@
-FROM gcr.io/distroless/nodejs:20
+FROM gcr.io/distroless/nodejs20-debian12:nonroot
 
 WORKDIR /var/server
 
