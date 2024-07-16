@@ -2,10 +2,8 @@ import styled from 'styled-components';
 import * as React from 'react';
 import { FormEvent, useState, useCallback, useEffect } from 'react';
 import { useApp } from '../../../App/context/AppContext';
-import { BorderBox } from './Totrinnskontroll';
 import { useBehandling } from '../../../App/context/BehandlingContext';
-import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
-import { AlertWarning } from '../../../Felles/Visningskomponenter/Alerts';
+import { AlertError, AlertWarning } from '../../../Felles/Visningskomponenter/Alerts';
 import { EToast } from '../../../App/typer/toast';
 import {
     Button,
@@ -22,11 +20,7 @@ import { useNavigate } from 'react-router-dom';
 import { RessursStatus } from '../../../App/typer/ressurs';
 import { Behandling } from '../../../App/typer/fagsak';
 import { Steg } from '../Høyremeny/Steg';
-
-const WrapperMedMargin = styled.div`
-    display: block;
-    margin: 1rem 0;
-`;
+import { ABorderSubtle } from '@navikt/ds-tokens/dist/tokens';
 
 const SubmitButtonWrapper = styled.div`
     display: flex;
@@ -34,11 +28,14 @@ const SubmitButtonWrapper = styled.div`
 `;
 
 const Container = styled.div`
-    margin: 0.5rem 0;
-`;
+    border: 1px solid ${ABorderSubtle};
+    margin: 1rem 0.5rem;
+    padding: 1rem;
+    border-radius: 0.125rem;
 
-const RadioMedPadding = styled(Radio)`
-    padding-bottom: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 `;
 
 interface TotrinnskontrollForm {
@@ -57,7 +54,9 @@ const FatterVedtak: React.FC<{
     behandling: Behandling;
     settVisGodkjentModal: (vis: boolean) => void;
 }> = ({ behandling, settVisGodkjentModal }) => {
-    const [godkjent, settGodkjent] = useState<Totrinnsresultat>(Totrinnsresultat.IKKE_VALGT);
+    const [totrinnsresultat, settTotrinnsresultat] = useState<Totrinnsresultat>(
+        Totrinnsresultat.IKKE_VALGT
+    );
     const [årsakerUnderkjent, settÅrsakerUnderkjent] = useState<ÅrsakUnderkjent[]>([]);
     const [begrunnelse, settBegrunnelse] = useState<string>();
     const [feil, settFeil] = useState<string>();
@@ -70,8 +69,8 @@ const FatterVedtak: React.FC<{
     const navigate = useNavigate();
 
     const erUtfylt =
-        godkjent === Totrinnsresultat.GODKJENT ||
-        (godkjent === Totrinnsresultat.UNDERKJENT &&
+        totrinnsresultat === Totrinnsresultat.GODKJENT ||
+        (totrinnsresultat === Totrinnsresultat.UNDERKJENT &&
             (begrunnelse || '').length > 0 &&
             årsakerUnderkjent.length > 0);
 
@@ -106,14 +105,14 @@ const FatterVedtak: React.FC<{
             method: 'POST',
             url: `/familie-ef-sak/api/vedtak/${behandling.id}/beslutte-vedtak`,
             data: {
-                godkjent: godkjent === Totrinnsresultat.GODKJENT,
+                godkjent: totrinnsresultat === Totrinnsresultat.GODKJENT,
                 begrunnelse,
                 årsakerUnderkjent,
             },
         })
             .then((response) => {
                 if (response.status === RessursStatus.SUKSESS) {
-                    if (godkjent === Totrinnsresultat.GODKJENT) {
+                    if (totrinnsresultat === Totrinnsresultat.GODKJENT) {
                         hentBehandlingshistorikk.rerun();
                         hentTotrinnskontroll.rerun();
                         settVisGodkjentModal(true);
@@ -130,63 +129,59 @@ const FatterVedtak: React.FC<{
 
     return (
         <form onSubmit={fatteTotrinnsKontroll}>
-            <BorderBox>
-                <Container>
-                    {erSimuleringsresultatEndret && (
-                        <AlertWarning>
-                            Det har skjedd endringer i simulering mot oppdrag etter at vedtaket ble
-                            sendt til godkjenning. Underkjenn derfor vedtaket slik at saksbehandler
-                            kan ta stilling til om endringene påvirker vedtaket.
-                        </AlertWarning>
-                    )}
+            <Container>
+                {erSimuleringsresultatEndret && (
+                    <AlertWarning>
+                        Det har skjedd endringer i simulering mot oppdrag etter at vedtaket ble
+                        sendt til godkjenning. Underkjenn derfor vedtaket slik at saksbehandler kan
+                        ta stilling til om endringene påvirker vedtaket.
+                    </AlertWarning>
+                )}
+                <div>
                     <Heading size={'small'} level={'3'}>
                         Totrinnskontroll
                     </Heading>
-                </Container>
-                <BodyShortSmall>
-                    Kontroller opplysninger og faglige vurderinger gjort under behandlingen
-                </BodyShortSmall>
-                <WrapperMedMargin>
-                    <RadioGroup legend={'Beslutt vedtak'} value={godkjent} hideLegend>
-                        <RadioMedPadding
+                    <BodyShortSmall>
+                        Kontroller opplysninger og faglige vurderinger gjort under behandlingen
+                    </BodyShortSmall>
+                    <RadioGroup legend={'Beslutt vedtak'} value={totrinnsresultat} hideLegend>
+                        <Radio
                             value={Totrinnsresultat.GODKJENT}
                             name="minRadioKnapp"
                             onChange={() => {
-                                settGodkjent(Totrinnsresultat.GODKJENT);
+                                settTotrinnsresultat(Totrinnsresultat.GODKJENT);
                                 settBegrunnelse(undefined);
                                 settÅrsakerUnderkjent([]);
                             }}
                         >
                             Godkjenn
-                        </RadioMedPadding>
-                        <RadioMedPadding
+                        </Radio>
+                        <Radio
                             value={Totrinnsresultat.UNDERKJENT}
                             name="minRadioKnapp"
                             onChange={() => {
-                                settGodkjent(Totrinnsresultat.UNDERKJENT);
+                                settTotrinnsresultat(Totrinnsresultat.UNDERKJENT);
                                 settBegrunnelse(undefined);
                             }}
                         >
                             Underkjenn
-                        </RadioMedPadding>
+                        </Radio>
                     </RadioGroup>
-                </WrapperMedMargin>
-                {godkjent === Totrinnsresultat.UNDERKJENT && (
+                </div>
+                {totrinnsresultat === Totrinnsresultat.UNDERKJENT && (
                     <>
-                        <WrapperMedMargin>
-                            <CheckboxGroup
-                                legend={'Årsak til underkjennelse'}
-                                description={'Manglende eller feil opplysninger om:'}
-                                value={årsakerUnderkjent}
-                                onChange={settÅrsakerUnderkjent}
-                            >
-                                {Object.values(ÅrsakUnderkjent).map((årsak) => (
-                                    <Checkbox key={årsak} value={årsak}>
-                                        {årsakUnderkjentTilTekst[årsak]}
-                                    </Checkbox>
-                                ))}
-                            </CheckboxGroup>
-                        </WrapperMedMargin>
+                        <CheckboxGroup
+                            legend={'Årsak til underkjennelse'}
+                            description={'Manglende eller feil opplysninger om:'}
+                            value={årsakerUnderkjent}
+                            onChange={settÅrsakerUnderkjent}
+                        >
+                            {Object.values(ÅrsakUnderkjent).map((årsak) => (
+                                <Checkbox key={årsak} value={årsak}>
+                                    {årsakUnderkjentTilTekst[årsak]}
+                                </Checkbox>
+                            ))}
+                        </CheckboxGroup>
                         <Textarea
                             value={begrunnelse || ''}
                             maxLength={0}
@@ -204,8 +199,8 @@ const FatterVedtak: React.FC<{
                         </Button>
                     </SubmitButtonWrapper>
                 )}
-                {feil && <AlertStripeFeilPreWrap>{feil}</AlertStripeFeilPreWrap>}
-            </BorderBox>
+                {feil && <AlertError>{feil}</AlertError>}
+            </Container>
         </form>
     );
 };
