@@ -22,7 +22,7 @@ import { CheckmarkIcon } from '@navikt/aksel-icons';
 import { useNavigate } from 'react-router-dom';
 import { ABorderSubtle } from '@navikt/ds-tokens/dist/tokens';
 
-export const BorderBox = styled.div`
+const BorderBox = styled.div`
     border: 1px solid ${ABorderSubtle};
     padding: 0.5rem 1rem;
     margin: 1rem 0.5rem;
@@ -99,7 +99,7 @@ const TotrinnskontrollSwitch: FC<{ settVisGodkjentModal: (vis: boolean) => void 
         case TotrinnskontrollStatus.KAN_FATTE_VEDTAK:
             return (
                 <FatterVedtak
-                    behandlingId={behandling.data.id}
+                    behandling={behandling.data}
                     settVisGodkjentModal={settVisGodkjentModal}
                 />
             );

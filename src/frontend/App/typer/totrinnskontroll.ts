@@ -37,6 +37,7 @@ export enum ÅrsakUnderkjent {
     SIMULERING = 'SIMULERING',
     VEDTAKSBREV = 'VEDTAKSBREV',
     RETUR_ETTER_ØNSKE_FRA_SAKSBEHANDLER = 'RETUR_ETTER_ØNSKE_FRA_SAKSBEHANDLER',
+    SIMULERING_ENDRET = 'SIMULERING_ENDRET',
 }
 
 export const årsakUnderkjentTilTekst: Record<ÅrsakUnderkjent, string> = {
@@ -49,4 +50,5 @@ export const årsakUnderkjentTilTekst: Record<ÅrsakUnderkjent, string> = {
     SIMULERING: 'Simulering',
     VEDTAKSBREV: 'Vedtaksbrev',
     RETUR_ETTER_ØNSKE_FRA_SAKSBEHANDLER: 'Retur etter ønske fra saksbehandler',
+    SIMULERING_ENDRET: 'Simulering endret',
 };

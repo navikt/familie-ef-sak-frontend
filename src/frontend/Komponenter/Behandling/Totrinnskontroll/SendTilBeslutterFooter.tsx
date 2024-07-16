@@ -66,13 +66,12 @@ const SendTilBeslutterFooter: React.FC<{
     const [laster, settLaster] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>();
     const [visModal, settVisModal] = useState<boolean>(false);
-    const behandlingId = behandling.id;
     const sendTilBeslutter = () => {
         settLaster(true);
         settFeilmelding(undefined);
         axiosRequest<string, SendTilBeslutterRequest>({
             method: 'POST',
-            url: `/familie-ef-sak/api/vedtak/${behandlingId}/send-til-beslutter`,
+            url: `/familie-ef-sak/api/vedtak/${behandling.id}/send-til-beslutter`,
             data: {
                 oppgavetyperSomSkalOpprettes: oppgaverForOpprettelse
                     ? oppgaverForOpprettelse.oppgavetyperSomSkalOpprettes
