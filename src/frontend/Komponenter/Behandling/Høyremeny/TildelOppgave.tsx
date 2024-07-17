@@ -28,7 +28,7 @@ const TildelOppgave: React.FC<{ behandlingId: string }> = ({ behandlingId }) => 
 
     const erTilordnetOgInnloggetSaksbehandlerDenSamme =
         oppgave?.tilordnetRessurs === innloggetSaksbehandler.navIdent;
-    const erTogglet = toggles[ToggleName.visTildelOppgaveKnapp];
+    const erIkkeTogglet = !toggles[ToggleName.visTildelOppgaveKnapp];
 
     useEffect(() => {
         hentOppgave();
@@ -39,7 +39,7 @@ const TildelOppgave: React.FC<{ behandlingId: string }> = ({ behandlingId }) => 
         window.location.reload();
     };
 
-    if (erTogglet || laster || erTilordnetOgInnloggetSaksbehandlerDenSamme) {
+    if (erIkkeTogglet || laster || erTilordnetOgInnloggetSaksbehandlerDenSamme) {
         return null;
     }
 
