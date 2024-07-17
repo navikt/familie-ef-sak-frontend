@@ -8,6 +8,7 @@ import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 import { useApp } from '../../../App/context/AppContext';
 import { useToggles } from '../../../App/context/TogglesContext';
 import { ToggleName } from '../../../App/context/toggles';
+import { Behandling, BehandlingResultat } from '../../../App/typer/fagsak';
 
 const Container = styled.div`
     border: 1px solid ${ABorderSubtle};
@@ -20,7 +21,8 @@ const Container = styled.div`
     }
 `;
 
-const TildelOppgave: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
+const TildelOppgave: React.FC<{ behandling: Behandling }> = ({ behandling }) => {
+    const { id: behandlingId, resultat } = behandling;
     const { innloggetSaksbehandler } = useApp();
     const { hentOppgave, oppgave, laster, feilmelding } = useHentOppgave(behandlingId);
     const { settOppgaveTilSaksbehandler } = useOppgave(oppgave);
@@ -29,22 +31,32 @@ const TildelOppgave: React.FC<{ behandlingId: string }> = ({ behandlingId }) => 
     const erTilordnetOgInnloggetSaksbehandlerDenSamme =
         oppgave?.tilordnetRessurs === innloggetSaksbehandler.navIdent;
     const erIkkeTogglet = !toggles[ToggleName.visTildelOppgaveKnapp];
+    const erBehandlingFortsattAktiv =
+        resultat === BehandlingResultat.IKKE_SATT || resultat === BehandlingResultat.AVSLÅTT;
 
     useEffect(() => {
-        hentOppgave();
-    }, [behandlingId, hentOppgave]);
+        if (erTilordnetOgInnloggetSaksbehandlerDenSamme && erBehandlingFortsattAktiv) {
+            hentOppgave();
+        }
+    }, [
+        behandlingId,
+        erBehandlingFortsattAktiv,
+        erTilordnetOgInnloggetSaksbehandlerDenSamme,
+        hentOppgave,
+    ]);
 
     const handleTildelOppgave = () => {
         settOppgaveTilSaksbehandler();
         window.location.reload();
     };
 
-    if (erIkkeTogglet || laster || erTilordnetOgInnloggetSaksbehandlerDenSamme) {
+    if (laster || erTilordnetOgInnloggetSaksbehandlerDenSamme || !erBehandlingFortsattAktiv) {
         return null;
     }
 
     return (
         <Container>
+            <BodyShortSmall>toggle: {erIkkeTogglet}</BodyShortSmall>
             <BodyShortSmall>KUN PREPROD - Overta oppgaven</BodyShortSmall>
             <Button size="small" onClick={handleTildelOppgave}>
                 Tildel oppgave

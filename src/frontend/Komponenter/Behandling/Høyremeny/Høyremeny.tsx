@@ -74,7 +74,7 @@ const Høyremeny: React.FC<Props> = ({ behandling, åpenHøyremeny }) => {
         <>
             {åpenHøyremeny ? (
                 <>
-                    <TildelOppgave behandlingId={behandling.id} />
+                    <TildelOppgave behandling={behandling} />
                     <Totrinnskontroll />
                     <StyledHøyremeny>
                         <StyledButton
