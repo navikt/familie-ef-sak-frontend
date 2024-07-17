@@ -35,15 +35,10 @@ const TildelOppgave: React.FC<{ behandling: Behandling }> = ({ behandling }) => 
         resultat === BehandlingResultat.IKKE_SATT || resultat === BehandlingResultat.AVSLÅTT;
 
     useEffect(() => {
-        if (erTilordnetOgInnloggetSaksbehandlerDenSamme && erBehandlingFortsattAktiv) {
+        if (erBehandlingFortsattAktiv) {
             hentOppgave();
         }
-    }, [
-        behandlingId,
-        erBehandlingFortsattAktiv,
-        erTilordnetOgInnloggetSaksbehandlerDenSamme,
-        hentOppgave,
-    ]);
+    }, [behandlingId, erBehandlingFortsattAktiv, hentOppgave]);
 
     const handleTildelOppgave = () => {
         settOppgaveTilSaksbehandler();
