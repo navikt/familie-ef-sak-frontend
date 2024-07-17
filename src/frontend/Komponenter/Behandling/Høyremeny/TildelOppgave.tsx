@@ -6,8 +6,8 @@ import { ABorderSubtle } from '@navikt/ds-tokens/dist/tokens';
 import styled from 'styled-components';
 import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 import { useApp } from '../../../App/context/AppContext';
-import { useToggles } from '../../../App/context/TogglesContext';
-import { ToggleName } from '../../../App/context/toggles';
+// import { useToggles } from '../../../App/context/TogglesContext';
+// import { ToggleName } from '../../../App/context/toggles';
 import { Behandling, BehandlingResultat } from '../../../App/typer/fagsak';
 
 const Container = styled.div`
@@ -22,17 +22,34 @@ const Container = styled.div`
 `;
 
 const TildelOppgave: React.FC<{ behandling: Behandling }> = ({ behandling }) => {
-    const { id: behandlingId, resultat } = behandling;
+    const { id: behandlingId, resultat, opprettet } = behandling;
     const { innloggetSaksbehandler } = useApp();
     const { hentOppgave, oppgave, laster, feilmelding } = useHentOppgave(behandlingId);
     const { settOppgaveTilSaksbehandler } = useOppgave(oppgave);
-    const { toggles } = useToggles();
+    // const { toggles } = useToggles();
 
     const erTilordnetOgInnloggetSaksbehandlerDenSamme =
         oppgave?.tilordnetRessurs === innloggetSaksbehandler.navIdent;
-    const erIkkeTogglet = !toggles[ToggleName.visTildelOppgaveKnapp];
+    // const erIkkeTogglet = !toggles[ToggleName.visTildelOppgaveKnapp];
     const erBehandlingFortsattAktiv =
         resultat === BehandlingResultat.IKKE_SATT || resultat === BehandlingResultat.AVSLÅTT;
+
+    const handleTildelOppgave = () => {
+        settOppgaveTilSaksbehandler();
+        window.location.reload();
+    };
+
+    const sjekkOmDetHarGåttMistTiSekunderSidenBehandlingBleOpprettet = (
+        opprettet: string
+    ): boolean => {
+        const opprettetDate = new Date(opprettet);
+        const nå = new Date();
+        const tiSekunder = 10 * 1000;
+        return nå.getTime() - opprettetDate.getTime() > tiSekunder;
+    };
+
+    const erBehandlingOpprettetForMerEnnTiSekunderSiden =
+        sjekkOmDetHarGåttMistTiSekunderSidenBehandlingBleOpprettet(opprettet);
 
     useEffect(() => {
         if (erBehandlingFortsattAktiv) {
@@ -40,18 +57,17 @@ const TildelOppgave: React.FC<{ behandling: Behandling }> = ({ behandling }) => 
         }
     }, [behandlingId, erBehandlingFortsattAktiv, hentOppgave]);
 
-    const handleTildelOppgave = () => {
-        settOppgaveTilSaksbehandler();
-        window.location.reload();
-    };
-
-    if (laster || erTilordnetOgInnloggetSaksbehandlerDenSamme || !erBehandlingFortsattAktiv) {
+    if (
+        laster ||
+        erTilordnetOgInnloggetSaksbehandlerDenSamme ||
+        !erBehandlingFortsattAktiv ||
+        !erBehandlingOpprettetForMerEnnTiSekunderSiden
+    ) {
         return null;
     }
 
     return (
         <Container>
-            <BodyShortSmall>toggle: {erIkkeTogglet}</BodyShortSmall>
             <BodyShortSmall>KUN PREPROD - Overta oppgaven</BodyShortSmall>
             <Button size="small" onClick={handleTildelOppgave}>
                 Tildel oppgave
