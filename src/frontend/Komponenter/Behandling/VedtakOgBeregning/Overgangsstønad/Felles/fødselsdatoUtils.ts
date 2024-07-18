@@ -27,10 +27,12 @@ export const utledYngsteBarnFødselsdatoSomHarInngangsvilkåretAleneomsorgOppfyl
         .map((b) => b?.registergrunnlag.fødselsdato)
         .filter((fødselsdato): fødselsdato is string => !!fødselsdato && erGyldigDato(fødselsdato))
         .concat(terminbarnFødselsdatoer);
+
     if (datoer.length === 0) {
         return undefined;
     }
+
     return datoer.reduce((a, b) => {
         return erEtter(a, b) ? a : b;
-    });
+    }, datoer[0]);
 };
