@@ -14,6 +14,7 @@ export enum ToggleName {
     // Miljø-toggles - la stå
     visIkkePubliserteBrevmaler = 'familie.ef.sak.frontend-vis-ikke-publiserte-brevmaler',
     visAutomatiskUtfylleVilkår = 'familie.ef.sak.frontend-automatisk-utfylle-vilkar',
+    visTildelOppgaveKnapp = 'familie.ef.sak.frontend-tildel-oppgave-knapp',
 
     // Release-toggles
     // Midlertidige toggles - kan fjernes etterhvert

@@ -11,6 +11,7 @@ import { erBehandlingUnderArbeid } from '../../../App/typer/behandlingstatus';
 import { ABlue400 } from '@navikt/ds-tokens/dist/tokens';
 import { Behandling } from '../../../App/typer/fagsak';
 import TilegnetSaksbehandler from './TilegnetSaksbehandler';
+import TildelOppgave from './TildelOppgave';
 
 interface Props {
     behandling: Behandling;
@@ -73,6 +74,7 @@ const Høyremeny: React.FC<Props> = ({ behandling, åpenHøyremeny }) => {
         <>
             {åpenHøyremeny ? (
                 <>
+                    <TildelOppgave behandling={behandling} />
                     <Totrinnskontroll />
                     <StyledHøyremeny>
                         <StyledButton
