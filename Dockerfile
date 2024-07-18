@@ -2,7 +2,7 @@ FROM node:18-alpine as builder
 
 WORKDIR /app
 
-COPY .npmrc
+COPY .npmrc .
 COPY package.json .
 COPY yarn.lock .
 RUN yarn
