@@ -39,7 +39,7 @@ export const InnvilgeVedtak: React.FC<{
         (revurderesFra: string) => {
             axiosRequest<IInnvilgeVedtakForOvergangsstønad, void>({
                 method: 'GET',
-                url: `/familie-ef-sak/api/vedtak/fagsak/${behandling.fagsakId}/historikk/${revurderesFra}`,
+                url: `/familie-ef-sak/api/vedtak/${behandling.id}/historikk/${revurderesFra}`,
             }).then((res: RessursSuksess<IInnvilgeVedtakForOvergangsstønad> | RessursFeilet) => {
                 if (res.status === RessursStatus.SUKSESS) {
                     settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
