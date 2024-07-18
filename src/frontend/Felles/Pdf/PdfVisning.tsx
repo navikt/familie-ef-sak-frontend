@@ -17,10 +17,6 @@ interface PdfVisningProps {
     pdfFilInnhold: Ressurs<string>;
 }
 
-const StyledPagination = styled(Pagination)`
-    margin: 0 auto;
-`;
-
 const StyledDokument = styled(Document)`
     .react-pdf__Page__canvas {
         box-shadow:
@@ -35,36 +31,38 @@ const StyledDokument = styled(Document)`
 const DokumentWrapper = styled.div`
     display: flex;
     flex-direction: column;
-    margin: 0.5rem 0;
-    min-width: 600px;
+    align-items: center;
 
-    align-self: flex-start;
+    min-width: 600px;
     position: sticky;
     top: 100px;
-    left: 0;
 `;
 
 const PdfVisning: React.FC<PdfVisningProps> = ({ pdfFilInnhold }) => {
-    const [numPages, setNumPages] = useState<number>(1);
-    const [pageNumber, setPageNumber] = useState(1);
+    const [antallSider, setAntallSider] = useState(1);
+    const [sidenummer, setSidenummer] = useState(1);
 
-    function onDocumentLoadSuccess({ numPages }: { numPages: number }) {
-        if (pageNumber > numPages) {
-            setPageNumber(numPages);
+    const skalVisePaginering = antallSider > 1;
+
+    const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
+        if (sidenummer > numPages) {
+            setSidenummer(numPages);
         }
-        setNumPages(numPages);
-    }
+        setAntallSider(numPages);
+    };
 
     return (
         <DataViewer response={{ pdfFilInnhold }}>
             {({ pdfFilInnhold }) => (
                 <DokumentWrapper>
-                    <StyledPagination
-                        page={pageNumber}
-                        count={numPages}
-                        onPageChange={setPageNumber}
-                        size="xsmall"
-                    />
+                    {skalVisePaginering && (
+                        <Pagination
+                            page={sidenummer}
+                            count={antallSider}
+                            onPageChange={setSidenummer}
+                            size="xsmall"
+                        />
+                    )}
                     <StyledDokument
                         file={`data:application/pdf;base64,${pdfFilInnhold}`}
                         onLoadSuccess={onDocumentLoadSuccess}
@@ -74,14 +72,16 @@ const PdfVisning: React.FC<PdfVisningProps> = ({ pdfFilInnhold }) => {
                             <Loader size={'xlarge'} variant="interaction" transparent={true} />
                         }
                     >
-                        <Page pageNumber={pageNumber} renderTextLayer={true} />
+                        <Page pageNumber={sidenummer} renderTextLayer={true} />
                     </StyledDokument>
-                    <StyledPagination
-                        page={pageNumber}
-                        count={numPages}
-                        onPageChange={setPageNumber}
-                        size="xsmall"
-                    />
+                    {skalVisePaginering && (
+                        <Pagination
+                            page={sidenummer}
+                            count={antallSider}
+                            onPageChange={setSidenummer}
+                            size="xsmall"
+                        />
+                    )}
                 </DokumentWrapper>
             )}
         </DataViewer>
