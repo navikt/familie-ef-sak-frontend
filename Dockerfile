@@ -2,10 +2,12 @@ FROM node:18-alpine as builder
 
 WORKDIR /app
 
+COPY assets ./assets
+COPY node_modules ./node_modules
+COPY build_n_deploy ./build_n_deploy
+COPY node_dist ./node_dist
+COPY frontend_production ./frontend_production
 COPY package.json .
-COPY yarn.lock .
-
-COPY . .
 
 FROM gcr.io/distroless/nodejs:18
 
