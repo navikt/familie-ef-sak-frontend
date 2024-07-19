@@ -23,5 +23,5 @@ COPY --from=builder /app/package.json .
 ENV NODE_ENV production
 
 EXPOSE 8000
-
+USER nonroot
 CMD ["--es-module-specifier-resolution=node", "node_dist/backend/server.js"]
