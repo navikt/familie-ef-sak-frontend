@@ -16,9 +16,9 @@ import Info from '../../../Felles/Ikoner/Info';
 import { BreakWordBodyLongSmall } from '../../../Felles/Visningskomponenter/BreakWordBodyLongSmall';
 import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
 import { useApp } from '../../../App/context/AppContext';
-import { Alert, BodyShort, Button, Detail, Heading, Label } from '@navikt/ds-react';
+import { Alert, Button, Detail, Heading, Label } from '@navikt/ds-react';
 import { BodyShortSmall, SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
-import { CheckmarkIcon } from '@navikt/aksel-icons';
+import { XMarkIcon } from '@navikt/aksel-icons';
 import { useNavigate } from 'react-router-dom';
 import { ABorderSubtle } from '@navikt/ds-tokens/dist/tokens';
 
@@ -39,19 +39,18 @@ const BorderBox = styled.div`
     }
 `;
 
-const SukksessIkonMedHøyreMargin = styled(CheckmarkIcon)`
-    margin-right: 0.5rem;
-`;
-
-const ÅrsakUnderkjentRad = styled(BodyShort)`
+const ÅrsakUnderkjentContainer = styled.div`
     display: flex;
-    margin-bottom: 1rem;
     align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.65rem;
 `;
 
-const ÅrsakerUnderkjentWrapper = styled.div`
-    margin-top: 0.5rem;
+const IconContainer = styled.div`
+    width: 18px;
+    height: 18px;
 `;
+
 const AngreSendTilBeslutterContainer = styled.div`
     display: flex;
     flex-direction: column;
@@ -202,14 +201,18 @@ const TotrinnskontrollUnderkjent: React.FC<{
                 <div>
                     <Label>Årsak til underkjennelse</Label>
                     <Detail>Manglende eller feil opplysninger om:</Detail>
-                    <ÅrsakerUnderkjentWrapper>
+                    <>
                         {totrinnskontroll.årsakerUnderkjent.map((årsakUnderkjent) => (
-                            <ÅrsakUnderkjentRad key={årsakUnderkjent}>
-                                <SukksessIkonMedHøyreMargin />
-                                {årsakUnderkjentTilTekst[årsakUnderkjent]}
-                            </ÅrsakUnderkjentRad>
+                            <ÅrsakUnderkjentContainer>
+                                <IconContainer>
+                                    <XMarkIcon />
+                                </IconContainer>
+                                <BodyShortSmall>
+                                    {årsakUnderkjentTilTekst[årsakUnderkjent]}
+                                </BodyShortSmall>
+                            </ÅrsakUnderkjentContainer>
                         ))}
-                    </ÅrsakerUnderkjentWrapper>
+                    </>
                 </div>
             )}
             <div>
