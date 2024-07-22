@@ -19,8 +19,12 @@ import { ÅrsakUnderkjent, årsakUnderkjentTilTekst } from '../../../App/typer/t
 import { useNavigate } from 'react-router-dom';
 import { RessursStatus } from '../../../App/typer/ressurs';
 import { Behandling } from '../../../App/typer/fagsak';
-import { Steg } from '../Høyremeny/Steg';
 import { ABorderSubtle } from '@navikt/ds-tokens/dist/tokens';
+import {
+    harVedtaksresultatMedTilkjentYtelse,
+    useHentVedtak,
+} from '../../../App/hooks/useHentVedtak';
+import { Steg } from '../Høyremeny/Steg';
 
 const SubmitButtonWrapper = styled.div`
     display: flex;
@@ -65,14 +69,9 @@ const FatterVedtak: React.FC<{
 
     const { axiosRequest, settToast } = useApp();
     const { hentBehandlingshistorikk, hentTotrinnskontroll } = useBehandling();
+    const { hentVedtak, vedtaksresultat } = useHentVedtak(behandling.id);
 
     const navigate = useNavigate();
-
-    const erUtfylt =
-        totrinnsresultat === Totrinnsresultat.GODKJENT ||
-        (totrinnsresultat === Totrinnsresultat.UNDERKJENT &&
-            (begrunnelse || '').length > 0 &&
-            årsakerUnderkjent.length > 0);
 
     const hentSammenlignSimuleringsresultater = useCallback(
         (behandlingId: string) => {
@@ -89,10 +88,23 @@ const FatterVedtak: React.FC<{
     );
 
     useEffect(() => {
-        if (behandling.steg === Steg.BESLUTTE_VEDTAK) {
+        hentVedtak();
+    }, [hentVedtak]);
+
+    useEffect(() => {
+        if (
+            harVedtaksresultatMedTilkjentYtelse(vedtaksresultat) &&
+            behandling.steg === Steg.BESLUTTE_VEDTAK
+        ) {
             hentSammenlignSimuleringsresultater(behandling.id);
         }
-    }, [hentSammenlignSimuleringsresultater, behandling.id, behandling.steg]);
+    }, [vedtaksresultat, hentSammenlignSimuleringsresultater, behandling.id, behandling.steg]);
+
+    const erUtfylt =
+        totrinnsresultat === Totrinnsresultat.GODKJENT ||
+        (totrinnsresultat === Totrinnsresultat.UNDERKJENT &&
+            (begrunnelse || '').length > 0 &&
+            årsakerUnderkjent.length > 0);
 
     const fatteTotrinnsKontroll = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
