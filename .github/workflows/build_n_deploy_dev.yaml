@@ -5,7 +5,6 @@ env:
   IMAGE: ghcr.io/navikt/familie-ef-sak-frontend:${{ github.sha }}
 
 permissions:
-  packages: write
   id-token: write
   contents: read
 

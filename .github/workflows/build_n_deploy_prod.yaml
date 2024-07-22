@@ -10,7 +10,6 @@ env:
   IMAGE_LATEST: ghcr.io/navikt/familie-ef-sak-frontend:latest
 
 permissions:
-  packages: write
   id-token: write
   contents: read
 
