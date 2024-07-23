@@ -1,8 +1,6 @@
 name: Build, push, and deploy app to dev
 
 on: [ workflow_dispatch ]
-env:
-  IMAGE: ghcr.io/navikt/familie-ef-sak-frontend:${{ github.sha }}
 
 permissions:
   id-token: write
