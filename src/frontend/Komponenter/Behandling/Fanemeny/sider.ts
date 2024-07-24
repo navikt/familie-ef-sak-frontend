@@ -11,7 +11,7 @@ import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
 import Sanksjonsfastsettelse from '../Sanksjon/Sanksjonsfastsettelse';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { ÅrsakRevurderingSide } from '../ÅrsakRevurdering/ÅrsakRevurderingSide';
-import BehandlingsÅrsakUtenBrev from './BehandlingsÅrsakUtenBrev';
+import BehandlingsårsakUtenBrev from './BehandlingsårsakUtenBrev';
 
 export interface ISide {
     href: string;
@@ -76,7 +76,7 @@ const alleSider: ISide[] = [
     {
         href: 'brev',
         navn: SideNavn.KORRIGERING_UTEN_BREV || SideNavn.IVERKSETTE_KA_VEDTAK,
-        komponent: BehandlingsÅrsakUtenBrev,
+        komponent: BehandlingsårsakUtenBrev,
     },
 ];
 

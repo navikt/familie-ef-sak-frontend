@@ -21,6 +21,7 @@ import { useVilkår } from '../hooks/useVilkår';
 import { useHentAnsvarligSaksbehandler } from '../hooks/useHentAnsvarligSaksbehandler';
 import { useApp } from './AppContext';
 import { ModalState, utledModalState } from '../../Komponenter/Behandling/Modal/NyEierModal';
+import { useHentVedtak } from '../hooks/useHentVedtak';
 
 const [BehandlingProvider, useBehandling] = constate(() => {
     const { innloggetSaksbehandler } = useApp();
@@ -37,6 +38,7 @@ const [BehandlingProvider, useBehandling] = constate(() => {
         useHentTotrinnskontroll(behandlingId);
     const { hentAnsvarligSaksbehandlerCallback, ansvarligSaksbehandler } =
         useHentAnsvarligSaksbehandler(behandlingId);
+    const { hentVedtak: hentVedtakCallback, vedtak, vedtaksresultat } = useHentVedtak(behandlingId);
 
     const hentBehandling = useRerunnableEffect(hentBehandlingCallback, [behandlingId]);
     const hentAnsvarligSaksbehandler = useRerunnableEffect(hentAnsvarligSaksbehandlerCallback, [
@@ -45,6 +47,7 @@ const [BehandlingProvider, useBehandling] = constate(() => {
     const hentBehandlingshistorikk = useRerunnableEffect(hentBehandlingshistorikkCallback, [
         behandlingId,
     ]);
+    const hentVedtak = useRerunnableEffect(hentVedtakCallback, [behandlingId]);
 
     const { hentUtestengelserForBehandling, utestengelser } = useHentUtestengelser();
 
@@ -138,6 +141,9 @@ const [BehandlingProvider, useBehandling] = constate(() => {
         vilkårState,
         nyEierModalState,
         åpenHøyremeny,
+        hentVedtak,
+        vedtak,
+        vedtaksresultat,
     };
 });
 

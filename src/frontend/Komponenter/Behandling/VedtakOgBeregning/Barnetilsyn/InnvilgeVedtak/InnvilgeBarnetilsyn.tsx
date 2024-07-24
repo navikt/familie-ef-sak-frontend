@@ -122,6 +122,7 @@ export const InnvilgeBarnetilsyn: React.FC<{
         behandlingErRedigerbar,
         hentAnsvarligSaksbehandler,
         hentBehandling,
+        hentVedtak,
         settNyEierModalState,
     } = useBehandling();
     const [laster, settLaster] = useState<boolean>(false);
@@ -221,6 +222,7 @@ export const InnvilgeBarnetilsyn: React.FC<{
                 case RessursStatus.SUKSESS:
                     utførRedirect();
                     hentBehandling.rerun();
+                    hentVedtak.rerun();
                     break;
                 case RessursStatus.HENTER:
                 case RessursStatus.IKKE_HENTET:

@@ -38,13 +38,14 @@ const utledInitielleSkoleårsperioder = (
 
 export const OpphøreVedtak: React.FC<{
     behandling: Behandling;
-    lagretInnvilgetVedtak?: IvedtakForSkolepenger;
+    lagretVedtak?: IvedtakForSkolepenger;
     forrigeVedtak?: IvedtakForSkolepenger;
-}> = ({ behandling, lagretInnvilgetVedtak, forrigeVedtak }) => {
+}> = ({ behandling, lagretVedtak, forrigeVedtak }) => {
     const {
         behandlingErRedigerbar,
         hentAnsvarligSaksbehandler,
         hentBehandling,
+        hentVedtak,
         settNyEierModalState,
     } = useBehandling();
     const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
@@ -58,10 +59,10 @@ export const OpphøreVedtak: React.FC<{
 
     const formState = useFormState<InnvilgeVedtakForm>(
         {
-            skoleårsperioder: lagretInnvilgetVedtak
-                ? lagretInnvilgetVedtak.skoleårsperioder
+            skoleårsperioder: lagretVedtak
+                ? lagretVedtak.skoleårsperioder
                 : utledInitielleSkoleårsperioder(forrigeVedtak),
-            begrunnelse: lagretInnvilgetVedtak?.begrunnelse || '',
+            begrunnelse: lagretVedtak?.begrunnelse || '',
         },
         validerSkoleårsperioderForOpphør
     );
@@ -92,6 +93,7 @@ export const OpphøreVedtak: React.FC<{
                 case RessursStatus.SUKSESS:
                     utførRedirect();
                     hentBehandling.rerun();
+                    hentVedtak.rerun();
                     break;
                 case RessursStatus.HENTER:
                 case RessursStatus.IKKE_HENTET:

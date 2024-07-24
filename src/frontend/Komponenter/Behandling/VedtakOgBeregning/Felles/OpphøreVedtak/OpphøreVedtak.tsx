@@ -40,6 +40,7 @@ export const OpphøreVedtak: React.FC<{
         hentAnsvarligSaksbehandler,
         hentBehandling,
         settNyEierModalState,
+        hentVedtak,
     } = useBehandling();
     const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
         useApp();
@@ -72,6 +73,7 @@ export const OpphøreVedtak: React.FC<{
     const håndterOpphørtVedtak = (res: RessursSuksess<string> | RessursFeilet) => {
         if (res.status === RessursStatus.SUKSESS) {
             hentBehandling.rerun();
+            hentVedtak.rerun();
             utførRedirect();
         } else {
             settIkkePersistertKomponent(uuidv4());

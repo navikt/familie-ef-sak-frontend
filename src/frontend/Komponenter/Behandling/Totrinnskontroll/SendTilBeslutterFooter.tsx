@@ -60,6 +60,7 @@ const SendTilBeslutterFooter: React.FC<{
         hentTotrinnskontroll,
         hentAnsvarligSaksbehandler,
         hentBehandling,
+        hentVedtak,
         hentBehandlingshistorikk,
         settNyEierModalState,
     } = useBehandling();
@@ -81,6 +82,7 @@ const SendTilBeslutterFooter: React.FC<{
             .then((res: RessursSuksess<string> | RessursFeilet) => {
                 if (res.status === RessursStatus.SUKSESS) {
                     hentBehandling.rerun();
+                    hentVedtak.rerun();
                     hentTotrinnskontroll.rerun();
                     settVisModal(true);
                 } else {

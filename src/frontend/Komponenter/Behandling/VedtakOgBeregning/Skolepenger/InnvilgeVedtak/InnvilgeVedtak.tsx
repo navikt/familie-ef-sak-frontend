@@ -81,13 +81,14 @@ const utledInitielleSkoleårsperioder = (
 
 export const InnvilgeVedtak: React.FC<{
     behandling: Behandling;
-    lagretInnvilgetVedtak?: IvedtakForSkolepenger;
+    lagretVedtak?: IvedtakForSkolepenger;
     forrigeVedtak?: IvedtakForSkolepenger;
-}> = ({ behandling, lagretInnvilgetVedtak, forrigeVedtak }) => {
+}> = ({ behandling, lagretVedtak, forrigeVedtak }) => {
     const {
         behandlingErRedigerbar,
         hentAnsvarligSaksbehandler,
         hentBehandling,
+        hentVedtak,
         settNyEierModalState,
     } = useBehandling();
     const [laster, settLaster] = useState<boolean>(false);
@@ -102,10 +103,10 @@ export const InnvilgeVedtak: React.FC<{
     const { utførRedirect } = useRedirectEtterLagring(`/behandling/${behandling.id}/simulering`);
     const formState = useFormState<InnvilgeVedtakForm>(
         {
-            skoleårsperioder: lagretInnvilgetVedtak
-                ? markerErHentetFraBackend(lagretInnvilgetVedtak.skoleårsperioder)
+            skoleårsperioder: lagretVedtak
+                ? markerErHentetFraBackend(lagretVedtak.skoleårsperioder)
                 : utledInitielleSkoleårsperioder(forrigeVedtak),
-            begrunnelse: lagretInnvilgetVedtak?.begrunnelse || '',
+            begrunnelse: lagretVedtak?.begrunnelse || '',
         },
         validerSkoleårsperioderMedBegrunnelse
     );
@@ -145,6 +146,7 @@ export const InnvilgeVedtak: React.FC<{
                 case RessursStatus.SUKSESS:
                     utførRedirect();
                     hentBehandling.rerun();
+                    hentVedtak.rerun();
                     break;
                 case RessursStatus.HENTER:
                 case RessursStatus.IKKE_HENTET:

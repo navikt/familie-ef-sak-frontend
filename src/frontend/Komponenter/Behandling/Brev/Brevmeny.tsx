@@ -16,6 +16,7 @@ import { useHentBrevStruktur } from '../../../App/hooks/useHentBrevStruktur';
 import { useHentBrevmaler } from '../../../App/hooks/useHentBrevmaler';
 import { useVerdierForBrev } from '../../../App/hooks/useVerdierForBrev';
 import { utledHtmlFelterPåStønadstype } from './BrevUtils';
+import { useBehandling } from '../../../App/context/BehandlingContext';
 
 export interface BrevmenyProps {
     oppdaterBrevRessurs: (brevRessurs: Ressurs<string>) => void;
@@ -46,6 +47,7 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
         behandling.id,
         behandling.stønadstype
     );
+    const { vedtak } = useBehandling();
     const [brevMal, settBrevmal] = useState<string>();
 
     const { brevmaler } = useHentBrevmaler();
@@ -62,7 +64,7 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
         }
     }, [mellomlagretBrev]);
 
-    const brevverdier = useVerdierForBrev(beløpsperioder, behandling);
+    const brevverdier = useVerdierForBrev(beløpsperioder, behandling, vedtak);
 
     return (
         <StyledBrevMeny>
@@ -76,7 +78,6 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
                 response={{
                     brevStruktur,
                     mellomlagretBrev,
-                    beløpsperioder,
                 }}
             >
                 {({ brevStruktur, mellomlagretBrev }) =>
