@@ -13,11 +13,6 @@ import { Behandling } from '../../../App/typer/fagsak';
 import TilegnetSaksbehandler from './TilegnetSaksbehandler';
 import TildelOppgave from './TildelOppgave';
 
-interface Props {
-    behandling: Behandling;
-    åpenHøyremeny: boolean;
-}
-
 const StyledBack = styled(ChevronLeftIcon)`
     border-radius: 0;
     margin-top: 3px;
@@ -60,6 +55,11 @@ export enum Høyremenyvalg {
     Logg = 'Logg',
 }
 
+interface Props {
+    behandling: Behandling;
+    åpenHøyremeny: boolean;
+}
+
 const Høyremeny: React.FC<Props> = ({ behandling, åpenHøyremeny }) => {
     const [aktivtValg, settAktivtvalg] = useState<Høyremenyvalg>(Høyremenyvalg.Logg);
     const { settÅpenHøyremeny } = useBehandling();
@@ -88,10 +88,7 @@ const Høyremeny: React.FC<Props> = ({ behandling, åpenHøyremeny }) => {
                         <Valgvisning aktiv={aktivtValg} settAktiv={settAktivtvalg} />
                         {aktivtValg === Høyremenyvalg.Mappe && <Dokumentoversikt />}
                         {aktivtValg === Høyremenyvalg.Logg && (
-                            <BehandlingHistorikk
-                                behandling={behandling}
-                                behandlingId={behandling.id}
-                            />
+                            <BehandlingHistorikk behandling={behandling} />
                         )}
                         {aktivtValg === Høyremenyvalg.Dialog && <div>Her kommer dialog</div>}
                     </StyledHøyremeny>

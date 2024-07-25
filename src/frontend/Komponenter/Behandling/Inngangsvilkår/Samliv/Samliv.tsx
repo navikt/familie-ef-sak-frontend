@@ -1,12 +1,12 @@
 import React from 'react';
 import { InngangsvilkårType } from '../vilkår';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
-import { VilkårPropsMedBehandlingsstatus } from '../vilkårprops';
+import { VilkårPropsMedBehandling } from '../vilkårprops';
 import SamlivInfo from './SamlivInfo';
 import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';
 import { VilkårpanelInnhold } from '../../Vilkårpanel/VilkårpanelInnhold';
 
-export const Samliv: React.FC<VilkårPropsMedBehandlingsstatus> = ({
+export const Samliv: React.FC<VilkårPropsMedBehandling> = ({
     vurderinger,
     grunnlag,
     lagreVurdering,
@@ -14,8 +14,7 @@ export const Samliv: React.FC<VilkårPropsMedBehandlingsstatus> = ({
     ikkeVurderVilkår,
     feilmeldinger,
     skalViseSøknadsdata,
-    behandlingId,
-    behandlingsstatus,
+    behandling,
 }) => {
     const vurdering = vurderinger.find((v) => v.vilkårType === InngangsvilkårType.SAMLIV);
     if (!vurdering) {
@@ -32,10 +31,9 @@ export const Samliv: React.FC<VilkårPropsMedBehandlingsstatus> = ({
                 {{
                     venstre: (
                         <SamlivInfo
-                            behandlingId={behandlingId}
                             grunnlag={grunnlag}
                             skalViseSøknadsdata={skalViseSøknadsdata}
-                            behandlingsstatus={behandlingsstatus}
+                            behandling={behandling}
                         />
                     ),
                     høyre: (

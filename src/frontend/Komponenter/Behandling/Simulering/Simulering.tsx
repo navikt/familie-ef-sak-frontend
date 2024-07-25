@@ -6,8 +6,13 @@ import { harVedtaksresultatMedTilkjentYtelse } from '../../../App/hooks/useHentV
 import { byggTomRessurs, Ressurs, RessursFeilet } from '../../../App/typer/ressurs';
 import { useApp } from '../../../App/context/AppContext';
 import { useBehandling } from '../../../App/context/BehandlingContext';
+import { Behandling } from '../../../App/typer/fagsak';
 
-export const Simulering: FC<{ behandlingId: string }> = ({ behandlingId }) => {
+interface Props {
+    behandling: Behandling;
+}
+
+export const Simulering: FC<Props> = ({ behandling }) => {
     const { axiosRequest } = useApp();
     const { vedtak, vedtaksresultat } = useBehandling();
     const [simuleringsresultat, settSimuleringsresultat] =
@@ -17,19 +22,19 @@ export const Simulering: FC<{ behandlingId: string }> = ({ behandlingId }) => {
         if (harVedtaksresultatMedTilkjentYtelse(vedtaksresultat)) {
             axiosRequest<ISimulering, null>({
                 method: 'GET',
-                url: `/familie-ef-sak/api/simulering/${behandlingId}`,
+                url: `/familie-ef-sak/api/simulering/${behandling.id}`,
             }).then((respons: Ressurs<ISimulering> | RessursFeilet) => {
                 settSimuleringsresultat(respons);
             });
         }
-    }, [vedtaksresultat, behandlingId, axiosRequest]);
+    }, [vedtaksresultat, behandling.id, axiosRequest]);
 
     return (
         <DataViewer response={{ simuleringsresultat, vedtak }}>
             {({ simuleringsresultat, vedtak }) => (
                 <SimuleringSide
                     simuleringsresultat={simuleringsresultat}
-                    behandlingId={behandlingId}
+                    behandlingId={behandling.id}
                     lagretVedtak={vedtak}
                 />
             )}

@@ -14,6 +14,7 @@ import { useHentOppgaverForOpprettelse } from '../../../App/hooks/useHentOppgave
 import { AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
 import { oppgaveSomSkalOpprettesTilTekst } from '../Totrinnskontroll/oppgaveForOpprettelseTyper';
 import { HøyreKolonne, StyledBrev, VenstreKolonne } from './StyledBrev';
+import { Behandling } from '../../../App/typer/fagsak';
 
 const InfostripeGruppe = styled.div`
     display: flex;
@@ -28,26 +29,21 @@ const StyledInfostripe = styled(AlertInfo)`
 `;
 
 interface Props {
-    behandlingId: string;
+    behandling: Behandling;
 }
 
-const Brev: React.FC<Props> = ({ behandlingId }) => {
+const Brev: React.FC<Props> = ({ behandling }) => {
     const { axiosRequest } = useApp();
+    const { behandlingErRedigerbar, vedtak, personopplysningerResponse, totrinnskontroll } =
+        useBehandling();
     const [brevRessurs, settBrevRessurs] = useState<Ressurs<string>>(byggTomRessurs());
-    const {
-        behandlingErRedigerbar,
-        vedtak,
-        personopplysningerResponse,
-        totrinnskontroll,
-        behandling,
-    } = useBehandling();
     const [kanSendesTilBeslutter, settKanSendesTilBeslutter] = useState<boolean>(false);
-    const oppgaverForOpprettelse = useHentOppgaverForOpprettelse(behandlingId);
+    const oppgaverForOpprettelse = useHentOppgaverForOpprettelse(behandling.id);
 
     const lagBeslutterBrev = () => {
         axiosRequest<string, null>({
             method: 'POST',
-            url: `/familie-ef-sak/api/brev/${behandlingId}`,
+            url: `/familie-ef-sak/api/brev/${behandling.id}`,
         }).then((respons: Ressurs<string>) => {
             settBrevRessurs(respons);
         });
@@ -56,7 +52,7 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
     const hentBrev = () => {
         axiosRequest<string, null>({
             method: 'GET',
-            url: `/familie-ef-sak/api/brev/${behandlingId}`,
+            url: `/familie-ef-sak/api/brev/${behandling.id}`,
         }).then((respons: Ressurs<string>) => {
             settBrevRessurs(respons);
         });
@@ -78,8 +74,8 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
     }, [behandlingErRedigerbar, totrinnskontroll]);
 
     return (
-        <DataViewer response={{ personopplysningerResponse, behandling, vedtak }}>
-            {({ personopplysningerResponse, behandling, vedtak }) => (
+        <DataViewer response={{ personopplysningerResponse, vedtak }}>
+            {({ personopplysningerResponse, vedtak }) => (
                 <>
                     <StyledBrev>
                         <VenstreKolonne>
@@ -100,7 +96,6 @@ const Brev: React.FC<Props> = ({ behandlingId }) => {
                             )}
                             {behandlingErRedigerbar && (
                                 <Brevmeny
-                                    behandlingId={behandlingId}
                                     oppdaterBrevRessurs={oppdaterBrevRessurs}
                                     personopplysninger={personopplysningerResponse}
                                     settKanSendesTilBeslutter={settKanSendesTilBeslutter}

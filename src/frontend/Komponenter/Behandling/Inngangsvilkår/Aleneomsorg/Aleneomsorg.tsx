@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { vilkårStatusForBarn } from '../../Vurdering/VurderingUtil';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import AleneomsorgInfo from './AleneomsorgInfo';
-import { VilkårPropsMedStønadstype } from '../vilkårprops';
+import { VilkårPropsMedBehandling } from '../vilkårprops';
 import { InngangsvilkårType } from '../vilkår';
 import { byggTomRessurs, Ressurs } from '../../../../App/typer/ressurs';
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
@@ -12,7 +12,7 @@ import DokumentasjonSendtInn from '../DokumentasjonSendtInn';
 import { VilkårpanelInnhold } from '../../Vilkårpanel/VilkårpanelInnhold';
 import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';
 
-export const Aleneomsorg: React.FC<VilkårPropsMedStønadstype> = ({
+export const Aleneomsorg: React.FC<VilkårPropsMedBehandling> = ({
     vurderinger,
     lagreVurdering,
     nullstillVurdering,
@@ -20,23 +20,22 @@ export const Aleneomsorg: React.FC<VilkårPropsMedStønadstype> = ({
     grunnlag,
     ikkeVurderVilkår,
     skalViseSøknadsdata,
-    stønadstype,
-    behandlingId,
+    behandling,
 }) => {
     const [barnMedLøpendeStønad, settBarnMedLøpendeStønad] =
         useState<Ressurs<IBarnMedLøpendeStønad>>(byggTomRessurs());
     const { axiosRequest } = useApp();
 
     useEffect(() => {
-        if (stønadstype === Stønadstype.BARNETILSYN) {
+        if (behandling.stønadstype === Stønadstype.BARNETILSYN) {
             axiosRequest<IBarnMedLøpendeStønad, null>({
                 method: 'GET',
-                url: `/familie-ef-sak/api/tilkjentytelse/barn/${behandlingId}`,
+                url: `/familie-ef-sak/api/tilkjentytelse/barn/${behandling.id}`,
             }).then((respons: Ressurs<IBarnMedLøpendeStønad>) => {
                 settBarnMedLøpendeStønad(respons);
             });
         }
-    }, [axiosRequest, behandlingId, stønadstype, settBarnMedLøpendeStønad]);
+    }, [axiosRequest, behandling.stønadstype, behandling.id, settBarnMedLøpendeStønad]);
 
     const vilkårsresultatAleneomsorg = vurderinger
         .filter((vurdering) => vurdering.vilkårType === InngangsvilkårType.ALENEOMSORG)
@@ -73,7 +72,7 @@ export const Aleneomsorg: React.FC<VilkårPropsMedStønadstype> = ({
                                         gjeldendeBarn={barn}
                                         skalViseSøknadsdata={skalViseSøknadsdata}
                                         barnMedLøpendeStønad={barnMedLøpendeStønad}
-                                        stønadstype={stønadstype}
+                                        stønadstype={behandling.stønadstype}
                                         personalia={grunnlag.personalia}
                                     />
                                     {erSisteBarn && skalViseSøknadsdata && (

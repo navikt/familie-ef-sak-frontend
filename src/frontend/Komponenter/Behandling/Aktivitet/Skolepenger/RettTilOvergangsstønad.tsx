@@ -1,5 +1,5 @@
 import React from 'react';
-import { VilkårPropsMedBehandlingOpprettetOgStønadstype } from '../../Inngangsvilkår/vilkårprops';
+import { VilkårPropsMedBehandling } from '../../Inngangsvilkår/vilkårprops';
 import { AktivitetsvilkårType } from '../../Inngangsvilkår/vilkår';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import { AlertError } from '../../../../Felles/Visningskomponenter/Alerts';
@@ -8,15 +8,14 @@ import { VilkårpanelInnhold } from '../../Vilkårpanel/VilkårpanelInnhold';
 import { IGrunnlagsdataSistePeriodeOvergangsstønad } from '../../TidligereVedtaksperioder/typer';
 import SistePeriodeMedOvergangsstønad from '../Inntekt/SistePeriodeMedOvergangsstønad';
 
-export const RettTilOvergangsstønad: React.FC<VilkårPropsMedBehandlingOpprettetOgStønadstype> = ({
+export const RettTilOvergangsstønad: React.FC<VilkårPropsMedBehandling> = ({
     vurderinger,
     lagreVurdering,
     nullstillVurdering,
     ikkeVurderVilkår,
     feilmeldinger,
     grunnlag,
-    behandlingOpprettet,
-    stønadstype,
+    behandling,
 }) => {
     const vurdering = vurderinger.find(
         (v) => v.vilkårType === AktivitetsvilkårType.RETT_TIL_OVERGANGSSTØNAD
@@ -44,8 +43,7 @@ export const RettTilOvergangsstønad: React.FC<VilkårPropsMedBehandlingOpprette
                     venstre: (
                         <SistePeriodeMedOvergangsstønad
                             sistePeriodeMedOS={sistePeriodeMedOS}
-                            behandlingOpprettet={behandlingOpprettet}
-                            stønadstype={stønadstype}
+                            behandling={behandling}
                         />
                     ),
                     høyre: (

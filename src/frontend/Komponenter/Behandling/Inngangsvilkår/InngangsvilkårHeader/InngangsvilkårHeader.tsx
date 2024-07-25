@@ -33,7 +33,6 @@ interface Props {
     behandlingErRedigerbar: boolean;
     oppdaterGrunnlagsdata: (behandlingId: string) => Promise<void>;
     behandlingId: string;
-    behandling: Behandling;
     gjenbrukInngangsvilkår: (behandlingId: string, kopierBehandlingId: string) => void;
 }
 
@@ -42,7 +41,6 @@ export const InngangsvilkårHeader: React.FC<Props> = ({
     behandlingErRedigerbar,
     oppdaterGrunnlagsdata,
     behandlingId,
-    behandling,
     gjenbrukInngangsvilkår,
 }) => {
     const [behandlingerForVilkårsgjenbruk, settbehandlingerForVilkårsgjenbruk] =
@@ -64,8 +62,8 @@ export const InngangsvilkårHeader: React.FC<Props> = ({
     );
 
     useEffect(() => {
-        finnBehandlingForGjenbrukAvVilkår(behandling.id);
-    }, [behandling, finnBehandlingForGjenbrukAvVilkår]);
+        finnBehandlingForGjenbrukAvVilkår(behandlingId);
+    }, [behandlingId, finnBehandlingForGjenbrukAvVilkår]);
 
     return (
         <FlexRow>

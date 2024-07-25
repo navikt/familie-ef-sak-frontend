@@ -6,8 +6,7 @@ import {
     Vurderingsfeilmelding,
 } from './vilkår';
 import { RessursFeilet, RessursSuksess } from '../../../App/typer/ressurs';
-import { Stønadstype } from '../../../App/typer/behandlingstema';
-import { BehandlingStatus } from '../../../App/typer/behandlingstatus';
+import { Behandling } from '../../../App/typer/fagsak';
 
 export interface VilkårProps {
     vurderinger: IVurdering[];
@@ -25,21 +24,6 @@ export interface VilkårProps {
     skalViseSøknadsdata: boolean;
 }
 
-export interface VilkårPropsMedStønadstype extends VilkårProps {
-    stønadstype: Stønadstype;
-    behandlingId: string;
-}
-
-export interface VilkårPropsMedBehandlingId extends VilkårProps {
-    behandlingId: string;
-}
-
-export interface VilkårPropsMedBehandlingsstatus extends VilkårProps {
-    behandlingsstatus: BehandlingStatus;
-    behandlingId: string;
-}
-
-export interface VilkårPropsMedBehandlingOpprettetOgStønadstype extends VilkårProps {
-    behandlingOpprettet: string;
-    stønadstype: Stønadstype;
+export interface VilkårPropsMedBehandling extends VilkårProps {
+    behandling: Behandling;
 }

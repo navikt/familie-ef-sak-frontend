@@ -8,8 +8,13 @@ import ToKolonnerLayout from '../../../Felles/Visningskomponenter/ToKolonnerLayo
 import TidligereVedtaksperioderInfo from './TidligereVedtaksperioderInfo';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import VilkårIkkeOpprettetAlert from '../Vurdering/VilkårIkkeOpprettet';
+import { Behandling } from '../../../App/typer/fagsak';
 
-const TidligereVedtaksperioder: React.FC<{ behandlingId: string }> = ({ behandlingId }) => {
+interface Props {
+    behandling: Behandling;
+}
+
+const TidligereVedtaksperioder: React.FC<Props> = ({ behandling }) => {
     const { vilkårState } = useBehandling();
     const {
         hentVilkår,
@@ -21,9 +26,8 @@ const TidligereVedtaksperioder: React.FC<{ behandlingId: string }> = ({ behandli
     } = vilkårState;
 
     useEffect(() => {
-        hentVilkår(behandlingId);
-        // eslint-disable-next-line
-    }, [behandlingId]);
+        hentVilkår(behandling.id);
+    }, [hentVilkår, behandling.id]);
 
     return (
         <DataViewer response={{ vilkår }}>

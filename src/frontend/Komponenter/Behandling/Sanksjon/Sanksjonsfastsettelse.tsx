@@ -78,12 +78,16 @@ const AdvarselVisning = styled(AlertWarning)`
     }
 `;
 
-const Sanksjonsfastsettelse: FC = () => {
-    const { behandling, vedtak } = useBehandling();
+interface Props {
+    behandling: Behandling;
+}
+
+const Sanksjonsfastsettelse: FC<Props> = ({ behandling }) => {
+    const { vedtak } = useBehandling();
 
     return (
-        <DataViewer response={{ vedtak, behandling }}>
-            {({ vedtak, behandling }) => (
+        <DataViewer response={{ vedtak }}>
+            {({ vedtak }) => (
                 <SanksjonsvedtakVisning
                     behandling={behandling}
                     lagretVedtak={vedtak}
