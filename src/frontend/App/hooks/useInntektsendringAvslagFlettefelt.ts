@@ -1,6 +1,6 @@
 import { Ressurs, RessursStatus } from '../typer/ressurs';
 import { useApp } from '../context/AppContext';
-import { useCallback, useEffect } from 'react';
+import { useCallback } from 'react';
 import { AxiosRequestConfig } from 'axios';
 import {
     beregnTiProsentReduksjonIMånedsinntekt,
@@ -12,23 +12,18 @@ import {
     EAvslagÅrsak,
     EBehandlingResultat,
     IInnvilgeVedtakForOvergangsstønad,
+    IVedtak,
     IVedtakForOvergangsstønad,
     IVedtakType,
 } from '../typer/vedtak';
 import { formaterTallMedTusenSkille } from '../utils/formatter';
-import { useHentVedtak } from './useHentVedtak';
 
 export const useInntektsendringAvslagFlettefelt = (
-    behandlingId: string,
     forrigeBehandlingId: string | undefined,
-    leggTilNyeFlettefelt: (nyeFlettefelt: FlettefeltStore) => void
+    leggTilNyeFlettefelt: (nyeFlettefelt: FlettefeltStore) => void,
+    vedtak: Ressurs<IVedtak | undefined>
 ) => {
     const { axiosRequest } = useApp();
-    const { vedtak, hentVedtak } = useHentVedtak(behandlingId);
-
-    useEffect(() => {
-        hentVedtak();
-    }, [hentVedtak]);
 
     const settFlettefeltForAvslagMindreInntektsøkning = useCallback(() => {
         if (

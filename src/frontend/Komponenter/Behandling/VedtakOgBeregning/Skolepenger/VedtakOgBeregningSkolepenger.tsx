@@ -8,12 +8,12 @@ import {
 } from '../../../../App/typer/vedtak';
 import { useHentVedtak } from '../../../../App/hooks/useHentVedtak';
 import { erAlleVilkårOppfylt, skalViseNullstillVedtakKnapp } from '../Felles/utils';
-import { RessursStatus } from '../../../../App/typer/ressurs';
 import SelectVedtaksresultat from '../Felles/SelectVedtaksresultat';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 import { AvslåVedtak } from '../Felles/AvslåVedtak/AvslåVedtak';
 import { InnvilgeVedtak } from './InnvilgeVedtak/InnvilgeVedtak';
 import { OpphøreVedtak } from './OpphøreVedtak/OpphøreVedtak';
+import { useBehandling } from '../../../../App/context/BehandlingContext';
 
 interface Props {
     behandling: Behandling;
@@ -21,27 +21,20 @@ interface Props {
 }
 
 const VedtakOgBeregningSkolepenger: FC<Props> = ({ behandling, vilkår }) => {
-    const { id: behandlingId, forrigeBehandlingId } = behandling;
-    const [resultatType, settResultatType] = useState<EBehandlingResultat | undefined>();
-    const { vedtak, hentVedtak } = useHentVedtak(behandlingId);
-    const { vedtak: vedtakForrigeBehandling, hentVedtak: hentVedtakForrigeBehandling } =
-        useHentVedtak(forrigeBehandlingId);
+    const { vedtak, vedtaksresultat } = useBehandling();
+    const { vedtak: forrigeVedtak, hentVedtak: hentForrigeVedtak } = useHentVedtak(
+        behandling.forrigeBehandlingId
+    );
+
+    const [resultatType, settResultatType] = useState<EBehandlingResultat | undefined>(
+        vedtaksresultat
+    );
 
     const alleVilkårOppfylt = erAlleVilkårOppfylt(vilkår);
 
     useEffect(() => {
-        hentVedtak();
-    }, [hentVedtak, behandling]);
-
-    useEffect(() => {
-        hentVedtakForrigeBehandling();
-    }, [hentVedtakForrigeBehandling]);
-
-    useEffect(() => {
-        if (vedtak.status === RessursStatus.SUKSESS) {
-            settResultatType(vedtak.data?.resultatType);
-        }
-    }, [vedtak]);
+        hentForrigeVedtak();
+    }, [hentForrigeVedtak]);
 
     return (
         <>
@@ -52,23 +45,23 @@ const VedtakOgBeregningSkolepenger: FC<Props> = ({ behandling, vilkår }) => {
                 alleVilkårOppfylt={alleVilkårOppfylt}
                 skalViseNullstillVedtakKnapp={skalViseNullstillVedtakKnapp(vedtak)}
             />
-            <DataViewer response={{ vedtak, vedtakForrigeBehandling }}>
-                {({ vedtak, vedtakForrigeBehandling }) => {
-                    const vedtakForSkolepenger = vedtak as unknown as IVedtakForSkolepenger;
+            <DataViewer response={{ vedtak, forrigeVedtak }}>
+                {({ vedtak, forrigeVedtak }) => {
+                    const skolepengeVedtak = vedtak as unknown as IVedtakForSkolepenger;
                     switch (resultatType) {
                         case EBehandlingResultat.INNVILGE:
                             return (
                                 <InnvilgeVedtak
                                     behandling={behandling}
                                     forrigeVedtak={
-                                        vedtakForrigeBehandling &&
-                                        (vedtakForrigeBehandling as unknown as IVedtakForSkolepenger)
+                                        forrigeVedtak &&
+                                        (forrigeVedtak as unknown as IVedtakForSkolepenger)
                                     }
                                     key={'innvilge'}
-                                    lagretInnvilgetVedtak={
-                                        vedtakForSkolepenger?._type ===
+                                    lagretVedtak={
+                                        skolepengeVedtak?._type ===
                                         IVedtakType.InnvilgelseSkolepenger
-                                            ? vedtakForSkolepenger
+                                            ? skolepengeVedtak
                                             : undefined
                                     }
                                 />
@@ -78,11 +71,11 @@ const VedtakOgBeregningSkolepenger: FC<Props> = ({ behandling, vilkår }) => {
                                 <OpphøreVedtak
                                     behandling={behandling}
                                     forrigeVedtak={
-                                        vedtakForrigeBehandling &&
-                                        (vedtakForrigeBehandling as unknown as IVedtakForSkolepenger)
+                                        forrigeVedtak &&
+                                        (forrigeVedtak as unknown as IVedtakForSkolepenger)
                                     }
                                     key={'opphør'}
-                                    lagretInnvilgetVedtak={vedtakForSkolepenger}
+                                    lagretVedtak={skolepengeVedtak}
                                 />
                             );
 

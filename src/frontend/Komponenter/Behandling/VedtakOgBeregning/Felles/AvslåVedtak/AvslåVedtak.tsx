@@ -41,6 +41,7 @@ export const AvslåVedtak: React.FC<{
     const {
         hentAnsvarligSaksbehandler,
         hentBehandling,
+        hentVedtak,
         behandlingErRedigerbar,
         settNyEierModalState,
     } = useBehandling();
@@ -63,6 +64,7 @@ export const AvslåVedtak: React.FC<{
                 case RessursStatus.SUKSESS:
                     utførRedirect();
                     hentBehandling.rerun();
+                    hentVedtak.rerun();
                     break;
                 case RessursStatus.HENTER:
                 case RessursStatus.IKKE_HENTET:

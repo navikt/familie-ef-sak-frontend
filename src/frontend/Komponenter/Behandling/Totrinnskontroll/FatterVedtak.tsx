@@ -20,10 +20,7 @@ import { useNavigate } from 'react-router-dom';
 import { RessursStatus } from '../../../App/typer/ressurs';
 import { Behandling } from '../../../App/typer/fagsak';
 import { ABorderSubtle } from '@navikt/ds-tokens/dist/tokens';
-import {
-    harVedtaksresultatMedTilkjentYtelse,
-    useHentVedtak,
-} from '../../../App/hooks/useHentVedtak';
+import { harVedtaksresultatMedTilkjentYtelse } from '../../../App/hooks/useHentVedtak';
 import { Steg } from '../Høyremeny/Steg';
 
 const SubmitButtonWrapper = styled.div`
@@ -68,8 +65,8 @@ const FatterVedtak: React.FC<{
     const [erSimuleringsresultatEndret, settErSimuleringsresultatEndret] = useState<boolean>(false);
 
     const { axiosRequest, settToast } = useApp();
-    const { hentBehandlingshistorikk, hentTotrinnskontroll } = useBehandling();
-    const { hentVedtak, vedtaksresultat } = useHentVedtak(behandling.id);
+    const { hentBehandlingshistorikk, hentTotrinnskontroll, hentVedtak, vedtaksresultat } =
+        useBehandling();
 
     const navigate = useNavigate();
 
@@ -86,10 +83,6 @@ const FatterVedtak: React.FC<{
         },
         [axiosRequest]
     );
-
-    useEffect(() => {
-        hentVedtak();
-    }, [hentVedtak]);
 
     useEffect(() => {
         if (
@@ -126,6 +119,7 @@ const FatterVedtak: React.FC<{
                 if (response.status === RessursStatus.SUKSESS) {
                     if (totrinnsresultat === Totrinnsresultat.GODKJENT) {
                         hentBehandlingshistorikk.rerun();
+                        hentVedtak.rerun();
                         hentTotrinnskontroll.rerun();
                         settVisGodkjentModal(true);
                     } else {

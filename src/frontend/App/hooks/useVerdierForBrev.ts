@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { formaterIsoDato, formaterTallMedTusenSkille } from '../utils/formatter';
-import { IBeløpsperiode, IBeregningsperiodeBarnetilsyn } from '../typer/vedtak';
+import { IBeløpsperiode, IBeregningsperiodeBarnetilsyn, IVedtak } from '../typer/vedtak';
 import { Behandling } from '../typer/fagsak';
 import { useInntektsendringAvslagFlettefelt } from './useInntektsendringAvslagFlettefelt';
 import { Ressurs, RessursStatus } from '../typer/ressurs';
@@ -57,7 +57,8 @@ export const lagTomBrevverdier = (): Brevverdier => ({
 
 export const useVerdierForBrev = (
     beløpsperioder: Ressurs<IBeløpsperiode[] | IBeregningsperiodeBarnetilsyn[] | undefined>,
-    behandling: Behandling
+    behandling: Behandling,
+    vedtak: Ressurs<IVedtak | undefined>
 ): Brevverdier => {
     const [flettefeltStore, settFlettefeltStore] = useState<FlettefeltStore>({});
     const [valgfeltStore, settValgfeltStore] = useState<ValgfeltStore>({});
@@ -73,9 +74,9 @@ export const useVerdierForBrev = (
     };
 
     const { settFlettefeltForAvslagMindreInntektsøkning } = useInntektsendringAvslagFlettefelt(
-        behandling.id,
         behandling.forrigeBehandlingId,
-        leggTilNyeFlettefelt
+        leggTilNyeFlettefelt,
+        vedtak
     );
 
     useEffect(() => {

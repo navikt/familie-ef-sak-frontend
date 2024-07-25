@@ -2,16 +2,14 @@ import React, { FC, useEffect, useState } from 'react';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import SimuleringSide from './SimuleringSide';
 import { Simulering as ISimulering } from './SimuleringTyper';
-import {
-    harVedtaksresultatMedTilkjentYtelse,
-    useHentVedtak,
-} from '../../../App/hooks/useHentVedtak';
+import { harVedtaksresultatMedTilkjentYtelse } from '../../../App/hooks/useHentVedtak';
 import { byggTomRessurs, Ressurs, RessursFeilet } from '../../../App/typer/ressurs';
 import { useApp } from '../../../App/context/AppContext';
+import { useBehandling } from '../../../App/context/BehandlingContext';
 
 export const Simulering: FC<{ behandlingId: string }> = ({ behandlingId }) => {
     const { axiosRequest } = useApp();
-    const { vedtak, hentVedtak, vedtaksresultat } = useHentVedtak(behandlingId);
+    const { vedtak, vedtaksresultat } = useBehandling();
     const [simuleringsresultat, settSimuleringsresultat] =
         useState<Ressurs<ISimulering>>(byggTomRessurs<ISimulering>());
 
@@ -25,10 +23,6 @@ export const Simulering: FC<{ behandlingId: string }> = ({ behandlingId }) => {
             });
         }
     }, [vedtaksresultat, behandlingId, axiosRequest]);
-
-    useEffect(() => {
-        hentVedtak();
-    }, [hentVedtak]);
 
     return (
         <DataViewer response={{ simuleringsresultat, vedtak }}>

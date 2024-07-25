@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import styled from 'styled-components';
 import {
     dagsgrenseForAdvarsel,
@@ -25,7 +25,6 @@ import useFormState, { FormState } from '../../../App/hooks/felles/useFormState'
 import { FieldState } from '../../../App/hooks/felles/useFieldState';
 import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import { SANKSJONERE_VEDTAK, validerSanksjonereVedtakForm } from './utils';
-import { useHentVedtak } from '../../../App/hooks/useHentVedtak';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { Behandling } from '../../../App/typer/fagsak';
 import { stønadstypeTilTekst } from '../../../App/typer/behandlingstema';
@@ -79,27 +78,18 @@ const AdvarselVisning = styled(AlertWarning)`
     }
 `;
 
-interface Props {
-    behandlingId: string;
-}
+const Sanksjonsfastsettelse: FC = () => {
+    const { behandling, vedtak } = useBehandling();
 
-const Sanksjonsfastsettelse: FC<Props> = ({ behandlingId }) => {
-    const { vedtak, hentVedtak } = useHentVedtak(behandlingId);
-    const { behandling } = useBehandling();
-    useEffect(() => {
-        hentVedtak();
-    }, [hentVedtak]);
     return (
         <DataViewer response={{ vedtak, behandling }}>
-            {({ vedtak, behandling }) => {
-                return (
-                    <SanksjonsvedtakVisning
-                        behandling={behandling}
-                        lagretVedtak={vedtak}
-                        key={'sanksjonsvedtakVisning'}
-                    />
-                );
-            }}
+            {({ vedtak, behandling }) => (
+                <SanksjonsvedtakVisning
+                    behandling={behandling}
+                    lagretVedtak={vedtak}
+                    key={'sanksjonsvedtakVisning'}
+                />
+            )}
         </DataViewer>
     );
 };
@@ -113,7 +103,8 @@ const SanksjonsvedtakVisning: FC<{
             ? (lagretVedtak as ISanksjonereVedtakForOvergangsstønad)
             : undefined;
     const [feilmelding, settFeilmelding] = useState<string>();
-    const { hentAnsvarligSaksbehandler, hentBehandling, behandlingErRedigerbar } = useBehandling();
+    const { hentAnsvarligSaksbehandler, hentBehandling, hentVedtak, behandlingErRedigerbar } =
+        useBehandling();
     const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
         useApp();
     const { utførRedirect } = useRedirectEtterLagring(`/behandling/${behandling.id}/simulering`);
@@ -136,6 +127,7 @@ const SanksjonsvedtakVisning: FC<{
             if (res.status === RessursStatus.SUKSESS) {
                 utførRedirect();
                 hentBehandling.rerun();
+                hentVedtak.rerun();
             } else {
                 settIkkePersistertKomponent(uuidv4());
                 settFeilmelding(res.frontendFeilmelding);

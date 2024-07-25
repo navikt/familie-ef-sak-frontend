@@ -9,7 +9,6 @@ import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { useApp } from '../../../App/context/AppContext';
 import { TotrinnskontrollStatus } from '../../../App/typer/totrinnskontroll';
 import { BrevmottakereForBehandling } from '../Brevmottakere/BrevmottakereForBehandling';
-import { useHentVedtak } from '../../../App/hooks/useHentVedtak';
 import { skalFerdigstilleUtenBeslutter } from '../VedtakOgBeregning/Felles/utils';
 import { useHentOppgaverForOpprettelse } from '../../../App/hooks/useHentOppgaverForOpprettelse';
 import { AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
@@ -35,15 +34,15 @@ interface Props {
 const Brev: React.FC<Props> = ({ behandlingId }) => {
     const { axiosRequest } = useApp();
     const [brevRessurs, settBrevRessurs] = useState<Ressurs<string>>(byggTomRessurs());
-    const { behandlingErRedigerbar, personopplysningerResponse, totrinnskontroll, behandling } =
-        useBehandling();
+    const {
+        behandlingErRedigerbar,
+        vedtak,
+        personopplysningerResponse,
+        totrinnskontroll,
+        behandling,
+    } = useBehandling();
     const [kanSendesTilBeslutter, settKanSendesTilBeslutter] = useState<boolean>(false);
-    const { hentVedtak, vedtak } = useHentVedtak(behandlingId);
     const oppgaverForOpprettelse = useHentOppgaverForOpprettelse(behandlingId);
-
-    useEffect(() => {
-        hentVedtak();
-    }, [hentVedtak]);
 
     const lagBeslutterBrev = () => {
         axiosRequest<string, null>({

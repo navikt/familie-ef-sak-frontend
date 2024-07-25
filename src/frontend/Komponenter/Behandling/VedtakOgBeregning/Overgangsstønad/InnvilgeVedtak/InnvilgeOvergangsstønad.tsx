@@ -57,6 +57,7 @@ export const InnvilgeOvergangsstønad: React.FC<{
     const {
         hentAnsvarligSaksbehandler,
         hentBehandling,
+        hentVedtak,
         behandlingErRedigerbar,
         settNyEierModalState,
     } = useBehandling();
@@ -182,6 +183,7 @@ export const InnvilgeOvergangsstønad: React.FC<{
             switch (res.status) {
                 case RessursStatus.SUKSESS:
                     hentBehandling.rerun();
+                    hentVedtak.rerun();
                     utførRedirect();
                     break;
                 case RessursStatus.HENTER:
