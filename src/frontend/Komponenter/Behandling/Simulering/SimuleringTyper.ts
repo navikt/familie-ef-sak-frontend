@@ -1,4 +1,4 @@
-export interface Simulering {
+export interface SimuleringResultat {
     perioder: SimuleringPeriode[];
     fomDatoNestePeriode: string;
     etterbetaling: number;

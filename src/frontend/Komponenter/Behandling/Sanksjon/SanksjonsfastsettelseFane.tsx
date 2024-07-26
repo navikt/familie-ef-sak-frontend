@@ -82,13 +82,13 @@ interface Props {
     behandling: Behandling;
 }
 
-const Sanksjonsfastsettelse: FC<Props> = ({ behandling }) => {
+export const SanksjonsfastsettelseFane: FC<Props> = ({ behandling }) => {
     const { vedtak } = useBehandling();
 
     return (
         <DataViewer response={{ vedtak }}>
             {({ vedtak }) => (
-                <SanksjonsvedtakVisning
+                <Sanksjonsfastsettelse
                     behandling={behandling}
                     lagretVedtak={vedtak}
                     key={'sanksjonsvedtakVisning'}
@@ -98,7 +98,7 @@ const Sanksjonsfastsettelse: FC<Props> = ({ behandling }) => {
     );
 };
 
-const SanksjonsvedtakVisning: FC<{
+const Sanksjonsfastsettelse: FC<{
     behandling: Behandling;
     lagretVedtak?: IVedtak;
 }> = ({ behandling, lagretVedtak }) => {
@@ -272,5 +272,3 @@ const SanksjonsvedtakVisning: FC<{
         </Container>
     );
 };
-
-export default Sanksjonsfastsettelse;

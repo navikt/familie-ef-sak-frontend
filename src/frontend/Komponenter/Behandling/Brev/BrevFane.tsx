@@ -32,7 +32,7 @@ interface Props {
     behandling: Behandling;
 }
 
-const Brev: React.FC<Props> = ({ behandling }) => {
+export const BrevFane: React.FC<Props> = ({ behandling }) => {
     const { axiosRequest } = useApp();
     const { behandlingErRedigerbar, vedtak, personopplysningerResponse, totrinnskontroll } =
         useBehandling();
@@ -120,5 +120,3 @@ const Brev: React.FC<Props> = ({ behandling }) => {
         </DataViewer>
     );
 };
-
-export default Brev;

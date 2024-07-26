@@ -10,7 +10,7 @@ interface Props {
     behandling: Behandling;
 }
 
-export const AktivitetsvilkårSide: FC<Props> = ({ behandling }) => (
+export const AktivitetsvilkårFane: FC<Props> = ({ behandling }) => (
     <>
         <AktivitetsvilkårHeader />
         <AktivitetsVilkår behandling={behandling} />

@@ -1,4 +1,4 @@
-import { SanksjonereVedtakForm } from './Sanksjonsfastsettelse';
+import { SanksjonereVedtakForm } from './SanksjonsfastsettelseFane';
 import { FormErrors } from '../../../App/hooks/felles/useFormState';
 
 export const SANKSJONERE_VEDTAK = 'sanksjonere-vedtak';

@@ -80,7 +80,7 @@ const BehandlingContent: FC<{
 }> = ({ behandling, personopplysninger }) => {
     useSetValgtFagsakId(behandling.fagsakId);
     useSetPersonIdent(personopplysninger.personIdent);
-    const { åpenHøyremeny, utestengelser } = useBehandling();
+    const { åpenHøyremeny } = useBehandling();
 
     return (
         <>
@@ -89,7 +89,7 @@ const BehandlingContent: FC<{
                 <InnholdWrapper $åpenHøyremeny={åpenHøyremeny}>
                     <Fanemeny behandling={behandling} />
                     <SettPåVent behandling={behandling} />
-                    <InfostripeUtestengelse utestengelser={utestengelser} />
+                    <InfostripeUtestengelse />
                     <Personopplysningsendringer behandlingId={behandling.id} />
                     <EkspanderbareVilkårpanelProvider>
                         <BehandlingRoutes behandling={behandling} />

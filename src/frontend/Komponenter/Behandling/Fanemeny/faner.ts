@@ -1,17 +1,17 @@
-import TidligereVedtaksperioder from '../TidligereVedtaksperioder/TidligereVedtaksperioder';
-import Inngangsvilkår from '../Inngangsvilkår/Inngangsvilkår';
 import { FunctionComponent } from 'react';
-import Brev from '../Brev/Brev';
 import { Behandling, BehandlingResultat } from '../../../App/typer/fagsak';
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
-import { VedtakOgBeregningSide } from '../VedtakOgBeregning/VedtakOgBeregningSide';
-import { Simulering } from '../Simulering/Simulering';
 import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
-import Sanksjonsfastsettelse from '../Sanksjon/Sanksjonsfastsettelse';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
-import { ÅrsakRevurderingSide } from '../ÅrsakRevurdering/ÅrsakRevurderingSide';
-import BehandlingsårsakUtenBrev from './BehandlingsårsakUtenBrev';
-import { AktivitetsvilkårSide } from '../Aktivitet/AktivitetsvilkårSide';
+import { AktivitetsvilkårFane } from '../Aktivitet/AktivitetsvilkårFane';
+import { BrevFane } from '../Brev/BrevFane';
+import { InngangsvilkårFane } from '../Inngangsvilkår/InngangsvilkårFane';
+import { KorrigeringFane } from './KorrigeringFane';
+import { SanksjonsfastsettelseFane } from '../Sanksjon/SanksjonsfastsettelseFane';
+import { SimuleringFane } from '../Simulering/SimuleringFane';
+import { TidligereVedtaksperioderFane } from '../TidligereVedtaksperioder/TidligereVedtaksperioderFane';
+import { VedtakOgBeregningFane } from '../VedtakOgBeregning/VedtakOgBeregningFane';
+import { ÅrsakRevurderingFane } from '../ÅrsakRevurdering/ÅrsakRevurderingFane';
 
 export interface FaneProps {
     href: string;
@@ -36,47 +36,47 @@ const alleFaner: FaneProps[] = [
     {
         href: 'arsak-revurdering',
         navn: FaneNavn.ÅRSAK_REVURDERING,
-        komponent: ÅrsakRevurderingSide,
+        komponent: ÅrsakRevurderingFane,
     },
     {
         href: 'tidligere-vedtaksperioder',
         navn: FaneNavn.TIDLIGEREVEDTAKSPERIODER,
-        komponent: TidligereVedtaksperioder,
+        komponent: TidligereVedtaksperioderFane,
     },
     {
         href: 'inngangsvilkar',
         navn: FaneNavn.INNGANGSVILKÅR,
-        komponent: Inngangsvilkår,
+        komponent: InngangsvilkårFane,
     },
     {
         href: 'aktivitet',
         navn: FaneNavn.AKTIVITET,
-        komponent: AktivitetsvilkårSide,
+        komponent: AktivitetsvilkårFane,
     },
     {
         href: 'vedtak-og-beregning',
         navn: FaneNavn.VEDTAK_OG_BEREGNING,
-        komponent: VedtakOgBeregningSide,
+        komponent: VedtakOgBeregningFane,
     },
     {
         href: 'sanksjonsfastsettelse',
         navn: FaneNavn.SANKSJON,
-        komponent: Sanksjonsfastsettelse,
+        komponent: SanksjonsfastsettelseFane,
     },
     {
         href: 'simulering',
         navn: FaneNavn.SIMULERING,
-        komponent: Simulering,
+        komponent: SimuleringFane,
     },
     {
         href: 'brev',
         navn: FaneNavn.BREV,
-        komponent: Brev,
+        komponent: BrevFane,
     },
     {
         href: 'brev',
         navn: FaneNavn.KORRIGERING_UTEN_BREV || FaneNavn.IVERKSETTE_KA_VEDTAK,
-        komponent: BehandlingsårsakUtenBrev,
+        komponent: KorrigeringFane,
     },
 ];
 

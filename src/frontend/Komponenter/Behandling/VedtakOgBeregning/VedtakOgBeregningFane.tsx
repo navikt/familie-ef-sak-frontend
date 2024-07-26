@@ -33,7 +33,7 @@ interface Props {
     behandling: Behandling;
 }
 
-export const VedtakOgBeregningSide: FC<Props> = ({ behandling }) => {
+export const VedtakOgBeregningFane: FC<Props> = ({ behandling }) => {
     const { vilkårState } = useBehandling();
 
     const [visNullstillVedtakModal, settVisNullstillVedtakModal] = useState(false);

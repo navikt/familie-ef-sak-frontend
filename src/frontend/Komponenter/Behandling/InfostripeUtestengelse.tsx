@@ -2,9 +2,8 @@ import React, { FC } from 'react';
 import { Alert } from '@navikt/ds-react';
 import styled from 'styled-components';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
-import { IUtestengelse } from '../../App/typer/utestengelse';
-import { Ressurs } from '../../App/typer/ressurs';
 import { formaterIsoDato, formaterIsoSisteDagIMåneden } from '../../App/utils/formatter';
+import { useBehandling } from '../../App/context/BehandlingContext';
 
 const AdvarselVisning = styled(Alert)`
     margin: 0.5rem 0.5rem 0 0.5rem;
@@ -13,9 +12,8 @@ const AdvarselVisning = styled(Alert)`
     }
 `;
 
-export const InfostripeUtestengelse: FC<{ utestengelser: Ressurs<IUtestengelse[]> }> = ({
-    utestengelser,
-}) => {
+export const InfostripeUtestengelse: FC = () => {
+    const { utestengelser } = useBehandling();
     return (
         <DataViewer response={{ utestengelser }}>
             {({ utestengelser }) => {

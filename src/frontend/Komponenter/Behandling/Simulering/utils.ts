@@ -1,9 +1,9 @@
-import { Simulering, SimuleringTabellRad } from './SimuleringTyper';
+import { SimuleringResultat, SimuleringTabellRad } from './SimuleringTyper';
 import { gjelderÅr } from '../../../App/utils/dato';
 import { formaterIsoMåned } from '../../../App/utils/formatter';
 
 export const mapSimuleringstabellRader = (
-    simuleringsresultat: Simulering,
+    simuleringsresultat: SimuleringResultat,
     år: number
 ): SimuleringTabellRad[] =>
     simuleringsresultat.perioder

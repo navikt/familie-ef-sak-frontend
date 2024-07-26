@@ -20,7 +20,7 @@ interface Props {
     behandling: Behandling;
 }
 
-export const ÅrsakRevurderingSide: React.FC<Props> = ({ behandling }) => {
+export const ÅrsakRevurderingFane: React.FC<Props> = ({ behandling }) => {
     const { axiosRequest } = useApp();
 
     const [revurderingsinformasjon, settRevurderingsinformasjon] =

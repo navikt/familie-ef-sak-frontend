@@ -20,7 +20,7 @@ interface Props {
     behandling: Behandling;
 }
 
-const Inngangsvilkår: FC<Props> = ({ behandling }) => {
+export const InngangsvilkårFane: FC<Props> = ({ behandling }) => {
     const { behandlingErRedigerbar, vilkårState } = useBehandling();
     const { erSaksbehandler } = useApp();
     const {
@@ -137,5 +137,3 @@ const Inngangsvilkår: FC<Props> = ({ behandling }) => {
         </DataViewer>
     );
 };
-
-export default Inngangsvilkår;
