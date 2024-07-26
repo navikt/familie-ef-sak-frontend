@@ -2,7 +2,6 @@ import * as React from 'react';
 import { FC, useEffect } from 'react';
 import Høyremeny from './Høyremeny/Høyremeny';
 import styled from 'styled-components';
-import Fanemeny from './Fanemeny/Fanemeny';
 import BehandlingRoutes from './BehandlingRoutes';
 import { BehandlingProvider, useBehandling } from '../../App/context/BehandlingContext';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
@@ -18,6 +17,7 @@ import { EkspanderbareVilkårpanelProvider } from '../../App/context/Ekspanderba
 import Personopplysningsendringer from './Endring/EndringPersonopplysninger';
 import { SettPåVent } from './SettPåVent/SettPåVent';
 import { NyEierModal } from './Modal/NyEierModal';
+import { Fanemeny } from './Fanemeny/Fanemeny';
 
 const Container = styled.div`
     display: flex;
@@ -87,7 +87,7 @@ const BehandlingContent: FC<{
             <PersonHeaderComponent data={personopplysninger} behandling={behandling} />
             <Container>
                 <InnholdWrapper $åpenHøyremeny={åpenHøyremeny}>
-                    <Fanemeny />
+                    <Fanemeny behandling={behandling} />
                     <SettPåVent behandling={behandling} />
                     <InfostripeUtestengelse utestengelser={utestengelser} />
                     <Personopplysningsendringer behandlingId={behandling.id} />

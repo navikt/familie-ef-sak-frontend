@@ -13,13 +13,13 @@ import { ÅrsakRevurderingSide } from '../ÅrsakRevurdering/ÅrsakRevurderingSid
 import BehandlingsårsakUtenBrev from './BehandlingsårsakUtenBrev';
 import { AktivitetsvilkårSide } from '../Aktivitet/AktivitetsvilkårSide';
 
-export interface ISide {
+export interface FaneProps {
     href: string;
     navn: string;
     komponent: FunctionComponent<{ behandling: Behandling }>;
 }
 
-export enum SideNavn {
+export enum FaneNavn {
     AKTIVITET = 'Aktivitet',
     BREV = 'Vedtaksbrev',
     KORRIGERING_UTEN_BREV = 'Korrigering uten brev',
@@ -32,103 +32,110 @@ export enum SideNavn {
     ÅRSAK_REVURDERING = 'Årsak revurdering',
 }
 
-const alleSider: ISide[] = [
+const alleFaner: FaneProps[] = [
     {
         href: 'arsak-revurdering',
-        navn: SideNavn.ÅRSAK_REVURDERING,
+        navn: FaneNavn.ÅRSAK_REVURDERING,
         komponent: ÅrsakRevurderingSide,
     },
     {
         href: 'tidligere-vedtaksperioder',
-        navn: SideNavn.TIDLIGEREVEDTAKSPERIODER,
+        navn: FaneNavn.TIDLIGEREVEDTAKSPERIODER,
         komponent: TidligereVedtaksperioder,
     },
     {
         href: 'inngangsvilkar',
-        navn: SideNavn.INNGANGSVILKÅR,
+        navn: FaneNavn.INNGANGSVILKÅR,
         komponent: Inngangsvilkår,
     },
     {
         href: 'aktivitet',
-        navn: SideNavn.AKTIVITET,
+        navn: FaneNavn.AKTIVITET,
         komponent: AktivitetsvilkårSide,
     },
     {
         href: 'vedtak-og-beregning',
-        navn: SideNavn.VEDTAK_OG_BEREGNING,
+        navn: FaneNavn.VEDTAK_OG_BEREGNING,
         komponent: VedtakOgBeregningSide,
     },
     {
         href: 'sanksjonsfastsettelse',
-        navn: SideNavn.SANKSJON,
+        navn: FaneNavn.SANKSJON,
         komponent: Sanksjonsfastsettelse,
     },
     {
         href: 'simulering',
-        navn: SideNavn.SIMULERING,
+        navn: FaneNavn.SIMULERING,
         komponent: Simulering,
     },
     {
         href: 'brev',
-        navn: SideNavn.BREV,
+        navn: FaneNavn.BREV,
         komponent: Brev,
     },
     {
         href: 'brev',
-        navn: SideNavn.KORRIGERING_UTEN_BREV || SideNavn.IVERKSETTE_KA_VEDTAK,
+        navn: FaneNavn.KORRIGERING_UTEN_BREV || FaneNavn.IVERKSETTE_KA_VEDTAK,
         komponent: BehandlingsårsakUtenBrev,
     },
 ];
 
-export const siderForStønad = (stønadstype: Stønadstype): ISide[] => {
+export const fanerForStønad = (stønadstype: Stønadstype): FaneProps[] => {
     switch (stønadstype) {
         case Stønadstype.OVERGANGSSTØNAD:
-            return alleSider;
+            return alleFaner;
         case Stønadstype.BARNETILSYN:
         case Stønadstype.SKOLEPENGER:
-            return alleSider.filter((side) => side.navn !== SideNavn.TIDLIGEREVEDTAKSPERIODER);
+            return alleFaner.filter((fane) => fane.navn !== FaneNavn.TIDLIGEREVEDTAKSPERIODER);
         default:
-            return alleSider;
+            return alleFaner;
     }
 };
 
-const filtrerHvisSanksjon = [SideNavn.SANKSJON, SideNavn.SIMULERING, SideNavn.BREV];
-const filtrerHvisMigrering = [SideNavn.VEDTAK_OG_BEREGNING];
+const filtrerHvisSanksjon = [FaneNavn.SANKSJON, FaneNavn.SIMULERING, FaneNavn.BREV];
+
+const filtrerHvisMigrering = [FaneNavn.VEDTAK_OG_BEREGNING];
+
 const filtrerHvisGOmregningEllerSatsendring = [
-    SideNavn.VEDTAK_OG_BEREGNING,
-    SideNavn.SIMULERING,
-    SideNavn.KORRIGERING_UTEN_BREV,
-    SideNavn.IVERKSETTE_KA_VEDTAK,
+    FaneNavn.VEDTAK_OG_BEREGNING,
+    FaneNavn.SIMULERING,
+    FaneNavn.KORRIGERING_UTEN_BREV,
+    FaneNavn.IVERKSETTE_KA_VEDTAK,
 ];
+
 const filtrerVekkHvisStandard = [
-    SideNavn.SANKSJON,
-    SideNavn.KORRIGERING_UTEN_BREV,
-    SideNavn.IVERKSETTE_KA_VEDTAK,
+    FaneNavn.SANKSJON,
+    FaneNavn.KORRIGERING_UTEN_BREV,
+    FaneNavn.IVERKSETTE_KA_VEDTAK,
 ];
-const filtrerVekkHvisBehandlingsÅrsakUtenBrev = [SideNavn.SANKSJON, SideNavn.BREV];
 
-const ikkeVisBrevHvisHenlagt = (behandling: Behandling, side: ISide) =>
-    behandling.resultat !== BehandlingResultat.HENLAGT || side.navn !== SideNavn.BREV;
+const filtrerVekkHvisBehandlingsårsakUtenBrev = [FaneNavn.SANKSJON, FaneNavn.BREV];
 
-export const filtrerSiderEtterBehandlingstype = (behandling: Behandling): ISide[] => {
-    const sider = siderForStønad(behandling.stønadstype).filter((side) =>
-        ikkeVisBrevHvisHenlagt(behandling, side)
+const filtrerVekkÅrsakRevurderingHvisIkkeRevurdering = (fane: FaneProps, behandling: Behandling) =>
+    fane.navn !== FaneNavn.ÅRSAK_REVURDERING || behandling.type === Behandlingstype.REVURDERING;
+
+const ikkeVisBrevHvisHenlagt = (behandling: Behandling, fane: FaneProps) =>
+    behandling.resultat !== BehandlingResultat.HENLAGT || fane.navn !== FaneNavn.BREV;
+
+export const filtrerFanerPåBehandlingstype = (behandling: Behandling): FaneProps[] => {
+    const faner = fanerForStønad(behandling.stønadstype).filter((fane) =>
+        ikkeVisBrevHvisHenlagt(behandling, fane)
     );
     if (
         behandling.type === Behandlingstype.REVURDERING &&
         behandling.behandlingsårsak === Behandlingsårsak.SANKSJON_1_MND
     ) {
-        return sider.filter((side) => filtrerHvisSanksjon.includes(side.navn as SideNavn));
+        return faner.filter((fane) => filtrerHvisSanksjon.includes(fane.navn as FaneNavn));
     }
     if (behandling.behandlingsårsak === Behandlingsårsak.MIGRERING) {
-        return sider.filter((side) => filtrerHvisMigrering.includes(side.navn as SideNavn));
+        return faner.filter((fane) => filtrerHvisMigrering.includes(fane.navn as FaneNavn));
     }
     if (
         behandling.behandlingsårsak === Behandlingsårsak.G_OMREGNING ||
         behandling.behandlingsårsak === Behandlingsårsak.SATSENDRING
     ) {
-        return sider.filter((side) =>
-            filtrerHvisGOmregningEllerSatsendring.includes(side.navn as SideNavn)
+        return faner.filter((fane) =>
+            filtrerHvisGOmregningEllerSatsendring.includes(fane.navn as FaneNavn)
         );
     }
 
@@ -136,17 +143,14 @@ export const filtrerSiderEtterBehandlingstype = (behandling: Behandling): ISide[
         behandling.behandlingsårsak === Behandlingsårsak.KORRIGERING_UTEN_BREV ||
         behandling.behandlingsårsak === Behandlingsårsak.IVERKSETTE_KA_VEDTAK
     ) {
-        return sider
+        return faner
             .filter(
-                (side) => !filtrerVekkHvisBehandlingsÅrsakUtenBrev.includes(side.navn as SideNavn)
+                (fane) => !filtrerVekkHvisBehandlingsårsakUtenBrev.includes(fane.navn as FaneNavn)
             )
-            .filter((side) => filtrerVekkÅrsakRevurderingHvisIkkeRevurdering(side, behandling));
+            .filter((fane) => filtrerVekkÅrsakRevurderingHvisIkkeRevurdering(fane, behandling));
     }
 
-    return sider
-        .filter((side) => !filtrerVekkHvisStandard.includes(side.navn as SideNavn))
-        .filter((side) => filtrerVekkÅrsakRevurderingHvisIkkeRevurdering(side, behandling));
+    return faner
+        .filter((fane) => !filtrerVekkHvisStandard.includes(fane.navn as FaneNavn))
+        .filter((fane) => filtrerVekkÅrsakRevurderingHvisIkkeRevurdering(fane, behandling));
 };
-
-const filtrerVekkÅrsakRevurderingHvisIkkeRevurdering = (side: ISide, behandling: Behandling) =>
-    side.navn !== SideNavn.ÅRSAK_REVURDERING || behandling.type === Behandlingstype.REVURDERING;

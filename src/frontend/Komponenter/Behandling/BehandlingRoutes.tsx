@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import * as React from 'react';
-import { filtrerSiderEtterBehandlingstype } from './Fanemeny/sider';
+import { filtrerFanerPåBehandlingstype } from './Fanemeny/faner';
 import { Behandling } from '../../App/typer/fagsak';
 
 interface Props {
@@ -8,17 +8,17 @@ interface Props {
 }
 
 const BehandlingRoutes: React.FC<Props> = ({ behandling }) => {
-    const siderForBehandling = filtrerSiderEtterBehandlingstype(behandling);
+    const behandlingsfaner = filtrerFanerPåBehandlingstype(behandling);
     return (
         <Routes>
-            {siderForBehandling.map((side) => (
+            {behandlingsfaner.map((fane) => (
                 <Route
-                    key={side.navn}
-                    path={`${side.href}`}
-                    element={React.createElement(side.komponent, { behandling: behandling }, null)}
+                    key={fane.navn}
+                    path={`${fane.href}`}
+                    element={React.createElement(fane.komponent, { behandling: behandling }, null)}
                 />
             ))}
-            <Route path="*" element={<Navigate to={siderForBehandling[0].href} replace={true} />} />
+            <Route path="*" element={<Navigate to={behandlingsfaner[0].href} replace={true} />} />
         </Routes>
     );
 };
