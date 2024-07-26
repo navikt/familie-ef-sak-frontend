@@ -10,24 +10,20 @@ import TabellVisning, { Kolonner } from '../../Tabell/TabellVisning';
 import { IGrunnlagsdataSistePeriodeOvergangsstønad } from '../../TidligereVedtaksperioder/typer';
 import SistePeriodeTittelTekst from './SistePeriodeTittelTekst';
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
+import { Behandling } from '../../../../App/typer/fagsak';
 
-interface SistePeriodeMedOvergangsstønadProps {
+interface Props {
     sistePeriodeMedOS: IGrunnlagsdataSistePeriodeOvergangsstønad | undefined;
-    behandlingOpprettet: string;
-    stønadstype: Stønadstype;
+    behandling: Behandling;
 }
 
-const SistePeriodeMedOvergangsstønad: React.FC<SistePeriodeMedOvergangsstønadProps> = ({
-    sistePeriodeMedOS,
-    behandlingOpprettet,
-    stønadstype,
-}) => {
+const SistePeriodeMedOvergangsstønad: React.FC<Props> = ({ sistePeriodeMedOS, behandling }) => {
     if (!sistePeriodeMedOS) {
         return <SistePeriodeTittelTekst />;
     }
 
     const kolonner: Kolonner<IGrunnlagsdataSistePeriodeOvergangsstønad>[] =
-        stønadstype === Stønadstype.SKOLEPENGER
+        behandling.stønadstype === Stønadstype.SKOLEPENGER
             ? [
                   {
                       overskrift: 'Periode',
@@ -77,7 +73,7 @@ const SistePeriodeMedOvergangsstønad: React.FC<SistePeriodeMedOvergangsstønadP
         <>
             <TabellVisning
                 tittel={`Siste periode med overgangsstønad`}
-                ekstraTekstTittel={`(sist oppdatert ${formaterIsoDatoTid(behandlingOpprettet)})`}
+                ekstraTekstTittel={`(sist oppdatert ${formaterIsoDatoTid(behandling.opprettet)})`}
                 verdier={[sistePeriodeMedOS]}
                 minimerKolonnebredde={true}
                 kolonner={kolonner}

@@ -5,13 +5,18 @@ import { AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
 import { skalFerdigstilleUtenBeslutter } from '../VedtakOgBeregning/Felles/utils';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
+import { Behandling } from '../../../App/typer/fagsak';
 
-const BehandlingsårsakUtenBrev: React.FC = () => {
-    const { behandling, behandlingErRedigerbar, vedtak } = useBehandling();
+interface Props {
+    behandling: Behandling;
+}
+
+const BehandlingsårsakUtenBrev: React.FC<Props> = ({ behandling }) => {
+    const { behandlingErRedigerbar, vedtak } = useBehandling();
 
     return (
-        <DataViewer response={{ behandling, vedtak }}>
-            {({ behandling, vedtak }) => (
+        <DataViewer response={{ vedtak }}>
+            {({ vedtak }) => (
                 <>
                     <AlertInfo>
                         {behandling.behandlingsårsak === Behandlingsårsak.IVERKSETTE_KA_VEDTAK

@@ -1,7 +1,6 @@
 import TidligereVedtaksperioder from '../TidligereVedtaksperioder/TidligereVedtaksperioder';
 import Inngangsvilkår from '../Inngangsvilkår/Inngangsvilkår';
 import { FunctionComponent } from 'react';
-import Aktivitet from '../Aktivitet/Aktivitetsvilkår';
 import Brev from '../Brev/Brev';
 import { Behandling, BehandlingResultat } from '../../../App/typer/fagsak';
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
@@ -12,11 +11,12 @@ import Sanksjonsfastsettelse from '../Sanksjon/Sanksjonsfastsettelse';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { ÅrsakRevurderingSide } from '../ÅrsakRevurdering/ÅrsakRevurderingSide';
 import BehandlingsårsakUtenBrev from './BehandlingsårsakUtenBrev';
+import { AktivitetsvilkårSide } from '../Aktivitet/AktivitetsvilkårSide';
 
 export interface ISide {
     href: string;
     navn: string;
-    komponent: FunctionComponent<{ behandlingId: string }>;
+    komponent: FunctionComponent<{ behandling: Behandling }>;
 }
 
 export enum SideNavn {
@@ -51,7 +51,7 @@ const alleSider: ISide[] = [
     {
         href: 'aktivitet',
         navn: SideNavn.AKTIVITET,
-        komponent: Aktivitet,
+        komponent: AktivitetsvilkårSide,
     },
     {
         href: 'vedtak-og-beregning',

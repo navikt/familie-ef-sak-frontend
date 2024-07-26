@@ -29,31 +29,27 @@ const AlertErrorLeft = styled(AlertError)`
     margin-top: 1rem;
 `;
 
-const AlertStripeIkkeFerdigBehandletVilkår = (): JSX.Element => (
-    <AlertErrorLeft inline>
-        <SmallTextLabel>
-            Vedtaksresultat kan ikke settes da et eller flere vilkår er ubehandlet.
-        </SmallTextLabel>
-    </AlertErrorLeft>
-);
+interface Props {
+    behandling: Behandling;
+}
 
-export const VedtakOgBeregningSide: FC<{ behandlingId: string }> = ({ behandlingId }) => {
-    const { behandling, vilkårState } = useBehandling();
+export const VedtakOgBeregningSide: FC<Props> = ({ behandling }) => {
+    const { vilkårState } = useBehandling();
 
     const [visNullstillVedtakModal, settVisNullstillVedtakModal] = useState(false);
     const { vilkår, hentVilkår } = vilkårState;
 
     useEffect(() => {
-        hentVilkår(behandlingId);
+        hentVilkår(behandling.id);
         // eslint-disable-next-line
-    }, [behandlingId]);
+    }, [behandling.id]);
 
     return (
         <NullstillVedtakModalContext.Provider
             value={{ visNullstillVedtakModal, settVisNullstillVedtakModal }}
         >
-            <DataViewer response={{ behandling, vilkår }}>
-                {({ behandling, vilkår }) => {
+            <DataViewer response={{ vilkår }}>
+                {({ vilkår }) => {
                     switch (behandling.stønadstype) {
                         case Stønadstype.OVERGANGSSTØNAD:
                             return (
@@ -82,7 +78,7 @@ export const VedtakOgBeregningSide: FC<{ behandlingId: string }> = ({ behandling
             <NullstillVedtakModal
                 visModal={visNullstillVedtakModal}
                 settVisModal={settVisNullstillVedtakModal}
-                behandlingId={behandlingId}
+                behandlingId={behandling.id}
             />
         </NullstillVedtakModalContext.Provider>
     );
@@ -119,6 +115,14 @@ const VedtakOgBeregningSideBarnetilsyn: React.FC<{
         </Side>
     );
 };
+
+const AlertStripeIkkeFerdigBehandletVilkår = (): JSX.Element => (
+    <AlertErrorLeft inline>
+        <SmallTextLabel>
+            Vedtaksresultat kan ikke settes da et eller flere vilkår er ubehandlet.
+        </SmallTextLabel>
+    </AlertErrorLeft>
+);
 
 const VedtakOgBeregningSideSkolepenger: React.FC<{
     behandling: Behandling;

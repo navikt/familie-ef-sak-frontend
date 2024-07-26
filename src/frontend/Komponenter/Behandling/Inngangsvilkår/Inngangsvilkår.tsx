@@ -14,13 +14,14 @@ import { InngangsvilkårHeader } from './InngangsvilkårHeader/InngangsvilkårHe
 import { useApp } from '../../../App/context/AppContext';
 import { FyllUtVilkårKnapp } from './FyllUtVilkårKnapp';
 import VilkårIkkeOpprettetAlert from '../Vurdering/VilkårIkkeOpprettet';
+import { Behandling } from '../../../App/typer/fagsak';
 
 interface Props {
-    behandlingId: string;
+    behandling: Behandling;
 }
 
-const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
-    const { behandling, behandlingErRedigerbar, vilkårState } = useBehandling();
+const Inngangsvilkår: FC<Props> = ({ behandling }) => {
+    const { behandlingErRedigerbar, vilkårState } = useBehandling();
     const { erSaksbehandler } = useApp();
     const {
         vilkår,
@@ -34,12 +35,12 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
     } = vilkårState;
 
     React.useEffect(() => {
-        hentVilkår(behandlingId);
-        // eslint-disable-next-line
-    }, [behandlingId]);
+        hentVilkår(behandling.id);
+    }, [hentVilkår, behandling.id]);
+
     return (
-        <DataViewer response={{ vilkår, behandling }}>
-            {({ vilkår, behandling }) => {
+        <DataViewer response={{ vilkår }}>
+            {({ vilkår }) => {
                 const årsak = behandling.behandlingsårsak;
                 const skalViseSøknadsdata =
                     årsak === Behandlingsårsak.SØKNAD || årsak === Behandlingsårsak.PAPIRSØKNAD;
@@ -61,8 +62,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                                 oppdatertDato={grunnlagsdataInnhentetDato}
                                 behandlingErRedigerbar={behandlingErRedigerbar}
                                 oppdaterGrunnlagsdata={oppdaterGrunnlagsdataOgHentVilkår}
-                                behandlingId={behandlingId}
-                                behandling={behandling}
+                                behandlingId={behandling.id}
                                 gjenbrukInngangsvilkår={gjenbrukInngangsvilkår}
                             />
                         )}
@@ -119,8 +119,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                             vurderinger={vilkår.vurderinger}
                             ikkeVurderVilkår={ikkeVurderVilkår}
                             skalViseSøknadsdata={skalViseSøknadsdata}
-                            behandlingId={behandlingId}
-                            behandlingsstatus={behandling.status}
+                            behandling={behandling}
                         />
                         <Aleneomsorg
                             nullstillVurdering={nullstillVurdering}
@@ -130,8 +129,7 @@ const Inngangsvilkår: FC<Props> = ({ behandlingId }) => {
                             vurderinger={vilkår.vurderinger}
                             ikkeVurderVilkår={ikkeVurderVilkår}
                             skalViseSøknadsdata={skalViseSøknadsdata}
-                            stønadstype={behandling.stønadstype}
-                            behandlingId={behandlingId}
+                            behandling={behandling}
                         />
                     </>
                 );

@@ -2,13 +2,13 @@ import React from 'react';
 import styled from 'styled-components';
 import { formaterIsoDatoTidKort } from '../../../App/utils/formatter';
 import { Hendelse, HendelseIkon, hendelseTilHistorikkTekst } from './Historikk';
-import { HistorikkElementProps, LinjeProps } from './typer';
+import { Behandlingshistorikk, LinjeProps } from './typer';
 import { useApp } from '../../../App/context/AppContext';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
 import { base64toBlob, winUrl, åpnePdfIEgenTab } from '../../../App/utils/utils';
 import { ExternalLinkIcon } from '@navikt/aksel-icons';
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
-import { BehandlingResultat } from '../../../App/typer/fagsak';
+import { Behandling, BehandlingResultat } from '../../../App/typer/fagsak';
 import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
 import { BreakWordUndertekst } from '../../../Felles/Visningskomponenter/BreakWordUndertekst';
 import { Button } from '@navikt/ds-react';
@@ -41,10 +41,16 @@ const StyledHistorikkElement = styled.li`
     }
 `;
 
-const HistorikkElement: React.FC<HistorikkElementProps> = ({
+export interface Props {
+    siste: boolean;
+    behandlingshistorikk: Behandlingshistorikk;
+    behandling: Behandling;
+    skalViseBegrunnelse: boolean;
+}
+
+const HistorikkElement: React.FC<Props> = ({
     behandlingshistorikk,
     siste,
-    behandlingId,
     behandling,
     skalViseBegrunnelse,
 }) => {
@@ -53,7 +59,7 @@ const HistorikkElement: React.FC<HistorikkElementProps> = ({
     const hentOgÅpneVedtaksbrev = () => {
         axiosRequest<string, null>({
             method: 'GET',
-            url: `/familie-ef-sak/api/brev/${behandlingId}`,
+            url: `/familie-ef-sak/api/brev/${behandling.id}`,
         }).then((respons: RessursSuksess<string> | RessursFeilet) => {
             if (respons.status === RessursStatus.SUKSESS) {
                 åpnePdfIEgenTab(base64toBlob(respons.data, 'application/pdf'), 'Vedtaksbrev');

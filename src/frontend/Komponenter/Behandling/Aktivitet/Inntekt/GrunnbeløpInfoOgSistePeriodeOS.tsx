@@ -10,7 +10,7 @@ import { styled } from 'styled-components';
 import { IVilkårGrunnlag } from '../../Inngangsvilkår/vilkår';
 import { IGrunnlagsdataSistePeriodeOvergangsstønad } from '../../TidligereVedtaksperioder/typer';
 import SistePeriodeMedOvergangsstønad from './SistePeriodeMedOvergangsstønad';
-import { Stønadstype } from '../../../../App/typer/behandlingstema';
+import { Behandling } from '../../../../App/typer/fagsak';
 
 const Container = styled.div`
     & > *:not(:last-child) {
@@ -18,11 +18,12 @@ const Container = styled.div`
     }
 `;
 
-export const GrunnbeløpInfoOgSistePeriodeOS: FC<{
+interface Props {
     grunnlag: IVilkårGrunnlag;
-    behandlingOpprettet: string;
-    stønadstype: Stønadstype;
-}> = ({ grunnlag, behandlingOpprettet, stønadstype }) => {
+    behandling: Behandling;
+}
+
+export const GrunnbeløpInfoOgSistePeriodeOS: FC<Props> = ({ grunnlag, behandling }) => {
     const sistePeriodeMedOS: IGrunnlagsdataSistePeriodeOvergangsstønad | undefined =
         grunnlag.tidligereVedtaksperioder.sak?.sistePeriodeMedOvergangsstønad;
 
@@ -62,8 +63,7 @@ export const GrunnbeløpInfoOgSistePeriodeOS: FC<{
 
             <SistePeriodeMedOvergangsstønad
                 sistePeriodeMedOS={sistePeriodeMedOS}
-                behandlingOpprettet={behandlingOpprettet}
-                stønadstype={stønadstype}
+                behandling={behandling}
             />
         </Container>
     );

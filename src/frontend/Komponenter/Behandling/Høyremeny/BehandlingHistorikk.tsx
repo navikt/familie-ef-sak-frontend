@@ -8,7 +8,6 @@ import { Behandling } from '../../../App/typer/fagsak';
 
 interface Props {
     behandling: Behandling;
-    behandlingId: string;
 }
 
 const HistorikkListe = styled.ul`
@@ -16,7 +15,7 @@ const HistorikkListe = styled.ul`
     margin: 0.5rem 1rem;
 `;
 
-const BehandlingHistorikk: React.FC<Props> = ({ behandling, behandlingId }) => {
+const BehandlingHistorikk: React.FC<Props> = ({ behandling }) => {
     const { behandlingHistorikk } = useBehandling();
 
     return (
@@ -35,7 +34,6 @@ const BehandlingHistorikk: React.FC<Props> = ({ behandling, behandlingId }) => {
                                     siste={siste}
                                     behandlingshistorikk={behandlingshistorikk}
                                     key={idx}
-                                    behandlingId={behandlingId}
                                     behandling={behandling}
                                     skalViseBegrunnelse={skalViseBegrunnelse}
                                 />

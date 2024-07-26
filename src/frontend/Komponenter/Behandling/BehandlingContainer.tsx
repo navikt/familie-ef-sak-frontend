@@ -92,7 +92,7 @@ const BehandlingContent: FC<{
                     <InfostripeUtestengelse utestengelser={utestengelser} />
                     <Personopplysningsendringer behandlingId={behandling.id} />
                     <EkspanderbareVilkårpanelProvider>
-                        <BehandlingRoutes />
+                        <BehandlingRoutes behandling={behandling} />
                     </EkspanderbareVilkårpanelProvider>
                     <HenleggModal behandling={behandling} />
                     <NyEierModal />

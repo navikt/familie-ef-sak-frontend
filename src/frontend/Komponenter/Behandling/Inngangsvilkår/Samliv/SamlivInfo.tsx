@@ -12,19 +12,15 @@ import { Addresseopplysninger } from './Addresseopplysninger';
 import { InformasjonContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
 import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
 import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
+import { Behandling } from '../../../../App/typer/fagsak';
+
 interface Props {
     grunnlag: IVilkårGrunnlag;
     skalViseSøknadsdata: boolean;
-    behandlingId: string;
-    behandlingsstatus: BehandlingStatus;
+    behandling: Behandling;
 }
 
-const SamlivInfo: FC<Props> = ({
-    grunnlag,
-    skalViseSøknadsdata,
-    behandlingId,
-    behandlingsstatus,
-}) => {
+const SamlivInfo: FC<Props> = ({ grunnlag, skalViseSøknadsdata, behandling }) => {
     const {
         personalia,
         sivilstand,
@@ -71,8 +67,8 @@ const SamlivInfo: FC<Props> = ({
                         />
                     </>
                 )}
-            {behandlingsstatus !== BehandlingStatus.FERDIGSTILT && (
-                <Bostedsadresse behandlingId={behandlingId} personalia={personalia} />
+            {behandling.status !== BehandlingStatus.FERDIGSTILT && (
+                <Bostedsadresse behandlingId={behandling.id} personalia={personalia} />
             )}
             {skalViseSøknadsdata && <Addresseopplysninger data={adresseopplysninger} />}
             {skalViseSøknadsdata && (

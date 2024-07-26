@@ -3,25 +3,24 @@ import ToKolonnerLayout from '../../../Felles/Visningskomponenter/ToKolonnerLayo
 import IkkeVurdert from '../../../Felles/Ikoner/IkkeVurdert';
 import Oppfylt from '../../../Felles/Ikoner/Oppfylt';
 import styled from 'styled-components';
-import { useBehandling } from '../../../App/context/BehandlingContext';
 import { Revurderingsinformasjon } from './typer';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { useApp } from '../../../App/context/AppContext';
 import { byggTomRessurs, Ressurs } from '../../../App/typer/ressurs';
 import { ÅrsakRevurdering } from './ÅrsakRevurdering';
 import { Heading } from '@navikt/ds-react';
-
-interface Props {
-    behandlingId: string;
-}
+import { Behandling } from '../../../App/typer/fagsak';
 
 const FlexDiv = styled.div`
     display: flex;
     gap: 0.5rem;
 `;
 
-export const ÅrsakRevurderingSide: React.FC<Props> = ({ behandlingId }) => {
-    const { behandling } = useBehandling();
+interface Props {
+    behandling: Behandling;
+}
+
+export const ÅrsakRevurderingSide: React.FC<Props> = ({ behandling }) => {
     const { axiosRequest } = useApp();
 
     const [revurderingsinformasjon, settRevurderingsinformasjon] =
@@ -31,10 +30,10 @@ export const ÅrsakRevurderingSide: React.FC<Props> = ({ behandlingId }) => {
 
     useEffect(() => {
         axiosRequest<Revurderingsinformasjon, null>({
-            url: `/familie-ef-sak/api/revurdering/informasjon/${behandlingId}`,
+            url: `/familie-ef-sak/api/revurdering/informasjon/${behandling.id}`,
             method: 'GET',
         }).then(settRevurderingsinformasjon);
-    }, [axiosRequest, behandlingId]);
+    }, [axiosRequest, behandling.id]);
 
     return (
         <ToKolonnerLayout skillelinje={false}>
@@ -48,8 +47,8 @@ export const ÅrsakRevurderingSide: React.FC<Props> = ({ behandlingId }) => {
                     </FlexDiv>
                 ),
                 høyre: (
-                    <DataViewer response={{ revurderingsinformasjon, behandling }}>
-                        {({ revurderingsinformasjon, behandling }) => (
+                    <DataViewer response={{ revurderingsinformasjon }}>
+                        {({ revurderingsinformasjon }) => (
                             <ÅrsakRevurdering
                                 revurderingsinformasjon={revurderingsinformasjon}
                                 behandling={behandling}

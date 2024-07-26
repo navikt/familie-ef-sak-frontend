@@ -18,9 +18,8 @@ import { useVerdierForBrev } from '../../../App/hooks/useVerdierForBrev';
 import { utledHtmlFelterPåStønadstype } from './BrevUtils';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 
-export interface BrevmenyProps {
+export interface Props {
     oppdaterBrevRessurs: (brevRessurs: Ressurs<string>) => void;
-    behandlingId: string;
     personopplysninger: IPersonopplysninger;
     settKanSendesTilBeslutter: (kanSendesTilBeslutter: boolean) => void;
     behandling: Behandling;
@@ -34,15 +33,13 @@ const StyledBrevMeny = styled.div`
     margin-top: 2rem;
 `;
 
-const Brevmeny: React.FC<BrevmenyProps> = (props) => {
-    const {
-        oppdaterBrevRessurs,
-        behandling,
-        vedtaksresultat,
-        behandlingId,
-        personopplysninger,
-        settKanSendesTilBeslutter,
-    } = props;
+const Brevmeny: React.FC<Props> = ({
+    oppdaterBrevRessurs,
+    behandling,
+    vedtaksresultat,
+    personopplysninger,
+    settKanSendesTilBeslutter,
+}) => {
     const { hentBeløpsperioder, beløpsperioder } = useHentBeløpsperioder(
         behandling.id,
         behandling.stønadstype
@@ -57,7 +54,7 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
         hentBeløpsperioder(vedtaksresultat);
     }, [vedtaksresultat, hentBeløpsperioder]);
 
-    const { mellomlagreSanitybrev, mellomlagretBrev } = useMellomlagringBrev(behandlingId);
+    const { mellomlagreSanitybrev, mellomlagretBrev } = useMellomlagringBrev(behandling.id);
     useEffect(() => {
         if (mellomlagretBrev.status === RessursStatus.SUKSESS && mellomlagretBrev.data) {
             settBrevmal(mellomlagretBrev.data.brevmal);
@@ -83,7 +80,7 @@ const Brevmeny: React.FC<BrevmenyProps> = (props) => {
                 {({ brevStruktur, mellomlagretBrev }) =>
                     brevMal ? (
                         <BrevmenyVisning
-                            behandlingId={behandlingId}
+                            behandlingId={behandling.id}
                             oppdaterBrevRessurs={oppdaterBrevRessurs}
                             brevStruktur={brevStruktur}
                             brevMal={brevMal}
