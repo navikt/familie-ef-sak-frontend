@@ -66,18 +66,37 @@ const InnholdWrapper = styled.div<InnholdWrapperProps>`
     position: relative;
 `;
 
-export const BehandlingContainer: FC = () => {
+export const BehandlingSide: FC = () => (
+    <BehandlingProvider>
+        <Side />
+    </BehandlingProvider>
+);
+
+const Side: FC = () => {
+    const { behandling, personopplysningerResponse } = useBehandling();
+
+    useEffect(() => {
+        document.title = 'Behandling';
+    }, []);
+
     return (
-        <BehandlingProvider>
-            <BehandlingOverbygg />
-        </BehandlingProvider>
+        <DataViewer response={{ personopplysningerResponse, behandling }}>
+            {({ personopplysningerResponse, behandling }) => (
+                <SideInnhold
+                    behandling={behandling}
+                    personopplysninger={personopplysningerResponse}
+                />
+            )}
+        </DataViewer>
     );
 };
 
-const BehandlingContent: FC<{
+interface Props {
     behandling: Behandling;
     personopplysninger: IPersonopplysninger;
-}> = ({ behandling, personopplysninger }) => {
+}
+
+const SideInnhold: FC<Props> = ({ behandling, personopplysninger }) => {
     useSetValgtFagsakId(behandling.fagsakId);
     useSetPersonIdent(personopplysninger.personIdent);
     const { åpenHøyremeny } = useBehandling();
@@ -102,24 +121,5 @@ const BehandlingContent: FC<{
                 </HøyreMenyWrapper>
             </Container>
         </>
-    );
-};
-
-const BehandlingOverbygg: FC = () => {
-    const { behandling, personopplysningerResponse } = useBehandling();
-
-    useEffect(() => {
-        document.title = 'Behandling';
-    }, []);
-
-    return (
-        <DataViewer response={{ personopplysningerResponse, behandling }}>
-            {({ personopplysningerResponse, behandling }) => (
-                <BehandlingContent
-                    behandling={behandling}
-                    personopplysninger={personopplysningerResponse}
-                />
-            )}
-        </DataViewer>
     );
 };

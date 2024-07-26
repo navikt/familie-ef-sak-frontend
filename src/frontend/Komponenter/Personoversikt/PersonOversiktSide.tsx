@@ -3,7 +3,6 @@ import { Navigate, Route, Routes, useLocation, useNavigate, useParams } from 're
 import { IPersonopplysninger } from '../../App/typer/personopplysninger';
 import PersonHeaderComponent from '../../Felles/PersonHeader/PersonHeader';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
-import { Side } from '../../Felles/Visningskomponenter/Side';
 import Behandlingsoversikt from './Behandlingsoversikt';
 import Personopplysninger from './Personopplysninger';
 import { useDataHenter } from '../../App/hooks/felles/useDataHenter';
@@ -20,6 +19,7 @@ import { useHentFagsakPerson } from '../../App/hooks/useHentFagsakPerson';
 import { Tabs } from '@navikt/ds-react';
 import { InntektForPerson } from './InntektForPerson';
 import { loggNavigereTabEvent } from '../../App/utils/amplitude/amplitudeLoggEvents';
+import styled from 'styled-components';
 
 type TabWithRouter = {
     label: string;
@@ -96,10 +96,52 @@ const tabs: TabWithRouter[] = [
     },
 ];
 
-const PersonoversiktContent: React.FC<{
+const Container = styled.div`
+    margin: 0.5rem;
+`;
+
+export const PersonOversiktSide: React.FC = () => {
+    const fagsakPersonId = useParams<{ fagsakPersonId: string }>().fagsakPersonId as string;
+    useSetValgtFagsakPersonId(fagsakPersonId);
+
+    const { hentFagsakPerson, fagsakPerson } = useHentFagsakPerson();
+
+    const personopplysningerConfig: AxiosRequestConfig = useMemo(
+        () => ({
+            method: 'GET',
+            url: `/familie-ef-sak/api/personopplysninger/fagsak-person/${fagsakPersonId}`,
+        }),
+        [fagsakPersonId]
+    );
+
+    useEffect(() => {
+        hentFagsakPerson(fagsakPersonId);
+    }, [hentFagsakPerson, fagsakPersonId]);
+
+    useEffect(() => {
+        document.title = 'Brukeroversikt';
+    }, []);
+
+    const personopplysninger = useDataHenter<IPersonopplysninger, null>(personopplysningerConfig);
+
+    return (
+        <DataViewer response={{ personopplysninger, fagsakPerson }}>
+            {({ personopplysninger, fagsakPerson }) => (
+                <PersonOversikt
+                    fagsakPerson={fagsakPerson}
+                    personopplysninger={personopplysninger}
+                />
+            )}
+        </DataViewer>
+    );
+};
+
+interface Props {
     fagsakPerson: IFagsakPerson;
     personopplysninger: IPersonopplysninger;
-}> = ({ fagsakPerson, personopplysninger }) => {
+}
+
+const PersonOversikt: React.FC<Props> = ({ fagsakPerson, personopplysninger }) => {
     const navigate = useNavigate();
     const { erSaksbehandler } = useApp();
     const paths = useLocation().pathname.split('/').slice(-1);
@@ -109,7 +151,7 @@ const PersonoversiktContent: React.FC<{
     return (
         <>
             <PersonHeaderComponent data={personopplysninger} />
-            <Side className={'container'}>
+            <Container>
                 <Tabs
                     value={path}
                     onChange={(tabPath) => {
@@ -142,45 +184,7 @@ const PersonoversiktContent: React.FC<{
                     ))}
                     <Route path="*" element={<Navigate to="behandlinger" replace={true} />} />
                 </Routes>
-            </Side>
+            </Container>
         </>
     );
 };
-
-const Personoversikt: React.FC = () => {
-    const fagsakPersonId = useParams<{ fagsakPersonId: string }>().fagsakPersonId as string;
-    useSetValgtFagsakPersonId(fagsakPersonId);
-
-    const { hentFagsakPerson, fagsakPerson } = useHentFagsakPerson();
-
-    const personopplysningerConfig: AxiosRequestConfig = useMemo(
-        () => ({
-            method: 'GET',
-            url: `/familie-ef-sak/api/personopplysninger/fagsak-person/${fagsakPersonId}`,
-        }),
-        [fagsakPersonId]
-    );
-
-    useEffect(() => {
-        hentFagsakPerson(fagsakPersonId);
-    }, [hentFagsakPerson, fagsakPersonId]);
-
-    useEffect(() => {
-        document.title = 'Brukeroversikt';
-    }, []);
-
-    const personopplysninger = useDataHenter<IPersonopplysninger, null>(personopplysningerConfig);
-
-    return (
-        <DataViewer response={{ personopplysninger, fagsakPerson }}>
-            {({ personopplysninger, fagsakPerson }) => (
-                <PersonoversiktContent
-                    fagsakPerson={fagsakPerson}
-                    personopplysninger={personopplysninger}
-                />
-            )}
-        </DataViewer>
-    );
-};
-
-export default Personoversikt;

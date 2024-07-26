@@ -13,25 +13,22 @@ import { FamilieSelect } from '../../../Felles/Input/FamilieSelect';
 const AlertInfoPreWrap = styled(AlertInfo)`
     white-space: pre-wrap;
     word-wrap: break-word;
-    margin-top: 2rem;
 `;
 
 const Container = styled.div`
     margin: 2rem;
     max-width: 60rem;
+
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
 `;
 
-const SkjemaContainer = styled.div`
-    margin-top: 2rem;
+const MaxWidth = styled.div`
     max-width: 14rem;
 `;
 
-const WrapperMedMargin = styled.div`
-    margin-top: 2rem;
-    margin-bottom: 1rem;
-`;
-
-const VelgPersonOgStønadstype = () => {
+export const VelgPersonOgStønadstypeSide = () => {
     const [stønadstype, settStønadstype] = useState<Stønadstype>();
     const [personIdent, settPersonIdent] = useState<string>('');
     const [feilmelding, settFeilmelding] = useState<string>();
@@ -82,7 +79,7 @@ const VelgPersonOgStønadstype = () => {
                 {'\n\n'}
                 Dersom det foreligger en digital søknad så skal denne admin-journalføres.
             </AlertInfoPreWrap>
-            <SkjemaContainer>
+            <MaxWidth>
                 <FamilieSelect
                     value={stønadstype || ''}
                     label={'Velg stønadstype'}
@@ -101,15 +98,13 @@ const VelgPersonOgStønadstype = () => {
                     value={personIdent}
                     onChange={(e) => oppdaterFødselsnummer(e.target.value)}
                 />
-                <WrapperMedMargin>
-                    <Button onClick={bekreftValg} type="button">
-                        Gå videre
-                    </Button>
-                </WrapperMedMargin>
-            </SkjemaContainer>
+            </MaxWidth>
+            <div>
+                <Button onClick={bekreftValg} type="button">
+                    Gå videre
+                </Button>
+            </div>
             {harFeil && <AlertStripeFeilPreWrap>{feilmelding}</AlertStripeFeilPreWrap>}
         </Container>
     );
 };
-
-export default VelgPersonOgStønadstype;

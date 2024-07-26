@@ -33,17 +33,17 @@ export const Høyrekolonne = styled.div`
     height: calc(100vh - 4rem);
 `;
 
-export interface JournalføringAppProps {
+export interface JournalføringSideProps {
     oppgaveId: string;
     gjelderKlage: boolean;
     journalResponse: IJournalpostResponse;
 }
 
-interface JournalføringAppSide {
-    komponent: FunctionComponent<JournalføringAppProps>;
+interface Props {
+    komponent: FunctionComponent<JournalføringSideProps>;
 }
 
-const JournalføringWrapper: React.FC<JournalføringAppSide> = ({ komponent }) => {
+const JournalføringWrapper: React.FC<Props> = ({ komponent }) => {
     const query: URLSearchParams = useQueryParams();
     const oppgaveId = query.get(OPPGAVEID_QUERY_STRING);
     const journalpostId = query.get(JOURNALPOST_QUERY_STRING);

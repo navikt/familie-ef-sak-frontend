@@ -10,7 +10,7 @@ type IFagsakParams = {
     behandlingIdEllerSaksoversikt: string; // Her vil vi enten få inn variabelen eksternBehandlingId, eller strengen: saksoversikt.
 };
 
-const EksternRedirectContainer: FC = () => {
+export const EksternIdRedirect: FC = () => {
     const { eksternFagsakId, behandlingIdEllerSaksoversikt } = useParams<IFagsakParams>();
     const [fagsak, settFagsak] = useState<Ressurs<Fagsak>>(byggTomRessurs());
     const [behandling, settBehandling] = useState<Ressurs<Behandling>>(byggTomRessurs());
@@ -52,5 +52,3 @@ const EksternRedirectContainer: FC = () => {
         </DataViewer>
     );
 };
-
-export default EksternRedirectContainer;
