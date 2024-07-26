@@ -23,7 +23,6 @@ import {
     Route,
     useLocation,
 } from 'react-router-dom';
-import UlagretDataModal from './Felles/Visningskomponenter/UlagretDataModal';
 import { loggBesøkEvent } from './App/utils/amplitude/amplitudeLoggEvents';
 import { BesøkEvent } from './App/utils/amplitude/typer';
 import Innloggingsfeilmelding from './Felles/Varsel/Innloggingsfeilmelding';
@@ -34,6 +33,7 @@ import { PersonOversiktSide } from './Komponenter/Personoversikt/PersonOversiktS
 import { UttrekkArbeidssøkerSide } from './Komponenter/Uttrekk/UttrekkArbeidssøkerSide';
 import { VelgPersonOgStønadstypeSide } from './Komponenter/Behandling/Førstegangsbehandling/VelgPersonOgStønadstypeSide';
 import { OpprettFørstegangsbehandlingSide } from './Komponenter/Behandling/Førstegangsbehandling/OpprettFørstegangsbehandlingSide';
+import { UlagretDataModal } from './Felles/Modal/UlagretDataModal';
 
 export const App: React.FC = () => {
     const [innloggetSaksbehandler, settInnloggetSaksbehandler] = useState<ISaksbehandler>();
