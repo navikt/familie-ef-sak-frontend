@@ -15,20 +15,20 @@ import { Adressebeskyttelse } from '../../App/typer/personopplysninger';
 import UttrekkArbeidssøkerTabell from './UttrekkArbeidssøkerTabell';
 import { Checkbox, Heading } from '@navikt/ds-react';
 
-const UttrekkArbeidssøkerContent = styled.div`
+const Container = styled.div`
     padding: 1rem;
 `;
 
-export interface IUttrekkArbeidssøkere {
+interface UttrekkArbeidssøkere {
     årMåned: string;
     side: number;
     antallTotalt: number;
     antallKontrollert: number;
     antallManglerKontrollUtenTilgang: number;
-    arbeidssøkere: IUttrekkArbeidssøker[];
+    arbeidssøkere: UttrekkArbeidssøker[];
 }
 
-export interface IUttrekkArbeidssøker {
+export interface UttrekkArbeidssøker {
     id: string;
     fagsakId: string;
     behandlingIdForVedtak: string;
@@ -43,40 +43,20 @@ export interface IUttrekkArbeidssøker {
 
 const URL_ARBEIDSSØKER = '/familie-ef-sak/api/uttrekk/arbeidssoker';
 
-/**
- * Brukes for å ikke laste all data på nytt i det att man endrer til/sletter kontrollert
- */
-const settArbeidssøkereTilKontrollert = (
-    prevState: RessursSuksess<IUttrekkArbeidssøkere>,
-    oppdatertUttrekkArbeidssøkere: IUttrekkArbeidssøker
-): RessursSuksess<IUttrekkArbeidssøkere> => {
-    return {
-        ...prevState,
-        data: {
-            ...prevState.data,
-            arbeidssøkere: prevState.data.arbeidssøkere.map((arbeidssøker) =>
-                arbeidssøker.id === oppdatertUttrekkArbeidssøkere.id
-                    ? oppdatertUttrekkArbeidssøkere
-                    : arbeidssøker
-            ),
-        },
-    };
-};
-
-const UttrekkArbeidssøker: React.FC = () => {
+export const UttrekkArbeidssøkerSide: React.FC = () => {
     const { axiosRequest } = useApp();
     const [arbeidssøkere, settArbeidssøkere] =
-        useState<Ressurs<IUttrekkArbeidssøkere>>(byggTomRessurs());
+        useState<Ressurs<UttrekkArbeidssøkere>>(byggTomRessurs());
     const [feilmelding, settFeilmelding] = useState<string>();
     const [visKontrollerte, settVisKontrollerte] = useState<boolean>(false);
 
     const hentUttrekk = useCallback(
         (visKontrollerte: boolean) => {
-            return axiosRequest<IUttrekkArbeidssøkere, null>({
+            return axiosRequest<UttrekkArbeidssøkere, null>({
                 method: 'GET',
                 url: URL_ARBEIDSSØKER,
                 params: { visKontrollerte: visKontrollerte },
-            }).then((respons: RessursSuksess<IUttrekkArbeidssøkere> | RessursFeilet) =>
+            }).then((respons: RessursSuksess<UttrekkArbeidssøkere> | RessursFeilet) =>
                 settArbeidssøkere(respons)
             );
         },
@@ -87,10 +67,10 @@ const UttrekkArbeidssøker: React.FC = () => {
         (id: string, kontrollert: boolean): void => {
             settFeilmelding(undefined);
             const kontrollertQuery = kontrollert ? '' : '?kontrollert=false';
-            axiosRequest<IUttrekkArbeidssøker, null>({
+            axiosRequest<UttrekkArbeidssøker, null>({
                 method: 'POST',
                 url: `${URL_ARBEIDSSØKER}/${id}/kontrollert${kontrollertQuery}`,
-            }).then((respons: RessursSuksess<IUttrekkArbeidssøker> | RessursFeilet) => {
+            }).then((respons: RessursSuksess<UttrekkArbeidssøker> | RessursFeilet) => {
                 if (respons.status === RessursStatus.SUKSESS) {
                     settArbeidssøkere((prevState) => {
                         if (prevState.status !== RessursStatus.SUKSESS) {
@@ -118,7 +98,7 @@ const UttrekkArbeidssøker: React.FC = () => {
     }, [settVisKontrollerte]);
 
     return (
-        <UttrekkArbeidssøkerContent>
+        <Container>
             <Heading size={'large'} level={'1'}>
                 Uttrekk arbeidssøkere (P43)
             </Heading>
@@ -133,12 +113,12 @@ const UttrekkArbeidssøker: React.FC = () => {
                     />
                 )}
             </DataViewer>
-        </UttrekkArbeidssøkerContent>
+        </Container>
     );
 };
 
 const UttrekkArbeidssøkerMedMetadata: React.FC<{
-    arbeidssøkere: IUttrekkArbeidssøkere;
+    arbeidssøkere: UttrekkArbeidssøkere;
     settKontrollert: (id: string, kontrolllert: boolean) => void;
     visKontrollerte: boolean;
     toggleVisKontrollerte: () => void;
@@ -160,8 +140,28 @@ const UttrekkArbeidssøkerMedMetadata: React.FC<{
     );
 };
 
+/**
+ * Brukes for å ikke laste all data på nytt i det att man endrer til/sletter kontrollert
+ */
+const settArbeidssøkereTilKontrollert = (
+    prevState: RessursSuksess<UttrekkArbeidssøkere>,
+    oppdatertUttrekkArbeidssøkere: UttrekkArbeidssøker
+): RessursSuksess<UttrekkArbeidssøkere> => {
+    return {
+        ...prevState,
+        data: {
+            ...prevState.data,
+            arbeidssøkere: prevState.data.arbeidssøkere.map((arbeidssøker) =>
+                arbeidssøker.id === oppdatertUttrekkArbeidssøkere.id
+                    ? oppdatertUttrekkArbeidssøkere
+                    : arbeidssøker
+            ),
+        },
+    };
+};
+
 const Infoboks: React.FC<{
-    arbeidssøkere: IUttrekkArbeidssøkere;
+    arbeidssøkere: UttrekkArbeidssøkere;
 }> = ({ arbeidssøkere }) => {
     const antallManglerKontroll = arbeidssøkere.antallTotalt - arbeidssøkere.antallKontrollert;
     const rødMarkertTekst = (antall: number) => (antall > 0 ? { color: 'red' } : {});
@@ -179,5 +179,3 @@ const Infoboks: React.FC<{
         </div>
     );
 };
-
-export default UttrekkArbeidssøker;

@@ -11,7 +11,7 @@ interface Props {
     behandling: Behandling;
 }
 
-const BehandlingsårsakUtenBrev: React.FC<Props> = ({ behandling }) => {
+export const KorrigeringFane: React.FC<Props> = ({ behandling }) => {
     const { behandlingErRedigerbar, vedtak } = useBehandling();
 
     return (
@@ -34,5 +34,3 @@ const BehandlingsårsakUtenBrev: React.FC<Props> = ({ behandling }) => {
         </DataViewer>
     );
 };
-
-export default BehandlingsårsakUtenBrev;

@@ -7,20 +7,13 @@ import { ISaksbehandler } from './App/typer/saksbehandler';
 import ErrorBoundary from './Felles/ErrorBoundary/ErrorBoundary';
 import { TogglesProvider } from './App/context/TogglesContext';
 import { HeaderMedSøk } from './Felles/HeaderMedSøk/HeaderMedSøk';
-import { BehandlingContainer } from './Komponenter/Behandling/BehandlingContainer';
-import { OppgavebenkApp } from './Komponenter/Oppgavebenk/OppgavebenkApp';
-import Personoversikt from './Komponenter/Personoversikt/Personoversikt';
-import EksternRedirectContainer from './Komponenter/EksternRedirect/EksternRedirectContainer';
-import UttrekkArbeidssøker from './Komponenter/Uttrekk/UttrekkArbeidssøker';
+import { BehandlingSide } from './Komponenter/Behandling/BehandlingSide';
+import { OppgavebenkSide } from './Komponenter/Oppgavebenk/OppgavebenkSide';
 import { AppEnv, hentEnv } from './App/api/env';
 import { Toast } from './Felles/Toast/Toast';
-import FagsakTilFagsakPersonRedirect from './Komponenter/Redirect/FagsakTilFagsakPersonRedirect';
-import { AdminApp } from './Komponenter/Admin/AdminApp';
+import { AdminSide } from './Komponenter/Admin/AdminSide';
 import ScrollToTop from './Felles/ScrollToTop/ScrollToTop';
-import styled from 'styled-components';
 import { ModalWrapper } from './Felles/Modal/ModalWrapper';
-import VelgPersonOgStønadstype from './Komponenter/Behandling/Førstegangsbehandling/VelgPersonOgStønadstype';
-import OpprettFørstegangsbehandling from './Komponenter/Behandling/Førstegangsbehandling/OpprettFørstegangsbehandling';
 import {
     createBrowserRouter,
     createRoutesFromElements,
@@ -30,18 +23,19 @@ import {
     Route,
     useLocation,
 } from 'react-router-dom';
-import UlagretDataModal from './Felles/Visningskomponenter/UlagretDataModal';
 import { loggBesøkEvent } from './App/utils/amplitude/amplitudeLoggEvents';
 import { BesøkEvent } from './App/utils/amplitude/typer';
 import Innloggingsfeilmelding from './Felles/Varsel/Innloggingsfeilmelding';
-import { JournalføringAppNy } from './Komponenter/Journalføring/Standard/JournalføringAppNy';
+import { JournalføringSide } from './Komponenter/Journalføring/Standard/JournalføringSide';
+import { EksternIdRedirect } from './Komponenter/Redirect/EksternIdRedirect';
+import { FagsakTilFagsakPersonRedirect } from './Komponenter/Redirect/FagsakTilFagsakPersonRedirect';
+import { PersonOversiktSide } from './Komponenter/Personoversikt/PersonOversiktSide';
+import { UttrekkArbeidssøkerSide } from './Komponenter/Uttrekk/UttrekkArbeidssøkerSide';
+import { VelgPersonOgStønadstypeSide } from './Komponenter/Behandling/Førstegangsbehandling/VelgPersonOgStønadstypeSide';
+import { OpprettFørstegangsbehandlingSide } from './Komponenter/Behandling/Førstegangsbehandling/OpprettFørstegangsbehandlingSide';
+import { UlagretDataModal } from './Felles/Modal/UlagretDataModal';
 
-const Innhold = styled(BodyLong)`
-    margin-top: 2rem;
-    margin-bottom: 2rem;
-`;
-
-const App: React.FC = () => {
+export const App: React.FC = () => {
     const [innloggetSaksbehandler, settInnloggetSaksbehandler] = useState<ISaksbehandler>();
     const [appEnv, settAppEnv] = useState<AppEnv>();
 
@@ -71,8 +65,6 @@ const App: React.FC = () => {
     );
 };
 
-export default App;
-
 const AppRoutes: React.FC<{ innloggetSaksbehandler: ISaksbehandler }> = ({
     innloggetSaksbehandler,
 }) => {
@@ -87,22 +79,22 @@ const AppRoutes: React.FC<{ innloggetSaksbehandler: ISaksbehandler }> = ({
                 >
                     <Route
                         path="/ekstern/fagsak/:eksternFagsakId/:behandlingIdEllerSaksoversikt"
-                        element={<EksternRedirectContainer />}
+                        element={<EksternIdRedirect />}
                     />
-                    <Route path="/behandling/:behandlingId/*" element={<BehandlingContainer />} />
-                    <Route path="/oppgavebenk" element={<OppgavebenkApp />} />
-                    <Route path="/journalfor" element={<JournalføringAppNy />} />
-                    <Route path="/admin/*" element={<AdminApp />} />
+                    <Route path="/behandling/:behandlingId/*" element={<BehandlingSide />} />
+                    <Route path="/oppgavebenk" element={<OppgavebenkSide />} />
+                    <Route path="/journalfor" element={<JournalføringSide />} />
+                    <Route path="/admin/*" element={<AdminSide />} />
                     <Route path="/fagsak/:fagsakId" element={<FagsakTilFagsakPersonRedirect />} />
-                    <Route path="/person/:fagsakPersonId/*" element={<Personoversikt />} />
-                    <Route path="/uttrekk/arbeidssoker" element={<UttrekkArbeidssøker />} />
+                    <Route path="/person/:fagsakPersonId/*" element={<PersonOversiktSide />} />
+                    <Route path="/uttrekk/arbeidssoker" element={<UttrekkArbeidssøkerSide />} />
                     <Route
                         path={`/opprett-forstegangsbehandling`}
-                        element={<VelgPersonOgStønadstype />}
+                        element={<VelgPersonOgStønadstypeSide />}
                     />
                     <Route
                         path={`/opprett-forstegangsbehandling/:fagsakId`}
-                        element={<OpprettFørstegangsbehandling />}
+                        element={<OpprettFørstegangsbehandlingSide />}
                     />
                     <Route path="/" element={<Navigate to="/oppgavebenk" replace={true} />} />
                 </Route>
@@ -115,7 +107,7 @@ const AppRoutes: React.FC<{ innloggetSaksbehandler: ISaksbehandler }> = ({
                             visModal={true}
                             ariaLabel={'Sesjonen har utløpt. Prøv å last inn siden på nytt.'}
                         >
-                            <Innhold>Prøv å last siden på nytt</Innhold>
+                            <BodyLong>Prøv å last siden på nytt</BodyLong>
                         </ModalWrapper>
                     }
                 />

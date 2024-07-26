@@ -14,7 +14,7 @@ interface Props {
     behandling: Behandling;
 }
 
-const TidligereVedtaksperioder: React.FC<Props> = ({ behandling }) => {
+export const TidligereVedtaksperioderFane: React.FC<Props> = ({ behandling }) => {
     const { vilkårState } = useBehandling();
     const {
         hentVilkår,
@@ -79,5 +79,3 @@ const TidligereVedtaksperioder: React.FC<Props> = ({ behandling }) => {
         </DataViewer>
     );
 };
-
-export default TidligereVedtaksperioder;

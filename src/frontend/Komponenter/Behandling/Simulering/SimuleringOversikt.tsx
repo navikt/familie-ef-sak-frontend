@@ -1,4 +1,4 @@
-import { Simulering } from './SimuleringTyper';
+import { SimuleringResultat } from './SimuleringTyper';
 import React from 'react';
 import styled from 'styled-components';
 import { TotaltForPeriode } from './TotaltForPeriode';
@@ -8,7 +8,7 @@ import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 import { AGreen500, ARed500 } from '@navikt/ds-tokens/dist/tokens';
 
 interface ISimuleringOversikt {
-    simulering: Simulering;
+    simulering: SimuleringResultat;
 }
 
 const BoksMedBorder = styled.div`

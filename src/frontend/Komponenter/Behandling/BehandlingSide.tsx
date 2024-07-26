@@ -2,7 +2,6 @@ import * as React from 'react';
 import { FC, useEffect } from 'react';
 import Høyremeny from './Høyremeny/Høyremeny';
 import styled from 'styled-components';
-import Fanemeny from './Fanemeny/Fanemeny';
 import BehandlingRoutes from './BehandlingRoutes';
 import { BehandlingProvider, useBehandling } from '../../App/context/BehandlingContext';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
@@ -18,6 +17,7 @@ import { EkspanderbareVilkårpanelProvider } from '../../App/context/Ekspanderba
 import Personopplysningsendringer from './Endring/EndringPersonopplysninger';
 import { SettPåVent } from './SettPåVent/SettPåVent';
 import { NyEierModal } from './Modal/NyEierModal';
+import { Fanemeny } from './Fanemeny/Fanemeny';
 
 const Container = styled.div`
     display: flex;
@@ -66,30 +66,49 @@ const InnholdWrapper = styled.div<InnholdWrapperProps>`
     position: relative;
 `;
 
-export const BehandlingContainer: FC = () => {
+export const BehandlingSide: FC = () => (
+    <BehandlingProvider>
+        <Side />
+    </BehandlingProvider>
+);
+
+const Side: FC = () => {
+    const { behandling, personopplysningerResponse } = useBehandling();
+
+    useEffect(() => {
+        document.title = 'Behandling';
+    }, []);
+
     return (
-        <BehandlingProvider>
-            <BehandlingOverbygg />
-        </BehandlingProvider>
+        <DataViewer response={{ personopplysningerResponse, behandling }}>
+            {({ personopplysningerResponse, behandling }) => (
+                <SideInnhold
+                    behandling={behandling}
+                    personopplysninger={personopplysningerResponse}
+                />
+            )}
+        </DataViewer>
     );
 };
 
-const BehandlingContent: FC<{
+interface Props {
     behandling: Behandling;
     personopplysninger: IPersonopplysninger;
-}> = ({ behandling, personopplysninger }) => {
+}
+
+const SideInnhold: FC<Props> = ({ behandling, personopplysninger }) => {
     useSetValgtFagsakId(behandling.fagsakId);
     useSetPersonIdent(personopplysninger.personIdent);
-    const { åpenHøyremeny, utestengelser } = useBehandling();
+    const { åpenHøyremeny } = useBehandling();
 
     return (
         <>
             <PersonHeaderComponent data={personopplysninger} behandling={behandling} />
             <Container>
                 <InnholdWrapper $åpenHøyremeny={åpenHøyremeny}>
-                    <Fanemeny />
+                    <Fanemeny behandling={behandling} />
                     <SettPåVent behandling={behandling} />
-                    <InfostripeUtestengelse utestengelser={utestengelser} />
+                    <InfostripeUtestengelse />
                     <Personopplysningsendringer behandlingId={behandling.id} />
                     <EkspanderbareVilkårpanelProvider>
                         <BehandlingRoutes behandling={behandling} />
@@ -102,24 +121,5 @@ const BehandlingContent: FC<{
                 </HøyreMenyWrapper>
             </Container>
         </>
-    );
-};
-
-const BehandlingOverbygg: FC = () => {
-    const { behandling, personopplysningerResponse } = useBehandling();
-
-    useEffect(() => {
-        document.title = 'Behandling';
-    }, []);
-
-    return (
-        <DataViewer response={{ personopplysningerResponse, behandling }}>
-            {({ personopplysningerResponse, behandling }) => (
-                <BehandlingContent
-                    behandling={behandling}
-                    personopplysninger={personopplysningerResponse}
-                />
-            )}
-        </DataViewer>
     );
 };

@@ -10,7 +10,7 @@ type IFagsakParams = {
     fagsakId: string;
 };
 
-const EksternRedirectContainer: FC = () => {
+export const FagsakTilFagsakPersonRedirect: FC = () => {
     const fagsakId = useParams<IFagsakParams>().fagsakId as string;
     const [fagsak, settFagsak] = useState<Ressurs<Fagsak>>(byggTomRessurs());
     const { axiosRequest } = useApp();
@@ -50,5 +50,3 @@ const EksternRedirectContainer: FC = () => {
         </DataViewer>
     );
 };
-
-export default EksternRedirectContainer;

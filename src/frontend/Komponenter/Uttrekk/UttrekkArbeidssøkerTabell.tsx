@@ -2,7 +2,7 @@ import React from 'react';
 import { KopierbartNullableFødselsnummer } from '../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
 import AdressebeskyttelseVarsel from '../../Felles/Varsel/AdressebeskyttelseVarsel';
 import { formaterNullableIsoDatoTid, nullableBooleanTilTekst } from '../../App/utils/formatter';
-import { IUttrekkArbeidssøker } from './UttrekkArbeidssøker';
+import { UttrekkArbeidssøker } from './UttrekkArbeidssøkerSide';
 import styled from 'styled-components';
 import { Button, Link } from '@navikt/ds-react';
 import { SmallTextLabel } from '../../Felles/Visningskomponenter/Tekster';
@@ -18,7 +18,7 @@ const StyledTable = styled.table`
 `;
 
 const UttrekkArbeidssøkerTabell: React.FC<{
-    arbeidssøkere: IUttrekkArbeidssøker[];
+    arbeidssøkere: UttrekkArbeidssøker[];
     settKontrollert: (id: string, kontrollert: boolean) => void;
 }> = ({ arbeidssøkere, settKontrollert }) => {
     const navigate = useNavigate();

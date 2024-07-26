@@ -4,7 +4,7 @@ import { JournalføringAdmin } from '../Journalføring/Admin/JournalføringAdmin
 import { JournalføringAdminVelger } from '../Journalføring/Admin/JournalføringAdminVelger';
 import GamleBehandlinger from '../Behandling/GamleBehandlinger/GamleBehandlinger';
 
-export const AdminApp: React.FC = () => {
+export const AdminSide: React.FC = () => {
     return (
         <Routes>
             <Route

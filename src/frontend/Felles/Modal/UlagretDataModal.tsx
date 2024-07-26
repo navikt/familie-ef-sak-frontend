@@ -1,9 +1,9 @@
 import React, { FC } from 'react';
 import { useApp } from '../../App/context/AppContext';
-import { ModalWrapper } from '../Modal/ModalWrapper';
+import { ModalWrapper } from './ModalWrapper';
 import ReactRouterPrompt from 'react-router-prompt';
 
-const UlagretDataModal: FC = () => {
+export const UlagretDataModal: FC = () => {
     const { nullstillIkkePersisterteKomponenter, ulagretData } = useApp();
     return (
         <ReactRouterPrompt when={ulagretData}>
@@ -33,5 +33,3 @@ const UlagretDataModal: FC = () => {
         </ReactRouterPrompt>
     );
 };
-
-export default UlagretDataModal;

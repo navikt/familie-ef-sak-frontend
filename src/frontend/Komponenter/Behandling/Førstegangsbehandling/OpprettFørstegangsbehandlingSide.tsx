@@ -12,7 +12,7 @@ import {
     RessursSuksess,
 } from '../../../App/typer/ressurs';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
-import { BodyLong, BodyShort, Button, Heading, Label } from '@navikt/ds-react';
+import { BodyLong, BodyShort, Button, Heading } from '@navikt/ds-react';
 import { TextLabel } from '../../../Felles/Visningskomponenter/Tekster';
 import { stønadstypeTilTekst } from '../../../App/typer/behandlingstema';
 import { erGyldigDato } from '../../../App/utils/dato';
@@ -25,18 +25,14 @@ import { Datovelger } from '../../../Felles/Datovelger/Datovelger';
 type IFagsakParam = {
     fagsakId: string;
 };
-const FeilmeldingWrapper = styled.div`
-    margin-top: 2rem;
-`;
 
 const Container = styled.div`
     margin: 2rem;
     max-width: 60rem;
-`;
 
-const SkjemaContainer = styled.div`
-    margin-top: 2rem;
-    max-width: 14rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
 `;
 
 interface Førstegangsbehandling {
@@ -61,7 +57,8 @@ const kanOppretteFørstegangsbehandling = (behandlinger: Behandling[]): boolean 
         );
     });
 };
-const OpprettFørstegangsbehandling = () => {
+
+export const OpprettFørstegangsbehandlingSide = () => {
     const { fagsakId } = useParams<IFagsakParam>();
     const [fagsak, settFagsak] = useState<Ressurs<Fagsak>>(byggTomRessurs());
     const [barnSomSkalFødes, settBarnSomSkalFødes] = useState<BarnSomSkalFødes[]>([]);
@@ -124,11 +121,12 @@ const OpprettFørstegangsbehandling = () => {
 
     return (
         <Container>
-            <Heading size={'xlarge'} level={'1'}>
-                Opprett førstegangsbehandling manuelt
-            </Heading>
-            <BodyLong>Velg evt. terminbarn og sett krav mottatt dato</BodyLong>
-
+            <div>
+                <Heading size={'xlarge'} level={'1'}>
+                    Opprett førstegangsbehandling manuelt
+                </Heading>
+                <BodyLong>Velg evt. terminbarn og sett krav mottatt dato</BodyLong>
+            </div>
             <DataViewer response={{ fagsak }}>
                 {({ fagsak }) => (
                     <>
@@ -137,34 +135,31 @@ const OpprettFørstegangsbehandling = () => {
                             <BodyShort>{stønadstypeTilTekst[fagsak.stønadstype]}</BodyShort>
                             <TextLabel>Fødselsnummer: </TextLabel>
                             <BodyShort>{fagsak.personIdent}</BodyShort>
-                        </div>
-                        <div>
                             <TextLabel>Årsak:</TextLabel>
                             <BodyShort>
                                 {behandlingsårsakTilTekst[Behandlingsårsak.MANUELT_OPPRETTET]}
                             </BodyShort>
-                            <SkjemaContainer>
-                                <Label htmlFor={'krav-mottatt'}>Krav mottatt</Label>
-                                <Datovelger
-                                    id={'krav-mottatt'}
-                                    label={''}
-                                    settVerdi={(dato) => {
-                                        settKravMottattDato(dato as string);
-                                    }}
-                                    verdi={kravMottattDato}
-                                    feil={
-                                        kravMottattDato && !erGyldigDato(kravMottattDato)
-                                            ? 'Ugyldig dato'
-                                            : undefined
-                                    }
-                                    maksDato={new Date()}
-                                />
-                            </SkjemaContainer>
-                            <LeggTilBarnSomSkalFødes
-                                barnSomSkalFødes={barnSomSkalFødes}
-                                oppdaterBarnSomSkalFødes={settBarnSomSkalFødes}
-                                tittel={'Terminbarn'}
-                            />
+                        </div>
+                        <Datovelger
+                            id={'krav-mottatt'}
+                            label={'Krav mottatt'}
+                            settVerdi={(dato) => {
+                                settKravMottattDato(dato as string);
+                            }}
+                            verdi={kravMottattDato}
+                            feil={
+                                kravMottattDato && !erGyldigDato(kravMottattDato)
+                                    ? 'Ugyldig dato'
+                                    : undefined
+                            }
+                            maksDato={new Date()}
+                        />
+                        <LeggTilBarnSomSkalFødes
+                            barnSomSkalFødes={barnSomSkalFødes}
+                            oppdaterBarnSomSkalFødes={settBarnSomSkalFødes}
+                            tittel={'Terminbarn'}
+                        />
+                        <div>
                             <Button
                                 type={'button'}
                                 onClick={() => opprettBehandling(fagsak)}
@@ -172,22 +167,18 @@ const OpprettFørstegangsbehandling = () => {
                             >
                                 Opprett førstegangsbehandling
                             </Button>
-                            <FeilmeldingWrapper>
-                                {feilmelding && (
-                                    <AlertStripeFeilPreWrap>{feilmelding}</AlertStripeFeilPreWrap>
-                                )}
-                                {!kanOppretteFørstegangsbehandling(fagsak.behandlinger) && (
-                                    <AlertStripeFeilPreWrap>
-                                        Det finnes allerede en behandling på denne brukeren
-                                    </AlertStripeFeilPreWrap>
-                                )}
-                            </FeilmeldingWrapper>
                         </div>
+                        {feilmelding && (
+                            <AlertStripeFeilPreWrap>{feilmelding}</AlertStripeFeilPreWrap>
+                        )}
+                        {!kanOppretteFørstegangsbehandling(fagsak.behandlinger) && (
+                            <AlertStripeFeilPreWrap>
+                                Det finnes allerede en behandling på denne brukeren
+                            </AlertStripeFeilPreWrap>
+                        )}
                     </>
                 )}
             </DataViewer>
         </Container>
     );
 };
-
-export default OpprettFørstegangsbehandling;

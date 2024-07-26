@@ -15,7 +15,7 @@ import {
 import { BodyShort, Heading, HStack } from '@navikt/ds-react';
 import JournalføringWrapper, {
     Høyrekolonne,
-    JournalføringAppProps,
+    JournalføringSideProps,
     Kolonner,
     Venstrekolonne,
 } from '../Felles/JournalføringWrapper';
@@ -50,11 +50,11 @@ const Tittel = styled(Heading)`
     margin-bottom: 0.5rem;
 `;
 
-export const JournalføringAppNy: React.FC = () => {
-    return <JournalføringWrapper komponent={JournalføringSide} />;
+export const JournalføringSide: React.FC = () => {
+    return <JournalføringWrapper komponent={Journalføring} />;
 };
 
-const JournalføringSide: React.FC<JournalføringAppProps> = ({
+const Journalføring: React.FC<JournalføringSideProps> = ({
     oppgaveId,
     journalResponse,
     gjelderKlage,

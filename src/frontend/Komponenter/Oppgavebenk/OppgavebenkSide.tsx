@@ -4,7 +4,6 @@ import OppgaveTabell, { IOppgaverResponse } from './OppgaveTabell';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../App/typer/ressurs';
 import { IOppgaveRequest } from './typer/oppgaverequest';
 import { OpprettDummyBehandling } from './OpprettDummyBehandling';
-import { Side } from '../../Felles/Visningskomponenter/Side';
 import { IMappe, tomMappeListe } from './typer/mappe';
 import OppgaveFiltrering from './OppgaveFiltrering';
 import { erProd } from '../../App/utils/miljø';
@@ -12,20 +11,16 @@ import styled from 'styled-components';
 import { AlertInfo } from '../../Felles/Visningskomponenter/Alerts';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 
-const InfoVisning = styled(AlertInfo)`
-    margin-top: 2rem;
+const InfoStripe = styled(AlertInfo)`
+    margin: 2rem;
     max-width: 60rem;
-
-    .navds-alert__wrapper {
-        max-width: 60rem;
-    }
 `;
 
-const TabellContainer = styled.div`
-    margin-top: 1rem;
+const Container = styled.div`
+    margin: 0.5rem;
 `;
 
-export const OppgavebenkApp: React.FC = () => {
+export const OppgavebenkSide: React.FC = () => {
     const { axiosRequest, erSaksbehandler } = useApp();
     const [oppgaveRessurs, settOppgaveRessurs] =
         useState<Ressurs<IOppgaverResponse>>(byggTomRessurs());
@@ -59,18 +54,9 @@ export const OppgavebenkApp: React.FC = () => {
         document.title = 'Oppgavebenk';
     }, []);
 
-    if (!erSaksbehandler) {
+    if (erSaksbehandler) {
         return (
-            <Side className={'container'}>
-                <InfoVisning>
-                    Oppgavebenken er ikke tilgjengelig for veiledere. Benytt fødselsnummer i
-                    søkefelt for å finne informasjon om en person
-                </InfoVisning>
-            </Side>
-        );
-    } else {
-        return (
-            <Side className={'container'}>
+            <Container>
                 {!erProd() && <OpprettDummyBehandling />}
                 <OppgaveFiltrering
                     hentOppgaver={hentOppgaver}
@@ -78,18 +64,23 @@ export const OppgavebenkApp: React.FC = () => {
                     feilmelding={feilmelding}
                     settFeilmelding={settFeilmelding}
                 />
-                <TabellContainer>
-                    <DataViewer response={{ oppgaveRessurs }}>
-                        {({ oppgaveRessurs }) => (
-                            <OppgaveTabell
-                                oppgaver={oppgaveRessurs.oppgaver}
-                                mapper={mapper}
-                                settFeilmelding={settFeilmelding}
-                            />
-                        )}
-                    </DataViewer>
-                </TabellContainer>
-            </Side>
+                <DataViewer response={{ oppgaveRessurs }}>
+                    {({ oppgaveRessurs }) => (
+                        <OppgaveTabell
+                            oppgaver={oppgaveRessurs.oppgaver}
+                            mapper={mapper}
+                            settFeilmelding={settFeilmelding}
+                        />
+                    )}
+                </DataViewer>
+            </Container>
         );
     }
+
+    return (
+        <InfoStripe>
+            Oppgavebenken er ikke tilgjengelig for veiledere. Benytt fødselsnummer i søkefelt for å
+            finne informasjon om en person
+        </InfoStripe>
+    );
 };

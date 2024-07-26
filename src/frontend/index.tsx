@@ -2,10 +2,10 @@ import { init } from '@sentry/browser';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import axe from '@axe-core/react';
-import App from './App';
 import './index.less';
 import '@navikt/ds-css';
 import { createRoot } from 'react-dom/client';
+import { App } from './App';
 
 // eslint-disable-next-line
 const packageConfig = require('../../package.json');
