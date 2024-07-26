@@ -17,7 +17,7 @@ import { NullstillVedtakModalContext } from './Felles/NullstillVedtakModalContex
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 import { SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
 
-const Side = styled.main`
+const Fane = styled.main`
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -41,8 +41,7 @@ export const VedtakOgBeregningFane: FC<Props> = ({ behandling }) => {
 
     useEffect(() => {
         hentVilkår(behandling.id);
-        // eslint-disable-next-line
-    }, [behandling.id]);
+    }, [hentVilkår, behandling.id]);
 
     return (
         <NullstillVedtakModalContext.Provider
@@ -52,26 +51,11 @@ export const VedtakOgBeregningFane: FC<Props> = ({ behandling }) => {
                 {({ vilkår }) => {
                     switch (behandling.stønadstype) {
                         case Stønadstype.OVERGANGSSTØNAD:
-                            return (
-                                <VedtakOgBeregningSideOvergangsstønad
-                                    behandling={behandling}
-                                    vilkår={vilkår}
-                                />
-                            );
+                            return <FaneOvergangsstønad behandling={behandling} vilkår={vilkår} />;
                         case Stønadstype.BARNETILSYN:
-                            return (
-                                <VedtakOgBeregningSideBarnetilsyn
-                                    behandling={behandling}
-                                    vilkår={vilkår}
-                                />
-                            );
+                            return <FaneBarnetilsyn behandling={behandling} vilkår={vilkår} />;
                         case Stønadstype.SKOLEPENGER:
-                            return (
-                                <VedtakOgBeregningSideSkolepenger
-                                    behandling={behandling}
-                                    vilkår={vilkår}
-                                />
-                            );
+                            return <FaneSkolepenger behandling={behandling} vilkår={vilkår} />;
                     }
                 }}
             </DataViewer>
@@ -84,58 +68,48 @@ export const VedtakOgBeregningFane: FC<Props> = ({ behandling }) => {
     );
 };
 
-const VedtakOgBeregningSideOvergangsstønad: React.FC<{
+interface FaneProps {
     behandling: Behandling;
     vilkår: IVilkår;
-}> = ({ behandling, vilkår }) => {
-    return (
-        <Side>
-            <VedtaksoppsummeringOvergangsstønad vilkår={vilkår} behandling={behandling} />
-            {behandling.steg === Steg.VILKÅR ? (
-                <AlertStripeIkkeFerdigBehandletVilkår />
-            ) : (
-                <VedtakOgBeregningOvergangsstønad behandling={behandling} vilkår={vilkår} />
-            )}
-        </Side>
-    );
-};
+}
 
-const VedtakOgBeregningSideBarnetilsyn: React.FC<{
-    behandling: Behandling;
-    vilkår: IVilkår;
-}> = ({ behandling, vilkår }) => {
-    return (
-        <Side>
-            <VedtaksoppsummeringBarnetilsyn vilkår={vilkår} behandling={behandling} />
-            {behandling.steg === Steg.VILKÅR ? (
-                <AlertStripeIkkeFerdigBehandletVilkår />
-            ) : (
-                <VedtakOgBeregningBarnetilsyn behandling={behandling} vilkår={vilkår} />
-            )}
-        </Side>
-    );
-};
+const FaneOvergangsstønad: React.FC<FaneProps> = ({ behandling, vilkår }) => (
+    <Fane>
+        <VedtaksoppsummeringOvergangsstønad vilkår={vilkår} behandling={behandling} />
+        {behandling.steg === Steg.VILKÅR ? (
+            <AlertStripe />
+        ) : (
+            <VedtakOgBeregningOvergangsstønad behandling={behandling} vilkår={vilkår} />
+        )}
+    </Fane>
+);
 
-const AlertStripeIkkeFerdigBehandletVilkår = (): JSX.Element => (
+const FaneBarnetilsyn: React.FC<FaneProps> = ({ behandling, vilkår }) => (
+    <Fane>
+        <VedtaksoppsummeringBarnetilsyn vilkår={vilkår} behandling={behandling} />
+        {behandling.steg === Steg.VILKÅR ? (
+            <AlertStripe />
+        ) : (
+            <VedtakOgBeregningBarnetilsyn behandling={behandling} vilkår={vilkår} />
+        )}
+    </Fane>
+);
+
+const FaneSkolepenger: React.FC<FaneProps> = ({ behandling, vilkår }) => (
+    <Fane>
+        <VedtaksoppsummeringSkolepenger vilkår={vilkår} behandling={behandling} />
+        {behandling.steg === Steg.VILKÅR ? (
+            <AlertStripe />
+        ) : (
+            <VedtakOgBeregningSkolepenger behandling={behandling} vilkår={vilkår} />
+        )}
+    </Fane>
+);
+
+const AlertStripe = () => (
     <AlertErrorLeft inline>
         <SmallTextLabel>
             Vedtaksresultat kan ikke settes da et eller flere vilkår er ubehandlet.
         </SmallTextLabel>
     </AlertErrorLeft>
 );
-
-const VedtakOgBeregningSideSkolepenger: React.FC<{
-    behandling: Behandling;
-    vilkår: IVilkår;
-}> = ({ behandling, vilkår }) => {
-    return (
-        <Side>
-            <VedtaksoppsummeringSkolepenger vilkår={vilkår} behandling={behandling} />
-            {behandling.steg === Steg.VILKÅR ? (
-                <AlertStripeIkkeFerdigBehandletVilkår />
-            ) : (
-                <VedtakOgBeregningSkolepenger behandling={behandling} vilkår={vilkår} />
-            )}
-        </Side>
-    );
-};
