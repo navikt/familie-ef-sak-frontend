@@ -4,7 +4,6 @@ import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { AxiosRequestConfig } from 'axios';
 import { useDataHenter } from '../../../App/hooks/felles/useDataHenter';
 import { useParams } from 'react-router-dom';
-import { IBehandlingParams } from '../../../App/typer/routing';
 import { formaterNullableIsoDatoTid } from '../../../App/utils/formatter';
 import { compareDesc } from 'date-fns';
 import { åpneFilIEgenTab } from '../../../App/utils/utils';
@@ -34,7 +33,7 @@ const sorterDokumentlisten = (dokumentResponse: AlleDokument) => {
 };
 
 const Dokumentoversikt: React.FC = () => {
-    const { behandlingId } = useParams<IBehandlingParams>();
+    const { behandlingId } = useParams<{ behandlingId: string }>();
 
     const dokumentConfig: AxiosRequestConfig = useMemo(
         () => ({

@@ -4,8 +4,7 @@ import { IBrevmottaker } from './typer';
 import { fullmaktTilBrevMottaker, vergemålTilBrevmottaker } from './brevmottakerUtils';
 import styled from 'styled-components';
 import { KopierbartNullableFødselsnummer } from '../../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
-import { Ingress, Button, BodyShort } from '@navikt/ds-react';
-import { VertikalSentrering } from '../../../App/utils/styling';
+import { Button, BodyShort, HStack } from '@navikt/ds-react';
 
 interface Props {
     valgteMottakere: IBrevmottaker[];
@@ -13,10 +12,6 @@ interface Props {
     verger: IVergemål[];
     fullmakter: IFullmakt[];
 }
-
-const Undertittel = styled(Ingress)`
-    margin-bottom: 1rem;
-`;
 
 const StyledMottakerBoks = styled.div`
     padding: 10px;
@@ -50,7 +45,7 @@ export const VergerOgFullmektigeFraRegister: FC<Props> = ({
 
     return (
         <>
-            <Undertittel>Verge/Fullmektig fra register</Undertittel>
+            <BodyShort size="large">Verge/Fullmektig fra register</BodyShort>
             {muligeMottakere.length ? (
                 muligeMottakere.map((mottaker, index) => {
                     const mottakerValgt = !!valgteMottakere.find(
@@ -65,17 +60,15 @@ export const VergerOgFullmektigeFraRegister: FC<Props> = ({
                                 />
                             </Kolonner>
                             {!mottakerValgt && (
-                                <VertikalSentrering>
-                                    <div>
-                                        <Button
-                                            variant="secondary"
-                                            size="small"
-                                            onClick={settMottaker(mottaker)}
-                                        >
-                                            Legg til
-                                        </Button>
-                                    </div>
-                                </VertikalSentrering>
+                                <HStack align="center">
+                                    <Button
+                                        variant="secondary"
+                                        size="small"
+                                        onClick={settMottaker(mottaker)}
+                                    >
+                                        Legg til
+                                    </Button>
+                                </HStack>
                             )}
                         </StyledMottakerBoks>
                     );

@@ -6,12 +6,7 @@ import { PopoverItem } from '@navikt/familie-header/dist/header/Header';
 import { useApp } from '../../App/context/AppContext';
 import './headermedsøk.less';
 import { AppEnv } from '../../App/api/env';
-import {
-    lagAInntektLink,
-    lagArbeidsforholdLink,
-    lagGosysLink,
-    lagModiaLink,
-} from '../Lenker/Lenker';
+import { lagAInntektLink, lagGosysLink, lagModiaLink } from '../Lenker/Lenker';
 import { AxiosRequestCallback } from '../../App/typer/axiosRequest';
 import Endringslogg from '@navikt/familie-endringslogg';
 import { harTilgangTilRolle } from '../../App/utils/roller';
@@ -39,25 +34,6 @@ const lagAInntekt = (
         onClick: async (e: React.SyntheticEvent) => {
             e.preventDefault();
             window.open(await lagAInntektLink(axiosRequest, appEnv, fagsakId, fagsakPersonId));
-        },
-    };
-};
-
-export const lagAInntektArbeidsforhold = (
-    axiosRequest: AxiosRequestCallback,
-    appEnv: AppEnv,
-    fagsakId: string | undefined
-): PopoverItem => {
-    if (!fagsakId) {
-        return { name: 'Arbeidsforhold', href: appEnv.aInntekt, isExternal: true };
-    }
-
-    return {
-        name: 'Arbeidsforhold',
-        href: '#/arbeidsforhold',
-        onClick: async (e: React.SyntheticEvent) => {
-            e.preventDefault();
-            window.open(await lagArbeidsforholdLink(axiosRequest, appEnv, fagsakId));
         },
     };
 };

@@ -48,10 +48,6 @@ export interface Behandling {
     vedtaksdato?: string;
 }
 
-export interface IEndringerRegistergrunnlag {
-    [key: string]: string[];
-}
-
 export enum BehandlingResultat {
     INNVILGET = 'INNVILGET',
     IKKE_SATT = 'IKKE_SATT',

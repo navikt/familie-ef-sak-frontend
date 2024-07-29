@@ -3,9 +3,8 @@ import { useApp } from '../../../App/context/AppContext';
 import { byggTomRessurs, Ressurs } from '../../../App/typer/ressurs';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { EBrevmottakerRolle, IBrevmottaker } from './typer';
-import { BodyShort, Button } from '@navikt/ds-react';
+import { BodyShort, Button, HStack } from '@navikt/ds-react';
 import { Søkefelt, Søkeresultat } from './brevmottakereStyling';
-import { VertikalSentrering } from '../../../App/utils/styling';
 
 interface Props {
     settValgteMottakere: Dispatch<SetStateAction<IBrevmottaker[]>>;
@@ -60,20 +59,18 @@ export const SøkPerson: React.FC<Props> = ({ settValgteMottakere }) => {
                                 <BodyShort>{søkRessurs.navn}</BodyShort>
                                 {søkRessurs.personIdent}
                             </div>
-                            <VertikalSentrering>
-                                <div>
-                                    <Button
-                                        variant="secondary"
-                                        size="small"
-                                        onClick={leggTilBrevmottaker(
-                                            søkRessurs.personIdent,
-                                            søkRessurs.navn
-                                        )}
-                                    >
-                                        Legg til
-                                    </Button>
-                                </div>
-                            </VertikalSentrering>
+                            <HStack align="center">
+                                <Button
+                                    variant="secondary"
+                                    size="small"
+                                    onClick={leggTilBrevmottaker(
+                                        søkRessurs.personIdent,
+                                        søkRessurs.navn
+                                    )}
+                                >
+                                    Legg til
+                                </Button>
+                            </HStack>
                         </Søkeresultat>
                     );
                 }}
