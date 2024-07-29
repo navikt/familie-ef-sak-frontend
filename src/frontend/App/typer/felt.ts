@@ -5,15 +5,6 @@ export enum Valideringsstatus {
     IKKE_VALIDERT = 'IKKE_VALIDERT',
 }
 
-export const ok = <T>(felt: IFelt<T>): IFelt<T> => {
-    return {
-        feilmelding: '',
-        valideringsFunksjon: felt.valideringsFunksjon,
-        valideringsstatus: Valideringsstatus.OK,
-        verdi: felt.verdi,
-    };
-};
-
 export const feil = <T>(felt: IFelt<T>, feilmelding: string): IFelt<T> => {
     return {
         feilmelding,
