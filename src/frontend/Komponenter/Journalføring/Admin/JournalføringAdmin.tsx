@@ -40,7 +40,7 @@ export const JournalføringAdmin: React.FC = () => {
     const { axiosRequest, innloggetSaksbehandler } = useApp();
     const navigate = useNavigate();
     const { hentJournalPost, journalResponse } = useHentJournalpost(journalpostid);
-    const { hentFagsak, fagsak } = useHentFagsak();
+    const { hentFagsakPåPersonIdent: hentFagsak, fagsakPåPersonIdent: fagsak } = useHentFagsak();
     const [nyBehandlingstype, settNyBehandlingstype] = useState<Behandlingstype | undefined>();
     const [senderInn, settSenderInn] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>('');

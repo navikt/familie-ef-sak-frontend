@@ -1,15 +1,12 @@
 import React, { FC, useEffect, useState } from 'react';
 import { IPersonopplysninger } from '../../App/typer/personopplysninger';
 import styled from 'styled-components';
-import { Behandling } from '../../App/typer/fagsak';
+import { Behandling, Fagsak, IFagsakPersonMedBehandlinger } from '../../App/typer/fagsak';
 import { Sticky } from '../Visningskomponenter/Sticky';
 import { nullableDatoTilAlder } from '../../App/utils/dato';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../App/typer/ressurs';
 import { useApp } from '../../App/context/AppContext';
-import { ISøkPerson } from '../../App/typer/personsøk';
-import { IPersonIdent } from '../../App/typer/felles';
 import { AksjonsknapperPersonHeader } from './AksjonsknapperPersonHeader';
-import { Stønadstype } from '../../App/typer/behandlingstema';
 import { ABorderStrong } from '@navikt/ds-tokens/dist/tokens';
 import Visittkort from './Visittkort';
 import PersonTags from './PersonTags';
@@ -38,9 +35,18 @@ const FlexContainer = styled.div`
     gap: 1rem;
 `;
 
-const PersonHeaderComponent: FC<{ data: IPersonopplysninger; behandling?: Behandling }> = ({
-    data,
+interface Props {
+    fagsakPersonId: string;
+    personopplysninger: IPersonopplysninger;
+    behandling?: Behandling;
+    fagsak?: Fagsak;
+}
+
+export const PersonHeader: FC<Props> = ({
+    fagsakPersonId,
+    personopplysninger,
     behandling,
+    fagsak,
 }) => {
     const {
         personIdent,
@@ -52,48 +58,29 @@ const PersonHeaderComponent: FC<{ data: IPersonopplysninger; behandling?: Behand
         fullmakt,
         vergemål,
         fødselsdato,
-    } = data;
+    } = personopplysninger;
 
     const { axiosRequest, erSaksbehandler } = useApp();
-    const [fagsakPersonId, settFagsakPersonId] = useState<string>('');
     const [erMigrert, settErMigrert] = useState(false);
     const alder = nullableDatoTilAlder(fødselsdato);
     const visningsnavn = alder ? `${navn.visningsnavn} (${alder})` : navn.visningsnavn;
 
-    const utledOmFagsakErMigrert = (fagsak: {
-        fagsakId: string;
-        stønadstype: Stønadstype;
-        erLøpende: boolean;
-        erMigrert: boolean;
-    }) => {
-        if (behandling) {
-            return behandling.fagsakId === fagsak.fagsakId && fagsak.erMigrert;
-        }
-        return fagsak.stønadstype === Stønadstype.OVERGANGSSTØNAD && fagsak.erMigrert;
-    };
-
     useEffect(() => {
-        const hentFagsak = (personIdent: string): void => {
-            if (!personIdent) return;
-
-            axiosRequest<ISøkPerson, IPersonIdent>({
-                method: 'POST',
-                url: `/familie-ef-sak/api/sok`,
-                data: { personIdent: personIdent },
-            }).then((respons: RessursSuksess<ISøkPerson> | RessursFeilet) => {
+        if (fagsak) {
+            settErMigrert(fagsak.erMigrert);
+        } else {
+            axiosRequest<IFagsakPersonMedBehandlinger, null>({
+                method: 'GET',
+                url: `/familie-ef-sak/api/fagsak-person/${fagsakPersonId}/utvidet`,
+            }).then((respons: RessursSuksess<IFagsakPersonMedBehandlinger> | RessursFeilet) => {
                 if (respons.status === RessursStatus.SUKSESS) {
-                    if (respons.data?.fagsakPersonId) {
-                        settFagsakPersonId(respons.data.fagsakPersonId);
-                        settErMigrert(respons.data.fagsaker.some(utledOmFagsakErMigrert));
+                    if (respons.data) {
+                        settErMigrert(respons.data.overgangsstønad?.erMigrert ?? false);
                     }
                 }
             });
-        };
-
-        hentFagsak(personIdent);
-
-        // eslint-disable-next-line
-    }, []);
+        }
+    }, [axiosRequest, fagsak, fagsakPersonId]);
 
     return (
         <Container>
@@ -127,5 +114,3 @@ const PersonHeaderComponent: FC<{ data: IPersonopplysninger; behandling?: Behand
         </Container>
     );
 };
-
-export default PersonHeaderComponent;
