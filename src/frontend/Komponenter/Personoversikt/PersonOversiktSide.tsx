@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import { Navigate, Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { IPersonopplysninger } from '../../App/typer/personopplysninger';
-import PersonHeaderComponent from '../../Felles/PersonHeader/PersonHeader';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import Behandlingsoversikt from './Behandlingsoversikt';
 import Personopplysninger from './Personopplysninger';
@@ -20,6 +19,7 @@ import { Tabs } from '@navikt/ds-react';
 import { InntektForPerson } from './InntektForPerson';
 import { loggNavigereTabEvent } from '../../App/utils/amplitude/amplitudeLoggEvents';
 import styled from 'styled-components';
+import { PersonHeader } from '../../Felles/PersonHeader/PersonHeader';
 
 type TabWithRouter = {
     label: string;
@@ -150,7 +150,10 @@ const PersonOversikt: React.FC<Props> = ({ fagsakPerson, personopplysninger }) =
 
     return (
         <>
-            <PersonHeaderComponent data={personopplysninger} />
+            <PersonHeader
+                fagsakPersonId={fagsakPerson.id}
+                personopplysninger={personopplysninger}
+            />
             <Container>
                 <Tabs
                     value={path}

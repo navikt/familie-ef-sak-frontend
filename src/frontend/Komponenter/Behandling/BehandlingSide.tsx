@@ -5,8 +5,7 @@ import styled from 'styled-components';
 import BehandlingRoutes from './BehandlingRoutes';
 import { BehandlingProvider, useBehandling } from '../../App/context/BehandlingContext';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
-import PersonHeaderComponent from '../../Felles/PersonHeader/PersonHeader';
-import { Behandling } from '../../App/typer/fagsak';
+import { Behandling, Fagsak } from '../../App/typer/fagsak';
 import { IPersonopplysninger } from '../../App/typer/personopplysninger';
 import { HenleggModal } from './Modal/HenleggModal';
 import { useSetValgtFagsakId } from '../../App/hooks/useSetValgtFagsakId';
@@ -18,6 +17,7 @@ import Personopplysningsendringer from './Endring/EndringPersonopplysninger';
 import { SettPåVent } from './SettPåVent/SettPåVent';
 import { NyEierModal } from './Modal/NyEierModal';
 import { Fanemeny } from './Fanemeny/Fanemeny';
+import { PersonHeader } from '../../Felles/PersonHeader/PersonHeader';
 
 const Container = styled.div`
     display: flex;
@@ -73,17 +73,18 @@ export const BehandlingSide: FC = () => (
 );
 
 const Side: FC = () => {
-    const { behandling, personopplysningerResponse } = useBehandling();
+    const { behandling, fagsak, personopplysningerResponse } = useBehandling();
 
     useEffect(() => {
         document.title = 'Behandling';
     }, []);
 
     return (
-        <DataViewer response={{ personopplysningerResponse, behandling }}>
-            {({ personopplysningerResponse, behandling }) => (
+        <DataViewer response={{ personopplysningerResponse, behandling, fagsak }}>
+            {({ personopplysningerResponse, behandling, fagsak }) => (
                 <SideInnhold
                     behandling={behandling}
+                    fagsak={fagsak}
                     personopplysninger={personopplysningerResponse}
                 />
             )}
@@ -93,17 +94,23 @@ const Side: FC = () => {
 
 interface Props {
     behandling: Behandling;
+    fagsak: Fagsak;
     personopplysninger: IPersonopplysninger;
 }
 
-const SideInnhold: FC<Props> = ({ behandling, personopplysninger }) => {
+const SideInnhold: FC<Props> = ({ behandling, personopplysninger, fagsak }) => {
     useSetValgtFagsakId(behandling.fagsakId);
     useSetPersonIdent(personopplysninger.personIdent);
     const { åpenHøyremeny } = useBehandling();
 
     return (
         <>
-            <PersonHeaderComponent data={personopplysninger} behandling={behandling} />
+            <PersonHeader
+                fagsakPersonId={fagsak.fagsakPersonId}
+                personopplysninger={personopplysninger}
+                behandling={behandling}
+                fagsak={fagsak}
+            />
             <Container>
                 <InnholdWrapper $åpenHøyremeny={åpenHøyremeny}>
                     <Fanemeny behandling={behandling} />

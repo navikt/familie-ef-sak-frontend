@@ -110,7 +110,7 @@ export const useJournalføringState = (
         dokumenter.length > 0 ? dokumenter[0].dokumentInfoId : '';
 
     const { axiosRequest, innloggetSaksbehandler } = useApp();
-    const { fagsak, hentFagsak } = useHentFagsak();
+    const { fagsakPåPersonIdent: fagsak, hentFagsakPåPersonIdent: hentFagsak } = useHentFagsak();
     const hentDokumentResponse = useHentDokument(journalpost);
 
     const [fagsakId, settFagsakId] = useState<string>('');
