@@ -7,15 +7,16 @@ import { Fagsak } from '../typer/fagsak';
 interface HentFagsakResponse {
     hentFagsakPåPersonIdent: (personIdent: string, stønadstype: Stønadstype) => void;
     fagsakPåPersonIdent: Ressurs<Fagsak>;
-    hentFagsak: (fagsakId: string) => void;
-    fagsak: Ressurs<Fagsak>;
+    hentFagsakPåBehandlingId: (behandlingId: string) => void;
+    fagsakPåBehandlingId: Ressurs<Fagsak>;
 }
 
 export const useHentFagsak = (): HentFagsakResponse => {
     const { axiosRequest } = useApp();
     const [fagsakPåPersonIdent, settFagsakPåPersonIdent] =
         useState<Ressurs<Fagsak>>(byggTomRessurs());
-    const [fagsak, settFagsak] = useState<Ressurs<Fagsak>>(byggTomRessurs());
+    const [fagsakPåBehandlingId, settFagsakPåBehandlingId] =
+        useState<Ressurs<Fagsak>>(byggTomRessurs());
 
     const hentFagsakPåPersonIdent = useCallback(
         (personIdent: string, stønadstype: Stønadstype) => {
@@ -29,13 +30,13 @@ export const useHentFagsak = (): HentFagsakResponse => {
         [axiosRequest]
     );
 
-    const hentFagsak = useCallback(
-        (fagsakId: string) => {
-            settFagsak(byggHenterRessurs());
+    const hentFagsakPåBehandlingId = useCallback(
+        (behandlingId: string) => {
+            settFagsakPåBehandlingId(byggHenterRessurs());
             axiosRequest<Fagsak, null>({
                 method: 'GET',
-                url: `/familie-ef-sak/api/fagsak/${fagsakId}`,
-            }).then((res: Ressurs<Fagsak>) => settFagsak(res));
+                url: `/familie-ef-sak/api/fagsak/behandling/${behandlingId}`,
+            }).then((res: Ressurs<Fagsak>) => settFagsakPåBehandlingId(res));
         },
         [axiosRequest]
     );
@@ -43,7 +44,7 @@ export const useHentFagsak = (): HentFagsakResponse => {
     return {
         hentFagsakPåPersonIdent,
         fagsakPåPersonIdent,
-        fagsak,
-        hentFagsak,
+        hentFagsakPåBehandlingId,
+        fagsakPåBehandlingId,
     };
 };

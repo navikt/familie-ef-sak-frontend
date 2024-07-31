@@ -32,7 +32,7 @@ const [BehandlingProvider, useBehandling] = constate(() => {
     const { hentPersonopplysninger, personopplysningerResponse } =
         useHentPersonopplysninger(behandlingId);
     const { hentBehandlingCallback, behandling } = useHentBehandling(behandlingId);
-    const { hentFagsak, fagsak } = useHentFagsak();
+    const { hentFagsakPåBehandlingId: hentFagsak, fagsakPåBehandlingId: fagsak } = useHentFagsak();
     const { hentBehandlingshistorikkCallback, behandlingHistorikk } =
         useHentBehandlingHistorikk(behandlingId);
     const { hentTotrinnskontrollCallback, totrinnskontroll } =
@@ -73,6 +73,7 @@ const [BehandlingProvider, useBehandling] = constate(() => {
         hentRegler();
         hentPersonopplysninger(behandlingId);
         hentUtestengelserForBehandling(behandlingId);
+        hentFagsak(behandlingId);
         // eslint-disable-next-line
     }, [behandlingId]);
 
@@ -84,7 +85,6 @@ const [BehandlingProvider, useBehandling] = constate(() => {
             ) {
                 hentEndringerForPersonopplysninger(behandling.data.id);
             }
-            hentFagsak(behandling.data.fagsakId);
             settVisSettPåVent(behandling.data.status === BehandlingStatus.SATT_PÅ_VENT);
         }
 
