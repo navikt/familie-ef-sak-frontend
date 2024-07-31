@@ -11,7 +11,10 @@ type Props = {
     personopplysninger: IPersonopplysninger;
 };
 
-const FrittståendeBrevMedVisning: React.FC<Props> = ({ fagsakId, personopplysninger }: Props) => {
+export const FrittståendeBrevMedVisning: React.FC<Props> = ({
+    fagsakId,
+    personopplysninger,
+}: Props) => {
     const [brevRessurs, oppdaterBrevressurs] = useState<Ressurs<string>>(byggTomRessurs());
 
     return (
@@ -30,5 +33,3 @@ const FrittståendeBrevMedVisning: React.FC<Props> = ({ fagsakId, personopplysni
         </StyledBrev>
     );
 };
-
-export default FrittståendeBrevMedVisning;

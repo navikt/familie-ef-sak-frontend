@@ -21,6 +21,7 @@ import { useHentAnsvarligSaksbehandler } from '../hooks/useHentAnsvarligSaksbeha
 import { useApp } from './AppContext';
 import { ModalState, utledModalState } from '../../Komponenter/Behandling/Modal/NyEierModal';
 import { useHentVedtak } from '../hooks/useHentVedtak';
+import { useHentFagsak } from '../hooks/useHentFagsak';
 
 const [BehandlingProvider, useBehandling] = constate(() => {
     const { innloggetSaksbehandler } = useApp();
@@ -31,6 +32,7 @@ const [BehandlingProvider, useBehandling] = constate(() => {
     const { hentPersonopplysninger, personopplysningerResponse } =
         useHentPersonopplysninger(behandlingId);
     const { hentBehandlingCallback, behandling } = useHentBehandling(behandlingId);
+    const { hentFagsak, fagsak } = useHentFagsak();
     const { hentBehandlingshistorikkCallback, behandlingHistorikk } =
         useHentBehandlingHistorikk(behandlingId);
     const { hentTotrinnskontrollCallback, totrinnskontroll } =
@@ -82,6 +84,7 @@ const [BehandlingProvider, useBehandling] = constate(() => {
             ) {
                 hentEndringerForPersonopplysninger(behandling.data.id);
             }
+            hentFagsak(behandling.data.fagsakId);
             settVisSettPåVent(behandling.data.status === BehandlingStatus.SATT_PÅ_VENT);
         }
 
@@ -143,6 +146,7 @@ const [BehandlingProvider, useBehandling] = constate(() => {
         hentVedtak,
         vedtak,
         vedtaksresultat,
+        fagsak,
     };
 });
 

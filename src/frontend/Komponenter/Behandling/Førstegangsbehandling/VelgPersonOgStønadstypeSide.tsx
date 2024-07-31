@@ -33,7 +33,7 @@ export const VelgPersonOgStønadstypeSide = () => {
     const [personIdent, settPersonIdent] = useState<string>('');
     const [feilmelding, settFeilmelding] = useState<string>();
     const [laster, settLaster] = useState<boolean>(false);
-    const { fagsak, hentFagsak } = useHentFagsak();
+    const { fagsakPåPersonIdent: fagsak, hentFagsakPåPersonIdent: hentFagsak } = useHentFagsak();
     const navigate = useNavigate();
     const harSattPersonIdent = personIdent.length === 11;
     const harFeil = feilmelding !== undefined && harSattPersonIdent;

@@ -5,7 +5,6 @@ import DataViewer from '../../Felles/DataViewer/DataViewer';
 import styled from 'styled-components';
 import { Dokumentinfo } from '../../App/typer/dokumentliste';
 import { groupBy } from '../../App/utils/utils';
-import { IFagsakPerson } from '../../App/typer/fagsak';
 import {
     gyldigeJournalstatuserTilTekst,
     journalposttypeTilTekst,
@@ -64,9 +63,9 @@ const Container = styled.div`
     }
 `;
 
-const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson }) => {
+export const Dokumenter: React.FC<{ fagsakPersonId: string }> = ({ fagsakPersonId }) => {
     const [vedleggRequest, settVedleggRequest] = useState<VedleggRequest>({
-        fagsakPersonId: fagsakPerson.id,
+        fagsakPersonId: fagsakPersonId,
     });
 
     const settVedlegg = (key: keyof VedleggRequest) => {
@@ -235,5 +234,3 @@ const Dokumenter: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson })
         </Container>
     );
 };
-
-export default Dokumenter;

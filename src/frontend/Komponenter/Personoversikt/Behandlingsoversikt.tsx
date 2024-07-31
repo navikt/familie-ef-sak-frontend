@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import { FagsakOversikt } from './FagsakOversikt';
-import { useHentFagsakPersonUtvidet } from '../../App/hooks/useHentFagsakPerson';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { useHentKlagebehandlinger } from '../../App/hooks/useHentKlagebehandlinger';
 import Utestengelse from './Utestengelse/Utestengelse';
 import { useHentUtestengelser } from '../../App/hooks/useHentUtestengelser';
 import { InfostripeUtestengelse } from './InfostripeUtestengelse';
 import { ÅpneKlager } from './Klage/ÅpneKlager';
+import { FagsakPersonMedBehandlinger } from '../../App/typer/fagsak';
 
 export enum BehandlingApplikasjon {
     EF_SAK = 'EF_SAK',
@@ -14,29 +14,29 @@ export enum BehandlingApplikasjon {
     TILBAKEKREVING = 'TILBAKEKREVING',
 }
 
-const Behandlingsoversikt: React.FC<{ fagsakPersonId: string }> = ({ fagsakPersonId }) => {
-    const { hentFagsakPerson, fagsakPerson } = useHentFagsakPersonUtvidet();
+export const Behandlingsoversikt: React.FC<{
+    fagsakPerson: FagsakPersonMedBehandlinger;
+}> = ({ fagsakPerson }) => {
     const { hentKlagebehandlinger, klagebehandlinger } = useHentKlagebehandlinger();
     const { hentUtestengelser, utestengelser } = useHentUtestengelser();
 
     useEffect(() => {
-        hentUtestengelser(fagsakPersonId);
-    }, [hentUtestengelser, fagsakPersonId]);
+        hentUtestengelser(fagsakPerson.id);
+    }, [hentUtestengelser, fagsakPerson.id]);
 
     useEffect(() => {
-        hentFagsakPerson(fagsakPersonId);
-        hentKlagebehandlinger(fagsakPersonId);
-    }, [fagsakPersonId, hentFagsakPerson, hentKlagebehandlinger]);
+        hentKlagebehandlinger(fagsakPerson.id);
+    }, [fagsakPerson.id, hentKlagebehandlinger]);
 
     const reHentKlagebehandlinger = () => {
-        hentKlagebehandlinger(fagsakPersonId);
+        hentKlagebehandlinger(fagsakPerson.id);
     };
     return (
-        <DataViewer response={{ fagsakPerson, klagebehandlinger }}>
-            {({ fagsakPerson, klagebehandlinger }) => (
+        <DataViewer response={{ klagebehandlinger }}>
+            {({ klagebehandlinger }) => (
                 <>
                     <InfostripeUtestengelse utestengelser={utestengelser} />
-                    <ÅpneKlager fagsakPersonId={fagsakPersonId} />
+                    <ÅpneKlager fagsakPersonId={fagsakPerson.id} />
                     {fagsakPerson.overgangsstønad && (
                         <FagsakOversikt
                             fagsak={fagsakPerson.overgangsstønad}
@@ -59,7 +59,7 @@ const Behandlingsoversikt: React.FC<{ fagsakPersonId: string }> = ({ fagsakPerso
                         />
                     )}
                     <Utestengelse
-                        fagsakPersonId={fagsakPersonId}
+                        fagsakPersonId={fagsakPerson.id}
                         utestengelser={utestengelser}
                         hentUtestengelser={hentUtestengelser}
                     />
@@ -68,5 +68,3 @@ const Behandlingsoversikt: React.FC<{ fagsakPersonId: string }> = ({ fagsakPerso
         </DataViewer>
     );
 };
-
-export default Behandlingsoversikt;

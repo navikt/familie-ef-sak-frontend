@@ -17,7 +17,7 @@ export const useOppgave = (oppgave: IOppgave) => {
     const navigate = useNavigate();
     const [feilmelding, settFeilmelding] = useState<string>('');
     const [laster, settLaster] = useState<boolean>(false);
-    const { fagsak, hentFagsak } = useHentFagsak();
+    const { fagsakPåPersonIdent: fagsak, hentFagsakPåPersonIdent: hentFagsak } = useHentFagsak();
 
     const settOppgaveTilSaksbehandler = () => {
         settLaster(true);
