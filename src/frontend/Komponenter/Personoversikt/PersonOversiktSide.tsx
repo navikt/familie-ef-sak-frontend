@@ -2,36 +2,36 @@ import React, { useEffect, useMemo } from 'react';
 import { Navigate, Route, Routes, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { IPersonopplysninger } from '../../App/typer/personopplysninger';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
-import Behandlingsoversikt from './Behandlingsoversikt';
-import Personopplysninger from './Personopplysninger';
 import { useDataHenter } from '../../App/hooks/felles/useDataHenter';
 import { AxiosRequestConfig } from 'axios';
-import Vedtaksperioderoversikt from './Vedtaksperioderoversikt';
-import FrittståendeBrevMedVisning from '../Behandling/Brev/FrittståendeBrevMedVisning';
-import Dokumenter from './Dokumenter';
 import { Infotrygdperioderoversikt } from './Infotrygdperioderoversikt';
-import { IFagsakPerson } from '../../App/typer/fagsak';
+import { FagsakPersonMedBehandlinger } from '../../App/typer/fagsak';
 import { useApp } from '../../App/context/AppContext';
 import { useSetValgtFagsakPersonId } from '../../App/hooks/useSetValgtFagsakPersonId';
 import { useSetPersonIdent } from '../../App/hooks/useSetPersonIdent';
-import { useHentFagsakPerson } from '../../App/hooks/useHentFagsakPerson';
+import { useHentFagsakPersonUtvidet } from '../../App/hooks/useHentFagsakPerson';
 import { Tabs } from '@navikt/ds-react';
 import { InntektForPerson } from './InntektForPerson';
 import { loggNavigereTabEvent } from '../../App/utils/amplitude/amplitudeLoggEvents';
 import styled from 'styled-components';
 import { PersonHeader } from '../../Felles/PersonHeader/PersonHeader';
+import { Personopplysninger } from './Personopplysninger';
+import { Vedtaksperioderoversikt } from './Vedtaksperioderoversikt';
+import { Behandlingsoversikt } from './Behandlingsoversikt';
+import { FrittståendeBrevMedVisning } from '../Behandling/Brev/FrittståendeBrevMedVisning';
+import { Dokumenter } from './Dokumenter';
 
-type TabWithRouter = {
+interface FaneProps {
     label: string;
     path: string;
     komponent: (
-        fagsakPerson: IFagsakPerson,
+        fagsakPerson: FagsakPersonMedBehandlinger,
         personopplysninger: IPersonopplysninger,
         erSaksbehandler: boolean
     ) => React.ReactNode | undefined;
-};
+}
 
-const tabs: TabWithRouter[] = [
+const faner: FaneProps[] = [
     {
         label: 'Personopplysninger',
         path: 'personopplysninger',
@@ -45,7 +45,7 @@ const tabs: TabWithRouter[] = [
     {
         label: 'Behandlingsoversikt',
         path: 'behandlinger',
-        komponent: (fagsakPerson) => <Behandlingsoversikt fagsakPersonId={fagsakPerson.id} />,
+        komponent: (fagsakPerson) => <Behandlingsoversikt fagsakPerson={fagsakPerson} />,
     },
     {
         label: 'Vedtaksperioder',
@@ -57,7 +57,7 @@ const tabs: TabWithRouter[] = [
         path: 'infotrygd',
         komponent: (fagsakPerson, personopplysninger) => (
             <Infotrygdperioderoversikt
-                fagsakPerson={fagsakPerson}
+                fagsakPersonId={fagsakPerson.id}
                 personIdent={personopplysninger.personIdent}
             />
         ),
@@ -65,16 +65,16 @@ const tabs: TabWithRouter[] = [
     {
         label: 'Dokumentoversikt',
         path: 'dokumenter',
-        komponent: (fagsakPerson) => <Dokumenter fagsakPerson={fagsakPerson} />,
+        komponent: (fagsakPerson) => <Dokumenter fagsakPersonId={fagsakPerson.id} />,
     },
     {
         label: 'Brev',
         path: 'frittstaaende-brev',
         komponent: (fagsakPerson, personopplysninger, erSaksbehandler) => {
             const fagsakId =
-                fagsakPerson.overgangsstønad ||
-                fagsakPerson.barnetilsyn ||
-                fagsakPerson.skolepenger;
+                fagsakPerson.overgangsstønad?.id ||
+                fagsakPerson.barnetilsyn?.id ||
+                fagsakPerson.skolepenger?.id;
 
             return (
                 erSaksbehandler &&
@@ -90,9 +90,7 @@ const tabs: TabWithRouter[] = [
     {
         label: 'Inntekt',
         path: 'inntekt',
-        komponent: (fagsakPerson) => {
-            return <InntektForPerson fagsakPerson={fagsakPerson} />;
-        },
+        komponent: (fagsakPerson) => <InntektForPerson fagsakPersonId={fagsakPerson.id} />,
     },
 ];
 
@@ -104,7 +102,7 @@ export const PersonOversiktSide: React.FC = () => {
     const fagsakPersonId = useParams<{ fagsakPersonId: string }>().fagsakPersonId as string;
     useSetValgtFagsakPersonId(fagsakPersonId);
 
-    const { hentFagsakPerson, fagsakPerson } = useHentFagsakPerson();
+    const { hentFagsakPerson, fagsakPerson } = useHentFagsakPersonUtvidet();
 
     const personopplysningerConfig: AxiosRequestConfig = useMemo(
         () => ({
@@ -137,7 +135,7 @@ export const PersonOversiktSide: React.FC = () => {
 };
 
 interface Props {
-    fagsakPerson: IFagsakPerson;
+    fagsakPerson: FagsakPersonMedBehandlinger;
     personopplysninger: IPersonopplysninger;
 }
 
@@ -150,35 +148,31 @@ const PersonOversikt: React.FC<Props> = ({ fagsakPerson, personopplysninger }) =
 
     return (
         <>
-            <PersonHeader
-                fagsakPersonId={fagsakPerson.id}
-                personopplysninger={personopplysninger}
-            />
+            <PersonHeader fagsakPerson={fagsakPerson} personopplysninger={personopplysninger} />
             <Container>
                 <Tabs
                     value={path}
-                    onChange={(tabPath) => {
-                        navigate(tabPath);
+                    onChange={(fane) => {
+                        navigate(fane);
                         loggNavigereTabEvent({
                             side: 'person',
                             forrigeFane: path,
-                            nesteFane: tabPath,
+                            nesteFane: fane,
                         });
                     }}
                 >
                     <Tabs.List>
-                        {tabs.map((tab) => {
-                            return <Tabs.Tab key={tab.path} value={tab.path} label={tab.label} />;
-                        })}
+                        {faner.map((fane) => (
+                            <Tabs.Tab key={fane.path} value={fane.path} label={fane.label} />
+                        ))}
                     </Tabs.List>
                 </Tabs>
-
                 <Routes>
-                    {tabs.map((tab) => (
+                    {faner.map((fane) => (
                         <Route
-                            key={tab.path}
-                            path={`/${tab.path}`}
-                            element={tab.komponent(
+                            key={fane.path}
+                            path={`/${fane.path}`}
+                            element={fane.komponent(
                                 fagsakPerson,
                                 personopplysninger,
                                 erSaksbehandler

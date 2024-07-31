@@ -10,8 +10,7 @@ import {
     Behandling,
     BehandlingResultat,
     Fagsak,
-    IFagsakPerson,
-    IFagsakPersonMedBehandlinger,
+    FagsakPersonMedBehandlinger,
 } from '../../App/typer/fagsak';
 import { Stønadstype } from '../../App/typer/behandlingstema';
 import { BehandlingStatus } from '../../App/typer/behandlingstatus';
@@ -19,7 +18,6 @@ import VedtaksperioderBarnetilsyn from './HistorikkVedtaksperioder/Vedtaksperiod
 import VedtaksperioderOvergangsstønad from './HistorikkVedtaksperioder/VedtaksperioderOvergangsstønad';
 import { IVedtakForSkolepenger } from '../../App/typer/vedtak';
 import VedtaksperioderSkolepenger from './HistorikkVedtaksperioder/VedtaksperioderSkolepeger';
-import { useHentFagsakPersonUtvidet } from '../../App/hooks/useHentFagsakPerson';
 import { Checkbox, Select } from '@navikt/ds-react';
 import { sorterBehandlinger } from '../../App/utils/behandlingutil';
 import { useHentAndelHistorikkPerioder } from '../../App/hooks/useHentAndelHistorikkPerioder';
@@ -126,7 +124,7 @@ const Vedtaksperioder: React.FC<VedtaksperioderProps> = (props) => {
     }
 };
 
-const VedtaksperioderForFagsakPerson: React.FC<{ fagsakPerson: IFagsakPersonMedBehandlinger }> = ({
+export const Vedtaksperioderoversikt: React.FC<{ fagsakPerson: FagsakPersonMedBehandlinger }> = ({
     fagsakPerson,
 }) => {
     const [valgtFagsak, settValgtFagsak] = useState<Fagsak | undefined>(
@@ -228,21 +226,3 @@ const VedtaksperioderForFagsakPerson: React.FC<{ fagsakPerson: IFagsakPersonMedB
         </>
     );
 };
-
-const Vedtaksperioderoversikt: React.FC<{ fagsakPerson: IFagsakPerson }> = ({ fagsakPerson }) => {
-    const { hentFagsakPerson, fagsakPerson: fagsakPersonMedBehandlinger } =
-        useHentFagsakPersonUtvidet();
-
-    useEffect(() => {
-        hentFagsakPerson(fagsakPerson.id);
-    }, [fagsakPerson, hentFagsakPerson]);
-
-    return (
-        <DataViewer response={{ fagsakPersonMedBehandlinger }}>
-            {({ fagsakPersonMedBehandlinger }) => (
-                <VedtaksperioderForFagsakPerson fagsakPerson={fagsakPersonMedBehandlinger} />
-            )}
-        </DataViewer>
-    );
-};
-export default Vedtaksperioderoversikt;

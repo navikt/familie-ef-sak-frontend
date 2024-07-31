@@ -1,10 +1,9 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC } from 'react';
 import { IPersonopplysninger } from '../../App/typer/personopplysninger';
 import styled from 'styled-components';
-import { Behandling, Fagsak, IFagsakPersonMedBehandlinger } from '../../App/typer/fagsak';
+import { Behandling, Fagsak, FagsakPersonMedBehandlinger } from '../../App/typer/fagsak';
 import { Sticky } from '../Visningskomponenter/Sticky';
 import { nullableDatoTilAlder } from '../../App/utils/dato';
-import { RessursFeilet, RessursStatus, RessursSuksess } from '../../App/typer/ressurs';
 import { useApp } from '../../App/context/AppContext';
 import { AksjonsknapperPersonHeader } from './AksjonsknapperPersonHeader';
 import { ABorderStrong } from '@navikt/ds-tokens/dist/tokens';
@@ -35,19 +34,35 @@ const FlexContainer = styled.div`
     gap: 1rem;
 `;
 
-interface Props {
-    fagsakPersonId: string;
+type PersonOversiktProps = {
     personopplysninger: IPersonopplysninger;
-    behandling?: Behandling;
-    fagsak?: Fagsak;
-}
+    fagsakPerson: FagsakPersonMedBehandlinger;
+
+    behandling?: never;
+    fagsak?: never;
+    fagsakPersonId?: never;
+};
+
+type BehandlingProps = {
+    personopplysninger: IPersonopplysninger;
+    behandling: Behandling;
+    fagsak: Fagsak;
+    fagsakPersonId: string;
+
+    fagsakPerson?: never;
+};
+
+type Props = PersonOversiktProps | BehandlingProps;
 
 export const PersonHeader: FC<Props> = ({
     fagsakPersonId,
     personopplysninger,
     behandling,
     fagsak,
+    fagsakPerson,
 }) => {
+    const { erSaksbehandler } = useApp();
+
     const {
         personIdent,
         kjønn,
@@ -59,34 +74,18 @@ export const PersonHeader: FC<Props> = ({
         vergemål,
         fødselsdato,
     } = personopplysninger;
-
-    const { axiosRequest, erSaksbehandler } = useApp();
-    const [erMigrert, settErMigrert] = useState(false);
     const alder = nullableDatoTilAlder(fødselsdato);
     const visningsnavn = alder ? `${navn.visningsnavn} (${alder})` : navn.visningsnavn;
 
-    useEffect(() => {
-        if (fagsak) {
-            settErMigrert(fagsak.erMigrert);
-        } else {
-            axiosRequest<IFagsakPersonMedBehandlinger, null>({
-                method: 'GET',
-                url: `/familie-ef-sak/api/fagsak-person/${fagsakPersonId}/utvidet`,
-            }).then((respons: RessursSuksess<IFagsakPersonMedBehandlinger> | RessursFeilet) => {
-                if (respons.status === RessursStatus.SUKSESS) {
-                    if (respons.data) {
-                        settErMigrert(respons.data.overgangsstønad?.erMigrert ?? false);
-                    }
-                }
-            });
-        }
-    }, [axiosRequest, fagsak, fagsakPersonId]);
+    const erFagsakMigrert = fagsak
+        ? fagsak.erMigrert
+        : (fagsakPerson?.overgangsstønad?.erMigrert ?? false);
 
     return (
         <Container>
             <FlexContainer>
                 <Visittkort
-                    fagsakPersonId={fagsakPersonId}
+                    fagsakPersonId={fagsakPersonId ?? fagsakPerson?.id}
                     kjønn={kjønn}
                     ident={personIdent}
                     visningsnavn={visningsnavn}
@@ -98,7 +97,7 @@ export const PersonHeader: FC<Props> = ({
                     egenAnsatt={egenAnsatt}
                     fullmakt={fullmakt}
                     folkeregisterPersonStatus={folkeregisterpersonstatus}
-                    migrert={erMigrert}
+                    migrert={erFagsakMigrert}
                     vergemål={vergemål}
                 />
             </FlexContainer>

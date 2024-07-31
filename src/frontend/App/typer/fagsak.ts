@@ -6,14 +6,7 @@ import { Behandlingsårsak, EHenlagtårsak } from '../typer/Behandlingsårsak';
 import { TilbakekrevingBehandlingsresultatstype } from './tilbakekreving';
 import { KlagebehandlingResultat } from './klage';
 
-export interface IFagsakPerson {
-    id: string;
-    overgangsstønad?: string;
-    barnetilsyn?: string;
-    skolepenger?: string;
-}
-
-export interface IFagsakPersonMedBehandlinger {
+export interface FagsakPersonMedBehandlinger {
     id: string;
     overgangsstønad?: Fagsak;
     barnetilsyn?: Fagsak;
