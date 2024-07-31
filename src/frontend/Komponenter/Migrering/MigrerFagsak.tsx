@@ -17,7 +17,6 @@ import {
     nullableBooleanTilTekst,
 } from '../../App/utils/formatter';
 import Utregningstabell from '../Behandling/VedtakOgBeregning/Overgangsstønad/InnvilgeVedtak/Utregningstabell';
-import { IFagsakPerson } from '../../App/typer/fagsak';
 import styled from 'styled-components';
 import { Button, Checkbox, CheckboxGroup } from '@navikt/ds-react';
 import { AlertWarning } from '../../Felles/Visningskomponenter/Alerts';
@@ -97,15 +96,13 @@ const visMigreringInfo = (migreringInfo: MigreringInfoResponse) => {
 };
 
 const MigrerFagsak: React.FC<{
-    fagsakPerson: IFagsakPerson;
-}> = ({ fagsakPerson }) => {
+    fagsakPersonId: string;
+}> = ({ fagsakPersonId }) => {
     const { axiosRequest } = useApp();
     const [migreringInfo, settMigreringInfo] =
         useState<Ressurs<MigreringInfoResponse>>(byggTomRessurs());
     const [migrertStatus, settMigrertStatus] = useState<Ressurs<string>>(byggTomRessurs());
     const [ignorerFeilISimulering, settIgnorerFeilISimulering] = useState<boolean>();
-
-    const { id: fagsakPersonId } = fagsakPerson;
 
     const hentMigreringConfig: AxiosRequestConfig = useMemo(
         () => ({

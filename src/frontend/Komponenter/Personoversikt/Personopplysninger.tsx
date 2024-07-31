@@ -1,14 +1,14 @@
 import React, { useMemo } from 'react';
 import { INavKontor, IPersonopplysninger } from '../../App/typer/personopplysninger';
-import PersonopplysningerMedNavKontor from '../../Felles/Personopplysninger/PersonopplysningerMedNavKontor';
 import { IPersonIdent } from '../../App/typer/felles';
 import { AxiosRequestConfig } from 'axios';
 import { useDataHenter } from '../../App/hooks/felles/useDataHenter';
-import { IFagsakPerson } from '../../App/typer/fagsak';
+import { FagsakPersonMedBehandlinger } from '../../App/typer/fagsak';
+import { PersonopplysningerMedNavKontor } from '../../Felles/Personopplysninger/PersonopplysningerMedNavKontor';
 
-const Personopplysninger: React.FC<{
+export const Personopplysninger: React.FC<{
     personopplysninger: IPersonopplysninger;
-    fagsakPerson: IFagsakPerson;
+    fagsakPerson: FagsakPersonMedBehandlinger;
 }> = ({ personopplysninger, fagsakPerson }) => {
     const personIdent = personopplysninger.personIdent;
     const navKontorConfig: AxiosRequestConfig = useMemo(
@@ -30,5 +30,3 @@ const Personopplysninger: React.FC<{
         />
     );
 };
-
-export default Personopplysninger;
