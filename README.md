@@ -35,7 +35,7 @@ Appen krever en del environment variabler og legges til i .env fila i root på p
     AZURE_APP_WELL_KNOWN_URL='<AZURE_APP_WELL_KNOWN_URL fra secret>'
 ```
 
-Secrets kan bli lagt inn automatisk dersom man kjører `sh hent-og-lagre-miljøvariabler.sh`. Scriptet krever at du har `jq` og er pålogget naisdevice og er logget inn på google `gcloud auth login`)
+Secrets kan bli lagt inn automatisk dersom man kjører `sh hent-og-lagre-miljøvariabler.sh`. Scriptet krever at du har `jq`, er pålogget naisdevice og er logget inn på google `gcloud auth login`)
 
 Secrets kan også hentes selv fra cluster med
 `kubectl -n teamfamilie get secret azuread-familie-ef-sak-frontend-lokal -o json | jq '.data | map_values(@base64d)'`
