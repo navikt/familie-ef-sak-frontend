@@ -106,7 +106,6 @@ const SideInnhold: FC<Props> = ({ behandling, personopplysninger, fagsak }) => {
     return (
         <>
             <PersonHeader
-                fagsakPersonId={fagsak.fagsakPersonId}
                 personopplysninger={personopplysninger}
                 behandling={behandling}
                 fagsak={fagsak}
