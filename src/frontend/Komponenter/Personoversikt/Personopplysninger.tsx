@@ -3,12 +3,12 @@ import { INavKontor, IPersonopplysninger } from '../../App/typer/personopplysnin
 import { IPersonIdent } from '../../App/typer/felles';
 import { AxiosRequestConfig } from 'axios';
 import { useDataHenter } from '../../App/hooks/felles/useDataHenter';
-import { FagsakPersonMedBehandlinger } from '../../App/typer/fagsak';
+import { FagsakPerson } from '../../App/typer/fagsak';
 import { PersonopplysningerMedNavKontor } from '../../Felles/Personopplysninger/PersonopplysningerMedNavKontor';
 
 export const Personopplysninger: React.FC<{
     personopplysninger: IPersonopplysninger;
-    fagsakPerson: FagsakPersonMedBehandlinger;
+    fagsakPerson: FagsakPerson;
 }> = ({ personopplysninger, fagsakPerson }) => {
     const personIdent = personopplysninger.personIdent;
     const navKontorConfig: AxiosRequestConfig = useMemo(

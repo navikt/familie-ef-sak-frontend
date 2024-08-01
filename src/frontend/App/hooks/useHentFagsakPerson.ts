@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import { byggHenterRessurs, byggTomRessurs, Ressurs } from '../typer/ressurs';
-import { FagsakPersonMedBehandlinger } from '../typer/fagsak';
+import { FagsakPerson } from '../typer/fagsak';
 import { useApp } from '../context/AppContext';
 
 interface HentFagsakPersonResponse<T> {
@@ -8,25 +8,23 @@ interface HentFagsakPersonResponse<T> {
     fagsakPerson: Ressurs<T>;
 }
 
-export const useHentFagsakPersonUtvidet =
-    (): HentFagsakPersonResponse<FagsakPersonMedBehandlinger> => {
-        const { axiosRequest } = useApp();
-        const [fagsakPerson, settFagsakPerson] =
-            useState<Ressurs<FagsakPersonMedBehandlinger>>(byggTomRessurs());
+export const useHentFagsakPerson = (): HentFagsakPersonResponse<FagsakPerson> => {
+    const { axiosRequest } = useApp();
+    const [fagsakPerson, settFagsakPerson] = useState<Ressurs<FagsakPerson>>(byggTomRessurs());
 
-        const hentFagsakPerson = useCallback(
-            (fagsakPersonid: string) => {
-                settFagsakPerson(byggHenterRessurs());
-                axiosRequest<FagsakPersonMedBehandlinger, null>({
-                    method: 'GET',
-                    url: `/familie-ef-sak/api/fagsak-person/${fagsakPersonid}/utvidet`,
-                }).then((res: Ressurs<FagsakPersonMedBehandlinger>) => settFagsakPerson(res));
-            },
-            [axiosRequest]
-        );
+    const hentFagsakPerson = useCallback(
+        (fagsakPersonid: string) => {
+            settFagsakPerson(byggHenterRessurs());
+            axiosRequest<FagsakPerson, null>({
+                method: 'GET',
+                url: `/familie-ef-sak/api/fagsak-person/${fagsakPersonid}`,
+            }).then((res: Ressurs<FagsakPerson>) => settFagsakPerson(res));
+        },
+        [axiosRequest]
+    );
 
-        return {
-            hentFagsakPerson,
-            fagsakPerson,
-        };
+    return {
+        hentFagsakPerson,
+        fagsakPerson,
     };
+};

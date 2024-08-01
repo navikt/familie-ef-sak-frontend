@@ -12,7 +12,7 @@ import { INavKontor, IPersonopplysninger } from '../../App/typer/personopplysnin
 import { Ressurs } from '../../App/typer/ressurs';
 import Vergemål from './Vergemål';
 import styled from 'styled-components';
-import { FagsakPersonMedBehandlinger } from '../../App/typer/fagsak';
+import { FagsakPerson } from '../../App/typer/fagsak';
 
 const Container = styled.div`
     display: flex;
@@ -24,7 +24,7 @@ const Container = styled.div`
 export const PersonopplysningerMedNavKontor: React.FC<{
     personopplysninger: IPersonopplysninger;
     navKontor: Ressurs<INavKontor | undefined>;
-    fagsakPerson: FagsakPersonMedBehandlinger;
+    fagsakPerson: FagsakPerson;
 }> = ({ personopplysninger, navKontor, fagsakPerson }) => {
     const {
         adresse,

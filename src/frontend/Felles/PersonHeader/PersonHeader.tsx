@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { IPersonopplysninger } from '../../App/typer/personopplysninger';
 import styled from 'styled-components';
-import { Behandling, Fagsak, FagsakPersonMedBehandlinger } from '../../App/typer/fagsak';
+import { Behandling, Fagsak, FagsakPerson } from '../../App/typer/fagsak';
 import { Sticky } from '../Visningskomponenter/Sticky';
 import { nullableDatoTilAlder } from '../../App/utils/dato';
 import { useApp } from '../../App/context/AppContext';
@@ -36,7 +36,7 @@ const FlexContainer = styled.div`
 
 type PersonOversiktProps = {
     personopplysninger: IPersonopplysninger;
-    fagsakPerson: FagsakPersonMedBehandlinger;
+    fagsakPerson: FagsakPerson;
 };
 
 type BehandlingProps = {

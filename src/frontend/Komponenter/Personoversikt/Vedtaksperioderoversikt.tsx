@@ -6,12 +6,7 @@ import { formaterNullableIsoDatoTid } from '../../App/utils/formatter';
 import { useDataHenter } from '../../App/hooks/felles/useDataHenter';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { behandlingstypeTilTekst } from '../../App/typer/behandlingstype';
-import {
-    Behandling,
-    BehandlingResultat,
-    Fagsak,
-    FagsakPersonMedBehandlinger,
-} from '../../App/typer/fagsak';
+import { Behandling, BehandlingResultat, Fagsak, FagsakPerson } from '../../App/typer/fagsak';
 import { Stønadstype } from '../../App/typer/behandlingstema';
 import { BehandlingStatus } from '../../App/typer/behandlingstatus';
 import VedtaksperioderBarnetilsyn from './HistorikkVedtaksperioder/VedtaksperioderBarnetilsyn';
@@ -124,7 +119,7 @@ const Vedtaksperioder: React.FC<VedtaksperioderProps> = (props) => {
     }
 };
 
-export const Vedtaksperioderoversikt: React.FC<{ fagsakPerson: FagsakPersonMedBehandlinger }> = ({
+export const Vedtaksperioderoversikt: React.FC<{ fagsakPerson: FagsakPerson }> = ({
     fagsakPerson,
 }) => {
     const [valgtFagsak, settValgtFagsak] = useState<Fagsak | undefined>(
