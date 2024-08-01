@@ -37,30 +37,20 @@ const FlexContainer = styled.div`
 type PersonOversiktProps = {
     personopplysninger: IPersonopplysninger;
     fagsakPerson: FagsakPerson;
-
-    behandling?: never;
-    fagsak?: never;
-    fagsakPersonId?: never;
 };
 
 type BehandlingProps = {
     personopplysninger: IPersonopplysninger;
     behandling: Behandling;
     fagsak: Fagsak;
-    fagsakPersonId: string;
-
-    fagsakPerson?: never;
 };
 
 type Props = PersonOversiktProps | BehandlingProps;
 
-export const PersonHeader: FC<Props> = ({
-    fagsakPersonId,
-    personopplysninger,
-    behandling,
-    fagsak,
-    fagsakPerson,
-}) => {
+const isBehandlingProps = (props: Props): props is BehandlingProps =>
+    (props as BehandlingProps).behandling !== undefined;
+
+export const PersonHeader: FC<Props> = (props) => {
     const { erSaksbehandler } = useApp();
 
     const {
@@ -73,19 +63,21 @@ export const PersonHeader: FC<Props> = ({
         fullmakt,
         vergemål,
         fødselsdato,
-    } = personopplysninger;
+    } = props.personopplysninger;
     const alder = nullableDatoTilAlder(fødselsdato);
     const visningsnavn = alder ? `${navn.visningsnavn} (${alder})` : navn.visningsnavn;
 
-    const erFagsakMigrert = fagsak
-        ? fagsak.erMigrert
-        : (fagsakPerson?.overgangsstønad?.erMigrert ?? false);
+    const harBehandling = isBehandlingProps(props);
+    const erFagsakMigrert = harBehandling
+        ? props.fagsak.erMigrert
+        : (props.fagsakPerson.overgangsstønad?.erMigrert ?? false);
+    const fagsakPersonId = harBehandling ? props.fagsak.fagsakPersonId : props.fagsakPerson.id;
 
     return (
         <Container>
             <FlexContainer>
                 <Visittkort
-                    fagsakPersonId={fagsakPersonId ?? fagsakPerson?.id}
+                    fagsakPersonId={fagsakPersonId}
                     kjønn={kjønn}
                     ident={personIdent}
                     visningsnavn={visningsnavn}
@@ -101,11 +93,11 @@ export const PersonHeader: FC<Props> = ({
                     vergemål={vergemål}
                 />
             </FlexContainer>
-            {behandling && (
+            {harBehandling && (
                 <FlexContainer>
-                    <BehandlingTags behandling={behandling} />
+                    <BehandlingTags behandling={props.behandling} />
                     <AksjonsknapperPersonHeader
-                        behandling={behandling}
+                        behandling={props.behandling}
                         erSaksbehandler={erSaksbehandler}
                     />
                 </FlexContainer>
