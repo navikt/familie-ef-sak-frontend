@@ -6,7 +6,7 @@ import Utestengelse from './Utestengelse/Utestengelse';
 import { useHentUtestengelser } from '../../App/hooks/useHentUtestengelser';
 import { InfostripeUtestengelse } from './InfostripeUtestengelse';
 import { ÅpneKlager } from './Klage/ÅpneKlager';
-import { FagsakPersonMedBehandlinger } from '../../App/typer/fagsak';
+import { FagsakPerson } from '../../App/typer/fagsak';
 
 export enum BehandlingApplikasjon {
     EF_SAK = 'EF_SAK',
@@ -15,7 +15,7 @@ export enum BehandlingApplikasjon {
 }
 
 export const Behandlingsoversikt: React.FC<{
-    fagsakPerson: FagsakPersonMedBehandlinger;
+    fagsakPerson: FagsakPerson;
 }> = ({ fagsakPerson }) => {
     const { hentKlagebehandlinger, klagebehandlinger } = useHentKlagebehandlinger();
     const { hentUtestengelser, utestengelser } = useHentUtestengelser();

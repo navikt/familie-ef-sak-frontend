@@ -5,11 +5,11 @@ import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { useDataHenter } from '../../App/hooks/felles/useDataHenter';
 import { AxiosRequestConfig } from 'axios';
 import { Infotrygdperioderoversikt } from './Infotrygdperioderoversikt';
-import { FagsakPersonMedBehandlinger } from '../../App/typer/fagsak';
+import { FagsakPerson } from '../../App/typer/fagsak';
 import { useApp } from '../../App/context/AppContext';
 import { useSetValgtFagsakPersonId } from '../../App/hooks/useSetValgtFagsakPersonId';
 import { useSetPersonIdent } from '../../App/hooks/useSetPersonIdent';
-import { useHentFagsakPersonUtvidet } from '../../App/hooks/useHentFagsakPerson';
+import { useHentFagsakPerson } from '../../App/hooks/useHentFagsakPerson';
 import { Tabs } from '@navikt/ds-react';
 import { InntektForPerson } from './InntektForPerson';
 import { loggNavigereTabEvent } from '../../App/utils/amplitude/amplitudeLoggEvents';
@@ -25,7 +25,7 @@ interface FaneProps {
     label: string;
     path: string;
     komponent: (
-        fagsakPerson: FagsakPersonMedBehandlinger,
+        fagsakPerson: FagsakPerson,
         personopplysninger: IPersonopplysninger,
         erSaksbehandler: boolean
     ) => React.ReactNode | undefined;
@@ -102,7 +102,7 @@ export const PersonOversiktSide: React.FC = () => {
     const fagsakPersonId = useParams<{ fagsakPersonId: string }>().fagsakPersonId as string;
     useSetValgtFagsakPersonId(fagsakPersonId);
 
-    const { hentFagsakPerson, fagsakPerson } = useHentFagsakPersonUtvidet();
+    const { hentFagsakPerson, fagsakPerson } = useHentFagsakPerson();
 
     const personopplysningerConfig: AxiosRequestConfig = useMemo(
         () => ({
@@ -135,7 +135,7 @@ export const PersonOversiktSide: React.FC = () => {
 };
 
 interface Props {
-    fagsakPerson: FagsakPersonMedBehandlinger;
+    fagsakPerson: FagsakPerson;
     personopplysninger: IPersonopplysninger;
 }
 
