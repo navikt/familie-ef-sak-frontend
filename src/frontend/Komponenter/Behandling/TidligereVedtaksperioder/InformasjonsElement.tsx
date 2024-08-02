@@ -33,8 +33,9 @@ const InformasjonsElement: React.FC<Props> = ({
                                     size={'small'}
                                     style={{ marginLeft: '0.25rem' }}
                                     as="span"
-                                    children={hjelpetekst}
-                                />
+                                >
+                                    {hjelpetekst}
+                                </BodyShort>
                             )}
                         </Label>
                         <BodyShortSmall>{spørsmålsvar}</BodyShortSmall>

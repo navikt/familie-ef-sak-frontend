@@ -20,7 +20,6 @@ const StyledIkonWrapper = styled.div`
     }
 `;
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 interface IkonProps {
     $erAktiv: boolean;
 }

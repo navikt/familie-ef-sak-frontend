@@ -40,7 +40,7 @@ export const AlderPåBarn: React.FC<VilkårProps> = ({
 
                     if (!vurdering && barn.barnepass?.skalHaBarnepass) {
                         return (
-                            <AlertError>
+                            <AlertError key={idx}>
                                 Noe er galt - det finnes ingen vilkår for dette barnets alder
                             </AlertError>
                         );

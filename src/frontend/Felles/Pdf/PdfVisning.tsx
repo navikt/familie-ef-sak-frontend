@@ -66,8 +66,8 @@ const PdfVisning: React.FC<PdfVisningProps> = ({ pdfFilInnhold }) => {
                     <StyledDokument
                         file={`data:application/pdf;base64,${pdfFilInnhold}`}
                         onLoadSuccess={onDocumentLoadSuccess}
-                        error={<AlertError children={'Ukjent feil ved henting av dokument.'} />}
-                        noData={<AlertError children={'Dokumentet er tomt.'} />}
+                        error={<AlertError>Ukjent feil ved henting av dokument</AlertError>}
+                        noData={<AlertError>Dokumentet er tomt</AlertError>}
                         loading={
                             <Loader size={'xlarge'} variant="interaction" transparent={true} />
                         }

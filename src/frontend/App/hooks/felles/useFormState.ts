@@ -44,9 +44,9 @@ export default function useFormState<T extends Record<string, unknown>>(
     const formState: InternalFormState<T> = Object.entries(initialState)
         .map(([key, value]) => {
             if (typeof value === 'string') {
-                return { key, value: useFieldState(value) }; // eslint-disable-line
+                return { key, value: useFieldState(value) };
             } else if (Array.isArray(value)) {
-                return { key, value: useListState(value) }; // eslint-disable-line
+                return { key, value: useListState(value) };
             } else {
                 throw Error(`Støtter ikke den typen: ${key}`);
             }

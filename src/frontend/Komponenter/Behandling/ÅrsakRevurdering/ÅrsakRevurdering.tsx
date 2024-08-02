@@ -11,7 +11,7 @@ interface Props {
     settVurderingUtfylt: (vurderingUtfylt: boolean) => void;
 }
 
-export const ÅrsakRevurdering: React.FC<Props> = ({
+export const AarsakRevurdering: React.FC<Props> = ({
     revurderingsinformasjon: initState,
     behandling,
     settVurderingUtfylt,

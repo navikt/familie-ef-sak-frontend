@@ -73,6 +73,7 @@ const Annet: FC<Props> = ({ dinSituasjon, særligTilsynsbehov }) => {
                     <Informasjonsrad label="Om tilsynsbehov for: " />
                     {særligTilsynsbehov.map((barnetsBehov) => (
                         <Informasjonsrad
+                            key={barnetsBehov.id}
                             label={
                                 barnetsBehov.navn
                                     ? `${barnetsBehov.navn} `

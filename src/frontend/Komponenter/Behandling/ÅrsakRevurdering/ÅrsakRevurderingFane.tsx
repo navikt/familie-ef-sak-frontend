@@ -7,7 +7,7 @@ import { Revurderingsinformasjon } from './typer';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { useApp } from '../../../App/context/AppContext';
 import { byggTomRessurs, Ressurs } from '../../../App/typer/ressurs';
-import { ÅrsakRevurdering } from './ÅrsakRevurdering';
+import { AarsakRevurdering } from './ÅrsakRevurdering';
 import { Heading } from '@navikt/ds-react';
 import { Behandling } from '../../../App/typer/fagsak';
 
@@ -20,7 +20,7 @@ interface Props {
     behandling: Behandling;
 }
 
-export const ÅrsakRevurderingFane: React.FC<Props> = ({ behandling }) => {
+export const AarsakRevurderingFane: React.FC<Props> = ({ behandling }) => {
     const { axiosRequest } = useApp();
 
     const [revurderingsinformasjon, settRevurderingsinformasjon] =
@@ -49,7 +49,7 @@ export const ÅrsakRevurderingFane: React.FC<Props> = ({ behandling }) => {
                 høyre: (
                     <DataViewer response={{ revurderingsinformasjon }}>
                         {({ revurderingsinformasjon }) => (
-                            <ÅrsakRevurdering
+                            <AarsakRevurdering
                                 revurderingsinformasjon={revurderingsinformasjon}
                                 behandling={behandling}
                                 settVurderingUtfylt={settVurderingUtfylt}

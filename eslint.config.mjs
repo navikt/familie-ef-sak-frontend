@@ -22,6 +22,7 @@ export default tseslint.config(
         rules: {
             ...reactHooks.configs.recommended.rules,
             'react/no-unescaped-entities': 'off',
+            '@typescript-eslint/no-unused-expressions': 'off'
         },
         settings: {
             react: {

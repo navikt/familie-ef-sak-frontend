@@ -78,7 +78,7 @@ export const NyeBarn = ({
                 <ul>
                     {nyeBarnSidenForrigeBehandling?.map((nyttBarn) => {
                         return (
-                            <li>
+                            <li key={nyttBarn.personIdent}>
                                 {nyttBarn.navn} ({datoTilAlder(nyttBarn.fødselsdato)} år,{' '}
                                 {nyttBarn.personIdent})
                             </li>

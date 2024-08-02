@@ -25,7 +25,7 @@ export const useEffectDebugger = (
         if (dependency !== previousDeps[index]) {
             const keyName = dependencyNames[index] || index;
             return {
-                // @ts-ignore
+                // @ts-expect-error Manglende typer
                 ...accum,
                 [keyName]: {
                     before: previousDeps[index],
@@ -37,9 +37,8 @@ export const useEffectDebugger = (
         return accum;
     }, {});
 
-    // @ts-ignore-next-line
+    // @ts-expect-error Manglende typer
     if (Object.keys(changedDeps).length) {
-        // eslint-disable-next-line no-console
         console.log('[use-effect-debugger] ', changedDeps);
     }
 

@@ -86,8 +86,8 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
                             {!behandlingErRedigerbar && (
                                 <InfostripeGruppe>
                                     {oppgaverForOpprettelse.oppgavetyperSomSkalOpprettes.map(
-                                        (oppgaveType) => (
-                                            <StyledInfostripe>
+                                        (oppgaveType, idx) => (
+                                            <StyledInfostripe key={idx}>
                                                 {oppgaveSomSkalOpprettesTilTekst[oppgaveType]}
                                             </StyledInfostripe>
                                         )

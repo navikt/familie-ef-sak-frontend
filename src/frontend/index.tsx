@@ -37,6 +37,5 @@ if (process.env.NODE_ENV !== 'production') {
 })();
 
 const rootElement = document.getElementById('app');
-// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 const root = createRoot(rootElement!);
 root.render(<App />);

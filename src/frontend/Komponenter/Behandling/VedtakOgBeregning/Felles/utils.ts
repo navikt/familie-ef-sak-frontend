@@ -59,7 +59,7 @@ export const eksistererVilkårsResultat = (
     vilkårstypeTilResultat: Record<VilkårType, [Vilkårsresultat]>,
     resultat: Vilkårsresultat
 ): boolean => {
-    // @ts-ignore
+    // @ts-expect-error Type mangler
     return [].concat(...Object.values(vilkårstypeTilResultat)).includes(resultat);
 };
 

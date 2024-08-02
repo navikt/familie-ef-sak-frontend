@@ -44,8 +44,9 @@ const BarnBosted: React.FC<{ barn: IBarn }> = ({ barn }) => {
                 open={openState}
                 onClose={() => setOpenState(false)}
                 anchorEl={iconRef.current}
-                children={popoverContentDeltBosted(barn.deltBosted)}
-            />
+            >
+                {popoverContentDeltBosted(barn.deltBosted)}
+            </Popover>
         </FlexBox>
     );
 };
