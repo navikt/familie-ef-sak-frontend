@@ -68,6 +68,7 @@ const config = mergeWithCustomize({
         }),
         new ESLintPlugin({
             cache: true,
+            configType: 'flat',
             extensions: [`ts`, `tsx`],
         }),
     ],
