@@ -24,8 +24,8 @@ const TilsynsutgifterBarnInfo: FC<{
                 <Informasjonsrad label="Ingen søknadsopplysninger" />
             ) : (
                 harPassordning &&
-                barnepass.barnepassordninger.map((ordning) => (
-                    <Barnepassordning barnepassordning={ordning} />
+                barnepass.barnepassordninger.map((ordning, idx) => (
+                    <Barnepassordning key={idx} barnepassordning={ordning} />
                 ))
             )}
         </BarneInfoWrapper>

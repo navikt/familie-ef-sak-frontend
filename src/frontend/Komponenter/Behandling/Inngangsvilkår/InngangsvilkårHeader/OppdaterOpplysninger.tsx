@@ -47,7 +47,7 @@ export const OppdaterOpplysninger: React.FC<Props> = ({
     return behandlingErRedigerbar ? (
         <FlexWrapper>
             <Container>
-                <Oppdateringstekst children={grunnlagsdataSistOppdatert} />
+                <Oppdateringstekst>{grunnlagsdataSistOppdatert}</Oppdateringstekst>
                 <Button
                     aria-label={'Oppdater registeropplysninger'}
                     title={'Oppdater'}

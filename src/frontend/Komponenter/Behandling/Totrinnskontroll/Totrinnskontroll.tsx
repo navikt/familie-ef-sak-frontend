@@ -205,7 +205,7 @@ const TotrinnskontrollUnderkjent: React.FC<{
                     <Detail>Manglende eller feil opplysninger om:</Detail>
                     <>
                         {totrinnskontroll.årsakerUnderkjent.map((årsakUnderkjent) => (
-                            <ÅrsakUnderkjentContainer>
+                            <ÅrsakUnderkjentContainer key={årsakUnderkjent}>
                                 <IconContainer>
                                     <XMarkIcon />
                                 </IconContainer>

@@ -86,17 +86,17 @@ export const Hamburgermeny: FC<Props> = ({ className, items, type = 'hamburger' 
 
     useEffect(() => {
         const håndterKlikkUtenforKomponent = (event: { target: never }) => {
-            // @ts-ignore
+            // @ts-expect-error ref mangler type
             if (åpenHamburgerMeny && ref.current && !ref.current.contains(event.target)) {
                 settÅpenHamburgerMeny(false);
             }
         };
 
-        // @ts-ignore
+        // @ts-expect-error Mangler type
         document.addEventListener('click', håndterKlikkUtenforKomponent, true);
 
         return () => {
-            // @ts-ignore
+            // @ts-expect-error Mangler type
             document.removeEventListener('click', håndterKlikkUtenforKomponent, true);
         };
     }, [åpenHamburgerMeny]);

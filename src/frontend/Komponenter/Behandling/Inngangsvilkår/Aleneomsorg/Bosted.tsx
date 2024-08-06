@@ -89,8 +89,9 @@ const Bosted: FC<Props> = ({
                                 open={openState}
                                 onClose={() => setOpenState(false)}
                                 anchorEl={iconRef.current}
-                                children={popoverContentDeltBosted(deltBostedPerioder)}
-                            />
+                            >
+                                {popoverContentDeltBosted(deltBostedPerioder)}
+                            </Popover>
                         </>
                     )}
                 </FlexBox>

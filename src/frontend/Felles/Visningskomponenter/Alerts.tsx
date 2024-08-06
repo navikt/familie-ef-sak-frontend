@@ -19,3 +19,7 @@ export const AlertWarning = forwardRef<HTMLDivElement, Omit<AlertProps, 'variant
         return <Alert variant={'warning'} {...props} ref={ref} />;
     }
 );
+AlertError.displayName = 'AlertError';
+AlertSuccess.displayName = 'AlertSuccess';
+AlertInfo.displayName = 'AlertInfo';
+AlertWarning.displayName = 'AlertWarning';

@@ -12,7 +12,6 @@ export function useRerunnableEffect(
         () => ({
             rerun: () => setRerun((prev) => prev + 1),
         }),
-        // eslint-disable-next-line
         [setRerun]
     );
 }

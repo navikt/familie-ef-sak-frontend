@@ -11,7 +11,7 @@ import { SanksjonsfastsettelseFane } from '../Sanksjon/SanksjonsfastsettelseFane
 import { SimuleringFane } from '../Simulering/SimuleringFane';
 import { TidligereVedtaksperioderFane } from '../TidligereVedtaksperioder/TidligereVedtaksperioderFane';
 import { VedtakOgBeregningFane } from '../VedtakOgBeregning/VedtakOgBeregningFane';
-import { ÅrsakRevurderingFane } from '../ÅrsakRevurdering/ÅrsakRevurderingFane';
+import { AarsakRevurderingFane } from '../ÅrsakRevurdering/ÅrsakRevurderingFane';
 
 export interface FaneProps {
     href: string;
@@ -36,7 +36,7 @@ const alleFaner: FaneProps[] = [
     {
         href: 'arsak-revurdering',
         navn: FaneNavn.ÅRSAK_REVURDERING,
-        komponent: ÅrsakRevurderingFane,
+        komponent: AarsakRevurderingFane,
     },
     {
         href: 'tidligere-vedtaksperioder',

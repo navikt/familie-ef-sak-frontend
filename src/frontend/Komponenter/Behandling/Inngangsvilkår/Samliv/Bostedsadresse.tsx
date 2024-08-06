@@ -104,7 +104,7 @@ export const Bostedsadresse = ({ behandlingId, personalia }: BostedsadresseProps
                                     <tbody>
                                         {beboere.hits.map((beboer) => {
                                             return (
-                                                <tr>
+                                                <tr key={beboer.personIdent}>
                                                     <Td>{beboer.visningsnavn}</Td>
                                                     <Td>{beboer.personIdent}</Td>
                                                     <Td>{beboer.visningsadresse}</Td>

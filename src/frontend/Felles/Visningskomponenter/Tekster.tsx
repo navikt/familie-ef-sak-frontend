@@ -45,3 +45,10 @@ export const TextLabel = forwardRef<HTMLParagraphElement, Omit<LabelProps, 'size
         return <Label {...props} ref={ref} as={'p'} />;
     }
 );
+
+BodyLongSmall.displayName = 'BodyLongSmall';
+BodyLongMedium.displayName = 'BodyLongMedium';
+BodyShortSmall.displayName = 'BodyShortSmall';
+DetailSmall.displayName = 'DetailSmall';
+SmallTextLabel.displayName = 'SmallTextLabel';
+TextLabel.displayName = 'TextLabel';
