@@ -6,31 +6,31 @@ registries:
     url: https://npm.pkg.github.com
     token: ${{ secrets.READER_TOKEN }}
 updates:
-- package-ecosystem: npm
-  directory: "/"
-  schedule:
-    interval: weekly
-    day: "sunday"
-    time: "04:00"
-  open-pull-requests-limit: 30
-  registries: "*"
-  versioning-strategy: increase
-  groups:
-    minor-and-patch-dependencies:
-      patterns:
-        - "*"
-      update-types:
-        - "minor"
-        - "patch"
-    major-dependencies:
-      patterns:
-        - "*"
-      update-types:
-        - "major"
+  - package-ecosystem: npm
+    directory: '/'
+    schedule:
+      interval: weekly
+      day: 'sunday'
+      time: '04:00'
+    open-pull-requests-limit: 30
+    registries: '*'
+    versioning-strategy: increase
+    groups:
+      minor-and-patch-dependencies:
+        patterns:
+          - '*'
+        update-types:
+          - 'minor'
+          - 'patch'
+      major-dependencies:
+        patterns:
+          - '*'
+        update-types:
+          - 'major'
 
-- package-ecosystem: github-actions
-  directory: "/"
-  schedule:
-    interval: weekly
-    day: "sunday"
-    time: "04:00"
+  - package-ecosystem: github-actions
+    directory: '/'
+    schedule:
+      interval: weekly
+      day: 'sunday'
+      time: '04:00'

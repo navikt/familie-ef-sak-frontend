@@ -19,7 +19,7 @@ jobs:
         with:
           node-version: '20'
           cache: yarn
-          registry-url: "https://npm.pkg.github.com"
+          registry-url: 'https://npm.pkg.github.com'
       - name: Yarn install
         run: yarn --prefer-offline --frozen-lockfile
         env:
@@ -66,5 +66,5 @@ jobs:
         run: |
           curl -X POST --data "{\"text\": \"Deploy av $GITHUB_REPOSITORY feilet - $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID\"}" $WEBHOOK_URL
         env:
-          MESSAGE: "Deploy av feilet"
+          MESSAGE: 'Deploy av feilet'
           WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

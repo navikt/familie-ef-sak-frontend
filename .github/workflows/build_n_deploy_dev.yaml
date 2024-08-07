@@ -1,6 +1,6 @@
 name: Build, push, and deploy app to dev
 
-on: [ workflow_dispatch ]
+on: [workflow_dispatch]
 
 permissions:
   id-token: write
@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: '20'
           cache: yarn
-          registry-url: "https://npm.pkg.github.com"
+          registry-url: 'https://npm.pkg.github.com'
       - name: Yarn install
         run: yarn --prefer-offline --frozen-lockfile
         env:
