@@ -1,11 +1,4 @@
-.prettierignore
-*.json
-*.less
-*.yaml
-*.yml
-*.md
-*.html
+node_modules
 *.lock
-.env
 .gitignore
 .husky/

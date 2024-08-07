@@ -3,21 +3,21 @@ name: Build app
 on: [pull_request, workflow_dispatch]
 
 jobs:
-  build:
-    name: Bygg app og Docker image
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-          cache: yarn
-          registry-url: "https://npm.pkg.github.com"
-      - name: Yarn install
-        run: yarn --prefer-offline --frozen-lockfile
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
-      - name: Yarn test
-        run: yarn test
-      - name: Yarn build
-        run: yarn build
+    build:
+        name: Bygg app og Docker image
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: '20'
+                  cache: yarn
+                  registry-url: 'https://npm.pkg.github.com'
+            - name: Yarn install
+              run: yarn --prefer-offline --frozen-lockfile
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
+            - name: Yarn test
+              run: yarn test
+            - name: Yarn build
+              run: yarn build
