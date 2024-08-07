@@ -12,15 +12,10 @@
             }
         },
         {
-            "files": "*.yaml",
+            "files": ["*.yml", "*.yaml"],
             "options": {
-                "parser": "yaml"
-            }
-        },
-        {
-            "files": "*.yml",
-            "options": {
-                "parser": "yaml"
+                "parser": "yaml",
+                "tabWidth": 2
             }
         },
         {
