@@ -1,4 +1,4 @@
-FROM node:18-alpine as builder
+FROM gcr.io/distroless/nodejs20-debian12
 
 WORKDIR /app
 
@@ -9,19 +9,7 @@ COPY node_dist ./node_dist
 COPY frontend_production ./frontend_production
 COPY package.json .
 
-FROM gcr.io/distroless/nodejs:18
-
-WORKDIR /var/server
-
-COPY --from=builder /app/assets ./assets
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/build_n_deploy ./build_n_deploy
-COPY --from=builder /app/node_dist ./node_dist
-COPY --from=builder /app/frontend_production ./frontend_production
-COPY --from=builder /app/package.json .
-
 ENV NODE_ENV production
 
 EXPOSE 8000
-USER nonroot
-CMD ["--es-module-specifier-resolution=node", "node_dist/backend/server.js"]
+CMD ["--import=./node_dist/backend/register.js", "--es-module-specifier-resolution=node", "node_dist/backend/server.js"]

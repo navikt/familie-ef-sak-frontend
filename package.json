@@ -7,16 +7,17 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "start": "NODE_ENV=production node --es-module-specifier-resolution=node node_dist/backend/server.js",
-    "start:mock": "NODE_ENV=development node --es-module-specifier-resolution=node dev-server/mock-server.js",
-    "start:dev": "tsc && NODE_ENV=development node --es-module-specifier-resolution=node --trace-deprecation node_dist/backend/server.js",
+    "start": "yarn set-node-options NODE_ENV=production node node_dist/backend/server.js",
+    "start:mock": "yarn set-node-options NODE_ENV=development node dev-server/mock-server.js",
+    "start:dev": "tsc && yarn set-node-options NODE_ENV=development node --trace-deprecation node_dist/backend/server.js",
     "build": "yarn lint && yarn build:prod",
     "build:dev": "tsc & NODE_ENV=development webpack --config ./build_n_deploy/webpack/webpack.dev.js",
     "build:prod": "tsc & NODE_ENV=production webpack --config ./build_n_deploy/webpack/webpack.prod.js",
     "lint": "tsc --project ./src/frontend/tsconfig.json --noEmit && eslint './src/**/*.{js,ts,tsx}'",
     "lint:fix": "eslint './src/**/*.{js,ts,tsx}' --fix",
     "test": "vitest run --exclude '**/frontend_production/**'",
-    "postinstall": "husky install"
+    "postinstall": "husky install",
+    "set-node-options": "NODE_OPTIONS='--import=./node_dist/backend/register.js --es-module-specifier-resolution=node'"
   },
   "lint-staged": {
     "src/**/*.{js,jsx,ts,tsx,json,css}": [
@@ -116,6 +117,7 @@
     "react-refresh": "^0.14.2",
     "style-loader": "^4.0.0",
     "ts-loader": "^9.5.1",
+    "ts-node": "^10.9.2",
     "tsconfig-paths-webpack-plugin": "^4.1.0",
     "typescript": "^5.5.4",
     "vitest": "^2.0.5",
