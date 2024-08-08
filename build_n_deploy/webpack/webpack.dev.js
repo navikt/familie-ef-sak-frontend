@@ -19,6 +19,7 @@ const config = mergeWithCustomize({
         filename: '[name].[contenthash].js',
         publicPath: '/assets/',
         globalObject: 'this',
+        clean: true,
     },
     module: {
         rules: [
