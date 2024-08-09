@@ -46,6 +46,10 @@ const VertikalLinje = styled.div`
     margin-bottom: 1rem;
 `;
 
+const AlertContainer = styled.div`
+    margin-top: 1rem;
+`;
+
 export const BrevmottakereModal: FC<{
     personopplysninger: IPersonopplysninger;
     mottakere: IBrevmottakere;
@@ -138,6 +142,7 @@ export const BrevmottakereModal: FC<{
                     />
                     <HorisontalLinje />
                     <SøkWrapper
+                        valgtePersonMottakere={valgtePersonMottakere}
                         settValgtePersonMottakere={settValgtePersonMottakere}
                         valgteOrganisasjonMottakere={valgteOrganisasjonMottakere}
                         settValgteOrganisasjonMottakere={settValgteOrganisasjonMottakere}
@@ -171,8 +176,10 @@ export const BrevmottakereModal: FC<{
                     Sett mottakere
                 </Button>
             </SentrerKnapper>
-            {feilmelding && <AlertError>{feilmelding}</AlertError>}
-            {innsendingSuksess && <AlertSuccess>Brevmottakere er satt</AlertSuccess>}
+            <AlertContainer>
+                {feilmelding && <AlertError>{feilmelding}</AlertError>}
+                {innsendingSuksess && <AlertSuccess>Brevmottakere er satt</AlertSuccess>}
+            </AlertContainer>
         </ModalWrapper>
     );
 };
