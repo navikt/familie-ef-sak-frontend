@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import { Ingress, Select } from '@navikt/ds-react';
 
 interface Props {
+    valgtePersonMottakere: IBrevmottaker[];
     settValgtePersonMottakere: Dispatch<SetStateAction<IBrevmottaker[]>>;
     valgteOrganisasjonMottakere: IOrganisasjonMottaker[];
     settValgteOrganisasjonMottakere: Dispatch<SetStateAction<IOrganisasjonMottaker[]>>;
@@ -26,6 +27,7 @@ const SøkTypeSelect = styled(Select)`
 `;
 
 export const SøkWrapper: FC<Props> = ({
+    valgtePersonMottakere,
     settValgtePersonMottakere,
     valgteOrganisasjonMottakere,
     settValgteOrganisasjonMottakere,
@@ -52,7 +54,10 @@ export const SøkWrapper: FC<Props> = ({
                 />
             )}
             {søktype === ESøktype.PERSON && (
-                <SøkPerson settValgteMottakere={settValgtePersonMottakere} />
+                <SøkPerson
+                    valgtePersonMottakere={valgtePersonMottakere}
+                    settValgteMottakere={settValgtePersonMottakere}
+                />
             )}
         </>
     );
