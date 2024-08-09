@@ -7,10 +7,6 @@ export const BredTd = styled.td`
     padding-left: 0;
 `;
 
-export const Td = styled.td`
-    padding-left: 0;
-`;
-
 export const TabellWrapper = styled.div<{ $erDobbelTabell?: boolean }>`
     display: grid;
     padding-top: 1rem;
