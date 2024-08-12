@@ -8,12 +8,14 @@ import React from 'react';
 import {
     datoAndelHistorikk,
     etikettTypeOvergangsstønad,
+    TableHeaderCellSmall,
     historikkEndring,
     HistorikkRad,
+    TableDataCellSmall,
     HistorikkTabell,
 } from './vedtakshistorikkUtil';
 import { Behandlingsårsak, behandlingsårsakTilTekst } from '../../../App/typer/Behandlingsårsak';
-import { Tag } from '@navikt/ds-react';
+import { Table, Tag } from '@navikt/ds-react';
 
 const lenketekst = (andel: AndelHistorikk) => {
     if (
@@ -33,8 +35,8 @@ const historikkRad = (andel: AndelHistorikk, index: number) => {
         !erSanksjon && !erOpphør && andel.periodeType !== EPeriodetype.MIDLERTIDIG_OPPHØR;
     return (
         <HistorikkRad $type={andel.endring?.type} key={index}>
-            <td>{datoAndelHistorikk(andel)}</td>
-            <td>
+            <TableDataCellSmall>{datoAndelHistorikk(andel)}</TableDataCellSmall>
+            <TableDataCellSmall>
                 {erOpphør ? (
                     <Tag variant={'error'} size={'small'}>
                         Opphør
@@ -44,45 +46,51 @@ const historikkRad = (andel: AndelHistorikk, index: number) => {
                         {periodetypeTilTekst[andel.periodeType || '']}
                     </Tag>
                 )}
-            </td>
-            <td>
+            </TableDataCellSmall>
+            <TableDataCellSmall>
                 {erSanksjon
                     ? sanksjonsårsakTilTekst[andel.sanksjonsårsak as Sanksjonsårsak]
                     : aktivitetTilTekst[andel.aktivitet || '']}
-            </td>
-            <td>{visDetaljer && formaterTallMedTusenSkille(andel.andel.inntekt)}</td>
-            <td>{visDetaljer && formaterTallMedTusenSkille(andel.andel.samordningsfradrag)}</td>
-            <td>{visDetaljer && formaterTallMedTusenSkille(andel.andel.beløp)}</td>
-            <td>{formaterIsoDatoTid(andel.vedtakstidspunkt)}</td>
-            <td>{andel.saksbehandler}</td>
-            <td>
+            </TableDataCellSmall>
+            <TableDataCellSmall>
+                {visDetaljer && formaterTallMedTusenSkille(andel.andel.inntekt)}
+            </TableDataCellSmall>
+            <TableDataCellSmall>
+                {visDetaljer && formaterTallMedTusenSkille(andel.andel.samordningsfradrag)}
+            </TableDataCellSmall>
+            <TableDataCellSmall>
+                {visDetaljer && formaterTallMedTusenSkille(andel.andel.beløp)}
+            </TableDataCellSmall>
+            <TableDataCellSmall>{formaterIsoDatoTid(andel.vedtakstidspunkt)}</TableDataCellSmall>
+            <TableDataCellSmall>{andel.saksbehandler}</TableDataCellSmall>
+            <TableDataCellSmall>
                 <Link className="lenke" to={{ pathname: `/behandling/${andel.behandlingId}` }}>
                     {lenketekst(andel)}
                 </Link>
-            </td>
-            <td>{historikkEndring(andel.endring)}</td>
+            </TableDataCellSmall>
+            <TableDataCellSmall>{historikkEndring(andel.endring)}</TableDataCellSmall>
         </HistorikkRad>
     );
 };
 
 const VedtaksperioderOvergangsstNad: React.FC<{ andeler: AndelHistorikk[] }> = ({ andeler }) => {
     return (
-        <HistorikkTabell className="tabell">
-            <thead>
-                <tr>
-                    <th>Periode (fom-tom)</th>
-                    <th>Periodetype</th>
-                    <th>Aktivitet</th>
-                    <th>Inntektsgrunnlag</th>
-                    <th>Samordningsfradrag</th>
-                    <th>Stønadsbeløp pr. mnd</th>
-                    <th>Vedtakstidspunkt</th>
-                    <th>Saksbehandler</th>
-                    <th>Behandlingstype</th>
-                    <th>Endring</th>
-                </tr>
-            </thead>
-            <tbody>{andeler.map((periode, index) => historikkRad(periode, index))}</tbody>
+        <HistorikkTabell>
+            <Table.Header>
+                <Table.Row>
+                    <TableHeaderCellSmall>Periode (fom-tom)</TableHeaderCellSmall>
+                    <TableHeaderCellSmall>Periodetype</TableHeaderCellSmall>
+                    <TableHeaderCellSmall>Aktivitet</TableHeaderCellSmall>
+                    <TableHeaderCellSmall>Inntektsgrunnlag</TableHeaderCellSmall>
+                    <TableHeaderCellSmall>Samordningsfradrag</TableHeaderCellSmall>
+                    <TableHeaderCellSmall>Stønadsbeløp pr. mnd</TableHeaderCellSmall>
+                    <TableHeaderCellSmall>Vedtakstidspunkt</TableHeaderCellSmall>
+                    <TableHeaderCellSmall>Saksbehandler</TableHeaderCellSmall>
+                    <TableHeaderCellSmall>Behandlingstype</TableHeaderCellSmall>
+                    <TableHeaderCellSmall>Endring</TableHeaderCellSmall>
+                </Table.Row>
+            </Table.Header>
+            <Table.Body>{andeler.map((periode, index) => historikkRad(periode, index))}</Table.Body>
         </HistorikkTabell>
     );
 };

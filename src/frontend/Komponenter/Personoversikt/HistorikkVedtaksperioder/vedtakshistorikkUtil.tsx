@@ -7,21 +7,32 @@ import {
 import { Link } from 'react-router-dom';
 import { formaterIsoDatoTid, formaterNullableIsoDato } from '../../../App/utils/formatter';
 import { EPeriodetype, EUtgiftsperiodetype } from '../../../App/typer/vedtak';
-import React from 'react';
+import React, { forwardRef } from 'react';
 import styled from 'styled-components';
-import { TagProps } from '@navikt/ds-react';
+import { TagProps, Table, HeaderCellProps } from '@navikt/ds-react';
 import { OverlappMedOvergangsstønad } from '../../Behandling/TidligereVedtaksperioder/typer';
+import { DataCellProps } from '@navikt/ds-react/src/table/DataCell';
 
-export const HistorikkTabell = styled.table`
-    margin-top: 2rem;
+export const HistorikkTabell = styled(Table)`
+    margin-top: 1rem;
 `;
 
-export const HistorikkRad = styled.tr<{ $type?: AndelEndringType }>`
+export const HistorikkRad = styled(Table.Row)<{ $type?: AndelEndringType }>`
     opacity: ${(props) => (skalMarkeresSomFjernet(props.$type) ? '50%' : '100%')};
 `;
 
 export const skalMarkeresSomFjernet = (type?: AndelEndringType) =>
     type === AndelEndringType.FJERNET || type === AndelEndringType.ERSTATTET;
+
+export const TableDataCellSmall = forwardRef<HTMLTableCellElement, DataCellProps>((props, ref) => (
+    <Table.DataCell textSize={'small'} {...props} ref={ref} />
+));
+TableDataCellSmall.displayName = 'TableDataCellSmall';
+
+export const TableHeaderCellSmall = forwardRef<HTMLTableCellElement, HeaderCellProps>(
+    (props, ref) => <Table.HeaderCell textSize={'small'} {...props} ref={ref} />
+);
+TableHeaderCellSmall.displayName = 'TableHeaderCellSmall';
 
 export const historikkEndring = (endring?: AndelHistorikkEndring) =>
     endring && (
