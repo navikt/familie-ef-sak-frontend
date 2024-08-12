@@ -6,6 +6,7 @@ import { PensjonsgivendeInntekt } from '../../App/typer/personinntekt';
 import { Table } from '@navikt/ds-react';
 import styled from 'styled-components';
 import { formaterTallMedTusenSkille } from '../../App/utils/formatter';
+import { BodyShortSmall } from '../../Felles/Visningskomponenter/Tekster';
 
 const Container = styled.div`
     width: max-content;
@@ -46,7 +47,11 @@ const PensjonsgivendeInntektTabell: React.FC<{
     pensjonsgivendeInntekter: PensjonsgivendeInntekt[];
 }> = ({ pensjonsgivendeInntekter }) => {
     if (pensjonsgivendeInntekter.length < 1) {
-        return null;
+        return (
+            <Container>
+                <BodyShortSmall>Ingen registrert inntekt…</BodyShortSmall>
+            </Container>
+        );
     }
 
     const harInntektFraSvalbard = pensjonsgivendeInntekter.some(
