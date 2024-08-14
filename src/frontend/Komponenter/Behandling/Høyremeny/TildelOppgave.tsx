@@ -39,17 +39,17 @@ const TildelOppgave: React.FC<{ behandling: Behandling }> = ({ behandling }) => 
         window.location.reload();
     };
 
-    const sjekkOmDetHarGåttMistTiSekunderSidenBehandlingBleOpprettet = (
+    const sjekkOmDetHarGåttMistEttMinuttSidenBehandlingenBleOpprettet = (
         opprettet: string
     ): boolean => {
         const opprettetDate = new Date(opprettet);
         const nå = new Date();
-        const tiSekunder = 10 * 1000;
-        return nå.getTime() - opprettetDate.getTime() > tiSekunder;
+        const ettMinutt = 60 * 1000;
+        return nå.getTime() - opprettetDate.getTime() > ettMinutt;
     };
 
     const erBehandlingOpprettetForMerEnnTiSekunderSiden =
-        sjekkOmDetHarGåttMistTiSekunderSidenBehandlingBleOpprettet(opprettet);
+        sjekkOmDetHarGåttMistEttMinuttSidenBehandlingenBleOpprettet(opprettet);
 
     useEffect(() => {
         if (erBehandlingFortsattAktiv) {
