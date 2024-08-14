@@ -1,13 +1,10 @@
-import { IOppgave } from './typer/oppgave';
-import { OrNothing } from '../../App/hooks/felles/useSorteringState';
-
-interface OppgaveHeaderConfig<T> {
+interface OppgaveHeaderConfig {
     tekst: string;
-    feltNavn: OrNothing<keyof T>;
+    feltNavn?: string;
     erSorterbar: boolean;
 }
 
-export const OppgaveHeaderConfig: OppgaveHeaderConfig<IOppgave>[] = [
+export const OppgaveHeaderConfig: OppgaveHeaderConfig[] = [
     {
         tekst: 'Reg. dato',
         feltNavn: 'opprettetTidspunkt',
@@ -35,12 +32,12 @@ export const OppgaveHeaderConfig: OppgaveHeaderConfig<IOppgave>[] = [
     },
     {
         tekst: 'Beskrivelse',
-        feltNavn: null,
+        feltNavn: undefined,
         erSorterbar: false,
     },
     {
         tekst: 'Bruker',
-        feltNavn: null,
+        feltNavn: undefined,
         erSorterbar: false,
     },
     {

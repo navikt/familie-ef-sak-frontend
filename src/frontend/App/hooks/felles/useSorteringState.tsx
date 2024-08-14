@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react';
 import { compareAsc, compareDesc, isValid } from 'date-fns';
-
-export type OrNothing<T> = T | undefined | null;
+import { OrNothing } from '../../typer/common';
 
 export type Rekkefolge = 'descending' | 'ascending';
 

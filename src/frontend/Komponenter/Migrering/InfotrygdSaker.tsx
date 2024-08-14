@@ -13,6 +13,10 @@ import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { stønadstypeTilTekst } from '../../App/typer/behandlingstema';
 import { tekstMapping } from '../../App/utils/tekstmapping';
 import { Table } from '@navikt/ds-react';
+import {
+    TableDataCellSmall,
+    TableHeaderCellSmall,
+} from '../Personoversikt/HistorikkVedtaksperioder/vedtakshistorikkUtil';
 
 const InfotrygdSakerTabell: FC<{ saker: InfotrygdSak[] }> = ({ saker }) => {
     if (saker.length === 0) {
@@ -22,41 +26,47 @@ const InfotrygdSakerTabell: FC<{ saker: InfotrygdSak[] }> = ({ saker }) => {
         <Table>
             <Table.Header>
                 <Table.Row>
-                    <Table.HeaderCell>Saksblokk</Table.HeaderCell>
-                    <Table.HeaderCell>Mottatt</Table.HeaderCell>
-                    <Table.HeaderCell>Personidentifikator</Table.HeaderCell>
-                    <Table.HeaderCell>Vedtatt</Table.HeaderCell>
-                    <Table.HeaderCell>Iverksatt</Table.HeaderCell>
-                    <Table.HeaderCell>Stønad</Table.HeaderCell>
-                    <Table.HeaderCell>Undervalg</Table.HeaderCell>
-                    <Table.HeaderCell>Type</Table.HeaderCell>
-                    <Table.HeaderCell>Nivå</Table.HeaderCell>
-                    <Table.HeaderCell>Resultat</Table.HeaderCell>
-                    <Table.HeaderCell>Årsak</Table.HeaderCell>
+                    <TableHeaderCellSmall>Saksblokk</TableHeaderCellSmall>
+                    <TableHeaderCellSmall>Mottatt</TableHeaderCellSmall>
+                    <TableHeaderCellSmall>Personidentifikator</TableHeaderCellSmall>
+                    <TableHeaderCellSmall>Vedtatt</TableHeaderCellSmall>
+                    <TableHeaderCellSmall>Iverksatt</TableHeaderCellSmall>
+                    <TableHeaderCellSmall>Stønad</TableHeaderCellSmall>
+                    <TableHeaderCellSmall>Undervalg</TableHeaderCellSmall>
+                    <TableHeaderCellSmall>Type</TableHeaderCellSmall>
+                    <TableHeaderCellSmall>Nivå</TableHeaderCellSmall>
+                    <TableHeaderCellSmall>Resultat</TableHeaderCellSmall>
+                    <TableHeaderCellSmall>Årsak</TableHeaderCellSmall>
                 </Table.Row>
             </Table.Header>
             <Table.Body>
                 {saker.map((sak) => (
                     <Table.Row key={`${sak.id}-${sak.saksblokk}-${sak.tkNr}`}>
-                        <Table.DataCell>{sak.saksblokk}</Table.DataCell>
-                        <Table.DataCell>{formaterNullableIsoDato(sak.mottattDato)}</Table.DataCell>
-                        <Table.DataCell>{sak.personIdent}</Table.DataCell>
-                        <Table.DataCell>{formaterNullableIsoDato(sak.vedtaksdato)}</Table.DataCell>
-                        <Table.DataCell>
+                        <TableDataCellSmall>{sak.saksblokk}</TableDataCellSmall>
+                        <TableDataCellSmall>
+                            {formaterNullableIsoDato(sak.mottattDato)}
+                        </TableDataCellSmall>
+                        <TableDataCellSmall>{sak.personIdent}</TableDataCellSmall>
+                        <TableDataCellSmall>
+                            {formaterNullableIsoDato(sak.vedtaksdato)}
+                        </TableDataCellSmall>
+                        <TableDataCellSmall>
                             {formaterNullableIsoDato(sak.iverksattdato)}
-                        </Table.DataCell>
-                        <Table.DataCell>{stønadstypeTilTekst[sak.stønadType]}</Table.DataCell>
-                        <Table.DataCell>{sak.undervalg}</Table.DataCell>
-                        <Table.DataCell>
+                        </TableDataCellSmall>
+                        <TableDataCellSmall>
+                            {stønadstypeTilTekst[sak.stønadType]}
+                        </TableDataCellSmall>
+                        <TableDataCellSmall>{sak.undervalg}</TableDataCellSmall>
+                        <TableDataCellSmall>
                             {tekstMapping(sak.type, infotrygdSakTypeTilTekst)}
-                        </Table.DataCell>
-                        <Table.DataCell>
+                        </TableDataCellSmall>
+                        <TableDataCellSmall>
                             {tekstMapping(sak.nivå, infotrygdSakNivåTilTekst)}
-                        </Table.DataCell>
-                        <Table.DataCell>
+                        </TableDataCellSmall>
+                        <TableDataCellSmall>
                             {tekstMapping(sak.resultat, infotrygdSakResultatTilTekst)}
-                        </Table.DataCell>
-                        <Table.DataCell>{sak.årsakskode}</Table.DataCell>
+                        </TableDataCellSmall>
+                        <TableDataCellSmall>{sak.årsakskode}</TableDataCellSmall>
                     </Table.Row>
                 ))}
             </Table.Body>

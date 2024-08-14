@@ -8,9 +8,10 @@ import {
     oppgaveBehandlingstypeTilTekst,
 } from '../../App/typer/behandlingstema';
 import { formaterIsoDato, formaterIsoDatoTid } from '../../App/utils/formatter';
-import { Popover } from '@navikt/ds-react';
+import { Popover, Table } from '@navikt/ds-react';
 import { utledetFolkeregisterIdent } from './utils';
 import { OppgaveKnapp } from './OppgaveKnapp';
+import { TableDataCellSmall } from '../Personoversikt/HistorikkVedtaksperioder/vedtakshistorikkUtil';
 
 interface Props {
     oppgave: IOppgave;
@@ -54,8 +55,8 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, mapper, settFeilmelding, hentOpp
 
     return (
         <>
-            <tr>
-                <td onMouseEnter={togglePopover} onMouseLeave={togglePopover}>
+            <Table.Row>
+                <TableDataCellSmall onMouseEnter={togglePopover} onMouseLeave={togglePopover}>
                     {regDato}
                     <Popover
                         id={`registreringstidspunkt-for-oppgave-${oppgave.id}`}
@@ -69,23 +70,23 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, mapper, settFeilmelding, hentOpp
                             Registreringstidspunkt: {regDatoMedKlokkeslett}
                         </Popover.Content>
                     </Popover>
-                </td>
-                <td>{oppgavetype}</td>
-                <td>{typeBehandling}</td>
-                <td>{fristFerdigstillelseDato}</td>
-                <td>{prioritet}</td>
-                <td>{oppgave.beskrivelse}</td>
-                <td>{utledetFolkeregisterIdent(oppgave)}</td>
-                <td>{oppgave.tildeltEnhetsnr}</td>
-                <td>{enhetsmappe}</td>
-                <td>
+                </TableDataCellSmall>
+                <TableDataCellSmall>{oppgavetype}</TableDataCellSmall>
+                <TableDataCellSmall>{typeBehandling}</TableDataCellSmall>
+                <TableDataCellSmall>{fristFerdigstillelseDato}</TableDataCellSmall>
+                <TableDataCellSmall>{prioritet}</TableDataCellSmall>
+                <TableDataCellSmall>{oppgave.beskrivelse}</TableDataCellSmall>
+                <TableDataCellSmall>{utledetFolkeregisterIdent(oppgave)}</TableDataCellSmall>
+                <TableDataCellSmall>{oppgave.tildeltEnhetsnr}</TableDataCellSmall>
+                <TableDataCellSmall>{enhetsmappe}</TableDataCellSmall>
+                <TableDataCellSmall>
                     <OppgaveKnapp
                         oppgave={oppgave}
                         hentOppgavePåNytt={hentOppgavePåNytt}
                         settFeilmelding={settFeilmelding}
                     />
-                </td>
-            </tr>
+                </TableDataCellSmall>
+            </Table.Row>
         </>
     );
 };

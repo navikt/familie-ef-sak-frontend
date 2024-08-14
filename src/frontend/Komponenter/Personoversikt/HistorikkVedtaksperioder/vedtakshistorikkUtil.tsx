@@ -11,7 +11,7 @@ import React, { forwardRef } from 'react';
 import styled from 'styled-components';
 import { TagProps, Table, HeaderCellProps } from '@navikt/ds-react';
 import { OverlappMedOvergangsstønad } from '../../Behandling/TidligereVedtaksperioder/typer';
-import { DataCellProps } from '@navikt/ds-react/src/table/DataCell';
+import { DataCellProps } from '@navikt/ds-react';
 
 export const HistorikkTabell = styled(Table)`
     margin-top: 1rem;

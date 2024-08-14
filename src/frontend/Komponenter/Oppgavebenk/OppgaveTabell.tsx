@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import OppgaveRad from './OppgaveRad';
 import { IOppgave } from './typer/oppgave';
-import OppgaveSorteringsHeader from './OppgaveSorteringHeader';
 import { useSorteringState } from '../../App/hooks/felles/useSorteringState';
 import { usePagineringState } from '../../App/hooks/felles/usePaginerState';
 import { OppgaveHeaderConfig } from './OppgaveHeaderConfig';
 import { IMappe } from './typer/mappe';
-import { Pagination } from '@navikt/ds-react';
+import { Pagination, SortState, Table } from '@navikt/ds-react';
 import styled from 'styled-components';
 import { useApp } from '../../App/context/AppContext';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../App/typer/ressurs';
@@ -84,30 +83,26 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaver, mapper, settFeilmelding }) =
                     <Pagination page={valgtSide} count={antallSider} onPageChange={settValgtSide} />
                 </FlexBox>
             )}
-            <table className="tabell tabell--stripet">
-                <thead>
-                    <tr>
-                        {OppgaveHeaderConfig.map((header) =>
-                            header.erSorterbar ? (
-                                <OppgaveSorteringsHeader
-                                    key={header.tekst}
-                                    tekst={header.tekst}
-                                    rekkefolge={
-                                        sortConfig?.orderBy === header.feltNavn
-                                            ? sortConfig?.direction
-                                            : undefined
-                                    }
-                                    onClick={() => settSortering(header.feltNavn as keyof IOppgave)}
-                                />
-                            ) : (
-                                <th key={header.tekst} role="columnheader">
-                                    {header.tekst}
-                                </th>
-                            )
-                        )}
-                    </tr>
-                </thead>
-                <tbody>
+            <Table
+                zebraStripes={true}
+                sort={sortConfig as SortState}
+                onSortChange={(sortKey) => settSortering(sortKey as keyof IOppgave)}
+            >
+                <Table.Header>
+                    <Table.Row>
+                        {OppgaveHeaderConfig.map((header) => (
+                            <Table.ColumnHeader
+                                textSize={'small'}
+                                key={header.tekst}
+                                sortKey={header.feltNavn}
+                                sortable={header.erSorterbar}
+                            >
+                                {header.tekst}
+                            </Table.ColumnHeader>
+                        ))}
+                    </Table.Row>
+                </Table.Header>
+                <Table.Body>
                     {slicedListe.map((v) => (
                         <OppgaveRad
                             key={v.id}
@@ -117,8 +112,8 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaver, mapper, settFeilmelding }) =
                             hentOppgavePåNytt={() => hentOppgavePåNytt(v.id.toString())}
                         />
                     ))}
-                </tbody>
-            </table>
+                </Table.Body>
+            </Table>
         </>
     );
 };
