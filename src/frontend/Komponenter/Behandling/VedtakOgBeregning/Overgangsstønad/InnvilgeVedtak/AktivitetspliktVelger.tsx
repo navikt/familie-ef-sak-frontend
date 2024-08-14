@@ -8,9 +8,9 @@ import {
 } from '../../../../../App/typer/vedtak';
 import React from 'react';
 import styled from 'styled-components';
-import { OrNothing } from '../../../../../App/hooks/felles/useSorteringState';
 import { EnsligFamilieSelect } from '../../../../../Felles/Input/EnsligFamilieSelect';
 import { BodyShort } from '@navikt/ds-react';
+import { OrNothing } from '../../../../../App/typer/common';
 
 interface Props {
     periodeType: EPeriodetype | '' | undefined;

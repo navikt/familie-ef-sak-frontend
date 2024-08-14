@@ -2,3 +2,5 @@
 export type PartialRecord<K extends keyof any, T> = {
     [P in K]?: T;
 };
+
+export type OrNothing<T> = T | undefined | null;
