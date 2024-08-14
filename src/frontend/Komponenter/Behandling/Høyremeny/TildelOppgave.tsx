@@ -48,7 +48,7 @@ const TildelOppgave: React.FC<{ behandling: Behandling }> = ({ behandling }) => 
         return nå.getTime() - opprettetDate.getTime() > ettMinutt;
     };
 
-    const erBehandlingOpprettetForMerEnnTiSekunderSiden =
+    const erBehandlingOpprettetForMerEnnEttMinuttSiden =
         sjekkOmDetHarGåttMistEttMinuttSidenBehandlingenBleOpprettet(opprettet);
 
     useEffect(() => {
@@ -62,7 +62,7 @@ const TildelOppgave: React.FC<{ behandling: Behandling }> = ({ behandling }) => 
         laster ||
         erTilordnetOgInnloggetSaksbehandlerDenSamme ||
         !erBehandlingFortsattAktiv ||
-        !erBehandlingOpprettetForMerEnnTiSekunderSiden
+        !erBehandlingOpprettetForMerEnnEttMinuttSiden
     ) {
         return null;
     }
