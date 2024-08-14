@@ -37,8 +37,8 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaver, mapper, settFeilmelding }) =
     }, [oppgaver]);
 
     const { sortertListe, settSortering, sortConfig } = useSorteringState<IOppgave>(oppgaveListe, {
-        sorteringsfelt: 'fristFerdigstillelse',
-        rekkefolge: 'ascending',
+        orderBy: 'fristFerdigstillelse',
+        direction: 'ascending',
     });
 
     const { valgtSide, settValgtSide, slicedListe, antallSider } = usePagineringState(
@@ -93,8 +93,8 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaver, mapper, settFeilmelding }) =
                                     key={header.tekst}
                                     tekst={header.tekst}
                                     rekkefolge={
-                                        sortConfig?.sorteringsfelt === header.feltNavn
-                                            ? sortConfig?.rekkefolge
+                                        sortConfig?.orderBy === header.feltNavn
+                                            ? sortConfig?.direction
                                             : undefined
                                     }
                                     onClick={() => settSortering(header.feltNavn as keyof IOppgave)}

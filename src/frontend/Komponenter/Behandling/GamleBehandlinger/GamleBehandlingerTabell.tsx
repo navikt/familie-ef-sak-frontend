@@ -3,17 +3,11 @@ import { behandlingstypeTilTekst } from '../../../App/typer/behandlingstype';
 import { behandlingsårsakTilTekst } from '../../../App/typer/Behandlingsårsak';
 import { PartialRecord } from '../../../App/typer/common';
 import { Behandling, behandlingResultatTilTekst } from '../../../App/typer/fagsak';
-import { Table } from '@navikt/ds-react';
+import { SortState, Table } from '@navikt/ds-react';
 import { formaterIsoDato } from '../../../App/utils/formatter';
 import { Link } from 'react-router-dom';
-import SorteringsHeader from '../../Oppgavebenk/OppgaveSorteringHeader';
-import { useSorteringState } from '../../../App/hooks/felles/useSorteringState';
-import styled from 'styled-components';
 import { stønadstypeTilTekst } from '../../../App/typer/behandlingstema';
-
-const StyledTable = styled(Table)`
-    padding: 2rem;
-`;
+import { useSorteringState } from '../../../App/hooks/felles/useSorteringState';
 
 const TabellData: PartialRecord<keyof Behandling, string> = {
     opprettet: 'Behandling opprettetdato',
@@ -27,25 +21,22 @@ export const GamleBehandlingerTabell: React.FC<{
     gamleBehandlinger: Behandling[];
 }> = ({ gamleBehandlinger }) => {
     const { sortertListe, settSortering, sortConfig } = useSorteringState(gamleBehandlinger, {
-        sorteringsfelt: 'opprettet',
-        rekkefolge: 'ascending',
+        orderBy: 'opprettet',
+        direction: 'ascending',
     });
 
     return (
-        <StyledTable className="tabell" size="medium" zebraStripes={true}>
+        <Table
+            zebraStripes={true}
+            sort={sortConfig as SortState}
+            onSortChange={(sortKey) => settSortering(sortKey as keyof Behandling)}
+        >
             <Table.Header>
                 <Table.Row>
                     {Object.entries(TabellData).map(([felt, tekst], index) => (
-                        <SorteringsHeader
-                            rekkefolge={
-                                sortConfig?.sorteringsfelt === felt
-                                    ? sortConfig?.rekkefolge
-                                    : undefined
-                            }
-                            tekst={tekst}
-                            onClick={() => settSortering(felt as keyof Behandling)}
-                            key={`${index}${felt}`}
-                        />
+                        <Table.ColumnHeader key={`${index}${felt}`} sortKey={felt} sortable={true}>
+                            {tekst}
+                        </Table.ColumnHeader>
                     ))}
                 </Table.Row>
             </Table.Header>
@@ -79,6 +70,6 @@ export const GamleBehandlingerTabell: React.FC<{
                     );
                 })}
             </Table.Body>
-        </StyledTable>
+        </Table>
     );
 };
