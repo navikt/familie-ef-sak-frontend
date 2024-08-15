@@ -9,6 +9,8 @@ import { useApp } from '../../../App/context/AppContext';
 import { useToggles } from '../../../App/context/TogglesContext';
 import { ToggleName } from '../../../App/context/toggles';
 import { Behandling, BehandlingResultat } from '../../../App/typer/fagsak';
+import { useNavigate } from 'react-router-dom';
+import { useBehandling } from '../../../App/context/BehandlingContext';
 
 const Container = styled.div`
     border: 1px solid ${ABorderSubtle};
@@ -27,6 +29,9 @@ const TildelOppgave: React.FC<{ behandling: Behandling }> = ({ behandling }) => 
     const { hentOppgave, oppgave, laster, feilmelding } = useHentOppgave(behandlingId);
     const { settOppgaveTilSaksbehandler } = useOppgave(oppgave);
     const { toggles } = useToggles();
+    const navigate = useNavigate();
+    const [harTildetOppgave, settHarTildetOppgave] = React.useState<boolean>(false);
+    const { hentAnsvarligSaksbehandler } = useBehandling();
 
     const erTilordnetOgInnloggetSaksbehandlerDenSamme =
         oppgave?.tilordnetRessurs === innloggetSaksbehandler.navIdent;
@@ -35,8 +40,15 @@ const TildelOppgave: React.FC<{ behandling: Behandling }> = ({ behandling }) => 
         resultat === BehandlingResultat.IKKE_SATT || resultat === BehandlingResultat.AVSLÅTT;
 
     const handleTildelOppgave = () => {
-        settOppgaveTilSaksbehandler();
-        window.location.reload();
+        settOppgaveTilSaksbehandler()
+            .then(() => {
+                hentAnsvarligSaksbehandler.rerun();
+                settHarTildetOppgave(true);
+                navigate(`/behandling/${behandlingId}/arsak-revurdering`);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     };
 
     const sjekkOmDetHarGåttMistEttMinuttSidenBehandlingenBleOpprettet = (
@@ -58,6 +70,7 @@ const TildelOppgave: React.FC<{ behandling: Behandling }> = ({ behandling }) => 
     }, [behandlingId, erBehandlingFortsattAktiv, hentOppgave]);
 
     if (
+        harTildetOppgave ||
         erIkkeTogglet ||
         laster ||
         erTilordnetOgInnloggetSaksbehandlerDenSamme ||
