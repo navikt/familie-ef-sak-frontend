@@ -2,23 +2,24 @@ import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useApp } from '../../../App/context/AppContext';
 import { byggTomRessurs, Ressurs } from '../../../App/typer/ressurs';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
-import { IOrganisasjonMottaker } from './typer';
+import { EBrevmottakerRolle, IOrganisasjonMottaker } from './typer';
 import { Søkefelt, Søkeresultat } from './brevmottakereStyling';
 import { BodyShort, TextField } from '@navikt/ds-react';
 import LeggTilKnapp from '../../../Felles/Knapper/LeggTilKnapp';
+import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 
 interface Props {
     valgteMottakere: IOrganisasjonMottaker[];
     settValgteMottakere: Dispatch<SetStateAction<IOrganisasjonMottaker[]>>;
 }
-export const SøkOrganisasjon: React.FC<Props> = ({ settValgteMottakere }) => {
+export const SøkOrganisasjon: React.FC<Props> = ({ settValgteMottakere, valgteMottakere }) => {
     const { axiosRequest } = useApp();
 
     const [organisasjonsnummer, settOrganisasjonsnummer] = useState('');
     const [navnHosOrganisasjon, settNavnHosOrganisasjon] = useState('');
     const [organisasjonRessurs, settOrganisasjonRessurs] =
         useState(byggTomRessurs<IOrganisasjon>());
-    const [feil, settFeil] = useState('');
+    const [feilmelding, settFeilmelding] = useState('');
 
     useEffect(() => {
         if (organisasjonsnummer?.length === 9) {
@@ -33,17 +34,28 @@ export const SøkOrganisasjon: React.FC<Props> = ({ settValgteMottakere }) => {
 
     const leggTilOrganisasjon = (organisasjonsnummer: string) => () => {
         if (!navnHosOrganisasjon) {
-            settFeil('Oppgi kontaktperson hos organisasjonen');
+            settFeilmelding('Oppgi kontaktperson hos organisasjonen');
             return;
         }
-        settFeil('');
-        settValgteMottakere([
-            {
-                organisasjonsnummer,
-                navnHosOrganisasjon: navnHosOrganisasjon,
-                mottakerRolle: 'VERGE',
-            },
-        ]);
+
+        const finnesAllerede = valgteMottakere.some(
+            (mottaker) => mottaker.organisasjonsnummer === organisasjonsnummer
+        );
+
+        if (!finnesAllerede) {
+            settValgteMottakere((forrigeMottakere) => [
+                ...forrigeMottakere,
+                {
+                    organisasjonsnummer,
+                    navnHosOrganisasjon,
+                    mottakerRolle: EBrevmottakerRolle.VERGE,
+                },
+            ]);
+        } else {
+            settFeilmelding('Organisasjonen er allerede lagt til');
+        }
+
+        settFeilmelding('');
     };
 
     return (
@@ -77,10 +89,10 @@ export const SøkOrganisasjon: React.FC<Props> = ({ settValgteMottakere }) => {
                                     placeholder={'Personen brevet skal til'}
                                     value={navnHosOrganisasjon}
                                     onChange={(e) => settNavnHosOrganisasjon(e.target.value)}
-                                    error={feil}
                                     autoComplete="off"
                                 />
                             </Søkeresultat>
+                            {feilmelding && <AlertError size="small">{feilmelding}</AlertError>}
                         </>
                     );
                 }}
