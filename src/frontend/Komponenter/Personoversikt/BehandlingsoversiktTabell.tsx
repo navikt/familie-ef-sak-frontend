@@ -35,13 +35,16 @@ import {
     KlageÅrsak,
 } from '../../App/typer/klage';
 import { ExclamationmarkTriangleFillIcon } from '@navikt/aksel-icons';
-import { Tag, Tooltip } from '@navikt/ds-react';
+import { Table, Tag, Tooltip } from '@navikt/ds-react';
 import { sorterBehandlinger } from '../../App/utils/behandlingutil';
 import { AIconWarning } from '@navikt/ds-tokens/dist/tokens';
+import {
+    TableDataCellSmall,
+    TableHeaderCellSmall,
+} from './HistorikkVedtaksperioder/vedtakshistorikkUtil';
 
-const StyledTable = styled.table`
+const StyledTable = styled(Table)`
     width: 60%;
-    padding: 2rem;
     margin-left: 1rem;
 `;
 
@@ -205,34 +208,36 @@ export const BehandlingsoversiktTabell: React.FC<{
     };
 
     return (
-        <StyledTable className="tabell">
-            <thead>
-                <tr>
+        <StyledTable>
+            <Table.Header>
+                <Table.Row>
                     {Object.entries(TabellData).map(([felt, tekst], index) => (
-                        <th role="columnheader" key={`${index}${felt}`}>
-                            {tekst}
-                        </th>
+                        <TableHeaderCellSmall key={`${index}${felt}`}>{tekst}</TableHeaderCellSmall>
                     ))}
-                </tr>
-            </thead>
-            <tbody>
+                </Table.Row>
+            </Table.Header>
+            <Table.Body>
                 {alleBehandlinger.map((behandling) => {
                     return (
-                        <tr key={behandling.id}>
-                            <td>{formaterIsoDatoTid(behandling.opprettet)}</td>
-                            <td>
+                        <Table.Row key={behandling.id}>
+                            <TableDataCellSmall>
+                                {formaterIsoDatoTid(behandling.opprettet)}
+                            </TableDataCellSmall>
+                            <TableDataCellSmall>
                                 <BehandlingType
                                     behandlingType={behandling.type}
                                     kategori={behandling.kategori}
                                 />
-                            </td>
-                            <td>{finnÅrsak(behandling)}</td>
-                            <td>{formatterEnumVerdi(behandling.status)}</td>
-                            <td>
+                            </TableDataCellSmall>
+                            <TableDataCellSmall>{finnÅrsak(behandling)}</TableDataCellSmall>
+                            <TableDataCellSmall>
+                                {formatterEnumVerdi(behandling.status)}
+                            </TableDataCellSmall>
+                            <TableDataCellSmall>
                                 {behandling.vedtaksdato &&
                                     formaterIsoDatoTid(behandling.vedtaksdato)}
-                            </td>
-                            <td>
+                            </TableDataCellSmall>
+                            <TableDataCellSmall>
                                 {behandling.applikasjon === BehandlingApplikasjon.EF_SAK ? (
                                     <Link
                                         className="lenke"
@@ -272,11 +277,11 @@ export const BehandlingsoversiktTabell: React.FC<{
                                         )}
                                     </>
                                 )}
-                            </td>
-                        </tr>
+                            </TableDataCellSmall>
+                        </Table.Row>
                     );
                 })}
-            </tbody>
+            </Table.Body>
         </StyledTable>
     );
 };

@@ -3,18 +3,13 @@ import { KopierbartNullableFødselsnummer } from '../../Felles/Fødselsnummer/Ko
 import AdressebeskyttelseVarsel from '../../Felles/Varsel/AdressebeskyttelseVarsel';
 import { formaterNullableIsoDatoTid, nullableBooleanTilTekst } from '../../App/utils/formatter';
 import { UttrekkArbeidssøker } from './UttrekkArbeidssøkerSide';
-import styled from 'styled-components';
-import { Button, Link } from '@navikt/ds-react';
+import { Button, Link, Table } from '@navikt/ds-react';
 import { SmallTextLabel } from '../../Felles/Visningskomponenter/Tekster';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 
-const StyledTable = styled.table`
+const StyledTable = styled(Table)`
     width: 70%;
-    padding: 2rem;
-    margin-left: 1rem;
-    td {
-        padding: 0.75rem;
-    }
 `;
 
 const UttrekkArbeidssøkerTabell: React.FC<{
@@ -23,19 +18,19 @@ const UttrekkArbeidssøkerTabell: React.FC<{
 }> = ({ arbeidssøkere, settKontrollert }) => {
     const navigate = useNavigate();
     return (
-        <StyledTable className="tabell">
-            <thead>
-                <tr>
-                    <th>Person</th>
-                    <th>Registrert som arbeidssøker i Arena</th>
-                    <th>Kontrollert</th>
-                </tr>
-            </thead>
-            <tbody>
+        <StyledTable size={'small'}>
+            <Table.Header>
+                <Table.Row>
+                    <Table.HeaderCell>Person</Table.HeaderCell>
+                    <Table.HeaderCell>Registrert som arbeidssøker i Arena</Table.HeaderCell>
+                    <Table.HeaderCell>Kontrollert</Table.HeaderCell>
+                </Table.Row>
+            </Table.Header>
+            <Table.Body>
                 {arbeidssøkere.map((arbeidssøker) => {
                     return (
-                        <tr key={arbeidssøker.id}>
-                            <td>
+                        <Table.Row key={arbeidssøker.id}>
+                            <Table.DataCell>
                                 <div style={{ display: 'flex' }}>
                                     <Link
                                         role={'link'}
@@ -57,9 +52,11 @@ const UttrekkArbeidssøkerTabell: React.FC<{
                                         />
                                     )}
                                 </div>
-                            </td>
-                            <td>{nullableBooleanTilTekst(arbeidssøker.registrertArbeidssøker)}</td>
-                            <td>
+                            </Table.DataCell>
+                            <Table.DataCell>
+                                {nullableBooleanTilTekst(arbeidssøker.registrertArbeidssøker)}
+                            </Table.DataCell>
+                            <Table.DataCell>
                                 {!arbeidssøker.kontrollert ? (
                                     <Button
                                         type={'button'}
@@ -92,11 +89,11 @@ const UttrekkArbeidssøkerTabell: React.FC<{
                                         </Button>
                                     </>
                                 )}
-                            </td>
-                        </tr>
+                            </Table.DataCell>
+                        </Table.Row>
                     );
                 })}
-            </tbody>
+            </Table.Body>
         </StyledTable>
     );
 };

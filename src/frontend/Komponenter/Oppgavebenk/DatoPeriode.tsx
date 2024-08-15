@@ -1,8 +1,8 @@
 import React from 'react';
 import { FlexDiv } from './OppgaveFiltrering';
-import { OrNothing } from '../../App/hooks/felles/useSorteringState';
 import { EnsligErrorMessage } from '../../Felles/ErrorMessage/EnsligErrorMessage';
 import { Datovelger } from '../../Felles/Datovelger/Datovelger';
+import { OrNothing } from '../../App/typer/common';
 
 interface Props {
     datoFraTekst: string;

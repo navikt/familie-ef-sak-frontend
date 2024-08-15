@@ -7,56 +7,70 @@ import {
     infotrygdSakResultatTilTekst,
     infotrygdSakTypeTilTekst,
 } from '../../App/typer/infotrygd';
-import styled from 'styled-components';
 import { AxiosRequestConfig } from 'axios';
 import { useDataHenter } from '../../App/hooks/felles/useDataHenter';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { stønadstypeTilTekst } from '../../App/typer/behandlingstema';
 import { tekstMapping } from '../../App/utils/tekstmapping';
-
-const StyledTabell = styled.table``;
-
-const Rad = styled.tr``;
+import { Table } from '@navikt/ds-react';
+import {
+    TableDataCellSmall,
+    TableHeaderCellSmall,
+} from '../Personoversikt/HistorikkVedtaksperioder/vedtakshistorikkUtil';
 
 const InfotrygdSakerTabell: FC<{ saker: InfotrygdSak[] }> = ({ saker }) => {
     if (saker.length === 0) {
         return <>Ingen saker i Infotrygd</>;
     }
     return (
-        <StyledTabell className="tabell">
-            <thead>
-                <tr>
-                    <th>Saksblokk</th>
-                    <th>Mottatt</th>
-                    <th>Personidentifikator</th>
-                    <th>Vedtatt</th>
-                    <th>Iverksatt</th>
-                    <th>Stønad</th>
-                    <th>Undervalg</th>
-                    <th>Type</th>
-                    <th>Nivå</th>
-                    <th>Resultat</th>
-                    <th>Årsak</th>
-                </tr>
-            </thead>
-            <tbody>
+        <Table>
+            <Table.Header>
+                <Table.Row>
+                    <TableHeaderCellSmall>Saksblokk</TableHeaderCellSmall>
+                    <TableHeaderCellSmall>Mottatt</TableHeaderCellSmall>
+                    <TableHeaderCellSmall>Personidentifikator</TableHeaderCellSmall>
+                    <TableHeaderCellSmall>Vedtatt</TableHeaderCellSmall>
+                    <TableHeaderCellSmall>Iverksatt</TableHeaderCellSmall>
+                    <TableHeaderCellSmall>Stønad</TableHeaderCellSmall>
+                    <TableHeaderCellSmall>Undervalg</TableHeaderCellSmall>
+                    <TableHeaderCellSmall>Type</TableHeaderCellSmall>
+                    <TableHeaderCellSmall>Nivå</TableHeaderCellSmall>
+                    <TableHeaderCellSmall>Resultat</TableHeaderCellSmall>
+                    <TableHeaderCellSmall>Årsak</TableHeaderCellSmall>
+                </Table.Row>
+            </Table.Header>
+            <Table.Body>
                 {saker.map((sak) => (
-                    <Rad key={`${sak.id}-${sak.saksblokk}-${sak.tkNr}`}>
-                        <td>{sak.saksblokk}</td>
-                        <td>{formaterNullableIsoDato(sak.mottattDato)}</td>
-                        <td>{sak.personIdent}</td>
-                        <td>{formaterNullableIsoDato(sak.vedtaksdato)}</td>
-                        <td>{formaterNullableIsoDato(sak.iverksattdato)}</td>
-                        <td>{stønadstypeTilTekst[sak.stønadType]}</td>
-                        <td>{sak.undervalg}</td>
-                        <td>{tekstMapping(sak.type, infotrygdSakTypeTilTekst)}</td>
-                        <td>{tekstMapping(sak.nivå, infotrygdSakNivåTilTekst)}</td>
-                        <td>{tekstMapping(sak.resultat, infotrygdSakResultatTilTekst)}</td>
-                        <td>{sak.årsakskode}</td>
-                    </Rad>
+                    <Table.Row key={`${sak.id}-${sak.saksblokk}-${sak.tkNr}`}>
+                        <TableDataCellSmall>{sak.saksblokk}</TableDataCellSmall>
+                        <TableDataCellSmall>
+                            {formaterNullableIsoDato(sak.mottattDato)}
+                        </TableDataCellSmall>
+                        <TableDataCellSmall>{sak.personIdent}</TableDataCellSmall>
+                        <TableDataCellSmall>
+                            {formaterNullableIsoDato(sak.vedtaksdato)}
+                        </TableDataCellSmall>
+                        <TableDataCellSmall>
+                            {formaterNullableIsoDato(sak.iverksattdato)}
+                        </TableDataCellSmall>
+                        <TableDataCellSmall>
+                            {stønadstypeTilTekst[sak.stønadType]}
+                        </TableDataCellSmall>
+                        <TableDataCellSmall>{sak.undervalg}</TableDataCellSmall>
+                        <TableDataCellSmall>
+                            {tekstMapping(sak.type, infotrygdSakTypeTilTekst)}
+                        </TableDataCellSmall>
+                        <TableDataCellSmall>
+                            {tekstMapping(sak.nivå, infotrygdSakNivåTilTekst)}
+                        </TableDataCellSmall>
+                        <TableDataCellSmall>
+                            {tekstMapping(sak.resultat, infotrygdSakResultatTilTekst)}
+                        </TableDataCellSmall>
+                        <TableDataCellSmall>{sak.årsakskode}</TableDataCellSmall>
+                    </Table.Row>
                 ))}
-            </tbody>
-        </StyledTabell>
+            </Table.Body>
+        </Table>
     );
 };
 

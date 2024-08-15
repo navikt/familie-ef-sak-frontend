@@ -3,14 +3,8 @@ import { ISøkeresultatPerson } from '../../App/typer/personopplysninger';
 import { useApp } from '../../App/context/AppContext';
 import { byggTomRessurs, Ressurs, RessursFeilet, RessursStatus } from '../../App/typer/ressurs';
 import DataViewer from '../DataViewer/DataViewer';
-import { BredTd, KolonneTitler, TabellWrapper } from './TabellWrapper';
-import styled from 'styled-components';
 import SystemetLaster from '../SystemetLaster/SystemetLaster';
-
-const StyledModalTabellWrapper = styled(TabellWrapper)`
-    margin-bottom: 1rem;
-    grid-template-columns: max-content;
-`;
+import { Table } from '@navikt/ds-react';
 
 const Beboere: React.FC<{ fagsakPersonId: string }> = ({ fagsakPersonId }) => {
     const { axiosRequest } = useApp();
@@ -38,22 +32,36 @@ const Beboere: React.FC<{ fagsakPersonId: string }> = ({ fagsakPersonId }) => {
             <DataViewer response={{ søkResultat }}>
                 {({ søkResultat }) => {
                     return (
-                        <StyledModalTabellWrapper>
-                            <table className="tabell">
-                                <KolonneTitler titler={['Navn', 'Fødselsnummer', 'Adresse']} />
-                                <tbody>
-                                    {søkResultat.hits.map((beboer, indeks) => {
-                                        return (
-                                            <tr key={indeks}>
-                                                <BredTd>{beboer.visningsnavn}</BredTd>
-                                                <BredTd>{beboer.personIdent}</BredTd>
-                                                <BredTd>{beboer.visningsadresse}</BredTd>
-                                            </tr>
-                                        );
-                                    })}
-                                </tbody>
-                            </table>
-                        </StyledModalTabellWrapper>
+                        <Table>
+                            <Table.Header>
+                                <Table.Row>
+                                    <Table.ColumnHeader textSize={'small'}>Navn</Table.ColumnHeader>
+                                    <Table.ColumnHeader textSize={'small'}>
+                                        Fødselsnummer
+                                    </Table.ColumnHeader>
+                                    <Table.ColumnHeader textSize={'small'}>
+                                        Adresse
+                                    </Table.ColumnHeader>
+                                </Table.Row>
+                            </Table.Header>
+                            <Table.Body>
+                                {søkResultat.hits.map((beboer) => {
+                                    return (
+                                        <Table.Row key={beboer.personIdent}>
+                                            <Table.DataCell textSize={'small'}>
+                                                {beboer.visningsnavn}
+                                            </Table.DataCell>
+                                            <Table.DataCell textSize={'small'}>
+                                                {beboer.personIdent}
+                                            </Table.DataCell>
+                                            <Table.DataCell textSize={'small'}>
+                                                {beboer.visningsadresse}
+                                            </Table.DataCell>
+                                        </Table.Row>
+                                    );
+                                })}
+                            </Table.Body>
+                        </Table>
                     );
                 }}
             </DataViewer>

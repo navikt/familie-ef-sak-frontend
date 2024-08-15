@@ -1,8 +1,8 @@
 import { KeyboardEvent } from 'react';
-import { OrNothing } from '../hooks/felles/useSorteringState';
 import { isAfter, isBefore } from 'date-fns';
 import { IOppgaveRequest } from '../../Komponenter/Oppgavebenk/typer/oppgaverequest';
 import { validate } from 'uuid';
+import { OrNothing } from '../typer/common';
 
 export const datoFeil = (valgtDatoFra?: string, valgtDatoTil?: string): OrNothing<string> => {
     if (!valgtDatoFra || !valgtDatoTil) {

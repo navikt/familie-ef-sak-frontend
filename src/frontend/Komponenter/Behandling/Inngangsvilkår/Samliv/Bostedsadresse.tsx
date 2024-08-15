@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Td } from '../../../../Felles/Personopplysninger/TabellWrapper';
 import { ISøkeresultatPerson } from '../../../../App/typer/personopplysninger';
 import { useApp } from '../../../../App/context/AppContext';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../../App/typer/ressurs';
@@ -7,27 +6,19 @@ import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 import styled from 'styled-components';
 import { ChevronUpIcon, ChevronDownIcon } from '@navikt/aksel-icons';
 import { AlertStripeVariant } from '../../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
-import { Button } from '@navikt/ds-react';
+import { Button, Table } from '@navikt/ds-react';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
 import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 import { IPersonalia } from '../vilkår';
-
-interface BeboereTabellProps {
-    $vis: boolean;
-}
 
 interface BostedsadresseProps {
     behandlingId: string;
     personalia: IPersonalia;
 }
 
-const BeboereTabell = styled.table<BeboereTabellProps>`
-    grid-column: 1 / span 3;
+const BeboereContainer = styled.div`
     background-color: #f9f9f9;
-    margin-top: 2rem;
-
-    display: ${(props) => (props.$vis ? 'block' : 'none')};
 `;
 
 const KnappMedMarginTop = styled(Button)`
@@ -94,26 +85,40 @@ export const Bostedsadresse = ({ behandlingId, personalia }: BostedsadresseProps
                 >
                     {({ beboere }) => {
                         return (
-                            <>
-                                <BeboereTabell $vis={visBeboere} className="tabell">
-                                    <thead>
-                                        <Td>Navn</Td>
-                                        <Td>Fødselsnummer</Td>
-                                        <Td>Adresse</Td>
-                                    </thead>
-                                    <tbody>
+                            <BeboereContainer>
+                                <Table>
+                                    <Table.Header>
+                                        <Table.Row>
+                                            <Table.ColumnHeader textSize={'small'}>
+                                                Navn
+                                            </Table.ColumnHeader>
+                                            <Table.ColumnHeader textSize={'small'}>
+                                                Fødselsnummer
+                                            </Table.ColumnHeader>
+                                            <Table.ColumnHeader textSize={'small'}>
+                                                Adresse
+                                            </Table.ColumnHeader>
+                                        </Table.Row>
+                                    </Table.Header>
+                                    <Table.Body>
                                         {beboere.hits.map((beboer) => {
                                             return (
-                                                <tr key={beboer.personIdent}>
-                                                    <Td>{beboer.visningsnavn}</Td>
-                                                    <Td>{beboer.personIdent}</Td>
-                                                    <Td>{beboer.visningsadresse}</Td>
-                                                </tr>
+                                                <Table.Row key={beboer.personIdent}>
+                                                    <Table.DataCell textSize={'small'}>
+                                                        {beboer.visningsnavn}
+                                                    </Table.DataCell>
+                                                    <Table.DataCell textSize={'small'}>
+                                                        {beboer.personIdent}
+                                                    </Table.DataCell>
+                                                    <Table.DataCell textSize={'small'}>
+                                                        {beboer.visningsadresse}
+                                                    </Table.DataCell>
+                                                </Table.Row>
                                             );
                                         })}
-                                    </tbody>
-                                </BeboereTabell>
-                            </>
+                                    </Table.Body>
+                                </Table>
+                            </BeboereContainer>
                         );
                     }}
                 </DataViewer>
