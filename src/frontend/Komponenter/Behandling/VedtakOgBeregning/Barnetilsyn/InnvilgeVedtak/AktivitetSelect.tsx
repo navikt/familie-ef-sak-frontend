@@ -5,9 +5,9 @@ import {
     utgiftsperiodeAktivitetTilTekst,
 } from '../../../../../App/typer/vedtak';
 import React from 'react';
-import { OrNothing } from '../../../../../App/hooks/felles/useSorteringState';
 import { EnsligFamilieSelect } from '../../../../../Felles/Input/EnsligFamilieSelect';
 import { erOpphørEllerSanksjon } from '../Felles/utils';
+import { OrNothing } from '../../../../../App/typer/common';
 
 interface Props {
     periodetype: EUtgiftsperiodetype | undefined;

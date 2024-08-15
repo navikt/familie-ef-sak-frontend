@@ -1,13 +1,12 @@
 import { useMemo, useState } from 'react';
 import { compareAsc, compareDesc, isValid } from 'date-fns';
-
-export type OrNothing<T> = T | undefined | null;
+import { OrNothing } from '../../typer/common';
 
 export type Rekkefolge = 'descending' | 'ascending';
 
 export interface SorteringConfig<T> {
-    rekkefolge: Rekkefolge;
-    sorteringsfelt: keyof T;
+    direction: Rekkefolge;
+    orderBy: keyof T;
 }
 
 interface ISortering<T> {
@@ -26,24 +25,24 @@ export function useSorteringState<T>(
         const listeKopi = [...liste];
         if (sortConfig) {
             listeKopi.sort((a, b) => {
-                if (a[sortConfig?.sorteringsfelt] === undefined) {
-                    return sortConfig?.rekkefolge === 'ascending' ? -1 : 1;
+                if (a[sortConfig?.orderBy] === undefined) {
+                    return sortConfig?.direction === 'ascending' ? -1 : 1;
                 }
-                if (b[sortConfig?.sorteringsfelt] === undefined) {
-                    return sortConfig?.rekkefolge === 'ascending' ? 1 : -1;
+                if (b[sortConfig?.orderBy] === undefined) {
+                    return sortConfig?.direction === 'ascending' ? 1 : -1;
                 }
-                if (erEttDatoFelt(a[sortConfig?.sorteringsfelt], b[sortConfig?.sorteringsfelt])) {
-                    const dateStringA = a[sortConfig?.sorteringsfelt] as unknown as string;
-                    const dateStringB = b[sortConfig?.sorteringsfelt] as unknown as string;
-                    return sortConfig?.rekkefolge === 'ascending'
+                if (erEttDatoFelt(a[sortConfig?.orderBy], b[sortConfig?.orderBy])) {
+                    const dateStringA = a[sortConfig?.orderBy] as unknown as string;
+                    const dateStringB = b[sortConfig?.orderBy] as unknown as string;
+                    return sortConfig?.direction === 'ascending'
                         ? compareAsc(new Date(dateStringA), new Date(dateStringB))
                         : compareDesc(new Date(dateStringA), new Date(dateStringB));
                 }
-                if (a[sortConfig?.sorteringsfelt] < b[sortConfig?.sorteringsfelt]) {
-                    return sortConfig?.rekkefolge === 'ascending' ? -1 : 1;
+                if (a[sortConfig?.orderBy] < b[sortConfig?.orderBy]) {
+                    return sortConfig?.direction === 'ascending' ? -1 : 1;
                 }
-                if (a[sortConfig?.sorteringsfelt] > b[sortConfig?.sorteringsfelt]) {
-                    return sortConfig?.rekkefolge === 'ascending' ? 1 : -1;
+                if (a[sortConfig?.orderBy] > b[sortConfig?.orderBy]) {
+                    return sortConfig?.direction === 'ascending' ? 1 : -1;
                 }
                 return 0;
             });
@@ -51,16 +50,12 @@ export function useSorteringState<T>(
         return listeKopi;
     }, [liste, sortConfig]);
 
-    const settSortering = (sorteringsfelt: keyof T) => {
-        let rekkefolge: Rekkefolge = 'ascending';
-        if (
-            sortConfig &&
-            sortConfig.sorteringsfelt === sorteringsfelt &&
-            sortConfig.rekkefolge === 'ascending'
-        ) {
-            rekkefolge = 'descending';
+    const settSortering = (orderBy: keyof T) => {
+        let direction: Rekkefolge = 'ascending';
+        if (sortConfig && sortConfig.orderBy === orderBy && sortConfig.direction === 'ascending') {
+            direction = 'descending';
         }
-        setSortConfig({ sorteringsfelt, rekkefolge });
+        setSortConfig({ orderBy, direction });
     };
 
     return { sortertListe, settSortering, sortConfig };

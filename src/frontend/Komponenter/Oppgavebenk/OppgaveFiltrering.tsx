@@ -8,7 +8,6 @@ import { enhetTilTekst, FortroligEnhet, IkkeFortroligEnhet } from './typer/enhet
 import DatoPeriode from './DatoPeriode';
 import { datoFeil, oppdaterFilter } from '../../App/utils/utils';
 import { IOppgaveRequest } from './typer/oppgaverequest';
-import { OrNothing } from '../../App/hooks/felles/useSorteringState';
 import {
     hentFraLocalStorage,
     lagreTilLocalStorage,
@@ -20,6 +19,7 @@ import { harEgenAnsattRolle, harStrengtFortroligRolle } from '../../App/utils/ro
 import { ModalWrapper } from '../../Felles/Modal/ModalWrapper';
 import { Alert, Button, Select, TextField } from '@navikt/ds-react';
 import SystemetLaster from '../../Felles/SystemetLaster/SystemetLaster';
+import { OrNothing } from '../../App/typer/common';
 
 export const FlexDiv = styled.div`
     display: flex;

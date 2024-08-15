@@ -3,7 +3,7 @@ import { useApp } from '../context/AppContext';
 import { useCallback, useMemo, useState } from 'react';
 import { IJournalpostResponse } from '../typer/journalføring';
 import { AxiosRequestConfig } from 'axios';
-import { OrNothing } from './felles/useSorteringState';
+import { OrNothing } from '../typer/common';
 
 interface HentJournalpostResponse {
     hentJournalPost: () => void;
