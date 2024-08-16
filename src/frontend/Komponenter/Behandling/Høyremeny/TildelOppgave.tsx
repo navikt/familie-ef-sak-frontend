@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHentOppgave } from '../../../App/hooks/useHentOppgave';
 import { Alert, Button } from '@navikt/ds-react';
 import { useOppgave } from '../../../App/hooks/useOppgave';
@@ -26,11 +26,17 @@ const Container = styled.div`
 const TildelOppgave: React.FC<{ behandling: Behandling }> = ({ behandling }) => {
     const { id: behandlingId, resultat, opprettet } = behandling;
     const { innloggetSaksbehandler } = useApp();
-    const { hentOppgave, oppgave, laster, feilmelding } = useHentOppgave(behandlingId);
+    const {
+        hentOppgave,
+        oppgave,
+        laster,
+        feilmelding: feilmeldingOppgave,
+    } = useHentOppgave(behandlingId);
     const { settOppgaveTilSaksbehandler } = useOppgave(oppgave);
     const { toggles } = useToggles();
     const navigate = useNavigate();
     const [harTildetOppgave, settHarTildetOppgave] = React.useState<boolean>(false);
+    const [feilmelding, settFeilmelding] = useState<string>('');
     const { hentAnsvarligSaksbehandler } = useBehandling();
 
     const erTilordnetOgInnloggetSaksbehandlerDenSamme =
@@ -40,6 +46,7 @@ const TildelOppgave: React.FC<{ behandling: Behandling }> = ({ behandling }) => 
         resultat === BehandlingResultat.IKKE_SATT || resultat === BehandlingResultat.AVSLÅTT;
 
     const handleTildelOppgave = () => {
+        settFeilmelding('');
         settOppgaveTilSaksbehandler()
             .then(() => {
                 hentAnsvarligSaksbehandler.rerun();
@@ -47,7 +54,7 @@ const TildelOppgave: React.FC<{ behandling: Behandling }> = ({ behandling }) => 
                 navigate(`/behandling/${behandlingId}/arsak-revurdering`);
             })
             .catch((error) => {
-                console.error(error);
+                settFeilmelding(error.message);
             });
     };
 
@@ -62,6 +69,8 @@ const TildelOppgave: React.FC<{ behandling: Behandling }> = ({ behandling }) => 
 
     const erBehandlingOpprettetForMerEnnEttMinuttSiden =
         sjekkOmDetHarGåttMistEttMinuttSidenBehandlingenBleOpprettet(opprettet);
+
+    const samletFeilmelding = feilmelding || feilmeldingOppgave;
 
     useEffect(() => {
         if (erBehandlingFortsattAktiv) {
@@ -86,9 +95,9 @@ const TildelOppgave: React.FC<{ behandling: Behandling }> = ({ behandling }) => 
             <Button size="small" onClick={handleTildelOppgave}>
                 Tildel oppgave
             </Button>
-            {feilmelding && (
+            {samletFeilmelding && (
                 <Alert size="small" variant={'error'}>
-                    {feilmelding}
+                    {samletFeilmelding}
                 </Alert>
             )}
         </Container>

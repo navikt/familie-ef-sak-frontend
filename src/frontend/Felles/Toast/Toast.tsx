@@ -54,12 +54,6 @@ export const Toast: React.FC = () => {
                     <AlertSuccess>{toastTilTekst[toast]}</AlertSuccess>
                 </ContainerTopMiddle>
             );
-        case EToast.TILDEL_OPPGAVE_FEILET:
-            return (
-                <ContainerTopMiddle>
-                    <AlertError>{toastTilTekst[toast]}</AlertError>
-                </ContainerTopMiddle>
-            );
         default:
             return (
                 <ContainerTopRight>

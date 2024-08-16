@@ -34,7 +34,6 @@ export const useOppgave = (oppgave: IOppgave) => {
                     settToast(EToast.TILDEL_OPPGAVE_VELlYKKET);
                     return Promise.resolve();
                 } else {
-                    settToast(EToast.TILDEL_OPPGAVE_FEILET);
                     return Promise.reject(
                         new Error(`Feilet fordeling av oppgave. Feil: ${res.frontendFeilmelding}`)
                     );
