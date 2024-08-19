@@ -138,9 +138,9 @@ const FatterVedtak: React.FC<{
             <Container>
                 {erSimuleringsresultatEndret && (
                     <AlertWarning>
-                        Det har skjedd endringer i simulering mot oppdrag etter at vedtaket ble
-                        sendt til godkjenning. Underkjenn derfor vedtaket slik at saksbehandler kan
-                        ta stilling til om endringene påvirker vedtaket.
+                        Det har skjedd en endring i feilutbetaling ved simulering mot oppdrag etter
+                        at vedtaket ble sendt til godkjenning. Underkjenn derfor vedtaket slik at
+                        saksbehandler kan ta stilling til om endringene påvirker vedtaket.
                     </AlertWarning>
                 )}
                 <div>
