@@ -6,6 +6,7 @@ import { useHentFagsak } from './useHentFagsak';
 import { Stønadstype } from '../typer/behandlingstema';
 import { lagJournalføringUrl } from '../../Komponenter/Journalføring/Felles/utils';
 import { useNavigate } from 'react-router-dom';
+import { EToast } from '../typer/toast';
 
 interface OppgaveDto {
     behandlingId: string;
@@ -13,7 +14,7 @@ interface OppgaveDto {
 }
 
 export const useOppgave = (oppgave: IOppgave) => {
-    const { axiosRequest, innloggetSaksbehandler } = useApp();
+    const { axiosRequest, innloggetSaksbehandler, settToast } = useApp();
     const navigate = useNavigate();
     const [feilmelding, settFeilmelding] = useState<string>('');
     const [laster, settLaster] = useState<boolean>(false);
@@ -30,6 +31,7 @@ export const useOppgave = (oppgave: IOppgave) => {
         })
             .then((res: RessursSuksess<string> | RessursFeilet) => {
                 if (res.status === RessursStatus.SUKSESS) {
+                    settToast(EToast.TILDEL_OPPGAVE_VELlYKKET);
                     return Promise.resolve();
                 } else {
                     return Promise.reject(

@@ -48,6 +48,12 @@ export const Toast: React.FC = () => {
                     <AlertSuccess>{toastTilTekst[toast]}</AlertSuccess>
                 </ContainerTopMiddle>
             );
+        case EToast.TILDEL_OPPGAVE_VELlYKKET:
+            return (
+                <ContainerTopMiddle>
+                    <AlertSuccess>{toastTilTekst[toast]}</AlertSuccess>
+                </ContainerTopMiddle>
+            );
         default:
             return (
                 <ContainerTopRight>
