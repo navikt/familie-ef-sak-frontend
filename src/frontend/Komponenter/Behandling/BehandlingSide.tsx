@@ -111,7 +111,7 @@ const SideInnhold: FC<Props> = ({ behandling, personopplysninger, fagsak }) => {
                 fagsak={fagsak}
             />
             <Container>
-                <InnholdWrapper $åpenHøyremeny={åpenHøyremeny}>
+                <InnholdWrapper $åpenHøyremeny={åpenHøyremeny} id="scroll-topp">
                     <Fanemeny behandling={behandling} />
                     <SettPåVent behandling={behandling} />
                     <InfostripeUtestengelse />

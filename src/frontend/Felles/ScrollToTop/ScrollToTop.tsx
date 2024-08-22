@@ -5,7 +5,16 @@ export default function ScrollToTop() {
     const { pathname } = useLocation();
 
     useEffect(() => {
-        window.scrollTo(0, 0);
+        const scrollTilTopp = () => {
+            const container = document.querySelector('#scroll-topp');
+            if (container) {
+                container.scrollTop = 0;
+            } else {
+                window.scrollTo(0, 0);
+            }
+        };
+
+        scrollTilTopp();
     }, [pathname]);
 
     return null;
