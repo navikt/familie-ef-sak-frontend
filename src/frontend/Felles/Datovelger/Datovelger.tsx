@@ -36,6 +36,7 @@ export const Datovelger: FC<{
                         label={label}
                         placeholder={placeholder}
                         {...inputProps}
+                        value={formatertDato || ''}
                         error={feil}
                         size={'medium'}
                     />
