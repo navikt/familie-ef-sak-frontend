@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useApp } from '../../App/context/AppContext';
 import { EToast, toastTilTekst } from '../../App/typer/toast';
-import { AlertError, AlertSuccess } from '../Visningskomponenter/Alerts';
+import { AlertErrorMedLukkeknapp, AlertSuccessMedLukkeknapp } from '../Visningskomponenter/Alerts';
 
 const ContainerTopMiddle = styled.div`
     z-index: 9999;
@@ -14,7 +14,10 @@ const ContainerTopMiddle = styled.div`
 `;
 
 const ToastAlert: React.FC<{ toast: EToast }> = ({ toast }) => {
-    const Alert = toast === EToast.REDIRECT_ANNEN_RELASJON_FEILET ? AlertError : AlertSuccess;
+    const Alert =
+        toast === EToast.REDIRECT_ANNEN_RELASJON_FEILET
+            ? AlertErrorMedLukkeknapp
+            : AlertSuccessMedLukkeknapp;
 
     return (
         <ContainerTopMiddle>
@@ -31,7 +34,7 @@ export const Toast: React.FC = () => {
             settToast(undefined);
         }, 5000);
         return () => clearTimeout(timer);
-    }, [settToast]);
+    });
 
     if (toast === null || toast === undefined) {
         return null;
