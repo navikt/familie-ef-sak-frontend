@@ -14,36 +14,27 @@ export const AlertSuccess = forwardRef<HTMLDivElement, Omit<AlertProps, 'variant
 export const AlertInfo = forwardRef<HTMLDivElement, Omit<AlertProps, 'variant'>>((props, ref) => {
     return <Alert variant={'info'} {...props} ref={ref} />;
 });
+
 export const AlertWarning = forwardRef<HTMLDivElement, Omit<AlertProps, 'variant'>>(
     (props, ref) => {
         return <Alert variant={'warning'} {...props} ref={ref} />;
     }
 );
 
-export const AlertErrorMedLukkeknapp = forwardRef<HTMLDivElement, Omit<AlertProps, 'variant'>>(
-    (props) => {
-        return <AlertMedLukkeknapp variant={'error'} {...props} />;
-    }
-);
-
-export const AlertSuccessMedLukkeknapp = forwardRef<HTMLDivElement, Omit<AlertProps, 'variant'>>(
-    (props) => {
-        return <AlertMedLukkeknapp variant={'success'} {...props} />;
-    }
-);
-
-const AlertMedLukkeknapp = ({
-    children,
+export const AlertMedLukkeknapp = ({
     variant,
+    children,
+    keyProp,
 }: {
-    children?: ReactNode;
     variant: AlertProps['variant'];
+    children: ReactNode;
+    keyProp: string;
 }) => {
     const [skalVise, settSkalVise] = useState(true);
 
     useEffect(() => {
         settSkalVise(true);
-    }, [children]);
+    }, [keyProp]);
 
     return (
         skalVise && (
@@ -58,5 +49,4 @@ AlertError.displayName = 'AlertError';
 AlertSuccess.displayName = 'AlertSuccess';
 AlertInfo.displayName = 'AlertInfo';
 AlertWarning.displayName = 'AlertWarning';
-AlertErrorMedLukkeknapp.displayName = 'AlertErrorMedLukkeknapp';
-AlertSuccessMedLukkeknapp.displayName = 'AlertSuccessMedLukkeknapp';
+AlertMedLukkeknapp.displayName = 'AlertMedLukkeknapp';
