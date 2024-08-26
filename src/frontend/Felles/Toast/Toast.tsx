@@ -1,17 +1,8 @@
 import React, { useEffect } from 'react';
-
 import styled from 'styled-components';
-
 import { useApp } from '../../App/context/AppContext';
 import { EToast, toastTilTekst } from '../../App/typer/toast';
-import { AlertError, AlertSuccess } from '../Visningskomponenter/Alerts';
-
-const ContainerTopRight = styled.div`
-    z-index: 9999;
-    position: fixed;
-    right: 2rem;
-    top: 4rem;
-`;
+import { AlertMedLukkeknapp } from '../Visningskomponenter/Alerts';
 
 const ContainerTopMiddle = styled.div`
     z-index: 9999;
@@ -21,6 +12,18 @@ const ContainerTopMiddle = styled.div`
     left: 50%;
     transform: translate(-50%, 0%);
 `;
+
+const ToastAlert: React.FC<{ toast: EToast }> = ({ toast }) => {
+    const variant = toast === EToast.REDIRECT_ANNEN_RELASJON_FEILET ? 'error' : 'success';
+
+    return (
+        <ContainerTopMiddle>
+            <AlertMedLukkeknapp variant={variant} keyProp={toast}>
+                {toastTilTekst[toast]}
+            </AlertMedLukkeknapp>
+        </ContainerTopMiddle>
+    );
+};
 
 export const Toast: React.FC = () => {
     const { toast, settToast } = useApp();
@@ -32,33 +35,9 @@ export const Toast: React.FC = () => {
         return () => clearTimeout(timer);
     });
 
-    switch (toast) {
-        case null:
-        case undefined:
-            return null;
-        case EToast.REDIRECT_ANNEN_RELASJON_FEILET:
-            return (
-                <ContainerTopMiddle>
-                    <AlertError>{toastTilTekst[toast]}</AlertError>
-                </ContainerTopMiddle>
-            );
-        case EToast.INNGANGSVILKÅR_GJENBRUKT:
-            return (
-                <ContainerTopMiddle>
-                    <AlertSuccess>{toastTilTekst[toast]}</AlertSuccess>
-                </ContainerTopMiddle>
-            );
-        case EToast.TILDEL_OPPGAVE_VELlYKKET:
-            return (
-                <ContainerTopMiddle>
-                    <AlertSuccess>{toastTilTekst[toast]}</AlertSuccess>
-                </ContainerTopMiddle>
-            );
-        default:
-            return (
-                <ContainerTopRight>
-                    <AlertSuccess>{toastTilTekst[toast]}</AlertSuccess>
-                </ContainerTopRight>
-            );
+    if (toast === null || toast === undefined) {
+        return null;
     }
+
+    return <ToastAlert toast={toast} />;
 };
