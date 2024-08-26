@@ -1,17 +1,8 @@
 import React, { useEffect } from 'react';
-
 import styled from 'styled-components';
-
 import { useApp } from '../../App/context/AppContext';
 import { EToast, toastTilTekst } from '../../App/typer/toast';
 import { AlertError, AlertSuccess } from '../Visningskomponenter/Alerts';
-
-const ContainerTopRight = styled.div`
-    z-index: 9999;
-    position: fixed;
-    right: 2rem;
-    top: 4rem;
-`;
 
 const ContainerTopMiddle = styled.div`
     z-index: 9999;
@@ -56,9 +47,9 @@ export const Toast: React.FC = () => {
             );
         default:
             return (
-                <ContainerTopRight>
+                <ContainerTopMiddle>
                     <AlertSuccess>{toastTilTekst[toast]}</AlertSuccess>
-                </ContainerTopRight>
+                </ContainerTopMiddle>
             );
     }
 };
