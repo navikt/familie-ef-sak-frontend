@@ -13,6 +13,16 @@ const ContainerTopMiddle = styled.div`
     transform: translate(-50%, 0%);
 `;
 
+const ToastAlert: React.FC<{ toast: EToast }> = ({ toast }) => {
+    const Alert = toast === EToast.REDIRECT_ANNEN_RELASJON_FEILET ? AlertError : AlertSuccess;
+
+    return (
+        <ContainerTopMiddle>
+            <Alert>{toastTilTekst[toast]}</Alert>
+        </ContainerTopMiddle>
+    );
+};
+
 export const Toast: React.FC = () => {
     const { toast, settToast } = useApp();
 
@@ -21,35 +31,11 @@ export const Toast: React.FC = () => {
             settToast(undefined);
         }, 5000);
         return () => clearTimeout(timer);
-    });
+    }, [settToast]);
 
-    switch (toast) {
-        case null:
-        case undefined:
-            return null;
-        case EToast.REDIRECT_ANNEN_RELASJON_FEILET:
-            return (
-                <ContainerTopMiddle>
-                    <AlertError>{toastTilTekst[toast]}</AlertError>
-                </ContainerTopMiddle>
-            );
-        case EToast.INNGANGSVILKÅR_GJENBRUKT:
-            return (
-                <ContainerTopMiddle>
-                    <AlertSuccess>{toastTilTekst[toast]}</AlertSuccess>
-                </ContainerTopMiddle>
-            );
-        case EToast.TILDEL_OPPGAVE_VELlYKKET:
-            return (
-                <ContainerTopMiddle>
-                    <AlertSuccess>{toastTilTekst[toast]}</AlertSuccess>
-                </ContainerTopMiddle>
-            );
-        default:
-            return (
-                <ContainerTopMiddle>
-                    <AlertSuccess>{toastTilTekst[toast]}</AlertSuccess>
-                </ContainerTopMiddle>
-            );
+    if (toast === null || toast === undefined) {
+        return null;
     }
+
+    return <ToastAlert toast={toast} />;
 };
