@@ -38,7 +38,7 @@ export const AlertMedLukkeknapp = ({
 
     return (
         skalVise && (
-            <Alert variant={variant} closeButton onClose={() => settSkalVise(false)}>
+            <Alert size="small" variant={variant} closeButton onClose={() => settSkalVise(false)}>
                 {children}
             </Alert>
         )

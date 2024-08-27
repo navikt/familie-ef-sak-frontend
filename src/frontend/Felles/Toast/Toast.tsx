@@ -4,24 +4,24 @@ import { useApp } from '../../App/context/AppContext';
 import { EToast, toastTilTekst } from '../../App/typer/toast';
 import { AlertMedLukkeknapp } from '../Visningskomponenter/Alerts';
 
-const ContainerTopMiddle = styled.div`
+const ContainerTopRight = styled.div`
     z-index: 9999;
     margin: auto;
     position: fixed;
-    top: 10%;
-    left: 50%;
-    transform: translate(-50%, 0%);
+    top: 2%;
+    right: 1%;
+    transform: translate(0%, 0%);
 `;
 
 const ToastAlert: React.FC<{ toast: EToast }> = ({ toast }) => {
     const variant = toast === EToast.REDIRECT_ANNEN_RELASJON_FEILET ? 'error' : 'success';
 
     return (
-        <ContainerTopMiddle>
+        <ContainerTopRight>
             <AlertMedLukkeknapp variant={variant} keyProp={toast}>
                 {toastTilTekst[toast]}
             </AlertMedLukkeknapp>
-        </ContainerTopMiddle>
+        </ContainerTopRight>
     );
 };
 
@@ -31,7 +31,7 @@ export const Toast: React.FC = () => {
     useEffect(() => {
         const timer = setTimeout(() => {
             settToast(undefined);
-        }, 5000);
+        }, 3000);
         return () => clearTimeout(timer);
     });
 
