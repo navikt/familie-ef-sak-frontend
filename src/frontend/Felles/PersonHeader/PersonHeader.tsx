@@ -21,7 +21,7 @@ export const Container = styled(Sticky)`
 
     border-bottom: 1px solid ${ABorderStrong};
     z-index: 23;
-    top: 55px;
+    top: 48px; // Høyden på headeren
 
     .visittkort {
         border-bottom: none;
