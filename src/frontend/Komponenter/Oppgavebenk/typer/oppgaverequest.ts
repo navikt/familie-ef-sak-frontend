@@ -17,5 +17,4 @@ export interface IOppgaveRequest {
     fristTom?: string;
     erUtenMappe?: boolean;
     ident?: string;
-    komponentKey?: string; // For intern re-rendering i frontend
 }
