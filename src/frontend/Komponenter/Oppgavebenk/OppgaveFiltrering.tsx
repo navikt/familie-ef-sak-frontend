@@ -20,7 +20,6 @@ import { ModalWrapper } from '../../Felles/Modal/ModalWrapper';
 import { Alert, Button, Select, TextField } from '@navikt/ds-react';
 import SystemetLaster from '../../Felles/SystemetLaster/SystemetLaster';
 import { OrNothing } from '../../App/typer/common';
-import { v4 as uuidv4 } from 'uuid';
 
 export const FlexDiv = styled.div`
     display: flex;
@@ -151,9 +150,18 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({
     };
 
     const tilbakestillFiltrering = () => {
+        settLasterFraLokalt(true);
         lagreTilLocalStorage(oppgaveRequestKey(innloggetSaksbehandler.navIdent), tomOppgaveRequest);
-        settOppgaveRequest({ ...tomOppgaveRequest, komponentKey: uuidv4() });
+        settOppgaveRequest(tomOppgaveRequest);
         hentOppgaver(tomOppgaveRequest);
+
+        /**
+         * Ønsker å tvinge rerendring når man tilbakestiller filtrering
+         * Datofeltene er uncontrolled og oppdateres ikke av stateendring
+         */
+        setTimeout(() => {
+            settLasterFraLokalt(false);
+        }, 50);
     };
 
     return lasterFraLokalt ? (
@@ -170,7 +178,6 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({
                     datoTilTekst="Reg.dato til"
                     datoFeil={periodeFeil.opprettetPeriodeFeil}
                     id={'regdato' + oppgaveRequest.opprettetFom + oppgaveRequest.opprettetTom}
-                    key={'regdato' + oppgaveRequest.komponentKey || 'default'}
                 />
                 <CustomSelect
                     onChange={settOppgave('oppgavetype')}
@@ -193,7 +200,6 @@ const OppgaveFiltrering: React.FC<IOppgaveFiltrering> = ({
                     datoTilTekst="Frist til"
                     datoFeil={periodeFeil.fristPeriodeFeil}
                     id={'frist'}
-                    key={'regdato' + oppgaveRequest.komponentKey || 'default'}
                 />
                 <CustomSelect
                     onChange={settOppgave('enhet')}

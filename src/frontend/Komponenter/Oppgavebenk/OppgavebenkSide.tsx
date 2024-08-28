@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useApp } from '../../App/context/AppContext';
 import OppgaveTabell, { IOppgaverResponse } from './OppgaveTabell';
-import { byggTomRessurs, Ressurs, RessursStatus } from '../../App/typer/ressurs';
+import { byggHenterRessurs, byggTomRessurs, Ressurs, RessursStatus } from '../../App/typer/ressurs';
 import { IOppgaveRequest } from './typer/oppgaverequest';
 import { OpprettDummyBehandling } from './OpprettDummyBehandling';
 import { IMappe, tomMappeListe } from './typer/mappe';
@@ -30,6 +30,7 @@ export const OppgavebenkSide: React.FC = () => {
 
     const hentOppgaver = useCallback(
         (data: IOppgaveRequest) => {
+            settOppgaveRessurs(byggHenterRessurs());
             axiosRequest<IOppgaverResponse, IOppgaveRequest>({
                 method: 'POST',
                 url: `/familie-ef-sak/api/oppgave/soek`,
