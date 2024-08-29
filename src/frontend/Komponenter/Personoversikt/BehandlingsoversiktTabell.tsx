@@ -161,12 +161,22 @@ export const BehandlingsoversiktTabell: React.FC<{
         return lagKlagebehandlingsLenke(behandlingId);
     };
 
-    const finnÅrsak = (behandling: BehandlingsoversiktTabellBehandling): string =>
-        behandling.type === TilbakekrevingBehandlingstype.TILBAKEKREVING
-            ? 'Feilutbetaling'
-            : behandling.årsak
-              ? behandlingOgTilbakekrevingsårsakTilTekst[behandling.årsak]
-              : '-';
+    const finnÅrsak = (behandling: BehandlingsoversiktTabellBehandling): string => {
+        if (behandling.type === TilbakekrevingBehandlingstype.TILBAKEKREVING) {
+            return 'Feilutbetaling';
+        }
+        if (
+            behandling.type === 'Klage' &&
+            behandling.resultat === BehandlingResultat.HENLAGT &&
+            behandling.henlagtÅrsak
+        ) {
+            return henlagtÅrsakTilTekst[behandling.henlagtÅrsak];
+        }
+        if (behandling.årsak) {
+            return behandlingOgTilbakekrevingsårsakTilTekst[behandling.årsak];
+        }
+        return '-';
+    };
 
     const finnHenlagtÅrsak = (behandling: BehandlingsoversiktTabellBehandling): string =>
         behandling.henlagtÅrsak ? ` (${henlagtÅrsakTilTekst[behandling.henlagtÅrsak]})` : '';
