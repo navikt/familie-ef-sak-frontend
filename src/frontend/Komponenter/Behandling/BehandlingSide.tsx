@@ -23,8 +23,8 @@ const Container = styled.div`
     display: flex;
     flex-shrink: 2;
     height: calc(
-        100vh - ${106}px
-    ); // Magisk tall som er høyden på header pluss PersonHeaderComponent
+        100vh - ${97}px
+    ); // Magisk tall som er høyden på Header pluss PersonHeaderComponent
 `;
 
 interface InnholdWrapperProps {

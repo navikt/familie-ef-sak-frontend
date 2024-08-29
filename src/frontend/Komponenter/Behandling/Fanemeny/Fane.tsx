@@ -37,10 +37,6 @@ const StyledNavLink = styled(NavLink)`
     &.active {
         background-color: ${AGray100};
         border-bottom: 5px solid ${ABlue500};
-
-        .navds-body-short {
-            font-weight: bold;
-        }
     }
 `;
 
