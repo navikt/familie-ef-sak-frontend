@@ -58,6 +58,70 @@ const FlexBox = styled.div`
     gap: 0.75rem;
 `;
 
+const finnHenlagtÅrsak = (behandling: BehandlingsoversiktTabellBehandling): string =>
+    behandling.henlagtÅrsak ? ` (${henlagtÅrsakTilTekst[behandling.henlagtÅrsak]})` : '';
+
+const lagKlagebehandlingsLenke = (behandlingId: string): string =>
+    `${klageBaseUrl()}/behandling/${behandlingId}`;
+
+const lagTilbakekrevingslenke = (eksternFagsakId: number, behandlingId: string): string =>
+    `${tilbakekrevingBaseUrl()}/fagsystem/EF/fagsak/${eksternFagsakId}/behandling/${behandlingId}`;
+
+const erKlageFeilregistrertAvKA = (behandling: BehandlingsoversiktTabellBehandling) =>
+    behandling.applikasjon === BehandlingApplikasjon.KLAGE &&
+    behandling.klageinstansResultat?.some(
+        (resultat) => resultat.type == KlageinstansEventType.BEHANDLING_FEILREGISTRERT
+    );
+
+const utledBehandlingResultatTilTekst = (behandling: BehandlingsoversiktTabellBehandling) => {
+    if (behandling.applikasjon === BehandlingApplikasjon.KLAGE) {
+        if (
+            behandling.resultat === BehandlingResultat.HENLAGT &&
+            behandling.henlagtÅrsak &&
+            behandling.resultat
+        ) {
+            return `${behandlingResultatTilTekst[behandling.resultat]} (${henlagtÅrsakTilTekst[behandling.henlagtÅrsak]})`;
+        }
+        const klageBehandlingAvsluttetUtfall = behandling.klageinstansResultat?.find(
+            (resultat) =>
+                resultat.utfall && resultat.type == KlageinstansEventType.KLAGEBEHANDLING_AVSLUTTET
+        )?.utfall;
+
+        if (klageBehandlingAvsluttetUtfall) {
+            return klageinstansUtfallTilTekst[klageBehandlingAvsluttetUtfall];
+        }
+        if (erKlageFeilregistrertAvKA(behandling)) {
+            return 'Feilregistrert (KA)';
+        }
+    }
+    return behandling.resultat ? behandlingResultatTilTekst[behandling.resultat] : 'Ikke satt';
+};
+
+const lagEksternBehandlingApplikasjonLenke = (
+    eksternFagsakId: number,
+    behandlingId: string,
+    behandlingApplikasjon: BehandlingApplikasjon
+): string =>
+    behandlingApplikasjon === BehandlingApplikasjon.TILBAKEKREVING
+        ? lagTilbakekrevingslenke(eksternFagsakId, behandlingId)
+        : lagKlagebehandlingsLenke(behandlingId);
+
+const ankeHarEksistertPåBehandling = (behandling: BehandlingsoversiktTabellBehandling) =>
+    behandling.applikasjon === BehandlingApplikasjon.KLAGE &&
+    behandling.klageinstansResultat?.some(
+        (resultat) =>
+            resultat.type === KlageinstansEventType.ANKEBEHANDLING_OPPRETTET ||
+            resultat.type === KlageinstansEventType.ANKEBEHANDLING_AVSLUTTET ||
+            resultat.type === KlageinstansEventType.ANKE_I_TRYGDERETTENBEHANDLING_OPPRETTET
+    );
+
+const finnÅrsak = (behandling: BehandlingsoversiktTabellBehandling): string =>
+    behandling.type === TilbakekrevingBehandlingstype.TILBAKEKREVING
+        ? 'Feilutbetaling'
+        : behandling.årsak
+          ? behandlingOgTilbakekrevingsårsakTilTekst[behandling.årsak]
+          : '-';
+
 const TabellData: PartialRecord<keyof Behandling | 'vedtaksdato', string> = {
     opprettet: 'Behandling opprettetdato',
     type: 'Type',
@@ -142,81 +206,6 @@ export const BehandlingsoversiktTabell: React.FC<{
         .concat(generelleKlageBehandlinger)
         .sort(sorterBehandlinger);
 
-    const lagTilbakekrevingslenke = (eksternFagsakId: number, behandlingId: string): string => {
-        return `${tilbakekrevingBaseUrl()}/fagsystem/EF/fagsak/${eksternFagsakId}/behandling/${behandlingId}`;
-    };
-
-    const lagKlagebehandlingsLenke = (behandlingId: string): string => {
-        return `${klageBaseUrl()}/behandling/${behandlingId}`;
-    };
-
-    const lagEksternBehandlingApplikasjonLenke = (
-        eksternFagsakId: number,
-        behandlingId: string,
-        behandlingApplikasjon: BehandlingApplikasjon
-    ): string => {
-        if (behandlingApplikasjon === BehandlingApplikasjon.TILBAKEKREVING) {
-            return lagTilbakekrevingslenke(eksternFagsakId, behandlingId);
-        }
-        return lagKlagebehandlingsLenke(behandlingId);
-    };
-
-    const finnÅrsak = (behandling: BehandlingsoversiktTabellBehandling): string => {
-        if (behandling.type === TilbakekrevingBehandlingstype.TILBAKEKREVING) {
-            return 'Feilutbetaling';
-        }
-        if (
-            behandling.type === 'Klage' &&
-            behandling.resultat === BehandlingResultat.HENLAGT &&
-            behandling.henlagtÅrsak
-        ) {
-            return henlagtÅrsakTilTekst[behandling.henlagtÅrsak];
-        }
-        if (behandling.årsak) {
-            return behandlingOgTilbakekrevingsårsakTilTekst[behandling.årsak];
-        }
-        return '-';
-    };
-
-    const finnHenlagtÅrsak = (behandling: BehandlingsoversiktTabellBehandling): string =>
-        behandling.henlagtÅrsak ? ` (${henlagtÅrsakTilTekst[behandling.henlagtÅrsak]})` : '';
-
-    const utledBehandlingResultatTilTekst = (behandling: BehandlingsoversiktTabellBehandling) => {
-        if (behandling.applikasjon === BehandlingApplikasjon.KLAGE) {
-            const klageBehandlingAvsluttetUtfall = behandling.klageinstansResultat?.find(
-                (resultat) =>
-                    resultat.utfall &&
-                    resultat.type == KlageinstansEventType.KLAGEBEHANDLING_AVSLUTTET
-            )?.utfall;
-
-            if (klageBehandlingAvsluttetUtfall) {
-                return klageinstansUtfallTilTekst[klageBehandlingAvsluttetUtfall];
-            }
-            if (erKlageFeilregistrertAvKA(behandling)) {
-                return 'Feilregistrert (KA)';
-            }
-        }
-        return behandling.resultat ? behandlingResultatTilTekst[behandling.resultat] : 'Ikke satt';
-    };
-
-    const erKlageFeilregistrertAvKA = (behandling: BehandlingsoversiktTabellBehandling) =>
-        behandling.applikasjon === BehandlingApplikasjon.KLAGE &&
-        behandling.klageinstansResultat?.some(
-            (resultat) => resultat.type == KlageinstansEventType.BEHANDLING_FEILREGISTRERT
-        );
-
-    const ankeHarEksistertPåBehandling = (behandling: BehandlingsoversiktTabellBehandling) => {
-        return (
-            behandling.applikasjon === BehandlingApplikasjon.KLAGE &&
-            behandling.klageinstansResultat?.some(
-                (resultat) =>
-                    resultat.type === KlageinstansEventType.ANKEBEHANDLING_OPPRETTET ||
-                    resultat.type === KlageinstansEventType.ANKEBEHANDLING_AVSLUTTET ||
-                    resultat.type === KlageinstansEventType.ANKE_I_TRYGDERETTENBEHANDLING_OPPRETTET
-            )
-        );
-    };
-
     return (
         <StyledTable>
             <Table.Header>
@@ -248,45 +237,10 @@ export const BehandlingsoversiktTabell: React.FC<{
                                     formaterIsoDatoTid(behandling.vedtaksdato)}
                             </TableDataCellSmall>
                             <TableDataCellSmall>
-                                {behandling.applikasjon === BehandlingApplikasjon.EF_SAK ? (
-                                    <Link
-                                        className="lenke"
-                                        to={{ pathname: `/behandling/${behandling.id}` }}
-                                    >
-                                        {behandling.resultat &&
-                                            behandlingResultatTilTekst[behandling.resultat]}
-                                        {finnHenlagtÅrsak(behandling)}
-                                    </Link>
-                                ) : (
-                                    <>
-                                        <a
-                                            className="lenke"
-                                            target="_blank"
-                                            rel="noreferrer"
-                                            href={lagEksternBehandlingApplikasjonLenke(
-                                                eksternFagsakId,
-                                                behandling.id,
-                                                behandling.applikasjon
-                                            )}
-                                        >
-                                            {utledBehandlingResultatTilTekst(behandling)}
-                                        </a>
-                                        {ankeHarEksistertPåBehandling(behandling) && (
-                                            <Tooltip content="Det finnes informasjon om anke på denne klagen. Gå inn på klagebehandlingens resultatside for å se detaljer.">
-                                                <AdvarselIkon title={'Har anke informasjon'} />
-                                            </Tooltip>
-                                        )}
-                                        {erKlageFeilregistrertAvKA(behandling) && (
-                                            <Tooltip content="Klagen er feilregistrert av NAV klageinstans. Gå inn på klagebehandlingens resultatside for å se detaljer">
-                                                <AdvarselIkon
-                                                    title={
-                                                        'Behandling feilregistrert av NAV klageinstans'
-                                                    }
-                                                />
-                                            </Tooltip>
-                                        )}
-                                    </>
-                                )}
+                                <Behandlingsresultat
+                                    behandling={behandling}
+                                    eksternFagsakId={eksternFagsakId}
+                                />
                             </TableDataCellSmall>
                         </Table.Row>
                     );
@@ -311,5 +265,46 @@ const BehandlingType: React.FC<{ behandlingType: string; kategori?: BehandlingKa
                 {kategoriTilTekst[kategori]}
             </Tag>
         </FlexBox>
+    );
+};
+
+const Behandlingsresultat: React.FC<{
+    behandling: BehandlingsoversiktTabellBehandling;
+    eksternFagsakId: number;
+}> = ({ behandling, eksternFagsakId }) => {
+    if (behandling.applikasjon === BehandlingApplikasjon.EF_SAK) {
+        return (
+            <Link className="lenke" to={{ pathname: `/behandling/${behandling.id}` }}>
+                {behandling.resultat && behandlingResultatTilTekst[behandling.resultat]}
+                {finnHenlagtÅrsak(behandling)}
+            </Link>
+        );
+    }
+
+    return (
+        <>
+            <a
+                className="lenke"
+                target="_blank"
+                rel="noreferrer"
+                href={lagEksternBehandlingApplikasjonLenke(
+                    eksternFagsakId,
+                    behandling.id,
+                    behandling.applikasjon
+                )}
+            >
+                {utledBehandlingResultatTilTekst(behandling)}
+            </a>
+            {ankeHarEksistertPåBehandling(behandling) && (
+                <Tooltip content="Det finnes informasjon om anke på denne klagen. Gå inn på klagebehandlingens resultatside for å se detaljer.">
+                    <AdvarselIkon title={'Har anke informasjon'} />
+                </Tooltip>
+            )}
+            {erKlageFeilregistrertAvKA(behandling) && (
+                <Tooltip content="Klagen er feilregistrert av NAV klageinstans. Gå inn på klagebehandlingens resultatside for å se detaljer">
+                    <AdvarselIkon title={'Behandling feilregistrert av NAV klageinstans'} />
+                </Tooltip>
+            )}
+        </>
     );
 };
