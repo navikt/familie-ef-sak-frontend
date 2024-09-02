@@ -77,7 +77,9 @@ const PersonTags: React.FC<Props> = ({
                     </TagStorSkjerm>
                 </>
             )}
-            {fullmakt.some((f) => erEtterDagensDato(f.gyldigTilOgMed)) && (
+            {fullmakt.some(
+                (f) => f.gyldigTilOgMed === null || erEtterDagensDato(f.gyldigTilOgMed)
+            ) && (
                 <>
                     <TagStorSkjerm variant={'warning'} size={'small'}>
                         Fullmakt

@@ -30,7 +30,9 @@ const Fullmakter: React.FC<{ fullmakter: IFullmakt[] }> = ({ fullmakter }) => {
                                         {formaterNullableIsoDato(fullmakt.gyldigFraOgMed)}
                                     </Table.DataCell>
                                     <Table.DataCell>
-                                        {formaterNullableIsoDato(fullmakt.gyldigTilOgMed)}
+                                        {fullmakt.gyldigTilOgMed
+                                            ? formaterNullableIsoDato(fullmakt.gyldigTilOgMed)
+                                            : '-'}
                                     </Table.DataCell>
                                 </Table.Row>
                             );
