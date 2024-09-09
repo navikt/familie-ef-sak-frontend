@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { EÅrsakEnslig, IPersonDetaljer, ISivilstandSøknadsgrunnlag } from './typer';
+import { EÅrsakEnslig, ISivilstandSøknadsgrunnlag } from './typer';
 import { hentBooleanTekst } from '../utils';
 import { formaterNullableIsoDato, mapTrueFalse } from '../../../../App/utils/formatter';
 import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
@@ -14,10 +14,9 @@ export const Søknadsinformasjon: FC<Props> = ({ søknad }) => {
         erUformeltGift,
         erUformeltSeparertEllerSkilt,
         søktOmSkilsmisseSeparasjon,
-        fraflytningsdato,
+
         datoSøktSeparasjon,
         årsakEnslig,
-        tidligereSamboer,
     } = søknad;
 
     const harBesvartErUformeltGiftSpørsmål =
@@ -29,13 +28,8 @@ export const Søknadsinformasjon: FC<Props> = ({ søknad }) => {
     const harBesvartSøktSkillsmisseSpørsmål =
         søktOmSkilsmisseSeparasjon !== undefined && søktOmSkilsmisseSeparasjon !== null;
 
-    const erEnsligPåGrunnAvSamlivsbruddMedNoenAndre =
-        årsakEnslig === EÅrsakEnslig.samlivsbruddAndre;
-
     const erEnsligPåGrunnAvEndringISamværsordning =
         årsakEnslig === EÅrsakEnslig.endringISamværsordning;
-
-    const tidligereSamboerInfo = utledTidligereSamboerInformasjon(tidligereSamboer);
 
     return (
         <>
@@ -65,13 +59,6 @@ export const Søknadsinformasjon: FC<Props> = ({ søknad }) => {
                     }
                 />
             )}
-            {erEnsligPåGrunnAvSamlivsbruddMedNoenAndre && (
-                <Informasjonsrad
-                    ikon={VilkårInfoIkon.SØKNAD}
-                    label="Tidligere samboer"
-                    verdi={tidligereSamboerInfo}
-                />
-            )}
             {erEnsligPåGrunnAvEndringISamværsordning && (
                 <Informasjonsrad
                     ikon={VilkårInfoIkon.SØKNAD}
@@ -83,25 +70,6 @@ export const Søknadsinformasjon: FC<Props> = ({ søknad }) => {
                     }
                 />
             )}
-            {fraflytningsdato && (
-                <Informasjonsrad
-                    ikon={VilkårInfoIkon.SØKNAD}
-                    label="Dato for fraflytting"
-                    verdi={formaterNullableIsoDato(fraflytningsdato)}
-                />
-            )}
         </>
     );
-};
-
-const utledTidligereSamboerInformasjon = (samboer: IPersonDetaljer | undefined) => {
-    if (!samboer) {
-        return 'ukjent samboer';
-    }
-
-    const personIdentEllerFødselsdato = samboer.personIdent
-        ? samboer.personIdent
-        : formaterNullableIsoDato(samboer.fødselsdato);
-
-    return `${samboer.navn} - ${personIdentEllerFødselsdato ?? 'ukjent fødselsdato'}`;
 };
