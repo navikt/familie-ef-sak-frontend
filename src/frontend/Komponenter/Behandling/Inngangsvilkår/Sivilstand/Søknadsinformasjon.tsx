@@ -14,7 +14,6 @@ export const Søknadsinformasjon: FC<Props> = ({ søknad }) => {
         erUformeltGift,
         erUformeltSeparertEllerSkilt,
         søktOmSkilsmisseSeparasjon,
-
         datoSøktSeparasjon,
         årsakEnslig,
     } = søknad;
