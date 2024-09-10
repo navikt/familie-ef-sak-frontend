@@ -304,6 +304,7 @@ export enum EAvslagÅrsak {
     MANGLENDE_OPPLYSNINGER = 'MANGLENDE_OPPLYSNINGER',
     MINDRE_INNTEKTSENDRINGER = 'MINDRE_INNTEKTSENDRINGER',
     KORTVARIG_AVBRUDD_JOBB = 'KORTVARIG_AVBRUDD_JOBB',
+    VILKÅR_IKKE_OPPFYLT_TIDSAVGRENSET_PERIODE = 'VILKÅR_IKKE_OPPFYLT_TIDSAVGRENSET_PERIODE',
 }
 
 export const årsakerTilAvslag: EAvslagÅrsak[] = [
@@ -312,6 +313,7 @@ export const årsakerTilAvslag: EAvslagÅrsak[] = [
     EAvslagÅrsak.STØNADSTID_OPPBRUKT,
     EAvslagÅrsak.MINDRE_INNTEKTSENDRINGER,
     EAvslagÅrsak.KORTVARIG_AVBRUDD_JOBB,
+    EAvslagÅrsak.VILKÅR_IKKE_OPPFYLT_TIDSAVGRENSET_PERIODE,
 ];
 
 export enum ESkolepengerStudietype {
@@ -450,6 +452,7 @@ export const avslagÅrsakTilTekst: Record<EAvslagÅrsak, string> = {
     MANGLENDE_OPPLYSNINGER: 'Manglende opplysninger',
     MINDRE_INNTEKTSENDRINGER: 'Ikke 10 % endring inntekt',
     KORTVARIG_AVBRUDD_JOBB: 'Kortvarig avbrudd jobb',
+    VILKÅR_IKKE_OPPFYLT_TIDSAVGRENSET_PERIODE: 'Vilkår ikke oppfylt i tidsavgrenset periode',
 };
 
 export const samordningsfradagTilTekst: Record<ESamordningsfradragtype, string> = {

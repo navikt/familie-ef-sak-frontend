@@ -30,7 +30,7 @@ interface Props {
     skalVelgeÅrsak: boolean;
 }
 
-const AvslåVedtakForm: React.FC<Props> = ({
+export const AvslåVedtakForm: React.FC<Props> = ({
     avslagBegrunnelse,
     avslagÅrsak,
     behandlingErRedigerbar,
@@ -72,5 +72,3 @@ const AvslåVedtakForm: React.FC<Props> = ({
         </Form>
     );
 };
-
-export default AvslåVedtakForm;
