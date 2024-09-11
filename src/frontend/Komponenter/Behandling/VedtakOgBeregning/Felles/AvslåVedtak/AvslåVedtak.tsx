@@ -9,12 +9,12 @@ import {
     IVedtakType,
 } from '../../../../../App/typer/vedtak';
 import { Behandling } from '../../../../../App/typer/fagsak';
-import AvslåVedtakForm from './AvslåVedtakForm';
 import { Behandlingstype } from '../../../../../App/typer/behandlingstype';
 import { Stønadstype } from '../../../../../App/typer/behandlingstema';
 import { useRedirectEtterLagring } from '../../../../../App/hooks/felles/useRedirectEtterLagring';
 import { v4 as uuidv4 } from 'uuid';
 import { ModalState } from '../../../Modal/NyEierModal';
+import { AvslåVedtakForm } from './AvslåVedtakForm';
 
 export const AvslåVedtak: React.FC<{
     behandling: Behandling;
