@@ -76,19 +76,27 @@ const Simulering: React.FC<{
         simuleringsresultat.etterbetaling === 0 &&
         toggles[ToggleName.visAutomatiskBehandlingAvTilbakekrevingValg];
 
-    const erPositivSum =
-        simuleringsresultat.sumManuellePosteringer !== null &&
-        simuleringsresultat.sumManuellePosteringer !== undefined &&
-        simuleringsresultat.sumManuellePosteringer > 0;
+    const harManuellePosteringer = simuleringsresultat.sumManuellePosteringer
+        ? simuleringsresultat.sumManuellePosteringer > 0
+        : false;
+
+    const harKreditorPosteringer = simuleringsresultat.sumKreditorPosteringer
+        ? simuleringsresultat.sumKreditorPosteringer !== 0
+        : false;
 
     return (
         <Container>
             <VStack gap="4">
                 <SimuleringOversikt simulering={simuleringsresultat} />
-                {erPositivSum && (
+                {harManuellePosteringer && (
                     <AlertWarning variant={'warning'}>
                         Det finnes manuelle posteringer tilknyttet tidligere behandling.
                         Simuleringsbildet kan derfor være ufullstendig.
+                    </AlertWarning>
+                )}
+                {harKreditorPosteringer && (
+                    <AlertWarning variant={'warning'}>
+                        Bruker har kreditortrekk. Se egen rutine i Sharepoint.
                     </AlertWarning>
                 )}
                 {finnesFlereTilbakekrevingsvalgRegistrertSisteÅr.status === RessursStatus.SUKSESS &&
