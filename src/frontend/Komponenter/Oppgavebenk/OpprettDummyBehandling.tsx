@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../App/typer/ressurs';
-import { Button, Select, TextField } from '@navikt/ds-react';
+import { Button, Select, TextField, Accordion } from '@navikt/ds-react';
 import { useApp } from '../../App/context/AppContext';
 import { useNavigate } from 'react-router-dom';
 import AlertStripeFeilPreWrap from '../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
@@ -55,38 +55,51 @@ export const OpprettDummyBehandling: React.FC = () => {
 
     return (
         <StyledOpprettDummyBehandling>
-            <StyledFnrInput
-                label={'[Test] Opprett dummy-behandling'}
-                value={personIdent}
-                onChange={(e) => {
-                    const verdi = e.target.value;
-                    settPersonIdent(verdi);
-                    settFeilmelding(
-                        fnr(verdi).status === 'invalid' ? 'Ugyldig fødselsnummer' : undefined
-                    );
-                }}
-                autoComplete="off"
-            />
+            <Accordion>
+                <Accordion.Item>
+                    <Accordion.Header>[Test] Opprett dummy-behandling</Accordion.Header>
+                    <Accordion.Content>
+                        <StyledFnrInput
+                            label={'[Test] Opprett dummy-behandling'}
+                            value={personIdent}
+                            onChange={(e) => {
+                                const verdi = e.target.value;
+                                settPersonIdent(verdi);
+                                settFeilmelding(
+                                    fnr(verdi).status === 'invalid'
+                                        ? 'Ugyldig fødselsnummer'
+                                        : undefined
+                                );
+                            }}
+                            autoComplete="off"
+                        />
 
-            <Select
-                value={behandlingsType}
-                className="flex-item"
-                label="Type"
-                onChange={(event) => {
-                    event.persist();
-                    settBehandlingstype(event.target.value);
-                }}
-            >
-                <option value="FØRSTEGANGSBEHANDLING">Førstegangsbehandling</option>
-                <option value="MIGRERING">Migrering</option>
-                <option value="BARNETILSYN">Barnetilsyn</option>
-                <option value="SKOLEPENGER">Skolepenger</option>
-            </Select>
+                        <Select
+                            value={behandlingsType}
+                            className="flex-item"
+                            label="Type"
+                            onChange={(event) => {
+                                event.persist();
+                                settBehandlingstype(event.target.value);
+                            }}
+                        >
+                            <option value="FØRSTEGANGSBEHANDLING">Førstegangsbehandling</option>
+                            <option value="MIGRERING">Migrering</option>
+                            <option value="BARNETILSYN">Barnetilsyn</option>
+                            <option value="SKOLEPENGER">Skolepenger</option>
+                        </Select>
 
-            <Button type={'button'} disabled={!harSattPersonIdent} onClick={opprettBehandling}>
-                Lag behandling
-            </Button>
-            {harFeil && <AlertStripeFeilPreWrap>{feilmelding}</AlertStripeFeilPreWrap>}
+                        <Button
+                            type={'button'}
+                            disabled={!harSattPersonIdent}
+                            onClick={opprettBehandling}
+                        >
+                            Lag behandling
+                        </Button>
+                        {harFeil && <AlertStripeFeilPreWrap>{feilmelding}</AlertStripeFeilPreWrap>}
+                    </Accordion.Content>
+                </Accordion.Item>
+            </Accordion>
         </StyledOpprettDummyBehandling>
     );
 };

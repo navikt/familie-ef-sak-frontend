@@ -24,9 +24,15 @@ interface Props {
     oppgaver: IOppgave[];
     mapper: IMappe[];
     settFeilmelding: (feilmelding: string) => void;
+    antallTreffTotalt?: number;
 }
 
-const OppgaveTabell: React.FC<Props> = ({ oppgaver, mapper, settFeilmelding }) => {
+const OppgaveTabell: React.FC<Props> = ({
+    oppgaver,
+    mapper,
+    settFeilmelding,
+    antallTreffTotalt,
+}) => {
     const { axiosRequest } = useApp();
 
     const [oppgaveListe, settOppgaveListe] = useState<IOppgave[]>(oppgaver);
@@ -76,11 +82,22 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaver, mapper, settFeilmelding }) =
         });
     };
 
+    const fra = (valgtSide - 1) * 15;
+    const til = Math.min(fra + 15, oppgaveListe.length);
+
     return (
         <>
+            <FlexBox>
+                {fra} til {til} av {oppgaveListe.length} ({antallTreffTotalt})
+            </FlexBox>
             {antallSider > 1 && (
                 <FlexBox>
-                    <Pagination page={valgtSide} count={antallSider} onPageChange={settValgtSide} />
+                    <Pagination
+                        size={'xsmall'}
+                        page={valgtSide}
+                        count={antallSider}
+                        onPageChange={settValgtSide}
+                    />
                 </FlexBox>
             )}
             <Table

@@ -69,6 +69,7 @@ export const OppgavebenkSide: React.FC = () => {
                     {({ oppgaveRessurs }) => (
                         <OppgaveTabell
                             oppgaver={oppgaveRessurs.oppgaver}
+                            antallTreffTotalt={oppgaveRessurs.antallTreffTotalt}
                             mapper={mapper}
                             settFeilmelding={settFeilmelding}
                         />
