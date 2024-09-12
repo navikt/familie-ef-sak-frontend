@@ -5,17 +5,15 @@ import { useSorteringState } from '../../App/hooks/felles/useSorteringState';
 import { usePagineringState } from '../../App/hooks/felles/usePaginerState';
 import { OppgaveHeaderConfig } from './OppgaveHeaderConfig';
 import { IMappe } from './typer/mappe';
-import { Pagination, SortState, Table } from '@navikt/ds-react';
-import styled from 'styled-components';
+import { HStack, Pagination, SortState, Table } from '@navikt/ds-react';
 import { useApp } from '../../App/context/AppContext';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../App/typer/ressurs';
+import styled from 'styled-components';
+import { ANTALL_OPPGAVER_PR_SIDE } from './utils';
 
-const FlexBox = styled.div`
-    display: flex;
-    justify-content: center;
+const PaginationContainer = styled(HStack)`
+    margin-bottom: 1rem;
 `;
-
-const ANTALL_OPPGAVER_PR_SIDE = 15;
 
 export interface IOppgaverResponse {
     antallTreffTotalt: number;
@@ -85,23 +83,25 @@ const OppgaveTabell: React.FC<Props> = ({
     };
 
     const fra = (valgtSide - 1) * ANTALL_OPPGAVER_PR_SIDE;
-    const til = Math.min(fra + ANTALL_OPPGAVER_PR_SIDE, oppgaveListe.length);
+    const oppgavenummerTil = Math.min(fra + ANTALL_OPPGAVER_PR_SIDE, oppgaveListe.length);
+    const oppgavenummerFra = oppgaveListe.length === 0 ? 0 : fra + 1;
 
     return (
         <>
-            <FlexBox>
-                {fra} til {til} av {oppgaveListe.length} ({antallTreffTotalt})
-            </FlexBox>
-            {antallSider > 1 && (
-                <FlexBox>
+            <PaginationContainer justify={'center'} gap={'16'}>
+                {antallSider > 1 && (
                     <Pagination
                         size={'xsmall'}
                         page={valgtSide}
                         count={antallSider}
                         onPageChange={settValgtSide}
                     />
-                </FlexBox>
-            )}
+                )}
+                <>
+                    {oppgavenummerFra} til {oppgavenummerTil} av {oppgaveListe.length} (
+                    {antallTreffTotalt})
+                </>
+            </PaginationContainer>
             <Table
                 zebraStripes={true}
                 sort={sortConfig as SortState}
