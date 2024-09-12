@@ -15,6 +15,8 @@ const FlexBox = styled.div`
     justify-content: center;
 `;
 
+const ANTALL_OPPGAVER_PR_SIDE = 15;
+
 export interface IOppgaverResponse {
     antallTreffTotalt: number;
     oppgaver: IOppgave[];
@@ -49,7 +51,7 @@ const OppgaveTabell: React.FC<Props> = ({
     const { valgtSide, settValgtSide, slicedListe, antallSider } = usePagineringState(
         sortertListe,
         1,
-        15
+        ANTALL_OPPGAVER_PR_SIDE
     );
     const mapperAsRecord = (mapper: IMappe[]): Record<number, string> =>
         mapper.reduce(
@@ -82,8 +84,8 @@ const OppgaveTabell: React.FC<Props> = ({
         });
     };
 
-    const fra = (valgtSide - 1) * 15;
-    const til = Math.min(fra + 15, oppgaveListe.length);
+    const fra = (valgtSide - 1) * ANTALL_OPPGAVER_PR_SIDE;
+    const til = Math.min(fra + ANTALL_OPPGAVER_PR_SIDE, oppgaveListe.length);
 
     return (
         <>
