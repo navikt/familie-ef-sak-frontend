@@ -5,14 +5,14 @@ import { useSorteringState } from '../../App/hooks/felles/useSorteringState';
 import { usePagineringState } from '../../App/hooks/felles/usePaginerState';
 import { OppgaveHeaderConfig } from './OppgaveHeaderConfig';
 import { IMappe } from './typer/mappe';
-import { Pagination, SortState, Table } from '@navikt/ds-react';
-import styled from 'styled-components';
+import { HStack, Pagination, SortState, Table } from '@navikt/ds-react';
 import { useApp } from '../../App/context/AppContext';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../App/typer/ressurs';
+import styled from 'styled-components';
+import { ANTALL_OPPGAVER_PR_SIDE } from './utils';
 
-const FlexBox = styled.div`
-    display: flex;
-    justify-content: center;
+const PaginationContainer = styled(HStack)`
+    margin-bottom: 1rem;
 `;
 
 export interface IOppgaverResponse {
@@ -24,9 +24,15 @@ interface Props {
     oppgaver: IOppgave[];
     mapper: IMappe[];
     settFeilmelding: (feilmelding: string) => void;
+    antallTreffTotalt?: number;
 }
 
-const OppgaveTabell: React.FC<Props> = ({ oppgaver, mapper, settFeilmelding }) => {
+const OppgaveTabell: React.FC<Props> = ({
+    oppgaver,
+    mapper,
+    settFeilmelding,
+    antallTreffTotalt,
+}) => {
     const { axiosRequest } = useApp();
 
     const [oppgaveListe, settOppgaveListe] = useState<IOppgave[]>(oppgaver);
@@ -43,7 +49,7 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaver, mapper, settFeilmelding }) =
     const { valgtSide, settValgtSide, slicedListe, antallSider } = usePagineringState(
         sortertListe,
         1,
-        15
+        ANTALL_OPPGAVER_PR_SIDE
     );
     const mapperAsRecord = (mapper: IMappe[]): Record<number, string> =>
         mapper.reduce(
@@ -76,13 +82,26 @@ const OppgaveTabell: React.FC<Props> = ({ oppgaver, mapper, settFeilmelding }) =
         });
     };
 
+    const fra = (valgtSide - 1) * ANTALL_OPPGAVER_PR_SIDE;
+    const oppgavenummerTil = Math.min(fra + ANTALL_OPPGAVER_PR_SIDE, oppgaveListe.length);
+    const oppgavenummerFra = oppgaveListe.length === 0 ? 0 : fra + 1;
+
     return (
         <>
-            {antallSider > 1 && (
-                <FlexBox>
-                    <Pagination page={valgtSide} count={antallSider} onPageChange={settValgtSide} />
-                </FlexBox>
-            )}
+            <PaginationContainer justify={'center'} gap={'16'}>
+                {antallSider > 1 && (
+                    <Pagination
+                        size={'xsmall'}
+                        page={valgtSide}
+                        count={antallSider}
+                        onPageChange={settValgtSide}
+                    />
+                )}
+                <>
+                    {oppgavenummerFra} til {oppgavenummerTil} av {oppgaveListe.length} (
+                    {antallTreffTotalt})
+                </>
+            </PaginationContainer>
             <Table
                 zebraStripes={true}
                 sort={sortConfig as SortState}
