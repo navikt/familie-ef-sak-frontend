@@ -128,8 +128,9 @@ export const Vedtaksperioderoversikt: React.FC<{ fagsakPerson: FagsakPerson }> =
 
     return (
         <>
-            <HStack gap="4">
+            <HStack gap="8">
                 <StønadSelect
+                    size="small"
                     label="Stønad"
                     className="flex-item"
                     defaultValue={valgtFagsak?.stønadstype}
@@ -170,6 +171,7 @@ export const Vedtaksperioderoversikt: React.FC<{ fagsakPerson: FagsakPerson }> =
                     </option>
                 </StønadSelect>
                 <BehandlingSelect
+                    size="small"
                     label="Behandling"
                     className="flex-item"
                     onChange={(event) => {
@@ -186,6 +188,7 @@ export const Vedtaksperioderoversikt: React.FC<{ fagsakPerson: FagsakPerson }> =
                 </BehandlingSelect>
                 {valgtFagsak && valgtFagsak.stønadstype !== Stønadstype.SKOLEPENGER ? (
                     <Checkbox
+                        size="small"
                         onChange={() => {
                             settVisUaktuelle((prevState) => !prevState);
                         }}
