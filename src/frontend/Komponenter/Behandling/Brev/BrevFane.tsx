@@ -15,6 +15,8 @@ import { AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
 import { oppgaveSomSkalOpprettesTilTekst } from '../Totrinnskontroll/oppgaveForOpprettelseTyper';
 import { HøyreKolonne, StyledBrev, VenstreKolonne } from './StyledBrev';
 import { Behandling } from '../../../App/typer/fagsak';
+import { Link, VStack } from '@navikt/ds-react';
+import { FolderFileIcon } from '@navikt/aksel-icons';
 
 const InfostripeGruppe = styled.div`
     display: flex;
@@ -31,6 +33,9 @@ const StyledInfostripe = styled(AlertInfo)`
 interface Props {
     behandling: Behandling;
 }
+
+const BREVMALER_SHAREPOINT_URL =
+    'https://navno.sharepoint.com/sites/Ensligforsrger-Sharepoint/Delte%20dokumenter/Forms/AllItems.aspx?id=%2Fsites%2FEnsligforsrger%2DSharepoint%2FDelte%20dokumenter%2FMaler&viewid=9e59b601%2Db831%2D49f5%2D8495%2D8623c77b3ae9';
 
 export const BrevFane: React.FC<Props> = ({ behandling }) => {
     const { axiosRequest } = useApp();
@@ -62,6 +67,10 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
         settBrevRessurs(respons);
     };
 
+    const åpneUrlINyttVindu = (url: string) => {
+        window.open(url, 'BrevmalerVindu', 'width=1200,height=1000');
+    };
+
     useEffect(() => {
         if (!behandlingErRedigerbar && totrinnskontroll.status === RessursStatus.SUKSESS) {
             if (totrinnskontroll.data.status === TotrinnskontrollStatus.KAN_FATTE_VEDTAK) {
@@ -79,30 +88,44 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
                 <>
                     <StyledBrev>
                         <VenstreKolonne>
-                            <BrevmottakereForBehandling
-                                behandlingId={behandling.id}
-                                personopplysninger={personopplysningerResponse}
-                            />
-                            {!behandlingErRedigerbar && (
-                                <InfostripeGruppe>
-                                    {oppgaverForOpprettelse.oppgavetyperSomSkalOpprettes.map(
-                                        (oppgaveType, idx) => (
-                                            <StyledInfostripe key={idx}>
-                                                {oppgaveSomSkalOpprettesTilTekst[oppgaveType]}
-                                            </StyledInfostripe>
-                                        )
-                                    )}
-                                </InfostripeGruppe>
-                            )}
-                            {behandlingErRedigerbar && (
-                                <Brevmeny
-                                    oppdaterBrevRessurs={oppdaterBrevRessurs}
+                            <VStack gap="6">
+                                <BrevmottakereForBehandling
+                                    behandlingId={behandling.id}
                                     personopplysninger={personopplysningerResponse}
-                                    settKanSendesTilBeslutter={settKanSendesTilBeslutter}
-                                    behandling={behandling}
-                                    vedtaksresultat={vedtak?.resultatType}
                                 />
-                            )}
+
+                                <Link
+                                    href={BREVMALER_SHAREPOINT_URL}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        åpneUrlINyttVindu(BREVMALER_SHAREPOINT_URL);
+                                    }}
+                                >
+                                    Brevmaler i Sharepoint
+                                    <FolderFileIcon title="a11y-title" fontSize="1.5rem" />
+                                </Link>
+
+                                {!behandlingErRedigerbar && (
+                                    <InfostripeGruppe>
+                                        {oppgaverForOpprettelse.oppgavetyperSomSkalOpprettes.map(
+                                            (oppgaveType, idx) => (
+                                                <StyledInfostripe key={idx}>
+                                                    {oppgaveSomSkalOpprettesTilTekst[oppgaveType]}
+                                                </StyledInfostripe>
+                                            )
+                                        )}
+                                    </InfostripeGruppe>
+                                )}
+                                {behandlingErRedigerbar && (
+                                    <Brevmeny
+                                        oppdaterBrevRessurs={oppdaterBrevRessurs}
+                                        personopplysninger={personopplysningerResponse}
+                                        settKanSendesTilBeslutter={settKanSendesTilBeslutter}
+                                        behandling={behandling}
+                                        vedtaksresultat={vedtak?.resultatType}
+                                    />
+                                )}
+                            </VStack>
                         </VenstreKolonne>
                         <HøyreKolonne>
                             <PdfVisning pdfFilInnhold={brevRessurs} />
