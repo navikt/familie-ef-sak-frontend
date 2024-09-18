@@ -27,6 +27,10 @@ const BehandlingSelect = styled(Select)`
     padding-top: 0.75rem;
 `;
 
+const StyledCheckbox = styled(Checkbox)`
+    align-content: end;
+`;
+
 const erAktuell = (periode: AndelHistorikk) => !skalMarkeresSomFjernet(periode.endring?.type);
 
 const skalMarkeresSomFjernet = (type?: AndelEndringType) =>
@@ -187,7 +191,7 @@ export const Vedtaksperioderoversikt: React.FC<{ fagsakPerson: FagsakPerson }> =
                     ))}
                 </BehandlingSelect>
                 {valgtFagsak && valgtFagsak.stønadstype !== Stønadstype.SKOLEPENGER ? (
-                    <Checkbox
+                    <StyledCheckbox
                         size="small"
                         onChange={() => {
                             settVisUaktuelle((prevState) => !prevState);
@@ -195,7 +199,7 @@ export const Vedtaksperioderoversikt: React.FC<{ fagsakPerson: FagsakPerson }> =
                         checked={visUaktuelle}
                     >
                         Vis uaktuelle perioder
-                    </Checkbox>
+                    </StyledCheckbox>
                 ) : (
                     <div />
                 )}
