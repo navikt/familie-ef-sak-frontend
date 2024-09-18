@@ -13,29 +13,18 @@ import VedtaksperioderBarnetilsyn from './HistorikkVedtaksperioder/Vedtaksperiod
 import VedtaksperioderOvergangsstønad from './HistorikkVedtaksperioder/VedtaksperioderOvergangsstønad';
 import { IVedtakForSkolepenger } from '../../App/typer/vedtak';
 import VedtaksperioderSkolepenger from './HistorikkVedtaksperioder/VedtaksperioderSkolepeger';
-import { Checkbox, Select } from '@navikt/ds-react';
+import { Checkbox, HStack, Select } from '@navikt/ds-react';
 import { sorterBehandlinger } from '../../App/utils/behandlingutil';
 import { useHentAndelHistorikkPerioder } from '../../App/hooks/useHentAndelHistorikkPerioder';
 
-const StyledInputs = styled.div`
-    display: flex;
-    justify-content: space-between;
-
-    > div {
-        padding: 0.25rem;
-    }
-
-    > div:last-child {
-        margin-left: auto;
-    }
-`;
-
 const StønadSelect = styled(Select)`
     width: 12rem;
+    padding-top: 0.75rem;
 `;
 
 const BehandlingSelect = styled(Select)`
     width: 22rem;
+    padding-top: 0.75rem;
 `;
 
 const erAktuell = (periode: AndelHistorikk) => !skalMarkeresSomFjernet(periode.endring?.type);
@@ -139,7 +128,7 @@ export const Vedtaksperioderoversikt: React.FC<{ fagsakPerson: FagsakPerson }> =
 
     return (
         <>
-            <StyledInputs>
+            <HStack gap="4">
                 <StønadSelect
                     label="Stønad"
                     className="flex-item"
@@ -207,7 +196,7 @@ export const Vedtaksperioderoversikt: React.FC<{ fagsakPerson: FagsakPerson }> =
                 ) : (
                     <div />
                 )}
-            </StyledInputs>
+            </HStack>
             {valgtFagsak && behandlinger.length > 0 && (
                 <Vedtaksperioder
                     fagsak={valgtFagsak}
