@@ -97,6 +97,7 @@ const Utgiftsperioder: React.FC<Props> = ({
                     <Grid>
                         <SmallTextLabel>Stønadsbeløp</SmallTextLabel>
                         <SmallTextLabel>Utbetalingsmåned</SmallTextLabel>
+                        <span></span>
                         {utgiftsperioder.map((utgift, index) => {
                             const erLåstFraForrigeBehandling =
                                 låsteUtgiftIder.indexOf(utgift.id) > -1;
@@ -129,11 +130,13 @@ const Utgiftsperioder: React.FC<Props> = ({
                                         lesevisning={true}
                                         onEndret={() => null}
                                     />
-                                    {skalViseFjernKnapp && (
+                                    {skalViseFjernKnapp ? (
                                         <FjernKnapp
                                             onClick={() => fjernUtgift(utgift.id)}
                                             ikontekst={'Fjern utgiftsperiode'}
                                         />
+                                    ) : (
+                                        <span></span>
                                     )}
                                 </React.Fragment>
                             );
