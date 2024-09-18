@@ -126,7 +126,7 @@ export const Vedtaksperioderoversikt: React.FC<{ fagsakPerson: FagsakPerson }> =
         fagsakPerson.overgangsstønad || fagsakPerson.barnetilsyn || fagsakPerson.skolepenger
     );
     const [valgtBehandlingId, settValgtBehandlingId] = useState<string>();
-    const [visUaktuelle, settVisUaktuelle] = useState<boolean>(true);
+    const [visUaktuelle, settVisUaktuelle] = useState<boolean>(false);
 
     const behandlinger = useMemo(
         () => (valgtFagsak ? filtrerOgSorterBehandlinger(valgtFagsak) : []),
