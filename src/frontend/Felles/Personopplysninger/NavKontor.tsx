@@ -2,7 +2,7 @@ import React from 'react';
 import { INavKontor } from '../../App/typer/personopplysninger';
 import styled from 'styled-components';
 import { Detail } from '@navikt/ds-react';
-import { Buldings3Icon } from '@navikt/aksel-icons';
+import { Buildings3Icon } from '@navikt/aksel-icons';
 
 const NavKontorContainer = styled.div`
     display: flex;
@@ -11,7 +11,7 @@ const NavKontorContainer = styled.div`
     gap: 0.5rem;
 `;
 
-const OfficeIkon = styled(Buldings3Icon)`
+const OfficeIkon = styled(Buildings3Icon)`
     width: 1rem;
     height: 1rem;
 `;
