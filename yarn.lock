@@ -1779,10 +1779,10 @@
     prom-client "^15.1.2"
     redis "^4.7.0"
 
-"@navikt/familie-endringslogg@^13.1.2":
-  version "13.1.2"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-endringslogg/13.1.2/e6ee3efc1c310cf9c51dd2e22d17fe58d31ebcad#e6ee3efc1c310cf9c51dd2e22d17fe58d31ebcad"
-  integrity sha512-u+M4Wv/QbjJIP0gmzZOdFWRDUVErg0OzDwQxYTUkK/iw61sga45hJq/6rzAxifcCHfgna0xh7ZRREEhXJbRgaA==
+"@navikt/familie-endringslogg@^13.1.3":
+  version "13.1.3"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-endringslogg/13.1.3/21554f41f43971c1c48cd9e519c140973f84bdf2#21554f41f43971c1c48cd9e519c140973f84bdf2"
+  integrity sha512-OJ5EdbHampMTYUxL0nBW/kUYC6JPGO0aEutDtsX0upZj+TV3VRqX+ea0N8gPb7RLFTkbbHaVNPGszQ6ZG4lEgA==
   dependencies:
     "@portabletext/react" "^3.1.0"
     classnames "^2.5.1"
