@@ -18,19 +18,15 @@ import { MannIkon } from '../Ikoner/MannIkon';
 import { KvinneIkon } from '../Ikoner/KvinneIkon';
 import { Kjønn } from '../../App/typer/personopplysninger';
 
-const tilSøkeresultatListe = (resultat: ISøkPerson): ISøkeresultat[] => {
-    return resultat.fagsakPersonId
-        ? [
-              {
-                  harTilgang: true, //Alltid true hvis har status RessursStatus.SUKSESS
-                  ident: resultat.personIdent,
-                  fagsakId: resultat.fagsakPersonId, // hak for å få Søk til å virke riktig med fagsakPersonId
-                  navn: resultat.visningsnavn,
-                  ikon: resultat.kjønn === Kjønn.MANN ? <MannIkon /> : <KvinneIkon />,
-              },
-          ]
-        : [];
-};
+const tilSøkeresultatListe = (resultat: ISøkPerson): ISøkeresultat[] => [
+    {
+        harTilgang: true, //Alltid true hvis har status RessursStatus.SUKSESS
+        ident: resultat.personIdent,
+        fagsakId: resultat.fagsakPersonId, // hak for å få Søk til å virke riktig med fagsakPersonId
+        navn: resultat.visningsnavn,
+        ikon: resultat.kjønn === Kjønn.MANN ? <MannIkon /> : <KvinneIkon />,
+    },
+];
 
 const erPositivtTall = (verdi: string) => /^\d+$/.test(verdi) && Number(verdi) !== 0;
 
@@ -45,7 +41,11 @@ const PersonSøk: React.FC = () => {
     };
 
     const søkeresultatOnClick = (søkeresultat: ISøkeresultat) => {
-        navigate(`/person/${søkeresultat.fagsakId}`); // fagsakId er mappet fra fagsakPersonId
+        if (søkeresultat.fagsakId) {
+            navigate(`/person/${søkeresultat.fagsakId}`); // fagsakId er mappet fra fagsakPersonId
+        } else {
+            navigate(`/opprett-fagsak-person`);
+        }
         settUuidSøk(uuidv4()); // Brukes for å fjerne søkeresultatene ved å rerendre søkekomponenten
         nullstillResultat();
     };
