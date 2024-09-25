@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Behandling } from '../../../../App/typer/fagsak';
 import { IVilkår } from '../../Inngangsvilkår/vilkår';
 import { EBehandlingResultat, IVedtakType } from '../../../../App/typer/vedtak';
@@ -25,6 +25,17 @@ const VedtakOgBeregningBarnetilsyn: FC<Props> = ({ behandling, vilkår }) => {
     );
 
     const alleVilkårOppfylt = erAlleVilkårOppfylt(vilkår);
+
+    /**
+     * Når vedtaket nullstilles av saksbehandler må resultattypen
+     * også nullstilles for at saksbehandler skal se endring på vedtakssiden
+     */
+    useEffect(() => {
+        if (resultatType !== undefined && vedtaksresultat === undefined) {
+            settResultatType(undefined);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [vedtaksresultat]);
 
     return (
         <>

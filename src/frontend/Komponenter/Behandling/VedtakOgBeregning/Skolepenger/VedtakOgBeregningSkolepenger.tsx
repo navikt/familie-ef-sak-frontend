@@ -36,6 +36,17 @@ const VedtakOgBeregningSkolepenger: FC<Props> = ({ behandling, vilkår }) => {
         hentForrigeVedtak();
     }, [hentForrigeVedtak]);
 
+    /**
+     * Når vedtaket nullstilles av saksbehandler må resultattypen
+     * også nullstilles for at saksbehandler skal se endring på vedtakssiden
+     */
+    useEffect(() => {
+        if (resultatType !== undefined && vedtaksresultat === undefined) {
+            settResultatType(undefined);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [vedtaksresultat]);
+
     return (
         <>
             <SelectVedtaksresultat

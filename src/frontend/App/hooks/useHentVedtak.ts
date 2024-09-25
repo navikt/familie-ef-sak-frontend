@@ -52,6 +52,7 @@ export const useHentVedtak = (
                             settVedtaksresultat(res.data.resultatType);
                         } else {
                             settVedtak(byggSuksessRessurs(undefined));
+                            settVedtaksresultat(undefined);
                         }
                     } else {
                         settVedtak(res);
