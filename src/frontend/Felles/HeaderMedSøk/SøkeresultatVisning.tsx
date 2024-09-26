@@ -30,7 +30,7 @@ const ResultatIkonOgRolle = styled.div`
     }
 `;
 
-const ResultatElementKnapp = styled.div``;
+const ResultatElementKnapp = styled.li``;
 
 export const utledSøkeresultatVisning = (
     søkeresultat: ISøkeresultat,

@@ -18,6 +18,7 @@ import { MannIkon } from '../Ikoner/MannIkon';
 import { KvinneIkon } from '../Ikoner/KvinneIkon';
 import { Kjønn } from '../../App/typer/personopplysninger';
 import { utledSøkeresultatVisning } from './SøkeresultatVisning';
+import { EToast } from '../../App/typer/toast';
 
 const tilSøkeresultatListe = (resultat: ISøkPerson): ISøkeresultat[] => [
     {
@@ -32,7 +33,7 @@ const tilSøkeresultatListe = (resultat: ISøkPerson): ISøkeresultat[] => [
 const erPositivtTall = (verdi: string) => /^\d+$/.test(verdi) && Number(verdi) !== 0;
 
 const PersonSøk: React.FC = () => {
-    const { axiosRequest } = useApp();
+    const { axiosRequest, settToast } = useApp();
     const navigate = useNavigate();
     const [resultat, settResultat] = useState<Ressurs<ISøkeresultat[]>>(byggTomRessurs());
     const [uuidSøk, settUuidSøk] = useState(uuidv4());
@@ -41,11 +42,25 @@ const PersonSøk: React.FC = () => {
         settResultat(byggTomRessurs());
     };
 
+    const opprettFagsakPersonOgNaviger = (personIdent: string) => {
+        axiosRequest<string, { personIdent: string }>({
+            method: 'POST',
+            url: `/familie-ef-sak/api/fagsak-person`,
+            data: { personIdent: personIdent },
+        }).then((res: Ressurs<string>) => {
+            if (res.status === RessursStatus.SUKSESS) {
+                window.open(`${window.location.origin}/person/${res.data}`, '_SELF');
+            } else {
+                settToast(EToast.REDIRECT_FAGSAK_PERSON_FEILET);
+            }
+        });
+    };
+
     const søkeresultatOnClick = (søkeresultat: ISøkeresultat) => {
         if (søkeresultat.fagsakId) {
             navigate(`/person/${søkeresultat.fagsakId}`); // fagsakId er mappet fra fagsakPersonId
         } else {
-            navigate(`/opprett-fagsak-person`);
+            opprettFagsakPersonOgNaviger(søkeresultat.ident);
         }
         settUuidSøk(uuidv4()); // Brukes for å fjerne søkeresultatene ved å rerendre søkekomponenten
         nullstillResultat();
