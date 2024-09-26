@@ -17,6 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import { MannIkon } from '../Ikoner/MannIkon';
 import { KvinneIkon } from '../Ikoner/KvinneIkon';
 import { Kjønn } from '../../App/typer/personopplysninger';
+import { utledSøkeresultatVisning } from './SøkeresultatVisning';
 
 const tilSøkeresultatListe = (resultat: ISøkPerson): ISøkeresultat[] => [
     {
@@ -99,6 +100,9 @@ const PersonSøk: React.FC = () => {
             søkeresultater={resultat}
             nullstillSøkeresultater={nullstillResultat}
             søkeresultatOnClick={søkeresultatOnClick}
+            formaterResultat={(søkeresultat: ISøkeresultat, erSøkeresultatValgt: boolean) =>
+                utledSøkeresultatVisning(søkeresultat, erSøkeresultatValgt, søkeresultatOnClick)
+            }
         />
     );
 };

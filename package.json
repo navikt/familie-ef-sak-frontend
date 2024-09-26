@@ -38,7 +38,7 @@
     "@navikt/familie-backend": "10.0.22",
     "@navikt/familie-endringslogg": "^13.1.2",
     "@navikt/familie-form-elements": "^21.0.1",
-    "@navikt/familie-header": "^14.0.6",
+    "@navikt/familie-header": "^14.1.0",
     "@navikt/familie-logging": "^7.0.1",
     "@navikt/familie-visittkort": "^15.1.1",
     "@navikt/fnrvalidator": "^2.1.2",
