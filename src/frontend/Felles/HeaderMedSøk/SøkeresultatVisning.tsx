@@ -6,9 +6,10 @@ import { formaterPersonIdent } from '@navikt/familie-header/dist/søk/formatter'
 import { AlertWarning } from '../Visningskomponenter/Alerts';
 import { adressebeskyttelsestyper } from './adressebeskyttelsegradering';
 
-const ResultatElement = styled.div`
+const ResultatElement = styled.div<{ $fokus: boolean }>`
     list-style-type: none;
     padding: 0.5rem;
+    outline: ${({ $fokus }) => ($fokus ? `3px solid var(--a-orange-300)` : '')};
     border-radius: 8px;
 
     &:hover {
@@ -35,10 +36,11 @@ const ResultatElementKnapp = styled.li``;
 export const utledSøkeresultatVisning = (
     søkeresultat: ISøkeresultat,
     _erSøkeresultatValgt: boolean,
-    søkeresultatOnClick: (søkResultat: ISøkeresultat) => void
+    søkeresultatOnClick: (søkResultat: ISøkeresultat) => void,
+    fokuserSøkeresultat: boolean
 ) => {
     return (
-        <ResultatElement>
+        <ResultatElement $fokus={fokuserSøkeresultat}>
             <ResultatElementKnapp
                 aria-label={
                     søkeresultat.harTilgang ? søkeresultat.navn : 'Person har diskresjonskode'

@@ -19,6 +19,7 @@ import { KvinneIkon } from '../Ikoner/KvinneIkon';
 import { Kjønn } from '../../App/typer/personopplysninger';
 import { utledSøkeresultatVisning } from './SøkeresultatVisning';
 import { EToast } from '../../App/typer/toast';
+import styled from 'styled-components';
 
 const tilSøkeresultatListe = (resultat: ISøkPerson): ISøkeresultat[] => [
     {
@@ -32,14 +33,32 @@ const tilSøkeresultatListe = (resultat: ISøkPerson): ISøkeresultat[] => [
 
 const erPositivtTall = (verdi: string) => /^\d+$/.test(verdi) && Number(verdi) !== 0;
 
+const SøkContainer = styled.div``;
+
 const PersonSøk: React.FC = () => {
     const { axiosRequest, settToast } = useApp();
     const navigate = useNavigate();
     const [resultat, settResultat] = useState<Ressurs<ISøkeresultat[]>>(byggTomRessurs());
     const [uuidSøk, settUuidSøk] = useState(uuidv4());
+    const [fokuserSøkeresultat, settFokuserSøkeresultat] = useState<boolean>(false);
 
     const nullstillResultat = (): void => {
         settResultat(byggTomRessurs());
+    };
+
+    const onInputKeyDown = (event: React.KeyboardEvent) => {
+        switch (event.key) {
+            case 'ArrowUp':
+            case 'ArrowDown':
+                if (resultat.status === RessursStatus.SUKSESS) {
+                    settFokuserSøkeresultat((prevState) => !prevState);
+                } else {
+                    settFokuserSøkeresultat(false);
+                }
+                break;
+            default:
+                break;
+        }
     };
 
     const opprettFagsakPersonOgNaviger = (personIdent: string) => {
@@ -107,18 +126,25 @@ const PersonSøk: React.FC = () => {
     };
 
     return (
-        <Søk
-            key={uuidSøk}
-            søk={søk}
-            label="Søk etter fagsak for en person"
-            placeholder="Fnr/saksnr"
-            søkeresultater={resultat}
-            nullstillSøkeresultater={nullstillResultat}
-            søkeresultatOnClick={søkeresultatOnClick}
-            formaterResultat={(søkeresultat: ISøkeresultat, erSøkeresultatValgt: boolean) =>
-                utledSøkeresultatVisning(søkeresultat, erSøkeresultatValgt, søkeresultatOnClick)
-            }
-        />
+        <SøkContainer onKeyDown={onInputKeyDown}>
+            <Søk
+                key={uuidSøk}
+                søk={søk}
+                label="Søk etter fagsak for en person"
+                placeholder="Fnr/saksnr"
+                søkeresultater={resultat}
+                nullstillSøkeresultater={nullstillResultat}
+                søkeresultatOnClick={søkeresultatOnClick}
+                formaterResultat={(søkeresultat: ISøkeresultat, erSøkeresultatValgt: boolean) =>
+                    utledSøkeresultatVisning(
+                        søkeresultat,
+                        erSøkeresultatValgt,
+                        søkeresultatOnClick,
+                        fokuserSøkeresultat
+                    )
+                }
+            />
+        </SøkContainer>
     );
 };
 
