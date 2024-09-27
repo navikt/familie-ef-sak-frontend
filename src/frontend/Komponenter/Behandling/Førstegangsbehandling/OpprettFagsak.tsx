@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Stønadstype, stønadstypeTilTekst } from '../../../App/typer/behandlingstema';
 import { useHentFagsak } from '../../../App/hooks/useHentFagsak';
-import { fnr } from '@navikt/fnrvalidator';
 import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
-import { BodyLong, Button, Heading, TextField, VStack } from '@navikt/ds-react';
+import { BodyLong, Button, Heading } from '@navikt/ds-react';
 import { erAvTypeFeil, RessursStatus } from '../../../App/typer/ressurs';
 import styled from 'styled-components';
 import { AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
@@ -27,10 +26,6 @@ const StønadstypeSelect = styled(FamilieSelect)`
     width: 12rem;
 `;
 
-const PersonIdentTextField = styled(TextField)`
-    width: 12rem;
-`;
-
 interface Props {
     fagsakPersonId: string;
     hentFagsakPerson: (fagsakPersonId: string) => void;
@@ -44,27 +39,19 @@ export const OpprettFagsak: React.FC<Props> = ({
 }) => {
     const { fagsakPåPersonIdent: fagsak, hentFagsakPåPersonIdent: opprettFagsak } = useHentFagsak();
     const [stønadstype, settStønadstype] = useState<Stønadstype>();
-    const [valgtPersonIdent, settValgtPersonIdent] = useState<string>(personIdent);
-    const [feilmelding, settFeilmelding] = useState<string>();
+    const [feilmelding, settFeilmelding] = useState<string>('');
     const [laster, settLaster] = useState<boolean>(false);
+
+    const validerInnsending = (): string => (stønadstype ? '' : 'Må velge stønadstype');
 
     const bekreftValg = () => {
         settFeilmelding('');
         const feilmelding = validerInnsending();
         if (!feilmelding && !laster && stønadstype) {
             settLaster(true);
-            opprettFagsak(valgtPersonIdent, stønadstype);
+            opprettFagsak(personIdent, stønadstype);
         } else {
             settFeilmelding(feilmelding);
-        }
-    };
-
-    const validerInnsending = (): string | undefined => {
-        if (!stønadstype) {
-            return 'Må velge stønadstype';
-        }
-        if (fnr(valgtPersonIdent).status === 'invalid') {
-            return 'Ugyldig fødselsnummer';
         }
     };
 
@@ -92,27 +79,19 @@ export const OpprettFagsak: React.FC<Props> = ({
                     for å vurdere retten til overgangsstønad.
                 </BodyLong>
             </AlertInfoPreWrap>
-            <VStack gap="2">
-                <BodyLong>Velg stønadstype og fødselsnummer for å opprette en fagsak</BodyLong>
-                <StønadstypeSelect
-                    value={stønadstype || ''}
-                    label={'Velg stønadstype'}
-                    onChange={(e) => settStønadstype(e.target.value as Stønadstype)}
-                >
-                    <option value="">Velg stønadstype</option>
-                    {Object.values(Stønadstype).map((stønadstype) => (
-                        <option value={stønadstype} key={stønadstype}>
-                            {stønadstypeTilTekst[stønadstype]}
-                        </option>
-                    ))}
-                </StønadstypeSelect>
-                <PersonIdentTextField
-                    label="Fødselsnummer"
-                    autoComplete="off"
-                    value={valgtPersonIdent}
-                    onChange={(e) => settValgtPersonIdent(e.target.value)}
-                />
-            </VStack>
+            <BodyLong>Velg stønadstype for å opprette en fagsak</BodyLong>
+            <StønadstypeSelect
+                value={stønadstype || ''}
+                label={'Velg stønadstype'}
+                onChange={(e) => settStønadstype(e.target.value as Stønadstype)}
+            >
+                <option value="">Velg stønadstype</option>
+                {Object.values(Stønadstype).map((stønadstype) => (
+                    <option value={stønadstype} key={stønadstype}>
+                        {stønadstypeTilTekst[stønadstype]}
+                    </option>
+                ))}
+            </StønadstypeSelect>
             <div>
                 <Button onClick={bekreftValg} type="button">
                     Gå videre
