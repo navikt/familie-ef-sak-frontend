@@ -1,6 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
-import { Behandling } from '../../../../App/typer/fagsak';
-import { IVilkår } from '../../Inngangsvilkår/vilkår';
+import React, { FC } from 'react';
 import { EBehandlingResultat, IVedtakType } from '../../../../App/typer/vedtak';
 import { erAlleVilkårOppfylt, skalViseNullstillVedtakKnapp } from '../Felles/utils';
 import SelectVedtaksresultat from '../Felles/SelectVedtaksresultat';
@@ -10,32 +8,18 @@ import { OpphøreVedtak } from '../Felles/OpphøreVedtak/OpphøreVedtak';
 import { barnSomOppfyllerAlleVilkår } from './Felles/utils';
 import { InnvilgeVedtak } from './InnvilgeVedtak/InnvilgeVedtak';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
+import { VedtakOgBeregningProps } from '../VedtakOgBeregningFane';
 
-interface Props {
-    behandling: Behandling;
-    vilkår: IVilkår;
-}
-
-const VedtakOgBeregningBarnetilsyn: FC<Props> = ({ behandling, vilkår }) => {
+const VedtakOgBeregningBarnetilsyn: FC<VedtakOgBeregningProps> = ({
+    behandling,
+    vilkår,
+    resultatType,
+    settResultatType,
+}) => {
     const behandlingId = behandling.id;
-    const { vedtak, vedtaksresultat } = useBehandling();
-
-    const [resultatType, settResultatType] = useState<EBehandlingResultat | undefined>(
-        vedtaksresultat
-    );
+    const { vedtak } = useBehandling();
 
     const alleVilkårOppfylt = erAlleVilkårOppfylt(vilkår);
-
-    /**
-     * Når vedtaket nullstilles av saksbehandler må resultattypen
-     * også nullstilles for at saksbehandler skal se endring på vedtakssiden
-     */
-    useEffect(() => {
-        if (resultatType !== undefined && vedtaksresultat === undefined) {
-            settResultatType(undefined);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [vedtaksresultat]);
 
     return (
         <>

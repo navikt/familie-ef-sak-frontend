@@ -21,7 +21,8 @@ export const NullstillVedtakModal: React.FC<{
     visModal: boolean;
     settVisModal: React.Dispatch<React.SetStateAction<boolean>>;
     behandlingId: string;
-}> = ({ visModal, settVisModal, behandlingId }) => {
+    nullstillResultatType: () => void;
+}> = ({ visModal, settVisModal, behandlingId, nullstillResultatType }) => {
     const { axiosRequest, settToast, nullstillIkkePersisterteKomponenter } = useApp();
     const { hentBehandling, hentVedtak } = useBehandling();
     const [feilmelding, settFeilmelding] = useState('');
@@ -38,6 +39,7 @@ export const NullstillVedtakModal: React.FC<{
                 hentVedtak.rerun();
                 settVisModal(false);
                 settToast(EToast.VEDTAK_NULLSTILT);
+                nullstillResultatType();
             } else {
                 settFeilmelding(resp.frontendFeilmelding);
             }

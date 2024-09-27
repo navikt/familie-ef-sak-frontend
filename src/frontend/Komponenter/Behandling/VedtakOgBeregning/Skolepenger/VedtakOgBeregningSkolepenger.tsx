@@ -1,6 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
-import { Behandling } from '../../../../App/typer/fagsak';
-import { IVilkår } from '../../Inngangsvilkår/vilkår';
+import React, { FC, useEffect } from 'react';
 import {
     EBehandlingResultat,
     IVedtakForSkolepenger,
@@ -14,20 +12,17 @@ import { AvslåVedtak } from '../Felles/AvslåVedtak/AvslåVedtak';
 import { InnvilgeVedtak } from './InnvilgeVedtak/InnvilgeVedtak';
 import { OpphøreVedtak } from './OpphøreVedtak/OpphøreVedtak';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
+import { VedtakOgBeregningProps } from '../VedtakOgBeregningFane';
 
-interface Props {
-    behandling: Behandling;
-    vilkår: IVilkår;
-}
-
-const VedtakOgBeregningSkolepenger: FC<Props> = ({ behandling, vilkår }) => {
-    const { vedtak, vedtaksresultat } = useBehandling();
+const VedtakOgBeregningSkolepenger: FC<VedtakOgBeregningProps> = ({
+    behandling,
+    vilkår,
+    resultatType,
+    settResultatType,
+}) => {
+    const { vedtak } = useBehandling();
     const { vedtak: forrigeVedtak, hentVedtak: hentForrigeVedtak } = useHentVedtak(
         behandling.forrigeBehandlingId
-    );
-
-    const [resultatType, settResultatType] = useState<EBehandlingResultat | undefined>(
-        vedtaksresultat
     );
 
     const alleVilkårOppfylt = erAlleVilkårOppfylt(vilkår);
@@ -35,17 +30,6 @@ const VedtakOgBeregningSkolepenger: FC<Props> = ({ behandling, vilkår }) => {
     useEffect(() => {
         hentForrigeVedtak();
     }, [hentForrigeVedtak]);
-
-    /**
-     * Når vedtaket nullstilles av saksbehandler må resultattypen
-     * også nullstilles for at saksbehandler skal se endring på vedtakssiden
-     */
-    useEffect(() => {
-        if (resultatType !== undefined && vedtaksresultat === undefined) {
-            settResultatType(undefined);
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [vedtaksresultat]);
 
     return (
         <>
