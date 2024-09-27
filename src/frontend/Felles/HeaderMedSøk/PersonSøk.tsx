@@ -20,6 +20,8 @@ import { Kjønn } from '../../App/typer/personopplysninger';
 import { utledSøkeresultatVisning } from './SøkeresultatVisning';
 import { EToast } from '../../App/typer/toast';
 import styled from 'styled-components';
+import { ModalWrapper } from '../Modal/ModalWrapper';
+import { BodyShort } from '@navikt/ds-react';
 
 const tilSøkeresultatListe = (resultat: ISøkPerson): ISøkeresultat[] => [
     {
@@ -43,6 +45,8 @@ const PersonSøk: React.FC = () => {
     const [resultat, settResultat] = useState<Ressurs<ISøkeresultat[]>>(byggTomRessurs());
     const [uuidSøk, settUuidSøk] = useState(uuidv4());
     const [fokuserSøkeresultat, settFokuserSøkeresultat] = useState<boolean>(false);
+    const [personIdentUtenFagsak, settPersonIdentUtenFagsak] = useState<string>('');
+    const [visModal, settVisModal] = useState<boolean>(false);
 
     const nullstillResultat = (): void => {
         settResultat(byggTomRessurs());
@@ -63,6 +67,11 @@ const PersonSøk: React.FC = () => {
         }
     };
 
+    const lukkModal = () => {
+        settPersonIdentUtenFagsak('');
+        settVisModal(false);
+    };
+
     const opprettFagsakPersonOgNaviger = (personIdent: string) => {
         axiosRequest<string, { personIdent: string }>({
             method: 'POST',
@@ -81,7 +90,8 @@ const PersonSøk: React.FC = () => {
         if (søkeresultat.fagsakId) {
             navigate(`/person/${søkeresultat.fagsakId}`); // fagsakId er mappet fra fagsakPersonId
         } else {
-            opprettFagsakPersonOgNaviger(søkeresultat.ident);
+            settPersonIdentUtenFagsak(søkeresultat.ident);
+            settVisModal(true);
         }
         settUuidSøk(uuidv4()); // Brukes for å fjerne søkeresultatene ved å rerendre søkekomponenten
         nullstillResultat();
@@ -128,25 +138,48 @@ const PersonSøk: React.FC = () => {
     };
 
     return (
-        <SøkContainer onKeyDown={onInputKeyDown}>
-            <Søk
-                key={uuidSøk}
-                søk={søk}
-                label="Søk etter fagsak for en person"
-                placeholder="Fnr/saksnr"
-                søkeresultater={resultat}
-                nullstillSøkeresultater={nullstillResultat}
-                søkeresultatOnClick={søkeresultatOnClick}
-                formaterResultat={(søkeresultat: ISøkeresultat, erSøkeresultatValgt: boolean) =>
-                    utledSøkeresultatVisning(
-                        søkeresultat,
-                        erSøkeresultatValgt,
-                        søkeresultatOnClick,
-                        fokuserSøkeresultat
-                    )
-                }
-            />
-        </SøkContainer>
+        <>
+            <SøkContainer onKeyDown={onInputKeyDown}>
+                <Søk
+                    key={uuidSøk}
+                    søk={søk}
+                    label="Søk etter fagsak for en person"
+                    placeholder="Fnr/saksnr"
+                    søkeresultater={resultat}
+                    nullstillSøkeresultater={nullstillResultat}
+                    søkeresultatOnClick={søkeresultatOnClick}
+                    formaterResultat={(søkeresultat: ISøkeresultat, erSøkeresultatValgt: boolean) =>
+                        utledSøkeresultatVisning(
+                            søkeresultat,
+                            erSøkeresultatValgt,
+                            søkeresultatOnClick,
+                            fokuserSøkeresultat
+                        )
+                    }
+                />
+            </SøkContainer>
+            <ModalWrapper
+                tittel={'Bekreft opprettelse av person'}
+                visModal={visModal}
+                onClose={() => lukkModal()}
+                aksjonsknapper={{
+                    hovedKnapp: {
+                        onClick: () => {
+                            if (personIdentUtenFagsak) {
+                                opprettFagsakPersonOgNaviger(personIdentUtenFagsak);
+                                lukkModal();
+                            }
+                        },
+                        tekst: 'Opprett',
+                    },
+                    lukkKnapp: { onClick: () => lukkModal(), tekst: 'Avbryt' },
+                    marginTop: 4,
+                }}
+                ariaLabel={'Bekreft opprettelse av person'}
+            >
+                <BodyShort>Fødselsnummer: {personIdentUtenFagsak}</BodyShort>
+            </ModalWrapper>
+        </>
     );
 };
 
