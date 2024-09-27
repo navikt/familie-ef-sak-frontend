@@ -33,7 +33,9 @@ const tilSøkeresultatListe = (resultat: ISøkPerson): ISøkeresultat[] => [
 
 const erPositivtTall = (verdi: string) => /^\d+$/.test(verdi) && Number(verdi) !== 0;
 
-const SøkContainer = styled.div``;
+const SøkContainer = styled.div`
+    display: flex;
+`;
 
 const PersonSøk: React.FC = () => {
     const { axiosRequest, settToast } = useApp();
