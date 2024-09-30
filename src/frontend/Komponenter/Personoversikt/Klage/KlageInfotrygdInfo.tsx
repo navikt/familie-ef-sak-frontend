@@ -40,7 +40,7 @@ export const KlageInfotrygdInfo: React.FunctionComponent<{ fagsakPersonId: strin
                     .join(', ');
                 return (
                     <AdvarselVisning variant={'warning'} size={'small'}>
-                        Merk at det ligger en åpen klage i Infortrygd på stønadstype:{' '}
+                        Merk at det ligger en åpen klage i Infotrygd på stønadstype:{' '}
                         {åpneKlagerTekst}
                     </AdvarselVisning>
                 );

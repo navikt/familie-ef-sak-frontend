@@ -20,6 +20,7 @@ import { Vedtaksperioderoversikt } from './Vedtaksperioderoversikt';
 import { Behandlingsoversikt } from './Behandlingsoversikt';
 import { FrittståendeBrevMedVisning } from '../Behandling/Brev/FrittståendeBrevMedVisning';
 import { Dokumenter } from './Dokumenter';
+import { OpprettFagsak } from '../Behandling/Førstegangsbehandling/OpprettFagsak';
 
 interface FaneProps {
     label: string;
@@ -27,7 +28,8 @@ interface FaneProps {
     komponent: (
         fagsakPerson: FagsakPerson,
         personopplysninger: IPersonopplysninger,
-        erSaksbehandler: boolean
+        erSaksbehandler: boolean,
+        hentFagsakPerson: (fagsakPersonId: string) => void
     ) => React.ReactNode | undefined;
 }
 
@@ -70,20 +72,31 @@ const faner: FaneProps[] = [
     {
         label: 'Brev',
         path: 'frittstaaende-brev',
-        komponent: (fagsakPerson, personopplysninger, erSaksbehandler) => {
+        komponent: (fagsakPerson, personopplysninger, erSaksbehandler, hentFagsakPerson) => {
             const fagsakId =
                 fagsakPerson.overgangsstønad?.id ||
                 fagsakPerson.barnetilsyn?.id ||
                 fagsakPerson.skolepenger?.id;
 
-            return (
-                erSaksbehandler &&
-                fagsakId && (
-                    <FrittståendeBrevMedVisning
-                        fagsakId={fagsakId}
-                        personopplysninger={personopplysninger}
+            if (!erSaksbehandler) {
+                return <></>;
+            }
+
+            if (!fagsakId) {
+                return (
+                    <OpprettFagsak
+                        fagsakPersonId={fagsakPerson.id}
+                        hentFagsakPerson={hentFagsakPerson}
+                        personIdent={personopplysninger.personIdent}
                     />
-                )
+                );
+            }
+
+            return (
+                <FrittståendeBrevMedVisning
+                    fagsakId={fagsakId}
+                    personopplysninger={personopplysninger}
+                />
             );
         },
     },
@@ -127,6 +140,7 @@ export const PersonOversiktSide: React.FC = () => {
             {({ personopplysninger, fagsakPerson }) => (
                 <PersonOversikt
                     fagsakPerson={fagsakPerson}
+                    hentFagsakPerson={hentFagsakPerson}
                     personopplysninger={personopplysninger}
                 />
             )}
@@ -136,10 +150,15 @@ export const PersonOversiktSide: React.FC = () => {
 
 interface Props {
     fagsakPerson: FagsakPerson;
+    hentFagsakPerson: (fagsakPersonId: string) => void;
     personopplysninger: IPersonopplysninger;
 }
 
-const PersonOversikt: React.FC<Props> = ({ fagsakPerson, personopplysninger }) => {
+const PersonOversikt: React.FC<Props> = ({
+    fagsakPerson,
+    hentFagsakPerson,
+    personopplysninger,
+}) => {
     const navigate = useNavigate();
     const { erSaksbehandler } = useApp();
     const paths = useLocation().pathname.split('/').slice(-1);
@@ -175,7 +194,8 @@ const PersonOversikt: React.FC<Props> = ({ fagsakPerson, personopplysninger }) =
                             element={fane.komponent(
                                 fagsakPerson,
                                 personopplysninger,
-                                erSaksbehandler
+                                erSaksbehandler,
+                                hentFagsakPerson
                             )}
                         />
                     ))}
