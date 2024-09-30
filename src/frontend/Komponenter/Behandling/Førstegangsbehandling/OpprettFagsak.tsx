@@ -55,6 +55,8 @@ export const OpprettFagsak: React.FC<Props> = ({
         }
     };
 
+    // Etter opprettelse av fagsak hentes fagsakperson på nytt.
+    // Denne personen vil deretter ha en fagsak og FrittståendeBrevMedVisning vil rendres i stedet for OpprettFagsak
     useEffect(() => {
         if (fagsak.status === RessursStatus.SUKSESS) {
             hentFagsakPerson(fagsakPersonId);
