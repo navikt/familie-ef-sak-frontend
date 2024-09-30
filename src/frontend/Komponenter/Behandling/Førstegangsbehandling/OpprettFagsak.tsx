@@ -71,12 +71,12 @@ export const OpprettFagsak: React.FC<Props> = ({
             </Heading>
             <AlertInfoPreWrap>
                 <BodyLong>
-                    Denne funksjonen skal brukes hvis du trenger å sende et brev til bruker uten en
+                    Denne funksjonen brukes hvis du skal sende brev til en bruker som ikke har
                     fagsak.
                 </BodyLong>
                 <BodyLong>
-                    Et typisk scenario for bruk er når du skal sende et innhentingsbrev til bruker
-                    for å vurdere retten til overgangsstønad.
+                    Dette kan for eksempel være hvis du skal innhente opplysninger for å vurdere
+                    retten til overgangsstønad når bruker har søkt om tilleggsstønader.
                 </BodyLong>
             </AlertInfoPreWrap>
             <BodyLong>Velg stønadstype for å opprette en fagsak</BodyLong>
