@@ -21,9 +21,10 @@ export const NullstillVedtakModal: React.FC<{
     visModal: boolean;
     settVisModal: React.Dispatch<React.SetStateAction<boolean>>;
     behandlingId: string;
-}> = ({ visModal, settVisModal, behandlingId }) => {
+    nullstillResultatType: () => void;
+}> = ({ visModal, settVisModal, behandlingId, nullstillResultatType }) => {
     const { axiosRequest, settToast, nullstillIkkePersisterteKomponenter } = useApp();
-    const { hentBehandling } = useBehandling();
+    const { hentBehandling, hentVedtak } = useBehandling();
     const [feilmelding, settFeilmelding] = useState('');
 
     const nullstillVedtak = () => {
@@ -32,11 +33,13 @@ export const NullstillVedtakModal: React.FC<{
             url: `familie-ef-sak/api/vedtak/${behandlingId}`,
         }).then((resp) => {
             if (resp.status === RessursStatus.SUKSESS) {
+                nullstillIkkePersisterteKomponenter();
                 settFeilmelding('');
                 hentBehandling.rerun();
+                hentVedtak.rerun();
                 settVisModal(false);
-                nullstillIkkePersisterteKomponenter();
                 settToast(EToast.VEDTAK_NULLSTILT);
+                nullstillResultatType();
             } else {
                 settFeilmelding(resp.frontendFeilmelding);
             }
