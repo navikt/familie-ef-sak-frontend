@@ -8,12 +8,17 @@ import { InfostripeUtestengelse } from './InfostripeUtestengelse';
 import { ÅpneKlager } from './Klage/ÅpneKlager';
 import { FagsakPerson } from '../../App/typer/fagsak';
 import { Heading } from '@navikt/ds-react';
+import styled from 'styled-components';
 
 export enum BehandlingApplikasjon {
     EF_SAK = 'EF_SAK',
     KLAGE = 'KLAGE',
     TILBAKEKREVING = 'TILBAKEKREVING',
 }
+
+const Tittel = styled(Heading)`
+    margin-top: 1rem;
+`;
 
 export const Behandlingsoversikt: React.FC<{
     fagsakPerson: FagsakPerson;
@@ -66,9 +71,9 @@ export const Behandlingsoversikt: React.FC<{
                         />
                     )}
                     {!harFagsak && (
-                        <Heading level="3" size="medium">
-                            Ingen fagsaker i EF-sak
-                        </Heading>
+                        <Tittel level="3" size="medium">
+                            Ingen fagsaker i EF Sak
+                        </Tittel>
                     )}
                     {harFagsak && (
                         <Utestengelse

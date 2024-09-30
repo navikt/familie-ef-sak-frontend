@@ -59,10 +59,10 @@ const ResultatElementKort: React.FC<{ søkeresultat: ISøkeresultat }> = ({ søk
         return (
             <AlertWarning size="small">
                 <BodyShort size="small" spacing>
-                    Fant ikke personen i vårt system.
+                    Personen har ingen saker i EF Sak.
                 </BodyShort>
                 <BodyShort weight="semibold" size="small">
-                    Trykk for å opprette.
+                    Trykk for å opprette person.
                 </BodyShort>
             </AlertWarning>
         );
