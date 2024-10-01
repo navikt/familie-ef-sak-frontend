@@ -1,4 +1,4 @@
-import LagBehandlingModal from './LagBehandlingModal';
+import LagBehandlingModal from './Modal/LagBehandlingModal';
 import React, { Dispatch, useEffect, useState } from 'react';
 import { byggTomRessurs, Ressurs } from '../../App/typer/ressurs';
 import { Fagsak } from '../../App/typer/fagsak';

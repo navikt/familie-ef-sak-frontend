@@ -1,18 +1,18 @@
 import React, { Dispatch, useState } from 'react';
-import { Behandlingstype } from '../../App/typer/behandlingstype';
+import { Behandlingstype } from '../../../App/typer/behandlingstype';
 import styled from 'styled-components';
-import { Ressurs, RessursStatus } from '../../App/typer/ressurs';
-import { useApp } from '../../App/context/AppContext';
+import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
+import { useApp } from '../../../App/context/AppContext';
 import { useNavigate } from 'react-router-dom';
-import { EToast } from '../../App/typer/toast';
-import { LagRevurdering } from './Revurdering/LagRevurdering';
-import { RevurderingInnhold } from '../../App/typer/revurderingstype';
-import { Fagsak } from '../../App/typer/fagsak';
-import OpprettKlage, { OpprettKlageRequest } from './Klage/OpprettKlage';
-import { ModalWrapper } from '../../Felles/Modal/ModalWrapper';
+import { EToast } from '../../../App/typer/toast';
+import { LagRevurdering } from '../Revurdering/LagRevurdering';
+import { RevurderingInnhold } from '../../../App/typer/revurderingstype';
+import { Fagsak } from '../../../App/typer/fagsak';
+import OpprettKlage, { OpprettKlageRequest } from '../Klage/OpprettKlage';
+import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
 import { Alert, Button, Select } from '@navikt/ds-react';
-import { AlertError } from '../../Felles/Visningskomponenter/Alerts';
-import { kanOppretteRevurdering } from './utils';
+import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
+import { kanOppretteRevurdering } from '../utils';
 
 export const StyledSelect = styled(Select)`
     margin-top: 2rem;
@@ -38,7 +38,7 @@ const ModalKnapp = styled(Button)`
     margin-left: 1rem;
 `;
 
-interface IProps {
+interface Props {
     visModal: boolean;
     settVisModal: (bool: boolean) => void;
     fagsak: Fagsak;
@@ -47,7 +47,7 @@ interface IProps {
     harÅpenKlage: boolean;
 }
 
-const LagBehandlingModal: React.FunctionComponent<IProps> = ({
+const LagBehandlingModal: React.FunctionComponent<Props> = ({
     visModal,
     settVisModal,
     fagsak,
