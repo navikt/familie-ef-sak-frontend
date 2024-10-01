@@ -10,9 +10,10 @@ import { RevurderingInnhold } from '../../../App/typer/revurderingstype';
 import { Fagsak } from '../../../App/typer/fagsak';
 import OpprettKlage, { OpprettKlageRequest } from '../Klage/OpprettKlage';
 import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
-import { Alert, Button, Select } from '@navikt/ds-react';
+import { Button, Select } from '@navikt/ds-react';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
-import { kanOppretteRevurdering } from '../utils';
+import { utledKanOppretteRevurdering } from '../utils';
+import { ModalAlerts } from './ModalAlerts';
 
 export const StyledSelect = styled(Select)`
     margin-top: 2rem;
@@ -20,11 +21,6 @@ export const StyledSelect = styled(Select)`
     width: 33.5rem;
 `;
 
-const Alerts = styled.div`
-    > :not(:first-child) {
-        margin-top: 1rem;
-    }
-`;
 const ButtonContainer = styled.div`
     display: flex;
     margin-top: 1rem;
@@ -61,7 +57,8 @@ const LagBehandlingModal: React.FunctionComponent<Props> = ({
     const [senderInnBehandling, settSenderInnBehandling] = useState<boolean>(false);
     const { axiosRequest, settToast } = useApp();
     const navigate = useNavigate();
-    const { harKunHenlagteBehandlinger, kanStarteRevurdering } = kanOppretteRevurdering(fagsak);
+    const { harKunHenlagteBehandlinger, kanOppretteRevurdering } =
+        utledKanOppretteRevurdering(fagsak);
 
     const opprettTilbakekrevingBehandling = () => {
         if (valgtBehandlingstype === Behandlingstype.TILBAKEKREVING && !senderInnBehandling) {
@@ -139,26 +136,11 @@ const LagBehandlingModal: React.FunctionComponent<Props> = ({
             visModal={visModal}
             onClose={() => settVisModal(false)}
         >
-            <Alerts>
-                {!kanStarteRevurdering && !harKunHenlagteBehandlinger && (
-                    <Alert variant={'info'}>
-                        Merk at det er ikke mulig å opprette en revurdering da det allerede finnes
-                        en åpen behandling for stønaden. Det er kun mulig å opprette tilbakekreving
-                        (dersom det foreligger et kravgrunnlag) eller klage.
-                    </Alert>
-                )}
-                {!kanStarteRevurdering && harKunHenlagteBehandlinger && (
-                    <Alert variant={'info'}>
-                        Merk at det er ikke mulig å opprette en revurdering da det ikke finnes en
-                        førstegangsbehandling for stønaden.
-                    </Alert>
-                )}
-                {harÅpenKlage && (
-                    <Alert variant={'info'}>
-                        Merk at det allerede finnes en åpen klagebehandling på fagsaken
-                    </Alert>
-                )}
-            </Alerts>
+            <ModalAlerts
+                harÅpenKlage={harÅpenKlage}
+                kanOppretteRevurdering={kanOppretteRevurdering}
+                harKunHenlagteBehandlinger={harKunHenlagteBehandlinger}
+            />
             <StyledSelect
                 label="Behandlingstype"
                 value={valgtBehandlingstype || ''}
@@ -168,7 +150,7 @@ const LagBehandlingModal: React.FunctionComponent<Props> = ({
                 }}
             >
                 <option value="">Velg</option>
-                {kanStarteRevurdering && (
+                {kanOppretteRevurdering && (
                     <option value={Behandlingstype.REVURDERING}>Revurdering</option>
                 )}
                 <option value={Behandlingstype.TILBAKEKREVING}>Tilbakekreving</option>
