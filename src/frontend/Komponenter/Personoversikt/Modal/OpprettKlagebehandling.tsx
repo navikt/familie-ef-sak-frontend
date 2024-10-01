@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { erFørEllerLikDagensDato, erGyldigDato } from '../../../App/utils/dato';
 import { Alert, Button } from '@navikt/ds-react';
-import KlageGjelderTilbakekreving from './KlageGjelderTilbakekreving';
+import KlageGjelderTilbakekreving from '../Klage/KlageGjelderTilbakekreving';
 import { Datovelger } from '../../../Felles/Datovelger/Datovelger';
 
 const AlertStripe = styled(Alert)`
@@ -37,7 +37,10 @@ interface IProps {
     opprettKlage: (data: OpprettKlageRequest) => void;
 }
 
-export const OpprettKlage: React.FunctionComponent<IProps> = ({ settVisModal, opprettKlage }) => {
+export const OpprettKlagebehandling: React.FunctionComponent<IProps> = ({
+    settVisModal,
+    opprettKlage,
+}) => {
     const [feilmelding, settFeilmelding] = useState<string>('');
     const [valgtDato, settValgtDato] = useState<string>();
     const [klageGjelderTilbakekreving, settKlageGjelderTilbakekreving] = useState<boolean>(false);
@@ -91,5 +94,3 @@ export const OpprettKlage: React.FunctionComponent<IProps> = ({ settVisModal, op
         </>
     );
 };
-
-export default OpprettKlage;

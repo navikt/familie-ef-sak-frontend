@@ -72,7 +72,7 @@ interface IProps {
     settVisModal: (bool: boolean) => void;
 }
 
-export const LagRevurdering: React.FunctionComponent<IProps> = ({
+export const OpprettRevurdering: React.FunctionComponent<IProps> = ({
     fagsak,
     valgtBehandlingstype,
     lagRevurdering,

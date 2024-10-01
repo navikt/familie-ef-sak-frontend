@@ -5,10 +5,10 @@ import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { useApp } from '../../../App/context/AppContext';
 import { useNavigate } from 'react-router-dom';
 import { EToast } from '../../../App/typer/toast';
-import { LagRevurdering } from '../Revurdering/LagRevurdering';
+import { OpprettRevurdering } from './OpprettRevurdering';
 import { RevurderingInnhold } from '../../../App/typer/revurderingstype';
 import { Fagsak } from '../../../App/typer/fagsak';
-import OpprettKlage, { OpprettKlageRequest } from '../Klage/OpprettKlage';
+import { OpprettKlagebehandling, OpprettKlageRequest } from './OpprettKlagebehandling';
 import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
 import { Button, Select } from '@navikt/ds-react';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
@@ -43,7 +43,7 @@ interface Props {
     harÅpenKlage: boolean;
 }
 
-const LagBehandlingModal: React.FunctionComponent<Props> = ({
+export const OpprettBehandlingModal: React.FunctionComponent<Props> = ({
     visModal,
     settVisModal,
     fagsak,
@@ -157,7 +157,7 @@ const LagBehandlingModal: React.FunctionComponent<Props> = ({
                 <option value={Behandlingstype.KLAGE}>Klage</option>
             </StyledSelect>
             {valgtBehandlingstype === Behandlingstype.REVURDERING && (
-                <LagRevurdering
+                <OpprettRevurdering
                     fagsak={fagsak}
                     valgtBehandlingstype={valgtBehandlingstype}
                     lagRevurdering={lagRevurdering}
@@ -187,11 +187,9 @@ const LagBehandlingModal: React.FunctionComponent<Props> = ({
                 </ButtonContainer>
             )}
             {valgtBehandlingstype === Behandlingstype.KLAGE && (
-                <OpprettKlage opprettKlage={opprettKlage} settVisModal={settVisModal} />
+                <OpprettKlagebehandling opprettKlage={opprettKlage} settVisModal={settVisModal} />
             )}
             {feilmeldingModal && <AlertError>{feilmeldingModal}</AlertError>}
         </ModalWrapper>
     );
 };
-
-export default LagBehandlingModal;
