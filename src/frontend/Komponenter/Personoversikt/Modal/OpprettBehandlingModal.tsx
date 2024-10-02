@@ -10,15 +10,16 @@ import { RevurderingInnhold } from '../../../App/typer/revurderingstype';
 import { Fagsak } from '../../../App/typer/fagsak';
 import { OpprettKlagebehandling, OpprettKlageRequest } from './OpprettKlagebehandling';
 import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
-import { Button, Select } from '@navikt/ds-react';
+import { Button } from '@navikt/ds-react';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 import { utledKanOppretteRevurdering } from '../utils';
 import { ModalAlerts } from './ModalAlerts';
+import { BehandlingstypeSelect } from './BehandlingstypeSelect';
 
-export const StyledSelect = styled(Select)`
-    margin-top: 2rem;
-    margin-bottom: 2rem;
+const FormContainer = styled.div`
     width: 33.5rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
 `;
 
 const ButtonContainer = styled.div`
@@ -51,7 +52,7 @@ export const OpprettBehandlingModal: React.FunctionComponent<Props> = ({
     hentKlageBehandlinger,
     harÅpenKlage,
 }) => {
-    const [feilmeldingModal, settFeilmeldingModal] = useState<string>();
+    const [feilmeldingModal, settFeilmeldingModal] = useState<string>('');
     const [valgtBehandlingstype, settValgtBehandlingstype] = useState<Behandlingstype>();
 
     const [senderInnBehandling, settSenderInnBehandling] = useState<boolean>(false);
@@ -141,55 +142,51 @@ export const OpprettBehandlingModal: React.FunctionComponent<Props> = ({
                 kanOppretteRevurdering={kanOppretteRevurdering}
                 harKunHenlagteBehandlinger={harKunHenlagteBehandlinger}
             />
-            <StyledSelect
-                label="Behandlingstype"
-                value={valgtBehandlingstype || ''}
-                onChange={(e) => {
-                    settValgtBehandlingstype(e.target.value as Behandlingstype);
-                    settFeilmeldingModal(undefined);
-                }}
-            >
-                <option value="">Velg</option>
-                {kanOppretteRevurdering && (
-                    <option value={Behandlingstype.REVURDERING}>Revurdering</option>
-                )}
-                <option value={Behandlingstype.TILBAKEKREVING}>Tilbakekreving</option>
-                <option value={Behandlingstype.KLAGE}>Klage</option>
-            </StyledSelect>
-            {valgtBehandlingstype === Behandlingstype.REVURDERING && (
-                <OpprettRevurdering
-                    fagsak={fagsak}
+            <FormContainer>
+                <BehandlingstypeSelect
                     valgtBehandlingstype={valgtBehandlingstype}
-                    lagRevurdering={lagRevurdering}
-                    settVisModal={settVisModal}
+                    settValgtBehandlingstype={settValgtBehandlingstype}
+                    settFeilmelding={settFeilmeldingModal}
+                    kanOppretteRevurdering={kanOppretteRevurdering}
                 />
-            )}
-            {valgtBehandlingstype === Behandlingstype.TILBAKEKREVING && (
-                <ButtonContainer>
-                    <ModalKnapp
-                        variant="tertiary"
-                        onClick={() => {
-                            settVisModal(false);
-                        }}
-                    >
-                        Avbryt
-                    </ModalKnapp>
-                    <ModalKnapp
-                        variant="primary"
-                        onClick={() => {
-                            if (!senderInnBehandling) {
-                                opprettTilbakekrevingBehandling();
-                            }
-                        }}
-                    >
-                        Opprett
-                    </ModalKnapp>
-                </ButtonContainer>
-            )}
-            {valgtBehandlingstype === Behandlingstype.KLAGE && (
-                <OpprettKlagebehandling opprettKlage={opprettKlage} settVisModal={settVisModal} />
-            )}
-            {feilmeldingModal && <AlertError>{feilmeldingModal}</AlertError>}
+                {valgtBehandlingstype === Behandlingstype.REVURDERING && (
+                    <OpprettRevurdering
+                        fagsak={fagsak}
+                        valgtBehandlingstype={valgtBehandlingstype}
+                        lagRevurdering={lagRevurdering}
+                        settVisModal={settVisModal}
+                    />
+                )}
+                {valgtBehandlingstype === Behandlingstype.TILBAKEKREVING && (
+                    <ButtonContainer>
+                        <ModalKnapp
+                            variant="tertiary"
+                            onClick={() => {
+                                settVisModal(false);
+                            }}
+                        >
+                            Avbryt
+                        </ModalKnapp>
+                        <ModalKnapp
+                            variant="primary"
+                            onClick={() => {
+                                if (!senderInnBehandling) {
+                                    opprettTilbakekrevingBehandling();
+                                }
+                            }}
+                        >
+                            Opprett
+                        </ModalKnapp>
+                    </ButtonContainer>
+                )}
+                {valgtBehandlingstype === Behandlingstype.KLAGE && (
+                    <OpprettKlagebehandling
+                        opprettKlage={opprettKlage}
+                        settVisModal={settVisModal}
+                    />
+                )}
+                {feilmeldingModal && <AlertError>{feilmeldingModal}</AlertError>}
+            </FormContainer>
         </ModalWrapper>
     );
 };
