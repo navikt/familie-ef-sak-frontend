@@ -32,12 +32,7 @@ import LeggTilBarnSomSkalFødes from '../../Behandling/Førstegangsbehandling/Le
 import { BarnSomSkalFødes } from '../../../App/hooks/useJournalføringState';
 
 const DatoContainer = styled.div`
-    margin-top: 2rem;
     min-height: 20rem;
-`;
-
-const StyledSelect = styled(Select)`
-    margin-top: 2rem;
 `;
 
 const AlertStripe = styled(Alert)`
@@ -46,7 +41,6 @@ const AlertStripe = styled(Alert)`
 
 const ButtonContainer = styled.div`
     display: flex;
-    margin-top: 1rem;
     justify-content: flex-end;
     margin-bottom: 0.5rem;
 `;
@@ -171,7 +165,7 @@ export const OpprettRevurdering: React.FunctionComponent<Props> = ({
 
                 return (
                     <>
-                        <StyledSelect
+                        <Select
                             label="Årsak"
                             value={valgtBehandlingsårsak || ''}
                             onChange={(e) => {
@@ -187,7 +181,7 @@ export const OpprettRevurdering: React.FunctionComponent<Props> = ({
                                             {behandlingsårsakTilTekst[behandlingsårsak]}
                                         </option>
                                     ))}
-                        </StyledSelect>
+                        </Select>
                         <DatoContainer>
                             <Datovelger
                                 id={'krav-mottatt'}

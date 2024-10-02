@@ -19,6 +19,10 @@ const FormContainer = styled.div`
     width: 33.5rem;
     padding-top: 1rem;
     padding-bottom: 1rem;
+
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
 `;
 
 interface Props {
@@ -38,7 +42,7 @@ export const OpprettBehandlingModal: React.FunctionComponent<Props> = ({
     hentKlageBehandlinger,
     harÅpenKlage,
 }) => {
-    const [feilmeldingModal, settFeilmeldingModal] = useState<string>('');
+    const [feilmelding, settFeilmelding] = useState<string>('');
     const [valgtBehandlingstype, settValgtBehandlingstype] = useState<Behandlingstype>();
 
     const [senderInnBehandling, settSenderInnBehandling] = useState<boolean>(false);
@@ -60,7 +64,7 @@ export const OpprettBehandlingModal: React.FunctionComponent<Props> = ({
                         settVisModal(false);
                         settToast(EToast.TILBAKEKREVING_OPPRETTET);
                     } else {
-                        settFeilmeldingModal(response.frontendFeilmelding || response.melding);
+                        settFeilmelding(response.frontendFeilmelding || response.melding);
                     }
                 })
                 .finally(() => {
@@ -70,7 +74,7 @@ export const OpprettBehandlingModal: React.FunctionComponent<Props> = ({
     };
 
     const opprettRevurdering = (revurderingInnhold: RevurderingInnhold) => {
-        settFeilmeldingModal('');
+        settFeilmelding('');
 
         if (!senderInnBehandling) {
             settSenderInnBehandling(true);
@@ -83,7 +87,7 @@ export const OpprettBehandlingModal: React.FunctionComponent<Props> = ({
                     if (response.status === RessursStatus.SUKSESS) {
                         navigate(`/behandling/${response.data}`);
                     } else {
-                        settFeilmeldingModal(response.frontendFeilmelding || response.melding);
+                        settFeilmelding(response.frontendFeilmelding || response.melding);
                     }
                 })
                 .finally(() => {
@@ -93,7 +97,7 @@ export const OpprettBehandlingModal: React.FunctionComponent<Props> = ({
     };
 
     const opprettKlagebehandling = (data: OpprettKlageRequest) => {
-        settFeilmeldingModal('');
+        settFeilmelding('');
 
         if (!senderInnBehandling) {
             settSenderInnBehandling(true);
@@ -108,7 +112,7 @@ export const OpprettBehandlingModal: React.FunctionComponent<Props> = ({
                         settVisModal(false);
                         settToast(EToast.KLAGE_OPPRETTET);
                     } else {
-                        settFeilmeldingModal(response.frontendFeilmelding || response.melding);
+                        settFeilmelding(response.frontendFeilmelding || response.melding);
                     }
                 })
                 .finally(() => {
@@ -132,7 +136,7 @@ export const OpprettBehandlingModal: React.FunctionComponent<Props> = ({
                 <BehandlingstypeSelect
                     valgtBehandlingstype={valgtBehandlingstype}
                     settValgtBehandlingstype={settValgtBehandlingstype}
-                    settFeilmelding={settFeilmeldingModal}
+                    settFeilmelding={settFeilmelding}
                     kanOppretteRevurdering={kanOppretteRevurdering}
                 />
                 <BehandlingstypeSwitch
@@ -143,7 +147,7 @@ export const OpprettBehandlingModal: React.FunctionComponent<Props> = ({
                     opprettTilbakekreving={opprettTilbakekreving}
                     opprettKlagebehandling={opprettKlagebehandling}
                 />
-                {feilmeldingModal && <AlertError>{feilmeldingModal}</AlertError>}
+                {feilmelding && <AlertError>{feilmelding}</AlertError>}
             </FormContainer>
         </ModalWrapper>
     );

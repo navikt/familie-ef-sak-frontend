@@ -6,7 +6,7 @@ interface Props {
     settKlageGjelderTilbakekreving: Dispatch<SetStateAction<boolean>>;
 }
 
-const KlageGjelderTilbakekreving: React.FC<Props> = ({
+export const KlageGjelderTilbakekreving: React.FC<Props> = ({
     klageGjelderTilbakekreving,
     settKlageGjelderTilbakekreving,
 }) => {
@@ -20,5 +20,3 @@ const KlageGjelderTilbakekreving: React.FC<Props> = ({
         </Checkbox>
     );
 };
-
-export default KlageGjelderTilbakekreving;
