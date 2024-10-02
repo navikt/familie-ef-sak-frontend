@@ -10,29 +10,16 @@ import { RevurderingInnhold } from '../../../App/typer/revurderingstype';
 import { Fagsak } from '../../../App/typer/fagsak';
 import { OpprettKlagebehandling, OpprettKlageRequest } from './OpprettKlagebehandling';
 import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
-import { Button } from '@navikt/ds-react';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 import { utledKanOppretteRevurdering } from '../utils';
 import { ModalAlerts } from './ModalAlerts';
 import { BehandlingstypeSelect } from './BehandlingstypeSelect';
+import { OpprettTilbakekreving } from './OpprettTilbakekreving';
 
 const FormContainer = styled.div`
     width: 33.5rem;
     padding-top: 1rem;
     padding-bottom: 1rem;
-`;
-
-const ButtonContainer = styled.div`
-    display: flex;
-    margin-top: 1rem;
-    justify-content: flex-end;
-    margin-bottom: 0.5rem;
-`;
-
-const ModalKnapp = styled(Button)`
-    padding-right: 1.5rem;
-    padding-left: 1.5rem;
-    margin-left: 1rem;
 `;
 
 interface Props {
@@ -61,7 +48,7 @@ export const OpprettBehandlingModal: React.FunctionComponent<Props> = ({
     const { harKunHenlagteBehandlinger, kanOppretteRevurdering } =
         utledKanOppretteRevurdering(fagsak);
 
-    const opprettTilbakekrevingBehandling = () => {
+    const opprettTilbakekreving = () => {
         if (valgtBehandlingstype === Behandlingstype.TILBAKEKREVING && !senderInnBehandling) {
             settSenderInnBehandling(true);
             axiosRequest<Ressurs<void>, null>({
@@ -106,7 +93,7 @@ export const OpprettBehandlingModal: React.FunctionComponent<Props> = ({
         }
     };
 
-    const opprettKlage = (data: OpprettKlageRequest) => {
+    const opprettKlagebehandling = (data: OpprettKlageRequest) => {
         settFeilmeldingModal('');
 
         if (!senderInnBehandling) {
@@ -153,35 +140,19 @@ export const OpprettBehandlingModal: React.FunctionComponent<Props> = ({
                     <OpprettRevurdering
                         fagsak={fagsak}
                         valgtBehandlingstype={valgtBehandlingstype}
-                        lagRevurdering={lagRevurdering}
+                        opprettRevurdering={lagRevurdering}
                         settVisModal={settVisModal}
                     />
                 )}
                 {valgtBehandlingstype === Behandlingstype.TILBAKEKREVING && (
-                    <ButtonContainer>
-                        <ModalKnapp
-                            variant="tertiary"
-                            onClick={() => {
-                                settVisModal(false);
-                            }}
-                        >
-                            Avbryt
-                        </ModalKnapp>
-                        <ModalKnapp
-                            variant="primary"
-                            onClick={() => {
-                                if (!senderInnBehandling) {
-                                    opprettTilbakekrevingBehandling();
-                                }
-                            }}
-                        >
-                            Opprett
-                        </ModalKnapp>
-                    </ButtonContainer>
+                    <OpprettTilbakekreving
+                        settVisModal={settVisModal}
+                        opprettTilbakekreving={opprettTilbakekreving}
+                    />
                 )}
                 {valgtBehandlingstype === Behandlingstype.KLAGE && (
                     <OpprettKlagebehandling
-                        opprettKlage={opprettKlage}
+                        opprettKlagebehandling={opprettKlagebehandling}
                         settVisModal={settVisModal}
                     />
                 )}

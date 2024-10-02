@@ -32,23 +32,23 @@ export interface OpprettKlageRequest {
     klageGjelderTilbakekreving: boolean;
 }
 
-interface IProps {
+interface Props {
     settVisModal: (bool: boolean) => void;
-    opprettKlage: (data: OpprettKlageRequest) => void;
+    opprettKlagebehandling: (data: OpprettKlageRequest) => void;
 }
 
-export const OpprettKlagebehandling: React.FunctionComponent<IProps> = ({
+export const OpprettKlagebehandling: React.FunctionComponent<Props> = ({
     settVisModal,
-    opprettKlage,
+    opprettKlagebehandling,
 }) => {
     const [feilmelding, settFeilmelding] = useState<string>('');
     const [valgtDato, settValgtDato] = useState<string>();
     const [klageGjelderTilbakekreving, settKlageGjelderTilbakekreving] = useState<boolean>(false);
 
-    const validerValgtDato = (valgtDato: string | undefined) => {
+    const validerOgOpprettKlagebehandling = (valgtDato: string | undefined) => {
         settFeilmelding('');
         if (valgtDato && erGyldigDato(valgtDato) && erFørEllerLikDagensDato(valgtDato)) {
-            opprettKlage({
+            opprettKlagebehandling({
                 mottattDato: valgtDato,
                 klageGjelderTilbakekreving: klageGjelderTilbakekreving,
             });
@@ -87,7 +87,10 @@ export const OpprettKlagebehandling: React.FunctionComponent<IProps> = ({
                 >
                     Avbryt
                 </ModalKnapp>
-                <ModalKnapp variant="primary" onClick={() => validerValgtDato(valgtDato)}>
+                <ModalKnapp
+                    variant="primary"
+                    onClick={() => validerOgOpprettKlagebehandling(valgtDato)}
+                >
                     Opprett
                 </ModalKnapp>
             </ButtonContainer>

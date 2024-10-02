@@ -65,17 +65,17 @@ const inneholderBarnSomErUgyldige = (barnSomSkalFødes: BarnSomSkalFødes[]) =>
             !erGyldigDato(barn.fødselTerminDato)
     );
 
-interface IProps {
+interface Props {
     fagsak: Fagsak;
     valgtBehandlingstype: Behandlingstype;
-    lagRevurdering: (revurderingInnhold: RevurderingInnhold) => void;
+    opprettRevurdering: (revurderingInnhold: RevurderingInnhold) => void;
     settVisModal: (bool: boolean) => void;
 }
 
-export const OpprettRevurdering: React.FunctionComponent<IProps> = ({
+export const OpprettRevurdering: React.FunctionComponent<Props> = ({
     fagsak,
     valgtBehandlingstype,
-    lagRevurdering,
+    opprettRevurdering,
     settVisModal,
 }) => {
     const { toggles } = useToggles();
@@ -132,7 +132,7 @@ export const OpprettRevurdering: React.FunctionComponent<IProps> = ({
         }
     };
 
-    const opprettRevurdering = (måTaStillingTilBarn: boolean) => {
+    const validerOgOpprettRevurdering = (måTaStillingTilBarn: boolean) => {
         if (!valgtBehandlingsårsak) {
             settFeilmeldingModal('Vennligst velg en årsak');
         } else if (!valgtDato || !erGyldigDato(valgtDato)) {
@@ -147,7 +147,7 @@ export const OpprettRevurdering: React.FunctionComponent<IProps> = ({
         } else if (inneholderBarnSomErUgyldige(barnSomSkalFødes)) {
             settFeilmeldingModal('Et eller flere barn mangler gyldig dato');
         } else {
-            lagRevurdering({
+            opprettRevurdering({
                 fagsakId: fagsak.id,
                 behandlingsårsak: valgtBehandlingsårsak,
                 kravMottatt: valgtDato,
@@ -236,7 +236,7 @@ export const OpprettRevurdering: React.FunctionComponent<IProps> = ({
                             </ModalKnapp>
                             <ModalKnapp
                                 variant="primary"
-                                onClick={() => opprettRevurdering(måTaStillingTilBarn)}
+                                onClick={() => validerOgOpprettRevurdering(måTaStillingTilBarn)}
                             >
                                 Opprett
                             </ModalKnapp>
