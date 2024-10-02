@@ -5,16 +5,15 @@ import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { useApp } from '../../../App/context/AppContext';
 import { useNavigate } from 'react-router-dom';
 import { EToast } from '../../../App/typer/toast';
-import { OpprettRevurdering } from './OpprettRevurdering';
 import { RevurderingInnhold } from '../../../App/typer/revurderingstype';
 import { Fagsak } from '../../../App/typer/fagsak';
-import { OpprettKlagebehandling, OpprettKlageRequest } from './OpprettKlagebehandling';
+import { OpprettKlageRequest } from './OpprettKlagebehandling';
 import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 import { utledKanOppretteRevurdering } from '../utils';
 import { ModalAlerts } from './ModalAlerts';
 import { BehandlingstypeSelect } from './BehandlingstypeSelect';
-import { OpprettTilbakekreving } from './OpprettTilbakekreving';
+import { BehandlingstypeSwitch } from './BehandlingstypeSwitch';
 
 const FormContainer = styled.div`
     width: 33.5rem;
@@ -70,7 +69,7 @@ export const OpprettBehandlingModal: React.FunctionComponent<Props> = ({
         }
     };
 
-    const lagRevurdering = (revurderingInnhold: RevurderingInnhold) => {
+    const opprettRevurdering = (revurderingInnhold: RevurderingInnhold) => {
         settFeilmeldingModal('');
 
         if (!senderInnBehandling) {
@@ -136,26 +135,14 @@ export const OpprettBehandlingModal: React.FunctionComponent<Props> = ({
                     settFeilmelding={settFeilmeldingModal}
                     kanOppretteRevurdering={kanOppretteRevurdering}
                 />
-                {valgtBehandlingstype === Behandlingstype.REVURDERING && (
-                    <OpprettRevurdering
-                        fagsak={fagsak}
-                        valgtBehandlingstype={valgtBehandlingstype}
-                        opprettRevurdering={lagRevurdering}
-                        settVisModal={settVisModal}
-                    />
-                )}
-                {valgtBehandlingstype === Behandlingstype.TILBAKEKREVING && (
-                    <OpprettTilbakekreving
-                        settVisModal={settVisModal}
-                        opprettTilbakekreving={opprettTilbakekreving}
-                    />
-                )}
-                {valgtBehandlingstype === Behandlingstype.KLAGE && (
-                    <OpprettKlagebehandling
-                        opprettKlagebehandling={opprettKlagebehandling}
-                        settVisModal={settVisModal}
-                    />
-                )}
+                <BehandlingstypeSwitch
+                    fagsak={fagsak}
+                    valgtBehandlingstype={valgtBehandlingstype}
+                    settVisModal={settVisModal}
+                    opprettRevurdering={opprettRevurdering}
+                    opprettTilbakekreving={opprettTilbakekreving}
+                    opprettKlagebehandling={opprettKlagebehandling}
+                />
                 {feilmeldingModal && <AlertError>{feilmeldingModal}</AlertError>}
             </FormContainer>
         </ModalWrapper>
