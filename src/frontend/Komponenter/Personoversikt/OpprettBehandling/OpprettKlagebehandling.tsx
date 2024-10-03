@@ -4,6 +4,13 @@ import { erFørEllerLikDagensDato, erGyldigDato } from '../../../App/utils/dato'
 import { Alert, Button, HStack } from '@navikt/ds-react';
 import { KlageGjelderTilbakekreving } from '../Klage/KlageGjelderTilbakekreving';
 import { Datovelger } from '../../../Felles/Datovelger/Datovelger';
+import { ÅrsakSelect } from './ÅrsakSelect';
+import {
+    Klagebehandlingsårsak,
+    klagebehandlingsårsakerForOpprettelse,
+    klagebehandlingsårsakTilTekst,
+} from '../../../App/typer/klagebehandlingsårsak';
+import { OpprettKlagebehandlingRequest } from '../../../App/typer/klage';
 
 const AlertStripe = styled(Alert)`
     margin-top: 1rem;
@@ -14,14 +21,9 @@ const ModalKnapp = styled(Button)`
     padding-left: 1.5rem;
 `;
 
-export interface OpprettKlageRequest {
-    mottattDato: string;
-    klageGjelderTilbakekreving: boolean;
-}
-
 interface Props {
     settVisModal: (bool: boolean) => void;
-    opprettKlagebehandling: (data: OpprettKlageRequest) => void;
+    opprettKlagebehandling: (data: OpprettKlagebehandlingRequest) => void;
 }
 
 export const OpprettKlagebehandling: React.FunctionComponent<Props> = ({
@@ -31,23 +33,33 @@ export const OpprettKlagebehandling: React.FunctionComponent<Props> = ({
     const [feilmelding, settFeilmelding] = useState<string>('');
     const [valgtDato, settValgtDato] = useState<string>();
     const [klageGjelderTilbakekreving, settKlageGjelderTilbakekreving] = useState<boolean>(false);
+    const [valgtBehandlingsårsak, settValgtBehandlingsårsak] = useState<Klagebehandlingsårsak>();
 
-    const validerOgOpprettKlagebehandling = (valgtDato: string | undefined) => {
+    const validerOgOpprettKlagebehandling = () => {
         settFeilmelding('');
-        if (valgtDato && erGyldigDato(valgtDato) && erFørEllerLikDagensDato(valgtDato)) {
-            opprettKlagebehandling({
-                mottattDato: valgtDato,
-                klageGjelderTilbakekreving: klageGjelderTilbakekreving,
-            });
+        if (!valgtBehandlingsårsak) {
+            settFeilmelding('Vennligst velg en årsak');
         } else if (!valgtDato) {
             settFeilmelding('Vennligst velg en dato fra datovelgeren');
-        } else {
+        } else if (!erGyldigDato(valgtDato) || !erFørEllerLikDagensDato(valgtDato)) {
             settFeilmelding('Vennligst velg en gyldig dato som ikke er fremover i tid');
+        } else {
+            opprettKlagebehandling({
+                mottattDato: valgtDato,
+                behandlingsårsak: valgtBehandlingsårsak,
+                klageGjelderTilbakekreving: klageGjelderTilbakekreving,
+            });
         }
     };
 
     return (
         <>
+            <ÅrsakSelect
+                valgmuligheter={klagebehandlingsårsakerForOpprettelse}
+                valgtBehandlingsårsak={valgtBehandlingsårsak}
+                settValgtBehandlingsårsak={settValgtBehandlingsårsak}
+                årsakTilTekst={klagebehandlingsårsakTilTekst}
+            />
             <Datovelger
                 id={'krav-mottatt'}
                 label={'Krav mottatt'}
@@ -72,10 +84,7 @@ export const OpprettKlagebehandling: React.FunctionComponent<Props> = ({
                 >
                     Avbryt
                 </ModalKnapp>
-                <ModalKnapp
-                    variant="primary"
-                    onClick={() => validerOgOpprettKlagebehandling(valgtDato)}
-                >
+                <ModalKnapp variant="primary" onClick={() => validerOgOpprettKlagebehandling()}>
                     Opprett
                 </ModalKnapp>
             </HStack>

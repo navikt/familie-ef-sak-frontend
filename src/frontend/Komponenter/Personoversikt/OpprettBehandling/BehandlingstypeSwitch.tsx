@@ -2,9 +2,10 @@ import React from 'react';
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
 import { OpprettRevurdering } from './OpprettRevurdering';
 import { OpprettTilbakekreving } from './OpprettTilbakekreving';
-import { OpprettKlagebehandling, OpprettKlageRequest } from './OpprettKlagebehandling';
+import { OpprettKlagebehandling } from './OpprettKlagebehandling';
 import { Fagsak } from '../../../App/typer/fagsak';
 import { RevurderingInnhold } from '../../../App/typer/revurderingstype';
+import { OpprettKlagebehandlingRequest } from '../../../App/typer/klage';
 
 interface Props {
     fagsak: Fagsak;
@@ -12,7 +13,7 @@ interface Props {
     settVisModal: (bool: boolean) => void;
     opprettRevurdering: (revurderingInnhold: RevurderingInnhold) => void;
     opprettTilbakekreving: () => void;
-    opprettKlagebehandling: (data: OpprettKlageRequest) => void;
+    opprettKlagebehandling: (data: OpprettKlagebehandlingRequest) => void;
 }
 
 export const BehandlingstypeSwitch: React.FC<Props> = ({
