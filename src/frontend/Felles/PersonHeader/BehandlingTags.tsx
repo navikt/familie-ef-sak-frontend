@@ -5,7 +5,7 @@ import {
     behandlingstypeTilTekst,
     behandlingstypeTilTekstKort,
 } from '../../App/typer/behandlingstype';
-import { Behandlingsårsak, behandlingsårsakTilTekst } from '../../App/typer/Behandlingsårsak';
+import { Behandlingsårsak, behandlingsårsakTilTekst } from '../../App/typer/behandlingsårsak';
 import React from 'react';
 import styled from 'styled-components';
 

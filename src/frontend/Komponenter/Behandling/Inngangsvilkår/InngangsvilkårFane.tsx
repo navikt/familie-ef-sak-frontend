@@ -8,7 +8,7 @@ import { Medlemskap } from './Medlemskap/Medlemskap';
 import { Samliv } from './Samliv/Samliv';
 import { Sivilstand } from './Sivilstand/Sivilstand';
 import { useBehandling } from '../../../App/context/BehandlingContext';
-import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
+import { Behandlingsårsak } from '../../../App/typer/behandlingsårsak';
 import { formaterIsoDatoTidMedSekunder } from '../../../App/utils/formatter';
 import { InngangsvilkårHeader } from './InngangsvilkårHeader/InngangsvilkårHeader';
 import { useApp } from '../../../App/context/AppContext';

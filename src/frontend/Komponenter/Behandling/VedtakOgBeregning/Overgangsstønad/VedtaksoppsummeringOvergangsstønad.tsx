@@ -5,7 +5,7 @@ import TidligereVedtaksperioder from './TidligereVedtaksperioder';
 import { sorterUtTidligereVedtaksvilkår } from '../Felles/utils';
 import { Søknadsinformasjon } from '../Felles/Søknadsinformasjon';
 import { Behandling } from '../../../../App/typer/fagsak';
-import { Behandlingsårsak } from '../../../../App/typer/Behandlingsårsak';
+import { Behandlingsårsak } from '../../../../App/typer/behandlingsårsak';
 import { Vilkårsvurdering } from '../Felles/Vilkårsvurdering';
 
 const OppsummeringContainer = styled.div`

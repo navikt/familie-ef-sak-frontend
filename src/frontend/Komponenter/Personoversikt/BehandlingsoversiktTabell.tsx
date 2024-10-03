@@ -18,7 +18,7 @@ import {
     Behandlingsårsak,
     EHenlagtårsak,
     henlagtÅrsakTilTekst,
-} from '../../App/typer/Behandlingsårsak';
+} from '../../App/typer/behandlingsårsak';
 import { Behandlingstype } from '../../App/typer/behandlingstype';
 import { Link } from 'react-router-dom';
 import { BehandlingApplikasjon } from './Behandlingsoversikt';

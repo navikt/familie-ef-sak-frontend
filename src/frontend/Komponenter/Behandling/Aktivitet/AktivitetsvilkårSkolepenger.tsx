@@ -1,6 +1,6 @@
 import React, { FC, useEffect } from 'react';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
-import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
+import { Behandlingsårsak } from '../../../App/typer/behandlingsårsak';
 import { Behandling } from '../../../App/typer/fagsak';
 import { RettTilOvergangsstønad } from './Skolepenger/RettTilOvergangsstønad';
 import { DokumentasjonUtdanning } from './Skolepenger/DokumentasjonUtdanning';

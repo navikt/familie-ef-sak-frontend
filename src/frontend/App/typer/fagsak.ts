@@ -2,7 +2,7 @@ import { Stønadstype } from './behandlingstema';
 import { Behandlingstype } from './behandlingstype';
 import { BehandlingStatus } from './behandlingstatus';
 import { Steg } from '../../Komponenter/Behandling/Høyremeny/Steg';
-import { Behandlingsårsak, EHenlagtårsak } from '../typer/Behandlingsårsak';
+import { Behandlingsårsak, EHenlagtårsak } from './behandlingsårsak';
 import { TilbakekrevingBehandlingsresultatstype } from './tilbakekreving';
 import { KlagebehandlingResultat } from './klage';
 

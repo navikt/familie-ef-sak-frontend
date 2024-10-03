@@ -1,6 +1,6 @@
 import React from 'react';
 import { behandlingstypeTilTekst } from '../../../App/typer/behandlingstype';
-import { behandlingsårsakTilTekst } from '../../../App/typer/Behandlingsårsak';
+import { behandlingsårsakTilTekst } from '../../../App/typer/behandlingsårsak';
 import { PartialRecord } from '../../../App/typer/common';
 import { Behandling, behandlingResultatTilTekst } from '../../../App/typer/fagsak';
 import { SortState, Table } from '@navikt/ds-react';
