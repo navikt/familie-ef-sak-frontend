@@ -31,7 +31,6 @@ export const BehandlingstypeSwitch: React.FC<Props> = ({
             return (
                 <OpprettRevurdering
                     fagsak={fagsak}
-                    valgtBehandlingstype={valgtBehandlingstype}
                     opprettRevurdering={opprettRevurdering}
                     settVisModal={settVisModal}
                 />

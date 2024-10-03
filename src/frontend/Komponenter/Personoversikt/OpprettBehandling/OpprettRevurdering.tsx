@@ -4,7 +4,6 @@ import {
     behandlingsårsakerForRevurdering,
     behandlingsårsakTilTekst,
 } from '../../../App/typer/Behandlingsårsak';
-import { Behandlingstype } from '../../../App/typer/behandlingstype';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import styled from 'styled-components';
 import {
@@ -61,14 +60,12 @@ const inneholderBarnSomErUgyldige = (barnSomSkalFødes: BarnSomSkalFødes[]) =>
 
 interface Props {
     fagsak: Fagsak;
-    valgtBehandlingstype: Behandlingstype;
     opprettRevurdering: (revurderingInnhold: RevurderingInnhold) => void;
     settVisModal: (bool: boolean) => void;
 }
 
 export const OpprettRevurdering: React.FunctionComponent<Props> = ({
     fagsak,
-    valgtBehandlingstype,
     opprettRevurdering,
     settVisModal,
 }) => {
@@ -173,14 +170,13 @@ export const OpprettRevurdering: React.FunctionComponent<Props> = ({
                             }}
                         >
                             <option value="">Velg</option>
-                            {valgtBehandlingstype === Behandlingstype.REVURDERING &&
-                                behandlingsårsakerForRevurdering
-                                    .filter(skalViseÅrsak)
-                                    .map((behandlingsårsak: Behandlingsårsak, index: number) => (
-                                        <option key={index} value={behandlingsårsak}>
-                                            {behandlingsårsakTilTekst[behandlingsårsak]}
-                                        </option>
-                                    ))}
+                            {behandlingsårsakerForRevurdering
+                                .filter(skalViseÅrsak)
+                                .map((behandlingsårsak: Behandlingsårsak, index: number) => (
+                                    <option key={index} value={behandlingsårsak}>
+                                        {behandlingsårsakTilTekst[behandlingsårsak]}
+                                    </option>
+                                ))}
                         </Select>
                         <DatoContainer>
                             <Datovelger
