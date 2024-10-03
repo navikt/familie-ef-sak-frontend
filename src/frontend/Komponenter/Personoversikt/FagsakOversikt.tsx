@@ -1,4 +1,4 @@
-import LagBehandlingModal from './LagBehandlingModal';
+import { OpprettBehandlingModal } from './OpprettBehandling/OpprettBehandlingModal';
 import React, { Dispatch, useEffect, useState } from 'react';
 import { byggTomRessurs, Ressurs } from '../../App/typer/ressurs';
 import { Fagsak } from '../../App/typer/fagsak';
@@ -59,7 +59,7 @@ export const FagsakOversikt: React.FC<Props> = ({
                     />
                     {erSaksbehandler && (
                         <>
-                            <LagBehandlingModal
+                            <OpprettBehandlingModal
                                 visModal={visLagBehandlingModal}
                                 settVisModal={settVisLagBehandlingModal}
                                 fagsak={fagsak}
