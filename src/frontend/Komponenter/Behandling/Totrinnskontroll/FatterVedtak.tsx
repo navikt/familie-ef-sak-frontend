@@ -65,8 +65,13 @@ const FatterVedtak: React.FC<{
     const [erSimuleringsresultatEndret, settErSimuleringsresultatEndret] = useState<boolean>(false);
 
     const { axiosRequest, settToast } = useApp();
-    const { hentBehandlingshistorikk, hentTotrinnskontroll, hentVedtak, vedtaksresultat } =
-        useBehandling();
+    const {
+        hentBehandlingshistorikk,
+        hentTotrinnskontroll,
+        hentVedtak,
+        vedtaksresultat,
+        hentAnsvarligSaksbehandler,
+    } = useBehandling();
 
     const navigate = useNavigate();
 
@@ -121,6 +126,7 @@ const FatterVedtak: React.FC<{
                         hentBehandlingshistorikk.rerun();
                         hentVedtak.rerun();
                         hentTotrinnskontroll.rerun();
+                        hentAnsvarligSaksbehandler.rerun();
                         settVisGodkjentModal(true);
                     } else {
                         settToast(EToast.VEDTAK_UNDERKJENT);

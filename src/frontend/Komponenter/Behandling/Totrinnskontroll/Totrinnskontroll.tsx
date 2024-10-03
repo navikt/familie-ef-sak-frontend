@@ -125,8 +125,13 @@ const SendtTilBeslutter: React.FC<{
     behandlingId: string;
 }> = ({ totrinnskontroll, behandlingId }) => {
     const { axiosRequest } = useApp();
-    const { hentBehandling, hentVedtak, hentTotrinnskontroll, hentBehandlingshistorikk } =
-        useBehandling();
+    const {
+        hentBehandling,
+        hentVedtak,
+        hentTotrinnskontroll,
+        hentBehandlingshistorikk,
+        hentAnsvarligSaksbehandler,
+    } = useBehandling();
     const [feilmelding, settFeilmelding] = useState<string>('');
     const [laster, settLaster] = useState(false);
 
@@ -146,6 +151,7 @@ const SendtTilBeslutter: React.FC<{
                     hentVedtak.rerun();
                     hentTotrinnskontroll.rerun();
                     hentBehandlingshistorikk.rerun();
+                    hentAnsvarligSaksbehandler.rerun();
                 } else {
                     settFeilmelding(res.frontendFeilmelding);
                 }

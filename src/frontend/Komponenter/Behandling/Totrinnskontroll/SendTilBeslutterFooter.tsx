@@ -83,6 +83,7 @@ const SendTilBeslutterFooter: React.FC<{
                 if (res.status === RessursStatus.SUKSESS) {
                     hentBehandling.rerun();
                     hentVedtak.rerun();
+                    hentAnsvarligSaksbehandler.rerun();
                     hentTotrinnskontroll.rerun();
                     settVisModal(true);
                 } else {
