@@ -3,7 +3,7 @@ import {
     Behandlingsårsak,
     behandlingsårsakerForRevurdering,
     behandlingsårsakTilTekst,
-} from '../../../App/typer/Behandlingsårsak';
+} from '../../../App/typer/behandlingsårsak';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import styled from 'styled-components';
 import {
@@ -25,10 +25,11 @@ import { EVilkårsbehandleBarnValg } from '../../../App/typer/vilkårsbehandleBa
 import { Fagsak } from '../../../App/typer/fagsak';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { erEtterDagensDato, erGyldigDato } from '../../../App/utils/dato';
-import { Alert, Button, Select } from '@navikt/ds-react';
+import { Alert, Button } from '@navikt/ds-react';
 import { Datovelger } from '../../../Felles/Datovelger/Datovelger';
 import LeggTilBarnSomSkalFødes from '../../Behandling/Førstegangsbehandling/LeggTilBarnSomSkalFødes';
 import { BarnSomSkalFødes } from '../../../App/hooks/useJournalføringState';
+import { ÅrsakSelect } from './ÅrsakSelect';
 
 const DatoContainer = styled.div`
     min-height: 20rem;
@@ -123,6 +124,8 @@ export const OpprettRevurdering: React.FunctionComponent<Props> = ({
         }
     };
 
+    const valgbareBehandlingsårsaker = behandlingsårsakerForRevurdering.filter(skalViseÅrsak);
+
     const validerOgOpprettRevurdering = (måTaStillingTilBarn: boolean) => {
         if (!valgtBehandlingsårsak) {
             settFeilmeldingModal('Vennligst velg en årsak');
@@ -162,22 +165,12 @@ export const OpprettRevurdering: React.FunctionComponent<Props> = ({
 
                 return (
                     <>
-                        <Select
-                            label="Årsak"
-                            value={valgtBehandlingsårsak || ''}
-                            onChange={(e) => {
-                                settValgtBehandlingsårsak(e.target.value as Behandlingsårsak);
-                            }}
-                        >
-                            <option value="">Velg</option>
-                            {behandlingsårsakerForRevurdering
-                                .filter(skalViseÅrsak)
-                                .map((behandlingsårsak: Behandlingsårsak, index: number) => (
-                                    <option key={index} value={behandlingsårsak}>
-                                        {behandlingsårsakTilTekst[behandlingsårsak]}
-                                    </option>
-                                ))}
-                        </Select>
+                        <ÅrsakSelect
+                            valgmuligheter={valgbareBehandlingsårsaker}
+                            valgtBehandlingsårsak={valgtBehandlingsårsak}
+                            settValgtBehandlingsårsak={settValgtBehandlingsårsak}
+                            årsakTilTekst={behandlingsårsakTilTekst}
+                        />
                         <DatoContainer>
                             <Datovelger
                                 id={'krav-mottatt'}
