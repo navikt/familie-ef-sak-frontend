@@ -1,14 +1,14 @@
 export enum Klagebehandlingsårsak {
-    STANDARD = 'STANDARD',
+    ORDINÆR = 'ORDINÆR',
     HENVENDELSE_FRA_KABAL = 'HENVENDELSE_FRA_KABAL',
 }
 
 export const klagebehandlingsårsakTilTekst: Record<Klagebehandlingsårsak, string> = {
-    STANDARD: 'Standard',
+    ORDINÆR: 'Ordinær',
     HENVENDELSE_FRA_KABAL: 'Henvendelse fra Kabal',
 };
 
 export const klagebehandlingsårsakerForOpprettelse = [
-    Klagebehandlingsårsak.STANDARD,
+    Klagebehandlingsårsak.ORDINÆR,
     Klagebehandlingsårsak.HENVENDELSE_FRA_KABAL,
 ];

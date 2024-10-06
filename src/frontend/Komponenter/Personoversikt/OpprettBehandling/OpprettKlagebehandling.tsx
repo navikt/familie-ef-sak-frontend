@@ -11,6 +11,8 @@ import {
     klagebehandlingsårsakTilTekst,
 } from '../../../App/typer/klagebehandlingsårsak';
 import { OpprettKlagebehandlingRequest } from '../../../App/typer/klage';
+import { useToggles } from '../../../App/context/TogglesContext';
+import { ToggleName } from '../../../App/context/toggles';
 
 const AlertStripe = styled(Alert)`
     margin-top: 1rem;
@@ -30,15 +32,29 @@ export const OpprettKlagebehandling: React.FunctionComponent<Props> = ({
     settVisModal,
     opprettKlagebehandling,
 }) => {
+    const { toggles } = useToggles();
     const [feilmelding, settFeilmelding] = useState<string>('');
     const [valgtDato, settValgtDato] = useState<string>();
     const [klageGjelderTilbakekreving, settKlageGjelderTilbakekreving] = useState<boolean>(false);
-    const [valgtBehandlingsårsak, settValgtBehandlingsårsak] = useState<Klagebehandlingsårsak>();
+    const [valgtBehandlingsårsak, settValgtBehandlingsårsak] = useState<
+        Klagebehandlingsårsak | undefined
+    >(Klagebehandlingsårsak.ORDINÆR);
+
+    const harTilgangTilValgAvAnnenBehandlingsårsak =
+        toggles[ToggleName.velgÅrsakVedKlageOpprettelse];
+
+    const harValgtBehandlingsårsakUtenTilgang =
+        !harTilgangTilValgAvAnnenBehandlingsårsak &&
+        valgtBehandlingsårsak !== Klagebehandlingsårsak.ORDINÆR;
 
     const validerOgOpprettKlagebehandling = () => {
         settFeilmelding('');
         if (!valgtBehandlingsårsak) {
             settFeilmelding('Vennligst velg en årsak');
+        } else if (harValgtBehandlingsårsakUtenTilgang) {
+            settFeilmelding(
+                'Du har valgt en årsak du ikke har tilgang til å velge. Vennligst meld i fra til brukerstøtte dersom du skal ha tilgang til valg av denne årsaken.'
+            );
         } else if (!valgtDato) {
             settFeilmelding('Vennligst velg en dato fra datovelgeren');
         } else if (!erGyldigDato(valgtDato) || !erFørEllerLikDagensDato(valgtDato)) {
@@ -54,12 +70,14 @@ export const OpprettKlagebehandling: React.FunctionComponent<Props> = ({
 
     return (
         <>
-            <ÅrsakSelect
-                valgmuligheter={klagebehandlingsårsakerForOpprettelse}
-                valgtBehandlingsårsak={valgtBehandlingsårsak}
-                settValgtBehandlingsårsak={settValgtBehandlingsårsak}
-                årsakTilTekst={klagebehandlingsårsakTilTekst}
-            />
+            {harTilgangTilValgAvAnnenBehandlingsårsak && (
+                <ÅrsakSelect
+                    valgmuligheter={klagebehandlingsårsakerForOpprettelse}
+                    valgtBehandlingsårsak={valgtBehandlingsårsak}
+                    settValgtBehandlingsårsak={settValgtBehandlingsårsak}
+                    årsakTilTekst={klagebehandlingsårsakTilTekst}
+                />
+            )}
             <Datovelger
                 id={'krav-mottatt'}
                 label={'Krav mottatt'}
