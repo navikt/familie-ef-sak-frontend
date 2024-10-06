@@ -1,7 +1,7 @@
 import { FunctionComponent } from 'react';
 import { Behandling, BehandlingResultat } from '../../../App/typer/fagsak';
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
-import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
+import { Behandlingsårsak } from '../../../App/typer/behandlingsårsak';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { AktivitetsvilkårFane } from '../Aktivitet/AktivitetsvilkårFane';
 import { BrevFane } from '../Brev/BrevFane';

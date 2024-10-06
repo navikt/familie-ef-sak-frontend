@@ -1,3 +1,5 @@
+import { Klagebehandlingsårsak } from './klagebehandlingsårsak';
+
 export interface Klagebehandlinger {
     overgangsstønad: KlageBehandling[];
     barnetilsyn: KlageBehandling[];
@@ -92,3 +94,9 @@ export const KlagebehandlingStatusTilTekst: Record<KlagebehandlingStatus, string
     VENTER: 'Venter',
     FERDIGSTILT: 'Ferdigstilt',
 };
+
+export interface OpprettKlagebehandlingRequest {
+    mottattDato: string;
+    behandlingsårsak: Klagebehandlingsårsak;
+    klageGjelderTilbakekreving: boolean;
+}

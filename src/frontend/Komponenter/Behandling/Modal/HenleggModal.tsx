@@ -4,7 +4,7 @@ import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { Behandling } from '../../../App/typer/fagsak';
 import { useApp } from '../../../App/context/AppContext';
 import { EToast } from '../../../App/typer/toast';
-import { EHenlagtårsak } from '../../../App/typer/Behandlingsårsak';
+import { EHenlagtårsak } from '../../../App/typer/behandlingsårsak';
 import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
 import { Alert, Radio, RadioGroup } from '@navikt/ds-react';
 import styled from 'styled-components';

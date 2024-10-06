@@ -7,13 +7,13 @@ import { useNavigate } from 'react-router-dom';
 import { EToast } from '../../../App/typer/toast';
 import { RevurderingInnhold } from '../../../App/typer/revurderingstype';
 import { Fagsak } from '../../../App/typer/fagsak';
-import { OpprettKlageRequest } from './OpprettKlagebehandling';
 import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 import { utledKanOppretteRevurdering } from '../utils';
 import { ModalAlerts } from './ModalAlerts';
 import { BehandlingstypeSelect } from './BehandlingstypeSelect';
 import { BehandlingstypeSwitch } from './BehandlingstypeSwitch';
+import { OpprettKlagebehandlingRequest } from '../../../App/typer/klage';
 
 const FormContainer = styled.div`
     width: 33.5rem;
@@ -96,12 +96,12 @@ export const OpprettBehandlingModal: React.FunctionComponent<Props> = ({
         }
     };
 
-    const opprettKlagebehandling = (data: OpprettKlageRequest) => {
+    const opprettKlagebehandling = (data: OpprettKlagebehandlingRequest) => {
         settFeilmelding('');
 
         if (!senderInnBehandling) {
             settSenderInnBehandling(true);
-            axiosRequest<Ressurs<void>, OpprettKlageRequest>({
+            axiosRequest<Ressurs<void>, OpprettKlagebehandlingRequest>({
                 method: 'POST',
                 url: `/familie-ef-sak/api/klage/fagsak/${fagsak.id}`,
                 data: data,

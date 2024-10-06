@@ -5,7 +5,7 @@ import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import AktivitetInfo from './AktivitetInfo';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
-import { Behandlingsårsak } from '../../../../App/typer/Behandlingsårsak';
+import { Behandlingsårsak } from '../../../../App/typer/behandlingsårsak';
 import { AlertError } from '../../../../Felles/Visningskomponenter/Alerts';
 import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';
 import { VilkårpanelInnhold } from '../../Vilkårpanel/VilkårpanelInnhold';

@@ -4,7 +4,7 @@ import { AktivitetsvilkårType } from '../../Inngangsvilkår/vilkår';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
-import { Behandlingsårsak } from '../../../../App/typer/Behandlingsårsak';
+import { Behandlingsårsak } from '../../../../App/typer/behandlingsårsak';
 import AktivitetArbeidInfo from './AktivitetArbeidInfo';
 import { AlertError } from '../../../../Felles/Visningskomponenter/Alerts';
 import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';

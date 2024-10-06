@@ -14,7 +14,7 @@ import {
     TableDataCellSmall,
     HistorikkTabell,
 } from './vedtakshistorikkUtil';
-import { Behandlingsårsak, behandlingsårsakTilTekst } from '../../../App/typer/Behandlingsårsak';
+import { Behandlingsårsak, behandlingsårsakTilTekst } from '../../../App/typer/behandlingsårsak';
 import { Table, Tag } from '@navikt/ds-react';
 
 const lenketekst = (andel: AndelHistorikk) => {
