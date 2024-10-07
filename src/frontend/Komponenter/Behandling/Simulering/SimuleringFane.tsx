@@ -34,7 +34,7 @@ export const SimuleringFane: FC<Props> = ({ behandling }) => {
             {({ simuleringsresultat, vedtak }) => (
                 <Simulering
                     simuleringsresultat={simuleringsresultat}
-                    behandlingId={behandling.id}
+                    behandling={behandling}
                     lagretVedtak={vedtak}
                 />
             )}

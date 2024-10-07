@@ -9,6 +9,7 @@ export interface SimuleringResultat {
     tidSimuleringHentet: string;
     tomSisteUtbetaling: string;
     sumManuellePosteringer?: number;
+    sumKreditorPosteringer?: number;
 }
 
 export interface SimuleringPeriode {
