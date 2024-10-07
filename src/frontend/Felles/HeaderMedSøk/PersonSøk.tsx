@@ -17,35 +17,82 @@ import { useNavigate } from 'react-router-dom';
 import { MannIkon } from '../Ikoner/MannIkon';
 import { KvinneIkon } from '../Ikoner/KvinneIkon';
 import { Kjønn } from '../../App/typer/personopplysninger';
+import { utledSøkeresultatVisning } from './SøkeresultatVisning';
+import { EToast } from '../../App/typer/toast';
+import styled from 'styled-components';
+import { ModalWrapper } from '../Modal/ModalWrapper';
+import { BodyShort } from '@navikt/ds-react';
 
-const tilSøkeresultatListe = (resultat: ISøkPerson): ISøkeresultat[] => {
-    return resultat.fagsakPersonId
-        ? [
-              {
-                  harTilgang: true, //Alltid true hvis har status RessursStatus.SUKSESS
-                  ident: resultat.personIdent,
-                  fagsakId: resultat.fagsakPersonId, // hak for å få Søk til å virke riktig med fagsakPersonId
-                  navn: resultat.visningsnavn,
-                  ikon: resultat.kjønn === Kjønn.MANN ? <MannIkon /> : <KvinneIkon />,
-              },
-          ]
-        : [];
-};
+const tilSøkeresultatListe = (resultat: ISøkPerson): ISøkeresultat[] => [
+    {
+        harTilgang: true, //Alltid true hvis har status RessursStatus.SUKSESS
+        ident: resultat.personIdent,
+        fagsakId: resultat.fagsakPersonId, // hak for å få Søk til å virke riktig med fagsakPersonId
+        navn: resultat.visningsnavn,
+        ikon: resultat.kjønn === Kjønn.MANN ? <MannIkon /> : <KvinneIkon />,
+    },
+];
 
 const erPositivtTall = (verdi: string) => /^\d+$/.test(verdi) && Number(verdi) !== 0;
 
+const SøkContainer = styled.div`
+    display: flex;
+`;
+
 const PersonSøk: React.FC = () => {
-    const { axiosRequest } = useApp();
+    const { axiosRequest, settToast } = useApp();
     const navigate = useNavigate();
     const [resultat, settResultat] = useState<Ressurs<ISøkeresultat[]>>(byggTomRessurs());
     const [uuidSøk, settUuidSøk] = useState(uuidv4());
+    const [fokuserSøkeresultat, settFokuserSøkeresultat] = useState<boolean>(false);
+    const [personIdentUtenFagsak, settPersonIdentUtenFagsak] = useState<string>('');
+    const [visModal, settVisModal] = useState<boolean>(false);
 
     const nullstillResultat = (): void => {
         settResultat(byggTomRessurs());
     };
 
+    const onInputKeyDown = (event: React.KeyboardEvent) => {
+        switch (event.key) {
+            case 'ArrowUp':
+            case 'ArrowDown':
+                if (resultat.status === RessursStatus.SUKSESS) {
+                    settFokuserSøkeresultat((prevState) => !prevState);
+                } else {
+                    settFokuserSøkeresultat(false);
+                }
+                break;
+            default:
+                break;
+        }
+    };
+
+    const lukkModal = () => {
+        settPersonIdentUtenFagsak('');
+        settVisModal(false);
+    };
+
+    const opprettFagsakPersonOgNaviger = (personIdent: string) => {
+        axiosRequest<string, { personIdent: string }>({
+            method: 'POST',
+            url: `/familie-ef-sak/api/fagsak-person`,
+            data: { personIdent: personIdent },
+        }).then((res: Ressurs<string>) => {
+            if (res.status === RessursStatus.SUKSESS) {
+                window.open(`${window.location.origin}/person/${res.data}`, '_SELF');
+            } else {
+                settToast(EToast.REDIRECT_FAGSAK_PERSON_FEILET);
+            }
+        });
+    };
+
     const søkeresultatOnClick = (søkeresultat: ISøkeresultat) => {
-        navigate(`/person/${søkeresultat.fagsakId}`); // fagsakId er mappet fra fagsakPersonId
+        if (søkeresultat.fagsakId) {
+            navigate(`/person/${søkeresultat.fagsakId}`); // fagsakId er mappet fra fagsakPersonId
+        } else {
+            settPersonIdentUtenFagsak(søkeresultat.ident);
+            settVisModal(true);
+        }
         settUuidSøk(uuidv4()); // Brukes for å fjerne søkeresultatene ved å rerendre søkekomponenten
         nullstillResultat();
     };
@@ -91,15 +138,48 @@ const PersonSøk: React.FC = () => {
     };
 
     return (
-        <Søk
-            key={uuidSøk}
-            søk={søk}
-            label="Søk etter fagsak for en person"
-            placeholder="Fnr/saksnr"
-            søkeresultater={resultat}
-            nullstillSøkeresultater={nullstillResultat}
-            søkeresultatOnClick={søkeresultatOnClick}
-        />
+        <>
+            <SøkContainer onKeyDown={onInputKeyDown}>
+                <Søk
+                    key={uuidSøk}
+                    søk={søk}
+                    label="Søk etter fagsak for en person"
+                    placeholder="Fnr/saksnr"
+                    søkeresultater={resultat}
+                    nullstillSøkeresultater={nullstillResultat}
+                    søkeresultatOnClick={søkeresultatOnClick}
+                    formaterResultat={(søkeresultat: ISøkeresultat, erSøkeresultatValgt: boolean) =>
+                        utledSøkeresultatVisning(
+                            søkeresultat,
+                            erSøkeresultatValgt,
+                            søkeresultatOnClick,
+                            fokuserSøkeresultat
+                        )
+                    }
+                />
+            </SøkContainer>
+            <ModalWrapper
+                tittel={'Bekreft opprettelse av person'}
+                visModal={visModal}
+                onClose={() => lukkModal()}
+                aksjonsknapper={{
+                    hovedKnapp: {
+                        onClick: () => {
+                            if (personIdentUtenFagsak) {
+                                opprettFagsakPersonOgNaviger(personIdentUtenFagsak);
+                                lukkModal();
+                            }
+                        },
+                        tekst: 'Opprett',
+                    },
+                    lukkKnapp: { onClick: () => lukkModal(), tekst: 'Avbryt' },
+                    marginTop: 4,
+                }}
+                ariaLabel={'Bekreft opprettelse av person'}
+            >
+                <BodyShort>Fødselsnummer: {personIdentUtenFagsak}</BodyShort>
+            </ModalWrapper>
+        </>
     );
 };
 

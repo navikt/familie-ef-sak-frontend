@@ -35,6 +35,10 @@ const SelectAvslagÅrsak = (props: Props): JSX.Element => {
     const { settIkkePersistertKomponent } = useApp();
     const { avslagÅrsak, settAvslagÅrsak, feilmelding } = props;
 
+    function fjernHistoriskeValg(value: EAvslagÅrsak): value is EAvslagÅrsak {
+        return value !== EAvslagÅrsak.MANGLENDE_OPPLYSNINGER; // Manglende opplysninger er ikke lenger en gyldig avslagsgrunn (høst 2024)
+    }
+
     return (
         <>
             <StyledSelect
@@ -49,7 +53,7 @@ const SelectAvslagÅrsak = (props: Props): JSX.Element => {
                 hideLabel={false}
             >
                 <option value="">Velg</option>
-                {årsakerTilAvslag.map((årsak) => {
+                {årsakerTilAvslag.filter(fjernHistoriskeValg).map((årsak) => {
                     return (
                         <option value={årsak} key={årsak}>
                             {avslagÅrsakTilTekst[årsak]}

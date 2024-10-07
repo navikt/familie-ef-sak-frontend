@@ -39,3 +39,5 @@ export const sorterMapperPåNavn = (a: IMappe, b: IMappe) => {
     else if (a.navn < b.navn) return -1;
     return 0;
 };
+
+export const ANTALL_OPPGAVER_PR_SIDE = 15;

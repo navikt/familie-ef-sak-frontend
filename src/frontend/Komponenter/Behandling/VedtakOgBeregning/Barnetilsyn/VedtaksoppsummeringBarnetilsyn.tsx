@@ -8,7 +8,7 @@ import {
 import { Behandling } from '../../../../App/typer/fagsak';
 import styled from 'styled-components';
 import { Heading } from '@navikt/ds-react';
-import { Behandlingsårsak } from '../../../../App/typer/Behandlingsårsak';
+import { Behandlingsårsak } from '../../../../App/typer/behandlingsårsak';
 import { Søknadsinformasjon } from '../Felles/Søknadsinformasjon';
 import { OppsummeringAvBarn } from './OppsummeringAvBarn';
 import { BreakWordBodyLongSmall } from '../../../../Felles/Visningskomponenter/BreakWordBodyLongSmall';

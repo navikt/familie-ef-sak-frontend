@@ -1,4 +1,4 @@
-import { Behandlingsårsak } from './Behandlingsårsak';
+import { Behandlingsårsak } from './behandlingsårsak';
 import { EVilkårsbehandleBarnValg } from './vilkårsbehandleBarnValg';
 import { BarnSomSkalFødes } from '../hooks/useJournalføringState';
 

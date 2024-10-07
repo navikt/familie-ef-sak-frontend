@@ -9,7 +9,7 @@ import { base64toBlob, winUrl, åpnePdfIEgenTab } from '../../../App/utils/utils
 import { ExternalLinkIcon } from '@navikt/aksel-icons';
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
 import { Behandling, BehandlingResultat } from '../../../App/typer/fagsak';
-import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
+import { Behandlingsårsak } from '../../../App/typer/behandlingsårsak';
 import { BreakWordUndertekst } from '../../../Felles/Visningskomponenter/BreakWordUndertekst';
 import { Button } from '@navikt/ds-react';
 import { DetailSmall, SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';

@@ -18,7 +18,7 @@ import { stønadstypeTilTekst } from '../../../App/typer/behandlingstema';
 import { erGyldigDato } from '../../../App/utils/dato';
 import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import styled from 'styled-components';
-import { Behandlingsårsak, behandlingsårsakTilTekst } from '../../../App/typer/Behandlingsårsak';
+import { Behandlingsårsak, behandlingsårsakTilTekst } from '../../../App/typer/behandlingsårsak';
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
 import { Datovelger } from '../../../Felles/Datovelger/Datovelger';
 

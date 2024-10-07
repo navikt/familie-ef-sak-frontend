@@ -3,8 +3,7 @@ import {
     Behandlingsårsak,
     behandlingsårsakerForRevurdering,
     behandlingsårsakTilTekst,
-} from '../../../App/typer/Behandlingsårsak';
-import { Behandlingstype } from '../../../App/typer/behandlingstype';
+} from '../../../App/typer/behandlingsårsak';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import styled from 'styled-components';
 import {
@@ -26,18 +25,14 @@ import { EVilkårsbehandleBarnValg } from '../../../App/typer/vilkårsbehandleBa
 import { Fagsak } from '../../../App/typer/fagsak';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { erEtterDagensDato, erGyldigDato } from '../../../App/utils/dato';
-import { Alert, Button, Select } from '@navikt/ds-react';
+import { Alert, Button } from '@navikt/ds-react';
 import { Datovelger } from '../../../Felles/Datovelger/Datovelger';
 import LeggTilBarnSomSkalFødes from '../../Behandling/Førstegangsbehandling/LeggTilBarnSomSkalFødes';
 import { BarnSomSkalFødes } from '../../../App/hooks/useJournalføringState';
+import { ÅrsakSelect } from './ÅrsakSelect';
 
 const DatoContainer = styled.div`
-    margin-top: 2rem;
     min-height: 20rem;
-`;
-
-const StyledSelect = styled(Select)`
-    margin-top: 2rem;
 `;
 
 const AlertStripe = styled(Alert)`
@@ -46,7 +41,6 @@ const AlertStripe = styled(Alert)`
 
 const ButtonContainer = styled.div`
     display: flex;
-    margin-top: 1rem;
     justify-content: flex-end;
     margin-bottom: 0.5rem;
 `;
@@ -65,17 +59,15 @@ const inneholderBarnSomErUgyldige = (barnSomSkalFødes: BarnSomSkalFødes[]) =>
             !erGyldigDato(barn.fødselTerminDato)
     );
 
-interface IProps {
+interface Props {
     fagsak: Fagsak;
-    valgtBehandlingstype: Behandlingstype;
-    lagRevurdering: (revurderingInnhold: RevurderingInnhold) => void;
+    opprettRevurdering: (revurderingInnhold: RevurderingInnhold) => void;
     settVisModal: (bool: boolean) => void;
 }
 
-export const LagRevurdering: React.FunctionComponent<IProps> = ({
+export const OpprettRevurdering: React.FunctionComponent<Props> = ({
     fagsak,
-    valgtBehandlingstype,
-    lagRevurdering,
+    opprettRevurdering,
     settVisModal,
 }) => {
     const { toggles } = useToggles();
@@ -132,7 +124,9 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
         }
     };
 
-    const opprettRevurdering = (måTaStillingTilBarn: boolean) => {
+    const valgbareBehandlingsårsaker = behandlingsårsakerForRevurdering.filter(skalViseÅrsak);
+
+    const validerOgOpprettRevurdering = (måTaStillingTilBarn: boolean) => {
         if (!valgtBehandlingsårsak) {
             settFeilmeldingModal('Vennligst velg en årsak');
         } else if (!valgtDato || !erGyldigDato(valgtDato)) {
@@ -147,7 +141,7 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
         } else if (inneholderBarnSomErUgyldige(barnSomSkalFødes)) {
             settFeilmeldingModal('Et eller flere barn mangler gyldig dato');
         } else {
-            lagRevurdering({
+            opprettRevurdering({
                 fagsakId: fagsak.id,
                 behandlingsårsak: valgtBehandlingsårsak,
                 kravMottatt: valgtDato,
@@ -171,23 +165,12 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
 
                 return (
                     <>
-                        <StyledSelect
-                            label="Årsak"
-                            value={valgtBehandlingsårsak || ''}
-                            onChange={(e) => {
-                                settValgtBehandlingsårsak(e.target.value as Behandlingsårsak);
-                            }}
-                        >
-                            <option value="">Velg</option>
-                            {valgtBehandlingstype === Behandlingstype.REVURDERING &&
-                                behandlingsårsakerForRevurdering
-                                    .filter(skalViseÅrsak)
-                                    .map((behandlingsårsak: Behandlingsårsak, index: number) => (
-                                        <option key={index} value={behandlingsårsak}>
-                                            {behandlingsårsakTilTekst[behandlingsårsak]}
-                                        </option>
-                                    ))}
-                        </StyledSelect>
+                        <ÅrsakSelect
+                            valgmuligheter={valgbareBehandlingsårsaker}
+                            valgtBehandlingsårsak={valgtBehandlingsårsak}
+                            settValgtBehandlingsårsak={settValgtBehandlingsårsak}
+                            årsakTilTekst={behandlingsårsakTilTekst}
+                        />
                         <DatoContainer>
                             <Datovelger
                                 id={'krav-mottatt'}
@@ -236,7 +219,7 @@ export const LagRevurdering: React.FunctionComponent<IProps> = ({
                             </ModalKnapp>
                             <ModalKnapp
                                 variant="primary"
-                                onClick={() => opprettRevurdering(måTaStillingTilBarn)}
+                                onClick={() => validerOgOpprettRevurdering(måTaStillingTilBarn)}
                             >
                                 Opprett
                             </ModalKnapp>

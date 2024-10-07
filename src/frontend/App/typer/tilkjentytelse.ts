@@ -1,7 +1,7 @@
 import { Behandlingstype } from './behandlingstype';
 import { EAktivitet, EPeriodetype, EUtgiftsperiodeAktivitet, EUtgiftsperiodetype } from './vedtak';
 import { Sanksjonsårsak } from './Sanksjonsårsak';
-import { Behandlingsårsak } from './Behandlingsårsak';
+import { Behandlingsårsak } from './behandlingsårsak';
 
 export interface AndelMedGrunnlag {
     stønadFra: string;

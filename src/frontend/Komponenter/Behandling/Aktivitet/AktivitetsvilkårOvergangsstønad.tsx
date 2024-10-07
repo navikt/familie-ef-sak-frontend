@@ -2,7 +2,7 @@ import React, { FC, useEffect } from 'react';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { Aktivitet } from './Aktivitet/Aktivitet';
 import { SagtOppEllerRedusert } from './SagtOppEllerRedusert/SagtOppEllerRedusert';
-import { Behandlingsårsak } from '../../../App/typer/Behandlingsårsak';
+import { Behandlingsårsak } from '../../../App/typer/behandlingsårsak';
 import { Behandling } from '../../../App/typer/fagsak';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import VilkårIkkeOpprettetAlert from '../Vurdering/VilkårIkkeOpprettet';

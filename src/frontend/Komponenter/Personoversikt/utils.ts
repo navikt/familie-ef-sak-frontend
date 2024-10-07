@@ -12,7 +12,7 @@ export const alleBehandlingerErFerdigstiltEllerSattPåVent = (fagsak: Fagsak) =>
                 behandling.type === Behandlingstype.REVURDERING)
     );
 
-export function kanOppretteRevurdering(fagsak: Fagsak) {
+export function utledKanOppretteRevurdering(fagsak: Fagsak) {
     const harMinstEnBehandlingSomIkkeErHenlagt = fagsak.behandlinger.some(
         (behandling) => behandling.resultat !== BehandlingResultat.HENLAGT
     );
@@ -25,7 +25,7 @@ export function kanOppretteRevurdering(fagsak: Fagsak) {
 
     return {
         harKunHenlagteBehandlinger: !harMinstEnBehandlingSomIkkeErHenlagt,
-        kanStarteRevurdering:
+        kanOppretteRevurdering:
             harMinstEnBehandlingSomIkkeErHenlagt &&
             alleBehandlingerErFerdigstiltEllerSattPåVent(fagsak) &&
             harBehandlingMedTypeFørstegangsbehandlingEllerRevurdering,

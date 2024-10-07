@@ -2,7 +2,7 @@ import React from 'react';
 import { IVilkår } from '../../Inngangsvilkår/vilkår';
 import styled from 'styled-components';
 import { Behandling } from '../../../../App/typer/fagsak';
-import { Behandlingsårsak } from '../../../../App/typer/Behandlingsårsak';
+import { Behandlingsårsak } from '../../../../App/typer/behandlingsårsak';
 import { Søknadsinformasjon } from '../Felles/Søknadsinformasjon';
 import {
     SøknadsinformasjonUtdanning,

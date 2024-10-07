@@ -13,29 +13,22 @@ import VedtaksperioderBarnetilsyn from './HistorikkVedtaksperioder/Vedtaksperiod
 import VedtaksperioderOvergangsstønad from './HistorikkVedtaksperioder/VedtaksperioderOvergangsstønad';
 import { IVedtakForSkolepenger } from '../../App/typer/vedtak';
 import VedtaksperioderSkolepenger from './HistorikkVedtaksperioder/VedtaksperioderSkolepeger';
-import { Checkbox, Select } from '@navikt/ds-react';
+import { Checkbox, HStack, Select } from '@navikt/ds-react';
 import { sorterBehandlinger } from '../../App/utils/behandlingutil';
 import { useHentAndelHistorikkPerioder } from '../../App/hooks/useHentAndelHistorikkPerioder';
 
-const StyledInputs = styled.div`
-    display: flex;
-    justify-content: space-between;
-
-    > div {
-        padding: 0.25rem;
-    }
-
-    > div:last-child {
-        margin-left: auto;
-    }
-`;
-
 const StønadSelect = styled(Select)`
     width: 12rem;
+    padding-top: 0.75rem;
 `;
 
 const BehandlingSelect = styled(Select)`
     width: 22rem;
+    padding-top: 0.75rem;
+`;
+
+const StyledCheckbox = styled(Checkbox)`
+    align-content: end;
 `;
 
 const erAktuell = (periode: AndelHistorikk) => !skalMarkeresSomFjernet(periode.endring?.type);
@@ -126,7 +119,7 @@ export const Vedtaksperioderoversikt: React.FC<{ fagsakPerson: FagsakPerson }> =
         fagsakPerson.overgangsstønad || fagsakPerson.barnetilsyn || fagsakPerson.skolepenger
     );
     const [valgtBehandlingId, settValgtBehandlingId] = useState<string>();
-    const [visUaktuelle, settVisUaktuelle] = useState<boolean>(true);
+    const [visUaktuelle, settVisUaktuelle] = useState<boolean>(false);
 
     const behandlinger = useMemo(
         () => (valgtFagsak ? filtrerOgSorterBehandlinger(valgtFagsak) : []),
@@ -139,8 +132,9 @@ export const Vedtaksperioderoversikt: React.FC<{ fagsakPerson: FagsakPerson }> =
 
     return (
         <>
-            <StyledInputs>
+            <HStack gap="8">
                 <StønadSelect
+                    size="small"
                     label="Stønad"
                     className="flex-item"
                     defaultValue={valgtFagsak?.stønadstype}
@@ -181,6 +175,7 @@ export const Vedtaksperioderoversikt: React.FC<{ fagsakPerson: FagsakPerson }> =
                     </option>
                 </StønadSelect>
                 <BehandlingSelect
+                    size="small"
                     label="Behandling"
                     className="flex-item"
                     onChange={(event) => {
@@ -196,18 +191,19 @@ export const Vedtaksperioderoversikt: React.FC<{ fagsakPerson: FagsakPerson }> =
                     ))}
                 </BehandlingSelect>
                 {valgtFagsak && valgtFagsak.stønadstype !== Stønadstype.SKOLEPENGER ? (
-                    <Checkbox
+                    <StyledCheckbox
+                        size="small"
                         onChange={() => {
                             settVisUaktuelle((prevState) => !prevState);
                         }}
                         checked={visUaktuelle}
                     >
                         Vis uaktuelle perioder
-                    </Checkbox>
+                    </StyledCheckbox>
                 ) : (
                     <div />
                 )}
-            </StyledInputs>
+            </HStack>
             {valgtFagsak && behandlinger.length > 0 && (
                 <Vedtaksperioder
                     fagsak={valgtFagsak}
