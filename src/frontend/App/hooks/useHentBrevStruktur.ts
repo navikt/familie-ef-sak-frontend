@@ -16,7 +16,6 @@ export const useHentBrevStruktur = (
 
     useEffect(() => {
         if (brevMal) {
-            console.log('url', url);
             axiosRequest<BrevStruktur, null>({
                 method: 'GET',
                 url: url,
