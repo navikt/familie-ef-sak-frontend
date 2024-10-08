@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { SimuleringResultat } from './SimuleringTyper';
 import SimuleringTabell from './SimuleringTabell';
-import { formaterIsoÅr } from '../../../App/utils/formatter';
+import { formaterIsoDato, formaterIsoÅr } from '../../../App/utils/formatter';
 import styled from 'styled-components';
 import SimuleringOversikt from './SimuleringOversikt';
 import { Tilbakekreving } from './Tilbakekreving';
@@ -110,7 +110,10 @@ const Simulering: React.FC<{
                 {harKreditorPosteringerForOvergangsstønad && (
                     <ExpansionCardWarning aria-label={'Kreditortrekk'} size={'small'}>
                         <ExpansionCard.Header>
-                            <ExpansionCard.Title>Bruker har kreditortrekk</ExpansionCard.Title>
+                            <ExpansionCard.Title>
+                                Bruker har kreditortrekk (
+                                {formaterIsoDato(simuleringsresultat.tidSimuleringHentet)})
+                            </ExpansionCard.Title>
                             <ExpansionCard.Description>
                                 Hvis bruker har feilutbetalt overgangsstønad, må du sjekke om totalt
                                 feilutbetalt beløp og månedsbeløpene stemmer overens.
