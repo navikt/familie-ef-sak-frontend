@@ -163,7 +163,7 @@ export const TilbakekrevingSkjema: React.FC<Props> = ({
                                 onClick={åpneBrevINyFane}
                                 disabled={henterBrev}
                             >
-                                Forhåndsvis varselbrev
+                                {henterBrev ? 'Genererer varselbrev...' : 'Forhåndsvis varselbrev'}
                             </Button>
                             {forhåndsvisningsFeil && (
                                 <AlertError>{forhåndsvisningsFeil}</AlertError>
