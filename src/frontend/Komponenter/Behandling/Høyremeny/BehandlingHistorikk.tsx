@@ -13,6 +13,7 @@ interface Props {
 const HistorikkListe = styled.ul`
     padding: 0;
     margin: 0.5rem 1rem;
+    word-break: break-word;
 `;
 
 const BehandlingHistorikk: React.FC<Props> = ({ behandling }) => {
