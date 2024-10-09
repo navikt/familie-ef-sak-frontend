@@ -33,6 +33,10 @@ const Bold = styled.span`
     font-weight: bold;
 `;
 
+const BegrunnelseTekst = styled.div`
+    white-space: pre-wrap;
+`;
+
 const TidligereVedtaksperioder: React.FC<Props> = ({ tidligereVedtaksvilkår }) => {
     return (
         <Container>
@@ -85,7 +89,7 @@ const Begrunnelse: React.FC<{ begrunnelse: string | undefined }> = ({ begrunnels
     harVerdi(begrunnelse) && begrunnelse ? (
         <BodyLong size="small">
             <Bold>Begrunnelse: </Bold>
-            {begrunnelse}
+            <BegrunnelseTekst>{begrunnelse}</BegrunnelseTekst>
         </BodyLong>
     ) : null;
 
