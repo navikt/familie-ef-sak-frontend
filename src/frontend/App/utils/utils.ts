@@ -138,7 +138,7 @@ export const winUrl = (feilmelding: string) =>
 
 export const åpnePdfIEgenTab = (blob: Blob, filnavn: string): void => {
     const blobUrl = URL.createObjectURL(blob);
-    const newWindow = window.open(blobUrl, '_blank');
+    const newWindow = window.open(blobUrl);
     setTimeout(function () {
         if (newWindow) {
             newWindow.document.title = filnavn;
