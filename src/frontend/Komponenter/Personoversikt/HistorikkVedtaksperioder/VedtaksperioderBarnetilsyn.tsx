@@ -53,7 +53,6 @@ const historikkRad = (andel: AndelHistorikk, index: number) => {
     return (
         <HistorikkRad $type={andel.endring?.type} key={index}>
             <TableDataCellSmall>
-                {datoAndelHistorikk(andel)}
                 <HStack gap={'2'}>
                     {datoAndelHistorikk(andel)}
                     {antallMåneder && (
