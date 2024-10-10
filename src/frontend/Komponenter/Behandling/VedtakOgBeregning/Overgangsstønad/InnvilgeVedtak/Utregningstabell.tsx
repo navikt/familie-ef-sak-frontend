@@ -48,7 +48,7 @@ const Utregningstabell: React.FC<Props> = ({ beregnetStønad, className }) => {
                                 <SmallTextLabel>Årsinntekt etter avrunding</SmallTextLabel>
                                 <SmallTextLabel>Beløp før samordning</SmallTextLabel>
                                 <SmallTextLabel>Samordningsfradrag (mnd)</SmallTextLabel>
-                                <SmallTextLabel>Stønadsbeløp pr. mnd</SmallTextLabel>
+                                <SmallTextLabel>Stønadsbeløp pr. md.</SmallTextLabel>
                             </div>
                             {beregnetStønad.map((beløpsPeriode) => {
                                 return (

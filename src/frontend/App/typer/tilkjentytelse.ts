@@ -16,6 +16,7 @@ export interface AndelMedGrunnlag {
     tilleggsstønad: number;
     sats: number;
     beløpFørFratrekkOgSatsJustering: number;
+    beregnetAntallMåneder: number;
 }
 
 export interface AndelHistorikk {

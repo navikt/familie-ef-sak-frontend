@@ -65,7 +65,7 @@ export const UtregningstabellBarnetilsyn: React.FC<{
                             <SmallTextLabel>Utgifter</SmallTextLabel>
                             <SmallTextLabel>Kontantstøtte</SmallTextLabel>
                             <SmallTextLabel>Tilleggsstønad</SmallTextLabel>
-                            <SmallTextLabel>Stønadsbeløp pr. mnd</SmallTextLabel>
+                            <SmallTextLabel>Stønadsbeløp pr. md.</SmallTextLabel>
                         </div>
                         {beregningsresultat.map((rad) => (
                             <React.Fragment key={rad.periode.fradato}>
