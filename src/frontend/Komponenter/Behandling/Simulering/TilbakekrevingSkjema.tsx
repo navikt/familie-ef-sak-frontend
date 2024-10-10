@@ -161,8 +161,9 @@ export const TilbakekrevingSkjema: React.FC<Props> = ({
                                 icon={<FileTextIcon />}
                                 size={'xsmall'}
                                 onClick={åpneBrevINyFane}
+                                disabled={henterBrev}
                             >
-                                Forhåndsvis varselbrev
+                                {henterBrev ? 'Genererer varselbrev...' : 'Forhåndsvis varselbrev'}
                             </Button>
                             {forhåndsvisningsFeil && (
                                 <AlertError>{forhåndsvisningsFeil}</AlertError>
