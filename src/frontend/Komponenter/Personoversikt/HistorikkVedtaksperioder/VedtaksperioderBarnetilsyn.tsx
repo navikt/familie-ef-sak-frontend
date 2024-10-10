@@ -19,8 +19,9 @@ import {
     utgiftsperiodetypeTilTekst,
 } from '../../../App/typer/vedtak';
 import { utledHjelpetekstForBeløpFørFratrekkOgSatsjusteringForVedtaksside } from '../../Behandling/VedtakOgBeregning/Felles/utils';
-import { HelpText, Table, Tag } from '@navikt/ds-react';
+import { HelpText, HStack, Table, Tag } from '@navikt/ds-react';
 import styled from 'styled-components';
+import { AntallMånederTag } from './VedtaksperioderOvergangsstønad';
 
 const Rad = styled.div`
     display: grid;
@@ -51,7 +52,12 @@ const historikkRad = (andel: AndelHistorikk, index: number) => {
 
     return (
         <HistorikkRad $type={andel.endring?.type} key={index}>
-            <TableDataCellSmall>{datoAndelHistorikk(andel)}</TableDataCellSmall>
+            <TableDataCellSmall>
+                <HStack gap={'2'}>
+                    {datoAndelHistorikk(andel)}
+                    <AntallMånederTag andel={andel} />
+                </HStack>
+            </TableDataCellSmall>
             <TableDataCellSmall>
                 {erOpphør ? (
                     <Tag
@@ -116,7 +122,7 @@ const historikkRad = (andel: AndelHistorikk, index: number) => {
 
 const VedtaksperioderBarnetilsyn: React.FC<{ andeler: AndelHistorikk[] }> = ({ andeler }) => {
     return (
-        <HistorikkTabell>
+        <HistorikkTabell size="small">
             <Table.Header>
                 <Table.Row>
                     <TableHeaderCellSmall>Periode (fom-tom)</TableHeaderCellSmall>
@@ -125,7 +131,7 @@ const VedtaksperioderBarnetilsyn: React.FC<{ andeler: AndelHistorikk[] }> = ({ a
                     <TableHeaderCellSmall>Antall barn</TableHeaderCellSmall>
                     <TableHeaderCellSmall>Utgifter</TableHeaderCellSmall>
                     <TableHeaderCellSmall>Kontantstøtte</TableHeaderCellSmall>
-                    <TableHeaderCellSmall>Stønadsbeløp pr. mnd</TableHeaderCellSmall>
+                    <TableHeaderCellSmall>Stønadsbeløp pr. md.</TableHeaderCellSmall>
                     <TableHeaderCellSmall>Vedtakstidspunkt</TableHeaderCellSmall>
                     <TableHeaderCellSmall>Saksbehandler</TableHeaderCellSmall>
                     <TableHeaderCellSmall>Behandlingstype</TableHeaderCellSmall>
