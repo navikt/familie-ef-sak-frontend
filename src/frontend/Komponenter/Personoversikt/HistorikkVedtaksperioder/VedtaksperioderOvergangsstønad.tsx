@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { formaterIsoDatoTid, formaterTallMedTusenSkille } from '../../../App/utils/formatter';
 import { aktivitetTilTekst, EPeriodetype, periodetypeTilTekst } from '../../../App/typer/vedtak';
 import { Sanksjonsårsak, sanksjonsårsakTilTekst } from '../../../App/typer/Sanksjonsårsak';
-import React from 'react';
+import React, { FC } from 'react';
 import {
     datoAndelHistorikk,
     etikettTypeOvergangsstønad,
@@ -28,23 +28,29 @@ const lenketekst = (andel: AndelHistorikk) => {
     }
 };
 
+export const AntallMånederTag: FC<{ andel: AndelHistorikk }> = ({ andel }) => {
+    const antallMåneder = andel.andel.beregnetAntallMåneder;
+
+    if (antallMåneder === 0) return null;
+    return (
+        <Tag variant="alt1" size="xsmall">
+            {andel.andel.beregnetAntallMåneder}
+        </Tag>
+    );
+};
+
 const historikkRad = (andel: AndelHistorikk, index: number) => {
     const erSanksjon = andel.periodeType === EPeriodetype.SANKSJON;
     const erOpphør = andel.erOpphør;
     const visDetaljer =
         !erSanksjon && !erOpphør && andel.periodeType !== EPeriodetype.MIDLERTIDIG_OPPHØR;
 
-    const antallMåneder = andel.andel.beregnetAntallMåneder;
     return (
         <HistorikkRad $type={andel.endring?.type} key={index}>
             <TableDataCellSmall>
                 <HStack gap={'2'}>
                     {datoAndelHistorikk(andel)}
-                    {antallMåneder && (
-                        <Tag variant="alt1" size="xsmall">
-                            {andel.andel.beregnetAntallMåneder}
-                        </Tag>
-                    )}
+                    <AntallMånederTag andel={andel} />
                 </HStack>
             </TableDataCellSmall>
             <TableDataCellSmall>

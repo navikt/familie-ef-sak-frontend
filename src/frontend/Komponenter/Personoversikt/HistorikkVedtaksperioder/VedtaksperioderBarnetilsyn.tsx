@@ -21,6 +21,7 @@ import {
 import { utledHjelpetekstForBeløpFørFratrekkOgSatsjusteringForVedtaksside } from '../../Behandling/VedtakOgBeregning/Felles/utils';
 import { HelpText, HStack, Table, Tag } from '@navikt/ds-react';
 import styled from 'styled-components';
+import { AntallMånederTag } from './VedtaksperioderOvergangsstønad';
 
 const Rad = styled.div`
     display: grid;
@@ -49,17 +50,12 @@ const historikkRad = (andel: AndelHistorikk, index: number) => {
         return 'Ukjent';
     };
 
-    const antallMåneder = andel.andel.beregnetAntallMåneder;
     return (
         <HistorikkRad $type={andel.endring?.type} key={index}>
             <TableDataCellSmall>
                 <HStack gap={'2'}>
                     {datoAndelHistorikk(andel)}
-                    {antallMåneder && (
-                        <Tag variant="alt3" size="xsmall">
-                            {andel.andel.beregnetAntallMåneder}
-                        </Tag>
-                    )}
+                    <AntallMånederTag andel={andel} />
                 </HStack>
             </TableDataCellSmall>
             <TableDataCellSmall>
