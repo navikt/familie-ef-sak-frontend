@@ -38,7 +38,7 @@ const [BehandlingProvider, useBehandling] = constate(() => {
     const { hentTotrinnskontrollCallback, totrinnskontroll } =
         useHentTotrinnskontroll(behandlingId);
     const { hentAnsvarligSaksbehandlerCallback, ansvarligSaksbehandler } =
-        useHentAnsvarligSaksbehandler(behandlingId);
+        useHentAnsvarligSaksbehandler(behandling);
     const { hentVedtak: hentVedtakCallback, vedtak, vedtaksresultat } = useHentVedtak(behandlingId);
 
     const hentBehandling = useRerunnableEffect(hentBehandlingCallback, [behandlingId]);
@@ -109,9 +109,7 @@ const [BehandlingProvider, useBehandling] = constate(() => {
 
         if (kanOppdatereOmBehandlingErRedigerbar) {
             settBehandlingErRedigerbar(
-                behandling.status === RessursStatus.SUKSESS &&
-                    ansvarligSaksbehandler.status === RessursStatus.SUKSESS &&
-                    erBehandlingRedigerbar(behandling.data) &&
+                erBehandlingRedigerbar(behandling.data) &&
                     innloggetSaksbehandlerKanRedigereBehandling(ansvarligSaksbehandler.data)
             );
         }
