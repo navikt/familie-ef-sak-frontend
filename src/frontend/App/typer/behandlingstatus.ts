@@ -35,7 +35,9 @@ export const innloggetSaksbehandlerKanRedigereBehandling = (
 ) => {
     return (
         ansvarligSaksbehandler.rolle === AnsvarligSaksbehandlerRolle.INNLOGGET_SAKSBEHANDLER ||
-        ansvarligSaksbehandler.rolle === AnsvarligSaksbehandlerRolle.OPPGAVE_FINNES_IKKE
+        ansvarligSaksbehandler.rolle === AnsvarligSaksbehandlerRolle.OPPGAVE_FINNES_IKKE ||
+        ansvarligSaksbehandler.rolle ===
+            AnsvarligSaksbehandlerRolle.OPPGAVE_FINNES_IKKE_SANNSYNLIGVIS_INNLOGGET_SAKSBEHANDLER
     );
 };
 
