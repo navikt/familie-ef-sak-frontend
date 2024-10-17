@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { ISøkeresultatPerson } from '../../../../App/typer/personopplysninger';
+import { IPersonFraSøk, ISøkeresultatPerson } from '../../../../App/typer/personopplysninger';
 import { useApp } from '../../../../App/context/AppContext';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../../App/typer/ressurs';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
@@ -11,6 +11,7 @@ import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
 import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 import { IPersonalia } from '../vilkår';
+import { nullableDatoTilAlder } from '../../../../App/utils/dato';
 
 interface BostedsadresseProps {
     behandlingId: string;
@@ -25,20 +26,30 @@ const KnappMedMarginTop = styled(Button)`
     margin-top: 0.5rem;
 `;
 
+const StyledDataCell = styled(Table.DataCell)<{ person: IPersonFraSøk }>`
+    font-weight: ${(props) => (props.person.erSøker || props.person.erBarn ? 'bold' : 'normal')};
+`;
+
 export const Bostedsadresse = ({ behandlingId, personalia }: BostedsadresseProps) => {
     const { axiosRequest } = useApp();
 
     const [beboere, settBeboere] = useState<Ressurs<ISøkeresultatPerson>>(byggTomRessurs());
     const [visBeboere, settVisBeboere] = useState<boolean>(false);
+    const [laster, settLaster] = useState<boolean>(false);
 
     const hentBeboerePåSammeAdresse = useCallback(
         (behandlingId: string) => {
+            settLaster(true);
             axiosRequest<ISøkeresultatPerson, null>({
                 method: 'GET',
                 url: `/familie-ef-sak/api/sok/${behandlingId}/samme-adresse`,
-            }).then((respons: Ressurs<ISøkeresultatPerson>) => {
-                settBeboere(respons);
-            });
+            })
+                .then((respons: Ressurs<ISøkeresultatPerson>) => {
+                    settBeboere(respons);
+                })
+                .finally(() => {
+                    settLaster(false);
+                });
         },
         [axiosRequest]
     );
@@ -71,8 +82,9 @@ export const Bostedsadresse = ({ behandlingId, personalia }: BostedsadresseProps
                                     settVisBeboere(!visBeboere);
                                 }}
                                 size={'small'}
+                                disabled={laster}
                             >
-                                Se beboere
+                                {laster ? 'Laster beboere...' : 'Se beboere'}
                             </KnappMedMarginTop>
                         )}
                     </div>
@@ -86,7 +98,7 @@ export const Bostedsadresse = ({ behandlingId, personalia }: BostedsadresseProps
                     {({ beboere }) => {
                         return (
                             <BeboereContainer>
-                                <Table>
+                                <Table size="small">
                                     <Table.Header>
                                         <Table.Row>
                                             <Table.ColumnHeader textSize={'small'}>
@@ -101,12 +113,15 @@ export const Bostedsadresse = ({ behandlingId, personalia }: BostedsadresseProps
                                         </Table.Row>
                                     </Table.Header>
                                     <Table.Body>
-                                        {beboere.hits.map((beboer) => {
+                                        {beboere.personer.map((beboer) => {
                                             return (
                                                 <Table.Row key={beboer.personIdent}>
-                                                    <Table.DataCell textSize={'small'}>
-                                                        {beboer.visningsnavn}
-                                                    </Table.DataCell>
+                                                    <StyledDataCell
+                                                        person={beboer}
+                                                        textSize={'small'}
+                                                    >
+                                                        {`${beboer.visningsnavn} ${beboer.fødselsdato ? `(${nullableDatoTilAlder(beboer.fødselsdato)})` : ''}`}
+                                                    </StyledDataCell>
                                                     <Table.DataCell textSize={'small'}>
                                                         {beboer.personIdent}
                                                     </Table.DataCell>
