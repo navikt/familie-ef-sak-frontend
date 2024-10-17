@@ -85,6 +85,7 @@ const TilegnetSaksbehandler: React.FC<Props> = ({ behandling }) => {
             case AnsvarligSaksbehandlerRolle.UTVIKLER_MED_VEILEDERROLLE:
                 return ASurfaceNeutral;
             case AnsvarligSaksbehandlerRolle.INNLOGGET_SAKSBEHANDLER:
+            case AnsvarligSaksbehandlerRolle.OPPGAVE_FINNES_IKKE_SANNSYNLIGVIS_INNLOGGET_SAKSBEHANDLER:
                 return ASurfaceSuccess;
             case AnsvarligSaksbehandlerRolle.ANNEN_SAKSBEHANDLER:
             case AnsvarligSaksbehandlerRolle.OPPGAVE_TILHØRER_IKKE_ENF:
@@ -97,6 +98,7 @@ const TilegnetSaksbehandler: React.FC<Props> = ({ behandling }) => {
     const utledVisningsnavn = (ansvarligSaksbehandler: AnsvarligSaksbehandler): string => {
         switch (ansvarligSaksbehandler.rolle) {
             case AnsvarligSaksbehandlerRolle.INNLOGGET_SAKSBEHANDLER:
+            case AnsvarligSaksbehandlerRolle.OPPGAVE_FINNES_IKKE_SANNSYNLIGVIS_INNLOGGET_SAKSBEHANDLER:
             case AnsvarligSaksbehandlerRolle.ANNEN_SAKSBEHANDLER:
                 return `${ansvarligSaksbehandler.fornavn} ${ansvarligSaksbehandler.etternavn}`;
             case AnsvarligSaksbehandlerRolle.UTVIKLER_MED_VEILEDERROLLE:
@@ -115,7 +117,9 @@ const TilegnetSaksbehandler: React.FC<Props> = ({ behandling }) => {
                     ansvarligSaksbehandler.rolle ===
                         AnsvarligSaksbehandlerRolle.INNLOGGET_SAKSBEHANDLER ||
                     ansvarligSaksbehandler.rolle ===
-                        AnsvarligSaksbehandlerRolle.ANNEN_SAKSBEHANDLER;
+                        AnsvarligSaksbehandlerRolle.ANNEN_SAKSBEHANDLER ||
+                    ansvarligSaksbehandler.rolle ===
+                        AnsvarligSaksbehandlerRolle.OPPGAVE_FINNES_IKKE_SANNSYNLIGVIS_INNLOGGET_SAKSBEHANDLER;
 
                 const visingsnavn = utledVisningsnavn(ansvarligSaksbehandler);
 
