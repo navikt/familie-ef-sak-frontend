@@ -15,9 +15,7 @@ export interface IÅrsakRevurdering {
     beskrivelse?: string;
 }
 
-export const utledInitiellOpplysningskilde = (
-    behandling: Behandling
-): Opplysningskilde | undefined => {
+const utledInitiellOpplysningskilde = (behandling: Behandling): Opplysningskilde | undefined => {
     if (
         behandling.behandlingsårsak === Behandlingsårsak.SØKNAD &&
         behandling.type == Behandlingstype.REVURDERING
@@ -26,6 +24,20 @@ export const utledInitiellOpplysningskilde = (
     } else {
         return undefined;
     }
+};
+
+export const initiellStateMedDefaultOpplysningskilde = (
+    initiellRevurderingsinformasjon: Revurderingsinformasjon,
+    behandling: Behandling
+): Revurderingsinformasjon => {
+    const initiellOpplysningskilde = utledInitiellOpplysningskilde(behandling);
+    if (!initiellRevurderingsinformasjon.årsakRevurdering && initiellOpplysningskilde) {
+        return {
+            ...initiellRevurderingsinformasjon,
+            årsakRevurdering: { opplysningskilde: initiellOpplysningskilde },
+        };
+    }
+    return initiellRevurderingsinformasjon;
 };
 
 export enum Årsak {

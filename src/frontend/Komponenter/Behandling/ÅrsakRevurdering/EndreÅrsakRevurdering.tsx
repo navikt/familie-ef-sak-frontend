@@ -3,7 +3,7 @@ import {
     Opplysningskilde,
     opplysningskildeTilTekst,
     Revurderingsinformasjon,
-    utledInitiellOpplysningskilde,
+    initiellStateMedDefaultOpplysningskilde,
     Årsak,
     årsakerForStønadstype,
     årsakRevuderingTilTekst,
@@ -34,19 +34,6 @@ interface Props {
 
 const ENDRE_ÅRSAK_REVURDERING = 'endre-årsak-revurdering';
 
-const medDefaultOpplysningskilde = (
-    initiellRevurderingsinformasjon: Revurderingsinformasjon,
-    behandling: Behandling
-): Revurderingsinformasjon => {
-    const initiellOpplysningskilde = utledInitiellOpplysningskilde(behandling);
-    if (!initiellRevurderingsinformasjon.årsakRevurdering && initiellOpplysningskilde) {
-        return {
-            ...initiellRevurderingsinformasjon,
-            årsakRevurdering: { opplysningskilde: initiellOpplysningskilde },
-        };
-    }
-    return initiellRevurderingsinformasjon;
-};
 export const EndreÅrsakRevurdering: React.FC<Props> = ({
     revurderingsinformasjon: initStateRevurderingsinformasjon,
     behandling,
@@ -63,7 +50,7 @@ export const EndreÅrsakRevurdering: React.FC<Props> = ({
 
     const [revurderingsinformasjon, settRevurderingsinformasjon] =
         useState<Revurderingsinformasjon>(
-            medDefaultOpplysningskilde(initStateRevurderingsinformasjon, behandling)
+            initiellStateMedDefaultOpplysningskilde(initStateRevurderingsinformasjon, behandling)
         );
 
     const { kravMottatt, årsakRevurdering } = revurderingsinformasjon;
