@@ -12,6 +12,7 @@ import { Popover, Table } from '@navikt/ds-react';
 import { utledetFolkeregisterIdent } from './utils';
 import { OppgaveKnapp } from './OppgaveKnapp';
 import { TableDataCellSmall } from '../Personoversikt/HistorikkVedtaksperioder/vedtakshistorikkUtil';
+import { kortNedBeskrivelse } from './kortNedBeskrivelse';
 
 interface Props {
     oppgave: IOppgave;
@@ -52,26 +53,6 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, mapper, settFeilmelding, hentOpp
             ? behandlingstype + ' - ' + behandlingstema
             : behandlingstype
         : behandlingstema;
-
-    const kortNedBeskrivelse = (beskrivelse?: string) => {
-        if (!beskrivelse) {
-            return '';
-        }
-
-        if (beskrivelse.startsWith('---')) {
-            const sluttIndeks = beskrivelse.indexOf('---', 3) + 3;
-            beskrivelse = beskrivelse.slice(sluttIndeks).trim();
-        }
-
-        const klippBortIndeks = beskrivelse.indexOf('---');
-        if (klippBortIndeks !== -1 && klippBortIndeks <= 75) {
-            return beskrivelse.slice(0, klippBortIndeks).trim();
-        } else if (beskrivelse.length > 75) {
-            return beskrivelse.slice(0, 75).trim() + '...';
-        }
-
-        return beskrivelse;
-    };
 
     return (
         <>
