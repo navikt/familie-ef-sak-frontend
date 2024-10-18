@@ -1,4 +1,7 @@
 import { Stønadstype } from '../../../App/typer/behandlingstema';
+import { Behandling } from '../../../App/typer/fagsak';
+import { Behandlingsårsak } from '../../../App/typer/behandlingsårsak';
+import { Behandlingstype } from '../../../App/typer/behandlingstype';
 
 export interface Revurderingsinformasjon {
     kravMottatt?: string;
@@ -11,6 +14,19 @@ export interface IÅrsakRevurdering {
     opplysningskilde?: Opplysningskilde;
     beskrivelse?: string;
 }
+
+export const utledInitiellOpplysningskilde = (
+    behandling: Behandling
+): Opplysningskilde | undefined => {
+    if (
+        behandling.behandlingsårsak === Behandlingsårsak.SØKNAD &&
+        behandling.type == Behandlingstype.REVURDERING
+    ) {
+        return Opplysningskilde.INNSENDT_SØKNAD;
+    } else {
+        return undefined;
+    }
+};
 
 export enum Årsak {
     ENDRING_INNTEKT = 'ENDRING_INNTEKT',
