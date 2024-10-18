@@ -45,7 +45,7 @@ const Beboere: React.FC<{ fagsakPersonId: string }> = ({ fagsakPersonId }) => {
                                 </Table.Row>
                             </Table.Header>
                             <Table.Body>
-                                {søkResultat.hits.map((beboer) => {
+                                {søkResultat.personer.map((beboer) => {
                                     return (
                                         <Table.Row key={beboer.personIdent}>
                                             <Table.DataCell textSize={'small'}>
