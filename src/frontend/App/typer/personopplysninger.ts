@@ -53,16 +53,16 @@ export interface IAdresse {
 }
 
 export interface ISøkeresultatPerson {
-    hits: IPersonFraSøk[];
-    totalHints: number;
-    pageNumber: number;
-    totalPages: number;
+    personer: IPersonFraSøk[];
 }
 
 export interface IPersonFraSøk {
     personIdent: string;
     visningsadresse: string;
     visningsnavn: string;
+    fødselsdato?: string;
+    erSøker?: boolean;
+    erBarn?: boolean;
 }
 
 export interface IFullmakt {
