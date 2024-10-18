@@ -3,6 +3,7 @@ import {
     Opplysningskilde,
     opplysningskildeTilTekst,
     Revurderingsinformasjon,
+    initiellStateMedDefaultOpplysningskilde,
     Årsak,
     årsakerForStønadstype,
     årsakRevuderingTilTekst,
@@ -48,7 +49,9 @@ export const EndreÅrsakRevurdering: React.FC<Props> = ({
     } = useBehandling();
 
     const [revurderingsinformasjon, settRevurderingsinformasjon] =
-        useState<Revurderingsinformasjon>(initStateRevurderingsinformasjon);
+        useState<Revurderingsinformasjon>(
+            initiellStateMedDefaultOpplysningskilde(initStateRevurderingsinformasjon, behandling)
+        );
 
     const { kravMottatt, årsakRevurdering } = revurderingsinformasjon;
     const { opplysningskilde, årsak, beskrivelse } = årsakRevurdering || {};
