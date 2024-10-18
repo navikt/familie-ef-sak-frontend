@@ -53,6 +53,7 @@ export const AksjonsknapperPersonHeader: React.FC<Props> = ({ erSaksbehandler, b
     const gyldigeSaksbehandlerRoller = [
         AnsvarligSaksbehandlerRolle.IKKE_SATT,
         AnsvarligSaksbehandlerRolle.OPPGAVE_FINNES_IKKE,
+        AnsvarligSaksbehandlerRolle.OPPGAVE_FINNES_IKKE_SANNSYNLIGVIS_INNLOGGET_SAKSBEHANDLER,
         AnsvarligSaksbehandlerRolle.INNLOGGET_SAKSBEHANDLER,
     ];
 
