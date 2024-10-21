@@ -9,7 +9,7 @@ import {
 } from '../../App/typer/behandlingstema';
 import { formaterIsoDato, formaterIsoDatoTid } from '../../App/utils/formatter';
 import { Popover, Table } from '@navikt/ds-react';
-import { utledetFolkeregisterIdent } from './utils';
+import { kortNedOppgavebeskrivelse, utledetFolkeregisterIdent } from './utils';
 import { OppgaveKnapp } from './OppgaveKnapp';
 import { TableDataCellSmall } from '../Personoversikt/HistorikkVedtaksperioder/vedtakshistorikkUtil';
 
@@ -75,7 +75,9 @@ const OppgaveRad: React.FC<Props> = ({ oppgave, mapper, settFeilmelding, hentOpp
                 <TableDataCellSmall>{typeBehandling}</TableDataCellSmall>
                 <TableDataCellSmall>{fristFerdigstillelseDato}</TableDataCellSmall>
                 <TableDataCellSmall>{prioritet}</TableDataCellSmall>
-                <TableDataCellSmall>{oppgave.beskrivelse}</TableDataCellSmall>
+                <TableDataCellSmall>
+                    {kortNedOppgavebeskrivelse(oppgave.beskrivelse)}
+                </TableDataCellSmall>
                 <TableDataCellSmall>{utledetFolkeregisterIdent(oppgave)}</TableDataCellSmall>
                 <TableDataCellSmall>{oppgave.tildeltEnhetsnr}</TableDataCellSmall>
                 <TableDataCellSmall>{enhetsmappe}</TableDataCellSmall>
