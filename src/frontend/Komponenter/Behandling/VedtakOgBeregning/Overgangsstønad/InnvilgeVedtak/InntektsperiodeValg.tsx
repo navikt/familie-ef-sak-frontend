@@ -23,6 +23,7 @@ import {
     Checkbox,
     CheckboxGroup,
     Heading,
+    HStack,
     ReadMore,
     Tooltip,
 } from '@navikt/ds-react';
@@ -37,6 +38,7 @@ import { EInntektstype, inntektsTypeTilKey, inntektsTypeTilTekst } from '../Fell
 import { ABorderDivider, AGray50 } from '@navikt/ds-tokens/dist/tokens';
 import { IngenBegrunnelseOppgitt } from './IngenBegrunnelseOppgitt';
 import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
+import BeregnetInntektKalkulator from './BeregnetInntektKalkulator';
 
 const Container = styled.div`
     padding: 1rem;
@@ -114,6 +116,11 @@ interface Props {
     skalVelgeSamordningstype: boolean;
 }
 
+export interface BeregnetInntekt {
+    minusTi: number;
+    plussTi: number;
+}
+
 const lagFeilmeldingCheckbox = (type: string) =>
     `En eller flere inntektsperioder på "${type}" ligger inne med et beløp. Skal feltet avhukes må beløp fjernes først.`;
 
@@ -189,11 +196,35 @@ const InntektsperiodeValg: React.FC<Props> = ({
         }
     };
 
+    const leggTilBeregnetInntektTekstIBegrunnelse = (beregnetInntekt: {
+        årsinntekt: number;
+        minusTi: number;
+        plussTi: number;
+    }) => {
+        const beregnetTekst = `
+Forventet årsinntekt fra [DATO]: ${beregnetInntekt.årsinntekt} kroner.
+   - 10 % ned: ${beregnetInntekt.minusTi} kroner per måned.
+   - 10 % opp: ${beregnetInntekt.plussTi} kroner per måned.
+`;
+
+        const oppdatertInntektBegrunnelse = inntektBegrunnelseState.value + beregnetTekst;
+        inntektBegrunnelseState.setValue(oppdatertInntektBegrunnelse);
+    };
+
     return (
         <Container>
-            <Heading size="small" level="5">
-                Inntekt
-            </Heading>
+            <HStack justify="space-between">
+                <Heading size="small" level="5">
+                    Inntekt
+                </Heading>
+                {behandlingErRedigerbar && (
+                    <BeregnetInntektKalkulator
+                        leggTilBeregnetInntektTekstIBegrunnelse={
+                            leggTilBeregnetInntektTekstIBegrunnelse
+                        }
+                    />
+                )}
+            </HStack>
             {!behandlingErRedigerbar && inntektBegrunnelseState.value === '' ? (
                 <IngenBegrunnelseOppgitt />
             ) : (
