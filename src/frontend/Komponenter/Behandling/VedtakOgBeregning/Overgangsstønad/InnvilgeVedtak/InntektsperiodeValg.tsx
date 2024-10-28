@@ -116,11 +116,6 @@ interface Props {
     skalVelgeSamordningstype: boolean;
 }
 
-export interface BeregnetInntekt {
-    minusTi: number;
-    plussTi: number;
-}
-
 const lagFeilmeldingCheckbox = (type: string) =>
     `En eller flere inntektsperioder på "${type}" ligger inne med et beløp. Skal feltet avhukes må beløp fjernes først.`;
 
@@ -196,19 +191,18 @@ const InntektsperiodeValg: React.FC<Props> = ({
         }
     };
 
-    const leggTilBeregnetInntektTekstIBegrunnelse = (beregnetInntekt: {
-        årsinntekt: number;
-        minusTi: number;
-        plussTi: number;
-    }) => {
-        const beregnetTekst = `
-Forventet årsinntekt fra [DATO]: ${beregnetInntekt.årsinntekt} kroner.
-   - 10 % ned: ${beregnetInntekt.minusTi} kroner per måned.
-   - 10 % opp: ${beregnetInntekt.plussTi} kroner per måned.
+    const leggTilBeregnetInntektTekstIBegrunnelse = (årsinntekt: number) => {
+        const månedsinntekt = årsinntekt / 12;
+        const minusTi = Math.round(månedsinntekt * 0.9);
+        const plusTi = Math.round(månedsinntekt * 1.1);
+
+        const beregnetInntektTekst = `
+Forventet årsinntekt fra [DATO]: ${årsinntekt} kroner.
+   - 10 % ned: ${minusTi} kroner per måned.
+   - 10 % opp: ${plusTi} kroner per måned.
 `;
 
-        const oppdatertInntektBegrunnelse = inntektBegrunnelseState.value + beregnetTekst;
-        inntektBegrunnelseState.setValue(oppdatertInntektBegrunnelse);
+        inntektBegrunnelseState.setValue((prevState) => prevState + beregnetInntektTekst);
     };
 
     return (

@@ -4,44 +4,51 @@ import React, { FC, useEffect, useRef, useState } from 'react';
 import { BodyShortSmall } from '../../../../../Felles/Visningskomponenter/Tekster';
 import styled from 'styled-components';
 import ForwardedTextField from './ForwardedTextField';
+import { EnsligErrorMessage } from '../../../../../Felles/ErrorMessage/EnsligErrorMessage';
 
 const StyledDropdownMenu = styled(Dropdown.Menu)`
     width: 23rem;
 `;
 
 const BeregnetInntektKalkulator: FC<{
-    leggTilBeregnetInntektTekstIBegrunnelse: (beregnetInntekt: {
-        årsinntekt: number;
-        minusTi: number;
-        plussTi: number;
-    }) => void;
+    leggTilBeregnetInntektTekstIBegrunnelse: (årsinntekt: number) => void;
 }> = ({ leggTilBeregnetInntektTekstIBegrunnelse }) => {
     const [årsinntekt, settÅrsinntekt] = useState<string>('');
     const textFieldRef = useRef<HTMLInputElement>(null);
     const [erDropdownÅpen, settErDropdownÅpen] = useState<boolean>(false);
+    const [feilmedling, settFeilmedling] = useState<string>('');
 
-    const regnUtInntektOgLeggTilTekst = () => {
+    const oppdaterÅrsinntekt = () => {
+        settFeilmedling('');
         const årsinntektTall = parseFloat(årsinntekt);
 
-        const månedsinntekt = årsinntektTall / 12;
-        const minusTi = Math.round(månedsinntekt * 0.9);
-        const plusTi = Math.round(månedsinntekt * 1.1);
+        if (isNaN(årsinntektTall)) {
+            settFeilmedling('Årsinntekt må være et tall');
+            return;
+        }
 
-        leggTilBeregnetInntektTekstIBegrunnelse({
-            årsinntekt: årsinntektTall,
-            minusTi: minusTi,
-            plussTi: plusTi,
-        });
-    };
-
-    const handleOnClick = () => {
-        settErDropdownÅpen(!erDropdownÅpen);
+        leggTilBeregnetInntektTekstIBegrunnelse(årsinntektTall);
+        settÅrsinntekt('');
+        settErDropdownÅpen(false);
     };
 
     const handleRegnUtOgLeggTilTekst = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
             event.preventDefault();
-            regnUtInntektOgLeggTilTekst();
+            oppdaterÅrsinntekt();
+        }
+    };
+
+    const handleOnOpenChange = (erÅpen: boolean) => {
+        settErDropdownÅpen(erÅpen);
+    };
+
+    const handleTextFieldOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const value = event.target.value;
+        settÅrsinntekt(value);
+
+        if (!isNaN(parseFloat(value))) {
+            settFeilmedling('');
         }
     };
 
@@ -51,10 +58,28 @@ const BeregnetInntektKalkulator: FC<{
         }
     }, [erDropdownÅpen]);
 
+    useEffect(() => {
+        const handleKeyDown = (event: KeyboardEvent) => {
+            if (event.metaKey && event.key === 'k') {
+                event.preventDefault();
+                settErDropdownÅpen((prev) => !prev);
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, []);
+
     return (
-        <Dropdown>
-            <Button type="button" as={Dropdown.Toggle} size="small" onClick={handleOnClick}>
-                <CalculatorIcon title="åpne " fontSize="1.5rem" />
+        <Dropdown open={erDropdownÅpen} onOpenChange={() => handleOnOpenChange(!erDropdownÅpen)}>
+            <Button type="button" as={Dropdown.Toggle} size="small">
+                <CalculatorIcon
+                    title="åpne kalkulator for beregning av pluss/minus 10 prosent forventet månedsinntekt"
+                    fontSize="1.5rem"
+                />
             </Button>
             <StyledDropdownMenu>
                 <BodyShortSmall>Legg inn årsinntekt for å regne ut +/- 10 prosent.</BodyShortSmall>
@@ -68,7 +93,7 @@ const BeregnetInntektKalkulator: FC<{
                         label=""
                         size="small"
                         value={årsinntekt}
-                        onChange={(e) => settÅrsinntekt(e.target.value)}
+                        onChange={handleTextFieldOnChange}
                         onKeyDown={handleRegnUtOgLeggTilTekst}
                     />
 
@@ -76,10 +101,11 @@ const BeregnetInntektKalkulator: FC<{
                         type="button"
                         variant="secondary"
                         size="xsmall"
-                        onClick={() => regnUtInntektOgLeggTilTekst()}
+                        onClick={oppdaterÅrsinntekt}
                     >
-                        Regn ut
+                        Beregn
                     </Button>
+                    <EnsligErrorMessage>{feilmedling}</EnsligErrorMessage>
                 </HStack>
             </StyledDropdownMenu>
         </Dropdown>
