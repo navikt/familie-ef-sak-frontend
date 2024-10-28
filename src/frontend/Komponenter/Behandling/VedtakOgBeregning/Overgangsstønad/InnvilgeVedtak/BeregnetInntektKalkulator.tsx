@@ -62,7 +62,11 @@ const BeregnetInntektKalkulator: FC<{
 
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => {
-            if (event.key === TASTATURTAST_K) {
+            if (
+                document.activeElement === document.body &&
+                !(event.target instanceof HTMLInputElement) &&
+                event.key === TASTATURTAST_K
+            ) {
                 event.preventDefault();
                 settErDropdownÅpen((prev) => !prev);
             }
