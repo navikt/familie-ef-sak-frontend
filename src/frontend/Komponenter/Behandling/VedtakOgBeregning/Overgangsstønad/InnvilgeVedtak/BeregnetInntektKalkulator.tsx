@@ -1,5 +1,5 @@
 import { CalculatorIcon } from '@navikt/aksel-icons';
-import { Dropdown, Button, HStack } from '@navikt/ds-react';
+import { Dropdown, Button, HStack, Tooltip } from '@navikt/ds-react';
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { BodyShortSmall } from '../../../../../Felles/Visningskomponenter/Tekster';
 import styled from 'styled-components';
@@ -9,6 +9,8 @@ import { EnsligErrorMessage } from '../../../../../Felles/ErrorMessage/EnsligErr
 const StyledDropdownMenu = styled(Dropdown.Menu)`
     width: 23rem;
 `;
+
+const TASTATURTAST_K = 'k';
 
 const BeregnetInntektKalkulator: FC<{
     leggTilBeregnetInntektTekstIBegrunnelse: (årsinntekt: number) => void;
@@ -60,7 +62,7 @@ const BeregnetInntektKalkulator: FC<{
 
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => {
-            if (event.metaKey && event.key === 'k') {
+            if (event.metaKey && event.key === TASTATURTAST_K) {
                 event.preventDefault();
                 settErDropdownÅpen((prev) => !prev);
             }
@@ -75,12 +77,14 @@ const BeregnetInntektKalkulator: FC<{
 
     return (
         <Dropdown open={erDropdownÅpen} onOpenChange={() => handleOnOpenChange(!erDropdownÅpen)}>
-            <Button type="button" as={Dropdown.Toggle} size="small">
-                <CalculatorIcon
-                    title="åpne kalkulator for beregning av pluss/minus 10 prosent forventet månedsinntekt"
-                    fontSize="1.5rem"
-                />
-            </Button>
+            <Tooltip
+                content="Åpne kalkulator for beregning av forventet månedsinntekt"
+                keys={['ctrl', TASTATURTAST_K]}
+            >
+                <Button type="button" as={Dropdown.Toggle} size="small">
+                    <CalculatorIcon aria-hidden fontSize="1.5rem" />
+                </Button>
+            </Tooltip>
             <StyledDropdownMenu>
                 <BodyShortSmall>Legg inn årsinntekt for å regne ut +/- 10 prosent.</BodyShortSmall>
 
