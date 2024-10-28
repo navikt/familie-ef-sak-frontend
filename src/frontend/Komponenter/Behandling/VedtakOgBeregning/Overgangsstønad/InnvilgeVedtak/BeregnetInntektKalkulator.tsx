@@ -10,11 +10,7 @@ const StyledDropdownMenu = styled(Dropdown.Menu)`
     width: 23rem;
 `;
 
-const erMac = /Mac/.test(navigator.userAgent);
-
 const TASTATURTAST_K = 'k';
-const TASTATURTAST_META = erMac ? 'cmd' : 'ctrl';
-const TASTATURTAST_SHIFT = 'Shift';
 
 const BeregnetInntektKalkulator: FC<{
     leggTilBeregnetInntektTekstIBegrunnelse: (årsinntekt: number) => void;
@@ -66,11 +62,7 @@ const BeregnetInntektKalkulator: FC<{
 
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => {
-            if (
-                event.metaKey &&
-                event.getModifierState(TASTATURTAST_SHIFT) &&
-                event.key === TASTATURTAST_K
-            ) {
+            if (event.key === TASTATURTAST_K) {
                 event.preventDefault();
                 settErDropdownÅpen((prev) => !prev);
             }
@@ -87,7 +79,7 @@ const BeregnetInntektKalkulator: FC<{
         <Dropdown open={erDropdownÅpen} onOpenChange={() => handleOnOpenChange(!erDropdownÅpen)}>
             <Tooltip
                 content="Åpne kalkulator for beregning av forventet månedsinntekt"
-                keys={[TASTATURTAST_META, TASTATURTAST_SHIFT, TASTATURTAST_K]}
+                keys={[TASTATURTAST_K]}
             >
                 <Button type="button" as={Dropdown.Toggle} size="small">
                     <CalculatorIcon aria-hidden fontSize="1.5rem" />

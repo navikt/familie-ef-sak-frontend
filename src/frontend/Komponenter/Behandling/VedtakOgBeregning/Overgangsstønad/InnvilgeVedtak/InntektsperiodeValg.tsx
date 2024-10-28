@@ -39,6 +39,7 @@ import { ABorderDivider, AGray50 } from '@navikt/ds-tokens/dist/tokens';
 import { IngenBegrunnelseOppgitt } from './IngenBegrunnelseOppgitt';
 import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
 import BeregnetInntektKalkulator from './BeregnetInntektKalkulator';
+import { formaterTallMedTusenSkille } from '../../../../../App/utils/formatter';
 
 const Container = styled.div`
     padding: 1rem;
@@ -193,11 +194,11 @@ const InntektsperiodeValg: React.FC<Props> = ({
 
     const leggTilBeregnetInntektTekstIBegrunnelse = (årsinntekt: number) => {
         const månedsinntekt = årsinntekt / 12;
-        const minusTi = Math.round(månedsinntekt * 0.9);
-        const plusTi = Math.round(månedsinntekt * 1.1);
+        const minusTi = formaterTallMedTusenSkille(Math.round(månedsinntekt * 0.9));
+        const plusTi = formaterTallMedTusenSkille(Math.round(månedsinntekt * 1.1));
 
         const beregnetInntektTekst = `
-Forventet årsinntekt fra [DATO]: ${årsinntekt} kroner.
+Forventet årsinntekt fra [DATO]: ${formaterTallMedTusenSkille(årsinntekt)} kroner.
    - 10 % ned: ${minusTi} kroner per måned.
    - 10 % opp: ${plusTi} kroner per måned.
 `;
