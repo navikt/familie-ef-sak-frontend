@@ -11,6 +11,7 @@ const StyledDropdownMenu = styled(Dropdown.Menu)`
 `;
 
 const TASTATURTAST_K = 'k';
+const TASTATURTAST_ENTER = 'Enter';
 
 const BeregnetInntektKalkulator: FC<{
     leggTilBeregnetInntektTekstIBegrunnelse: (årsinntekt: number) => void;
@@ -35,7 +36,7 @@ const BeregnetInntektKalkulator: FC<{
     };
 
     const handleRegnUtOgLeggTilTekst = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        if (event.key === 'Enter') {
+        if (event.key === TASTATURTAST_ENTER) {
             event.preventDefault();
             oppdaterÅrsinntekt();
         }
