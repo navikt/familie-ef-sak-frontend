@@ -23,6 +23,7 @@ import {
     Checkbox,
     CheckboxGroup,
     Heading,
+    HStack,
     ReadMore,
     Tooltip,
 } from '@navikt/ds-react';
@@ -37,6 +38,8 @@ import { EInntektstype, inntektsTypeTilKey, inntektsTypeTilTekst } from '../Fell
 import { ABorderDivider, AGray50 } from '@navikt/ds-tokens/dist/tokens';
 import { IngenBegrunnelseOppgitt } from './IngenBegrunnelseOppgitt';
 import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
+import BeregnetInntektKalkulator from './BeregnetInntektKalkulator';
+import { formaterTallMedTusenSkille } from '../../../../../App/utils/formatter';
 
 const Container = styled.div`
     padding: 1rem;
@@ -189,11 +192,34 @@ const InntektsperiodeValg: React.FC<Props> = ({
         }
     };
 
+    const leggTilBeregnetInntektTekstIBegrunnelse = (årsinntekt: number) => {
+        const månedsinntekt = årsinntekt / 12;
+        const minusTi = formaterTallMedTusenSkille(Math.round(månedsinntekt * 0.9));
+        const plusTi = formaterTallMedTusenSkille(Math.round(månedsinntekt * 1.1));
+
+        const beregnetInntektTekst = `
+Forventet årsinntekt fra [DATO]: ${formaterTallMedTusenSkille(årsinntekt)} kroner.
+   - 10 % ned: ${minusTi} kroner per måned.
+   - 10 % opp: ${plusTi} kroner per måned.
+`;
+
+        inntektBegrunnelseState.setValue((prevState) => prevState + beregnetInntektTekst);
+    };
+
     return (
         <Container>
-            <Heading size="small" level="5">
-                Inntekt
-            </Heading>
+            <HStack justify="space-between">
+                <Heading size="small" level="5">
+                    Inntekt
+                </Heading>
+                {behandlingErRedigerbar && (
+                    <BeregnetInntektKalkulator
+                        leggTilBeregnetInntektTekstIBegrunnelse={
+                            leggTilBeregnetInntektTekstIBegrunnelse
+                        }
+                    />
+                )}
+            </HStack>
             {!behandlingErRedigerbar && inntektBegrunnelseState.value === '' ? (
                 <IngenBegrunnelseOppgitt />
             ) : (
