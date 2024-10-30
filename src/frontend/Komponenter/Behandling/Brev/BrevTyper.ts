@@ -13,7 +13,7 @@ export type FritekstBlokk = {
     _type: 'fritekstområde';
     innhold: { id: string };
 };
-type DelmalBlokk = {
+export type DelmalBlokk = {
     _type: 'delmalBlock';
     innhold: Delmal;
 };
@@ -41,13 +41,13 @@ export type BrevmenyGruppe =
 export const erDelmalGruppe = (e: BrevmenyGruppe): e is DelmalGruppe => e.type === 'DelmalGruppe';
 
 export interface DokumentMal {
-    delmalerSortert: Delmal[];
     brevmenyBlokker: BrevmenyBlokk[];
 }
 
 export interface AlleFlettefelter {
     flettefeltReferanse: Flettefelt[];
 }
+
 interface Flettefelt {
     felt: string;
     erFritektsfelt?: boolean;
@@ -74,6 +74,7 @@ export interface Valgmulighet {
 export interface Flettefelter {
     flettefelt: Flettefeltreferanse[];
 }
+
 export interface ValgFelt {
     valgMuligheter: Valgmulighet[];
     valgfeltVisningsnavn: string;

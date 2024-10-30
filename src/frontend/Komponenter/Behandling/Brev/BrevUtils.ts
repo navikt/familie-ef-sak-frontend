@@ -9,6 +9,7 @@ import {
     erFritekstblokk,
     FlettefeltMedVerdi,
     ValgtFelt,
+    erDelmalBlokk,
 } from './BrevTyper';
 import { Dispatch, SetStateAction } from 'react';
 import { DelmalStore, FlettefeltStore, ValgfeltStore } from '../../../App/hooks/useVerdierForBrev';
@@ -105,6 +106,12 @@ export const initFlettefelterMedVerdi = (
         automatiskUtfylt: !!flettefeltStore[flettefeltReferanse.felt],
     }));
 
+function finnDelmal(blokk: BrevmenyBlokk): Delmal | undefined {
+    if (erDelmalBlokk(blokk)) {
+        return blokk.innhold;
+    }
+}
+
 export const initValgteFelt = (
     valgteFeltFraMellomlager: ValgtFelt | undefined,
     brevStruktur: BrevStruktur,
@@ -112,8 +119,14 @@ export const initValgteFelt = (
 ): ValgtFelt => {
     const valgfeltMellomlager = Object.entries(valgteFeltFraMellomlager || {}).reduce(
         (acc, [valgfeltApiNavn, mulighet]) => {
+            const delmaler = brevStruktur.dokument.brevmenyBlokker
+                .map((blokk) => {
+                    return finnDelmal(blokk);
+                })
+                .filter((delmal) => delmal !== undefined) as Delmal[];
+
             const utledOppdaterteFlettefeltFraSanity = () =>
-                brevStruktur.dokument.delmalerSortert.flatMap((delmal) => {
+                delmaler.flatMap((delmal) => {
                     const valgfelt = delmal.delmalValgfelt.find(
                         (valgFelt) => valgFelt.valgFeltApiNavn === valgfeltApiNavn
                     );
@@ -139,7 +152,13 @@ export const initValgteFelt = (
     );
 
     const automatiskeValgfelt = Object.entries(valgfeltStore).reduce((acc, [valgfelt, valg]) => {
-        const delmal = brevStruktur.dokument.delmalerSortert.find((delmal) =>
+        const delmaler = brevStruktur.dokument.brevmenyBlokker
+            .map((blokk) => {
+                return finnDelmal(blokk);
+            })
+            .filter((delmal) => delmal !== undefined) as Delmal[];
+
+        const delmal = delmaler.find((delmal) =>
             delmal.delmalValgfelt.some((v) => v.valgFeltApiNavn === valgfelt)
         );
 
@@ -157,8 +176,13 @@ export const harValgfeltFeil = (
     brevStruktur: BrevStruktur,
     settFeil: Dispatch<SetStateAction<string>>
 ): boolean => {
-    const harFeil = Object.entries(valgteFelt).some(([valgfeltApiNavn, valgtMulighet]) =>
-        brevStruktur.dokument.delmalerSortert.some((delmal) => {
+    const harFeil = Object.entries(valgteFelt).some(([valgfeltApiNavn, valgtMulighet]) => {
+        const delmaler = brevStruktur.dokument.brevmenyBlokker
+            .map((blokk) => {
+                return finnDelmal(blokk);
+            })
+            .filter((delmal) => delmal !== undefined) as Delmal[];
+        return delmaler.some((delmal) => {
             const valgfeltFraMal = delmal.delmalValgfelt.find(
                 (valgFelt) => valgFelt.valgFeltApiNavn === valgfeltApiNavn
             );
@@ -176,8 +200,8 @@ export const harValgfeltFeil = (
                 }
             }
             return false;
-        })
-    );
+        });
+    });
 
     if (!harFeil) {
         settFeil('');
