@@ -112,6 +112,15 @@ function finnDelmal(blokk: BrevmenyBlokk): Delmal | undefined {
     }
 }
 
+function trekkUtDelmaler(brevStruktur: BrevStruktur) {
+    const delmaler = brevStruktur.dokument.brevmenyBlokker
+        .map((blokk) => {
+            return finnDelmal(blokk);
+        })
+        .filter((delmal) => delmal !== undefined) as Delmal[];
+    return delmaler;
+}
+
 export const initValgteFelt = (
     valgteFeltFraMellomlager: ValgtFelt | undefined,
     brevStruktur: BrevStruktur,
@@ -152,11 +161,7 @@ export const initValgteFelt = (
     );
 
     const automatiskeValgfelt = Object.entries(valgfeltStore).reduce((acc, [valgfelt, valg]) => {
-        const delmaler = brevStruktur.dokument.brevmenyBlokker
-            .map((blokk) => {
-                return finnDelmal(blokk);
-            })
-            .filter((delmal) => delmal !== undefined) as Delmal[];
+        const delmaler = trekkUtDelmaler(brevStruktur);
 
         const delmal = delmaler.find((delmal) =>
             delmal.delmalValgfelt.some((v) => v.valgFeltApiNavn === valgfelt)
