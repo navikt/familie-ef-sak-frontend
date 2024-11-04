@@ -128,11 +128,7 @@ export const initValgteFelt = (
 ): ValgtFelt => {
     const valgfeltMellomlager = Object.entries(valgteFeltFraMellomlager || {}).reduce(
         (acc, [valgfeltApiNavn, mulighet]) => {
-            const delmaler = brevStruktur.dokument.brevmenyBlokker
-                .map((blokk) => {
-                    return finnDelmal(blokk);
-                })
-                .filter((delmal) => delmal !== undefined) as Delmal[];
+            const delmaler = trekkUtDelmaler(brevStruktur);
 
             const utledOppdaterteFlettefeltFraSanity = () =>
                 delmaler.flatMap((delmal) => {
@@ -182,11 +178,7 @@ export const harValgfeltFeil = (
     settFeil: Dispatch<SetStateAction<string>>
 ): boolean => {
     const harFeil = Object.entries(valgteFelt).some(([valgfeltApiNavn, valgtMulighet]) => {
-        const delmaler = brevStruktur.dokument.brevmenyBlokker
-            .map((blokk) => {
-                return finnDelmal(blokk);
-            })
-            .filter((delmal) => delmal !== undefined) as Delmal[];
+        const delmaler = trekkUtDelmaler(brevStruktur);
         return delmaler.some((delmal) => {
             const valgfeltFraMal = delmal.delmalValgfelt.find(
                 (valgFelt) => valgFelt.valgFeltApiNavn === valgfeltApiNavn
