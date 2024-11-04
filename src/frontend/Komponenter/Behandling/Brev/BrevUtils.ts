@@ -5,11 +5,11 @@ import {
     Delmal,
     DelmalGruppe,
     DokumentNavn,
+    erDelmalBlokk,
     erDelmalGruppe,
     erFritekstblokk,
     FlettefeltMedVerdi,
     ValgtFelt,
-    erDelmalBlokk,
 } from './BrevTyper';
 import { Dispatch, SetStateAction } from 'react';
 import { DelmalStore, FlettefeltStore, ValgfeltStore } from '../../../App/hooks/useVerdierForBrev';
@@ -106,20 +106,19 @@ export const initFlettefelterMedVerdi = (
         automatiskUtfylt: !!flettefeltStore[flettefeltReferanse.felt],
     }));
 
-function finnDelmal(blokk: BrevmenyBlokk): Delmal | undefined {
+const finnDelmal = (blokk: BrevmenyBlokk): Delmal | undefined => {
     if (erDelmalBlokk(blokk)) {
         return blokk.innhold;
     }
-}
+};
 
-function trekkUtDelmaler(brevStruktur: BrevStruktur) {
-    const delmaler = brevStruktur.dokument.brevmenyBlokker
+const trekkUtDelmaler = (brevStruktur: BrevStruktur) => {
+    return brevStruktur.dokument.brevmenyBlokker
         .map((blokk) => {
             return finnDelmal(blokk);
         })
         .filter((delmal) => delmal !== undefined) as Delmal[];
-    return delmaler;
-}
+};
 
 export const initValgteFelt = (
     valgteFeltFraMellomlager: ValgtFelt | undefined,
@@ -140,9 +139,7 @@ export const initValgteFelt = (
                         (valgmulighet) => valgmulighet.valgmulighet === mulighet.valgmulighet
                     );
 
-                    const flettefeltFraSanity = valgtValgmulighet?.flettefelter || [];
-
-                    return flettefeltFraSanity;
+                    return valgtValgmulighet?.flettefelter || [];
                 });
 
             return {
