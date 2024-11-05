@@ -18,9 +18,15 @@ export interface Svarsalternativ {
 
 export type SvarMapping = Record<SvarId, Svarsalternativ>;
 
+export enum RegelVersjon {
+    GJELDENDE = 'GJELDENDE',
+    HISTORISK = 'HISTORISK',
+}
+
 export interface Regel {
     regelId: string;
     svarMapping: SvarMapping;
+    versjon: RegelVersjon;
 }
 
 export type Regler = {

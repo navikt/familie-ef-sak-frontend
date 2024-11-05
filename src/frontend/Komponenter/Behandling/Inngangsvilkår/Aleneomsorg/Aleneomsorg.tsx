@@ -57,6 +57,7 @@ export const Aleneomsorg: React.FC<VilkårPropsMedBehandling> = ({
                 if (!vurdering) return null;
 
                 const erSisteBarn = indeks === grunnlag.barnMedSamvær.length - 1;
+
                 return (
                     <VilkårpanelInnhold
                         key={barn.barnId}

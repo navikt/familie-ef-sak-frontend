@@ -11,6 +11,7 @@ import {
 import {
     begrunnelseErPåkrevdOgUtfyllt,
     erAlleDelvilkårBesvarte,
+    filtrerHistoriskeDelvilkår,
     hentSvarsalternativ,
     kanHaBegrunnelse,
     kopierBegrunnelse,
@@ -48,7 +49,7 @@ const EndreVurderingComponent: FC<{
     const { nullstillIkkePersistertKomponent, settIkkePersistertKomponent } = useApp();
     const { settPanelITilstand } = useEkspanderbareVilkårpanelContext();
     const [delvilkårsvurderinger, settDelvilkårsvurderinger] = useState<IDelvilkår[]>(
-        vurdering.delvilkårsvurderinger
+        filtrerHistoriskeDelvilkår(vurdering.delvilkårsvurderinger, regler)
     );
 
     const oppdaterVilkårsvar = (index: number, nySvarArray: Vurdering[]) => {
@@ -141,21 +142,22 @@ const EndreVurderingComponent: FC<{
                 });
             }}
         >
-            {delvilkårsvurderinger.map((delvikår, delvikårIndex) => {
-                return delvikår.vurderinger.map((svar) => {
+            {delvilkårsvurderinger.map((delvilkår, delvilkårIndex) => {
+                return delvilkår.vurderinger.map((svar) => {
                     const regel = regler[svar.regelId];
+
                     return (
                         <DelvilkårContainer key={regel.regelId}>
                             <Delvilkår
                                 vurdering={svar}
                                 regel={regel}
                                 settVurdering={(nyVurdering) =>
-                                    oppdaterSvar(delvikår.vurderinger, delvikårIndex, nyVurdering)
+                                    oppdaterSvar(delvilkår.vurderinger, delvilkårIndex, nyVurdering)
                                 }
                             />
                             <Begrunnelse
                                 onChange={(begrunnelse) =>
-                                    oppdaterBegrunnelse(delvikår.vurderinger, delvikårIndex, {
+                                    oppdaterBegrunnelse(delvilkår.vurderinger, delvilkårIndex, {
                                         ...svar,
                                         begrunnelse,
                                     })
@@ -175,4 +177,5 @@ const EndreVurderingComponent: FC<{
         </form>
     );
 };
+
 export default EndreVurderingComponent;

@@ -1,4 +1,12 @@
-import { Begrunnelse, BegrunnelseRegel, Regel, RegelId, Regler, Svarsalternativ } from './typer';
+import {
+    Begrunnelse,
+    BegrunnelseRegel,
+    Regel,
+    RegelId,
+    RegelVersjon,
+    Regler,
+    Svarsalternativ,
+} from './typer';
 import { IDelvilkår, Vurdering } from '../Inngangsvilkår/vilkår';
 import { harIkkeVerdi, harVerdi } from '../../../App/utils/utils';
 
@@ -78,6 +86,16 @@ export function erAlleDelvilkårBesvarte(
 
     return erPåSisteNod && harBesvartAllePåkrevdeBegrunnelser;
 }
+
+export const filtrerHistoriskeDelvilkår = (
+    delvilkårListe: IDelvilkår[],
+    regler: Regler
+): IDelvilkår[] =>
+    delvilkårListe.filter((delvilkår) =>
+        delvilkår.vurderinger.every(
+            (vurdering) => regler[vurdering.regelId].versjon === RegelVersjon.GJELDENDE
+        )
+    );
 
 export function leggTilNesteIdHvis(
     nesteRegelId: RegelId,
