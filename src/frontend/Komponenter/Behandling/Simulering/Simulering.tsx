@@ -22,6 +22,7 @@ import { Behandling } from '../../../App/typer/fagsak';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { BodyLongSmall } from '../../../Felles/Visningskomponenter/Tekster';
 import { ASurfaceWarningSubtle, ASurfaceWarningSubtleHover } from '@navikt/ds-tokens/dist/tokens';
+import { AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
 const Container = styled.div`
     padding: 2rem;
     display: flex;
@@ -104,10 +105,10 @@ const Simulering: React.FC<{
             <VStack gap="4">
                 <SimuleringOversikt simulering={simuleringsresultat} />
                 {harManuellePosteringer && (
-                    <AlertWarning variant={'warning'}>
+                    <AlertInfo>
                         Det finnes manuelle posteringer tilknyttet tidligere behandling.
                         Simuleringsbildet kan derfor være ufullstendig.
-                    </AlertWarning>
+                    </AlertInfo>
                 )}
                 {harKreditorPosteringerForOvergangsstønad && (
                     <ExpansionCardWarning aria-label={'Kreditortrekk'} size={'small'}>
