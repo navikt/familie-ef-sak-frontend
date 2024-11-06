@@ -102,13 +102,6 @@ const Simulering: React.FC<{
     return (
         <Container>
             <VStack gap="4">
-                {harIngenResultater && (
-                    <AlertWarning variant={'info'}>
-                        Simuleringstjenesten i økonomi ga ingen resultater for dette vedtaket.
-                        Simuleringsresultatet vil bare foreligge dersom det er reelle
-                        utbetalinger/endring i utbetalinger tilbake i tid, inklusiv nåværende måned.
-                    </AlertWarning>
-                )}
                 <SimuleringOversikt simulering={simuleringsresultat} />
                 {harManuellePosteringer && (
                     <AlertWarning variant={'warning'}>
@@ -177,6 +170,13 @@ const Simulering: React.FC<{
                     perioder={simuleringTabellRader}
                     årsvelger={{ valgtÅr: år, settÅr: settÅr, muligeÅr: muligeÅr }}
                 />
+                {harIngenResultater && (
+                    <AlertWarning variant={'info'}>
+                        Simuleringstjenesten i økonomi ga ingen resultater for dette vedtaket.
+                        Simuleringsresultatet vil bare foreligge dersom det er reelle
+                        utbetalinger/endring i utbetalinger tilbake i tid, inklusiv nåværende måned.
+                    </AlertWarning>
+                )}
             </VStack>
             <Sanksjonsperiode sanksjonertVedtak={lagretSanksjonertVedtak} />
             {harFeilutbetaling && (
