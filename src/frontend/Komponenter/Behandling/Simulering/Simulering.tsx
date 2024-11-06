@@ -82,6 +82,8 @@ const Simulering: React.FC<{
 
     const harFeilutbetaling = simuleringsresultat.feilutbetaling > 0;
 
+    const harIngenResultater = simuleringsresultat.perioder.length === 0;
+
     const skalViseValgForAutomatiskBehandlingUnder4xRettsgebyr =
         simuleringsresultat.feilutbetaling < RETTSGEBYR_BELØP * 4 &&
         simuleringsresultat.etterbetaling === 0 &&
@@ -100,6 +102,13 @@ const Simulering: React.FC<{
     return (
         <Container>
             <VStack gap="4">
+                {harIngenResultater && (
+                    <AlertWarning variant={'info'}>
+                        Simuleringstjenesten i økonomi ga ingen resultater for dette vedtaket.
+                        Simuleringsresultatet vil bare foreligge dersom det er reelle
+                        utbetalinger/endring i utbetalinger tilbake i tid, inklusiv nåværende måned.
+                    </AlertWarning>
+                )}
                 <SimuleringOversikt simulering={simuleringsresultat} />
                 {harManuellePosteringer && (
                     <AlertWarning variant={'warning'}>
