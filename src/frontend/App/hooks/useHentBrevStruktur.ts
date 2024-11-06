@@ -11,7 +11,7 @@ export const useHentBrevStruktur = (
     const [brevStruktur, settBrevStruktur] = useState<Ressurs<BrevStruktur>>(byggTomRessurs());
     const { axiosRequest } = useApp();
     const { toggles } = useToggles();
-    const felterVersion = toggles[ToggleName.brukBrevEndepunktFelterV2] ? `/v2` : '';
+    const felterVersion = toggles[ToggleName.brukBrevEndepunktFelterV2] ? `/v3` : '';
     const url = `/familie-brev/api/${datasett}/avansert-dokument/bokmaal/${brevMal}/felter${felterVersion}`;
 
     useEffect(() => {
