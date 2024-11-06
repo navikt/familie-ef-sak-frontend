@@ -152,6 +152,7 @@ export const hvorMyeSammenTilTekst: Record<EHvorMyeSammen, string> = {
 export enum ESkalBarnetBoHosSøker {
     ja = 'ja',
     jaMenSamarbeiderIkke = 'jaMenSamarbeiderIkke',
+    neiMenAvtaleDeltBosted = 'neiMenAvtaleDeltBosted',
     nei = 'nei',
 }
 
@@ -159,6 +160,8 @@ export const skalBarnetBoHosSøkerTilTekst: Record<ESkalBarnetBoHosSøker, strin
     ja: 'Ja, og vi har eller skal registrere adressen i Folkeregisteret',
     nei: 'Nei',
     jaMenSamarbeiderIkke: 'Ja, men den andre forelderen samarbeider ikke om adresseendring',
+    neiMenAvtaleDeltBosted:
+        'Nei, barnet har adresse hos den andre forelderen fordi vi har avtale om delt fast bosted',
 };
 
 export enum EDelvilkårÅrsak {
