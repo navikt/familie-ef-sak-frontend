@@ -105,10 +105,10 @@ const Simulering: React.FC<{
             <VStack gap="4">
                 <SimuleringOversikt simulering={simuleringsresultat} />
                 {harManuellePosteringer && (
-                    <AlertInfo>
+                    <AlertWarning variant={'warning'}>
                         Det finnes manuelle posteringer tilknyttet tidligere behandling.
                         Simuleringsbildet kan derfor være ufullstendig.
-                    </AlertInfo>
+                    </AlertWarning>
                 )}
                 {harKreditorPosteringerForOvergangsstønad && (
                     <ExpansionCardWarning aria-label={'Kreditortrekk'} size={'small'}>
@@ -172,11 +172,11 @@ const Simulering: React.FC<{
                     årsvelger={{ valgtÅr: år, settÅr: settÅr, muligeÅr: muligeÅr }}
                 />
                 {harIngenResultater && (
-                    <AlertWarning variant={'info'}>
+                    <AlertInfo>
                         Simuleringstjenesten i økonomi ga ingen resultater for dette vedtaket.
                         Simuleringsresultatet vil bare foreligge dersom det er reelle
                         utbetalinger/endring i utbetalinger tilbake i tid, inklusiv nåværende måned.
-                    </AlertWarning>
+                    </AlertInfo>
                 )}
             </VStack>
             <Sanksjonsperiode sanksjonertVedtak={lagretSanksjonertVedtak} />
