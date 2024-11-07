@@ -83,8 +83,6 @@ const Simulering: React.FC<{
 
     const harFeilutbetaling = simuleringsresultat.feilutbetaling > 0;
 
-    const harIngenResultater = simuleringsresultat.perioder.length === 0;
-
     const skalViseValgForAutomatiskBehandlingUnder4xRettsgebyr =
         simuleringsresultat.feilutbetaling < RETTSGEBYR_BELØP * 4 &&
         simuleringsresultat.etterbetaling === 0 &&
@@ -100,103 +98,95 @@ const Simulering: React.FC<{
             ? simuleringsresultat.sumKreditorPosteringer !== 0
             : false;
 
+    if (simuleringsresultat.perioder.length === 0) {
+        return (
+            <AlertInfo>
+                I dette vedtaket er det ingen nye utbetalinger tilbake i tid og/eller i inneværende
+                måned. Det er derfor det ikke blir vist simulering i dette vedtaket.
+            </AlertInfo>
+        );
+    }
+
     return (
         <Container>
-            {harIngenResultater ? (
-                <AlertInfo>
-                    I dette vedtaket er det ingen nye utbetalinger tilbake i tid og/eller i
-                    inneværende måned. Det er derfor det ikke blir vist simulering i dette vedtaket.
-                </AlertInfo>
-            ) : (
-                <>
-                    <VStack gap="4">
-                        <SimuleringOversikt simulering={simuleringsresultat} />
-                        {harManuellePosteringer && (
-                            <AlertWarning variant={'warning'}>
-                                Det finnes manuelle posteringer tilknyttet tidligere behandling.
-                                Simuleringsbildet kan derfor være ufullstendig.
-                            </AlertWarning>
-                        )}
-                        {harKreditorPosteringerForOvergangsstønad && (
-                            <ExpansionCardWarning aria-label={'Kreditortrekk'} size={'small'}>
-                                <ExpansionCard.Header>
-                                    <ExpansionCard.Title>
-                                        Bruker har kreditortrekk (
-                                        {formaterIsoDato(simuleringsresultat.tidSimuleringHentet)})
-                                    </ExpansionCard.Title>
-                                    <ExpansionCard.Description>
-                                        Hvis bruker har feilutbetalt overgangsstønad, må du sjekke
-                                        om totalt feilutbetalt beløp og månedsbeløpene stemmer
-                                        overens.
-                                    </ExpansionCard.Description>
-                                </ExpansionCard.Header>
-                                <ExpansionCard.Content>
-                                    <List>
-                                        <List.Item>
-                                            <BodyLongSmall>
-                                                Hvis ja, kan du behandle saken på vanlig måte
-                                                (varsle eller fatte vedtak)
-                                            </BodyLongSmall>
-                                        </List.Item>
-                                        <List.Item>
-                                            <BodyLongSmall>
-                                                Hvis nei, kontakt NØS og spør om bruker har
-                                                kreditortrekk som ikke er utbetalt til kreditor. Be
-                                                om at kreditortrekket ikke utbetales til kreditor.
-                                                Slik kan vi gjøre feilutbetalingssaken lavere for
-                                                bruker. Behold saken på egen benk. Når NØS har gitt
-                                                tilbakemelding og kravgrunnlaget er oppdatert, kan
-                                                saken behandles på vanlig måte.
-                                            </BodyLongSmall>
-                                        </List.Item>
-                                    </List>
-                                    <VStack gap={'2'}>
-                                        <BodyLongSmall>
-                                            Du kan kontakte NØS via Gosys-oppgave eller på telefon.
-                                        </BodyLongSmall>
-                                        <div>
-                                            <BodyLongSmall>Gosys-oppgave til NØS:</BodyLongSmall>
-                                            <BodyLongSmall>Tema: Regnskap/utbetaling</BodyLongSmall>
-                                            <BodyLongSmall>
-                                                Gjelder: Velg aktuell ytelse
-                                            </BodyLongSmall>
-                                            <BodyLongSmall>
-                                                Oppgavetype: Vurder henvendelse
-                                            </BodyLongSmall>
-                                        </div>
-                                        <BodyLongSmall>
-                                            Tlf. nr. 40003700, åpningstid kl. 10:00 - 14:00.
-                                        </BodyLongSmall>
-                                    </VStack>
-                                </ExpansionCard.Content>
-                            </ExpansionCardWarning>
-                        )}
-                        {finnesFlereTilbakekrevingsvalgRegistrertSisteÅr.status ===
-                            RessursStatus.SUKSESS &&
-                            finnesFlereTilbakekrevingsvalgRegistrertSisteÅr.data &&
-                            skalViseValgForAutomatiskBehandlingUnder4xRettsgebyr &&
-                            behandlingErRedigerbar && (
-                                <AlertWarning variant={'warning'}>
-                                    Det er opprettet automatisk behandling av tilbakekreving minst 2
-                                    ganger i løpet av de siste 12 månedene. Vurder om beløpet skal
-                                    betales tilbake.
-                                </AlertWarning>
-                            )}
-                        <SimuleringTabell
-                            perioder={simuleringTabellRader}
-                            årsvelger={{ valgtÅr: år, settÅr: settÅr, muligeÅr: muligeÅr }}
-                        />
-                    </VStack>
-                    <Sanksjonsperiode sanksjonertVedtak={lagretSanksjonertVedtak} />
-                    {harFeilutbetaling && (
-                        <Tilbakekreving
-                            behandlingId={behandlingId}
-                            skalViseValgForAutomatiskBehandlingUnder4xRettsgebyr={
-                                skalViseValgForAutomatiskBehandlingUnder4xRettsgebyr
-                            }
-                        />
+            <VStack gap="4">
+                <SimuleringOversikt simulering={simuleringsresultat} />
+                {harManuellePosteringer && (
+                    <AlertWarning variant={'warning'}>
+                        Det finnes manuelle posteringer tilknyttet tidligere behandling.
+                        Simuleringsbildet kan derfor være ufullstendig.
+                    </AlertWarning>
+                )}
+                {harKreditorPosteringerForOvergangsstønad && (
+                    <ExpansionCardWarning aria-label={'Kreditortrekk'} size={'small'}>
+                        <ExpansionCard.Header>
+                            <ExpansionCard.Title>
+                                Bruker har kreditortrekk (
+                                {formaterIsoDato(simuleringsresultat.tidSimuleringHentet)})
+                            </ExpansionCard.Title>
+                            <ExpansionCard.Description>
+                                Hvis bruker har feilutbetalt overgangsstønad, må du sjekke om totalt
+                                feilutbetalt beløp og månedsbeløpene stemmer overens.
+                            </ExpansionCard.Description>
+                        </ExpansionCard.Header>
+                        <ExpansionCard.Content>
+                            <List>
+                                <List.Item>
+                                    <BodyLongSmall>
+                                        Hvis ja, kan du behandle saken på vanlig måte (varsle eller
+                                        fatte vedtak)
+                                    </BodyLongSmall>
+                                </List.Item>
+                                <List.Item>
+                                    <BodyLongSmall>
+                                        Hvis nei, kontakt NØS og spør om bruker har kreditortrekk
+                                        som ikke er utbetalt til kreditor. Be om at kreditortrekket
+                                        ikke utbetales til kreditor. Slik kan vi gjøre
+                                        feilutbetalingssaken lavere for bruker. Behold saken på egen
+                                        benk. Når NØS har gitt tilbakemelding og kravgrunnlaget er
+                                        oppdatert, kan saken behandles på vanlig måte.
+                                    </BodyLongSmall>
+                                </List.Item>
+                            </List>
+                            <VStack gap={'2'}>
+                                <BodyLongSmall>
+                                    Du kan kontakte NØS via Gosys-oppgave eller på telefon.
+                                </BodyLongSmall>
+                                <div>
+                                    <BodyLongSmall>Gosys-oppgave til NØS:</BodyLongSmall>
+                                    <BodyLongSmall>Tema: Regnskap/utbetaling</BodyLongSmall>
+                                    <BodyLongSmall>Gjelder: Velg aktuell ytelse</BodyLongSmall>
+                                    <BodyLongSmall>Oppgavetype: Vurder henvendelse</BodyLongSmall>
+                                </div>
+                                <BodyLongSmall>
+                                    Tlf. nr. 40003700, åpningstid kl. 10:00 - 14:00.
+                                </BodyLongSmall>
+                            </VStack>
+                        </ExpansionCard.Content>
+                    </ExpansionCardWarning>
+                )}
+                {finnesFlereTilbakekrevingsvalgRegistrertSisteÅr.status === RessursStatus.SUKSESS &&
+                    finnesFlereTilbakekrevingsvalgRegistrertSisteÅr.data &&
+                    skalViseValgForAutomatiskBehandlingUnder4xRettsgebyr &&
+                    behandlingErRedigerbar && (
+                        <AlertWarning variant={'warning'}>
+                            Det er opprettet automatisk behandling av tilbakekreving minst 2 ganger
+                            i løpet av de siste 12 månedene. Vurder om beløpet skal betales tilbake.
+                        </AlertWarning>
                     )}
-                </>
+                <SimuleringTabell
+                    perioder={simuleringTabellRader}
+                    årsvelger={{ valgtÅr: år, settÅr: settÅr, muligeÅr: muligeÅr }}
+                />
+            </VStack>
+            <Sanksjonsperiode sanksjonertVedtak={lagretSanksjonertVedtak} />
+            {harFeilutbetaling && (
+                <Tilbakekreving
+                    behandlingId={behandlingId}
+                    skalViseValgForAutomatiskBehandlingUnder4xRettsgebyr={
+                        skalViseValgForAutomatiskBehandlingUnder4xRettsgebyr
+                    }
+                />
             )}
         </Container>
     );
