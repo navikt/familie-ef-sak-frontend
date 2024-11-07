@@ -104,9 +104,8 @@ const Simulering: React.FC<{
         <Container>
             {harIngenResultater ? (
                 <AlertInfo>
-                    Simuleringstjenesten i økonomi ga ingen resultater for dette vedtaket.
-                    Simuleringsresultatet vil kun foreligge dersom det er reelle utbetalinger eller
-                    endringer i utbetalinger tilbake i tid, inkludert nåværende måned.
+                    I dette vedtaket er det ingen nye utbetalinger tilbake i tid og/eller i
+                    inneværende måned. Det er derfor det ikke blir vist simulering i dette vedtaket.
                 </AlertInfo>
             ) : (
                 <>
