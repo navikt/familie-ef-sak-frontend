@@ -22,6 +22,7 @@ import { Behandling } from '../../../App/typer/fagsak';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { BodyLongSmall } from '../../../Felles/Visningskomponenter/Tekster';
 import { ASurfaceWarningSubtle, ASurfaceWarningSubtleHover } from '@navikt/ds-tokens/dist/tokens';
+import { AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
 const Container = styled.div`
     padding: 2rem;
     display: flex;
@@ -96,6 +97,17 @@ const Simulering: React.FC<{
         simuleringsresultat.sumKreditorPosteringer
             ? simuleringsresultat.sumKreditorPosteringer !== 0
             : false;
+
+    if (simuleringsresultat.perioder.length === 0) {
+        return (
+            <Container>
+                <AlertInfo>
+                    I dette vedtaket er det ingen nye utbetalinger tilbake i tid og/eller i
+                    inneværende måned. Det er derfor det ikke blir vist simulering i dette vedtaket.
+                </AlertInfo>
+            </Container>
+        );
+    }
 
     return (
         <Container>
