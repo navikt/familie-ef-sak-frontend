@@ -100,10 +100,12 @@ const Simulering: React.FC<{
 
     if (simuleringsresultat.perioder.length === 0) {
         return (
-            <AlertInfo>
-                I dette vedtaket er det ingen nye utbetalinger tilbake i tid og/eller i inneværende
-                måned. Det er derfor det ikke blir vist simulering i dette vedtaket.
-            </AlertInfo>
+            <Container>
+                <AlertInfo>
+                    I dette vedtaket er det ingen nye utbetalinger tilbake i tid og/eller i
+                    inneværende måned. Det er derfor det ikke blir vist simulering i dette vedtaket.
+                </AlertInfo>
+            </Container>
         );
     }
 
