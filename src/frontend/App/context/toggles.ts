@@ -19,5 +19,4 @@ export enum ToggleName {
 
     // Release-toggles
     // Midlertidige toggles - kan fjernes etterhvert
-    brukBrevEndepunktFelterV2 = 'familie.ef.sak.frontend-bruk-brev-endepunkt-felter-v2',
 }
