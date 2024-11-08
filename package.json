@@ -16,7 +16,7 @@
         "lint": "tsc --project ./src/frontend/tsconfig.json --noEmit && eslint './src/**/*.{js,ts,tsx}'",
         "lint:fix": "eslint './src/**/*.{js,ts,tsx}' --fix",
         "test": "vitest run --exclude '**/frontend_production/**'",
-        "postinstall": "husky install",
+        "prepare": "husky install",
         "set-node-options": "NODE_OPTIONS='--import=./node_dist/backend/register.js --es-module-specifier-resolution=node'"
     },
     "lint-staged": {
