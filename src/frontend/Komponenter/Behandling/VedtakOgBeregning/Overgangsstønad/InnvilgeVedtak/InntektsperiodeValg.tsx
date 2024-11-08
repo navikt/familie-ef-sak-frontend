@@ -40,6 +40,10 @@ import { IngenBegrunnelseOppgitt } from './IngenBegrunnelseOppgitt';
 import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
 import BeregnetInntektKalkulator from './BeregnetInntektKalkulator';
 import { formaterTallMedTusenSkille } from '../../../../../App/utils/formatter';
+import {
+    beregnTiProsentReduksjonIMånedsinntekt,
+    beregnTiProsentØkningIMånedsinntekt,
+} from '../../../../../App/hooks/useVerdierForBrev';
 
 const Container = styled.div`
     padding: 1rem;
@@ -193,9 +197,8 @@ const InntektsperiodeValg: React.FC<Props> = ({
     };
 
     const leggTilBeregnetInntektTekstIBegrunnelse = (årsinntekt: number) => {
-        const månedsinntekt = årsinntekt / 12;
-        const minusTi = formaterTallMedTusenSkille(Math.round(månedsinntekt * 0.9));
-        const plusTi = formaterTallMedTusenSkille(Math.round(månedsinntekt * 1.1));
+        const minusTi = beregnTiProsentReduksjonIMånedsinntekt(årsinntekt);
+        const plusTi = beregnTiProsentØkningIMånedsinntekt(årsinntekt);
 
         const beregnetInntektTekst = `
 Forventet årsinntekt fra [DATO]: ${formaterTallMedTusenSkille(årsinntekt)} kroner.
