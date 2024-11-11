@@ -116,7 +116,7 @@ const lagEksterneLenker = (
             });
         }
         eksterneLenker.push({
-            name: '[Admin] Vis gamle behandlinger',
+            name: '[Admin] Åpne behandlinger over 1 mnd gamle',
             href: '/admin/gamle-behandlinger',
         });
     }
