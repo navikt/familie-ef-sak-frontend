@@ -9,7 +9,7 @@
     "scripts": {
         "start": "yarn set-node-options NODE_ENV=production node node_dist/backend/server.js",
         "start:mock": "yarn set-node-options NODE_ENV=development node dev-server/mock-server.js",
-        "start:dev": "tsc && yarn set-node-options NODE_ENV=development node --trace-deprecation node_dist/backend/server.js",
+        "start:dev": "tsc && yarn set-node-options NODE_ENV=development node --trace-deprecation node_dist/backend/server-lokal.js",
         "build": "yarn lint && yarn build:prod",
         "build:dev": "tsc & NODE_ENV=development webpack --config ./build_n_deploy/webpack/webpack.dev.js",
         "build:prod": "tsc & NODE_ENV=production webpack --config ./build_n_deploy/webpack/webpack.prod.js",
