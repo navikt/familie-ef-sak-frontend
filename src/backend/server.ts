@@ -1,87 +1,26 @@
 import './konfigurerApp.js';
 
-import backend, { IApp, ensureAuthenticated } from '@navikt/familie-backend';
-import bodyParser from 'body-parser';
+import backend, { IApp } from '@navikt/familie-backend';
 import path from 'path';
-import webpack from 'webpack';
-import webpackDevMiddleware from 'webpack-dev-middleware';
-import webpackHotMiddleware from 'webpack-hot-middleware';
 
-import {
-    brevProxyUrl,
-    buildPath,
-    endringsloggProxyUrl,
-    sakProxyUrl,
-    sessionConfig,
-} from './config.js';
+import { buildPath, sessionConfig } from './config.js';
 import { prometheusTellere } from './metrikker.js';
-import { addRequestInfo, attachToken, doProxy } from './proxy.js';
-import setupRouter from './router.js';
 import expressStaticGzip from 'express-static-gzip';
-import { logError, logInfo } from '@navikt/familie-logging';
-// @ts-expect-error Spesial-import
-import config from '../../build_n_deploy/webpack/webpack.dev.js';
+import { logInfo } from '@navikt/familie-logging';
+import { setupServerFelles } from './server-felles';
 
-const port = 8000;
-
-backend(sessionConfig, prometheusTellere).then(({ app, azureAuthClient, router }: IApp) => {
-    let middleware;
-
+backend(sessionConfig, prometheusTellere).then((appConfig: IApp) => {
     logInfo(`Starter opp med miljø: ${process.env.NODE_ENV}`);
     logInfo(`Starter opp med buildpath: ${buildPath}`);
 
     if (process.env.NODE_ENV === 'development') {
-        const compiler = webpack(config);
-
-        middleware = webpackDevMiddleware(compiler, {
-            publicPath: config.output.publicPath,
-            writeToDisk: true,
-        });
-
-        app.use(middleware);
-        app.use(webpackHotMiddleware(compiler));
+        throw Error('Kan ikke starte produksjonsserver i development-miljø');
     } else {
-        app.use('/assets', expressStaticGzip(path.join(process.cwd(), 'frontend_production'), {}));
+        appConfig.app.use(
+            '/assets',
+            expressStaticGzip(path.join(process.cwd(), 'frontend_production'), {})
+        );
     }
 
-    app.use(
-        '/familie-ef-sak/api',
-        addRequestInfo(),
-        ensureAuthenticated(azureAuthClient, true),
-        attachToken(azureAuthClient),
-        doProxy(sakProxyUrl)
-    );
-
-    app.use(
-        '/dokument',
-        addRequestInfo(),
-        ensureAuthenticated(azureAuthClient, false),
-        attachToken(azureAuthClient),
-        doProxy(sakProxyUrl)
-    );
-
-    app.use(
-        '/familie-brev/api',
-        addRequestInfo(),
-        ensureAuthenticated(azureAuthClient, true),
-        doProxy(brevProxyUrl)
-    );
-
-    app.use(
-        '/familie-endringslogg',
-        addRequestInfo(),
-        ensureAuthenticated(azureAuthClient, true),
-        doProxy(endringsloggProxyUrl, '')
-    );
-
-    // Sett opp bodyParser og router etter proxy. Spesielt viktig med tanke på større payloads som blir parset av bodyParser
-    app.use(bodyParser.json({ limit: '200mb' }));
-    app.use(bodyParser.urlencoded({ limit: '200mb', extended: true }));
-    app.use('/', setupRouter(azureAuthClient, router));
-
-    app.listen(port, '0.0.0.0', () => {
-        logInfo(`server startet på port ${port}. Build version: ${process.env.APP_VERSION}.`);
-    }).on('error', (err: Error) => {
-        logError(`server startup failed - ${err}`);
-    });
+    setupServerFelles(appConfig);
 });

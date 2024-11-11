@@ -9,14 +9,14 @@
     "scripts": {
         "start": "yarn set-node-options NODE_ENV=production node node_dist/backend/server.js",
         "start:mock": "yarn set-node-options NODE_ENV=development node dev-server/mock-server.js",
-        "start:dev": "tsc && yarn set-node-options NODE_ENV=development node --trace-deprecation node_dist/backend/server.js",
+        "start:dev": "tsc && yarn set-node-options NODE_ENV=development node --trace-deprecation node_dist/backend/server-lokal.js",
         "build": "yarn lint && yarn build:prod",
         "build:dev": "tsc & NODE_ENV=development webpack --config ./build_n_deploy/webpack/webpack.dev.js",
         "build:prod": "tsc & NODE_ENV=production webpack --config ./build_n_deploy/webpack/webpack.prod.js",
         "lint": "tsc --project ./src/frontend/tsconfig.json --noEmit && eslint './src/**/*.{js,ts,tsx}'",
         "lint:fix": "eslint './src/**/*.{js,ts,tsx}' --fix",
         "test": "vitest run --exclude '**/frontend_production/**'",
-        "postinstall": "husky install",
+        "prepare": "husky install",
         "set-node-options": "NODE_OPTIONS='--import=./node_dist/backend/register.js --es-module-specifier-resolution=node'"
     },
     "lint-staged": {
@@ -56,6 +56,7 @@
         "date-fns": "^4.1.0",
         "dotenv": "^16.4.5",
         "express": "^4.21.1",
+        "express-static-gzip": "^2.2.0",
         "file-loader": "^6.2.0",
         "http-proxy-middleware": "^3.0.3",
         "https-proxy-agent": "^7.0.5",
@@ -71,6 +72,7 @@
         "react-select": "^5.8.3",
         "styled-components": "^6.1.13",
         "svg-inline-loader": "^0.8.2",
+        "ts-node": "^10.9.2",
         "use-debounce": "^10.0.4",
         "uuid": "^11.0.3"
     },
@@ -97,7 +99,6 @@
         "eslint-plugin-react": "^7.37.2",
         "eslint-plugin-react-hooks": "5.1.0-rc-06d0b89e-20240801",
         "eslint-webpack-plugin": "^4.2.0",
-        "express-static-gzip": "^2.2.0",
         "fork-ts-checker-webpack-plugin": "^9.0.2",
         "html-webpack-plugin": "^5.6.3",
         "husky": "^9.1.6",
@@ -111,7 +112,6 @@
         "react-refresh": "^0.14.2",
         "style-loader": "^4.0.0",
         "ts-loader": "^9.5.1",
-        "ts-node": "^10.9.2",
         "tsconfig-paths-webpack-plugin": "^4.1.0",
         "typescript": "^5.6.3",
         "vitest": "^2.1.4",
