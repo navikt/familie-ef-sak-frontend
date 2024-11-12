@@ -1,7 +1,6 @@
 import React from 'react';
 import { Dokumentinfo } from '../../../App/typer/dokumentliste';
 import { formaterNullableIsoDatoTid } from '../../../App/utils/formatter';
-import { LogiskeVedlegg } from './LogiskeVedlegg';
 import { Arkivtema, arkivtemaerTilTekst } from '../../../App/typer/arkivtema';
 import { tekstMapping } from '../../../App/utils/tekstmapping';
 import {
@@ -11,15 +10,9 @@ import {
 import styled from 'styled-components';
 import { skalViseLenke } from '../utils';
 import { PadlockLockedIcon } from '@navikt/aksel-icons';
-import { tittelMedUrlGodkjenteTegn } from '../../../App/utils/utils';
 import { Table } from '@navikt/ds-react';
 import { JournalpostTag } from '../../Behandling/Høyremeny/Dokumentliste';
-
-const HovedLenke = styled.a`
-    &:visited {
-        color: purple;
-    }
-`;
+import { Dokumenttittel } from './Dokumenttittel';
 
 export const IkkeTilgang = styled.div`
     display: flex;
@@ -41,17 +34,7 @@ export const HovedTabellrad: React.FC<{ dokument: Dokumentinfo; erKlikketId: str
             <Table.DataCell>{utledAvsenderMottakerDetaljer(dokument)}</Table.DataCell>
             <Table.DataCell>
                 {skalViseLenke(dokument) ? (
-                    <>
-                        <HovedLenke
-                            key={dokument.journalpostId}
-                            href={`/dokument/journalpost/${dokument.journalpostId}/dokument-pdf/${dokument.dokumentinfoId}/${tittelMedUrlGodkjenteTegn(dokument.tittel)}`}
-                            target={'_blank'}
-                            rel={'noreferrer'}
-                        >
-                            {dokument.tittel}
-                        </HovedLenke>
-                        <LogiskeVedlegg logiskeVedlegg={dokument.logiskeVedlegg} />
-                    </>
+                    <Dokumenttittel dokument={dokument} />
                 ) : (
                     <>
                         <PadlockLockedIcon title="Mangler tilgang til dokument" />
