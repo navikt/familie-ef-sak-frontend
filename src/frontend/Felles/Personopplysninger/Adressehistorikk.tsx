@@ -122,6 +122,7 @@ const Adresser: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string; type?: 
         type === AdresseType.BOSTEDADRESSE ? 'Angitt flyttedato' : 'Type',
         'Fra og med',
         'Til og med',
+        '',
     ];
 
     return (
@@ -145,6 +146,7 @@ const Innhold: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string }> = ({
     fagsakPersonId,
 }) => {
     const [beboereAdresseIModal, settBeboereAdresseIModal] = useState<IAdresse>();
+    const [laster, settLaster] = useState<boolean>(false);
     return (
         <>
             <Table.Body>
@@ -172,17 +174,20 @@ const Innhold: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string }> = ({
                             <Table.DataCell>
                                 {formaterNullableIsoDato(adresse.gyldigTilOgMed)}
                             </Table.DataCell>
-
-                            {adresse.type === AdresseType.BOSTEDADRESSE && adresse.erGjeldende && (
-                                <Knapp
-                                    onClick={() => settBeboereAdresseIModal(adresse)}
-                                    variant={'secondary'}
-                                    size={'xsmall'}
-                                    type={'button'}
-                                >
-                                    Se Beboere
-                                </Knapp>
-                            )}
+                            <Table.DataCell>
+                                {adresse.type === AdresseType.BOSTEDADRESSE &&
+                                    adresse.erGjeldende && (
+                                        <Knapp
+                                            onClick={() => settBeboereAdresseIModal(adresse)}
+                                            variant={'secondary'}
+                                            size={'xsmall'}
+                                            type={'button'}
+                                            disabled={laster}
+                                        >
+                                            {laster ? 'Laster...' : 'Se Beboere'}
+                                        </Knapp>
+                                    )}
+                            </Table.DataCell>
                         </Table.Row>
                     );
                 })}
@@ -193,7 +198,7 @@ const Innhold: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string }> = ({
                 onClose={() => settBeboereAdresseIModal(undefined)}
                 ariaLabel={'Tabell over beboere på bostedsadresse.'}
             >
-                <Beboere fagsakPersonId={fagsakPersonId} />
+                <Beboere fagsakPersonId={fagsakPersonId} settLaster={settLaster} />
             </ModalWrapper>
         </>
     );
