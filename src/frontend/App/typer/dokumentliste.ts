@@ -18,4 +18,5 @@ export interface Dokumentinfo {
 
 export interface LogiskVedlegg {
     tittel: string;
+    logiskVedleggId: string;
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { Dokumentinfo } from '../../../App/typer/dokumentliste';
 import { skalViseLenke } from '../utils';
 import { IkkeTilgang } from './Hovedtabellrad';
@@ -6,9 +6,12 @@ import { PadlockLockedIcon } from '@navikt/aksel-icons';
 import { Table } from '@navikt/ds-react';
 import { Dokumenttittel } from './Dokumenttittel';
 
-export const Tabellrad: React.FC<{ dokument: Dokumentinfo; erKlikketId: string }> = ({
-    dokument,
-}) => {
+interface Props {
+    dokument: Dokumentinfo;
+    settValgtDokumentId: Dispatch<SetStateAction<string>>;
+}
+
+export const Tabellrad: React.FC<Props> = ({ dokument, settValgtDokumentId }) => {
     return (
         <Table.Row>
             <Table.DataCell></Table.DataCell>
@@ -17,7 +20,7 @@ export const Tabellrad: React.FC<{ dokument: Dokumentinfo; erKlikketId: string }
             <Table.DataCell></Table.DataCell>
             <Table.DataCell>
                 {skalViseLenke(dokument) ? (
-                    <Dokumenttittel dokument={dokument} />
+                    <Dokumenttittel dokument={dokument} settValgtDokumentId={settValgtDokumentId} />
                 ) : (
                     <IkkeTilgang>
                         <PadlockLockedIcon title="Mangler tilgang til dokument" />

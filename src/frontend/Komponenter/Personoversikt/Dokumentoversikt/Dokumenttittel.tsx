@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { Button, HStack } from '@navikt/ds-react';
 import { tittelMedUrlGodkjenteTegn } from '../../../App/utils/utils';
 import { NotePencilIcon } from '@navikt/aksel-icons';
@@ -20,9 +20,10 @@ const IkonKnapp = styled(Button)`
 
 interface Props {
     dokument: Dokumentinfo;
+    settValgtDokumentId: Dispatch<SetStateAction<string>>;
 }
 
-export const Dokumenttittel: React.FC<Props> = ({ dokument }) => (
+export const Dokumenttittel: React.FC<Props> = ({ dokument, settValgtDokumentId }) => (
     <>
         <HStack gap="2" justify="space-between">
             <LenkeVenstreMargin
@@ -32,7 +33,11 @@ export const Dokumenttittel: React.FC<Props> = ({ dokument }) => (
             >
                 {dokument.tittel}
             </LenkeVenstreMargin>
-            <IkonKnapp icon={<NotePencilIcon title="Rediger" />} variant="tertiary" />
+            <IkonKnapp
+                icon={<NotePencilIcon title="Rediger" />}
+                variant="tertiary"
+                onClick={() => settValgtDokumentId(dokument.dokumentinfoId)}
+            />
         </HStack>
         <LogiskeVedlegg logiskeVedlegg={dokument.logiskeVedlegg} />
     </>

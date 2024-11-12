@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { Dokumentinfo } from '../../../App/typer/dokumentliste';
 import { formaterNullableIsoDatoTid } from '../../../App/utils/formatter';
 import { Arkivtema, arkivtemaerTilTekst } from '../../../App/typer/arkivtema';
@@ -20,9 +20,12 @@ export const IkkeTilgang = styled.div`
     gap: 0.5rem;
 `;
 
-export const HovedTabellrad: React.FC<{ dokument: Dokumentinfo; erKlikketId: string }> = ({
-    dokument,
-}) => {
+interface Props {
+    dokument: Dokumentinfo;
+    settValgtDokumentId: Dispatch<SetStateAction<string>>;
+}
+
+export const HovedTabellrad: React.FC<Props> = ({ dokument, settValgtDokumentId }) => {
     return (
         <Table.Row>
             <Table.DataCell>{formaterNullableIsoDatoTid(dokument.dato)}</Table.DataCell>
@@ -34,7 +37,7 @@ export const HovedTabellrad: React.FC<{ dokument: Dokumentinfo; erKlikketId: str
             <Table.DataCell>{utledAvsenderMottakerDetaljer(dokument)}</Table.DataCell>
             <Table.DataCell>
                 {skalViseLenke(dokument) ? (
-                    <Dokumenttittel dokument={dokument} />
+                    <Dokumenttittel dokument={dokument} settValgtDokumentId={settValgtDokumentId} />
                 ) : (
                     <>
                         <PadlockLockedIcon title="Mangler tilgang til dokument" />

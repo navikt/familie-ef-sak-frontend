@@ -18,6 +18,7 @@ import { Checkbox, Label, Table } from '@navikt/ds-react';
 import { HovedTabellrad } from './Dokumentoversikt/Hovedtabellrad';
 import { Tabellrad } from './Dokumentoversikt/Tabellrad';
 import { KolonneTitler } from '../../Felles/Personopplysninger/TabellWrapper';
+import { EndreDokumenttittelModal } from './Dokumentoversikt/EndreDokumenttittelModal';
 
 const FiltreringGrid = styled.div`
     display: grid;
@@ -67,6 +68,7 @@ export const Dokumenter: React.FC<{ fagsakPersonId: string }> = ({ fagsakPersonI
     const [vedleggRequest, settVedleggRequest] = useState<VedleggRequest>({
         fagsakPersonId: fagsakPersonId,
     });
+    const [valgtDokumentId, settValgtDokumentId] = useState<string>('');
 
     const settVedlegg = (key: keyof VedleggRequest) => {
         return (val?: string | number) =>
@@ -180,57 +182,72 @@ export const Dokumenter: React.FC<{ fagsakPersonId: string }> = ({ fagsakPersonI
                 </Checkbox>
             </FiltreringGrid>
 
-            <Table size="small">
-                <KolonneTitler titler={titler} skalHaMinimumBreddePåKolonne={true} />
-                <DataViewer response={{ dokumentResponse }}>
-                    {({ dokumentResponse }) => {
-                        const grupperteDokumenter = groupBy(
-                            dokumentResponse,
-                            (i) => i.journalpostId
-                        );
-                        return (
-                            <Table.Body>
-                                {Object.keys(grupperteDokumenter)
-                                    .sort(function (a, b) {
-                                        const datoA = grupperteDokumenter[a][0].dato;
-                                        const datoB = grupperteDokumenter[b][0].dato;
-                                        if (!datoA) {
-                                            return -1;
-                                        } else if (!datoB) {
-                                            return 1;
-                                        }
-                                        return datoA > datoB ? -1 : 1;
-                                    })
-                                    .filter((journalPostId: string) =>
-                                        dokumentGruppeSkalVises(grupperteDokumenter[journalPostId])
-                                    )
-                                    .map((journalpostId: string) => {
-                                        return grupperteDokumenter[journalpostId].map(
-                                            (dokument: Dokumentinfo, indeks: number) => {
-                                                if (indeks === 0) {
-                                                    return (
-                                                        <HovedTabellrad
-                                                            key={`${journalpostId}-${indeks}`}
-                                                            erKlikketId={`${journalpostId}-${indeks}`}
-                                                            dokument={dokument}
-                                                        />
-                                                    );
-                                                } else
-                                                    return (
-                                                        <Tabellrad
-                                                            key={`${journalpostId}-${indeks}`}
-                                                            erKlikketId={`${journalpostId}-${indeks}`}
-                                                            dokument={dokument}
-                                                        />
-                                                    );
+            <DataViewer response={{ dokumentResponse }}>
+                {({ dokumentResponse }) => {
+                    const grupperteDokumenter = groupBy(dokumentResponse, (i) => i.journalpostId);
+                    const valgtDokument = dokumentResponse.find(
+                        (dokument) => dokument.dokumentinfoId === valgtDokumentId
+                    );
+                    return (
+                        <>
+                            <Table size="small">
+                                <KolonneTitler
+                                    titler={titler}
+                                    skalHaMinimumBreddePåKolonne={true}
+                                />
+                                <Table.Body>
+                                    {Object.keys(grupperteDokumenter)
+                                        .sort(function (a, b) {
+                                            const datoA = grupperteDokumenter[a][0].dato;
+                                            const datoB = grupperteDokumenter[b][0].dato;
+                                            if (!datoA) {
+                                                return -1;
+                                            } else if (!datoB) {
+                                                return 1;
                                             }
-                                        );
-                                    })}
-                            </Table.Body>
-                        );
-                    }}
-                </DataViewer>
-            </Table>
+                                            return datoA > datoB ? -1 : 1;
+                                        })
+                                        .filter((journalPostId: string) =>
+                                            dokumentGruppeSkalVises(
+                                                grupperteDokumenter[journalPostId]
+                                            )
+                                        )
+                                        .map((journalpostId: string) => {
+                                            return grupperteDokumenter[journalpostId].map(
+                                                (dokument: Dokumentinfo, indeks: number) => {
+                                                    if (indeks === 0) {
+                                                        return (
+                                                            <HovedTabellrad
+                                                                key={`${journalpostId}-${indeks}`}
+                                                                dokument={dokument}
+                                                                settValgtDokumentId={
+                                                                    settValgtDokumentId
+                                                                }
+                                                            />
+                                                        );
+                                                    } else
+                                                        return (
+                                                            <Tabellrad
+                                                                key={`${journalpostId}-${indeks}`}
+                                                                dokument={dokument}
+                                                                settValgtDokumentId={
+                                                                    settValgtDokumentId
+                                                                }
+                                                            />
+                                                        );
+                                                }
+                                            );
+                                        })}
+                                </Table.Body>
+                            </Table>
+                            <EndreDokumenttittelModal
+                                valgtDokument={valgtDokument}
+                                settValgtDokumentId={settValgtDokumentId}
+                            />
+                        </>
+                    );
+                }}
+            </DataViewer>
         </Container>
     );
 };
