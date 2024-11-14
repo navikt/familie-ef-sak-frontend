@@ -42,7 +42,12 @@ export const DokumentPanelEndreTittel: React.FC<Props> = ({ dokument }) => {
     };
 
     return (
-        <ExpansionCard id={dokument.dokumentinfoId} size="small" aria-label="journalpost">
+        <ExpansionCard
+            id={dokument.dokumentinfoId}
+            size="small"
+            aria-label="journalpost"
+            open={true}
+        >
             <ExpansionCardHeader>
                 <DokumentPanelHeader
                     dokumentTittel={dokumentTittel}
