@@ -1,14 +1,9 @@
-import React from 'react';
-import { ExpansionCard } from '@navikt/ds-react';
+import React, { useState } from 'react';
+import { ExpansionCard, UNSAFE_Combobox } from '@navikt/ds-react';
 import styled from 'styled-components';
 import { DokumentPanelHeader } from '../../Journalføring/Standard/DokumentPanelHeader';
-import { FamilieReactSelect } from '@navikt/familie-form-elements';
-import {
-    dokumentTitlerMultiSelect,
-    mapDokumentTittelTilMultiselectValue,
-    mapLogiskeVedleggTilMultiselectValue,
-} from '../../Journalføring/Felles/utils';
 import { Dokumentinfo } from '../../../App/typer/dokumentliste';
+import { dokumentTitler } from '../../utils';
 
 const ExpansionCardHeader = styled(ExpansionCard.Header)`
     padding-bottom: 0.35rem;
@@ -21,54 +16,60 @@ const ExpansionCardContent = styled.div`
     padding-bottom: 1rem;
 `;
 
-const MultiSelect = styled(FamilieReactSelect)`
-    margin-bottom: -1rem;
-`;
-
 interface Props {
     dokument: Dokumentinfo;
 }
 
 export const DokumentPanelEndreTittel: React.FC<Props> = ({ dokument }) => {
-    const defaultTittelValue = mapDokumentTittelTilMultiselectValue(dokument.tittel);
-    const defaultLogiskeVedleggValue = mapLogiskeVedleggTilMultiselectValue(
-        dokument.logiskeVedlegg
+    const [dokumentTittel, settDokumentTittel] = useState<string>(dokument.tittel);
+    const [logiskeVedlegg, settLogiskeVedlegg] = useState<string[]>(
+        dokument.logiskeVedlegg.map((vedlegg) => vedlegg.tittel)
     );
+    const [value, setValue] = useState<string>('');
+
+    const onTittelSelect = (option: string, isSelected: boolean) => {
+        if (isSelected) {
+            settDokumentTittel(() => option);
+        }
+    };
+
+    const onLogiskVedleggSelect = (option: string, isSelected: boolean) => {
+        if (isSelected) {
+            settLogiskeVedlegg((prevState) => [...prevState, option]);
+        } else {
+            settLogiskeVedlegg((prevState) => prevState.filter((vedlegg) => vedlegg !== option));
+        }
+    };
 
     return (
         <ExpansionCard id={dokument.dokumentinfoId} size="small" aria-label="journalpost">
             <ExpansionCardHeader>
                 <DokumentPanelHeader
-                    dokumentTittel={dokument.tittel}
+                    dokumentTittel={dokumentTittel}
                     erValgt={true}
                     logiskeVedlegg={dokument.logiskeVedlegg}
                 />
             </ExpansionCardHeader>
             <ExpansionCard.Content>
                 <ExpansionCardContent>
-                    <MultiSelect
-                        placeholder={'Velg tittel'}
+                    <UNSAFE_Combobox
+                        allowNewValues
                         label={'Dokumenttittel'}
-                        options={dokumentTitlerMultiSelect}
-                        creatable={true}
-                        menuPortalTarget={document.querySelector('body')}
-                        isMulti={false}
-                        isDisabled={false}
-                        defaultValue={defaultTittelValue}
-                        feil={null}
-                        onChange={() => null}
+                        options={dokumentTitler}
+                        defaultValue={dokumentTittel}
+                        onToggleSelected={onTittelSelect}
+                        shouldAutocomplete
                     />
-                    <MultiSelect
+                    <UNSAFE_Combobox
+                        allowNewValues
                         placeholder={'Velg innhold'}
                         label={'Annet innhold'}
-                        creatable={true}
-                        options={dokumentTitlerMultiSelect}
-                        menuPortalTarget={document.querySelector('body')}
-                        isMulti={true}
-                        isDisabled={false}
-                        defaultValue={defaultLogiskeVedleggValue}
-                        feil={null}
-                        onChange={() => null}
+                        options={dokumentTitler}
+                        isMultiSelect
+                        selectedOptions={logiskeVedlegg}
+                        onChange={setValue}
+                        onToggleSelected={onLogiskVedleggSelect}
+                        value={value}
                     />
                 </ExpansionCardContent>
             </ExpansionCard.Content>
