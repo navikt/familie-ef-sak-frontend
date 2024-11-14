@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import { BodyShort, Label, VStack } from '@navikt/ds-react';
 import { FileTextFillIcon, FileTextIcon } from '@navikt/aksel-icons';
-import { LogiskVedlegg } from '../../../App/typer/journalføring';
 import { ABlue500 } from '@navikt/ds-tokens/dist/tokens';
 
 const Container = styled.div`
@@ -24,7 +23,7 @@ const IkonContainer = styled.div`
 interface Props {
     dokumentTittel: string;
     erValgt: boolean;
-    logiskeVedlegg: LogiskVedlegg[] | undefined;
+    logiskeVedlegg: string[];
 }
 
 export const DokumentPanelHeader: React.FC<Props> = ({
@@ -47,8 +46,8 @@ export const DokumentPanelHeader: React.FC<Props> = ({
                     logiskeVedlegg !== null &&
                     logiskeVedlegg.length > 0 && (
                         <VStack gap={'0'}>
-                            {logiskeVedlegg.map((it) => (
-                                <BodyShort key={it.logiskVedleggId}>{it.tittel}</BodyShort>
+                            {logiskeVedlegg.map((it, index) => (
+                                <BodyShort key={index}>{it}</BodyShort>
                             ))}
                         </VStack>
                     )}

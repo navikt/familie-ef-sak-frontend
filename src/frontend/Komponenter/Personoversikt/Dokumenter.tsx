@@ -240,10 +240,12 @@ export const Dokumenter: React.FC<{ fagsakPersonId: string }> = ({ fagsakPersonI
                                         })}
                                 </Table.Body>
                             </Table>
-                            <EndreDokumenttittelModal
-                                valgtDokument={valgtDokument}
-                                settValgtDokumentId={settValgtDokumentId}
-                            />
+                            {valgtDokument && (
+                                <EndreDokumenttittelModal
+                                    dokument={valgtDokument}
+                                    settValgtDokumentId={settValgtDokumentId}
+                                />
+                            )}
                         </>
                     );
                 }}

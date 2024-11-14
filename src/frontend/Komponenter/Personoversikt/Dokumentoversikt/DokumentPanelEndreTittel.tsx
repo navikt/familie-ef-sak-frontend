@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import { ExpansionCard, UNSAFE_Combobox } from '@navikt/ds-react';
 import styled from 'styled-components';
 import { DokumentPanelHeader } from '../../Journalføring/Standard/DokumentPanelHeader';
-import { Dokumentinfo } from '../../../App/typer/dokumentliste';
 import { dokumentTitler } from '../../utils';
 
 const ExpansionCardHeader = styled(ExpansionCard.Header)`
@@ -17,42 +16,45 @@ const ExpansionCardContent = styled.div`
 `;
 
 interface Props {
-    dokument: Dokumentinfo;
+    dokumentTittel: string;
+    oppdaterDokumentTittel: Dispatch<SetStateAction<string>>;
+    logiskeVedlegg: string[];
+    oppdaterLogiskeVedlegg: Dispatch<SetStateAction<string[]>>;
+    dokumentId: string;
 }
 
-export const DokumentPanelEndreTittel: React.FC<Props> = ({ dokument }) => {
-    const [dokumentTittel, settDokumentTittel] = useState<string>(dokument.tittel);
-    const [logiskeVedlegg, settLogiskeVedlegg] = useState<string[]>(
-        dokument.logiskeVedlegg.map((vedlegg) => vedlegg.tittel)
-    );
+export const DokumentPanelEndreTittel: React.FC<Props> = ({
+    dokumentTittel,
+    oppdaterDokumentTittel,
+    logiskeVedlegg,
+    oppdaterLogiskeVedlegg,
+    dokumentId,
+}) => {
     const [value, setValue] = useState<string>('');
 
     const onTittelSelect = (option: string, isSelected: boolean) => {
         if (isSelected) {
-            settDokumentTittel(() => option);
+            oppdaterDokumentTittel(() => option);
         }
     };
 
     const onLogiskVedleggSelect = (option: string, isSelected: boolean) => {
         if (isSelected) {
-            settLogiskeVedlegg((prevState) => [...prevState, option]);
+            oppdaterLogiskeVedlegg((prevState) => [...prevState, option]);
         } else {
-            settLogiskeVedlegg((prevState) => prevState.filter((vedlegg) => vedlegg !== option));
+            oppdaterLogiskeVedlegg((prevState) =>
+                prevState.filter((vedlegg) => vedlegg !== option)
+            );
         }
     };
 
     return (
-        <ExpansionCard
-            id={dokument.dokumentinfoId}
-            size="small"
-            aria-label="journalpost"
-            open={true}
-        >
+        <ExpansionCard id={dokumentId} size="small" aria-label="journalpost" open={true}>
             <ExpansionCardHeader>
                 <DokumentPanelHeader
                     dokumentTittel={dokumentTittel}
                     erValgt={true}
-                    logiskeVedlegg={dokument.logiskeVedlegg}
+                    logiskeVedlegg={logiskeVedlegg}
                 />
             </ExpansionCardHeader>
             <ExpansionCard.Content>
