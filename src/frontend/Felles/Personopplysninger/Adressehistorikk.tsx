@@ -146,7 +146,7 @@ const Innhold: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string }> = ({
     fagsakPersonId,
 }) => {
     const [beboereAdresseIModal, settBeboereAdresseIModal] = useState<IAdresse>();
-    const [laster, settLaster] = useState<boolean>(false);
+    const [henterBeboere, settHenterBeboere] = useState<boolean>(false);
     return (
         <>
             <Table.Body>
@@ -182,9 +182,9 @@ const Innhold: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string }> = ({
                                             variant={'secondary'}
                                             size={'xsmall'}
                                             type={'button'}
-                                            disabled={laster}
+                                            disabled={henterBeboere}
                                         >
-                                            {laster ? 'Laster...' : 'Se Beboere'}
+                                            {henterBeboere ? 'Laster...' : 'Se Beboere'}
                                         </Knapp>
                                     )}
                             </Table.DataCell>
@@ -198,7 +198,7 @@ const Innhold: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string }> = ({
                 onClose={() => settBeboereAdresseIModal(undefined)}
                 ariaLabel={'Tabell over beboere på bostedsadresse.'}
             >
-                <Beboere fagsakPersonId={fagsakPersonId} settLaster={settLaster} />
+                <Beboere fagsakPersonId={fagsakPersonId} settHenterBeboere={settHenterBeboere} />
             </ModalWrapper>
         </>
     );

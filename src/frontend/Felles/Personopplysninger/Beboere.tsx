@@ -14,23 +14,23 @@ const StyledDataCell = styled(Table.DataCell)<{ person: IPersonFraSøk }>`
 
 const Beboere: React.FC<{
     fagsakPersonId: string;
-    settLaster: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ fagsakPersonId, settLaster }) => {
+    settHenterBeboere: React.Dispatch<React.SetStateAction<boolean>>;
+}> = ({ fagsakPersonId, settHenterBeboere }) => {
     const { axiosRequest } = useApp();
     const [søkResultat, settSøkResultat] = useState<Ressurs<ISøkeresultatPerson>>(byggTomRessurs());
 
     const søkPerson = useCallback(
         (fagsakPersonId: string) => {
-            settLaster(true);
+            settHenterBeboere(true);
             axiosRequest<ISøkeresultatPerson, null>({
                 method: 'GET',
                 url: `/familie-ef-sak/api/sok/fagsak-person/${fagsakPersonId}/samme-adresse`,
             }).then((respons: Ressurs<ISøkeresultatPerson> | RessursFeilet) => {
                 settSøkResultat(respons);
-                settLaster(false);
+                settHenterBeboere(false);
             });
         },
-        [axiosRequest, settLaster]
+        [axiosRequest, settHenterBeboere]
     );
 
     useEffect(() => {
