@@ -2,6 +2,8 @@ import React, { Dispatch, SetStateAction, useState } from 'react';
 import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
 import { DokumentPanelEndreTittel } from './DokumentPanelEndreTittel';
 import { Dokumentinfo } from '../../../App/typer/dokumentliste';
+import { v4 as uuidv4 } from 'uuid';
+import { LogiskVedlegg } from '../../../App/typer/journalføring';
 
 interface Props {
     dokument: Dokumentinfo;
@@ -16,11 +18,22 @@ export const EndreDokumenttittelModal: React.FC<Props> = ({ dokument, settValgtD
 
     const skalViseModal = dokument !== null && dokument !== undefined;
 
+    const mapLogiskeVedleggMedNyId = (logiskeVedlegg: string[]) => {
+        const listeMEdLogiskeVedLegg: LogiskVedlegg[] = logiskeVedlegg.map((vedlegg) => {
+            return {
+                tittel: vedlegg,
+                logiskVedleggId: uuidv4(),
+            };
+        });
+
+        return listeMEdLogiskeVedLegg;
+    };
+
     const validerOgSendInnDokument = () => {
-        // TODO: Valider og send til backend
-        // For tittel ønsker å validere: ikke tom streng
-        // For logiske vedlegg ønsker å validere: ikke tom streng
-        // For logiske vedlegg må vi mappe om til label value struktur. Bruk uuid v4 som id: {label: logisk-vedlegg-tittel, id: uuidv4()}
+        if (dokumentTittel !== '' && logiskeVedlegg.map((vedlegg) => vedlegg !== '')) {
+            const listeMedLogiskeVedlegg = mapLogiskeVedleggMedNyId(logiskeVedlegg);
+            console.log(listeMedLogiskeVedlegg);
+        }
     };
 
     // const endreDokument = useCallback(
