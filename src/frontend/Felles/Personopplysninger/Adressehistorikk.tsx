@@ -184,7 +184,7 @@ const Innhold: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string }> = ({
                                             type={'button'}
                                             disabled={henterBeboere}
                                         >
-                                            {henterBeboere ? 'Laster...' : 'Se Beboere'}
+                                            {henterBeboere ? 'Henter beboere...' : 'Se Beboere'}
                                         </Knapp>
                                     )}
                             </Table.DataCell>
