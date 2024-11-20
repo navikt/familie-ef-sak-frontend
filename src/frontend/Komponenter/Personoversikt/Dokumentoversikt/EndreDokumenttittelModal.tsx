@@ -6,10 +6,12 @@ import { v4 as uuidv4 } from 'uuid';
 import { LogiskVedlegg } from '../../../App/typer/journalføring';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 import { useApp } from '../../../App/context/AppContext';
+import { RessursStatus } from '../../../App/typer/ressurs';
 
 interface Props {
     dokument: Dokumentinfo;
     settValgtDokumentId: Dispatch<SetStateAction<string>>;
+    hentDokumenter: () => void;
 }
 
 interface OppdaterJournalpostMedDokumenterRequest {
@@ -17,7 +19,11 @@ interface OppdaterJournalpostMedDokumenterRequest {
     logiskeVedlegg: Record<string, LogiskVedlegg[]> | null;
 }
 
-export const EndreDokumenttittelModal: React.FC<Props> = ({ dokument, settValgtDokumentId }) => {
+export const EndreDokumenttittelModal: React.FC<Props> = ({
+    dokument,
+    settValgtDokumentId,
+    hentDokumenter,
+}) => {
     const { axiosRequest } = useApp();
     const [dokumentTittel, settDokumentTittel] = useState<string>(dokument.tittel);
     const [logiskeVedlegg, settLogiskeVedlegg] = useState<string[]>(
@@ -28,12 +34,16 @@ export const EndreDokumenttittelModal: React.FC<Props> = ({ dokument, settValgtD
 
     const utledTittelErEndret = (): boolean => dokument.tittel !== dokumentTittel;
 
-    const utledLogiskeErVedleggEndret = (): boolean =>
+    const lukkModal = () => {
+        settValgtDokumentId('');
+    };
+
+    const utledLogiskeVedleggErEndret = (): boolean =>
         dokument.logiskeVedlegg.length !== logiskeVedlegg.length ||
         dokument.logiskeVedlegg.some((vedlegg) => !logiskeVedlegg.includes(vedlegg.tittel));
 
     const validerDokument = (tittelErEndret: boolean, logiskeVedleggErEndret: boolean) => {
-        if (!tittelErEndret || !logiskeVedleggErEndret) {
+        if (!tittelErEndret && !logiskeVedleggErEndret) {
             return 'Enten tittel eller minst et logisk vedlegg må endres på før innsending.';
         }
         if (dokumentTittel === '') {
@@ -73,7 +83,15 @@ export const EndreDokumenttittelModal: React.FC<Props> = ({ dokument, settValgtD
             method: 'POST',
             url: `/familie-ef-sak/api/journalpost/${dokument.journalpostId}/oppdater-dokumenter`,
             data: request,
-        }).then(() => settSenderInnDokument(false));
+        }).then((res) => {
+            if (res.status === RessursStatus.SUKSESS) {
+                lukkModal();
+                hentDokumenter();
+            } else {
+                settFeilmelding(res.frontendFeilmelding);
+            }
+            settSenderInnDokument(false);
+        });
     };
 
     const validerOgSendInnDokument = () => {
@@ -82,7 +100,7 @@ export const EndreDokumenttittelModal: React.FC<Props> = ({ dokument, settValgtD
         }
 
         const tittelErEndret = utledTittelErEndret();
-        const logiskeVedleggErEndret = utledLogiskeErVedleggEndret();
+        const logiskeVedleggErEndret = utledLogiskeVedleggErEndret();
 
         const feilmelding = validerDokument(tittelErEndret, logiskeVedleggErEndret);
         settFeilmelding(feilmelding);
@@ -96,14 +114,14 @@ export const EndreDokumenttittelModal: React.FC<Props> = ({ dokument, settValgtD
             tittel={'Endre tittel på dokument'}
             visModal={true}
             ariaLabel={'Endre tittel på dokument'}
-            onClose={() => settValgtDokumentId('')}
+            onClose={() => lukkModal()}
             aksjonsknapper={{
                 hovedKnapp: {
                     onClick: () => validerOgSendInnDokument(),
                     tekst: 'Lagre',
                 },
                 lukkKnapp: {
-                    onClick: () => settValgtDokumentId(''),
+                    onClick: () => lukkModal(),
                     tekst: 'Avbryt',
                 },
                 marginTop: 2,

@@ -1,6 +1,4 @@
-import React, { useMemo, useState } from 'react';
-import { useDataHenter } from '../../App/hooks/felles/useDataHenter';
-import { AxiosRequestConfig } from 'axios';
+import React, { useEffect, useState } from 'react';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import styled from 'styled-components';
 import { Dokumentinfo } from '../../App/typer/dokumentliste';
@@ -19,6 +17,7 @@ import { HovedTabellrad } from './Dokumentoversikt/Hovedtabellrad';
 import { Tabellrad } from './Dokumentoversikt/Tabellrad';
 import { KolonneTitler } from '../../Felles/Personopplysninger/TabellWrapper';
 import { EndreDokumenttittelModal } from './Dokumentoversikt/EndreDokumenttittelModal';
+import { useHentDokumenter } from '../../App/hooks/useHentDokumenter';
 
 const FiltreringGrid = styled.div`
     display: grid;
@@ -68,7 +67,12 @@ export const Dokumenter: React.FC<{ fagsakPersonId: string }> = ({ fagsakPersonI
     const [vedleggRequest, settVedleggRequest] = useState<VedleggRequest>({
         fagsakPersonId: fagsakPersonId,
     });
+    const { dokumenter, hentDokumenterCallback } = useHentDokumenter();
     const [valgtDokumentId, settValgtDokumentId] = useState<string>('');
+
+    useEffect(() => {
+        hentDokumenterCallback(vedleggRequest);
+    }, [hentDokumenterCallback, vedleggRequest]);
 
     const settVedlegg = (key: keyof VedleggRequest) => {
         return (val?: string | number) =>
@@ -77,16 +81,10 @@ export const Dokumenter: React.FC<{ fagsakPersonId: string }> = ({ fagsakPersonI
             );
     };
 
-    const dokumentConfig: AxiosRequestConfig = useMemo(
-        () => ({
-            method: 'POST',
-            url: `/familie-ef-sak/api/vedlegg/fagsak-person`,
-            data: vedleggRequest,
-        }),
-        [vedleggRequest]
-    );
+    const reHentDokumenter = () => {
+        hentDokumenterCallback(vedleggRequest);
+    };
 
-    const dokumentResponse = useDataHenter<Dokumentinfo[], null>(dokumentConfig);
     const [visFeilregistrerteOgAvbruttValgt, setVisFeilregistrerteOgAvbruttValgt] =
         React.useState(false);
 
@@ -182,10 +180,10 @@ export const Dokumenter: React.FC<{ fagsakPersonId: string }> = ({ fagsakPersonI
                 </Checkbox>
             </FiltreringGrid>
 
-            <DataViewer response={{ dokumentResponse }}>
-                {({ dokumentResponse }) => {
-                    const grupperteDokumenter = groupBy(dokumentResponse, (i) => i.journalpostId);
-                    const valgtDokument = dokumentResponse.find(
+            <DataViewer response={{ dokumenter }}>
+                {({ dokumenter }) => {
+                    const grupperteDokumenter = groupBy(dokumenter, (i) => i.journalpostId);
+                    const valgtDokument = dokumenter.find(
                         (dokument) => dokument.dokumentinfoId === valgtDokumentId
                     );
                     return (
@@ -244,6 +242,7 @@ export const Dokumenter: React.FC<{ fagsakPersonId: string }> = ({ fagsakPersonI
                                 <EndreDokumenttittelModal
                                     dokument={valgtDokument}
                                     settValgtDokumentId={settValgtDokumentId}
+                                    hentDokumenter={reHentDokumenter}
                                 />
                             )}
                         </>
