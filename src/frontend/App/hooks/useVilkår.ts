@@ -220,7 +220,7 @@ export const useVilkår = (): UseVilkår => {
                     { behandlingId: string; vilkårId: string }
                 >({
                     method: 'POST',
-                    url: `/familie-ef-sak/api/vurdering/gjenbruk-enkelt-vilkår`,
+                    url: `/familie-ef-sak/api/vurdering/hent-gjenbruk-enkelt-vilkår`,
                     data: { behandlingId: behandlingId, vilkårId: vilkårId },
                 });
 
