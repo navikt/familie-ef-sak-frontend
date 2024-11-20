@@ -4,53 +4,97 @@ import { DokumentPanelEndreTittel } from './DokumentPanelEndreTittel';
 import { Dokumentinfo } from '../../../App/typer/dokumentliste';
 import { v4 as uuidv4 } from 'uuid';
 import { LogiskVedlegg } from '../../../App/typer/journalføring';
+import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
+import { useApp } from '../../../App/context/AppContext';
 
 interface Props {
     dokument: Dokumentinfo;
     settValgtDokumentId: Dispatch<SetStateAction<string>>;
 }
 
+interface OppdaterJournalpostMedDokumenterRequest {
+    dokumenttitler: Record<string, string> | null;
+    logiskeVedlegg: Record<string, LogiskVedlegg[]> | null;
+}
+
 export const EndreDokumenttittelModal: React.FC<Props> = ({ dokument, settValgtDokumentId }) => {
+    const { axiosRequest } = useApp();
     const [dokumentTittel, settDokumentTittel] = useState<string>(dokument.tittel);
     const [logiskeVedlegg, settLogiskeVedlegg] = useState<string[]>(
         dokument.logiskeVedlegg.map((vedlegg) => vedlegg.tittel)
     );
+    const [feilmedling, settFeilmelding] = useState<string>('');
+    const [senderInnDokument, settSenderInnDokument] = useState<boolean>(false);
 
-    const skalViseModal = dokument !== null && dokument !== undefined;
+    const utledTittelErEndret = (): boolean => dokument.tittel !== dokumentTittel;
 
-    const mapLogiskeVedleggMedNyId = (logiskeVedlegg: string[]) => {
-        const listeMEdLogiskeVedLegg: LogiskVedlegg[] = logiskeVedlegg.map((vedlegg) => {
+    const utledLogiskeErVedleggEndret = (): boolean =>
+        dokument.logiskeVedlegg.length !== logiskeVedlegg.length ||
+        dokument.logiskeVedlegg.some((vedlegg) => !logiskeVedlegg.includes(vedlegg.tittel));
+
+    const validerDokument = (tittelErEndret: boolean, logiskeVedleggErEndret: boolean) => {
+        if (!tittelErEndret || !logiskeVedleggErEndret) {
+            return 'Enten tittel eller minst et logisk vedlegg må endres på før innsending.';
+        }
+        if (dokumentTittel === '') {
+            return 'Vennligst fyll inn ny dokumenttittel.';
+        }
+        if (logiskeVedlegg.some((vedlegg) => vedlegg === '')) {
+            return 'Et eller flere logiske vedlegg mangler tittel.';
+        }
+        return '';
+    };
+
+    const leggTilIdPåLogiskVedlegg = (vedleggTitler: string[]): LogiskVedlegg[] =>
+        vedleggTitler.map((vedlegg) => {
             return {
                 tittel: vedlegg,
                 logiskVedleggId: uuidv4(),
             };
         });
 
-        return listeMEdLogiskeVedLegg;
+    const lagRequest = (
+        tittelErEndret: boolean,
+        logiskeVedleggErEndret: boolean
+    ): OppdaterJournalpostMedDokumenterRequest => {
+        return {
+            dokumenttitler: tittelErEndret ? { [dokument.dokumentinfoId]: dokumentTittel } : null,
+            logiskeVedlegg: logiskeVedleggErEndret
+                ? { [dokument.dokumentinfoId]: leggTilIdPåLogiskVedlegg(logiskeVedlegg) }
+                : null,
+        };
+    };
+
+    const sendInnDokument = (tittelErEndret: boolean, logiskeVedleggErEndret: boolean) => {
+        settSenderInnDokument(true);
+        const request = lagRequest(tittelErEndret, logiskeVedleggErEndret);
+
+        axiosRequest<string, OppdaterJournalpostMedDokumenterRequest>({
+            method: 'POST',
+            url: `/familie-ef-sak/api/journalpost/${dokument.journalpostId}/oppdater-dokumenter`,
+            data: request,
+        }).then(() => settSenderInnDokument(false));
     };
 
     const validerOgSendInnDokument = () => {
-        if (dokumentTittel !== '' && logiskeVedlegg.map((vedlegg) => vedlegg !== '')) {
-            const listeMedLogiskeVedlegg = mapLogiskeVedleggMedNyId(logiskeVedlegg);
-            console.log(listeMedLogiskeVedlegg);
+        if (senderInnDokument) {
+            return;
+        }
+
+        const tittelErEndret = utledTittelErEndret();
+        const logiskeVedleggErEndret = utledLogiskeErVedleggEndret();
+
+        const feilmelding = validerDokument(tittelErEndret, logiskeVedleggErEndret);
+        settFeilmelding(feilmelding);
+        if (feilmelding === '') {
+            sendInnDokument(tittelErEndret, logiskeVedleggErEndret);
         }
     };
-
-    // const endreDokument = useCallback(
-    //     (personIdent: string, stønadstype: Stønadstype) => {
-    //         axiosRequest<null, Dokumentinfo>({
-    //             method: 'POST',
-    //             url: `/familie-ef-sak/api/fagsak`,
-    //             data: { personIdent, stønadstype },
-    //         });
-    //     },
-    //     [axiosRequest]
-    // );
 
     return (
         <ModalWrapper
             tittel={'Endre tittel på dokument'}
-            visModal={skalViseModal}
+            visModal={true}
             ariaLabel={'Endre tittel på dokument'}
             onClose={() => settValgtDokumentId('')}
             aksjonsknapper={{
@@ -74,6 +118,7 @@ export const EndreDokumenttittelModal: React.FC<Props> = ({ dokument, settValgtD
                     dokumentId={dokument.dokumentinfoId}
                 />
             )}
+            {feilmedling && <AlertError>{feilmedling}</AlertError>}
         </ModalWrapper>
     );
 };
