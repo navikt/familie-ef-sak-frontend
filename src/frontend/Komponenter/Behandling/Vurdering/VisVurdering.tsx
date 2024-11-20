@@ -62,7 +62,7 @@ interface Props {
     startRedigering: () => void;
     behandlingErRedigerbar: boolean;
     tittelTekst?: string;
-    kallGjenbrukEnkeltInngangsvilkår: () => Promise<void>;
+    hentResponsForEnkeltVilkår: () => Promise<void>;
 }
 
 const VisVurdering: FC<Props> = ({
@@ -72,7 +72,7 @@ const VisVurdering: FC<Props> = ({
     feilmelding,
     behandlingErRedigerbar,
     tittelTekst,
-    kallGjenbrukEnkeltInngangsvilkår,
+    hentResponsForEnkeltVilkår,
 }) => {
     const vilkårsresultat = vurdering.resultat;
     const sistOppdatert = formaterIsoDatoTidMedSekunder(
@@ -131,7 +131,7 @@ const VisVurdering: FC<Props> = ({
                                 type={'button'}
                                 variant={'tertiary'}
                                 icon={<MotorcycleIcon />}
-                                onClick={kallGjenbrukEnkeltInngangsvilkår}
+                                onClick={hentResponsForEnkeltVilkår}
                                 size={'small'}
                             >
                                 Gjenbruk

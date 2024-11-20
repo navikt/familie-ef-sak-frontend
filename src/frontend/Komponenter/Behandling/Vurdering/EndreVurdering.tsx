@@ -39,6 +39,8 @@ interface Props {
     settRedigeringsmodus: (verdi: Redigeringsmodus) => void;
     feilmelding: string | undefined;
     initiellRedigeringsmodus: Redigeringsmodus;
+    skalGjenbruke: boolean;
+    vilkårGjenbruk: IVurdering | null;
 }
 
 const EndreVurdering: FC<Props> = ({
@@ -47,6 +49,8 @@ const EndreVurdering: FC<Props> = ({
     feilmelding,
     settRedigeringsmodus,
     initiellRedigeringsmodus,
+    skalGjenbruke,
+    vilkårGjenbruk,
 }) => {
     const { regler, hentAnsvarligSaksbehandler, hentBehandling, settNyEierModalState } =
         useBehandling();
@@ -110,6 +114,8 @@ const EndreVurdering: FC<Props> = ({
                         vilkårType={vurdering.vilkårType}
                         regler={regler.data.vilkårsregler[vurdering.vilkårType].regler}
                         vurdering={vurdering}
+                        skalGjenbruke={skalGjenbruke}
+                        vilkårGjenbruk={vilkårGjenbruk}
                     />
                 </FlexColumn>
             )}

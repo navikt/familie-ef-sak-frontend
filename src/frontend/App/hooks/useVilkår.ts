@@ -50,6 +50,10 @@ export interface UseVilkår {
         vilkårId?: string
     ) => void;
     gjenbrukEnkeltInngangsvilkår: (behandlingId: string, vilkårId: string) => void;
+    hentEnkeltInngangsvilkår: (
+        behandlingId: string,
+        vilkårId: string
+    ) => Promise<IVurdering | null>;
 }
 
 export const useVilkår = (): UseVilkår => {
@@ -208,6 +212,29 @@ export const useVilkår = (): UseVilkår => {
         [axiosRequest, settToast]
     );
 
+    const hentEnkeltInngangsvilkår = useCallback(
+        async (behandlingId: string, vilkårId: string): Promise<IVurdering | null> => {
+            try {
+                const respons = await axiosRequest<
+                    IVurdering,
+                    { behandlingId: string; vilkårId: string }
+                >({
+                    method: 'POST',
+                    url: `/familie-ef-sak/api/vurdering/gjenbruk-enkelt-vilkår`,
+                    data: { behandlingId: behandlingId, vilkårId: vilkårId },
+                });
+
+                if (respons.status === RessursStatus.SUKSESS) {
+                    return respons.data;
+                }
+                return null;
+            } catch {
+                return null;
+            }
+        },
+        [axiosRequest]
+    );
+
     return {
         vilkår,
         hentVilkår,
@@ -218,5 +245,6 @@ export const useVilkår = (): UseVilkår => {
         oppdaterGrunnlagsdataOgHentVilkår,
         gjenbrukInngangsvilkår,
         gjenbrukEnkeltInngangsvilkår,
+        hentEnkeltInngangsvilkår,
     };
 };

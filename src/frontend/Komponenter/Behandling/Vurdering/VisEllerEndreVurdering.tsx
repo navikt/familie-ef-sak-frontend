@@ -84,7 +84,10 @@ const VisEllerEndreVurdering: FC<Props> = ({
         vilkårState,
     } = useBehandling();
 
-    const { gjenbrukEnkeltInngangsvilkår } = vilkårState;
+    const { hentEnkeltInngangsvilkår } = vilkårState;
+    // const { hentEnkeltInngangsvilkår, gjenbrukEnkeltInngangsvilkår } = vilkårState;
+    const [skalGjenbruke, settSaklGjenbruke] = useState<boolean>(false);
+    const [vilkårGjenbruk, settVilkårGjenbruk] = useState<IVurdering | null>(null);
 
     const { settPanelITilstand } = useEkspanderbareVilkårpanelContext();
     const [redigeringsmodus, settRedigeringsmodus] = useState<Redigeringsmodus>(
@@ -113,10 +116,13 @@ const VisEllerEndreVurdering: FC<Props> = ({
         });
     };
 
-    const kallGjenbrukEnkeltInngangsvilkår = async () => {
+    const hentResponsForEnkeltVilkår = async () => {
+        settSaklGjenbruke(true);
         settRedigeringsmodus(Redigeringsmodus.REDIGERING);
-        gjenbrukEnkeltInngangsvilkår(vurdering.behandlingId, vurdering.id);
-        hentBehandling.rerun();
+        const vilkår = await hentEnkeltInngangsvilkår(vurdering.behandlingId, vurdering.id);
+        if (vilkår) {
+            settVilkårGjenbruk(vilkår);
+        }
         settPanelITilstand(vurdering.vilkårType, EkspandertTilstand.KAN_IKKE_LUKKES);
     };
 
@@ -157,7 +163,7 @@ const VisEllerEndreVurdering: FC<Props> = ({
                         {høyreKnappetekst ? høyreKnappetekst : 'Ikke vurder vilkår'}
                     </Button>
                     <Button
-                        onClick={kallGjenbrukEnkeltInngangsvilkår}
+                        onClick={hentResponsForEnkeltVilkår}
                         variant={'tertiary'}
                         type={'button'}
                     >
@@ -173,6 +179,8 @@ const VisEllerEndreVurdering: FC<Props> = ({
                     feilmelding={feilmelding || resetFeilmelding}
                     settRedigeringsmodus={settRedigeringsmodus}
                     initiellRedigeringsmodus={initiellRedigeringsmodus}
+                    skalGjenbruke={skalGjenbruke}
+                    vilkårGjenbruk={vilkårGjenbruk}
                 />
             );
         case Redigeringsmodus.VISNING:
@@ -184,7 +192,7 @@ const VisEllerEndreVurdering: FC<Props> = ({
                     feilmelding={feilmelding || resetFeilmelding}
                     behandlingErRedigerbar={behandlingErRedigerbar && erSaksbehandler}
                     tittelTekst={tittelTekstVisVurdering}
-                    kallGjenbrukEnkeltInngangsvilkår={kallGjenbrukEnkeltInngangsvilkår}
+                    hentResponsForEnkeltVilkår={hentResponsForEnkeltVilkår}
                 />
             );
     }

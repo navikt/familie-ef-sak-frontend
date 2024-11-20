@@ -45,11 +45,19 @@ const EndreVurderingComponent: FC<{
     regler: Regler;
     oppdaterVurdering: (vurdering: SvarPåVilkårsvurdering) => void;
     vurdering: IVurdering;
-}> = ({ regler, oppdaterVurdering, vurdering }) => {
+    skalGjenbruke: boolean;
+    vilkårGjenbruk: IVurdering | null;
+}> = ({ regler, oppdaterVurdering, vurdering, skalGjenbruke, vilkårGjenbruk }) => {
     const { nullstillIkkePersistertKomponent, settIkkePersistertKomponent } = useApp();
     const { settPanelITilstand } = useEkspanderbareVilkårpanelContext();
+
     const [delvilkårsvurderinger, settDelvilkårsvurderinger] = useState<IDelvilkår[]>(
-        filtrerHistoriskeDelvilkår(vurdering.delvilkårsvurderinger, regler)
+        filtrerHistoriskeDelvilkår(
+            skalGjenbruke && vilkårGjenbruk
+                ? vilkårGjenbruk.delvilkårsvurderinger
+                : vurdering.delvilkårsvurderinger,
+            regler
+        )
     );
 
     const oppdaterVilkårsvar = (index: number, nySvarArray: Vurdering[]) => {
