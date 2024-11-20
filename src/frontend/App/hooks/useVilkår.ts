@@ -44,7 +44,12 @@ export interface UseVilkår {
     ikkeVurderVilkår: (
         nullstillVilkårsvurdering: OppdaterVilkårsvurdering
     ) => Promise<RessursSuksess<IVurdering> | RessursFeilet>;
-    gjenbrukInngangsvilkår: (behandlingId: string, kopierBehandlingId: string) => void;
+    gjenbrukInngangsvilkår: (
+        behandlingId: string,
+        kopierBehandlingId: string,
+        vilkårId?: string
+    ) => void;
+    gjenbrukEnkeltInngangsvilkår: (behandlingId: string, vilkårId: string) => void;
 }
 
 export const useVilkår = (): UseVilkår => {
@@ -170,6 +175,39 @@ export const useVilkår = (): UseVilkår => {
         [axiosRequest, settToast]
     );
 
+    const gjenbrukEnkeltInngangsvilkår = useCallback(
+        (behandlingId: string, vilkårId: string) => {
+            axiosRequest<IVurdering, { behandlingId: string; vilkårId: string }>({
+                method: 'POST',
+                url: `/familie-ef-sak/api/vurdering/gjenbruk-enkelt-vilkår`,
+                data: { behandlingId: behandlingId, vilkårId: vilkårId },
+            }).then((respons: RessursSuksess<IVurdering> | RessursFeilet) => {
+                settVilkår((prevVilkår) => {
+                    if (
+                        prevVilkår.status === RessursStatus.SUKSESS &&
+                        respons.status === RessursStatus.SUKSESS
+                    ) {
+                        return {
+                            ...prevVilkår,
+                            status: RessursStatus.SUKSESS,
+                            data: {
+                                ...prevVilkår.data,
+                                vurderinger: prevVilkår.data.vurderinger.map((vurdering) =>
+                                    vurdering.id === respons.data.id ? respons.data : vurdering
+                                ),
+                            },
+                        };
+                    }
+                    return prevVilkår;
+                });
+                if (respons.status === RessursStatus.SUKSESS) {
+                    settToast(EToast.INNGANGSVILKÅR_GJENBRUKT);
+                }
+            });
+        },
+        [axiosRequest, settToast]
+    );
+
     return {
         vilkår,
         hentVilkår,
@@ -179,5 +217,6 @@ export const useVilkår = (): UseVilkår => {
         ikkeVurderVilkår,
         oppdaterGrunnlagsdataOgHentVilkår,
         gjenbrukInngangsvilkår,
+        gjenbrukEnkeltInngangsvilkår,
     };
 };

@@ -7,7 +7,8 @@ import { IVurdering, resultatTilTekst, Vilk책rsresultat } from '../Inngangsvilk�
 import { BreakWordBodyLongSmall } from '../../../Felles/Visningskomponenter/BreakWordBodyLongSmall';
 import { formaterIsoDatoTidMedSekunder } from '../../../App/utils/formatter';
 import { Button, ErrorMessage, Heading } from '@navikt/ds-react';
-import { TrashIcon, PencilIcon } from '@navikt/aksel-icons';
+import { TrashIcon, PencilIcon, MotorcycleIcon } from '@navikt/aksel-icons';
+
 import {
     SistOppdatertOgVurderingWrapper,
     TittelOgKnappWrapper,
@@ -61,6 +62,7 @@ interface Props {
     startRedigering: () => void;
     behandlingErRedigerbar: boolean;
     tittelTekst?: string;
+    kallGjenbrukEnkeltInngangsvilk책r: () => Promise<void>;
 }
 
 const VisVurdering: FC<Props> = ({
@@ -70,6 +72,7 @@ const VisVurdering: FC<Props> = ({
     feilmelding,
     behandlingErRedigerbar,
     tittelTekst,
+    kallGjenbrukEnkeltInngangsvilk책r,
 }) => {
     const vilk책rsresultat = vurdering.resultat;
     const sistOppdatert = formaterIsoDatoTidMedSekunder(
@@ -121,7 +124,17 @@ const VisVurdering: FC<Props> = ({
                                 onClick={resetVurdering}
                                 size={'small'}
                             >
-                                <span>slett</span>
+                                <span>Slett</span>
+                            </Button>
+
+                            <Button
+                                type={'button'}
+                                variant={'tertiary'}
+                                icon={<MotorcycleIcon />}
+                                onClick={kallGjenbrukEnkeltInngangsvilk책r}
+                                size={'small'}
+                            >
+                                Gjenbruk
                             </Button>
                         </div>
                         {feilmelding && (

@@ -81,7 +81,11 @@ const VisEllerEndreVurdering: FC<Props> = ({
         hentAnsvarligSaksbehandler,
         hentBehandling,
         settNyEierModalState,
+        vilkårState,
     } = useBehandling();
+
+    const { gjenbrukEnkeltInngangsvilkår } = vilkårState;
+
     const { settPanelITilstand } = useEkspanderbareVilkårpanelContext();
     const [redigeringsmodus, settRedigeringsmodus] = useState<Redigeringsmodus>(
         utledRedigeringsmodus(feilmelding, vurdering, behandlingErRedigerbar)
@@ -107,6 +111,13 @@ const VisEllerEndreVurdering: FC<Props> = ({
                 hentAnsvarligSaksbehandler.rerun();
             }
         });
+    };
+
+    const kallGjenbrukEnkeltInngangsvilkår = async () => {
+        settRedigeringsmodus(Redigeringsmodus.REDIGERING);
+        gjenbrukEnkeltInngangsvilkår(vurdering.behandlingId, vurdering.id);
+        hentBehandling.rerun();
+        settPanelITilstand(vurdering.vilkårType, EkspandertTilstand.KAN_IKKE_LUKKES);
     };
 
     const initiellRedigeringsmodus =
@@ -145,6 +156,13 @@ const VisEllerEndreVurdering: FC<Props> = ({
                     <Button onClick={ikkeVurder} variant={'tertiary'} type={'button'}>
                         {høyreKnappetekst ? høyreKnappetekst : 'Ikke vurder vilkår'}
                     </Button>
+                    <Button
+                        onClick={kallGjenbrukEnkeltInngangsvilkår}
+                        variant={'tertiary'}
+                        type={'button'}
+                    >
+                        Gjenbruk
+                    </Button>
                 </KnappWrapper>
             );
         case Redigeringsmodus.REDIGERING:
@@ -166,6 +184,7 @@ const VisEllerEndreVurdering: FC<Props> = ({
                     feilmelding={feilmelding || resetFeilmelding}
                     behandlingErRedigerbar={behandlingErRedigerbar && erSaksbehandler}
                     tittelTekst={tittelTekstVisVurdering}
+                    kallGjenbrukEnkeltInngangsvilkår={kallGjenbrukEnkeltInngangsvilkår}
                 />
             );
     }
