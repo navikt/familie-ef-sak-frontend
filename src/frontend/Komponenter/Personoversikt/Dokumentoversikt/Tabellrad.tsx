@@ -20,7 +20,11 @@ export const Tabellrad: React.FC<Props> = ({ dokument, settValgtDokumentId }) =>
             <Table.DataCell></Table.DataCell>
             <Table.DataCell>
                 {skalViseLenke(dokument) ? (
-                    <Dokumenttittel dokument={dokument} settValgtDokumentId={settValgtDokumentId} />
+                    <Dokumenttittel
+                        dokument={dokument}
+                        settValgtDokumentId={settValgtDokumentId}
+                        erHovedDokument={false}
+                    />
                 ) : (
                     <IkkeTilgang>
                         <PadlockLockedIcon title="Mangler tilgang til dokument" />

@@ -37,7 +37,11 @@ export const HovedTabellrad: React.FC<Props> = ({ dokument, settValgtDokumentId 
             <Table.DataCell>{utledAvsenderMottakerDetaljer(dokument)}</Table.DataCell>
             <Table.DataCell>
                 {skalViseLenke(dokument) ? (
-                    <Dokumenttittel dokument={dokument} settValgtDokumentId={settValgtDokumentId} />
+                    <Dokumenttittel
+                        dokument={dokument}
+                        settValgtDokumentId={settValgtDokumentId}
+                        erHovedDokument={true}
+                    />
                 ) : (
                     <>
                         <PadlockLockedIcon title="Mangler tilgang til dokument" />

@@ -6,12 +6,16 @@ import { LogiskeVedlegg } from './LogiskeVedlegg';
 import styled from 'styled-components';
 import { Dokumentinfo } from '../../../App/typer/dokumentliste';
 
-const LenkeVenstreMargin = styled.a`
-    margin-left: 2rem;
+const LenkeVenstreMargin = styled.a<{ $erHovedDokument: boolean }>`
+    margin-left: ${(props) => (props.$erHovedDokument ? '0rem' : '2rem')};
 
     &:visited {
         color: purple;
     }
+`;
+
+const Container = styled.div`
+    max-width: 32rem;
 `;
 
 const IkonKnapp = styled(Button)`
@@ -21,15 +25,21 @@ const IkonKnapp = styled(Button)`
 interface Props {
     dokument: Dokumentinfo;
     settValgtDokumentId: Dispatch<SetStateAction<string>>;
+    erHovedDokument: boolean;
 }
 
-export const Dokumenttittel: React.FC<Props> = ({ dokument, settValgtDokumentId }) => (
-    <>
+export const Dokumenttittel: React.FC<Props> = ({
+    dokument,
+    settValgtDokumentId,
+    erHovedDokument,
+}) => (
+    <Container>
         <HStack gap="2" justify="space-between">
             <LenkeVenstreMargin
                 href={`/dokument/journalpost/${dokument.journalpostId}/dokument-pdf/${dokument.dokumentinfoId}/${tittelMedUrlGodkjenteTegn(dokument.tittel)}`}
                 target={'_blank'}
                 rel={'noreferrer'}
+                $erHovedDokument={erHovedDokument}
             >
                 {dokument.tittel}
             </LenkeVenstreMargin>
@@ -40,5 +50,5 @@ export const Dokumenttittel: React.FC<Props> = ({ dokument, settValgtDokumentId 
             />
         </HStack>
         <LogiskeVedlegg logiskeVedlegg={dokument.logiskeVedlegg} />
-    </>
+    </Container>
 );
