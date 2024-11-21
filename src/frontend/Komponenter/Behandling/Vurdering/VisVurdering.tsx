@@ -7,7 +7,7 @@ import { IVurdering, resultatTilTekst, Vilkårsresultat } from '../Inngangsvilk�
 import { BreakWordBodyLongSmall } from '../../../Felles/Visningskomponenter/BreakWordBodyLongSmall';
 import { formaterIsoDatoTidMedSekunder } from '../../../App/utils/formatter';
 import { Button, ErrorMessage, Heading } from '@navikt/ds-react';
-import { TrashIcon, PencilIcon, MotorcycleIcon } from '@navikt/aksel-icons';
+import { TrashIcon, PencilIcon, RecycleIcon } from '@navikt/aksel-icons';
 
 import {
     SistOppdatertOgVurderingWrapper,
@@ -132,7 +132,7 @@ const VisVurdering: FC<Props> = ({
                                 <Button
                                     type={'button'}
                                     variant={'tertiary'}
-                                    icon={<MotorcycleIcon />}
+                                    icon={<RecycleIcon />}
                                     onClick={hentResponsForEnkeltVilkår}
                                     size={'small'}
                                 >

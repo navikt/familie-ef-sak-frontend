@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { BegrunnelseRegel, Regler, Svarsalternativ } from './typer';
 import {
     IDelvilkår,
@@ -21,22 +21,21 @@ import {
 import Begrunnelse from './Begrunnelse';
 import Delvilkår from './Delvilkår';
 import { useApp } from '../../../App/context/AppContext';
-import { Button } from '@navikt/ds-react';
+import { Button, VStack } from '@navikt/ds-react';
 import styled from 'styled-components';
 import {
     EkspandertTilstand,
     useEkspanderbareVilkårpanelContext,
 } from '../../../App/context/EkspanderbareVilkårpanelContext';
-
-/**
- * Skal resette undervilkår, men ikke rootnivå hvis en tidligere endrer seg
- */
+import { GjenbrukInngangsvilkår } from '../Inngangsvilkår/GjenbrukInngangsvilkår';
+import { RessursStatus } from '../../../App/typer/ressurs';
+import { Behandling } from '../../../App/typer/fagsak';
 
 const LagreKnapp = styled(Button)`
     margin-top: 1rem;
 `;
 
-const DelvilkårContainer = styled.div`
+const DelvilkårContainer = styled(VStack)`
     margin-bottom: 1rem;
 `;
 
@@ -144,6 +143,35 @@ const EndreVurderingComponent: FC<{
         settPanelITilstand(vurdering.vilkårType, EkspandertTilstand.EKSPANDERT);
     };
 
+    const [behandlingerForVilkårsgjenbruk, settbehandlingerForVilkårsgjenbruk] = useState<
+        Behandling[]
+    >([]);
+    const { axiosRequest } = useApp();
+
+    const finnBehandlingForGjenbrukAvVilkår = useCallback(
+        async (behandlingId: string): Promise<Behandling[] | null> => {
+            try {
+                const respons = await axiosRequest<Behandling[], { behandlingId: string }>({
+                    method: 'GET',
+                    url: `/familie-ef-sak/api/behandling/gjenbruk/${behandlingId}`,
+                });
+                if (respons.status === RessursStatus.SUKSESS) {
+                    settbehandlingerForVilkårsgjenbruk(respons.data);
+                }
+                return null;
+            } catch {
+                return null;
+            }
+        },
+        [axiosRequest]
+    );
+
+    useEffect(() => {
+        if (vilkårGjenbruk) {
+            finnBehandlingForGjenbrukAvVilkår(vilkårGjenbruk?.behandlingId);
+        }
+    }, [vilkårGjenbruk, finnBehandlingForGjenbrukAvVilkår]);
+
     return (
         <form
             onSubmit={(event) => {
@@ -161,7 +189,12 @@ const EndreVurderingComponent: FC<{
                     const regel = regler[svar.regelId];
 
                     return (
-                        <DelvilkårContainer key={regel.regelId}>
+                        <DelvilkårContainer key={regel.regelId} gap="3">
+                            {skalGjenbrukeVilkår && vilkårGjenbruk && (
+                                <GjenbrukInngangsvilkår
+                                    behandlinger={behandlingerForVilkårsgjenbruk}
+                                />
+                            )}
                             <Delvilkår
                                 vurdering={svar}
                                 regel={regel}

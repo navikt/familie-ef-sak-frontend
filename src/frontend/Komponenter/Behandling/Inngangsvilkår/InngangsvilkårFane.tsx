@@ -9,9 +9,6 @@ import { Samliv } from './Samliv/Samliv';
 import { Sivilstand } from './Sivilstand/Sivilstand';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { Behandlingsårsak } from '../../../App/typer/behandlingsårsak';
-import { formaterIsoDatoTidMedSekunder } from '../../../App/utils/formatter';
-import { InngangsvilkårHeader } from './InngangsvilkårHeader/InngangsvilkårHeader';
-import { useApp } from '../../../App/context/AppContext';
 import { FyllUtVilkårKnapp } from './FyllUtVilkårKnapp';
 import VilkårIkkeOpprettetAlert from '../Vurdering/VilkårIkkeOpprettet';
 import { Behandling } from '../../../App/typer/fagsak';
@@ -22,7 +19,6 @@ interface Props {
 
 export const InngangsvilkårFane: FC<Props> = ({ behandling }) => {
     const { behandlingErRedigerbar, vilkårState } = useBehandling();
-    const { erSaksbehandler } = useApp();
     const {
         vilkår,
         hentVilkår,
@@ -30,8 +26,6 @@ export const InngangsvilkårFane: FC<Props> = ({ behandling }) => {
         feilmeldinger,
         nullstillVurdering,
         ikkeVurderVilkår,
-        oppdaterGrunnlagsdataOgHentVilkår,
-        gjenbrukInngangsvilkår,
     } = vilkårState;
 
     React.useEffect(() => {
@@ -44,9 +38,6 @@ export const InngangsvilkårFane: FC<Props> = ({ behandling }) => {
                 const årsak = behandling.behandlingsårsak;
                 const skalViseSøknadsdata =
                     årsak === Behandlingsårsak.SØKNAD || årsak === Behandlingsårsak.PAPIRSØKNAD;
-                const grunnlagsdataInnhentetDato = formaterIsoDatoTidMedSekunder(
-                    vilkår.grunnlag.registeropplysningerOpprettetTid
-                );
 
                 return vilkår.vurderinger.length === 0 ? (
                     <VilkårIkkeOpprettetAlert />
@@ -57,15 +48,6 @@ export const InngangsvilkårFane: FC<Props> = ({ behandling }) => {
                             hentVilkår={hentVilkår}
                             behandlingErRedigerbar={behandlingErRedigerbar}
                         />
-                        {erSaksbehandler && (
-                            <InngangsvilkårHeader
-                                oppdatertDato={grunnlagsdataInnhentetDato}
-                                behandlingErRedigerbar={behandlingErRedigerbar}
-                                oppdaterGrunnlagsdata={oppdaterGrunnlagsdataOgHentVilkår}
-                                behandlingId={behandling.id}
-                                gjenbrukInngangsvilkår={gjenbrukInngangsvilkår}
-                            />
-                        )}
                         <Medlemskap
                             nullstillVurdering={nullstillVurdering}
                             feilmeldinger={feilmeldinger}
