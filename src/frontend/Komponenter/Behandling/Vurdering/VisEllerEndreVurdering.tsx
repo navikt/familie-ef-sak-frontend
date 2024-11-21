@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { FC, useEffect, useState } from 'react';
 import {
+    InngangsvilkårType,
     IVurdering,
     OppdaterVilkårsvurdering,
     SvarPåVilkårsvurdering,
     Vilkårsresultat,
+    VilkårType,
 } from '../Inngangsvilkår/vilkår';
 import EndreVurdering from './EndreVurdering';
 import VisVurdering from './VisVurdering';
@@ -96,6 +98,10 @@ const VisEllerEndreVurdering: FC<Props> = ({
     const [resetFeilmelding, settResetFeilmelding] = useState<string | undefined>();
     const { nullstillIkkePersistertKomponent, erSaksbehandler } = useApp();
 
+    const erInngangsvilkårType = (vilkårtype: VilkårType): vilkårtype is InngangsvilkårType => {
+        return Object.values(InngangsvilkårType).includes(vilkårtype as InngangsvilkårType);
+    };
+
     useEffect(() => {
         settRedigeringsmodus(utledRedigeringsmodus(feilmelding, vurdering, behandlingErRedigerbar));
     }, [vurdering, feilmelding, behandlingErRedigerbar]);
@@ -157,16 +163,18 @@ const VisEllerEndreVurdering: FC<Props> = ({
     };
 
     useEffect(() => {
-        const fetchVilkår = async () => {
-            const vilkår = await hentEnkelVilkårsvurderingForGjenbruk(
-                vurdering.behandlingId,
-                vurdering.id
-            );
-            if (vilkår) {
-                settVilkårGjenbruk(vilkår);
-            }
-        };
-        fetchVilkår();
+        if (erInngangsvilkårType(vurdering.vilkårType)) {
+            const fetchVilkår = async () => {
+                const vilkår = await hentEnkelVilkårsvurderingForGjenbruk(
+                    vurdering.behandlingId,
+                    vurdering.id
+                );
+                if (vilkår) {
+                    settVilkårGjenbruk(vilkår);
+                }
+            };
+            fetchVilkår();
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [vurdering.behandlingId, vurdering.id]);
 
