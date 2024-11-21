@@ -1,5 +1,4 @@
 import {
-    byggHenterRessurs,
     byggTomRessurs,
     Ressurs,
     RessursFeilet,
@@ -15,7 +14,6 @@ import {
     SvarPåVilkårsvurdering,
     Vurderingsfeilmelding,
 } from '../../Komponenter/Behandling/Inngangsvilkår/vilkår';
-import { EToast } from '../typer/toast';
 
 const oppdaterInngangsvilkårMedVurdering = (
     vilkår: RessursSuksess<IVilkår>,
@@ -44,11 +42,6 @@ export interface UseVilkår {
     ikkeVurderVilkår: (
         nullstillVilkårsvurdering: OppdaterVilkårsvurdering
     ) => Promise<RessursSuksess<IVurdering> | RessursFeilet>;
-    gjenbrukInngangsvilkår: (
-        behandlingId: string,
-        kopierBehandlingId: string,
-        vilkårId?: string
-    ) => void;
     hentEnkelVilkårsvurderingForGjenbruk: (
         behandlingId: string,
         vilkårId: string
@@ -56,7 +49,7 @@ export interface UseVilkår {
 }
 
 export const useVilkår = (): UseVilkår => {
-    const { axiosRequest, settToast } = useApp();
+    const { axiosRequest } = useApp();
 
     const [feilmeldinger, settFeilmeldinger] = useState<Vurderingsfeilmelding>({});
 
@@ -161,22 +154,6 @@ export const useVilkår = (): UseVilkår => {
             }),
         [axiosRequest]
     );
-    const gjenbrukInngangsvilkår = useCallback(
-        (behandlingId: string, kopierBehandlingId: string) => {
-            settVilkår(byggHenterRessurs());
-            axiosRequest<IVilkår, { behandlingId: string; kopierBehandlingId: string }>({
-                method: 'POST',
-                url: `/familie-ef-sak/api/vurdering/gjenbruk`,
-                data: { behandlingId: behandlingId, kopierBehandlingId: kopierBehandlingId },
-            }).then((respons: RessursSuksess<IVilkår> | RessursFeilet) => {
-                settVilkår(respons);
-                if (respons.status === RessursStatus.SUKSESS) {
-                    settToast(EToast.INNGANGSVILKÅR_GJENBRUKT);
-                }
-            });
-        },
-        [axiosRequest, settToast]
-    );
 
     const hentEnkelVilkårsvurderingForGjenbruk = useCallback(
         async (behandlingId: string, vilkårId: string): Promise<IVurdering | null> => {
@@ -209,7 +186,6 @@ export const useVilkår = (): UseVilkår => {
         nullstillVurdering,
         ikkeVurderVilkår,
         oppdaterGrunnlagsdataOgHentVilkår,
-        gjenbrukInngangsvilkår,
         hentEnkelVilkårsvurderingForGjenbruk,
     };
 };
