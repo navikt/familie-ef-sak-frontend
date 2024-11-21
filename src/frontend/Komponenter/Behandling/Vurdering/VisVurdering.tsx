@@ -63,6 +63,7 @@ interface Props {
     behandlingErRedigerbar: boolean;
     tittelTekst?: string;
     hentResponsForEnkeltVilkår: () => Promise<void>;
+    skalViseGjenbrukKnapp: boolean;
 }
 
 const VisVurdering: FC<Props> = ({
@@ -73,6 +74,7 @@ const VisVurdering: FC<Props> = ({
     behandlingErRedigerbar,
     tittelTekst,
     hentResponsForEnkeltVilkår,
+    skalViseGjenbrukKnapp,
 }) => {
     const vilkårsresultat = vurdering.resultat;
     const sistOppdatert = formaterIsoDatoTidMedSekunder(
@@ -126,16 +128,17 @@ const VisVurdering: FC<Props> = ({
                             >
                                 <span>Slett</span>
                             </Button>
-
-                            <Button
-                                type={'button'}
-                                variant={'tertiary'}
-                                icon={<MotorcycleIcon />}
-                                onClick={hentResponsForEnkeltVilkår}
-                                size={'small'}
-                            >
-                                Gjenbruk
-                            </Button>
+                            {skalViseGjenbrukKnapp && (
+                                <Button
+                                    type={'button'}
+                                    variant={'tertiary'}
+                                    icon={<MotorcycleIcon />}
+                                    onClick={hentResponsForEnkeltVilkår}
+                                    size={'small'}
+                                >
+                                    Gjenbruk
+                                </Button>
+                            )}
                         </div>
                         {feilmelding && (
                             <StyledFeilmelding>

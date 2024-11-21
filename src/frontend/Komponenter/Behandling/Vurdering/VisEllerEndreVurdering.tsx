@@ -84,10 +84,10 @@ const VisEllerEndreVurdering: FC<Props> = ({
         vilkårState,
     } = useBehandling();
 
-    const { hentEnkeltInngangsvilkår } = vilkårState;
-    // const { hentEnkeltInngangsvilkår, gjenbrukEnkeltInngangsvilkår } = vilkårState;
-    const [skalGjenbruke, settSaklGjenbruke] = useState<boolean>(false);
+    const { hentEnkelVilkårsvurderingForGjenbruk } = vilkårState;
+    const [skalGjenbrukeVilkår, settSkalGjenbrukeVilkår] = useState<boolean>(false);
     const [vilkårGjenbruk, settVilkårGjenbruk] = useState<IVurdering | null>(null);
+    const [skalViseGjenbrukKnapp, settSkalViseGjenbrukKnapp] = useState(false);
 
     const { settPanelITilstand } = useEkspanderbareVilkårpanelContext();
     const [redigeringsmodus, settRedigeringsmodus] = useState<Redigeringsmodus>(
@@ -117,11 +117,14 @@ const VisEllerEndreVurdering: FC<Props> = ({
     };
 
     const hentResponsForEnkeltVilkår = async () => {
-        settSaklGjenbruke(true);
         settRedigeringsmodus(Redigeringsmodus.REDIGERING);
-        const vilkår = await hentEnkeltInngangsvilkår(vurdering.behandlingId, vurdering.id);
+        const vilkår = await hentEnkelVilkårsvurderingForGjenbruk(
+            vurdering.behandlingId,
+            vurdering.id
+        );
         if (vilkår) {
             settVilkårGjenbruk(vilkår);
+            settSkalGjenbrukeVilkår(true);
         }
         settPanelITilstand(vurdering.vilkårType, EkspandertTilstand.KAN_IKKE_LUKKES);
     };
@@ -148,9 +151,28 @@ const VisEllerEndreVurdering: FC<Props> = ({
         });
 
     const startRedigering = () => {
+        settSkalGjenbrukeVilkår(false);
         settRedigeringsmodus(Redigeringsmodus.REDIGERING);
         settPanelITilstand(vurdering.vilkårType, EkspandertTilstand.KAN_IKKE_LUKKES);
     };
+
+    useEffect(() => {
+        const fetchVilkår = async () => {
+            const vilkår = await hentEnkelVilkårsvurderingForGjenbruk(
+                vurdering.behandlingId,
+                vurdering.id
+            );
+            if (vilkår) {
+                settVilkårGjenbruk(vilkår);
+            }
+        };
+        fetchVilkår();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [vurdering.behandlingId, vurdering.id]);
+
+    useEffect(() => {
+        settSkalViseGjenbrukKnapp(vilkårGjenbruk !== null);
+    }, [vilkårGjenbruk]);
 
     switch (redigeringsmodus) {
         case Redigeringsmodus.IKKE_PÅSTARTET:
@@ -162,13 +184,15 @@ const VisEllerEndreVurdering: FC<Props> = ({
                     <Button onClick={ikkeVurder} variant={'tertiary'} type={'button'}>
                         {høyreKnappetekst ? høyreKnappetekst : 'Ikke vurder vilkår'}
                     </Button>
-                    <Button
-                        onClick={hentResponsForEnkeltVilkår}
-                        variant={'tertiary'}
-                        type={'button'}
-                    >
-                        Gjenbruk
-                    </Button>
+                    {skalViseGjenbrukKnapp && (
+                        <Button
+                            onClick={hentResponsForEnkeltVilkår}
+                            variant={'tertiary'}
+                            type={'button'}
+                        >
+                            Gjenbruk
+                        </Button>
+                    )}
                 </KnappWrapper>
             );
         case Redigeringsmodus.REDIGERING:
@@ -179,7 +203,7 @@ const VisEllerEndreVurdering: FC<Props> = ({
                     feilmelding={feilmelding || resetFeilmelding}
                     settRedigeringsmodus={settRedigeringsmodus}
                     initiellRedigeringsmodus={initiellRedigeringsmodus}
-                    skalGjenbruke={skalGjenbruke}
+                    skalGjenbrukeVilkår={skalGjenbrukeVilkår}
                     vilkårGjenbruk={vilkårGjenbruk}
                 />
             );
@@ -193,6 +217,7 @@ const VisEllerEndreVurdering: FC<Props> = ({
                     behandlingErRedigerbar={behandlingErRedigerbar && erSaksbehandler}
                     tittelTekst={tittelTekstVisVurdering}
                     hentResponsForEnkeltVilkår={hentResponsForEnkeltVilkår}
+                    skalViseGjenbrukKnapp={skalViseGjenbrukKnapp}
                 />
             );
     }

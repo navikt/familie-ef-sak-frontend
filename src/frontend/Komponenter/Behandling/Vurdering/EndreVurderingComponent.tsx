@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { BegrunnelseRegel, Regler, Svarsalternativ } from './typer';
 import {
     IDelvilkår,
@@ -45,20 +45,26 @@ const EndreVurderingComponent: FC<{
     regler: Regler;
     oppdaterVurdering: (vurdering: SvarPåVilkårsvurdering) => void;
     vurdering: IVurdering;
-    skalGjenbruke: boolean;
+    skalGjenbrukeVilkår: boolean;
     vilkårGjenbruk: IVurdering | null;
-}> = ({ regler, oppdaterVurdering, vurdering, skalGjenbruke, vilkårGjenbruk }) => {
+}> = ({ regler, oppdaterVurdering, vurdering, skalGjenbrukeVilkår, vilkårGjenbruk }) => {
     const { nullstillIkkePersistertKomponent, settIkkePersistertKomponent } = useApp();
     const { settPanelITilstand } = useEkspanderbareVilkårpanelContext();
 
-    const [delvilkårsvurderinger, settDelvilkårsvurderinger] = useState<IDelvilkår[]>(
-        filtrerHistoriskeDelvilkår(
-            skalGjenbruke && vilkårGjenbruk
-                ? vilkårGjenbruk.delvilkårsvurderinger
-                : vurdering.delvilkårsvurderinger,
-            regler
-        )
-    );
+    const [delvilkårsvurderinger, settDelvilkårsvurderinger] = useState<IDelvilkår[]>([]);
+
+    useEffect(() => {
+        const skallBrukeGjenbruk = skalGjenbrukeVilkår && vilkårGjenbruk !== null;
+        settDelvilkårsvurderinger(
+            filtrerHistoriskeDelvilkår(
+                skallBrukeGjenbruk
+                    ? vilkårGjenbruk!.delvilkårsvurderinger
+                    : vurdering.delvilkårsvurderinger,
+                regler
+            )
+        );
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [skalGjenbrukeVilkår, vilkårGjenbruk]);
 
     const oppdaterVilkårsvar = (index: number, nySvarArray: Vurdering[]) => {
         settDelvilkårsvurderinger((prevSvar) => {
