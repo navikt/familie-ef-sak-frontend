@@ -5,21 +5,23 @@ import { NotePencilIcon } from '@navikt/aksel-icons';
 import { LogiskeVedlegg } from './LogiskeVedlegg';
 import styled from 'styled-components';
 import { Dokumentinfo } from '../../../App/typer/dokumentliste';
+import { useToggles } from '../../../App/context/TogglesContext';
+import { ToggleName } from '../../../App/context/toggles';
 
-const LenkeVenstreMargin = styled.a<{ $erHovedDokument: boolean }>`
+const Div = styled.div<{ $erHovedDokument: boolean }>`
     margin-left: ${(props) => (props.$erHovedDokument ? '0rem' : '2rem')};
+`;
 
+const Tittel = styled.a`
     &:visited {
         color: purple;
     }
 `;
 
-const Container = styled.div`
-    max-width: 32rem;
-`;
-
 const IkonKnapp = styled(Button)`
     padding: 0;
+    width: fit-content;
+    height: fit-content;
 `;
 
 interface Props {
@@ -32,23 +34,29 @@ export const Dokumenttittel: React.FC<Props> = ({
     dokument,
     settValgtDokumentId,
     erHovedDokument,
-}) => (
-    <Container>
-        <HStack gap="2" justify="space-between">
-            <LenkeVenstreMargin
-                href={`/dokument/journalpost/${dokument.journalpostId}/dokument-pdf/${dokument.dokumentinfoId}/${tittelMedUrlGodkjenteTegn(dokument.tittel)}`}
-                target={'_blank'}
-                rel={'noreferrer'}
-                $erHovedDokument={erHovedDokument}
-            >
-                {dokument.tittel}
-            </LenkeVenstreMargin>
-            <IkonKnapp
-                icon={<NotePencilIcon title="Rediger" />}
-                variant="tertiary"
-                onClick={() => settValgtDokumentId(dokument.dokumentinfoId)}
-            />
+}) => {
+    const { toggles } = useToggles();
+    const skalViseEndreTittelKnapp = toggles[ToggleName.visEndreDokumenttittelKnapp];
+
+    return (
+        <HStack gap="2">
+            {skalViseEndreTittelKnapp && (
+                <IkonKnapp
+                    icon={<NotePencilIcon title="Rediger" />}
+                    variant="tertiary"
+                    onClick={() => settValgtDokumentId(dokument.dokumentinfoId)}
+                />
+            )}
+            <Div $erHovedDokument={erHovedDokument}>
+                <Tittel
+                    href={`/dokument/journalpost/${dokument.journalpostId}/dokument-pdf/${dokument.dokumentinfoId}/${tittelMedUrlGodkjenteTegn(dokument.tittel)}`}
+                    target={'_blank'}
+                    rel={'noreferrer'}
+                >
+                    {dokument.tittel}
+                </Tittel>
+                <LogiskeVedlegg logiskeVedlegg={dokument.logiskeVedlegg} />
+            </Div>
         </HStack>
-        <LogiskeVedlegg logiskeVedlegg={dokument.logiskeVedlegg} />
-    </Container>
-);
+    );
+};

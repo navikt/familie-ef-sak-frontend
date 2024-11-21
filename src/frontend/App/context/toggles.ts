@@ -18,5 +18,7 @@ export enum ToggleName {
     visTildelOppgaveKnapp = 'familie.ef.sak.frontend-tildel-oppgave-knapp',
 
     // Release-toggles
+    visEndreDokumenttittelKnapp = 'familie.ef.sak.frontend-endre-dokumenttittel',
+
     // Midlertidige toggles - kan fjernes etterhvert
 }
