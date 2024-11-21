@@ -1,20 +1,15 @@
 import React from 'react';
 import { LogiskVedlegg } from '../../../App/typer/dokumentliste';
-import styled from 'styled-components';
 
-const DivMedVenstreMargin = styled.div`
-    margin-left: 2rem;
-`;
+interface Props {
+    logiskeVedlegg: LogiskVedlegg[];
+}
 
-export const LogiskeVedlegg: React.FC<{ logiskeVedlegg: LogiskVedlegg[] }> = ({
-    logiskeVedlegg,
-}) => {
+export const LogiskeVedlegg: React.FC<Props> = ({ logiskeVedlegg }) => {
     return (
         <>
             {logiskeVedlegg.map((logiskVedlegg, index) => (
-                <DivMedVenstreMargin key={`${logiskVedlegg.tittel}${index}`}>
-                    {logiskVedlegg.tittel}
-                </DivMedVenstreMargin>
+                <div key={`${logiskVedlegg.tittel}${index}`}>{logiskVedlegg.tittel}</div>
             ))}
         </>
     );

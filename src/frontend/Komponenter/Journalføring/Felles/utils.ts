@@ -14,6 +14,7 @@ import {
 import { ISelectOption, MultiValue, PropsValue, SingleValue } from '@navikt/familie-form-elements';
 import { Klagebehandlinger } from '../../../App/typer/klage';
 import { JournalføringEvent } from '../../../App/utils/amplitude/typer';
+import { dokumentTitler } from '../../utils';
 
 export const JOURNALPOST_QUERY_STRING = 'journalpostId';
 export const GJELDER_KLAGE_QUERY_STRING = 'gjelderKlage';
@@ -47,40 +48,6 @@ export const utledRiktigBehandlingstype = (
         ? Behandlingstype.REVURDERING
         : Behandlingstype.FØRSTEGANGSBEHANDLING;
 };
-
-const dokumentTitler: string[] = [
-    'Anke på tilbakekreving',
-    'Arbeidsforhold',
-    'Avtale / Avgjørelse om samvær',
-    'Bekreftelse fra barnevernet',
-    'Bekreftelse på termindato',
-    'Bekreftelse på tilsynsutgifter',
-    'Bekreftelse på utdanning / utgifter',
-    'Endring i sivilstand',
-    'Enslig mor eller far som er arbeidssøker',
-    'Eklæring om samlivsbrudd',
-    'EØS dokument',
-    'Forespørsel',
-    'Fødselsmelding/Fødselsattest',
-    'Grunnblankett',
-    'Inntektsopplysninger',
-    'Klage på tilbakekreving',
-    'Klage/Anke',
-    'Krav om gjenopptak av ankesak',
-    'Medisinsk dokumentasjon',
-    'Merknader i ankesak',
-    'Oppholdstillatelse',
-    'Refusjonskrav/faktura',
-    'Rettsavgjørelse',
-    'Skatteopplysninger',
-    'Stevning',
-    'Søknad om overgangsstønad',
-    'Søknad om skolepenger',
-    'Søknad om barnetilsyn',
-    'Tilmelding til NAV som reell arbeidssøker ved krav om overgangsstønad',
-    'Uttalelse',
-    'Uttalelse tilbakekreving',
-];
 
 export const dokumentTitlerMultiSelect: ISelectOption[] = dokumentTitler.map((tittel) => {
     return { value: tittel, label: tittel };
