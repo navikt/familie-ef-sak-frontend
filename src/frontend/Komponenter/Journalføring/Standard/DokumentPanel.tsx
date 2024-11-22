@@ -84,6 +84,9 @@ const DokumentPanel: React.FC<Props> = ({ journalpost, journalpostState, dokumen
         ? mapLogiskeVedleggTilMultiselectValue(logiskeVedlegg)
         : undefined;
 
+    const logiskeVedleggString: string[] =
+        logiskeVedlegg !== undefined ? logiskeVedlegg.map((vedlegg) => vedlegg.tittel) : [];
+
     return (
         <ExpansionCard
             id={dokument.dokumentInfoId}
@@ -100,7 +103,7 @@ const DokumentPanel: React.FC<Props> = ({ journalpost, journalpostState, dokumen
                 <DokumentPanelHeader
                     dokumentTittel={dokumentTittel}
                     erValgt={dokumentPanelErValgt}
-                    logiskeVedlegg={logiskeVedlegg}
+                    logiskeVedlegg={logiskeVedleggString}
                 />
             </ExpansionCardHeader>
             <ExpansionCard.Content>
