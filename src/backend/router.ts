@@ -54,7 +54,7 @@ export default (authClient: Client, router: Router): Router => {
     });
 
     router.get(
-        '*',
+        '*global',
         redirectHvisInternUrlIPreprod(),
         ensureAuthenticated(authClient, false),
         (_req: Request, res: Response) => {
