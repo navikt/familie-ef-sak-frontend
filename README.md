@@ -4,6 +4,7 @@ Frontend app for enslig forsørger saksbehandling (overgangsstønad)
 
 # Kom i gang med utvikling
 
+
 -   Installere avhengigheter `yarn`
 -   Starte dev-server `yarn start:dev`
 -   Starte mock-server `yarn start:mock`
