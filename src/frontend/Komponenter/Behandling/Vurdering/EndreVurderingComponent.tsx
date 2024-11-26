@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import { BegrunnelseRegel, Regler, Svarsalternativ } from './typer';
 import {
     IDelvilkår,
@@ -27,9 +27,6 @@ import {
     EkspandertTilstand,
     useEkspanderbareVilkårpanelContext,
 } from '../../../App/context/EkspanderbareVilkårpanelContext';
-import { GjenbrukInngangsvilkår } from '../Inngangsvilkår/GjenbrukInngangsvilkår';
-import { RessursStatus } from '../../../App/typer/ressurs';
-import { Behandling } from '../../../App/typer/fagsak';
 
 const LagreKnapp = styled(Button)`
     margin-top: 1rem;
@@ -44,26 +41,13 @@ const EndreVurderingComponent: FC<{
     regler: Regler;
     oppdaterVurdering: (vurdering: SvarPåVilkårsvurdering) => void;
     vurdering: IVurdering;
-    skalGjenbrukeVilkår: boolean;
-    vilkårGjenbruk: IVurdering | null;
-}> = ({ regler, oppdaterVurdering, vurdering, skalGjenbrukeVilkår, vilkårGjenbruk }) => {
+}> = ({ regler, oppdaterVurdering, vurdering }) => {
     const { nullstillIkkePersistertKomponent, settIkkePersistertKomponent } = useApp();
     const { settPanelITilstand } = useEkspanderbareVilkårpanelContext();
 
-    const [delvilkårsvurderinger, settDelvilkårsvurderinger] = useState<IDelvilkår[]>([]);
-
-    useEffect(() => {
-        const skallBrukeGjenbruk = skalGjenbrukeVilkår && vilkårGjenbruk !== null;
-        settDelvilkårsvurderinger(
-            filtrerHistoriskeDelvilkår(
-                skallBrukeGjenbruk
-                    ? vilkårGjenbruk!.delvilkårsvurderinger
-                    : vurdering.delvilkårsvurderinger,
-                regler
-            )
-        );
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [skalGjenbrukeVilkår, vilkårGjenbruk]);
+    const [delvilkårsvurderinger, settDelvilkårsvurderinger] = useState<IDelvilkår[]>(
+        filtrerHistoriskeDelvilkår(vurdering.delvilkårsvurderinger, regler)
+    );
 
     const oppdaterVilkårsvar = (index: number, nySvarArray: Vurdering[]) => {
         settDelvilkårsvurderinger((prevSvar) => {
@@ -143,35 +127,6 @@ const EndreVurderingComponent: FC<{
         settPanelITilstand(vurdering.vilkårType, EkspandertTilstand.EKSPANDERT);
     };
 
-    const [behandlingerForVilkårsgjenbruk, settbehandlingerForVilkårsgjenbruk] = useState<
-        Behandling[]
-    >([]);
-    const { axiosRequest } = useApp();
-
-    const finnBehandlingForGjenbrukAvVilkår = useCallback(
-        async (behandlingId: string): Promise<Behandling[] | null> => {
-            try {
-                const respons = await axiosRequest<Behandling[], { behandlingId: string }>({
-                    method: 'GET',
-                    url: `/familie-ef-sak/api/behandling/gjenbruk/${behandlingId}`,
-                });
-                if (respons.status === RessursStatus.SUKSESS) {
-                    settbehandlingerForVilkårsgjenbruk(respons.data);
-                }
-                return null;
-            } catch {
-                return null;
-            }
-        },
-        [axiosRequest]
-    );
-
-    useEffect(() => {
-        if (vilkårGjenbruk) {
-            finnBehandlingForGjenbrukAvVilkår(vilkårGjenbruk?.behandlingId);
-        }
-    }, [vilkårGjenbruk, finnBehandlingForGjenbrukAvVilkår]);
-
     return (
         <form
             onSubmit={(event) => {
@@ -184,17 +139,13 @@ const EndreVurderingComponent: FC<{
                 });
             }}
         >
+            {/* {skalGjenbrukeVilkår && vilkårGjenbruk && <GjenbrukInngangsvilkår />} */}
             {delvilkårsvurderinger.map((delvilkår, delvilkårIndex) => {
                 return delvilkår.vurderinger.map((svar) => {
                     const regel = regler[svar.regelId];
 
                     return (
                         <DelvilkårContainer key={regel.regelId} gap="3">
-                            {skalGjenbrukeVilkår && vilkårGjenbruk && (
-                                <GjenbrukInngangsvilkår
-                                    behandlinger={behandlingerForVilkårsgjenbruk}
-                                />
-                            )}
                             <Delvilkår
                                 vurdering={svar}
                                 regel={regel}

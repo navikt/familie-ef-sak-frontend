@@ -42,10 +42,7 @@ export interface UseVilkår {
     ikkeVurderVilkår: (
         nullstillVilkårsvurdering: OppdaterVilkårsvurdering
     ) => Promise<RessursSuksess<IVurdering> | RessursFeilet>;
-    hentEnkelVilkårsvurderingForGjenbruk: (
-        behandlingId: string,
-        vilkårId: string
-    ) => Promise<IVurdering | null>;
+    gjenbrukEnkelVilkårsvurdering: (behandlingId: string, vilkårId: string) => void;
 }
 
 export const useVilkår = (): UseVilkår => {
@@ -155,25 +152,32 @@ export const useVilkår = (): UseVilkår => {
         [axiosRequest]
     );
 
-    const hentEnkelVilkårsvurderingForGjenbruk = useCallback(
-        async (behandlingId: string, vilkårId: string): Promise<IVurdering | null> => {
-            try {
-                const respons = await axiosRequest<
-                    IVurdering,
-                    { behandlingId: string; vilkårId: string }
-                >({
-                    method: 'POST',
-                    url: `/familie-ef-sak/api/vurdering/hent-enkelt-gjenbruk-vilkar`,
-                    data: { behandlingId: behandlingId, vilkårId: vilkårId },
+    const gjenbrukEnkelVilkårsvurdering = useCallback(
+        (behandlingId: string, vilkårId: string) => {
+            axiosRequest<IVurdering, { behandlingId: string; vilkårId: string }>({
+                method: 'POST',
+                url: `/familie-ef-sak/api/vurdering/gjenbruk-enkelt-vilkår`,
+                data: { behandlingId: behandlingId, vilkårId: vilkårId },
+            }).then((respons: RessursSuksess<IVurdering> | RessursFeilet) => {
+                settVilkår((prevVilkår) => {
+                    if (
+                        prevVilkår.status === RessursStatus.SUKSESS &&
+                        respons.status === RessursStatus.SUKSESS
+                    ) {
+                        return {
+                            ...prevVilkår,
+                            status: RessursStatus.SUKSESS,
+                            data: {
+                                ...prevVilkår.data,
+                                vurderinger: prevVilkår.data.vurderinger.map((vurdering) =>
+                                    vurdering.id === respons.data.id ? respons.data : vurdering
+                                ),
+                            },
+                        };
+                    }
+                    return prevVilkår;
                 });
-
-                if (respons.status === RessursStatus.SUKSESS) {
-                    return respons.data;
-                }
-                return null;
-            } catch {
-                return null;
-            }
+            });
         },
         [axiosRequest]
     );
@@ -186,6 +190,6 @@ export const useVilkår = (): UseVilkår => {
         nullstillVurdering,
         ikkeVurderVilkår,
         oppdaterGrunnlagsdataOgHentVilkår,
-        hentEnkelVilkårsvurderingForGjenbruk,
+        gjenbrukEnkelVilkårsvurdering,
     };
 };

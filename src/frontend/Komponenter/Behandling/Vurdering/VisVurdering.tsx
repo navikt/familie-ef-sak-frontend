@@ -21,6 +21,7 @@ import {
     SmallTextLabel,
 } from '../../../Felles/Visningskomponenter/Tekster';
 import { ATextSubtle } from '@navikt/ds-tokens/dist/tokens';
+import ModalGjenbrukVilkårsvurdering from './ModalGjenbrukVilkårsvurdering';
 
 const StyledVilkår = styled.div`
     grid-column: 2/4;
@@ -62,8 +63,7 @@ interface Props {
     startRedigering: () => void;
     behandlingErRedigerbar: boolean;
     tittelTekst?: string;
-    hentResponsForEnkeltVilkår: () => Promise<void>;
-    skalViseGjenbrukKnapp: boolean;
+    handleGjenbrukEnkelVilkårsvurdering: () => Promise<void>;
 }
 
 const VisVurdering: FC<Props> = ({
@@ -73,8 +73,7 @@ const VisVurdering: FC<Props> = ({
     feilmelding,
     behandlingErRedigerbar,
     tittelTekst,
-    hentResponsForEnkeltVilkår,
-    skalViseGjenbrukKnapp,
+    handleGjenbrukEnkelVilkårsvurdering,
 }) => {
     const vilkårsresultat = vurdering.resultat;
     const sistOppdatert = formaterIsoDatoTidMedSekunder(
@@ -89,6 +88,8 @@ const VisVurdering: FC<Props> = ({
     const erAutomatiskVurdert = vurdering.delvilkårsvurderinger.every(
         (delvilkårsvurdering) => delvilkårsvurdering.resultat === Vilkårsresultat.AUTOMATISK_OPPFYLT
     );
+
+    const [visModal, settVisModal] = React.useState<boolean>(false);
 
     return (
         <VurderingLesemodusGrid key={vurdering.id}>
@@ -128,17 +129,16 @@ const VisVurdering: FC<Props> = ({
                             >
                                 <span>Slett</span>
                             </Button>
-                            {skalViseGjenbrukKnapp && (
-                                <Button
-                                    type={'button'}
-                                    variant={'tertiary'}
-                                    icon={<RecycleIcon />}
-                                    onClick={hentResponsForEnkeltVilkår}
-                                    size={'small'}
-                                >
-                                    Gjenbruk
-                                </Button>
-                            )}
+
+                            <Button
+                                type={'button'}
+                                variant={'tertiary'}
+                                icon={<RecycleIcon />}
+                                onClick={() => settVisModal(true)}
+                                size={'small'}
+                            >
+                                Gjenbruk
+                            </Button>
                         </div>
                         {feilmelding && (
                             <StyledFeilmelding>
@@ -150,6 +150,12 @@ const VisVurdering: FC<Props> = ({
                     </>
                 )}
             </TittelOgKnappWrapper>
+
+            <ModalGjenbrukVilkårsvurdering
+                visModal={visModal}
+                settVisModal={settVisModal}
+                handleGjenbrukEnkelVilkårsvurdering={handleGjenbrukEnkelVilkårsvurdering}
+            />
 
             <VertikalStrek />
             <SistOppdatertOgVurderingWrapper>

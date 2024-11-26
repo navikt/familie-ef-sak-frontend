@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { FC, useEffect, useState } from 'react';
 import {
-    InngangsvilkårType,
+    // InngangsvilkårType,
     IVurdering,
     OppdaterVilkårsvurdering,
     SvarPåVilkårsvurdering,
     Vilkårsresultat,
-    VilkårType,
+    // VilkårType,
 } from '../Inngangsvilkår/vilkår';
 import EndreVurdering from './EndreVurdering';
 import VisVurdering from './VisVurdering';
@@ -86,10 +86,7 @@ const VisEllerEndreVurdering: FC<Props> = ({
         vilkårState,
     } = useBehandling();
 
-    const { hentEnkelVilkårsvurderingForGjenbruk } = vilkårState;
-    const [skalGjenbrukeVilkår, settSkalGjenbrukeVilkår] = useState<boolean>(false);
-    const [vilkårGjenbruk, settVilkårGjenbruk] = useState<IVurdering | null>(null);
-    const [skalViseGjenbrukKnapp, settSkalViseGjenbrukKnapp] = useState(false);
+    const { gjenbrukEnkelVilkårsvurdering } = vilkårState;
 
     const { settPanelITilstand } = useEkspanderbareVilkårpanelContext();
     const [redigeringsmodus, settRedigeringsmodus] = useState<Redigeringsmodus>(
@@ -98,9 +95,9 @@ const VisEllerEndreVurdering: FC<Props> = ({
     const [resetFeilmelding, settResetFeilmelding] = useState<string | undefined>();
     const { nullstillIkkePersistertKomponent, erSaksbehandler } = useApp();
 
-    const erInngangsvilkårType = (vilkårtype: VilkårType): vilkårtype is InngangsvilkårType => {
-        return Object.values(InngangsvilkårType).includes(vilkårtype as InngangsvilkårType);
-    };
+    // const erInngangsvilkårType = (vilkårtype: VilkårType): vilkårtype is InngangsvilkårType => {
+    //     return Object.values(InngangsvilkårType).includes(vilkårtype as InngangsvilkårType);
+    // };
 
     useEffect(() => {
         settRedigeringsmodus(utledRedigeringsmodus(feilmelding, vurdering, behandlingErRedigerbar));
@@ -122,17 +119,9 @@ const VisEllerEndreVurdering: FC<Props> = ({
         });
     };
 
-    const hentResponsForEnkeltVilkår = async () => {
-        settRedigeringsmodus(Redigeringsmodus.REDIGERING);
-        const vilkår = await hentEnkelVilkårsvurderingForGjenbruk(
-            vurdering.behandlingId,
-            vurdering.id
-        );
-        if (vilkår) {
-            settVilkårGjenbruk(vilkår);
-            settSkalGjenbrukeVilkår(true);
-        }
-        settPanelITilstand(vurdering.vilkårType, EkspandertTilstand.KAN_IKKE_LUKKES);
+    const handleGjenbrukEnkelVilkårsvurdering = async () => {
+        // settRedigeringsmodus(Redigeringsmodus.REDIGERING);
+        gjenbrukEnkelVilkårsvurdering(vurdering.behandlingId, vurdering.id);
     };
 
     const initiellRedigeringsmodus =
@@ -157,30 +146,9 @@ const VisEllerEndreVurdering: FC<Props> = ({
         });
 
     const startRedigering = () => {
-        settSkalGjenbrukeVilkår(false);
         settRedigeringsmodus(Redigeringsmodus.REDIGERING);
         settPanelITilstand(vurdering.vilkårType, EkspandertTilstand.KAN_IKKE_LUKKES);
     };
-
-    useEffect(() => {
-        if (erInngangsvilkårType(vurdering.vilkårType)) {
-            const fetchVilkår = async () => {
-                const vilkår = await hentEnkelVilkårsvurderingForGjenbruk(
-                    vurdering.behandlingId,
-                    vurdering.id
-                );
-                if (vilkår) {
-                    settVilkårGjenbruk(vilkår);
-                }
-            };
-            fetchVilkår();
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [vurdering.behandlingId, vurdering.id]);
-
-    useEffect(() => {
-        settSkalViseGjenbrukKnapp(vilkårGjenbruk !== null);
-    }, [vilkårGjenbruk]);
 
     switch (redigeringsmodus) {
         case Redigeringsmodus.IKKE_PÅSTARTET:
@@ -192,15 +160,13 @@ const VisEllerEndreVurdering: FC<Props> = ({
                     <Button onClick={ikkeVurder} variant={'tertiary'} type={'button'}>
                         {høyreKnappetekst ? høyreKnappetekst : 'Ikke vurder vilkår'}
                     </Button>
-                    {skalViseGjenbrukKnapp && (
-                        <Button
-                            onClick={hentResponsForEnkeltVilkår}
-                            variant={'tertiary'}
-                            type={'button'}
-                        >
-                            Gjenbruk
-                        </Button>
-                    )}
+                    <Button
+                        onClick={handleGjenbrukEnkelVilkårsvurdering}
+                        variant={'tertiary'}
+                        type={'button'}
+                    >
+                        Gjenbruk
+                    </Button>
                 </KnappWrapper>
             );
         case Redigeringsmodus.REDIGERING:
@@ -211,8 +177,6 @@ const VisEllerEndreVurdering: FC<Props> = ({
                     feilmelding={feilmelding || resetFeilmelding}
                     settRedigeringsmodus={settRedigeringsmodus}
                     initiellRedigeringsmodus={initiellRedigeringsmodus}
-                    skalGjenbrukeVilkår={skalGjenbrukeVilkår}
-                    vilkårGjenbruk={vilkårGjenbruk}
                 />
             );
         case Redigeringsmodus.VISNING:
@@ -224,8 +188,7 @@ const VisEllerEndreVurdering: FC<Props> = ({
                     feilmelding={feilmelding || resetFeilmelding}
                     behandlingErRedigerbar={behandlingErRedigerbar && erSaksbehandler}
                     tittelTekst={tittelTekstVisVurdering}
-                    hentResponsForEnkeltVilkår={hentResponsForEnkeltVilkår}
-                    skalViseGjenbrukKnapp={skalViseGjenbrukKnapp}
+                    handleGjenbrukEnkelVilkårsvurdering={handleGjenbrukEnkelVilkårsvurdering}
                 />
             );
     }
