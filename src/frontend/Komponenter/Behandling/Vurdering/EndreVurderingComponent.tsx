@@ -139,7 +139,6 @@ const EndreVurderingComponent: FC<{
                 });
             }}
         >
-            {/* {skalGjenbrukeVilkår && vilkårGjenbruk && <GjenbrukInngangsvilkår />} */}
             {delvilkårsvurderinger.map((delvilkår, delvilkårIndex) => {
                 return delvilkår.vurderinger.map((svar) => {
                     const regel = regler[svar.regelId];
