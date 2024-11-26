@@ -21,18 +21,22 @@ import {
 import Begrunnelse from './Begrunnelse';
 import Delvilkår from './Delvilkår';
 import { useApp } from '../../../App/context/AppContext';
-import { Button, VStack } from '@navikt/ds-react';
+import { Button } from '@navikt/ds-react';
 import styled from 'styled-components';
 import {
     EkspandertTilstand,
     useEkspanderbareVilkårpanelContext,
 } from '../../../App/context/EkspanderbareVilkårpanelContext';
 
+/**
+ * Skal resette undervilkår, men ikke rootnivå hvis en tidligere endrer seg
+ */
+
 const LagreKnapp = styled(Button)`
     margin-top: 1rem;
 `;
 
-const DelvilkårContainer = styled(VStack)`
+const DelvilkårContainer = styled.div`
     margin-bottom: 1rem;
 `;
 
@@ -44,7 +48,6 @@ const EndreVurderingComponent: FC<{
 }> = ({ regler, oppdaterVurdering, vurdering }) => {
     const { nullstillIkkePersistertKomponent, settIkkePersistertKomponent } = useApp();
     const { settPanelITilstand } = useEkspanderbareVilkårpanelContext();
-
     const [delvilkårsvurderinger, settDelvilkårsvurderinger] = useState<IDelvilkår[]>(
         filtrerHistoriskeDelvilkår(vurdering.delvilkårsvurderinger, regler)
     );
@@ -144,7 +147,7 @@ const EndreVurderingComponent: FC<{
                     const regel = regler[svar.regelId];
 
                     return (
-                        <DelvilkårContainer key={regel.regelId} gap="3">
+                        <DelvilkårContainer key={regel.regelId}>
                             <Delvilkår
                                 vurdering={svar}
                                 regel={regel}
