@@ -22,6 +22,7 @@ import {
 } from '../../../Felles/Visningskomponenter/Tekster';
 import { ATextSubtle } from '@navikt/ds-tokens/dist/tokens';
 import ModalGjenbrukVilkårsvurdering from './ModalGjenbrukVilkårsvurdering';
+import { sjekkErInngangsvilkårType } from './utils';
 
 const StyledVilkår = styled.div`
     grid-column: 2/4;
@@ -63,7 +64,7 @@ interface Props {
     startRedigering: () => void;
     behandlingErRedigerbar: boolean;
     tittelTekst?: string;
-    handleGjenbrukEnkelVilkårsvurdering: () => Promise<void>;
+    handleGjenbrukEnkelVilkårsvurdering: () => void;
 }
 
 const VisVurdering: FC<Props> = ({
@@ -91,6 +92,7 @@ const VisVurdering: FC<Props> = ({
 
     const [visModal, settVisModal] = React.useState<boolean>(false);
 
+    const erInngangsvilkårType = sjekkErInngangsvilkårType(vurdering.vilkårType);
     return (
         <VurderingLesemodusGrid key={vurdering.id}>
             {erAutomatiskVurdert && <CogIkon />}
@@ -129,16 +131,17 @@ const VisVurdering: FC<Props> = ({
                             >
                                 <span>Slett</span>
                             </Button>
-
-                            <Button
-                                type={'button'}
-                                variant={'tertiary'}
-                                icon={<RecycleIcon />}
-                                onClick={() => settVisModal(true)}
-                                size={'small'}
-                            >
-                                Gjenbruk
-                            </Button>
+                            {erInngangsvilkårType && (
+                                <Button
+                                    type={'button'}
+                                    variant={'tertiary'}
+                                    icon={<RecycleIcon />}
+                                    onClick={() => settVisModal(true)}
+                                    size={'small'}
+                                >
+                                    Gjenbruk
+                                </Button>
+                            )}
                         </div>
                         {feilmelding && (
                             <StyledFeilmelding>

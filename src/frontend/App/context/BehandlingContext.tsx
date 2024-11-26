@@ -22,7 +22,6 @@ import { useApp } from './AppContext';
 import { ModalState, utledModalState } from '../../Komponenter/Behandling/Modal/NyEierModal';
 import { useHentVedtak } from '../hooks/useHentVedtak';
 import { useHentFagsak } from '../hooks/useHentFagsak';
-import { useHentBehandlinger } from '../hooks/useHentBehandlinger';
 
 const [BehandlingProvider, useBehandling] = constate(() => {
     const { innloggetSaksbehandler } = useApp();
@@ -41,10 +40,8 @@ const [BehandlingProvider, useBehandling] = constate(() => {
     const { hentAnsvarligSaksbehandlerCallback, ansvarligSaksbehandler } =
         useHentAnsvarligSaksbehandler(behandlingId);
     const { hentVedtak: hentVedtakCallback, vedtak, vedtaksresultat } = useHentVedtak(behandlingId);
-    const { hentBehandlingerCallback, behandlinger } = useHentBehandlinger(behandlingId);
 
     const hentBehandling = useRerunnableEffect(hentBehandlingCallback, [behandlingId]);
-    const hentBehandlinger = useRerunnableEffect(hentBehandlingerCallback, [behandlingId]);
     const hentAnsvarligSaksbehandler = useRerunnableEffect(hentAnsvarligSaksbehandlerCallback, [
         behandlingId,
     ]);
@@ -131,8 +128,6 @@ const [BehandlingProvider, useBehandling] = constate(() => {
         hentAnsvarligSaksbehandler,
         hentBehandling,
         hentBehandlingshistorikk,
-        hentBehandlinger,
-        behandlinger,
         hentTotrinnskontroll,
         nullstillGrunnlagsendringer,
         personopplysningerResponse,

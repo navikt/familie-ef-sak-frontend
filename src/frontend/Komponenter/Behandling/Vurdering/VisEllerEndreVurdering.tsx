@@ -1,12 +1,10 @@
 import * as React from 'react';
 import { FC, useEffect, useState } from 'react';
 import {
-    // InngangsvilkårType,
     IVurdering,
     OppdaterVilkårsvurdering,
     SvarPåVilkårsvurdering,
     Vilkårsresultat,
-    // VilkårType,
 } from '../Inngangsvilkår/vilkår';
 import EndreVurdering from './EndreVurdering';
 import VisVurdering from './VisVurdering';
@@ -20,6 +18,7 @@ import {
     useEkspanderbareVilkårpanelContext,
 } from '../../../App/context/EkspanderbareVilkårpanelContext';
 import { ModalState } from '../Modal/NyEierModal';
+import { sjekkErInngangsvilkårType } from './utils';
 
 const KnappWrapper = styled.div`
     display: flex;
@@ -95,10 +94,6 @@ const VisEllerEndreVurdering: FC<Props> = ({
     const [resetFeilmelding, settResetFeilmelding] = useState<string | undefined>();
     const { nullstillIkkePersistertKomponent, erSaksbehandler } = useApp();
 
-    // const erInngangsvilkårType = (vilkårtype: VilkårType): vilkårtype is InngangsvilkårType => {
-    //     return Object.values(InngangsvilkårType).includes(vilkårtype as InngangsvilkårType);
-    // };
-
     useEffect(() => {
         settRedigeringsmodus(utledRedigeringsmodus(feilmelding, vurdering, behandlingErRedigerbar));
     }, [vurdering, feilmelding, behandlingErRedigerbar]);
@@ -119,8 +114,7 @@ const VisEllerEndreVurdering: FC<Props> = ({
         });
     };
 
-    const handleGjenbrukEnkelVilkårsvurdering = async () => {
-        // settRedigeringsmodus(Redigeringsmodus.REDIGERING);
+    const handleGjenbrukEnkelVilkårsvurdering = () => {
         gjenbrukEnkelVilkårsvurdering(vurdering.behandlingId, vurdering.id);
     };
 
@@ -150,6 +144,8 @@ const VisEllerEndreVurdering: FC<Props> = ({
         settPanelITilstand(vurdering.vilkårType, EkspandertTilstand.KAN_IKKE_LUKKES);
     };
 
+    const erInngangsvilkårType = sjekkErInngangsvilkårType(vurdering.vilkårType);
+
     switch (redigeringsmodus) {
         case Redigeringsmodus.IKKE_PÅSTARTET:
             return (
@@ -160,13 +156,15 @@ const VisEllerEndreVurdering: FC<Props> = ({
                     <Button onClick={ikkeVurder} variant={'tertiary'} type={'button'}>
                         {høyreKnappetekst ? høyreKnappetekst : 'Ikke vurder vilkår'}
                     </Button>
-                    <Button
-                        onClick={handleGjenbrukEnkelVilkårsvurdering}
-                        variant={'tertiary'}
-                        type={'button'}
-                    >
-                        Gjenbruk
-                    </Button>
+                    {erInngangsvilkårType && (
+                        <Button
+                            onClick={handleGjenbrukEnkelVilkårsvurdering}
+                            variant={'tertiary'}
+                            type={'button'}
+                        >
+                            Gjenbruk
+                        </Button>
+                    )}
                 </KnappWrapper>
             );
         case Redigeringsmodus.REDIGERING:

@@ -4,7 +4,7 @@ import React, { FC } from 'react';
 const ModalGjenbrukVilkårsvurdering: FC<{
     visModal: boolean;
     settVisModal: React.Dispatch<React.SetStateAction<boolean>>;
-    handleGjenbrukEnkelVilkårsvurdering: () => Promise<void>;
+    handleGjenbrukEnkelVilkårsvurdering: () => void;
 }> = ({ visModal, settVisModal, handleGjenbrukEnkelVilkårsvurdering }) => {
     if (!visModal) {
         return null;
