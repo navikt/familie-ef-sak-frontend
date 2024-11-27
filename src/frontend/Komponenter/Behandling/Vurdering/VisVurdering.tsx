@@ -76,6 +76,7 @@ const VisVurdering: FC<Props> = ({
     tittelTekst,
     handleGjenbrukEnkelVilkårsvurdering,
 }) => {
+    const [visModal, settVisModal] = React.useState<boolean>(false);
     const vilkårsresultat = vurdering.resultat;
     const sistOppdatert = formaterIsoDatoTidMedSekunder(
         vurdering.opphavsvilkår?.endretTid || vurdering.endretTid
@@ -89,8 +90,6 @@ const VisVurdering: FC<Props> = ({
     const erAutomatiskVurdert = vurdering.delvilkårsvurderinger.every(
         (delvilkårsvurdering) => delvilkårsvurdering.resultat === Vilkårsresultat.AUTOMATISK_OPPFYLT
     );
-
-    const [visModal, settVisModal] = React.useState<boolean>(false);
 
     const erInngangsvilkårType = sjekkErInngangsvilkårType(vurdering.vilkårType);
     return (
