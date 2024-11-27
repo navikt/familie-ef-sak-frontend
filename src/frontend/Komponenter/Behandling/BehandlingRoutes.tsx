@@ -18,7 +18,15 @@ const BehandlingRoutes: React.FC<Props> = ({ behandling }) => {
                     element={React.createElement(fane.komponent, { behandling: behandling }, null)}
                 />
             ))}
-            <Route path="*" element={<Navigate to={behandlingsfaner[0].href} replace={true} />} />
+            <Route
+                path="*"
+                element={
+                    <Navigate
+                        to={`/behandling/${behandling.id}/${behandlingsfaner[0].href}`}
+                        replace={true}
+                    />
+                }
+            />
         </Routes>
     );
 };
