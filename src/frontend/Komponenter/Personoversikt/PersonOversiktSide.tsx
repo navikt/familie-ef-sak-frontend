@@ -172,7 +172,7 @@ const PersonOversikt: React.FC<Props> = ({
                 <Tabs
                     value={path}
                     onChange={(fane) => {
-                        navigate(fane);
+                        navigate(`/person/${fagsakPerson.id}/${fane}`);
                         loggNavigereTabEvent({
                             side: 'person',
                             forrigeFane: path,
@@ -199,7 +199,15 @@ const PersonOversikt: React.FC<Props> = ({
                             )}
                         />
                     ))}
-                    <Route path="*" element={<Navigate to="behandlinger" replace={true} />} />
+                    <Route
+                        path="*"
+                        element={
+                            <Navigate
+                                to={`/person/${fagsakPerson.id}/behandlinger`}
+                                replace={true}
+                            />
+                        }
+                    />
                 </Routes>
             </Container>
         </>
