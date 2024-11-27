@@ -13,7 +13,7 @@ import { ISøkPerson } from '../../App/typer/personsøk';
 import { useApp } from '../../App/context/AppContext';
 import { IPersonIdent } from '../../App/typer/felles';
 import { v4 as uuidv4 } from 'uuid';
-import { useNavigate } from 'react-router-dom';
+// import { useNavigate } from 'react-router-dom';
 import { MannIkon } from '../Ikoner/MannIkon';
 import { KvinneIkon } from '../Ikoner/KvinneIkon';
 import { Kjønn } from '../../App/typer/personopplysninger';
@@ -41,7 +41,7 @@ const SøkContainer = styled.div`
 
 const PersonSøk: React.FC = () => {
     const { axiosRequest, settToast } = useApp();
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const [resultat, settResultat] = useState<Ressurs<ISøkeresultat[]>>(byggTomRessurs());
     const [uuidSøk, settUuidSøk] = useState(uuidv4());
     const [fokuserSøkeresultat, settFokuserSøkeresultat] = useState<boolean>(false);
@@ -88,7 +88,8 @@ const PersonSøk: React.FC = () => {
 
     const søkeresultatOnClick = (søkeresultat: ISøkeresultat) => {
         if (søkeresultat.fagsakId) {
-            navigate(`/person/${søkeresultat.fagsakId}`); // fagsakId er mappet fra fagsakPersonId
+            // navigate(`/person/${søkeresultat.fagsakId}`); // fagsakId er mappet fra fagsakPersonId
+            window.location.href = `${window.location.origin}/person/${søkeresultat.fagsakId}`;
         } else {
             settPersonIdentUtenFagsak(søkeresultat.ident);
             settVisModal(true);
