@@ -88,7 +88,6 @@ const PersonSøk: React.FC = () => {
 
     const søkeresultatOnClick = (søkeresultat: ISøkeresultat) => {
         if (søkeresultat.fagsakId) {
-            console.log('Skal navigere', søkeresultat);
             // navigate(`/person/${søkeresultat.fagsakId}`); // fagsakId er mappet fra fagsakPersonId
             window.location.href = `${window.location.origin}/person/${søkeresultat.fagsakId}`;
         } else {
