@@ -159,24 +159,16 @@ export const useVilkår = (): UseVilkår => {
                 url: `/familie-ef-sak/api/vurdering/gjenbruk-enkelt-vilkår`,
                 data: { behandlingId: behandlingId, vilkårId: vilkårId },
             }).then((respons: RessursSuksess<IVurdering> | RessursFeilet) => {
-                settVilkår((prevVilkår) => {
-                    if (
-                        prevVilkår.status === RessursStatus.SUKSESS &&
-                        respons.status === RessursStatus.SUKSESS
-                    ) {
-                        return {
-                            ...prevVilkår,
-                            status: RessursStatus.SUKSESS,
-                            data: {
-                                ...prevVilkår.data,
-                                vurderinger: prevVilkår.data.vurderinger.map((vurdering) =>
-                                    vurdering.id === respons.data.id ? respons.data : vurdering
-                                ),
-                            },
-                        };
-                    }
-                    return prevVilkår;
-                });
+                if (respons.status === RessursStatus.SUKSESS) {
+                    settVilkår((prevInngangsvilkår) =>
+                        oppdaterInngangsvilkårMedVurdering(
+                            prevInngangsvilkår as RessursSuksess<IVilkår>,
+                            respons.data
+                        )
+                    );
+                } else {
+                    leggTilFeilmelding(vilkårId, respons.frontendFeilmelding);
+                }
             });
         },
         [axiosRequest]

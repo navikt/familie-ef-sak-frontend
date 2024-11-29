@@ -4,8 +4,8 @@ import React, { FC } from 'react';
 const ModalGjenbrukVilkårsvurdering: FC<{
     visModal: boolean;
     settVisModal: React.Dispatch<React.SetStateAction<boolean>>;
-    handleGjenbrukEnkelVilkårsvurdering: () => void;
-}> = ({ visModal, settVisModal, handleGjenbrukEnkelVilkårsvurdering }) => {
+    gjenbrukVilkårsvurdering: () => void;
+}> = ({ visModal, settVisModal, gjenbrukVilkårsvurdering }) => {
     if (!visModal) {
         return null;
     }
@@ -27,7 +27,7 @@ const ModalGjenbrukVilkårsvurdering: FC<{
                 <Button
                     type="button"
                     onClick={() => {
-                        handleGjenbrukEnkelVilkårsvurdering();
+                        gjenbrukVilkårsvurdering();
                         settVisModal(false);
                     }}
                 >

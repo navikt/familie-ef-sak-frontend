@@ -114,7 +114,7 @@ const VisEllerEndreVurdering: FC<Props> = ({
         });
     };
 
-    const handleGjenbrukEnkelVilkårsvurdering = () => {
+    const gjenbrukVilkårsvurdering = () => {
         gjenbrukEnkelVilkårsvurdering(vurdering.behandlingId, vurdering.id);
     };
 
@@ -158,7 +158,7 @@ const VisEllerEndreVurdering: FC<Props> = ({
                     </Button>
                     {erInngangsvilkårType && (
                         <Button
-                            onClick={handleGjenbrukEnkelVilkårsvurdering}
+                            onClick={gjenbrukVilkårsvurdering}
                             variant={'tertiary'}
                             type={'button'}
                         >
@@ -186,7 +186,7 @@ const VisEllerEndreVurdering: FC<Props> = ({
                     feilmelding={feilmelding || resetFeilmelding}
                     behandlingErRedigerbar={behandlingErRedigerbar && erSaksbehandler}
                     tittelTekst={tittelTekstVisVurdering}
-                    handleGjenbrukEnkelVilkårsvurdering={handleGjenbrukEnkelVilkårsvurdering}
+                    gjenbrukVilkårsvurdering={gjenbrukVilkårsvurdering}
                 />
             );
     }

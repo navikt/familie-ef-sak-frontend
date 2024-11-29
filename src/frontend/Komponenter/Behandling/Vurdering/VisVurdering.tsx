@@ -64,7 +64,7 @@ interface Props {
     startRedigering: () => void;
     behandlingErRedigerbar: boolean;
     tittelTekst?: string;
-    handleGjenbrukEnkelVilkårsvurdering: () => void;
+    gjenbrukVilkårsvurdering: () => void;
 }
 
 const VisVurdering: FC<Props> = ({
@@ -74,7 +74,7 @@ const VisVurdering: FC<Props> = ({
     feilmelding,
     behandlingErRedigerbar,
     tittelTekst,
-    handleGjenbrukEnkelVilkårsvurdering,
+    gjenbrukVilkårsvurdering,
 }) => {
     const [visModal, settVisModal] = React.useState<boolean>(false);
     const vilkårsresultat = vurdering.resultat;
@@ -156,7 +156,7 @@ const VisVurdering: FC<Props> = ({
             <ModalGjenbrukVilkårsvurdering
                 visModal={visModal}
                 settVisModal={settVisModal}
-                handleGjenbrukEnkelVilkårsvurdering={handleGjenbrukEnkelVilkårsvurdering}
+                gjenbrukVilkårsvurdering={gjenbrukVilkårsvurdering}
             />
 
             <VertikalStrek />
