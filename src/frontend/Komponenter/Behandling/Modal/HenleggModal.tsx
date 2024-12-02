@@ -14,9 +14,16 @@ import { useToggles } from '../../../App/context/TogglesContext';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { AnsvarligSaksbehandlerRolle } from '../../../App/typer/saksbehandler';
 import { ToggleName } from '../../../App/context/toggles';
+import { Checkbox, CheckboxGroup } from '@navikt/ds-react';
+import { Link } from '@navikt/ds-react';
 
 const AlertStripe = styled(Alert)`
     margin-top: 1rem;
+`;
+
+const TillegsValg = styled.div`
+    display: flex;
+    flex-direction: column;
 `;
 
 export const HenleggModal: FC<{ behandling: Behandling }> = ({ behandling }) => {
@@ -35,6 +42,7 @@ export const HenleggModal: FC<{ behandling: Behandling }> = ({ behandling }) => 
         settIkkePersistertKomponent,
     } = useApp();
     const [henlagtårsak, settHenlagtårsak] = useState<EHenlagtårsak>();
+    const [sendHenleggelsesbrev, settSendHenleggelsesbrev] = useState(['Send henleggelsesbrev']);
     const [låsKnapp, settLåsKnapp] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>();
 
@@ -85,6 +93,7 @@ export const HenleggModal: FC<{ behandling: Behandling }> = ({ behandling }) => 
     const lukkModal = () => {
         settFeilmelding('');
         settVisHenleggModal(false);
+        console.log(sendHenleggelsesbrev);
     };
 
     return (
@@ -112,6 +121,21 @@ export const HenleggModal: FC<{ behandling: Behandling }> = ({ behandling }) => 
                             <Radio value={EHenlagtårsak.TRUKKET_TILBAKE}>Trukket tilbake</Radio>
                             <Radio value={EHenlagtårsak.FEILREGISTRERT}>Feilregistrert</Radio>
                         </RadioGroup>
+                        {henlagtårsak === EHenlagtårsak.TRUKKET_TILBAKE && (
+                            <TillegsValg>
+                                <CheckboxGroup
+                                    legend="Send henleggelsesbrev"
+                                    hideLegend
+                                    onChange={settSendHenleggelsesbrev}
+                                    value={sendHenleggelsesbrev}
+                                >
+                                    <Checkbox value="Send henleggelsesbrev">
+                                        Send henleggelsesbrev
+                                    </Checkbox>
+                                </CheckboxGroup>
+                                <Link href="#">Forhåndsvis brev</Link>
+                            </TillegsValg>
+                        )}
                         {feilmelding && <AlertStripe variant={'error'}>{feilmelding}</AlertStripe>}
                     </ModalWrapper>
                 );
