@@ -9,8 +9,9 @@ import React, { Dispatch, SetStateAction, useState } from 'react';
 import { ValgfeltSelect } from './ValgfeltSelect';
 import { Flettefelt } from './Flettefelt';
 import styled from 'styled-components';
-import { Accordion, Checkbox } from '@navikt/ds-react';
+import { Accordion, Button, Checkbox } from '@navikt/ds-react';
 import { ABorderRadiusMedium, ABorderStrong } from '@navikt/ds-tokens/dist/tokens';
+import HtmlEditor from '../../../Felles/HtmlEditor/HtmlEditor';
 
 const DelmalValg = styled.div`
     display: flex;
@@ -38,6 +39,9 @@ interface Props {
     settBrevOppdatert: (kanSendeTilBeslutter: boolean) => void;
     valgt: boolean;
     skjul: boolean;
+    konverterDelmal: (delmal: Delmal, tilTekstfelt: boolean) => void;
+    erKonvertert: boolean;
+    konvertertInnhold?: string;
 }
 
 export const BrevMenyDelmal: React.FC<Props> = ({
@@ -51,6 +55,9 @@ export const BrevMenyDelmal: React.FC<Props> = ({
     settBrevOppdatert,
     valgt,
     skjul,
+    konverterDelmal,
+    erKonvertert,
+    konvertertInnhold,
 }) => {
     const { delmalValgfelt, delmalFlettefelter } = delmal;
     const [ekspanderbartPanelÅpen, settEkspanderbartPanelÅpen] = useState(false);
@@ -103,7 +110,8 @@ export const BrevMenyDelmal: React.FC<Props> = ({
                     </Accordion.Header>
                     {ekspanderbartPanelÅpen && (
                         <AccordionInnhold>
-                            {delmalValgfelt &&
+                            {!erKonvertert &&
+                                delmalValgfelt &&
                                 delmalValgfelt.map((valgFelt, index) => (
                                     <ValgfeltSelect
                                         valgFelt={valgFelt}
@@ -118,22 +126,42 @@ export const BrevMenyDelmal: React.FC<Props> = ({
                                         settKanSendeTilBeslutter={settBrevOppdatert}
                                     />
                                 ))}
-                            {delmalFlettefelter
-                                .flatMap((f) => f.flettefelt)
-                                .filter(
-                                    (felt, index, self) =>
-                                        self.findIndex((t) => t._ref === felt._ref) === index
-                                )
-                                .map((flettefelt) => (
-                                    <Flettefelt
-                                        fetLabel={true}
-                                        flettefelt={flettefelt}
-                                        dokument={dokument}
-                                        flettefelter={flettefelter}
-                                        handleFlettefeltInput={handleFlettefeltInput}
-                                        key={flettefelt._ref}
+                            {!erKonvertert &&
+                                delmalFlettefelter
+                                    .flatMap((f) => f.flettefelt)
+                                    .filter(
+                                        (felt, index, self) =>
+                                            self.findIndex((t) => t._ref === felt._ref) === index
+                                    )
+                                    .map((flettefelt) => (
+                                        <Flettefelt
+                                            fetLabel={true}
+                                            flettefelt={flettefelt}
+                                            dokument={dokument}
+                                            flettefelter={flettefelter}
+                                            handleFlettefeltInput={handleFlettefeltInput}
+                                            key={flettefelt._ref}
+                                        />
+                                    ))}
+                            {!erKonvertert && (
+                                <Button onClick={() => konverterDelmal(delmal, true)}>
+                                    Konverter til tekstfelt
+                                </Button>
+                            )}
+                            {erKonvertert && (
+                                <>
+                                    <HtmlEditor
+                                        defaultValue={konvertertInnhold}
+                                        onTextChange={(x) => {
+                                            console.log(x);
+                                            // TODO: Oppdater brevmal-verdi og generer brev
+                                        }}
                                     />
-                                ))}
+                                    <Button onClick={() => konverterDelmal(delmal, false)}>
+                                        Konverter tilbake
+                                    </Button>
+                                </>
+                            )}
                         </AccordionInnhold>
                     )}
                 </Accordion.Item>

@@ -112,6 +112,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
 
     const [valgteFelt, settValgteFelt] = useState<ValgtFelt>({});
     const [valgteDelmaler, settValgteDelmaler] = useState<ValgteDelmaler>({});
+    const [konverterteDelmaler, settKonverterteDelmaler] = useState<ValgteDelmaler>({}); // TODO: Må inneholde html fra familie-brev / oppdatert tekstfelt også (!)
     const [fritekstområder, settFritekstområder] = useState<Fritekstområder>({});
 
     const lagFlettefelterForDelmal = (delmalflettefelter: Flettefelter[]) => {
@@ -244,6 +245,14 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
 
     const brevmenyBlokkerGruppert = grupperBrevmenyBlokker(brevStruktur.dokument.brevmenyBlokker);
 
+    const konverterDelmal = (delmal: Delmal, tilTekstfelt: boolean) => {
+        // TODO: Gjør et kall mot familie-brev
+        settKonverterteDelmaler((prevState) => ({
+            ...prevState,
+            [delmal.delmalApiNavn]: tilTekstfelt,
+        }));
+    };
+
     return (
         <BrevFelter>
             {brevmalFeil && <Alert variant={'warning'}>{brevmalFeil}</Alert>}
@@ -276,6 +285,17 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                                         key={delmal.delmalApiNavn}
                                         settBrevOppdatert={settBrevOppdatert}
                                         skjul={erAutomatiskFeltSomSkalSkjules(delmalStore, delmal)}
+                                        konverterDelmal={konverterDelmal}
+                                        erKonvertert={konverterteDelmaler[delmal.delmalApiNavn]}
+                                        konvertertInnhold={
+                                            konverterteDelmaler[delmal.delmalApiNavn]
+                                                ? `<div style="min-height:1rem" class="block"></div>
+<div class="valgfelt">
+    <div style="min-height:1rem" class="block">Du får overgangsstønad fra <span class="">01.01.2024</span>, som er
+        måneden etter at du kom tilbake til Norge etter opphold i utlandet.</div>
+</div>`
+                                                : undefined
+                                        }
                                     />
                                 </BrevMenyDelmalWrapper>
                             ))}
