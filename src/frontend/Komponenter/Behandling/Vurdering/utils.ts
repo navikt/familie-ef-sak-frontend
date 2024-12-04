@@ -7,7 +7,13 @@ import {
     Regler,
     Svarsalternativ,
 } from './typer';
-import { IDelvilkår, InngangsvilkårType, VilkårType, Vurdering } from '../Inngangsvilkår/vilkår';
+import {
+    IDelvilkår,
+    InngangsvilkårType,
+    IVurdering,
+    VilkårType,
+    Vurdering,
+} from '../Inngangsvilkår/vilkår';
 import { harIkkeVerdi, harVerdi } from '../../../App/utils/utils';
 
 export const manglerBegrunnelse = (begrunnelse: string | undefined | null): boolean => {
@@ -176,8 +182,12 @@ export const kopierBegrunnelse = (
     }
 };
 
-export const sjekkErInngangsvilkårType = (
-    vilkårtype: VilkårType
-): vilkårtype is InngangsvilkårType => {
+const sjekkErInngangsvilkårType = (vilkårtype: VilkårType): vilkårtype is InngangsvilkårType => {
     return Object.values(InngangsvilkårType).includes(vilkårtype as InngangsvilkårType);
+};
+
+export const skalViseGjenbrukKnapp = (vurdering: IVurdering) => {
+    const erInngangsvilkårType = sjekkErInngangsvilkårType(vurdering.vilkårType);
+    const kanGjenbruke = vurdering.kanGjenbrukes;
+    return erInngangsvilkårType && kanGjenbruke;
 };

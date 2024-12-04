@@ -22,7 +22,7 @@ import {
 } from '../../../Felles/Visningskomponenter/Tekster';
 import { ATextSubtle } from '@navikt/ds-tokens/dist/tokens';
 import ModalGjenbrukVilkårsvurdering from './ModalGjenbrukVilkårsvurdering';
-import { sjekkErInngangsvilkårType } from './utils';
+import { skalViseGjenbrukKnapp } from './utils';
 
 const StyledVilkår = styled.div`
     grid-column: 2/4;
@@ -91,7 +91,6 @@ const VisVurdering: FC<Props> = ({
         (delvilkårsvurdering) => delvilkårsvurdering.resultat === Vilkårsresultat.AUTOMATISK_OPPFYLT
     );
 
-    const erInngangsvilkårType = sjekkErInngangsvilkårType(vurdering.vilkårType);
     return (
         <VurderingLesemodusGrid key={vurdering.id}>
             {erAutomatiskVurdert && <CogIkon />}
@@ -130,7 +129,7 @@ const VisVurdering: FC<Props> = ({
                             >
                                 <span>Slett</span>
                             </Button>
-                            {erInngangsvilkårType && (
+                            {skalViseGjenbrukKnapp(vurdering) && (
                                 <Button
                                     type={'button'}
                                     variant={'tertiary'}

@@ -18,7 +18,7 @@ import {
     useEkspanderbareVilkårpanelContext,
 } from '../../../App/context/EkspanderbareVilkårpanelContext';
 import { ModalState } from '../Modal/NyEierModal';
-import { sjekkErInngangsvilkårType } from './utils';
+import { skalViseGjenbrukKnapp } from './utils';
 
 const KnappWrapper = styled.div`
     display: flex;
@@ -144,8 +144,6 @@ const VisEllerEndreVurdering: FC<Props> = ({
         settPanelITilstand(vurdering.vilkårType, EkspandertTilstand.KAN_IKKE_LUKKES);
     };
 
-    const erInngangsvilkårType = sjekkErInngangsvilkårType(vurdering.vilkårType);
-
     switch (redigeringsmodus) {
         case Redigeringsmodus.IKKE_PÅSTARTET:
             return (
@@ -156,7 +154,7 @@ const VisEllerEndreVurdering: FC<Props> = ({
                     <Button onClick={ikkeVurder} variant={'tertiary'} type={'button'}>
                         {høyreKnappetekst ? høyreKnappetekst : 'Ikke vurder vilkår'}
                     </Button>
-                    {erInngangsvilkårType && (
+                    {skalViseGjenbrukKnapp(vurdering) && (
                         <Button
                             onClick={gjenbrukVilkårsvurdering}
                             variant={'tertiary'}
