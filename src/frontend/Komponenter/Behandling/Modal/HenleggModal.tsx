@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import { useBehandling } from '../../../App/context/BehandlingContext';
-import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
+import { Ressurs, RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
 import { Behandling } from '../../../App/typer/fagsak';
 import { useApp } from '../../../App/context/AppContext';
 import { EToast } from '../../../App/typer/toast';
@@ -16,6 +16,7 @@ import { AnsvarligSaksbehandlerRolle } from '../../../App/typer/saksbehandler';
 import { ToggleName } from '../../../App/context/toggles';
 import { Checkbox, CheckboxGroup } from '@navikt/ds-react';
 import { Link } from '@navikt/ds-react';
+import { base64toBlob, åpnePdfIEgenTab } from '../../../App/utils/utils';
 
 const AlertStripe = styled(Alert)`
     margin-top: 1rem;
@@ -45,6 +46,24 @@ export const HenleggModal: FC<{ behandling: Behandling }> = ({ behandling }) => 
     const [sendHenleggelsesbrev, settSendHenleggelsesbrev] = useState(['Send henleggelsesbrev']);
     const [låsKnapp, settLåsKnapp] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>();
+    const [forhåndsvisningsFeil, settForhåndsvisningsFeil] = useState<string>();
+
+    const visBrevINyFane = () => {
+        axiosRequest<string, null>({
+            method: 'GET',
+            url: `familie-ef-sak/api/behandling/${behandling.id}/henlegg/brev`,
+        }).then((respons: RessursSuksess<string> | RessursFeilet) => {
+            if (respons.status === RessursStatus.SUKSESS) {
+                åpnePdfIEgenTab(
+                    base64toBlob(respons.data, 'application/pdf'),
+                    'Forhåndsvisning av varselbrev'
+                );
+            } else {
+                settForhåndsvisningsFeil(respons.frontendFeilmelding);
+                console.log(forhåndsvisningsFeil);
+            }
+        });
+    };
 
     const utledEndepunktForHenleggelse = (rolle: AnsvarligSaksbehandlerRolle) =>
         toggles[ToggleName.henleggBehandlingUtenÅHenleggeOppgave] &&
@@ -93,7 +112,6 @@ export const HenleggModal: FC<{ behandling: Behandling }> = ({ behandling }) => 
     const lukkModal = () => {
         settFeilmelding('');
         settVisHenleggModal(false);
-        console.log(sendHenleggelsesbrev);
     };
 
     return (
@@ -133,10 +151,13 @@ export const HenleggModal: FC<{ behandling: Behandling }> = ({ behandling }) => 
                                         Send henleggelsesbrev
                                     </Checkbox>
                                 </CheckboxGroup>
-                                <Link href="#">Forhåndsvis brev</Link>
+                                <Link onClick={visBrevINyFane}>Forhåndsvis brev</Link>
                             </TillegsValg>
                         )}
                         {feilmelding && <AlertStripe variant={'error'}>{feilmelding}</AlertStripe>}
+                        {forhåndsvisningsFeil && (
+                            <AlertStripe variant={'error'}>{forhåndsvisningsFeil}</AlertStripe>
+                        )}
                     </ModalWrapper>
                 );
             }}
