@@ -1,11 +1,21 @@
 import Quill from 'quill';
 import React, { forwardRef, useEffect, useLayoutEffect, useRef } from 'react';
 import 'quill/dist/quill.snow.css';
+import { BlockBlot } from 'parchment';
 
 type Props = {
     defaultValue?: string;
     onTextChange: (html: string, renTekst: string) => void;
 };
+
+/**
+ * Overstyre default tag fra `p` til `div` ettersom `p` gir noen uheldige sideeffekter med mellomrom i tekstene våre.
+ */
+const Block = Quill.import('blots/block') as BlockBlot;
+// @ts-expect-error Utypet kode - usikkert hvordan vi får dette til
+Block.tagName = 'div';
+// @ts-expect-error Utypet kode - usikkert hvordan vi får dette til
+Quill.register(Block);
 
 const HtmlEditor = forwardRef(({ defaultValue, onTextChange }: Props, ref) => {
     const defaultValueRef = useRef(defaultValue);

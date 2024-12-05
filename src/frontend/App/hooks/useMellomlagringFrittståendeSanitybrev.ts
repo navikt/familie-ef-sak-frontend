@@ -5,6 +5,7 @@ import {
     FlettefeltMedVerdi,
     Fritekstområder,
     MellomlagerRespons,
+    OverstyrteDelmaler,
     ValgteDelmaler,
     ValgtFelt,
 } from '../../Komponenter/Behandling/Brev/BrevTyper';
@@ -28,6 +29,7 @@ export const useMellomlagringFrittståendeSanitybrev = (
         valgteFelt: ValgtFelt,
         valgteDelmaler: ValgteDelmaler,
         fritekstområder: Fritekstområder,
+        overstyrteDelmaler: OverstyrteDelmaler,
         brevmal: string
     ): void => {
         axiosRequest<string, IMellomlagretBrev>({
@@ -39,6 +41,7 @@ export const useMellomlagringFrittståendeSanitybrev = (
                     valgteFeltFraMellomlager: valgteFelt,
                     valgteDelmalerFraMellomlager: valgteDelmaler,
                     fritekstområderFraMellomlager: fritekstområder,
+                    overstyrteDelmalerFraMellomlager: overstyrteDelmaler,
                 }),
                 brevmal,
                 versjon: sanityVersjon,

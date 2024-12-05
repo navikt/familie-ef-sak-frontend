@@ -20,7 +20,10 @@
         "set-node-options": "NODE_OPTIONS='--import=./node_dist/backend/register.js --es-module-specifier-resolution=node'"
     },
     "lint-staged": {
-        "src/**/*.{js,jsx,ts,tsx,json,css}": ["prettier --write", "eslint --fix --max-warnings=0"]
+        "src/**/*.{js,jsx,ts,tsx,json,css}": [
+            "prettier --write",
+            "eslint --fix --max-warnings=0"
+        ]
     },
     "dependencyComments": {
         "color-string": "Overrider versjon som brukes av winston, som kommer fra familie-frontend-backend",
@@ -125,5 +128,6 @@
     "resolutions": {
         "@types/react": "^18.x",
         "@types/react-select": "^5.x"
-    }
+    },
+    "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }

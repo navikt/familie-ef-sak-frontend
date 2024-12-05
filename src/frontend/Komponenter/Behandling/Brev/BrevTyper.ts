@@ -3,6 +3,9 @@ import { IBrevmottakere } from '../Brevmottakere/typer';
 
 export type ValgtFelt = { [valgFeltKategori: string]: Valgmulighet };
 export type ValgteDelmaler = { [delmalNavn: string]: boolean };
+export type OverstyrteDelmaler = {
+    [delmalNavn: string]: { htmlInnhold: string; skalOverstyre: boolean };
+};
 
 export interface BrevStruktur {
     dokument: DokumentMal;

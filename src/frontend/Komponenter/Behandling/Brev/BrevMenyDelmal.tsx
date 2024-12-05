@@ -40,8 +40,9 @@ interface Props {
     valgt: boolean;
     skjul: boolean;
     konverterDelmal: (delmal: Delmal, tilTekstfelt: boolean) => void;
-    erKonvertert: boolean;
-    konvertertInnhold?: string;
+    skalOverstyre: boolean;
+    oppdatertOverstyrtInnhold: (Delmal: Delmal, htmlInnhold: string) => void;
+    overstyrtInnhold?: string;
 }
 
 export const BrevMenyDelmal: React.FC<Props> = ({
@@ -56,8 +57,9 @@ export const BrevMenyDelmal: React.FC<Props> = ({
     valgt,
     skjul,
     konverterDelmal,
-    erKonvertert,
-    konvertertInnhold,
+    skalOverstyre,
+    overstyrtInnhold,
+    oppdatertOverstyrtInnhold,
 }) => {
     const { delmalValgfelt, delmalFlettefelter } = delmal;
     const [ekspanderbartPanelÅpen, settEkspanderbartPanelÅpen] = useState(false);
@@ -110,7 +112,7 @@ export const BrevMenyDelmal: React.FC<Props> = ({
                     </Accordion.Header>
                     {ekspanderbartPanelÅpen && (
                         <AccordionInnhold>
-                            {!erKonvertert &&
+                            {!skalOverstyre &&
                                 delmalValgfelt &&
                                 delmalValgfelt.map((valgFelt, index) => (
                                     <ValgfeltSelect
@@ -126,7 +128,7 @@ export const BrevMenyDelmal: React.FC<Props> = ({
                                         settKanSendeTilBeslutter={settBrevOppdatert}
                                     />
                                 ))}
-                            {!erKonvertert &&
+                            {!skalOverstyre &&
                                 delmalFlettefelter
                                     .flatMap((f) => f.flettefelt)
                                     .filter(
@@ -143,18 +145,17 @@ export const BrevMenyDelmal: React.FC<Props> = ({
                                             key={flettefelt._ref}
                                         />
                                     ))}
-                            {!erKonvertert && (
+                            {!skalOverstyre && (
                                 <Button onClick={() => konverterDelmal(delmal, true)}>
                                     Konverter til tekstfelt
                                 </Button>
                             )}
-                            {erKonvertert && (
+                            {skalOverstyre && (
                                 <>
                                     <HtmlEditor
-                                        defaultValue={konvertertInnhold}
-                                        onTextChange={(x) => {
-                                            console.log(x);
-                                            // TODO: Oppdater brevmal-verdi og generer brev
+                                        defaultValue={overstyrtInnhold}
+                                        onTextChange={(nyttInnhold) => {
+                                            oppdatertOverstyrtInnhold(delmal, nyttInnhold);
                                         }}
                                     />
                                     <Button onClick={() => konverterDelmal(delmal, false)}>
