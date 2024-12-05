@@ -112,6 +112,7 @@ export const HenleggModal: FC<{ behandling: Behandling }> = ({ behandling }) => 
     const lukkModal = () => {
         settFeilmelding('');
         settVisHenleggModal(false);
+        settHenlagtårsak(undefined);
     };
 
     return (
