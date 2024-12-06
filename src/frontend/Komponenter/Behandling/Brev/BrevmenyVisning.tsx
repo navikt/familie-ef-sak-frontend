@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {
     BrevStruktur,
+    datasett,
     Delmal,
     erDelmalBlokk,
     erDelmalGruppe,
@@ -9,6 +10,7 @@ import {
     FlettefeltMedVerdi,
     Flettefeltreferanse,
     Fritekstområder,
+    OverstyrteDelmaler,
     ValgFelt,
     ValgteDelmaler,
     ValgtFelt,
@@ -89,6 +91,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
             valgteFeltFraMellomlager,
             valgteDelmalerFraMellomlager,
             fritekstområderFraMellomlager,
+            overstyrteDelmalerFraMellomlager,
         } = parsetMellomlagretBrev || {};
         settAlleFlettefelter(
             initFlettefelterMedVerdi(brevStruktur, flettefeltFraMellomlager, flettefeltStore)
@@ -108,10 +111,14 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                 ...delmalStore.reduce((acc, delmal) => ({ ...acc, [delmal.delmal]: true }), {}),
             }));
         }
+        if (overstyrteDelmalerFraMellomlager) {
+            settOverstyrteDelmaler(overstyrteDelmalerFraMellomlager);
+        }
     }, [brevStruktur, flettefeltStore, delmalStore, valgfeltStore, mellomlagretBrevVerdier]);
 
     const [valgteFelt, settValgteFelt] = useState<ValgtFelt>({});
     const [valgteDelmaler, settValgteDelmaler] = useState<ValgteDelmaler>({});
+    const [overstyrteDelmaler, settOverstyrteDelmaler] = useState<OverstyrteDelmaler>({});
     const [fritekstområder, settFritekstområder] = useState<Fritekstområder>({});
 
     const lagFlettefelterForDelmal = (delmalflettefelter: Flettefelter[]) => {
@@ -174,6 +181,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                               ),
                               valgfelter: lagValgfelterForDelmal(blokk.innhold.delmalValgfelt),
                               htmlfelter: htmlFelter,
+                              overstyrtDelmalblokk: overstyrteDelmaler[blokk.innhold.delmalApiNavn],
                           },
                       ],
                   }
@@ -203,6 +211,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
             valgteFelt,
             valgteDelmaler,
             fritekstområder,
+            overstyrteDelmaler,
             brevMal
         );
 
@@ -240,9 +249,42 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
         behandlingId,
         brevMal,
         fritekstområder,
+        overstyrteDelmaler,
     ]);
 
     const brevmenyBlokkerGruppert = grupperBrevmenyBlokker(brevStruktur.dokument.brevmenyBlokker);
+
+    const konverterDelmalblokkTilHtml = (delmal: Delmal) => {
+        const urlForKonvertering = `/familie-brev/api/${datasett}/delmalblokk/bokmaal/${delmal.delmalApiNavn}/html`;
+        const delmalblokkVerdi = {
+            flettefelter: lagFlettefelterForDelmal(delmal.delmalFlettefelter),
+            valgfelter: lagValgfelterForDelmal(delmal.delmalValgfelt),
+            htmlfelter: htmlFelter,
+        };
+        axiosRequest<string, unknown>({
+            method: 'POST',
+            url: urlForKonvertering,
+            data: {
+                verdier: [delmalblokkVerdi],
+            },
+        }).then((respons: Ressurs<string>) => {
+            if (respons.status === RessursStatus.SUKSESS) {
+                settOverstyrteDelmaler((prevState) => ({
+                    ...prevState,
+                    [delmal.delmalApiNavn]: { htmlInnhold: respons.data, skalOverstyre: true },
+                }));
+            }
+        });
+    };
+    const konverterHtmlTilDelmalblokk = (delmal: Delmal) => {
+        settOverstyrteDelmaler((prevState) => ({
+            ...prevState,
+            [delmal.delmalApiNavn]: {
+                htmlInnhold: prevState[delmal.delmalApiNavn]?.htmlInnhold,
+                skalOverstyre: false,
+            },
+        }));
+    };
 
     return (
         <BrevFelter>
@@ -265,7 +307,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                                     key={`${delmal.delmalApiNavn}_wrapper`}
                                 >
                                     <BrevMenyDelmal
-                                        valgt={!!valgteDelmaler[delmal.delmalApiNavn]}
+                                        valgt={valgteDelmaler[delmal.delmalApiNavn]}
                                         delmal={delmal}
                                         dokument={brevStruktur}
                                         valgteFelt={valgteFelt}
@@ -276,6 +318,13 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                                         key={delmal.delmalApiNavn}
                                         settBrevOppdatert={settBrevOppdatert}
                                         skjul={erAutomatiskFeltSomSkalSkjules(delmalStore, delmal)}
+                                        overstyring={{
+                                            overstyrtDelmal:
+                                                overstyrteDelmaler[delmal.delmalApiNavn],
+                                            settOverstyrteDelmaler: settOverstyrteDelmaler,
+                                            konverterTilHtml: konverterDelmalblokkTilHtml,
+                                            konverterTilDelmalblokk: konverterHtmlTilDelmalblokk,
+                                        }}
                                     />
                                 </BrevMenyDelmalWrapper>
                             ))}
