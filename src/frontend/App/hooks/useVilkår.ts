@@ -14,6 +14,7 @@ import {
     SvarPåVilkårsvurdering,
     Vurderingsfeilmelding,
 } from '../../Komponenter/Behandling/Inngangsvilkår/vilkår';
+import { useHentAlleGjenbrukbareVilkårsvurderinger } from './useHentAlleGjenbrukbareVilkårsvurderinger';
 
 const oppdaterInngangsvilkårMedVurdering = (
     vilkår: RessursSuksess<IVilkår>,
@@ -43,10 +44,13 @@ export interface UseVilkår {
         nullstillVilkårsvurdering: OppdaterVilkårsvurdering
     ) => Promise<RessursSuksess<IVurdering> | RessursFeilet>;
     gjenbrukEnkelVilkårsvurdering: (behandlingId: string, vilkårId: string) => void;
+    gjenbrukbareVilkårsvurderinger: string[];
 }
 
 export const useVilkår = (): UseVilkår => {
     const { axiosRequest } = useApp();
+    const { hentAlleGjenbrukbareVilkårsvurderinger, gjenbrukbareVilkårsvurderinger } =
+        useHentAlleGjenbrukbareVilkårsvurderinger();
 
     const [feilmeldinger, settFeilmeldinger] = useState<Vurderingsfeilmelding>({});
 
@@ -136,10 +140,11 @@ export const useVilkår = (): UseVilkår => {
                 method: 'GET',
                 url: `/familie-ef-sak/api/vurdering/${behandlingId}/vilkar`,
             }).then((hentetInngangsvilkår: RessursSuksess<IVilkår> | RessursFeilet) => {
+                hentAlleGjenbrukbareVilkårsvurderinger(behandlingId);
                 settVilkår(hentetInngangsvilkår);
             });
         },
-        [axiosRequest]
+        [axiosRequest, hentAlleGjenbrukbareVilkårsvurderinger]
     );
     const oppdaterGrunnlagsdataOgHentVilkår = useCallback(
         (behandlingId: string) =>
@@ -183,5 +188,6 @@ export const useVilkår = (): UseVilkår => {
         ikkeVurderVilkår,
         oppdaterGrunnlagsdataOgHentVilkår,
         gjenbrukEnkelVilkårsvurdering,
+        gjenbrukbareVilkårsvurderinger,
     };
 };

@@ -83,10 +83,9 @@ const VisEllerEndreVurdering: FC<Props> = ({
         hentBehandling,
         settNyEierModalState,
         vilkårState,
-        gjenbrukbareVilkårsvurderinger,
     } = useBehandling();
 
-    const { gjenbrukEnkelVilkårsvurdering } = vilkårState;
+    const { gjenbrukEnkelVilkårsvurdering, gjenbrukbareVilkårsvurderinger } = vilkårState;
 
     const { settPanelITilstand } = useEkspanderbareVilkårpanelContext();
     const [redigeringsmodus, settRedigeringsmodus] = useState<Redigeringsmodus>(
