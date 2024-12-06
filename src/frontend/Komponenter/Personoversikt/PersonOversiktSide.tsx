@@ -139,6 +139,7 @@ export const PersonOversiktSide: React.FC = () => {
         <DataViewer response={{ personopplysninger, fagsakPerson }}>
             {({ personopplysninger, fagsakPerson }) => (
                 <PersonOversikt
+                    fagsakPersonId={fagsakPersonId}
                     fagsakPerson={fagsakPerson}
                     hentFagsakPerson={hentFagsakPerson}
                     personopplysninger={personopplysninger}
@@ -149,12 +150,14 @@ export const PersonOversiktSide: React.FC = () => {
 };
 
 interface Props {
+    fagsakPersonId: string;
     fagsakPerson: FagsakPerson;
     hentFagsakPerson: (fagsakPersonId: string) => void;
     personopplysninger: IPersonopplysninger;
 }
 
 const PersonOversikt: React.FC<Props> = ({
+    fagsakPersonId,
     fagsakPerson,
     hentFagsakPerson,
     personopplysninger,
@@ -172,7 +175,7 @@ const PersonOversikt: React.FC<Props> = ({
                 <Tabs
                     value={path}
                     onChange={(fane) => {
-                        navigate(fane);
+                        navigate(`/person/${fagsakPersonId}/${fane}`);
                         loggNavigereTabEvent({
                             side: 'person',
                             forrigeFane: path,
@@ -199,7 +202,15 @@ const PersonOversikt: React.FC<Props> = ({
                             )}
                         />
                     ))}
-                    <Route path="*" element={<Navigate to="behandlinger" replace={true} />} />
+                    <Route
+                        path="*"
+                        element={
+                            <Navigate
+                                to={`/person/${fagsakPersonId}/behandlinger`}
+                                replace={true}
+                            />
+                        }
+                    />
                 </Routes>
             </Container>
         </>
