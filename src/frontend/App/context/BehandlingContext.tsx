@@ -22,6 +22,7 @@ import { useApp } from './AppContext';
 import { ModalState, utledModalState } from '../../Komponenter/Behandling/Modal/NyEierModal';
 import { useHentVedtak } from '../hooks/useHentVedtak';
 import { useHentFagsak } from '../hooks/useHentFagsak';
+import { useHentAlleGjenbrukbareVilkårsvurderinger } from '../hooks/useHentAlleGjenbrukbareVilkårsvurderinger';
 
 const [BehandlingProvider, useBehandling] = constate(() => {
     const { innloggetSaksbehandler } = useApp();
@@ -62,6 +63,9 @@ const [BehandlingProvider, useBehandling] = constate(() => {
     );
     const [visSettPåVent, settVisSettPåVent] = useState(false);
     const [åpenHøyremeny, settÅpenHøyremeny] = useState(true);
+
+    const { gjenbrukbareVilkårsvurderinger, hentAlleGjenbrukbareVilkårsvurderinger } =
+        useHentAlleGjenbrukbareVilkårsvurderinger();
 
     const {
         endringerPersonopplysninger,
@@ -117,6 +121,14 @@ const [BehandlingProvider, useBehandling] = constate(() => {
         }
     }, [behandling, ansvarligSaksbehandler, innloggetSaksbehandler]);
 
+    useEffect(() => {
+        const delayFetch = setTimeout(() => {
+            hentAlleGjenbrukbareVilkårsvurderinger(behandlingId);
+        }, 1000);
+
+        return () => clearTimeout(delayFetch);
+    }, [hentAlleGjenbrukbareVilkårsvurderinger, behandlingId]);
+
     const vilkårState = useVilkår();
 
     return {
@@ -147,6 +159,7 @@ const [BehandlingProvider, useBehandling] = constate(() => {
         vedtak,
         vedtaksresultat,
         fagsak,
+        gjenbrukbareVilkårsvurderinger,
     };
 });
 

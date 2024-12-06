@@ -65,6 +65,7 @@ interface Props {
     behandlingErRedigerbar: boolean;
     tittelTekst?: string;
     gjenbrukVilkårsvurdering: () => void;
+    gjenbrukbareVilkårsvurderinger: string[];
 }
 
 const VisVurdering: FC<Props> = ({
@@ -75,6 +76,7 @@ const VisVurdering: FC<Props> = ({
     behandlingErRedigerbar,
     tittelTekst,
     gjenbrukVilkårsvurdering,
+    gjenbrukbareVilkårsvurderinger,
 }) => {
     const [visModal, settVisModal] = React.useState<boolean>(false);
     const vilkårsresultat = vurdering.resultat;
@@ -129,7 +131,7 @@ const VisVurdering: FC<Props> = ({
                             >
                                 <span>Slett</span>
                             </Button>
-                            {skalViseGjenbrukKnapp(vurdering) && (
+                            {skalViseGjenbrukKnapp(vurdering, gjenbrukbareVilkårsvurderinger) && (
                                 <Button
                                     type={'button'}
                                     variant={'tertiary'}

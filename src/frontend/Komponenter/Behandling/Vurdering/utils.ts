@@ -186,8 +186,11 @@ const sjekkErInngangsvilkårType = (vilkårtype: VilkårType): vilkårtype is In
     return Object.values(InngangsvilkårType).includes(vilkårtype as InngangsvilkårType);
 };
 
-export const skalViseGjenbrukKnapp = (vurdering: IVurdering) => {
+export const skalViseGjenbrukKnapp = (
+    vurdering: IVurdering,
+    gjenbrukbareVilkårsvurderinger: string[]
+) => {
     const erInngangsvilkårType = sjekkErInngangsvilkårType(vurdering.vilkårType);
-    const kanGjenbruke = vurdering.kanGjenbrukes;
+    const kanGjenbruke = gjenbrukbareVilkårsvurderinger?.includes(vurdering.id);
     return erInngangsvilkårType && kanGjenbruke;
 };

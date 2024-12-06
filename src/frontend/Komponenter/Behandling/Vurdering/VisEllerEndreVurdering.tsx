@@ -83,6 +83,7 @@ const VisEllerEndreVurdering: FC<Props> = ({
         hentBehandling,
         settNyEierModalState,
         vilkårState,
+        gjenbrukbareVilkårsvurderinger,
     } = useBehandling();
 
     const { gjenbrukEnkelVilkårsvurdering } = vilkårState;
@@ -154,7 +155,7 @@ const VisEllerEndreVurdering: FC<Props> = ({
                     <Button onClick={ikkeVurder} variant={'tertiary'} type={'button'}>
                         {høyreKnappetekst ? høyreKnappetekst : 'Ikke vurder vilkår'}
                     </Button>
-                    {skalViseGjenbrukKnapp(vurdering) && (
+                    {skalViseGjenbrukKnapp(vurdering, gjenbrukbareVilkårsvurderinger) && (
                         <Button
                             onClick={gjenbrukVilkårsvurdering}
                             variant={'tertiary'}
@@ -185,6 +186,7 @@ const VisEllerEndreVurdering: FC<Props> = ({
                     behandlingErRedigerbar={behandlingErRedigerbar && erSaksbehandler}
                     tittelTekst={tittelTekstVisVurdering}
                     gjenbrukVilkårsvurdering={gjenbrukVilkårsvurdering}
+                    gjenbrukbareVilkårsvurderinger={gjenbrukbareVilkårsvurderinger}
                 />
             );
     }
