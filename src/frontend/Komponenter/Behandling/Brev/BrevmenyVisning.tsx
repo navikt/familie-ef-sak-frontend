@@ -254,47 +254,36 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
 
     const brevmenyBlokkerGruppert = grupperBrevmenyBlokker(brevStruktur.dokument.brevmenyBlokker);
 
-    // TODO: Trekk ut..?
-    const oppdatertOverstyrtInnhold = (delmal: Delmal, htmlInnhold: string) => {
+    const konverterDelmalblokkTilHtml = (delmal: Delmal) => {
+        const urlForKonvertering = `/familie-brev/api/${datasett}/delmalblokk/bokmaal/${delmal.delmalApiNavn}/html`;
+        const delmalblokkVerdi = {
+            flettefelter: lagFlettefelterForDelmal(delmal.delmalFlettefelter),
+            valgfelter: lagValgfelterForDelmal(delmal.delmalValgfelt),
+            htmlfelter: htmlFelter,
+        };
+        axiosRequest<string, unknown>({
+            method: 'POST',
+            url: urlForKonvertering,
+            data: {
+                verdier: [delmalblokkVerdi],
+            },
+        }).then((respons: Ressurs<string>) => {
+            if (respons.status === RessursStatus.SUKSESS) {
+                settOverstyrteDelmaler((prevState) => ({
+                    ...prevState,
+                    [delmal.delmalApiNavn]: { htmlInnhold: respons.data, skalOverstyre: true },
+                }));
+            }
+        });
+    };
+    const konverterHtmlTilDelmalblokk = (delmal: Delmal) => {
         settOverstyrteDelmaler((prevState) => ({
             ...prevState,
-            [delmal.delmalApiNavn]: { htmlInnhold: htmlInnhold, skalOverstyre: true },
+            [delmal.delmalApiNavn]: {
+                htmlInnhold: prevState[delmal.delmalApiNavn]?.htmlInnhold,
+                skalOverstyre: false,
+            },
         }));
-    };
-    // TODO: Trekk ut..?
-    const konverterDelmal = (delmal: Delmal, tilTekstfelt: boolean) => {
-        if (tilTekstfelt) {
-            const urlForKonvertering = `/familie-brev/api/${datasett}/delmalblokk/bokmaal/${delmal.delmalApiNavn}/html`;
-            const delmalblokkVerdi = {
-                flettefelter: lagFlettefelterForDelmal(delmal.delmalFlettefelter),
-                valgfelter: lagValgfelterForDelmal(delmal.delmalValgfelt),
-                htmlfelter: htmlFelter,
-            };
-            axiosRequest<string, unknown>({
-                method: 'POST',
-                url: urlForKonvertering,
-                data: {
-                    verdier: [delmalblokkVerdi],
-                },
-            }).then((respons: Ressurs<string>) => {
-                if (respons.status === RessursStatus.SUKSESS) {
-                    settOverstyrteDelmaler((prevState) => ({
-                        ...prevState,
-                        [delmal.delmalApiNavn]: { htmlInnhold: respons.data, skalOverstyre: true },
-                    }));
-                } else {
-                    // TODO: feilet
-                }
-            });
-        } else {
-            settOverstyrteDelmaler((prevState) => ({
-                ...prevState,
-                [delmal.delmalApiNavn]: {
-                    htmlInnhold: prevState[delmal.delmalApiNavn]?.htmlInnhold,
-                    skalOverstyre: false,
-                },
-            }));
-        }
     };
 
     return (
@@ -329,14 +318,13 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                                         key={delmal.delmalApiNavn}
                                         settBrevOppdatert={settBrevOppdatert}
                                         skjul={erAutomatiskFeltSomSkalSkjules(delmalStore, delmal)}
-                                        konverterDelmal={konverterDelmal}
-                                        skalOverstyre={
-                                            overstyrteDelmaler[delmal.delmalApiNavn]?.skalOverstyre
-                                        }
-                                        overstyrtInnhold={
-                                            overstyrteDelmaler[delmal.delmalApiNavn]?.htmlInnhold
-                                        }
-                                        oppdatertOverstyrtInnhold={oppdatertOverstyrtInnhold}
+                                        overstyring={{
+                                            overstyrtDelmal:
+                                                overstyrteDelmaler[delmal.delmalApiNavn],
+                                            settOverstyrteDelmaler: settOverstyrteDelmaler,
+                                            konverterTilHtml: konverterDelmalblokkTilHtml,
+                                            konverterTilDelmalblokk: konverterHtmlTilDelmalblokk,
+                                        }}
                                     />
                                 </BrevMenyDelmalWrapper>
                             ))}

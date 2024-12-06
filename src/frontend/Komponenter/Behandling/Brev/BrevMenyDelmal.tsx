@@ -3,6 +3,8 @@ import {
     Delmal,
     FlettefeltMedVerdi,
     Flettefeltreferanse,
+    OverstyrtDelmal,
+    OverstyrteDelmaler,
     ValgtFelt,
 } from './BrevTyper';
 import React, { Dispatch, SetStateAction, useState } from 'react';
@@ -39,10 +41,12 @@ interface Props {
     settBrevOppdatert: (kanSendeTilBeslutter: boolean) => void;
     valgt: boolean;
     skjul: boolean;
-    konverterDelmal: (delmal: Delmal, tilTekstfelt: boolean) => void;
-    skalOverstyre: boolean;
-    oppdatertOverstyrtInnhold: (Delmal: Delmal, htmlInnhold: string) => void;
-    overstyrtInnhold?: string;
+    overstyring: {
+        konverterTilHtml: (delmal: Delmal) => void;
+        konverterTilDelmalblokk: (delmal: Delmal) => void;
+        settOverstyrteDelmaler: Dispatch<SetStateAction<OverstyrteDelmaler>>;
+        overstyrtDelmal?: OverstyrtDelmal;
+    };
 }
 
 export const BrevMenyDelmal: React.FC<Props> = ({
@@ -56,10 +60,7 @@ export const BrevMenyDelmal: React.FC<Props> = ({
     settBrevOppdatert,
     valgt,
     skjul,
-    konverterDelmal,
-    skalOverstyre,
-    overstyrtInnhold,
-    oppdatertOverstyrtInnhold,
+    overstyring,
 }) => {
     const { delmalValgfelt, delmalFlettefelter } = delmal;
     const [ekspanderbartPanelÅpen, settEkspanderbartPanelÅpen] = useState(false);
@@ -69,6 +70,13 @@ export const BrevMenyDelmal: React.FC<Props> = ({
             prevState.map((felt) => (felt._ref === flettefelt._ref ? { ...felt, verdi } : felt))
         );
         settBrevOppdatert(false);
+    };
+
+    const oppdaterOverstyrtInnhold = (delmal: Delmal, htmlInnhold: string) => {
+        overstyring.settOverstyrteDelmaler((prevState) => ({
+            ...prevState,
+            [delmal.delmalApiNavn]: { htmlInnhold: htmlInnhold, skalOverstyre: true },
+        }));
     };
 
     const håndterToggleDelmal = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -87,6 +95,8 @@ export const BrevMenyDelmal: React.FC<Props> = ({
     if (skjul) {
         return null;
     }
+
+    const erDelmalblokk = overstyring.overstyrtDelmal?.skalOverstyre !== true;
 
     return (
         <DelmalValg>
@@ -112,7 +122,7 @@ export const BrevMenyDelmal: React.FC<Props> = ({
                     </Accordion.Header>
                     {ekspanderbartPanelÅpen && (
                         <AccordionInnhold>
-                            {!skalOverstyre &&
+                            {erDelmalblokk &&
                                 delmalValgfelt &&
                                 delmalValgfelt.map((valgFelt, index) => (
                                     <ValgfeltSelect
@@ -128,7 +138,7 @@ export const BrevMenyDelmal: React.FC<Props> = ({
                                         settKanSendeTilBeslutter={settBrevOppdatert}
                                     />
                                 ))}
-                            {!skalOverstyre &&
+                            {erDelmalblokk &&
                                 delmalFlettefelter
                                     .flatMap((f) => f.flettefelt)
                                     .filter(
@@ -145,20 +155,22 @@ export const BrevMenyDelmal: React.FC<Props> = ({
                                             key={flettefelt._ref}
                                         />
                                     ))}
-                            {!skalOverstyre && (
-                                <Button onClick={() => konverterDelmal(delmal, true)}>
+                            {erDelmalblokk && (
+                                <Button onClick={() => overstyring.konverterTilHtml(delmal)}>
                                     Konverter til tekstfelt
                                 </Button>
                             )}
-                            {skalOverstyre && (
+                            {overstyring.overstyrtDelmal?.skalOverstyre && (
                                 <>
                                     <HtmlEditor
-                                        defaultValue={overstyrtInnhold}
+                                        defaultValue={overstyring.overstyrtDelmal.htmlInnhold}
                                         onTextChange={(nyttInnhold) => {
-                                            oppdatertOverstyrtInnhold(delmal, nyttInnhold);
+                                            oppdaterOverstyrtInnhold(delmal, nyttInnhold);
                                         }}
                                     />
-                                    <Button onClick={() => konverterDelmal(delmal, false)}>
+                                    <Button
+                                        onClick={() => overstyring.konverterTilDelmalblokk(delmal)}
+                                    >
                                         Konverter tilbake
                                     </Button>
                                 </>

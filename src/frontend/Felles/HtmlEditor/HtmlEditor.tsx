@@ -53,8 +53,6 @@ const HtmlEditor = forwardRef(({ defaultValue, onTextChange }: Props, ref) => {
 
         if (defaultValueRef.current) {
             const htmlAsDelta = quill.clipboard.convert({ html: defaultValueRef.current });
-            console.log('html', defaultValueRef.current);
-            console.log('delta', htmlAsDelta);
             quill.setContents(htmlAsDelta);
         }
 
