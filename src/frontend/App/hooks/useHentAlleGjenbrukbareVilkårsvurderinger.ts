@@ -18,7 +18,7 @@ export const useHentAlleGjenbrukbareVilkårsvurderinger = (): Props => {
         async (behandlingId: string): Promise<void> => {
             const respons = await axiosRequest<string[], void>({
                 method: 'GET',
-                url: `/familie-ef-sak/api/vurdering/${behandlingId}/gjenbrukbare-vilkår`,
+                url: `/familie-ef-sak/api/vurdering/${behandlingId}/gjenbrukbare-vilkar`,
             });
             if (respons.status === RessursStatus.SUKSESS) {
                 settGjenbrukbareVilkårsvurderinger(respons.data);

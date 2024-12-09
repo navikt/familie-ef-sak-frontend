@@ -161,7 +161,7 @@ export const useVilkår = (): UseVilkår => {
         (behandlingId: string, vilkårId: string) => {
             axiosRequest<IVurdering, { behandlingId: string; vilkårId: string }>({
                 method: 'POST',
-                url: `/familie-ef-sak/api/vurdering/gjenbruk-enkelt-vilkår`,
+                url: `/familie-ef-sak/api/vurdering/gjenbruk-enkelt-vilkar`,
                 data: { behandlingId: behandlingId, vilkårId: vilkårId },
             }).then((respons: RessursSuksess<IVurdering> | RessursFeilet) => {
                 if (respons.status === RessursStatus.SUKSESS) {
