@@ -19,6 +19,7 @@ export enum ToggleName {
 
     // Release-toggles
     visEndreDokumenttittelKnapp = 'familie.ef.sak.frontend-endre-dokumenttittel',
+    konvertereDelmalblokkTilHtmlFelt = 'familie.ef.sak.konverter-delmalblokk-til-html-input',
 
     // Midlertidige toggles - kan fjernes etterhvert
 }

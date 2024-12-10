@@ -14,6 +14,8 @@ import styled from 'styled-components';
 import { Accordion, Button, Checkbox } from '@navikt/ds-react';
 import { ABorderRadiusMedium, ABorderStrong } from '@navikt/ds-tokens/dist/tokens';
 import HtmlEditor from '../../../Felles/HtmlEditor/HtmlEditor';
+import { useToggles } from '../../../App/context/TogglesContext';
+import { ToggleName } from '../../../App/context/toggles';
 
 const DelmalValg = styled.div`
     display: flex;
@@ -63,6 +65,10 @@ export const BrevMenyDelmal: React.FC<Props> = ({
     overstyring,
 }) => {
     const { delmalValgfelt, delmalFlettefelter } = delmal;
+    const { toggles } = useToggles();
+
+    const skalKunneKonvertereDelmalblokk = toggles[ToggleName.konvertereDelmalblokkTilHtmlFelt];
+
     const [ekspanderbartPanelÅpen, settEkspanderbartPanelÅpen] = useState(false);
 
     const handleFlettefeltInput = (verdi: string, flettefelt: Flettefeltreferanse) => {
@@ -155,8 +161,11 @@ export const BrevMenyDelmal: React.FC<Props> = ({
                                             key={flettefelt._ref}
                                         />
                                     ))}
-                            {erDelmalblokk && (
-                                <Button onClick={() => overstyring.konverterTilHtml(delmal)}>
+                            {erDelmalblokk && skalKunneKonvertereDelmalblokk && (
+                                <Button
+                                    onClick={() => overstyring.konverterTilHtml(delmal)}
+                                    size={'small'}
+                                >
                                     Konverter til tekstfelt
                                 </Button>
                             )}
@@ -170,8 +179,9 @@ export const BrevMenyDelmal: React.FC<Props> = ({
                                     />
                                     <Button
                                         onClick={() => overstyring.konverterTilDelmalblokk(delmal)}
+                                        size={'small'}
                                     >
-                                        Konverter tilbake
+                                        Konverter til brevbygger
                                     </Button>
                                 </>
                             )}
