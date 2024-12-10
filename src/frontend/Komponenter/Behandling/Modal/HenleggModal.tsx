@@ -17,6 +17,8 @@ import { ToggleName } from '../../../App/context/toggles';
 import { base64toBlob, åpnePdfIEgenTab } from '../../../App/utils/utils';
 import { ABorderSubtle } from '@navikt/ds-tokens/dist/tokens';
 import { VStack, Stack } from '@navikt/ds-react';
+import { IPersonopplysninger } from '../../../App/typer/personopplysninger';
+import { erEtterDagensDato } from '../../../App/utils/dato';
 
 const AlertStripe = styled(Alert)`
     margin-top: 1rem;
@@ -26,7 +28,10 @@ const HorizontalDivider = styled.div`
     border-bottom: 2px solid ${ABorderSubtle};
 `;
 
-export const HenleggModal: FC<{ behandling: Behandling }> = ({ behandling }) => {
+export const HenleggModal: FC<{
+    behandling: Behandling;
+    personopplysninger: IPersonopplysninger;
+}> = ({ behandling, personopplysninger }) => {
     const {
         visHenleggModal,
         settVisHenleggModal,
@@ -41,6 +46,7 @@ export const HenleggModal: FC<{ behandling: Behandling }> = ({ behandling }) => 
         nullstillIkkePersisterteKomponenter,
         settIkkePersistertKomponent,
     } = useApp();
+    const { vergemål, fullmakt } = personopplysninger;
     const [henlagtårsak, settHenlagtårsak] = useState<EHenlagtårsak>();
     const [huketAvSendBrev, settHuketAvSendBrev] = useState<boolean>(true);
     const [låsKnapp, settLåsKnapp] = useState<boolean>(false);
@@ -59,7 +65,6 @@ export const HenleggModal: FC<{ behandling: Behandling }> = ({ behandling }) => 
                 );
             } else {
                 settForhåndsvisningsFeil(respons.frontendFeilmelding);
-                console.log(forhåndsvisningsFeil);
             }
         });
     };
@@ -115,8 +120,17 @@ export const HenleggModal: FC<{ behandling: Behandling }> = ({ behandling }) => 
         settHenlagtårsak(undefined);
     };
 
+    const tilknyttetFullmakt = fullmakt.some(
+        (f) => f.gyldigTilOgMed === null || erEtterDagensDato(f.gyldigTilOgMed)
+    );
+
     const skalSendeHenleggelsesBrev =
         huketAvSendBrev && henlagtårsak === EHenlagtårsak.TRUKKET_TILBAKE;
+
+    const skalViseTillegsValg =
+        vergemål.length === 0 &&
+        !tilknyttetFullmakt &&
+        henlagtårsak === EHenlagtårsak.TRUKKET_TILBAKE;
 
     return (
         <DataViewer response={{ ansvarligSaksbehandler }}>
@@ -144,11 +158,11 @@ export const HenleggModal: FC<{ behandling: Behandling }> = ({ behandling }) => 
                                 <Radio value={EHenlagtårsak.TRUKKET_TILBAKE}>Trukket tilbake</Radio>
                                 <Radio value={EHenlagtårsak.FEILREGISTRERT}>Feilregistrert</Radio>
                             </RadioGroup>
-                            {henlagtårsak === EHenlagtårsak.TRUKKET_TILBAKE && (
+                            {skalViseTillegsValg && (
                                 <>
                                     <HorizontalDivider />
                                     <RadioGroup
-                                        legend="Send henleggelsesbrev"
+                                        legend="Send brev om trukket søknad"
                                         value={huketAvSendBrev}
                                     >
                                         <Stack
@@ -180,6 +194,16 @@ export const HenleggModal: FC<{ behandling: Behandling }> = ({ behandling }) => 
                             )}
                             {forhåndsvisningsFeil && (
                                 <AlertStripe variant={'error'}>{forhåndsvisningsFeil}</AlertStripe>
+                            )}
+                            {vergemål.length > 0 && (
+                                <AlertStripe size={'small'} variant={'warning'}>
+                                    {'Verge registrert på bruker kan ikke sende brev automatisk'}
+                                </AlertStripe>
+                            )}
+                            {tilknyttetFullmakt && (
+                                <AlertStripe size={'small'} variant={'warning'}>
+                                    {'Fullmakt registrert på bruker kan ikke sende brev automatisk'}
+                                </AlertStripe>
                             )}
                         </VStack>
                     </ModalWrapper>
