@@ -4,10 +4,10 @@ import { useApp } from '../context/AppContext';
 
 interface Props {
     gjenbrukbareVilkårsvurderinger: string[];
-    hentAlleGjenbrukbareVilkårsvurderinger: (behandlingId: string) => Promise<void>;
+    hentAlleGjenbrukbareVilkårsvurderinger: (behandlingId: string) => void;
 }
 
-export const useHentAlleGjenbrukbareVilkårsvurderinger = (): Props => {
+export const useHentGjenbrukbareVilkårsvurderinger = (): Props => {
     const [gjenbrukbareVilkårsvurderinger, settGjenbrukbareVilkårsvurderinger] = useState<string[]>(
         []
     );
@@ -15,16 +15,17 @@ export const useHentAlleGjenbrukbareVilkårsvurderinger = (): Props => {
     const { axiosRequest } = useApp();
 
     const hentAlleGjenbrukbareVilkårsvurderinger = useCallback(
-        async (behandlingId: string): Promise<void> => {
-            const respons = await axiosRequest<string[], void>({
+        (behandlingId: string): void => {
+            axiosRequest<string[], void>({
                 method: 'GET',
                 url: `/familie-ef-sak/api/vurdering/${behandlingId}/gjenbrukbare-vilkar`,
+            }).then((respons) => {
+                if (respons.status === RessursStatus.SUKSESS) {
+                    settGjenbrukbareVilkårsvurderinger(respons.data);
+                } else {
+                    settGjenbrukbareVilkårsvurderinger([]);
+                }
             });
-            if (respons.status === RessursStatus.SUKSESS) {
-                settGjenbrukbareVilkårsvurderinger(respons.data);
-            } else {
-                settGjenbrukbareVilkårsvurderinger([]);
-            }
         },
         [axiosRequest]
     );

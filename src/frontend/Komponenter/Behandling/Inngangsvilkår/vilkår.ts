@@ -53,7 +53,6 @@ export interface IVurdering {
     endretTid: string;
     delvilkårsvurderinger: IDelvilkår[];
     opphavsvilkår?: Opphavsvilkår;
-    kanGjenbrukes: boolean;
 }
 
 export interface Opphavsvilkår {

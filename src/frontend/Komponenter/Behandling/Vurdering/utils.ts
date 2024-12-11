@@ -191,6 +191,6 @@ export const skalViseGjenbrukKnapp = (
     gjenbrukbareVilkårsvurderinger: string[]
 ) => {
     const erInngangsvilkårType = sjekkErInngangsvilkårType(vurdering.vilkårType);
-    const kanGjenbruke = gjenbrukbareVilkårsvurderinger?.includes(vurdering.id);
+    const kanGjenbruke = gjenbrukbareVilkårsvurderinger.includes(vurdering.id);
     return erInngangsvilkårType && kanGjenbruke;
 };
