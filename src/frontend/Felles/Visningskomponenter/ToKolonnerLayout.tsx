@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 
 const Container = styled.div<{ $skillelinje?: boolean }>`
@@ -30,8 +30,8 @@ const Container = styled.div<{ $skillelinje?: boolean }>`
 interface Props {
     skillelinje?: boolean;
     children: {
-        venstre: JSX.Element;
-        høyre: JSX.Element;
+        venstre: ReactNode;
+        høyre: ReactNode;
     };
 }
 
