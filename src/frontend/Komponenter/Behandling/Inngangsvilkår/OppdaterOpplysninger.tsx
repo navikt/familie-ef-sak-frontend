@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { ArrowsCirclepathIcon } from '@navikt/aksel-icons';
 import { Button, HelpText } from '@navikt/ds-react';
-import { DetailSmall } from '../../../../Felles/Visningskomponenter/Tekster';
+import { DetailSmall } from '../../../Felles/Visningskomponenter/Tekster';
 import { ATextSubtle } from '@navikt/ds-tokens/dist/tokens';
-import { useBehandling } from '../../../../App/context/BehandlingContext';
+import { useBehandling } from '../../../App/context/BehandlingContext';
 
 const FlexWrapper = styled.div`
     display: flex;
