@@ -124,13 +124,12 @@ export const HenleggModal: FC<{
         (f) => f.gyldigTilOgMed === null || erEtterDagensDato(f.gyldigTilOgMed)
     );
 
-    const skalSendeHenleggelsesBrev =
-        huketAvSendBrev && henlagtårsak === EHenlagtårsak.TRUKKET_TILBAKE;
-
     const skalViseTillegsValg =
         vergemål.length === 0 &&
         !tilknyttetFullmakt &&
         henlagtårsak === EHenlagtårsak.TRUKKET_TILBAKE;
+
+    const skalSendeHenleggelsesBrev = huketAvSendBrev && skalViseTillegsValg;
 
     return (
         <DataViewer response={{ ansvarligSaksbehandler }}>
@@ -197,12 +196,16 @@ export const HenleggModal: FC<{
                             )}
                             {vergemål.length > 0 && (
                                 <AlertStripe size={'small'} variant={'warning'}>
-                                    {'Verge registrert på bruker kan ikke sende brev automatisk'}
+                                    {
+                                        'Verge registrert på bruker. Brev om trukket søknad må sendes manuelt.'
+                                    }
                                 </AlertStripe>
                             )}
                             {tilknyttetFullmakt && (
                                 <AlertStripe size={'small'} variant={'warning'}>
-                                    {'Fullmakt registrert på bruker kan ikke sende brev automatisk'}
+                                    {
+                                        'Fullmakt registrert på bruker. Brev om trukket søknad må sendes manuelt.'
+                                    }
                                 </AlertStripe>
                             )}
                         </VStack>
