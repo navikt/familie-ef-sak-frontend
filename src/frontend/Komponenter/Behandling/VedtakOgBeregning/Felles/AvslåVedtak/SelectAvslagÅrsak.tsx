@@ -30,7 +30,7 @@ const FeilmeldingTekst = styled(BodyShortSmall)`
     color: #ba3a26;
 `;
 
-const SelectAvslagÅrsak = (props: Props): JSX.Element => {
+const SelectAvslagÅrsak: React.FC<Props> = (props: Props) => {
     const { behandlingErRedigerbar } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
     const { avslagÅrsak, settAvslagÅrsak, feilmelding } = props;
