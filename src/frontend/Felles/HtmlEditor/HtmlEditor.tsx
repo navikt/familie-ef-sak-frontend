@@ -2,6 +2,7 @@ import Quill from 'quill';
 import React, { forwardRef, useEffect, useLayoutEffect, useRef } from 'react';
 import 'quill/dist/quill.snow.css';
 import { BlockBlot } from 'parchment';
+import { AlertError } from '../Visningskomponenter/Alerts';
 
 type Props = {
     defaultValue?: string;
@@ -30,7 +31,6 @@ const HtmlEditor = forwardRef(({ defaultValue, onTextChange }: Props, ref) => {
         const container = containerRef.current;
 
         if (!container) {
-            console.error('Ugyldig Quill container');
             return;
         }
 
@@ -71,7 +71,11 @@ const HtmlEditor = forwardRef(({ defaultValue, onTextChange }: Props, ref) => {
         };
     }, [ref]);
 
-    return <div ref={containerRef}></div>;
+    return containerRef ? (
+        <div ref={containerRef}></div>
+    ) : (
+        <AlertError>En uventet feil oppstod ved opprettelse av tekstfelt.</AlertError>
+    );
 });
 
 HtmlEditor.displayName = 'HtmlEditor';
