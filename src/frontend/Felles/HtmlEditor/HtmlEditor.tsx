@@ -1,5 +1,5 @@
 import Quill from 'quill';
-import React, { forwardRef, useEffect, useLayoutEffect, useRef } from 'react';
+import React, { forwardRef, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import 'quill/dist/quill.snow.css';
 import { BlockBlot } from 'parchment';
 import { AlertError } from '../Visningskomponenter/Alerts';
@@ -22,7 +22,7 @@ export const HtmlEditor = forwardRef(({ defaultValue, onTextChange }: Props, ref
     const defaultValueRef = useRef(defaultValue);
     const containerRef = useRef<HTMLDivElement>(null);
     const onTextChangeRef = useRef(onTextChange);
-
+    const [feilVedOpprettelse, settFeilVedOpprettelse] = useState<boolean>(false);
     useLayoutEffect(() => {
         onTextChangeRef.current = onTextChange;
     });
@@ -31,9 +31,11 @@ export const HtmlEditor = forwardRef(({ defaultValue, onTextChange }: Props, ref
         const container = containerRef.current;
 
         if (!container) {
+            settFeilVedOpprettelse(true);
             return;
         }
 
+        settFeilVedOpprettelse(false);
         const editorContainer = container.appendChild(container.ownerDocument.createElement('div'));
 
         const verktøySomSkalMed = [[{ list: 'bullet' }], ['clean']];
@@ -71,10 +73,10 @@ export const HtmlEditor = forwardRef(({ defaultValue, onTextChange }: Props, ref
         };
     }, [ref]);
 
-    return containerRef ? (
-        <div ref={containerRef}></div>
-    ) : (
+    return feilVedOpprettelse ? (
         <AlertError>En uventet feil oppstod ved opprettelse av tekstfelt.</AlertError>
+    ) : (
+        <div ref={containerRef}></div>
     );
 });
 
