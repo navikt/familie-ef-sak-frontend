@@ -51,7 +51,6 @@ export const HenleggModal: FC<{
     const [harHuketAvSendBrev, settHarHuketAvSendBrev] = useState<boolean>(true);
     const [låsKnapp, settLåsKnapp] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>();
-    const [forhåndsvisningsFeil, settForhåndsvisningsFeil] = useState<string>();
 
     const visBrevINyFane = () => {
         axiosRequest<string, null>({
@@ -64,7 +63,7 @@ export const HenleggModal: FC<{
                     'Forhåndsvisning av varselbrev'
                 );
             } else {
-                settForhåndsvisningsFeil(respons.frontendFeilmelding);
+                settFeilmelding(respons.frontendFeilmelding);
             }
         });
     };
@@ -190,9 +189,6 @@ export const HenleggModal: FC<{
                             )}
                             {feilmelding && (
                                 <AlertStripe variant={'error'}>{feilmelding}</AlertStripe>
-                            )}
-                            {forhåndsvisningsFeil && (
-                                <AlertStripe variant={'error'}>{forhåndsvisningsFeil}</AlertStripe>
                             )}
                             {vergemål.length > 0 && (
                                 <AlertStripe size={'small'} variant={'warning'}>
