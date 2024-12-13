@@ -48,7 +48,7 @@ export const HenleggModal: FC<{
     } = useApp();
     const { vergemål, fullmakt } = personopplysninger;
     const [henlagtårsak, settHenlagtårsak] = useState<EHenlagtårsak>();
-    const [huketAvSendBrev, settHuketAvSendBrev] = useState<boolean>(true);
+    const [harHuketAvSendBrev, settHarHuketAvSendBrev] = useState<boolean>(true);
     const [låsKnapp, settLåsKnapp] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>();
     const [forhåndsvisningsFeil, settForhåndsvisningsFeil] = useState<string>();
@@ -56,7 +56,7 @@ export const HenleggModal: FC<{
     const visBrevINyFane = () => {
         axiosRequest<string, null>({
             method: 'GET',
-            url: `familie-ef-sak/api/behandling/${behandling.id}/henlegg/brev`,
+            url: `familie-ef-sak/api/behandling/${behandling.id}/henlegg/brev/forhandsvisning`,
         }).then((respons: RessursSuksess<string> | RessursFeilet) => {
             if (respons.status === RessursStatus.SUKSESS) {
                 åpnePdfIEgenTab(
@@ -93,7 +93,7 @@ export const HenleggModal: FC<{
             url: endepunkt,
             data: {
                 årsak: henlagtårsak,
-                skalSendeHenleggelsesbrev: skalSendeHenleggelsesBrev,
+                skalSendeHenleggelsesbrev: harValgtSendBrevOgSkalViseFramValg,
             },
         })
             .then((respons: Ressurs<string>) => {
@@ -121,15 +121,15 @@ export const HenleggModal: FC<{
     };
 
     const tilknyttetFullmakt = fullmakt.some(
-        (f) => f.gyldigTilOgMed === null || erEtterDagensDato(f.gyldigTilOgMed)
+        (fullmakt) => fullmakt.gyldigTilOgMed === null || erEtterDagensDato(fullmakt.gyldigTilOgMed)
     );
 
-    const skalViseTillegsValg =
+    const skalViseTilleggsvalg =
         vergemål.length === 0 &&
         !tilknyttetFullmakt &&
         henlagtårsak === EHenlagtårsak.TRUKKET_TILBAKE;
 
-    const skalSendeHenleggelsesBrev = huketAvSendBrev && skalViseTillegsValg;
+    const harValgtSendBrevOgSkalViseFramValg = harHuketAvSendBrev && skalViseTilleggsvalg;
 
     return (
         <DataViewer response={{ ansvarligSaksbehandler }}>
@@ -157,12 +157,12 @@ export const HenleggModal: FC<{
                                 <Radio value={EHenlagtårsak.TRUKKET_TILBAKE}>Trukket tilbake</Radio>
                                 <Radio value={EHenlagtårsak.FEILREGISTRERT}>Feilregistrert</Radio>
                             </RadioGroup>
-                            {skalViseTillegsValg && (
+                            {skalViseTilleggsvalg && (
                                 <>
                                     <HorizontalDivider />
                                     <RadioGroup
                                         legend="Send brev om trukket søknad"
-                                        value={huketAvSendBrev}
+                                        value={harHuketAvSendBrev}
                                     >
                                         <Stack
                                             gap="0 6"
@@ -172,14 +172,14 @@ export const HenleggModal: FC<{
                                             <Radio
                                                 value={true}
                                                 onChange={() => {
-                                                    settHuketAvSendBrev(true);
+                                                    settHarHuketAvSendBrev(true);
                                                 }}
                                             >
                                                 Ja
                                             </Radio>
                                             <Radio
                                                 value={false}
-                                                onChange={() => settHuketAvSendBrev(false)}
+                                                onChange={() => settHarHuketAvSendBrev(false)}
                                             >
                                                 Nei
                                             </Radio>
