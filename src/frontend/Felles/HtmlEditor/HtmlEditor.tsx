@@ -18,7 +18,7 @@ Block.tagName = 'div';
 // @ts-expect-error Utypet kode - usikkert hvordan vi får dette til
 Quill.register(Block);
 
-const HtmlEditor = forwardRef(({ defaultValue, onTextChange }: Props, ref) => {
+export const HtmlEditor = forwardRef(({ defaultValue, onTextChange }: Props, ref) => {
     const defaultValueRef = useRef(defaultValue);
     const containerRef = useRef<HTMLDivElement>(null);
     const onTextChangeRef = useRef(onTextChange);
@@ -79,5 +79,3 @@ const HtmlEditor = forwardRef(({ defaultValue, onTextChange }: Props, ref) => {
 });
 
 HtmlEditor.displayName = 'HtmlEditor';
-
-export default HtmlEditor;

@@ -13,7 +13,7 @@ import { Flettefelt } from './Flettefelt';
 import styled from 'styled-components';
 import { Accordion, Button, Checkbox } from '@navikt/ds-react';
 import { ABorderRadiusMedium, ABorderStrong } from '@navikt/ds-tokens/dist/tokens';
-import HtmlEditor from '../../../Felles/HtmlEditor/HtmlEditor';
+import { HtmlEditor } from '../../../Felles/HtmlEditor/HtmlEditor';
 import { useToggles } from '../../../App/context/TogglesContext';
 import { ToggleName } from '../../../App/context/toggles';
 
