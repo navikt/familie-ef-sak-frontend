@@ -18,6 +18,7 @@ import {
     useEkspanderbareVilkårpanelContext,
 } from '../../../App/context/EkspanderbareVilkårpanelContext';
 import { ModalState } from '../Modal/NyEierModal';
+import { skalViseGjenbrukKnapp } from './utils';
 
 const KnappWrapper = styled.div`
     display: flex;
@@ -81,7 +82,11 @@ const VisEllerEndreVurdering: FC<Props> = ({
         hentAnsvarligSaksbehandler,
         hentBehandling,
         settNyEierModalState,
+        vilkårState,
     } = useBehandling();
+
+    const { gjenbrukEnkelVilkårsvurdering, gjenbrukbareVilkårsvurderinger } = vilkårState;
+
     const { settPanelITilstand } = useEkspanderbareVilkårpanelContext();
     const [redigeringsmodus, settRedigeringsmodus] = useState<Redigeringsmodus>(
         utledRedigeringsmodus(feilmelding, vurdering, behandlingErRedigerbar)
@@ -107,6 +112,10 @@ const VisEllerEndreVurdering: FC<Props> = ({
                 hentAnsvarligSaksbehandler.rerun();
             }
         });
+    };
+
+    const gjenbrukVilkårsvurdering = () => {
+        gjenbrukEnkelVilkårsvurdering(vurdering.behandlingId, vurdering.id);
     };
 
     const initiellRedigeringsmodus =
@@ -145,6 +154,15 @@ const VisEllerEndreVurdering: FC<Props> = ({
                     <Button onClick={ikkeVurder} variant={'tertiary'} type={'button'}>
                         {høyreKnappetekst ? høyreKnappetekst : 'Ikke vurder vilkår'}
                     </Button>
+                    {skalViseGjenbrukKnapp(vurdering, gjenbrukbareVilkårsvurderinger) && (
+                        <Button
+                            onClick={gjenbrukVilkårsvurdering}
+                            variant={'tertiary'}
+                            type={'button'}
+                        >
+                            Gjenbruk
+                        </Button>
+                    )}
                 </KnappWrapper>
             );
         case Redigeringsmodus.REDIGERING:
@@ -166,6 +184,8 @@ const VisEllerEndreVurdering: FC<Props> = ({
                     feilmelding={feilmelding || resetFeilmelding}
                     behandlingErRedigerbar={behandlingErRedigerbar && erSaksbehandler}
                     tittelTekst={tittelTekstVisVurdering}
+                    gjenbrukVilkårsvurdering={gjenbrukVilkårsvurdering}
+                    gjenbrukbareVilkårsvurderinger={gjenbrukbareVilkårsvurderinger}
                 />
             );
     }

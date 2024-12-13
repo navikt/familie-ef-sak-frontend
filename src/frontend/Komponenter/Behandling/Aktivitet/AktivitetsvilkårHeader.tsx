@@ -4,7 +4,7 @@ import {
     EVilkårstyper,
     useEkspanderbareVilkårpanelContext,
 } from '../../../App/context/EkspanderbareVilkårpanelContext';
-import { ÅpneOgLukkePanelKnapper } from '../Inngangsvilkår/InngangsvilkårHeader/ÅpneOgLukkePanelKnapper';
+import { ÅpneOgLukkePanelKnapper } from '../Inngangsvilkår/ÅpneOgLukkePanelKnapper';
 
 const Container = styled.div`
     margin: 2rem;
