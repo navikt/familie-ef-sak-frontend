@@ -3,14 +3,19 @@ import {
     Delmal,
     FlettefeltMedVerdi,
     Flettefeltreferanse,
+    OverstyrtDelmal,
+    OverstyrteDelmaler,
     ValgtFelt,
 } from './BrevTyper';
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { ValgfeltSelect } from './ValgfeltSelect';
 import { Flettefelt } from './Flettefelt';
 import styled from 'styled-components';
-import { Accordion, Checkbox } from '@navikt/ds-react';
+import { Accordion, Button, Checkbox } from '@navikt/ds-react';
 import { ABorderRadiusMedium, ABorderStrong } from '@navikt/ds-tokens/dist/tokens';
+import { HtmlEditor } from '../../../Felles/HtmlEditor/HtmlEditor';
+import { useToggles } from '../../../App/context/TogglesContext';
+import { ToggleName } from '../../../App/context/toggles';
 
 const DelmalValg = styled.div`
     display: flex;
@@ -38,6 +43,12 @@ interface Props {
     settBrevOppdatert: (kanSendeTilBeslutter: boolean) => void;
     valgt: boolean;
     skjul: boolean;
+    overstyring: {
+        konverterTilHtml: (delmal: Delmal) => void;
+        konverterTilDelmalblokk: (delmal: Delmal) => void;
+        settOverstyrteDelmaler: Dispatch<SetStateAction<OverstyrteDelmaler>>;
+        overstyrtDelmal?: OverstyrtDelmal;
+    };
 }
 
 export const BrevMenyDelmal: React.FC<Props> = ({
@@ -51,8 +62,13 @@ export const BrevMenyDelmal: React.FC<Props> = ({
     settBrevOppdatert,
     valgt,
     skjul,
+    overstyring,
 }) => {
     const { delmalValgfelt, delmalFlettefelter } = delmal;
+    const { toggles } = useToggles();
+
+    const skalKunneKonvertereDelmalblokk = toggles[ToggleName.konvertereDelmalblokkTilHtmlFelt];
+
     const [ekspanderbartPanelÅpen, settEkspanderbartPanelÅpen] = useState(false);
 
     const handleFlettefeltInput = (verdi: string, flettefelt: Flettefeltreferanse) => {
@@ -60,6 +76,13 @@ export const BrevMenyDelmal: React.FC<Props> = ({
             prevState.map((felt) => (felt._ref === flettefelt._ref ? { ...felt, verdi } : felt))
         );
         settBrevOppdatert(false);
+    };
+
+    const oppdaterOverstyrtInnhold = (delmal: Delmal, htmlInnhold: string) => {
+        overstyring.settOverstyrteDelmaler((prevState) => ({
+            ...prevState,
+            [delmal.delmalApiNavn]: { htmlInnhold: htmlInnhold, skalOverstyre: true },
+        }));
     };
 
     const håndterToggleDelmal = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -78,6 +101,8 @@ export const BrevMenyDelmal: React.FC<Props> = ({
     if (skjul) {
         return null;
     }
+
+    const erDelmalblokk = overstyring.overstyrtDelmal?.skalOverstyre !== true;
 
     return (
         <DelmalValg>
@@ -103,7 +128,8 @@ export const BrevMenyDelmal: React.FC<Props> = ({
                     </Accordion.Header>
                     {ekspanderbartPanelÅpen && (
                         <AccordionInnhold>
-                            {delmalValgfelt &&
+                            {erDelmalblokk &&
+                                delmalValgfelt &&
                                 delmalValgfelt.map((valgFelt, index) => (
                                     <ValgfeltSelect
                                         valgFelt={valgFelt}
@@ -118,22 +144,47 @@ export const BrevMenyDelmal: React.FC<Props> = ({
                                         settKanSendeTilBeslutter={settBrevOppdatert}
                                     />
                                 ))}
-                            {delmalFlettefelter
-                                .flatMap((f) => f.flettefelt)
-                                .filter(
-                                    (felt, index, self) =>
-                                        self.findIndex((t) => t._ref === felt._ref) === index
-                                )
-                                .map((flettefelt) => (
-                                    <Flettefelt
-                                        fetLabel={true}
-                                        flettefelt={flettefelt}
-                                        dokument={dokument}
-                                        flettefelter={flettefelter}
-                                        handleFlettefeltInput={handleFlettefeltInput}
-                                        key={flettefelt._ref}
+                            {erDelmalblokk &&
+                                delmalFlettefelter
+                                    .flatMap((f) => f.flettefelt)
+                                    .filter(
+                                        (felt, index, self) =>
+                                            self.findIndex((t) => t._ref === felt._ref) === index
+                                    )
+                                    .map((flettefelt) => (
+                                        <Flettefelt
+                                            fetLabel={true}
+                                            flettefelt={flettefelt}
+                                            dokument={dokument}
+                                            flettefelter={flettefelter}
+                                            handleFlettefeltInput={handleFlettefeltInput}
+                                            key={flettefelt._ref}
+                                        />
+                                    ))}
+                            {erDelmalblokk && skalKunneKonvertereDelmalblokk && (
+                                <Button
+                                    onClick={() => overstyring.konverterTilHtml(delmal)}
+                                    size={'small'}
+                                >
+                                    Konverter til tekstfelt
+                                </Button>
+                            )}
+                            {overstyring.overstyrtDelmal?.skalOverstyre && (
+                                <>
+                                    <HtmlEditor
+                                        defaultValue={overstyring.overstyrtDelmal.htmlInnhold}
+                                        onTextChange={(nyttInnhold) => {
+                                            oppdaterOverstyrtInnhold(delmal, nyttInnhold);
+                                        }}
                                     />
-                                ))}
+                                    <Button
+                                        onClick={() => overstyring.konverterTilDelmalblokk(delmal)}
+                                        size={'small'}
+                                    >
+                                        Konverter til brevbygger
+                                    </Button>
+                                </>
+                            )}
                         </AccordionInnhold>
                     )}
                 </Accordion.Item>
