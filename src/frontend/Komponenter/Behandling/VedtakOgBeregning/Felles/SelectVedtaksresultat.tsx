@@ -39,7 +39,7 @@ const Container = styled.section`
     background-color: ${AGray50};
 `;
 
-const SelectVedtaksresultat = (props: Props): JSX.Element => {
+const SelectVedtaksresultat: React.FC<Props> = (props: Props) => {
     const { behandlingErRedigerbar } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
     const { resultatType, settResultatType, alleVilkårOppfylt, behandling } = props;
