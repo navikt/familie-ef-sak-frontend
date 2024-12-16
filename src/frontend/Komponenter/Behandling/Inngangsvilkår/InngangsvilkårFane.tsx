@@ -9,12 +9,12 @@ import { Samliv } from './Samliv/Samliv';
 import { Sivilstand } from './Sivilstand/Sivilstand';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { Behandlingsårsak } from '../../../App/typer/behandlingsårsak';
-import { formaterIsoDatoTidMedSekunder } from '../../../App/utils/formatter';
-import { InngangsvilkårHeader } from './InngangsvilkårHeader/InngangsvilkårHeader';
-import { useApp } from '../../../App/context/AppContext';
 import { FyllUtVilkårKnapp } from './FyllUtVilkårKnapp';
 import VilkårIkkeOpprettetAlert from '../Vurdering/VilkårIkkeOpprettet';
 import { Behandling } from '../../../App/typer/fagsak';
+import { useApp } from '../../../App/context/AppContext';
+import { InngangsvilkårHeader } from './InngangsvilkårHeader';
+import { formaterIsoDatoTidMedSekunder } from '../../../App/utils/formatter';
 
 interface Props {
     behandling: Behandling;
@@ -31,7 +31,6 @@ export const InngangsvilkårFane: FC<Props> = ({ behandling }) => {
         nullstillVurdering,
         ikkeVurderVilkår,
         oppdaterGrunnlagsdataOgHentVilkår,
-        gjenbrukInngangsvilkår,
     } = vilkårState;
 
     React.useEffect(() => {
@@ -63,7 +62,6 @@ export const InngangsvilkårFane: FC<Props> = ({ behandling }) => {
                                 behandlingErRedigerbar={behandlingErRedigerbar}
                                 oppdaterGrunnlagsdata={oppdaterGrunnlagsdataOgHentVilkår}
                                 behandlingId={behandling.id}
-                                gjenbrukInngangsvilkår={gjenbrukInngangsvilkår}
                             />
                         )}
                         <Medlemskap
