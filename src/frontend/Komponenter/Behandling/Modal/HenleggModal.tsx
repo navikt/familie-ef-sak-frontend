@@ -148,7 +148,7 @@ export const HenleggModal: FC<{
                         }}
                         ariaLabel={'Velg årsak til henleggelse av behandlingen'}
                     >
-                        <VStack gap="4">
+                        <VStack gap="4" align="start">
                             <RadioGroup
                                 legend={''}
                                 onChange={(årsak: EHenlagtårsak) => settHenlagtårsak(årsak)}
@@ -184,7 +184,9 @@ export const HenleggModal: FC<{
                                             </Radio>
                                         </Stack>
                                     </RadioGroup>
-                                    <Link onClick={visBrevINyFane}>Forhåndsvis brev</Link>
+                                    <Link onClick={visBrevINyFane} href="#">
+                                        Forhåndsvis brev
+                                    </Link>
                                 </>
                             )}
                             {feilmelding && (
