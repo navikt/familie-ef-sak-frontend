@@ -172,10 +172,12 @@ const SendTilBeslutterFooter: React.FC<{
                     marginTop: 4,
                 }}
             />
-            <MarkereGodkjenneVedtakModal
-                open={visMarkereGodkjenneVedtakOppgaveModal}
-                setOpen={settVisMarkereGodkjenneVedtakOppgaveModal}
-            />
+            {visMarkereGodkjenneVedtakOppgaveModalToggle && (
+                <MarkereGodkjenneVedtakModal
+                    open={visMarkereGodkjenneVedtakOppgaveModal}
+                    setOpen={settVisMarkereGodkjenneVedtakOppgaveModal}
+                />
+            )}
         </>
     );
 };
