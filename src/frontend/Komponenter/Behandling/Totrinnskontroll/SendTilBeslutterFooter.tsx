@@ -16,6 +16,9 @@ import { IOppgaverForOpprettelse } from '../../../App/hooks/useHentOppgaverForOp
 import { OppgaveTypeForOpprettelse } from './oppgaveForOpprettelseTyper';
 import { harVerdi } from '../../../App/utils/utils';
 import { ModalState } from '../Modal/NyEierModal';
+import { useToggles } from '../../../App/context/TogglesContext';
+import { ToggleName } from '../../../App/context/toggles';
+import { MarkereGodkjenneVedtakModal } from './MarkereGodkjenneVedtakModal';
 
 const Footer = styled.footer`
     width: 100%;
@@ -64,9 +67,12 @@ const SendTilBeslutterFooter: React.FC<{
         hentBehandlingshistorikk,
         settNyEierModalState,
     } = useBehandling();
+    const { toggles } = useToggles();
     const [laster, settLaster] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>();
     const [visModal, settVisModal] = useState<boolean>(false);
+    const [visMarkereGodkjenneVedtakOppgaveModal, settVisMarkereGodkjenneVedtakOppgaveModal] =
+        useState<boolean>(false);
     const sendTilBeslutter = () => {
         settLaster(true);
         settFeilmelding(undefined);
@@ -94,6 +100,9 @@ const SendTilBeslutterFooter: React.FC<{
             })
             .finally(() => settLaster(false));
     };
+
+    const visMarkereGodkjenneVedtakOppgaveModalToggle =
+        toggles[ToggleName.visMarkereGodkjenneVedtakOppgaveModal] || false;
 
     const lukkModal = () => {
         settVisModal(false);
@@ -124,6 +133,14 @@ const SendTilBeslutterFooter: React.FC<{
                             />
                         )}
                         <MidtstiltInnhold>
+                            {visMarkereGodkjenneVedtakOppgaveModalToggle && (
+                                <Button
+                                    onClick={() => settVisMarkereGodkjenneVedtakOppgaveModal(true)}
+                                    type={'button'}
+                                >
+                                    Markere godkjenne vedtak - TEST
+                                </Button>
+                            )}
                             <Button
                                 onClick={sendTilBeslutter}
                                 disabled={
@@ -154,6 +171,10 @@ const SendTilBeslutterFooter: React.FC<{
                     },
                     marginTop: 4,
                 }}
+            />
+            <MarkereGodkjenneVedtakModal
+                open={visMarkereGodkjenneVedtakOppgaveModal}
+                setOpen={settVisMarkereGodkjenneVedtakOppgaveModal}
             />
         </>
     );
