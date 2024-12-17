@@ -1,7 +1,8 @@
 import { Modal, Button, Checkbox, CheckboxGroup, VStack, Table, Heading } from '@navikt/ds-react';
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Divider } from '../../../Felles/Divider/Divider';
 import { styled } from 'styled-components';
+import { IOppgaverForOpprettelse } from '../../../App/hooks/useHentOppgaverForOpprettelse';
 
 const StyledTableDataCell = styled(Table.DataCell)`
     padding: 12px 8px 12px 0;
@@ -10,9 +11,27 @@ const StyledTableDataCell = styled(Table.DataCell)`
 export const MarkereGodkjenneVedtakModal: FC<{
     open: boolean;
     setOpen: (open: boolean) => void;
-}> = ({ open, setOpen }) => {
+    oppgaverForOpprettelse?: IOppgaverForOpprettelse;
+}> = ({ open, setOpen, oppgaverForOpprettelse }) => {
     const handleChange = (val: string[]) => console.info(val);
     const [selectedRows, setSelectedRows] = useState<string[]>([]);
+
+    const {
+        // feilmelding,
+        oppgavetyperSomKanOpprettes,
+        // oppgavetyperSomSkalOpprettes,
+        // settOppgavetyperSomSkalOpprettes,
+    } = oppgaverForOpprettelse || {};
+
+    const finnesOppgavetyperSomKanOpprettes = (oppgavetyperSomKanOpprettes ?? []).length > 0;
+
+    const [oppgaverForOpprettelseState, settOppgaverForOpprettelseState] = useState<string[]>([]); // TODO: Navn??
+
+    useEffect(() => {
+        if (finnesOppgavetyperSomKanOpprettes) {
+            settOppgaverForOpprettelseState(['kontrollAvInntekt']);
+        }
+    }, [finnesOppgavetyperSomKanOpprettes]);
 
     const data = [
         {
@@ -69,16 +88,21 @@ export const MarkereGodkjenneVedtakModal: FC<{
                 <VStack gap="4">
                     <CheckboxGroup
                         legend="Følgende oppgaver skal opprettes automatisk ved godkjenning av dette vedtaket:"
-                        onChange={handleChange}
+                        onChange={settOppgaverForOpprettelseState}
+                        value={oppgaverForOpprettelseState}
                     >
-                        <Checkbox value="car">
+                        <Checkbox
+                            value="kontrollAvInntekt"
+                            disabled={!finnesOppgavetyperSomKanOpprettes}
+                        >
                             Oppgave for kontroll av inntekt 1 år frem i tid
                         </Checkbox>
-                        <Checkbox value="taxi">
+                        <Checkbox value="kontrollAvSelvstendigNæringsdrivende">
                             Oppgave til 15.desember 2025 for kontroll av inntekt for selvstendig
                             næringsdrivende
                         </Checkbox>
                     </CheckboxGroup>
+                    {JSON.stringify(oppgaverForOpprettelseState)}
                     <Divider />
                     <>
                         <Heading size="small">

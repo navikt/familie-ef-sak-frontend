@@ -101,7 +101,7 @@ const SendTilBeslutterFooter: React.FC<{
             .finally(() => settLaster(false));
     };
 
-    const visMarkereGodkjenneVedtakOppgaveModalToggle =
+    const visMarkereGodkjenneVedtakOppgaveModalToggle = // TODO: Endre navn
         toggles[ToggleName.visMarkereGodkjenneVedtakOppgaveModal] || false;
 
     const lukkModal = () => {
@@ -176,6 +176,7 @@ const SendTilBeslutterFooter: React.FC<{
                 <MarkereGodkjenneVedtakModal
                     open={visMarkereGodkjenneVedtakOppgaveModal}
                     setOpen={settVisMarkereGodkjenneVedtakOppgaveModal}
+                    oppgaverForOpprettelse={oppgaverForOpprettelse}
                 />
             )}
         </>
