@@ -1,0 +1,10 @@
+import React, { FC } from 'react';
+import styled from 'styled-components';
+
+export const StyledDiv = styled.div<{ farge: string }>`
+    border-bottom: 2px solid ${({ farge }) => farge};
+`;
+
+export const Divider: FC<{ farge?: string }> = ({ farge = 'black' }) => {
+    return <StyledDiv farge={farge} />;
+};
