@@ -51,21 +51,26 @@ export const HenleggModal: FC<{
     const [harHuketAvSendBrev, settHarHuketAvSendBrev] = useState<boolean>(true);
     const [låsKnapp, settLåsKnapp] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>();
+    const [henterBrev, settHenterBrev] = useState<boolean>(false);
 
     const visBrevINyFane = () => {
-        axiosRequest<string, null>({
-            method: 'GET',
-            url: `familie-ef-sak/api/behandling/${behandling.id}/henlegg/brev/forhandsvisning`,
-        }).then((respons: RessursSuksess<string> | RessursFeilet) => {
-            if (respons.status === RessursStatus.SUKSESS) {
-                åpnePdfIEgenTab(
-                    base64toBlob(respons.data, 'application/pdf'),
-                    'Forhåndsvisning av varselbrev'
-                );
-            } else {
-                settFeilmelding(respons.frontendFeilmelding);
-            }
-        });
+        if (!henterBrev) {
+            settHenterBrev(true);
+            axiosRequest<string, null>({
+                method: 'GET',
+                url: `familie-ef-sak/api/behandling/${behandling.id}/henlegg/brev/forhandsvisning`,
+            }).then((respons: RessursSuksess<string> | RessursFeilet) => {
+                if (respons.status === RessursStatus.SUKSESS) {
+                    åpnePdfIEgenTab(
+                        base64toBlob(respons.data, 'application/pdf'),
+                        'Forhåndsvisning av trukket søknadsbrev'
+                    );
+                } else {
+                    settFeilmelding(respons.frontendFeilmelding);
+                }
+                settHenterBrev(false);
+            });
+        }
     };
 
     const utledEndepunktForHenleggelse = (rolle: AnsvarligSaksbehandlerRolle) =>
