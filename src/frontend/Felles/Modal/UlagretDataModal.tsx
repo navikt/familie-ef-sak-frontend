@@ -30,7 +30,6 @@ export const UlagretDataModal: FC = () => {
             (event) => {
                 if (ulagretData) {
                     event.preventDefault();
-                    event.returnValue = 'Changes you made may not be saved.';
                 }
             },
             [ulagretData]
