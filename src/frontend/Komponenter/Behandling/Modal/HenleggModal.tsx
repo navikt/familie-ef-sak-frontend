@@ -128,10 +128,10 @@ export const HenleggModal: FC<{
         (fullmakt) => fullmakt.gyldigTilOgMed === null || erEtterDagensDato(fullmakt.gyldigTilOgMed)
     );
 
+    const henlagtårsakTrukketTilbake = henlagtårsak === EHenlagtårsak.TRUKKET_TILBAKE;
+
     const skalViseTilleggsvalg =
-        vergemål.length === 0 &&
-        !tilknyttetFullmakt &&
-        henlagtårsak === EHenlagtårsak.TRUKKET_TILBAKE;
+        vergemål.length === 0 && !tilknyttetFullmakt && henlagtårsakTrukketTilbake;
 
     const harValgtSendBrevOgSkalViseFramValg = harHuketAvSendBrev && skalViseTilleggsvalg;
 
@@ -197,14 +197,14 @@ export const HenleggModal: FC<{
                             {feilmelding && (
                                 <AlertStripe variant={'error'}>{feilmelding}</AlertStripe>
                             )}
-                            {vergemål.length > 0 && (
+                            {vergemål.length > 0 && henlagtårsakTrukketTilbake && (
                                 <AlertStripe size={'small'} variant={'warning'}>
                                     {
                                         'Verge registrert på bruker. Brev om trukket søknad må sendes manuelt.'
                                     }
                                 </AlertStripe>
                             )}
-                            {tilknyttetFullmakt && (
+                            {tilknyttetFullmakt && henlagtårsakTrukketTilbake && (
                                 <AlertStripe size={'small'} variant={'warning'}>
                                     {
                                         'Fullmakt registrert på bruker. Brev om trukket søknad må sendes manuelt.'
