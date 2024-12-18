@@ -46,7 +46,8 @@ export const HenleggModal: FC<{
         nullstillIkkePersisterteKomponenter,
         settIkkePersistertKomponent,
     } = useApp();
-    const { vergemål, fullmakt } = personopplysninger;
+    const fullmakter = personopplysninger.fullmakt;
+    const vergemål = personopplysninger.vergemål;
     const [henlagtårsak, settHenlagtårsak] = useState<EHenlagtårsak>();
     const [harHuketAvSendBrev, settHarHuketAvSendBrev] = useState<boolean>(true);
     const [låsKnapp, settLåsKnapp] = useState<boolean>(false);
@@ -124,7 +125,7 @@ export const HenleggModal: FC<{
         settHenlagtårsak(undefined);
     };
 
-    const tilknyttetFullmakt = fullmakt.some(
+    const tilknyttetFullmakt = fullmakter.some(
         (fullmakt) => fullmakt.gyldigTilOgMed === null || erEtterDagensDato(fullmakt.gyldigTilOgMed)
     );
 
