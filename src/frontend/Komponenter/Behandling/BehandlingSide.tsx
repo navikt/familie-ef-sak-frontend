@@ -119,7 +119,7 @@ const SideInnhold: FC<Props> = ({ behandling, personopplysninger, fagsak }) => {
                     <EkspanderbareVilkårpanelProvider>
                         <BehandlingRoutes behandling={behandling} />
                     </EkspanderbareVilkårpanelProvider>
-                    <HenleggModal behandling={behandling} />
+                    <HenleggModal behandling={behandling} personopplysninger={personopplysninger} />
                     <NyEierModal />
                 </InnholdWrapper>
                 <HøyreMenyWrapper $åpenHøyremeny={åpenHøyremeny}>
