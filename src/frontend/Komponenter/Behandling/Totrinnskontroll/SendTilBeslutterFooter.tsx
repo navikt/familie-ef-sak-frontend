@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useApp } from '../../../App/context/AppContext';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
@@ -19,6 +19,8 @@ import { ModalState } from '../Modal/NyEierModal';
 import { useToggles } from '../../../App/context/TogglesContext';
 import { ToggleName } from '../../../App/context/toggles';
 import { MarkereGodkjenneVedtakModal } from './MarkereGodkjenneVedtakModal';
+import { useHentOppgaver } from '../../../App/hooks/useHentOppgaver';
+import { IkkeFortroligEnhet } from '../../Oppgavebenk/typer/enhet';
 
 const Footer = styled.footer`
     width: 100%;
@@ -57,7 +59,7 @@ const SendTilBeslutterFooter: React.FC<{
     ferdigstillUtenBeslutter,
     oppgaverForOpprettelse,
 }) => {
-    const { axiosRequest } = useApp();
+    const { axiosRequest, personIdent } = useApp();
     const navigate = useNavigate();
     const {
         hentTotrinnskontroll,
@@ -73,6 +75,8 @@ const SendTilBeslutterFooter: React.FC<{
     const [visModal, settVisModal] = useState<boolean>(false);
     const [visMarkereGodkjenneVedtakOppgaveModal, settVisMarkereGodkjenneVedtakOppgaveModal] =
         useState<boolean>(false);
+    const { hentOppgaver, oppgaver: fremleggsOppgaver } = useHentOppgaver();
+
     const sendTilBeslutter = () => {
         settLaster(true);
         settFeilmelding(undefined);
@@ -117,6 +121,18 @@ const SendTilBeslutterFooter: React.FC<{
         ? 'Vedtaket er ferdigstilt'
         : 'Vedtaket er sendt til beslutter';
 
+    useEffect(() => {
+        const fetchOppgaver = async () => {
+            hentOppgaver({
+                ident: personIdent,
+                oppgavetype: 'FREM',
+                enhet: IkkeFortroligEnhet.NAY,
+                behandlingstema: 'ab0071', //TODO: gjerne bruke tema: ENF
+            });
+        };
+        fetchOppgaver();
+    }, [hentOppgaver, personIdent]);
+
     return (
         <>
             {behandlingErRedigerbar && (
@@ -136,9 +152,11 @@ const SendTilBeslutterFooter: React.FC<{
                             {visMarkereGodkjenneVedtakOppgaveModalToggle && (
                                 <Button
                                     onClick={() => settVisMarkereGodkjenneVedtakOppgaveModal(true)}
+                                    variant="danger"
                                     type={'button'}
+                                    disabled={!kanSendesTilBeslutter || laster}
                                 >
-                                    Markere godkjenne vedtak - TEST
+                                    Opprettelse og ferdigstilling av oppgaver - TEST
                                 </Button>
                             )}
                             <Button
@@ -172,11 +190,13 @@ const SendTilBeslutterFooter: React.FC<{
                     marginTop: 4,
                 }}
             />
-            {visMarkereGodkjenneVedtakOppgaveModalToggle && (
+            {visMarkereGodkjenneVedtakOppgaveModalToggle && fremleggsOppgaver && (
                 <MarkereGodkjenneVedtakModal
                     open={visMarkereGodkjenneVedtakOppgaveModal}
                     setOpen={settVisMarkereGodkjenneVedtakOppgaveModal}
                     oppgaverForOpprettelse={oppgaverForOpprettelse}
+                    sendTilBeslutter={sendTilBeslutter}
+                    fremleggsOppgaver={fremleggsOppgaver}
                 />
             )}
         </>
