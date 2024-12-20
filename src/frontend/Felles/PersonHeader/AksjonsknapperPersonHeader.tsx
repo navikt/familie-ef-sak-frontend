@@ -48,6 +48,16 @@ export const AksjonsknapperPersonHeader: React.FC<Props> = ({ erSaksbehandler, b
         },
     ];
 
+    const settVisSettPåVentOgScrollTop = () => {
+        settVisSettPåVent(true);
+        const container = document.querySelector('#scroll-topp');
+        if (container) {
+            container.scrollTop = 0;
+        } else {
+            window.scrollTo(0, 0);
+        }
+    };
+
     const sattPåVent = behandling.status === BehandlingStatus.SATT_PÅ_VENT;
 
     const gyldigeSaksbehandlerRoller = [
@@ -75,7 +85,7 @@ export const AksjonsknapperPersonHeader: React.FC<Props> = ({ erSaksbehandler, b
                             {!sattPåVent && <StyledHamburgermeny items={menyvalg} />}
                             <ButtonSmall
                                 disabled={sattPåVent}
-                                onClick={() => settVisSettPåVent(true)}
+                                onClick={() => settVisSettPåVentOgScrollTop()}
                                 size="xsmall"
                                 variant="secondary"
                             >
