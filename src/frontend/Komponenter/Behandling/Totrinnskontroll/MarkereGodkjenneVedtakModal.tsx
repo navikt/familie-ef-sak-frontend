@@ -2,11 +2,12 @@ import {
     Modal,
     Button,
     Checkbox,
-    CheckboxGroup,
     VStack,
     Table,
     Heading,
     BodyLong,
+    Radio,
+    RadioGroup,
 } from '@navikt/ds-react';
 import React, { FC, useEffect, useState } from 'react';
 import { Divider } from '../../../Felles/Divider/Divider';
@@ -18,6 +19,7 @@ import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { behandlingstemaTilTekst } from '../../../App/typer/behandlingstema';
 import { oppgaveTypeTilTekst } from '../../Oppgavebenk/typer/oppgavetype';
 import { formaterIsoDato } from '../../../App/utils/formatter';
+import { SendTilBeslutterRequest } from './SendTilBeslutterFooter';
 
 const StyledTableDataCell = styled(Table.DataCell)`
     padding: 12px 8px 12px 0;
@@ -27,15 +29,14 @@ const StyledBodyLong = styled(BodyLong)`
     white-space: break-spaces;
 `;
 
+// TODO: Rename??
 export const MarkereGodkjenneVedtakModal: FC<{
     open: boolean;
     setOpen: (open: boolean) => void;
     oppgaverForOpprettelse?: IOppgaverForOpprettelse;
-    sendTilBeslutter: () => void;
+    sendTilBeslutter: (data?: SendTilBeslutterRequest) => void;
     fremleggsOppgaver: Ressurs<IOppgaverResponse>;
 }> = ({ open, setOpen, oppgaverForOpprettelse, sendTilBeslutter, fremleggsOppgaver }) => {
-    const [selectedRows, setSelectedRows] = useState<string[]>([]);
-
     const {
         // feilmelding,
         oppgavetyperSomKanOpprettes,
@@ -45,17 +46,21 @@ export const MarkereGodkjenneVedtakModal: FC<{
 
     const finnesOppgavetyperSomKanOpprettes = (oppgavetyperSomKanOpprettes ?? []).length > 0;
 
-    const [oppgaverForOpprettelseState, settOppgaverForOpprettelseState] = useState<string[]>([]); // TODO: Navn??
+    const [oppgaverForOpprettelseState, settOppgaverForOpprettelseState] = useState<string>(''); // TODO: Navn??
+    const [oppgaverSomSkalAutomatiskFerdigstilles, settOppgaverSomSkalAutomatiskFerdigstilles] =
+        useState<string[]>([]);
 
     useEffect(() => {
         if (finnesOppgavetyperSomKanOpprettes) {
-            settOppgaverForOpprettelseState(['kontrollAvInntekt']);
+            settOppgaverForOpprettelseState('kontrollAvInntekt');
         }
     }, [finnesOppgavetyperSomKanOpprettes]);
 
-    const toggleSelectedRow = (value: string) =>
-        setSelectedRows((list) =>
-            list.includes(value) ? list.filter((id) => id !== value) : [...list, value]
+    const handleSettOppgaverSomSkalFerdigstilles = (oppgaveId: string) =>
+        settOppgaverSomSkalAutomatiskFerdigstilles((prevOppgaver) =>
+            prevOppgaver.includes(oppgaveId)
+                ? prevOppgaver.filter((id) => id !== oppgaveId)
+                : [...prevOppgaver, oppgaveId]
         );
 
     return (
@@ -74,22 +79,19 @@ export const MarkereGodkjenneVedtakModal: FC<{
                     >
                         <Modal.Body>
                             <VStack gap="4">
-                                <CheckboxGroup
+                                <RadioGroup
                                     legend="Følgende oppgaver skal opprettes automatisk ved godkjenning av dette vedtaket:"
                                     onChange={settOppgaverForOpprettelseState}
                                     value={oppgaverForOpprettelseState}
                                 >
-                                    <Checkbox
-                                        value="kontrollAvInntekt"
-                                        disabled={!finnesOppgavetyperSomKanOpprettes}
-                                    >
+                                    <Radio value="kontrollAvInntekt">
                                         Oppgave for kontroll av inntekt 1 år frem i tid
-                                    </Checkbox>
-                                    <Checkbox value="kontrollAvSelvstendigNæringsdrivende">
+                                    </Radio>
+                                    <Radio value="kontrollAvSelvstendigNæringsdrivende">
                                         Oppgave til 15.desember 2025 for kontroll av inntekt for
                                         selvstendig næringsdrivende
-                                    </Checkbox>
-                                </CheckboxGroup>
+                                    </Radio>
+                                </RadioGroup>
                                 {JSON.stringify(oppgaverForOpprettelseState)}
                                 <Divider />
                                 <>
@@ -121,6 +123,7 @@ export const MarkereGodkjenneVedtakModal: FC<{
                                             {fremleggsOppgaver.oppgaver.map(
                                                 (
                                                     {
+                                                        id,
                                                         oppgavetype,
                                                         behandlingstema,
                                                         tilordnetRessurs,
@@ -145,15 +148,15 @@ export const MarkereGodkjenneVedtakModal: FC<{
                                                             <StyledTableDataCell>
                                                                 <Checkbox
                                                                     hideLabel
-                                                                    checked={selectedRows.includes(
-                                                                        i.toString()
+                                                                    checked={oppgaverSomSkalAutomatiskFerdigstilles.includes(
+                                                                        id.toString()
                                                                     )}
                                                                     onChange={() =>
-                                                                        toggleSelectedRow(
-                                                                            i.toString()
+                                                                        handleSettOppgaverSomSkalFerdigstilles(
+                                                                            id.toString()
                                                                         )
                                                                     }
-                                                                    aria-labelledby={`id-${behandlingstema}`}
+                                                                    aria-labelledby={`id-${id}`}
                                                                 >
                                                                     {' '}
                                                                 </Checkbox>
@@ -183,11 +186,21 @@ export const MarkereGodkjenneVedtakModal: FC<{
                                             )}
                                         </Table.Body>
                                     </Table>
+                                    {JSON.stringify(oppgaverSomSkalAutomatiskFerdigstilles)}
                                 </>
                             </VStack>
                         </Modal.Body>
                         <Modal.Footer>
-                            <Button type="button" onClick={sendTilBeslutter}>
+                            <Button
+                                type="button"
+                                onClick={() =>
+                                    sendTilBeslutter({
+                                        oppgavetyperSomSkalOpprettes:
+                                            oppgaverForOpprettelse?.oppgavetyperSomSkalOpprettes ??
+                                            [],
+                                    })
+                                }
+                            >
                                 Send til beslutter
                             </Button>
                             <Button type="button" variant="tertiary" onClick={() => setOpen(false)}>

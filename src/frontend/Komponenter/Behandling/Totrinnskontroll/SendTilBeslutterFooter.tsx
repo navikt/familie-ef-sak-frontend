@@ -77,13 +77,13 @@ const SendTilBeslutterFooter: React.FC<{
         useState<boolean>(false);
     const { hentOppgaver, oppgaver: fremleggsOppgaver } = useHentOppgaver();
 
-    const sendTilBeslutter = () => {
+    const sendTilBeslutter = (data?: SendTilBeslutterRequest) => {
         settLaster(true);
         settFeilmelding(undefined);
         axiosRequest<string, SendTilBeslutterRequest>({
             method: 'POST',
             url: `/familie-ef-sak/api/vedtak/${behandling.id}/send-til-beslutter`,
-            data: {
+            data: data ?? {
                 oppgavetyperSomSkalOpprettes: oppgaverForOpprettelse
                     ? oppgaverForOpprettelse.oppgavetyperSomSkalOpprettes
                     : [],
@@ -160,7 +160,7 @@ const SendTilBeslutterFooter: React.FC<{
                                 </Button>
                             )}
                             <Button
-                                onClick={sendTilBeslutter}
+                                onClick={() => sendTilBeslutter()}
                                 disabled={
                                     laster ||
                                     !kanSendesTilBeslutter ||
