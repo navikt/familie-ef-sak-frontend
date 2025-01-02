@@ -21,22 +21,22 @@ const lagInntektsperioder = (beløpsperioder: IBeregningsperiodeBarnetilsyn[]): 
     return `<table style="margin-left: 2px; margin-right: 2px; border-collapse: collapse; ${borderStylingCompact}">
                 <thead>
                     <tr>
-                        <th style="width: 100px; ${borderStylingCompact}">Periode</th>
-                        <th style="width: 40px; ${borderStylingCompact}">Ant. barn</th>
-                        <th style="width: 45px; word-wrap: break-word; ${borderStylingCompact}">Utgifter</th>
+                        <td style="width: 100px; ${borderStylingCompact}"><strong>Periode</strong></td>
+                        <td style="width: 40px; ${borderStylingCompact}"><strong>Ant. barn</strong></td>
+                        <td style="width: 45px; word-wrap: break-word; ${borderStylingCompact}"><strong>Utgifter</strong></td>
                         ${
                             harKontantStøtte
-                                ? `<th style="width: 60px; word-wrap: break-word; ${borderStylingCompact}">
-                                    Kontantstøtte
-                                </th>`
+                                ? `<td style="width: 60px; word-wrap: break-word; ${borderStylingCompact}">
+                                    <strong>Kontantstøtte</strong>
+                                </td>`
                                 : ''
                         }
                         ${
                             harTilleggsstønad
-                                ? `<th style="width: 60px; word-wrap: break-word; ${borderStylingCompact}">Tilleggsstønad</th>`
+                                ? `<td style="width: 60px; word-wrap: break-word; ${borderStylingCompact}"><strong>Tilleggsstønad</strong></td>`
                                 : ''
                         }
-                        <th style="width: 65px; word-wrap: break-word; ${borderStylingCompact}">Dette får du utbetalt pr. måned</th>
+                        <td style="width: 65px; word-wrap: break-word; ${borderStylingCompact}"><strong>Dette får du utbetalt pr. måned</strong></td>
                     </tr>
                 </thead>
                 <tbody>
