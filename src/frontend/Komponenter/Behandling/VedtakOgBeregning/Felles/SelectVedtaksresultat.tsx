@@ -1,5 +1,5 @@
 import { behandlingResultatTilTekst, EBehandlingResultat } from '../../../../App/typer/vedtak';
-import React, { useContext } from 'react';
+import React, { ReactNode, useContext } from 'react';
 import styled from 'styled-components';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
 import { Behandling } from '../../../../App/typer/fagsak';
@@ -39,7 +39,7 @@ const Container = styled.section`
     background-color: ${AGray50};
 `;
 
-const SelectVedtaksresultat = (props: Props): JSX.Element => {
+const SelectVedtaksresultat = (props: Props): ReactNode => {
     const { behandlingErRedigerbar } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
     const { resultatType, settResultatType, alleVilkårOppfylt, behandling } = props;

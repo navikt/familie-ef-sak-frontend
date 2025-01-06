@@ -277,13 +277,13 @@ describe('skal feile validering av vedtaksperioder', () => {
                 EPeriodetype.MIDLERTIDIG_OPPHØR,
                 EAktivitet.FORSØRGER_I_ARBEID,
                 '2024-07',
-                '2026-06'
+                '2096-06'
             ),
             lagVedtaksperiode(
                 EPeriodetype.HOVEDPERIODE,
                 EAktivitet.FORSØRGER_I_ARBEID,
-                '2026-07',
-                '2026-08'
+                '2096-07',
+                '2096-08'
             ),
         ];
         const vedtaksform = lagForm(vedtaksperioder, []);
@@ -294,7 +294,7 @@ describe('skal feile validering av vedtaksperioder', () => {
         expect(vedtaksvalidering.perioder[0].årMånedFra).toBeUndefined;
         expect(vedtaksvalidering.perioder[1].årMånedFra).toBeUndefined;
         expect(vedtaksvalidering.perioder[2].årMånedFra).toBe(
-            'Startdato (2026-07) mer enn 18mnd frem i tid'
+            'Startdato (2096-07) mer enn 18mnd frem i tid'
         );
     });
 });
