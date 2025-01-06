@@ -1,12 +1,12 @@
 import React, { FC, useState } from 'react';
 import { useBehandling } from '../../../App/context/BehandlingContext';
-import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
+import { Ressurs, RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
 import { Behandling } from '../../../App/typer/fagsak';
 import { useApp } from '../../../App/context/AppContext';
 import { EToast } from '../../../App/typer/toast';
 import { EHenlagtårsak } from '../../../App/typer/behandlingsårsak';
 import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
-import { Alert, Radio, RadioGroup } from '@navikt/ds-react';
+import { Alert, Link, Radio, RadioGroup } from '@navikt/ds-react';
 import styled from 'styled-components';
 import { useRedirectEtterLagring } from '../../../App/hooks/felles/useRedirectEtterLagring';
 import { v4 as uuidv4 } from 'uuid';
@@ -14,12 +14,24 @@ import { useToggles } from '../../../App/context/TogglesContext';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { AnsvarligSaksbehandlerRolle } from '../../../App/typer/saksbehandler';
 import { ToggleName } from '../../../App/context/toggles';
+import { base64toBlob, åpnePdfIEgenTab } from '../../../App/utils/utils';
+import { ABorderSubtle } from '@navikt/ds-tokens/dist/tokens';
+import { VStack, Stack } from '@navikt/ds-react';
+import { IPersonopplysninger } from '../../../App/typer/personopplysninger';
+import { erEtterDagensDato } from '../../../App/utils/dato';
 
 const AlertStripe = styled(Alert)`
     margin-top: 1rem;
 `;
 
-export const HenleggModal: FC<{ behandling: Behandling }> = ({ behandling }) => {
+const HorizontalDivider = styled.div`
+    border-bottom: 2px solid ${ABorderSubtle};
+`;
+
+export const HenleggModal: FC<{
+    behandling: Behandling;
+    personopplysninger: IPersonopplysninger;
+}> = ({ behandling, personopplysninger }) => {
     const {
         visHenleggModal,
         settVisHenleggModal,
@@ -34,9 +46,33 @@ export const HenleggModal: FC<{ behandling: Behandling }> = ({ behandling }) => 
         nullstillIkkePersisterteKomponenter,
         settIkkePersistertKomponent,
     } = useApp();
+    const fullmakter = personopplysninger.fullmakt;
+    const vergemål = personopplysninger.vergemål;
     const [henlagtårsak, settHenlagtårsak] = useState<EHenlagtårsak>();
+    const [harHuketAvSendBrev, settHarHuketAvSendBrev] = useState<boolean>(true);
     const [låsKnapp, settLåsKnapp] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>();
+    const [henterBrev, settHenterBrev] = useState<boolean>(false);
+
+    const visBrevINyFane = () => {
+        if (!henterBrev) {
+            settHenterBrev(true);
+            axiosRequest<string, null>({
+                method: 'GET',
+                url: `familie-ef-sak/api/behandling/${behandling.id}/henlegg/brev/forhandsvisning`,
+            }).then((respons: RessursSuksess<string> | RessursFeilet) => {
+                if (respons.status === RessursStatus.SUKSESS) {
+                    åpnePdfIEgenTab(
+                        base64toBlob(respons.data, 'application/pdf'),
+                        'Forhåndsvisning av trukket søknadsbrev'
+                    );
+                } else {
+                    settFeilmelding(respons.frontendFeilmelding);
+                }
+                settHenterBrev(false);
+            });
+        }
+    };
 
     const utledEndepunktForHenleggelse = (rolle: AnsvarligSaksbehandlerRolle) =>
         toggles[ToggleName.henleggBehandlingUtenÅHenleggeOppgave] &&
@@ -57,11 +93,12 @@ export const HenleggModal: FC<{ behandling: Behandling }> = ({ behandling }) => 
 
         const endepunkt = utledEndepunktForHenleggelse(ansvarligSaksbehandlerRolle);
 
-        axiosRequest<string, { årsak: EHenlagtårsak }>({
+        axiosRequest<string, { årsak: EHenlagtårsak; skalSendeHenleggelsesbrev: boolean }>({
             method: 'POST',
             url: endepunkt,
             data: {
                 årsak: henlagtårsak,
+                skalSendeHenleggelsesbrev: harValgtSendBrevOgSkalViseFramValg,
             },
         })
             .then((respons: Ressurs<string>) => {
@@ -85,7 +122,19 @@ export const HenleggModal: FC<{ behandling: Behandling }> = ({ behandling }) => 
     const lukkModal = () => {
         settFeilmelding('');
         settVisHenleggModal(false);
+        settHenlagtårsak(undefined);
     };
+
+    const tilknyttetFullmakt = fullmakter.some(
+        (fullmakt) => fullmakt.gyldigTilOgMed === null || erEtterDagensDato(fullmakt.gyldigTilOgMed)
+    );
+
+    const henlagtårsakTrukketTilbake = henlagtårsak === EHenlagtårsak.TRUKKET_TILBAKE;
+
+    const skalViseTilleggsvalg =
+        vergemål.length === 0 && !tilknyttetFullmakt && henlagtårsakTrukketTilbake;
+
+    const harValgtSendBrevOgSkalViseFramValg = harHuketAvSendBrev && skalViseTilleggsvalg;
 
     return (
         <DataViewer response={{ ansvarligSaksbehandler }}>
@@ -105,14 +154,65 @@ export const HenleggModal: FC<{ behandling: Behandling }> = ({ behandling }) => 
                         }}
                         ariaLabel={'Velg årsak til henleggelse av behandlingen'}
                     >
-                        <RadioGroup
-                            legend={''}
-                            onChange={(årsak: EHenlagtårsak) => settHenlagtårsak(årsak)}
-                        >
-                            <Radio value={EHenlagtårsak.TRUKKET_TILBAKE}>Trukket tilbake</Radio>
-                            <Radio value={EHenlagtårsak.FEILREGISTRERT}>Feilregistrert</Radio>
-                        </RadioGroup>
-                        {feilmelding && <AlertStripe variant={'error'}>{feilmelding}</AlertStripe>}
+                        <VStack gap="4" align="start">
+                            <RadioGroup
+                                legend={''}
+                                onChange={(årsak: EHenlagtårsak) => settHenlagtårsak(årsak)}
+                            >
+                                <Radio value={EHenlagtårsak.TRUKKET_TILBAKE}>Trukket tilbake</Radio>
+                                <Radio value={EHenlagtårsak.FEILREGISTRERT}>Feilregistrert</Radio>
+                            </RadioGroup>
+                            {skalViseTilleggsvalg && (
+                                <>
+                                    <HorizontalDivider />
+                                    <RadioGroup
+                                        legend="Send brev om trukket søknad"
+                                        value={harHuketAvSendBrev}
+                                    >
+                                        <Stack
+                                            gap="0 6"
+                                            direction={{ xs: 'column', sm: 'row' }}
+                                            wrap={false}
+                                        >
+                                            <Radio
+                                                value={true}
+                                                onChange={() => {
+                                                    settHarHuketAvSendBrev(true);
+                                                }}
+                                            >
+                                                Ja
+                                            </Radio>
+                                            <Radio
+                                                value={false}
+                                                onChange={() => settHarHuketAvSendBrev(false)}
+                                            >
+                                                Nei
+                                            </Radio>
+                                        </Stack>
+                                    </RadioGroup>
+                                    <Link onClick={visBrevINyFane} href="#">
+                                        Forhåndsvis brev
+                                    </Link>
+                                </>
+                            )}
+                            {feilmelding && (
+                                <AlertStripe variant={'error'}>{feilmelding}</AlertStripe>
+                            )}
+                            {vergemål.length > 0 && henlagtårsakTrukketTilbake && (
+                                <AlertStripe size={'small'} variant={'warning'}>
+                                    {
+                                        'Verge registrert på bruker. Brev om trukket søknad må sendes manuelt.'
+                                    }
+                                </AlertStripe>
+                            )}
+                            {tilknyttetFullmakt && henlagtårsakTrukketTilbake && (
+                                <AlertStripe size={'small'} variant={'warning'}>
+                                    {
+                                        'Fullmakt registrert på bruker. Brev om trukket søknad må sendes manuelt.'
+                                    }
+                                </AlertStripe>
+                            )}
+                        </VStack>
                     </ModalWrapper>
                 );
             }}
