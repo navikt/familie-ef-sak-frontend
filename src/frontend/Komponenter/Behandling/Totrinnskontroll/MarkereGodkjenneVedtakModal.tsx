@@ -20,6 +20,7 @@ import { behandlingstemaTilTekst } from '../../../App/typer/behandlingstema';
 import { oppgaveTypeTilTekst } from '../../Oppgavebenk/typer/oppgavetype';
 import { formaterIsoDato } from '../../../App/utils/formatter';
 import { SendTilBeslutterRequest } from './SendTilBeslutterFooter';
+import Årvelger from '../../../Felles/Input/MånedÅr/ÅrVelger';
 
 const StyledTableDataCell = styled(Table.DataCell)`
     padding: 12px 8px 12px 0;
@@ -28,6 +29,13 @@ const StyledTableDataCell = styled(Table.DataCell)`
 const StyledBodyLong = styled(BodyLong)`
     white-space: break-spaces;
 `;
+
+const StyledÅrvelger = styled(Årvelger)`
+    max-width: fit-content;
+`;
+
+const MAKS_ANTALL_ÅR_TILBAKE = 0;
+const MAKS_ANTALL_ÅR_FREM = 5;
 
 // TODO: Rename??
 export const MarkereGodkjenneVedtakModal: FC<{
@@ -45,6 +53,9 @@ export const MarkereGodkjenneVedtakModal: FC<{
     } = oppgaverForOpprettelse || {};
 
     const finnesOppgavetyperSomKanOpprettes = (oppgavetyperSomKanOpprettes ?? []).length > 0;
+
+    const dagensDato = new Date().toISOString();
+    const [år, settÅr] = useState(dagensDato ? parseInt(dagensDato.split('-')[0], 10) : undefined);
 
     const [oppgaverForOpprettelseState, settOppgaverForOpprettelseState] = useState<string>(''); // TODO: Navn??
     const [oppgaverSomSkalAutomatiskFerdigstilles, settOppgaverSomSkalAutomatiskFerdigstilles] =
@@ -88,10 +99,22 @@ export const MarkereGodkjenneVedtakModal: FC<{
                                         Oppgave for kontroll av inntekt 1 år frem i tid
                                     </Radio>
                                     <Radio value="kontrollAvSelvstendigNæringsdrivende">
-                                        Oppgave til 15.desember 2025 for kontroll av inntekt for
-                                        selvstendig næringsdrivende
+                                        Oppgave til 15.desember {år ? år : '[velg år]'} for kontroll
+                                        av inntekt for selvstendig næringsdrivende
                                     </Radio>
                                 </RadioGroup>
+                                {oppgaverForOpprettelseState ===
+                                    'kontrollAvSelvstendigNæringsdrivende' && (
+                                    <StyledÅrvelger
+                                        år={undefined}
+                                        settÅr={settÅr}
+                                        antallÅrTilbake={MAKS_ANTALL_ÅR_TILBAKE}
+                                        antallÅrFrem={MAKS_ANTALL_ÅR_FREM}
+                                        // lesevisning={lesevisning}
+                                        size={'small'}
+                                    />
+                                )}
+                                {JSON.stringify(år)}
                                 {JSON.stringify(oppgaverForOpprettelseState)}
                                 <Divider />
                                 <>
