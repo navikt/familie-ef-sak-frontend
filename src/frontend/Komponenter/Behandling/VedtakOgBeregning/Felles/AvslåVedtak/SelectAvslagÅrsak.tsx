@@ -3,7 +3,7 @@ import {
     EAvslagÅrsak,
     årsakerTilAvslag,
 } from '../../../../../App/typer/vedtak';
-import React from 'react';
+import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 import { useBehandling } from '../../../../../App/context/BehandlingContext';
 import { VEDTAK_OG_BEREGNING } from '../konstanter';
@@ -30,7 +30,7 @@ const FeilmeldingTekst = styled(BodyShortSmall)`
     color: #ba3a26;
 `;
 
-const SelectAvslagÅrsak = (props: Props): JSX.Element => {
+const SelectAvslagÅrsak = (props: Props): ReactNode => {
     const { behandlingErRedigerbar } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
     const { avslagÅrsak, settAvslagÅrsak, feilmelding } = props;

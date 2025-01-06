@@ -42,7 +42,7 @@ export const stønadstyperMedÅpenSakNavKlageinstans = (
         stønadstyperMedÅpenKlageNavKlageinstans.push(Stønadstype.OVERGANGSSTØNAD);
     }
     if (klagebehandlinger.barnetilsyn.some(erKlageTilBehandlingNavKlageinstans)) {
-        stønadstyperMedÅpenKlageNavKlageinstans.push(Stønadstype.SKOLEPENGER);
+        stønadstyperMedÅpenKlageNavKlageinstans.push(Stønadstype.BARNETILSYN);
     }
     if (klagebehandlinger.skolepenger.some(erKlageTilBehandlingNavKlageinstans)) {
         stønadstyperMedÅpenKlageNavKlageinstans.push(Stønadstype.SKOLEPENGER);
