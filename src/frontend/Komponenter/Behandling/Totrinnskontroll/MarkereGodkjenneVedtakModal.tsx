@@ -21,6 +21,7 @@ import { oppgaveTypeTilTekst } from '../../Oppgavebenk/typer/oppgavetype';
 import { formaterIsoDato } from '../../../App/utils/formatter';
 import { SendTilBeslutterRequest } from './SendTilBeslutterFooter';
 import Årvelger from '../../../Felles/Input/MånedÅr/ÅrVelger';
+import { OppgaveTypeForOpprettelse } from './oppgaveForOpprettelseTyper';
 
 const StyledTableDataCell = styled(Table.DataCell)`
     padding: 12px 8px 12px 0;
@@ -63,7 +64,7 @@ export const MarkereGodkjenneVedtakModal: FC<{
 
     useEffect(() => {
         if (finnesOppgavetyperSomKanOpprettes) {
-            settOppgaverForOpprettelseState('kontrollAvInntekt');
+            settOppgaverForOpprettelseState('INNTEKTSKONTROLL_1_ÅR_FREM_I_TID');
         }
     }, [finnesOppgavetyperSomKanOpprettes]);
 
@@ -95,18 +96,18 @@ export const MarkereGodkjenneVedtakModal: FC<{
                                     onChange={settOppgaverForOpprettelseState}
                                     value={oppgaverForOpprettelseState}
                                 >
-                                    <Radio value="kontrollAvInntekt">
+                                    <Radio value="INNTEKTSKONTROLL_1_ÅR_FREM_I_TID">
                                         Oppgave for kontroll av inntekt 1 år frem i tid
                                     </Radio>
-                                    <Radio value="kontrollAvSelvstendigNæringsdrivende">
+                                    <Radio value="INNTEKTSKONTROLL_SELVSTENDIG_NÆRINGSDRIVENDE">
                                         Oppgave til 15.desember {år ? år : '[velg år]'} for kontroll
                                         av inntekt for selvstendig næringsdrivende
                                     </Radio>
                                 </RadioGroup>
                                 {oppgaverForOpprettelseState ===
-                                    'kontrollAvSelvstendigNæringsdrivende' && (
+                                    'INNTEKTSKONTROLL_SELVSTENDIG_NÆRINGSDRIVENDE' && (
                                     <StyledÅrvelger
-                                        år={undefined}
+                                        år={år}
                                         settÅr={settÅr}
                                         antallÅrTilbake={MAKS_ANTALL_ÅR_TILBAKE}
                                         antallÅrFrem={MAKS_ANTALL_ÅR_FREM}
@@ -218,9 +219,9 @@ export const MarkereGodkjenneVedtakModal: FC<{
                                 type="button"
                                 onClick={() =>
                                     sendTilBeslutter({
-                                        oppgavetyperSomSkalOpprettes:
-                                            oppgaverForOpprettelse?.oppgavetyperSomSkalOpprettes ??
-                                            [],
+                                        oppgavetyperSomSkalOpprettes: [
+                                            oppgaverForOpprettelseState as OppgaveTypeForOpprettelse,
+                                        ],
                                     })
                                 }
                             >
