@@ -25,13 +25,13 @@ const lagInntektsperioder = (beløpsperioder?: IBeløpsperiode[]): string => {
     return `<table style="margin-left: 2px; margin-right: 2px; border-collapse: collapse; ${borderStylingCompact}">
                 <thead>
                     <tr>
-                        <th style="width: 110px; ${borderStylingCompact}">Periode</th>
-                        <th style="width: 55px; word-wrap: break-word; ${borderStylingCompact}">Beregnet inntekt</th>
+                        <td style="width: 110px; ${borderStylingCompact}"><strong>Periode</strong></td>
+                        <td style="width: 55px; word-wrap: break-word; ${borderStylingCompact}"><strong>Beregnet inntekt</strong></td>
                         ${
                             samordningskolonneTittel &&
-                            `<th style="width: 90px; word-wrap: break-word; ${borderStylingCompact}">${samordningskolonneTittel}</th>`
+                            `<td style="width: 90px; word-wrap: break-word; ${borderStylingCompact}"><strong>${samordningskolonneTittel}</strong></td>`
                         }
-                        <th style="width: 55px; word-wrap: break-word; ${borderStylingCompact}">Dette får du utbetalt pr. måned</th>
+                        <td style="width: 55px; word-wrap: break-word; ${borderStylingCompact}"><strong>Dette får du utbetalt pr. måned</strong></td>
                     </tr>
                 </thead>
                 <tbody>
