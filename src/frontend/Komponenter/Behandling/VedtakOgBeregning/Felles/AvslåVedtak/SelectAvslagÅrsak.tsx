@@ -36,7 +36,10 @@ const SelectAvslagÅrsak = (props: Props): JSX.Element => {
     const { avslagÅrsak, settAvslagÅrsak, feilmelding } = props;
 
     function fjernHistoriskeValg(value: EAvslagÅrsak): value is EAvslagÅrsak {
-        return value !== EAvslagÅrsak.MANGLENDE_OPPLYSNINGER; // Manglende opplysninger er ikke lenger en gyldig avslagsgrunn (høst 2024)
+        return (
+            value !== EAvslagÅrsak.MANGLENDE_OPPLYSNINGER &&
+            value !== EAvslagÅrsak.KORTVARIG_AVBRUDD_JOBB
+        ); // Manglende opplysninger (høst 2024) og kortvarig avbrudd jobb (jan 2025) er ikke lenger en gyldig avslagsgrunn
     }
 
     return (
