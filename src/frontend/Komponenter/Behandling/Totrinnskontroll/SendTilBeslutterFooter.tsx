@@ -44,6 +44,7 @@ const FlexBox = styled.div`
 
 export interface SendTilBeslutterRequest {
     oppgavetyperSomSkalOpprettes: OppgaveTypeForOpprettelse[];
+    årKontrollInntektSelvstendigNæringsdrivende?: number;
 }
 
 const SendTilBeslutterFooter: React.FC<{
@@ -76,6 +77,11 @@ const SendTilBeslutterFooter: React.FC<{
     const [visMarkereGodkjenneVedtakOppgaveModal, settVisMarkereGodkjenneVedtakOppgaveModal] =
         useState<boolean>(false);
     const { hentOppgaver, oppgaver: fremleggsOppgaver } = useHentOppgaver();
+    const [sendTilBeslutterRequest, settSendTilBeslutterRequest] =
+        useState<SendTilBeslutterRequest>({
+            oppgavetyperSomSkalOpprettes:
+                oppgaverForOpprettelse?.oppgavetyperSomSkalOpprettes ?? [],
+        });
 
     const sendTilBeslutter = (data?: SendTilBeslutterRequest) => {
         settLaster(true);
@@ -84,9 +90,9 @@ const SendTilBeslutterFooter: React.FC<{
             method: 'POST',
             url: `/familie-ef-sak/api/vedtak/${behandling.id}/send-til-beslutter`,
             data: data ?? {
-                oppgavetyperSomSkalOpprettes: oppgaverForOpprettelse
-                    ? oppgaverForOpprettelse.oppgavetyperSomSkalOpprettes
-                    : [],
+                oppgavetyperSomSkalOpprettes: sendTilBeslutterRequest.oppgavetyperSomSkalOpprettes,
+                årKontrollInntektSelvstendigNæringsdrivende:
+                    sendTilBeslutterRequest.årKontrollInntektSelvstendigNæringsdrivende,
             },
         })
             .then((res: RessursSuksess<string> | RessursFeilet) => {
@@ -195,6 +201,8 @@ const SendTilBeslutterFooter: React.FC<{
                     open={visMarkereGodkjenneVedtakOppgaveModal}
                     setOpen={settVisMarkereGodkjenneVedtakOppgaveModal}
                     oppgaverForOpprettelse={oppgaverForOpprettelse}
+                    sendTilBeslutterRequest={sendTilBeslutterRequest}
+                    settSendTilBeslutterRequest={settSendTilBeslutterRequest}
                     sendTilBeslutter={sendTilBeslutter}
                     fremleggsOppgaver={fremleggsOppgaver}
                 />

@@ -43,30 +43,46 @@ export const MarkereGodkjenneVedtakModal: FC<{
     open: boolean;
     setOpen: (open: boolean) => void;
     oppgaverForOpprettelse?: IOppgaverForOpprettelse;
+    sendTilBeslutterRequest: SendTilBeslutterRequest;
+    settSendTilBeslutterRequest: React.Dispatch<React.SetStateAction<SendTilBeslutterRequest>>;
     sendTilBeslutter: (data?: SendTilBeslutterRequest) => void;
     fremleggsOppgaver: Ressurs<IOppgaverResponse>;
-}> = ({ open, setOpen, oppgaverForOpprettelse, sendTilBeslutter, fremleggsOppgaver }) => {
-    const {
-        // feilmelding,
-        oppgavetyperSomKanOpprettes,
-        // oppgavetyperSomSkalOpprettes,
-        // settOppgavetyperSomSkalOpprettes,
-    } = oppgaverForOpprettelse || {};
+}> = ({
+    open,
+    setOpen,
+    oppgaverForOpprettelse,
+    sendTilBeslutterRequest,
+    settSendTilBeslutterRequest,
+    sendTilBeslutter,
+    fremleggsOppgaver,
+}) => {
+    const { oppgavetyperSomSkalOpprettes, årKontrollInntektSelvstendigNæringsdrivende } =
+        sendTilBeslutterRequest;
+
+    const { oppgavetyperSomKanOpprettes } = oppgaverForOpprettelse || {};
 
     const finnesOppgavetyperSomKanOpprettes = (oppgavetyperSomKanOpprettes ?? []).length > 0;
 
-    const dagensDato = new Date().toISOString();
-    const [år, settÅr] = useState(dagensDato ? parseInt(dagensDato.split('-')[0], 10) : undefined);
-
-    const [oppgaverForOpprettelseState, settOppgaverForOpprettelseState] = useState<string>(''); // TODO: Navn??
     const [oppgaverSomSkalAutomatiskFerdigstilles, settOppgaverSomSkalAutomatiskFerdigstilles] =
         useState<string[]>([]);
 
     useEffect(() => {
         if (finnesOppgavetyperSomKanOpprettes) {
-            settOppgaverForOpprettelseState('INNTEKTSKONTROLL_1_ÅR_FREM_I_TID');
+            settSendTilBeslutterRequest({
+                ...settSendTilBeslutterRequest,
+                oppgavetyperSomSkalOpprettes: [
+                    OppgaveTypeForOpprettelse.INNTEKTSKONTROLL_1_ÅR_FREM_I_TID,
+                ],
+            });
         }
-    }, [finnesOppgavetyperSomKanOpprettes]);
+    }, [finnesOppgavetyperSomKanOpprettes, settSendTilBeslutterRequest]);
+
+    const handleSettÅr = (år: number) => {
+        settSendTilBeslutterRequest({
+            ...sendTilBeslutterRequest,
+            årKontrollInntektSelvstendigNæringsdrivende: år,
+        });
+    };
 
     const handleSettOppgaverSomSkalFerdigstilles = (oppgaveId: string) =>
         settOppgaverSomSkalAutomatiskFerdigstilles((prevOppgaver) =>
@@ -93,30 +109,40 @@ export const MarkereGodkjenneVedtakModal: FC<{
                             <VStack gap="4">
                                 <RadioGroup
                                     legend="Følgende oppgaver skal opprettes automatisk ved godkjenning av dette vedtaket:"
-                                    onChange={settOppgaverForOpprettelseState}
-                                    value={oppgaverForOpprettelseState}
+                                    onChange={(value) =>
+                                        settSendTilBeslutterRequest({
+                                            ...sendTilBeslutterRequest,
+                                            oppgavetyperSomSkalOpprettes: [
+                                                value as OppgaveTypeForOpprettelse,
+                                            ],
+                                        })
+                                    }
+                                    value={oppgavetyperSomSkalOpprettes[0]}
                                 >
                                     <Radio value="INNTEKTSKONTROLL_1_ÅR_FREM_I_TID">
                                         Oppgave for kontroll av inntekt 1 år frem i tid
                                     </Radio>
                                     <Radio value="INNTEKTSKONTROLL_SELVSTENDIG_NÆRINGSDRIVENDE">
-                                        Oppgave til 15.desember {år ? år : '[velg år]'} for kontroll
-                                        av inntekt for selvstendig næringsdrivende
+                                        Oppgave til 15.desember{' '}
+                                        {årKontrollInntektSelvstendigNæringsdrivende
+                                            ? årKontrollInntektSelvstendigNæringsdrivende
+                                            : '[velg år]'}{' '}
+                                        for kontroll av inntekt for selvstendig næringsdrivende
                                     </Radio>
                                 </RadioGroup>
-                                {oppgaverForOpprettelseState ===
+                                {oppgavetyperSomSkalOpprettes[0] ===
                                     'INNTEKTSKONTROLL_SELVSTENDIG_NÆRINGSDRIVENDE' && (
                                     <StyledÅrvelger
-                                        år={år}
-                                        settÅr={settÅr}
+                                        år={årKontrollInntektSelvstendigNæringsdrivende}
+                                        settÅr={handleSettÅr}
                                         antallÅrTilbake={MAKS_ANTALL_ÅR_TILBAKE}
                                         antallÅrFrem={MAKS_ANTALL_ÅR_FREM}
                                         // lesevisning={lesevisning}
                                         size={'small'}
                                     />
                                 )}
-                                {JSON.stringify(år)}
-                                {JSON.stringify(oppgaverForOpprettelseState)}
+                                {JSON.stringify(årKontrollInntektSelvstendigNæringsdrivende)}
+                                {JSON.stringify(oppgavetyperSomSkalOpprettes)}
                                 <Divider />
                                 <>
                                     <Heading size="small">
@@ -220,7 +246,7 @@ export const MarkereGodkjenneVedtakModal: FC<{
                                 onClick={() =>
                                     sendTilBeslutter({
                                         oppgavetyperSomSkalOpprettes: [
-                                            oppgaverForOpprettelseState as OppgaveTypeForOpprettelse,
+                                            oppgavetyperSomSkalOpprettes[0] as OppgaveTypeForOpprettelse,
                                         ],
                                     })
                                 }
