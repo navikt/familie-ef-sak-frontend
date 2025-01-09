@@ -1583,18 +1583,18 @@
     "@portabletext/react" "^3.2.0"
     classnames "^2.5.1"
 
-"@navikt/familie-form-elements@^21.0.3":
-  version "21.0.3"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-form-elements/21.0.3/89cdc6ca8c5820feb00eaf23b1e0ab8fca84b17e#89cdc6ca8c5820feb00eaf23b1e0ab8fca84b17e"
-  integrity sha512-hCLG4r/Q03h6by/vLfN9/AdbwPBw9kzTVAZFS5XPooEghCUsqtY6sPiUYBjBbeLLAEsOyXgvqlfhXiKqvWoHQw==
+"@navikt/familie-form-elements@^21.0.4":
+  version "21.0.4"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-form-elements/21.0.4/cfbd3541081b539804664c4a02018cfe7b4e114b#cfbd3541081b539804664c4a02018cfe7b4e114b"
+  integrity sha512-stYA0FyjxvatWA4SEbBRkjN9vaoFCwFKInRSMKQLnLzZkK1MZnh7R95OAKS3e3I4+8uCWKjWP7D/kxkDbQ2u4g==
   dependencies:
     classnames "^2.5.1"
-    react-select "5.8.0"
+    react-select "5.9.0"
 
-"@navikt/familie-header@^14.2.1":
-  version "14.2.1"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-header/14.2.1/f765550f281fa9ba60c6fb6adfff8d2db288e5fd#f765550f281fa9ba60c6fb6adfff8d2db288e5fd"
-  integrity sha512-u+O8FiYaMwJdCsVSiUON18wq2j6zIMXcN2+2RjgoQuro0M8jU9vIvnmqoU9wNOu3VcOdcfpJmpoyz5Sx7gNu7A==
+"@navikt/familie-header@^15.0.0":
+  version "15.0.0"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-header/15.0.0/fc59270c3027ac3996c38720031d52b9dc41d98e#fc59270c3027ac3996c38720031d52b9dc41d98e"
+  integrity sha512-pwTbuecJEQv5WvfDOwgyuaIWRsvuB/eNmS1YCmdtzxvLBKXD8+gtxFApZHsDYP8rD5BeyZA4vhooYokQRtPsmQ==
   dependencies:
     "@navikt/familie-ikoner" "^9.0.3"
     "@navikt/familie-typer" "^8.0.2"
@@ -1607,7 +1607,7 @@
   dependencies:
     "@navikt/familie-typer" "^8.0.2"
 
-"@navikt/familie-logging@^7.0.2", "@navikt/familie-logging@^7.0.3":
+"@navikt/familie-logging@^7.0.3":
   version "7.0.3"
   resolved "https://npm.pkg.github.com/download/@navikt/familie-logging/7.0.3/64e03ec40585d30ab00c193d373f69dfa855def8#64e03ec40585d30ab00c193d373f69dfa855def8"
   integrity sha512-rhAz7p+9kRqvTJLFmFTSGfs80w+vsEwdZMhWXKeKlaegetHB3RHQMYqkxJRNKUUzZh2tzlWlHug3Du2Ue8pyMw==
@@ -1867,7 +1867,7 @@
     "@sentry-internal/replay-canvas" "8.48.0"
     "@sentry/core" "8.48.0"
 
-"@sentry/core@8.48.0", "@sentry/core@^8.40.0":
+"@sentry/core@8.48.0", "@sentry/core@^8.48.0":
   version "8.48.0"
   resolved "https://registry.yarnpkg.com/@sentry/core/-/core-8.48.0.tgz#3bb8d06305f0ec7c873453844687deafdeab168b"
   integrity sha512-VGwYgTfLpvJ5LRO5A+qWo1gpo6SfqaGXL9TOzVgBucAdpzbrYHpZ87sEarDVq/4275uk1b0S293/mfsskFczyw==
@@ -2090,10 +2090,17 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@^19.0.3", "@types/react@^19.x":
+"@types/react@*", "@types/react@^19.x":
   version "19.0.3"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-19.0.3.tgz#7867240defc1a3686f151644ac886a7e8e0868f4"
   integrity sha512-UavfHguIjnnuq9O67uXfgy/h3SRJbidAYvNjLceB+2RIKVRBzVsh0QO+Pw6BCSQqFS9xwzKfwstXx0m6AbAREA==
+  dependencies:
+    csstype "^3.0.2"
+
+"@types/react@^19.0.4":
+  version "19.0.4"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-19.0.4.tgz#ad1270e090118ac3c5f0928a29fe0ddf164881df"
+  integrity sha512-3O4QisJDYr1uTUMZHA2YswiQZRq+Pd8D+GdVFYikTutYsTz+QZgWkAPnP7rx9txoI6EXKcPiluMqWPFV3tT9Wg==
   dependencies:
     csstype "^3.0.2"
 
@@ -6875,7 +6882,7 @@ react-router@7.1.1:
     set-cookie-parser "^2.6.0"
     turbo-stream "2.4.0"
 
-react-select@*, react-select@^5.9.0:
+react-select@*, react-select@5.9.0, react-select@^5.9.0:
   version "5.9.0"
   resolved "https://registry.yarnpkg.com/react-select/-/react-select-5.9.0.tgz#41325b7bfe8452a8d401b82fc4fb7d44a03e29c5"
   integrity sha512-nwRKGanVHGjdccsnzhFte/PULziueZxGD8LL2WojON78Mvnq7LdAMEtu2frrwld1fr3geixg3iiMBIc/LLAZpw==
@@ -6889,21 +6896,6 @@ react-select@*, react-select@^5.9.0:
     prop-types "^15.6.0"
     react-transition-group "^4.3.0"
     use-isomorphic-layout-effect "^1.2.0"
-
-react-select@5.8.0:
-  version "5.8.0"
-  resolved "https://registry.yarnpkg.com/react-select/-/react-select-5.8.0.tgz#bd5c467a4df223f079dd720be9498076a3f085b5"
-  integrity sha512-TfjLDo58XrhP6VG5M/Mi56Us0Yt8X7xD6cDybC7yoRMUNm7BGO7qk8J0TLQOua/prb8vUOtsfnXZwfm30HGsAA==
-  dependencies:
-    "@babel/runtime" "^7.12.0"
-    "@emotion/cache" "^11.4.0"
-    "@emotion/react" "^11.8.1"
-    "@floating-ui/dom" "^1.0.1"
-    "@types/react-transition-group" "^4.4.0"
-    memoize-one "^6.0.0"
-    prop-types "^15.6.0"
-    react-transition-group "^4.3.0"
-    use-isomorphic-layout-effect "^1.1.2"
 
 react-transition-group@^4.3.0:
   version "4.4.5"
@@ -8147,10 +8139,10 @@ typescript-eslint@^8.19.1:
     "@typescript-eslint/parser" "8.19.1"
     "@typescript-eslint/utils" "8.19.1"
 
-typescript@^5.7.2:
-  version "5.7.2"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.7.2.tgz#3169cf8c4c8a828cde53ba9ecb3d2b1d5dd67be6"
-  integrity sha512-i5t66RHxDvVN40HfDd1PsEThGNnlMCMT3jMUuoh9/0TaqWevNontacunWyN02LA9/fIbEWlcHZcgTKb9QoaLfg==
+typescript@^5.7.3:
+  version "5.7.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.7.3.tgz#919b44a7dbb8583a9b856d162be24a54bf80073e"
+  integrity sha512-84MVSjMEHP+FQRPy3pX9sTVV/INIex71s9TL2Gm5FG/WG1SqXeKyZ0k7/blY/4FdOzI12CBy1vGc4og/eus0fw==
 
 uid-safe@~2.1.5:
   version "2.1.5"
@@ -8242,7 +8234,7 @@ use-debounce@^10.0.4:
   resolved "https://registry.yarnpkg.com/use-debounce/-/use-debounce-10.0.4.tgz#2135be498ad855416c4495cfd8e0e130bd33bb24"
   integrity sha512-6Cf7Yr7Wk7Kdv77nnJMf6de4HuDE4dTxKij+RqE9rufDsI6zsbjyAxcH5y2ueJCQAnfgKbzXbZHYlkFwmBlWkw==
 
-use-isomorphic-layout-effect@^1.1.2, use-isomorphic-layout-effect@^1.2.0:
+use-isomorphic-layout-effect@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/use-isomorphic-layout-effect/-/use-isomorphic-layout-effect-1.2.0.tgz#afb292eb284c39219e8cb8d3d62d71999361a21d"
   integrity sha512-q6ayo8DWoPZT0VdG4u3D3uxcgONP3Mevx2i2b0434cwWBoL+aelL1DzkXI6w3PhTZzUeR2kaVlZn70iCiseP6w==
