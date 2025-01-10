@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import {
@@ -24,6 +24,9 @@ import { HorizontalScroll } from '../../Felles/HorizontalScroll';
 import { useBehandling } from '../../../../../App/context/BehandlingContext';
 import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
 import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
+import { Behandling } from '../../../../../App/typer/fagsak';
+import { erEtter } from '../../../../../App/utils/dato';
+import { BehandlingStatus } from '../../../../../App/typer/behandlingstatus';
 
 const Container = styled.div`
     padding: 1rem;
@@ -61,6 +64,7 @@ interface Props {
     tilleggsstønadBegrunnelse: FieldState;
     tilleggsstønadPerioder: ListState<IPeriodeMedBeløp>;
     valideringsfeil: FormErrors<InnvilgeVedtakForm>;
+    behandling: Behandling;
 }
 
 export const tomTilleggsstønadRad = (): IPeriodeMedBeløp => ({
@@ -78,15 +82,10 @@ const TilleggsstønadValg: React.FC<Props> = ({
     tilleggsstønadBegrunnelse,
     tilleggsstønadPerioder,
     valideringsfeil,
+    behandling,
 }) => {
     const { settIkkePersistertKomponent } = useApp();
     const { åpenHøyremeny } = useBehandling();
-
-    useEffect(() => {
-        if (tilleggsstønad.value === ERadioValg.NEI) {
-            stønadsreduksjon.setValue(ERadioValg.IKKE_SATT);
-        }
-    }, [stønadsreduksjon, tilleggsstønad]);
 
     const oppdaterTilleggsstønadPeriode = (
         index: number,
@@ -130,20 +129,27 @@ const TilleggsstønadValg: React.FC<Props> = ({
         'Skal stønaden reduseres fordi brukeren har fått utbetalt stønad for tilsyn av barn etter tilleggsstønadsforskriften?';
     const visGrid = tilleggsstønadPerioder.value.length > 0;
 
+    const datoEndring = '2025-01-06T11:17:42.51';
+    const nyVisning =
+        !erEtter(datoEndring, behandling.opprettet) &&
+        behandling.status !== BehandlingStatus.FERDIGSTILT;
+
     return (
         <Container>
             <Heading spacing size="small" level="5">
                 Tilleggsstønadsforskriften
             </Heading>
-            <JaNeiRadioGruppe
-                className={'spacing'}
-                error={valideringsfeil?.harTilleggsstønad}
-                legend={erDetSøktOmTekst}
-                lesevisning={erLesevisning}
-                onChange={(event) => tilleggsstønad.onChange(event)}
-                value={tilleggsstønad.value as ERadioValg}
-            />
-            {søktTilleggsstønad && (
+            {!nyVisning && (
+                <JaNeiRadioGruppe
+                    className={'spacing'}
+                    error={valideringsfeil?.harTilleggsstønad}
+                    legend={erDetSøktOmTekst}
+                    lesevisning={erLesevisning}
+                    onChange={(event) => tilleggsstønad.onChange(event)}
+                    value={tilleggsstønad.value as ERadioValg}
+                />
+            )}
+            {(søktTilleggsstønad || nyVisning) && (
                 <JaNeiRadioGruppe
                     className={'spacing'}
                     error={valideringsfeil?.skalStønadReduseres}

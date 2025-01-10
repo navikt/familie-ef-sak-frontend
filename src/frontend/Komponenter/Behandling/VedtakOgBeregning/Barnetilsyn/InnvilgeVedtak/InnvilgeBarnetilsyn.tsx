@@ -334,6 +334,7 @@ export const InnvilgeBarnetilsyn: React.FC<{
                 tilleggsstønadBegrunnelse={tilleggsstønadBegrunnelseState}
                 tilleggsstønadPerioder={tilleggsstønadsperiodeState}
                 valideringsfeil={formState.errors}
+                behandling={behandling}
             />
             {behandlingErRedigerbar && (
                 <div>
