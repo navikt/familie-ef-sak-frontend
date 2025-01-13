@@ -44,7 +44,7 @@ const FlexBox = styled.div`
 
 export interface SendTilBeslutterRequest {
     oppgavetyperSomSkalOpprettes: OppgaveTypeForOpprettelse[];
-    årKontrollInntektSelvstendigNæringsdrivende?: number;
+    årForInntektskontrollSelvstendigNæringsdrivende?: number;
 }
 
 const SendTilBeslutterFooter: React.FC<{
@@ -83,16 +83,16 @@ const SendTilBeslutterFooter: React.FC<{
                 oppgaverForOpprettelse?.oppgavetyperSomSkalOpprettes ?? [],
         });
 
-    const sendTilBeslutter = (data?: SendTilBeslutterRequest) => {
+    const sendTilBeslutter = () => {
         settLaster(true);
         settFeilmelding(undefined);
         axiosRequest<string, SendTilBeslutterRequest>({
             method: 'POST',
             url: `/familie-ef-sak/api/vedtak/${behandling.id}/send-til-beslutter`,
-            data: data ?? {
+            data: {
                 oppgavetyperSomSkalOpprettes: sendTilBeslutterRequest.oppgavetyperSomSkalOpprettes,
-                årKontrollInntektSelvstendigNæringsdrivende:
-                    sendTilBeslutterRequest.årKontrollInntektSelvstendigNæringsdrivende,
+                årForInntektskontrollSelvstendigNæringsdrivende:
+                    sendTilBeslutterRequest.årForInntektskontrollSelvstendigNæringsdrivende,
             },
         })
             .then((res: RessursSuksess<string> | RessursFeilet) => {
@@ -166,7 +166,7 @@ const SendTilBeslutterFooter: React.FC<{
                                 </Button>
                             )}
                             <Button
-                                onClick={() => sendTilBeslutter()}
+                                onClick={sendTilBeslutter}
                                 disabled={
                                     laster ||
                                     !kanSendesTilBeslutter ||

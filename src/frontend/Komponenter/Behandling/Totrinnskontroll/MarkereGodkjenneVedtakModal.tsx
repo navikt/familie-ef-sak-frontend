@@ -56,7 +56,7 @@ export const MarkereGodkjenneVedtakModal: FC<{
     sendTilBeslutter,
     fremleggsOppgaver,
 }) => {
-    const { oppgavetyperSomSkalOpprettes, årKontrollInntektSelvstendigNæringsdrivende } =
+    const { oppgavetyperSomSkalOpprettes, årForInntektskontrollSelvstendigNæringsdrivende } =
         sendTilBeslutterRequest;
 
     const { oppgavetyperSomKanOpprettes } = oppgaverForOpprettelse || {};
@@ -80,7 +80,7 @@ export const MarkereGodkjenneVedtakModal: FC<{
     const handleSettÅr = (år: number) => {
         settSendTilBeslutterRequest({
             ...sendTilBeslutterRequest,
-            årKontrollInntektSelvstendigNæringsdrivende: år,
+            årForInntektskontrollSelvstendigNæringsdrivende: år,
         });
     };
 
@@ -124,8 +124,8 @@ export const MarkereGodkjenneVedtakModal: FC<{
                                     </Radio>
                                     <Radio value="INNTEKTSKONTROLL_SELVSTENDIG_NÆRINGSDRIVENDE">
                                         Oppgave til 15.desember{' '}
-                                        {årKontrollInntektSelvstendigNæringsdrivende
-                                            ? årKontrollInntektSelvstendigNæringsdrivende
+                                        {årForInntektskontrollSelvstendigNæringsdrivende
+                                            ? årForInntektskontrollSelvstendigNæringsdrivende
                                             : '[velg år]'}{' '}
                                         for kontroll av inntekt for selvstendig næringsdrivende
                                     </Radio>
@@ -133,7 +133,7 @@ export const MarkereGodkjenneVedtakModal: FC<{
                                 {oppgavetyperSomSkalOpprettes[0] ===
                                     'INNTEKTSKONTROLL_SELVSTENDIG_NÆRINGSDRIVENDE' && (
                                     <StyledÅrvelger
-                                        år={årKontrollInntektSelvstendigNæringsdrivende}
+                                        år={årForInntektskontrollSelvstendigNæringsdrivende}
                                         settÅr={handleSettÅr}
                                         antallÅrTilbake={MAKS_ANTALL_ÅR_TILBAKE}
                                         antallÅrFrem={MAKS_ANTALL_ÅR_FREM}
@@ -141,8 +141,9 @@ export const MarkereGodkjenneVedtakModal: FC<{
                                         size={'small'}
                                     />
                                 )}
-                                {JSON.stringify(årKontrollInntektSelvstendigNæringsdrivende)}
+                                {JSON.stringify(årForInntektskontrollSelvstendigNæringsdrivende)}
                                 {JSON.stringify(oppgavetyperSomSkalOpprettes)}
+                                {JSON.stringify(sendTilBeslutterRequest)}
                                 <Divider />
                                 <>
                                     <Heading size="small">
