@@ -103,6 +103,7 @@ const SendTilBeslutterFooter: React.FC<{
                     hentTotrinnskontroll.rerun();
                     settVisMarkereGodkjenneVedtakOppgaveModal(false);
                     settVisModal(true);
+                    oppgaverForOpprettelse?.hentOppgaverForOpprettelse(behandling.id);
                 } else {
                     settFeilmelding(res.frontendFeilmelding);
                     settNyEierModalState(ModalState.LUKKET);
