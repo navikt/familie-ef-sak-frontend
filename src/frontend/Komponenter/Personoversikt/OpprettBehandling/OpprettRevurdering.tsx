@@ -154,6 +154,16 @@ export const OpprettRevurdering: React.FunctionComponent<Props> = ({
         }
     };
 
+    const skalViseTerminBarnSkjema =
+        fagsak.stønadstype !== Stønadstype.BARNETILSYN &&
+        (valgtBehandlingsårsak === Behandlingsårsak.NYE_OPPLYSNINGER ||
+            valgtBehandlingsårsak === Behandlingsårsak.PAPIRSØKNAD);
+
+    const terminBarnSkjemaTekst =
+        valgtBehandlingsårsak === Behandlingsårsak.NYE_OPPLYSNINGER
+            ? 'Dersom brukeren har meldt fra om nye terminbarn må disse legges til her.'
+            : 'Dersom søkeren har terminbarn i søknaden må disse legges til her.';
+
     return (
         <DataViewer response={{ nyeBarnSidenForrigeBehandling }}>
             {({ nyeBarnSidenForrigeBehandling }) => {
@@ -199,14 +209,14 @@ export const OpprettRevurdering: React.FunctionComponent<Props> = ({
                                     settVilkårsbehandleNyeBarn={settVilkårsbehandleNyeBarn}
                                 />
                             )}
-                            {fagsak.stønadstype !== Stønadstype.BARNETILSYN &&
-                                valgtBehandlingsårsak === Behandlingsårsak.PAPIRSØKNAD && (
-                                    <TerminBarnSkjema
-                                        barnSomSkalFødes={barnSomSkalFødes}
-                                        oppdaterBarnSomSkalFødes={settBarnSomSkalFødes}
-                                        tittel={'Terminbarn'}
-                                    />
-                                )}
+                            {skalViseTerminBarnSkjema && (
+                                <TerminBarnSkjema
+                                    barnSomSkalFødes={barnSomSkalFødes}
+                                    oppdaterBarnSomSkalFødes={settBarnSomSkalFødes}
+                                    tittel="Terminbarn"
+                                    tekst={terminBarnSkjemaTekst}
+                                />
+                            )}
                             {feilmeldingModal && (
                                 <AlertStripe variant={'error'}>{feilmeldingModal}</AlertStripe>
                             )}
