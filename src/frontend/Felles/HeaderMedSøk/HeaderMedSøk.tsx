@@ -30,9 +30,7 @@ const lagAInntekt = (
 
     return {
         name: 'A-inntekt',
-        href: '#/a-inntekt',
-        onClick: async (e: React.SyntheticEvent) => {
-            e.preventDefault();
+        onSelect: async () => {
             window.open(await lagAInntektLink(axiosRequest, appEnv, fagsakId, fagsakPersonId));
         },
     };
@@ -45,9 +43,7 @@ const lagGosys = (appEnv: AppEnv, personIdent: string | undefined): PopoverItem 
 
     return {
         name: 'Gosys',
-        href: '#/gosys',
-        onClick: async (e: React.SyntheticEvent) => {
-            e.preventDefault();
+        onSelect: async () => {
             window.open(lagGosysLink(appEnv, personIdent));
         },
     };
@@ -60,9 +56,7 @@ const lagModia = (appEnv: AppEnv, personIdent: string | undefined): PopoverItem 
 
     return {
         name: 'Modia',
-        href: '#/modia',
-        onClick: async (e: React.SyntheticEvent) => {
-            e.preventDefault();
+        onSelect: async () => {
             window.open(lagModiaLink(appEnv, personIdent));
         },
     };
