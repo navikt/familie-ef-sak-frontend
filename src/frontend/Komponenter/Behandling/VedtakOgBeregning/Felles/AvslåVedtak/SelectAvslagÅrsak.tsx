@@ -39,7 +39,7 @@ const SelectAvslagÅrsak = (props: Props): ReactNode => {
         return (
             value !== EAvslagÅrsak.MANGLENDE_OPPLYSNINGER &&
             value !== EAvslagÅrsak.KORTVARIG_AVBRUDD_JOBB
-        ); // Manglende opplysninger (høst 2024) og kortvarig avbrudd jobb (jan 2025) er ikke lenger en gyldig avslagsgrunn
+        ); // Manglende opplysninger (høst 2024) og kortvarig avbrudd jobb (jan 2025) er ikke lenger en gyldig avslagsgrunnlag
     }
 
     return (
