@@ -51,7 +51,7 @@ export const useHentOppgaverForOpprettelse = (behandlingId: string): IOppgaverFo
 
     useEffect(() => {
         hentOppgaverForOpprettelse(behandlingId);
-    }, [behandlingId, hentOppgaverForOpprettelse]);
+    }, [behandlingId, hentOppgaverForOpprettelse, oppgavetyperSomSkalOpprettes]);
 
     return {
         feilmelding,

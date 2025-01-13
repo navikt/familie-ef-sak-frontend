@@ -73,6 +73,7 @@ export const MarkereGodkjenneVedtakModal: FC<{
                 oppgavetyperSomSkalOpprettes: [
                     OppgaveTypeForOpprettelse.INNTEKTSKONTROLL_1_ÅR_FREM_I_TID,
                 ],
+                årForInntektskontrollSelvstendigNæringsdrivende: undefined,
             });
         }
     }, [finnesOppgavetyperSomKanOpprettes, settSendTilBeslutterRequest]);
@@ -115,6 +116,8 @@ export const MarkereGodkjenneVedtakModal: FC<{
                                             oppgavetyperSomSkalOpprettes: [
                                                 value as OppgaveTypeForOpprettelse,
                                             ],
+                                            årForInntektskontrollSelvstendigNæringsdrivende:
+                                                undefined,
                                         })
                                     }
                                     value={oppgavetyperSomSkalOpprettes[0]}

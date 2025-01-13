@@ -101,6 +101,7 @@ const SendTilBeslutterFooter: React.FC<{
                     hentVedtak.rerun();
                     hentAnsvarligSaksbehandler.rerun();
                     hentTotrinnskontroll.rerun();
+                    settVisMarkereGodkjenneVedtakOppgaveModal(false);
                     settVisModal(true);
                 } else {
                     settFeilmelding(res.frontendFeilmelding);

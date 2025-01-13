@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import PdfVisning from '../../../Felles/Pdf/PdfVisning';
-import styled from 'styled-components';
 import SendTilBeslutterFooter from '../Totrinnskontroll/SendTilBeslutterFooter';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import Brevmeny from './Brevmeny';
@@ -11,22 +10,9 @@ import { TotrinnskontrollStatus } from '../../../App/typer/totrinnskontroll';
 import { BrevmottakereForBehandling } from '../Brevmottakere/BrevmottakereForBehandling';
 import { skalFerdigstilleUtenBeslutter } from '../VedtakOgBeregning/Felles/utils';
 import { useHentOppgaverForOpprettelse } from '../../../App/hooks/useHentOppgaverForOpprettelse';
-import { AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
-import { oppgaveSomSkalOpprettesTilTekst } from '../Totrinnskontroll/oppgaveForOpprettelseTyper';
 import { HøyreKolonne, StyledBrev, VenstreKolonne } from './StyledBrev';
 import { Behandling } from '../../../App/typer/fagsak';
-
-const InfostripeGruppe = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    margin-top: 1rem;
-`;
-
-const StyledInfostripe = styled(AlertInfo)`
-    padding-top: 1rem;
-    width: 40rem;
-`;
+import { FremleggoppgaverSomOpprettes } from './FremleggoppgaverSomOpprettes';
 
 interface Props {
     behandling: Behandling;
@@ -84,15 +70,11 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
                                 personopplysninger={personopplysningerResponse}
                             />
                             {!behandlingErRedigerbar && (
-                                <InfostripeGruppe>
-                                    {oppgaverForOpprettelse.oppgavetyperSomSkalOpprettes.map(
-                                        (oppgaveType, idx) => (
-                                            <StyledInfostripe key={idx}>
-                                                {oppgaveSomSkalOpprettesTilTekst[oppgaveType]}
-                                            </StyledInfostripe>
-                                        )
-                                    )}
-                                </InfostripeGruppe>
+                                <FremleggoppgaverSomOpprettes
+                                    oppgavetyperSomSkalOpprettes={
+                                        oppgaverForOpprettelse?.oppgavetyperSomSkalOpprettes ?? []
+                                    }
+                                />
                             )}
                             {behandlingErRedigerbar && (
                                 <Brevmeny
