@@ -1,14 +1,4 @@
-import {
-    Modal,
-    Button,
-    Checkbox,
-    VStack,
-    Table,
-    Heading,
-    BodyLong,
-    Radio,
-    RadioGroup,
-} from '@navikt/ds-react';
+import { Modal, Button, Checkbox, VStack, Table, Heading, BodyLong } from '@navikt/ds-react';
 import React, { FC, useEffect, useState } from 'react';
 import { Divider } from '../../../Felles/Divider/Divider';
 import { styled } from 'styled-components';
@@ -20,8 +10,8 @@ import { behandlingstemaTilTekst } from '../../../App/typer/behandlingstema';
 import { oppgaveTypeTilTekst } from '../../Oppgavebenk/typer/oppgavetype';
 import { formaterIsoDato } from '../../../App/utils/formatter';
 import { SendTilBeslutterRequest } from './SendTilBeslutterFooter';
-import Årvelger from '../../../Felles/Input/MånedÅr/ÅrVelger';
 import { OppgaveTypeForOpprettelse } from './oppgaveForOpprettelseTyper';
+import { FremleggsoppgaverForOpprettelse } from './FremleggsoppgaverForOpprettelse';
 
 const StyledTableDataCell = styled(Table.DataCell)`
     padding: 12px 8px 12px 0;
@@ -30,13 +20,6 @@ const StyledTableDataCell = styled(Table.DataCell)`
 const StyledBodyLong = styled(BodyLong)`
     white-space: break-spaces;
 `;
-
-const StyledÅrvelger = styled(Årvelger)`
-    max-width: fit-content;
-`;
-
-const MAKS_ANTALL_ÅR_TILBAKE = 0;
-const MAKS_ANTALL_ÅR_FREM = 5;
 
 // TODO: Rename??
 export const MarkereGodkjenneVedtakModal: FC<{
@@ -70,20 +53,15 @@ export const MarkereGodkjenneVedtakModal: FC<{
         if (finnesOppgavetyperSomKanOpprettes) {
             settSendTilBeslutterRequest({
                 ...settSendTilBeslutterRequest,
-                oppgavetyperSomSkalOpprettes: [
-                    OppgaveTypeForOpprettelse.INNTEKTSKONTROLL_1_ÅR_FREM_I_TID,
-                ],
+                oppgavetyperSomSkalOpprettes: oppgavetyperSomKanOpprettes ?? [],
                 årForInntektskontrollSelvstendigNæringsdrivende: undefined,
             });
         }
-    }, [finnesOppgavetyperSomKanOpprettes, settSendTilBeslutterRequest]);
-
-    const handleSettÅr = (år: number) => {
-        settSendTilBeslutterRequest({
-            ...sendTilBeslutterRequest,
-            årForInntektskontrollSelvstendigNæringsdrivende: år,
-        });
-    };
+    }, [
+        finnesOppgavetyperSomKanOpprettes,
+        oppgavetyperSomKanOpprettes,
+        settSendTilBeslutterRequest,
+    ]);
 
     const handleSettOppgaverSomSkalFerdigstilles = (oppgaveId: string) =>
         settOppgaverSomSkalAutomatiskFerdigstilles((prevOppgaver) =>
@@ -91,6 +69,11 @@ export const MarkereGodkjenneVedtakModal: FC<{
                 ? prevOppgaver.filter((id) => id !== oppgaveId)
                 : [...prevOppgaver, oppgaveId]
         );
+
+    const harValgtÅrForSelvstendig =
+        oppgavetyperSomSkalOpprettes.includes(
+            OppgaveTypeForOpprettelse.INNTEKTSKONTROLL_SELVSTENDIG_NÆRINGSDRIVENDE
+        ) && !!årForInntektskontrollSelvstendigNæringsdrivende;
 
     return (
         <DataViewer response={{ fremleggsOppgaver }}>
@@ -108,45 +91,15 @@ export const MarkereGodkjenneVedtakModal: FC<{
                     >
                         <Modal.Body>
                             <VStack gap="4">
-                                <RadioGroup
-                                    legend="Følgende oppgaver skal opprettes automatisk ved godkjenning av dette vedtaket:"
-                                    onChange={(value) =>
-                                        settSendTilBeslutterRequest({
-                                            ...sendTilBeslutterRequest,
-                                            oppgavetyperSomSkalOpprettes: [
-                                                value as OppgaveTypeForOpprettelse,
-                                            ],
-                                            årForInntektskontrollSelvstendigNæringsdrivende:
-                                                undefined,
-                                        })
+                                <FremleggsoppgaverForOpprettelse
+                                    årForInntektskontrollSelvstendigNæringsdrivende={
+                                        årForInntektskontrollSelvstendigNæringsdrivende
                                     }
-                                    value={oppgavetyperSomSkalOpprettes[0]}
-                                >
-                                    <Radio value="INNTEKTSKONTROLL_1_ÅR_FREM_I_TID">
-                                        Oppgave for kontroll av inntekt 1 år frem i tid
-                                    </Radio>
-                                    <Radio value="INNTEKTSKONTROLL_SELVSTENDIG_NÆRINGSDRIVENDE">
-                                        Oppgave til 15.desember{' '}
-                                        {årForInntektskontrollSelvstendigNæringsdrivende
-                                            ? årForInntektskontrollSelvstendigNæringsdrivende
-                                            : '[velg år]'}{' '}
-                                        for kontroll av inntekt for selvstendig næringsdrivende
-                                    </Radio>
-                                </RadioGroup>
-                                {oppgavetyperSomSkalOpprettes[0] ===
-                                    'INNTEKTSKONTROLL_SELVSTENDIG_NÆRINGSDRIVENDE' && (
-                                    <StyledÅrvelger
-                                        år={årForInntektskontrollSelvstendigNæringsdrivende}
-                                        settÅr={handleSettÅr}
-                                        antallÅrTilbake={MAKS_ANTALL_ÅR_TILBAKE}
-                                        antallÅrFrem={MAKS_ANTALL_ÅR_FREM}
-                                        // lesevisning={lesevisning}
-                                        size={'small'}
-                                    />
-                                )}
-                                {JSON.stringify(årForInntektskontrollSelvstendigNæringsdrivende)}
-                                {JSON.stringify(oppgavetyperSomSkalOpprettes)}
-                                {JSON.stringify(sendTilBeslutterRequest)}
+                                    oppgavetyperSomKanOpprettes={oppgavetyperSomKanOpprettes}
+                                    oppgavetyperSomSkalOpprettes={oppgavetyperSomSkalOpprettes}
+                                    sendTilBeslutterRequest={sendTilBeslutterRequest}
+                                    settSendTilBeslutterRequest={settSendTilBeslutterRequest}
+                                />
                                 <Divider />
                                 <>
                                     <Heading size="small">
@@ -254,6 +207,7 @@ export const MarkereGodkjenneVedtakModal: FC<{
                                         ],
                                     })
                                 }
+                                disabled={!harValgtÅrForSelvstendig}
                             >
                                 Send til beslutter
                             </Button>
