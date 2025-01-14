@@ -15,6 +15,9 @@ const StyledÅrvelger = styled(Årvelger)`
 const MAKS_ANTALL_ÅR_TILBAKE = 0;
 const MAKS_ANTALL_ÅR_FREM = 5; //TODO: Hvor mange år er hensiktsmessig?
 
+const LEGEND_TEKST =
+    'Følgende oppgaver skal opprettes automatisk ved godkjenning av dette vedtaket:';
+
 // TODO: Navn?
 export const FremleggsoppgaverForOpprettelse: FC<{
     årForInntektskontrollSelvstendigNæringsdrivende: number | undefined;
@@ -47,7 +50,7 @@ export const FremleggsoppgaverForOpprettelse: FC<{
         <>
             {kanVelgeMellomFlereOppgavetyper ? (
                 <RadioGroup
-                    legend="Følgende oppgaver skal opprettes automatisk ved godkjenning av dette vedtaket:"
+                    legend={LEGEND_TEKST}
                     onChange={(value) =>
                         settSendTilBeslutterRequest({
                             oppgavetyperSomSkalOpprettes: [value as OppgaveTypeForOpprettelse],
@@ -66,7 +69,7 @@ export const FremleggsoppgaverForOpprettelse: FC<{
                 </RadioGroup>
             ) : (
                 <CheckboxGroup
-                    legend="Følgende oppgaver skal opprettes automatisk ved godkjenning av dette vedtaket:" //TODO: Refaktor duplikat kode
+                    legend={LEGEND_TEKST}
                     onChange={(value) => {
                         settSendTilBeslutterRequest({
                             ...sendTilBeslutterRequest,

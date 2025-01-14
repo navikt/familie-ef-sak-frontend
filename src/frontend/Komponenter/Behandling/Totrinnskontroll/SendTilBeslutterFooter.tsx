@@ -130,7 +130,8 @@ const SendTilBeslutterFooter: React.FC<{
         : 'Vedtaket er sendt til beslutter';
 
     useEffect(() => {
-        const fetchOppgaver = async () => {
+        const fetchOppgaver = () => {
+            if (!personIdent) return;
             hentOppgaver({
                 ident: personIdent,
                 oppgavetype: 'FREM',
