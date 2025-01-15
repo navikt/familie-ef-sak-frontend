@@ -35,13 +35,11 @@ export const Dokumenttittel: React.FC<Props> = ({
 }) => {
     return (
         <HStack gap="2">
-            {
-                <IkonKnapp
-                    icon={<NotePencilIcon title="Rediger" />}
-                    variant="tertiary"
-                    onClick={() => settValgtDokumentId(dokument.dokumentinfoId)}
-                />
-            }
+            <IkonKnapp
+                icon={<NotePencilIcon title="Rediger" />}
+                variant="tertiary"
+                onClick={() => settValgtDokumentId(dokument.dokumentinfoId)}
+            />
             <Div $erHovedDokument={erHovedDokument}>
                 <Tittel
                     href={`/dokument/journalpost/${dokument.journalpostId}/dokument-pdf/${dokument.dokumentinfoId}/${tittelMedUrlGodkjenteTegn(dokument.tittel)}`}
