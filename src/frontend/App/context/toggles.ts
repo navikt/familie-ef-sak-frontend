@@ -9,7 +9,6 @@ export enum ToggleName {
     kanMigrereBarnetilsyn = 'familie.ef.sak.migrering.barnetilsyn',
     henleggBehandlingUtenÅHenleggeOppgave = 'familie.ef.sak.henlegg-behandling-uten-oppgave',
     visSatsendring = 'familie.ef.sak.frontend-vis-satsendring',
-    visAutomatiskBehandlingAvTilbakekrevingValg = 'familie.ef.sak.frontend.tilbakekreving-under-4x-rettsgebyr',
     velgÅrsakVedKlageOpprettelse = 'familie.ef.sak.klagebehandling-arsak',
 
     // Miljø-toggles - la stå
@@ -18,7 +17,6 @@ export enum ToggleName {
     visTildelOppgaveKnapp = 'familie.ef.sak.frontend-tildel-oppgave-knapp',
 
     // Release-toggles
-    visEndreDokumenttittelKnapp = 'familie.ef.sak.frontend-endre-dokumenttittel',
     konvertereDelmalblokkTilHtmlFelt = 'familie.ef.sak.konverter-delmalblokk-til-html-input',
     visMarkereGodkjenneVedtakOppgaveModal = 'familie.ef.sak.vis-markere-godkjenne-vedtak-oppgave-modal',
 
