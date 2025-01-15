@@ -1,4 +1,4 @@
-import { byggHenterRessurs, Ressurs } from '../typer/ressurs';
+import { byggHenterRessurs, byggTomRessurs, Ressurs } from '../typer/ressurs';
 import { useApp } from '../context/AppContext';
 import { useCallback, useState } from 'react';
 import { IOppgaverResponse } from '../../Komponenter/Oppgavebenk/OppgaveTabell';
@@ -6,9 +6,8 @@ import { IOppgaveRequest } from '../../Komponenter/Oppgavebenk/typer/oppgaverequ
 
 export const useHentOppgaver = () => {
     const { axiosRequest } = useApp();
-    const [oppgaver, settOppgaver] = useState<Ressurs<IOppgaverResponse>>();
+    const [oppgaver, settOppgaver] = useState<Ressurs<IOppgaverResponse>>(byggTomRessurs());
 
-    // TODO: Finnes noe liknende i OppgavebenkSide.tsx
     const hentOppgaver = useCallback(
         (data: IOppgaveRequest) => {
             settOppgaver(byggHenterRessurs());

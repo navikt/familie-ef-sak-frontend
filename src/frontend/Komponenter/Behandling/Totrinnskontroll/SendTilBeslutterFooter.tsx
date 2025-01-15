@@ -18,9 +18,9 @@ import { harVerdi } from '../../../App/utils/utils';
 import { ModalState } from '../Modal/NyEierModal';
 import { useToggles } from '../../../App/context/TogglesContext';
 import { ToggleName } from '../../../App/context/toggles';
-import { MarkereGodkjenneVedtakModal } from './MarkereGodkjenneVedtakModal';
 import { useHentOppgaver } from '../../../App/hooks/useHentOppgaver';
 import { IkkeFortroligEnhet } from '../../Oppgavebenk/typer/enhet';
+import { ModalOpprettOgFerdigstilleOppgaver } from './ModalOpprettOgFerdigstilleOppgaver';
 
 const Footer = styled.footer`
     width: 100%;
@@ -113,7 +113,7 @@ const SendTilBeslutterFooter: React.FC<{
             .finally(() => settLaster(false));
     };
 
-    const visMarkereGodkjenneVedtakOppgaveModalToggle = // TODO: Endre navn
+    const toggleVisKnappForModal =
         toggles[ToggleName.visMarkereGodkjenneVedtakOppgaveModal] || false;
 
     const lukkModal = () => {
@@ -136,11 +136,16 @@ const SendTilBeslutterFooter: React.FC<{
                 ident: personIdent,
                 oppgavetype: 'FREM',
                 enhet: IkkeFortroligEnhet.NAY,
-                behandlingstema: 'ab0071', //TODO: gjerne bruke tema: ENF
+                behandlingstema: 'ab0071',
             });
         };
         fetchOppgaver();
     }, [hentOppgaver, personIdent]);
+
+    const skalViseKnappForModal =
+        toggleVisKnappForModal &&
+        oppgaverForOpprettelse &&
+        oppgaverForOpprettelse.oppgavetyperSomKanOpprettes.length > 0;
 
     return (
         <>
@@ -158,14 +163,14 @@ const SendTilBeslutterFooter: React.FC<{
                             />
                         )}
                         <MidtstiltInnhold>
-                            {visMarkereGodkjenneVedtakOppgaveModalToggle && (
+                            {skalViseKnappForModal && (
                                 <Button
                                     onClick={() => settVisMarkereGodkjenneVedtakOppgaveModal(true)}
                                     variant="danger"
                                     type={'button'}
                                     disabled={!kanSendesTilBeslutter || laster}
                                 >
-                                    Opprettelse og ferdigstilling av oppgaver - TEST
+                                    Opprettelse av oppgaver - TEST
                                 </Button>
                             )}
                             <Button
@@ -199,8 +204,8 @@ const SendTilBeslutterFooter: React.FC<{
                     marginTop: 4,
                 }}
             />
-            {visMarkereGodkjenneVedtakOppgaveModalToggle && fremleggsOppgaver && (
-                <MarkereGodkjenneVedtakModal
+            {toggleVisKnappForModal && fremleggsOppgaver && (
+                <ModalOpprettOgFerdigstilleOppgaver
                     open={visMarkereGodkjenneVedtakOppgaveModal}
                     setOpen={settVisMarkereGodkjenneVedtakOppgaveModal}
                     oppgaverForOpprettelse={oppgaverForOpprettelse}

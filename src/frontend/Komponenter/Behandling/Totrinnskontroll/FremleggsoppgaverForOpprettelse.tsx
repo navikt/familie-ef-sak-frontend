@@ -13,12 +13,11 @@ const StyledÅrvelger = styled(Årvelger)`
 `;
 
 const MAKS_ANTALL_ÅR_TILBAKE = 0;
-const MAKS_ANTALL_ÅR_FREM = 5; //TODO: Hvor mange år er hensiktsmessig?
+const MAKS_ANTALL_ÅR_FREM = 2;
 
 const LEGEND_TEKST =
     'Følgende oppgaver skal opprettes automatisk ved godkjenning av dette vedtaket:';
 
-// TODO: Navn?
 export const FremleggsoppgaverForOpprettelse: FC<{
     årForInntektskontrollSelvstendigNæringsdrivende: number | undefined;
     oppgavetyperSomKanOpprettes: OppgaveTypeForOpprettelse[] | undefined;
@@ -66,6 +65,9 @@ export const FremleggsoppgaverForOpprettelse: FC<{
                             )}
                         </Radio>
                     ))}
+                    <Radio key="ingen" value={undefined}>
+                        Ingen
+                    </Radio>
                 </RadioGroup>
             ) : (
                 <CheckboxGroup
@@ -99,10 +101,6 @@ export const FremleggsoppgaverForOpprettelse: FC<{
                     size={'small'}
                 />
             )}
-            {/* TODO: Slett */}
-            {JSON.stringify(årForInntektskontrollSelvstendigNæringsdrivende)}
-            {JSON.stringify(oppgavetyperSomSkalOpprettes)}
-            {JSON.stringify(sendTilBeslutterRequest)}
         </>
     );
 };
