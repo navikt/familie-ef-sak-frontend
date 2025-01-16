@@ -1,9 +1,8 @@
 import { Modal, Button, VStack } from '@navikt/ds-react';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { Divider } from '../../../Felles/Divider/Divider';
-import { IOppgaverForOpprettelse } from '../../../App/hooks/useHentOppgaverForOpprettelse';
 import { Ressurs } from '../../../App/typer/ressurs';
-import { IOppgaverResponse } from '../../Oppgavebenk/OppgaveTabell';
+import { IOppgaverResponse } from '../../../App/hooks/useHentOppgaver';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { SendTilBeslutterRequest } from './SendTilBeslutterFooter';
 import { OppgaveTypeForOpprettelse } from './oppgaveForOpprettelseTyper';
@@ -13,51 +12,30 @@ import { TabellFerdigstilleOppgaver } from './TabellFerdigstilleOppgaver';
 export const ModalOpprettOgFerdigstilleOppgaver: FC<{
     open: boolean;
     setOpen: (open: boolean) => void;
-    oppgaverForOpprettelse?: IOppgaverForOpprettelse;
-    sendTilBeslutterRequest: SendTilBeslutterRequest;
-    settSendTilBeslutterRequest: React.Dispatch<React.SetStateAction<SendTilBeslutterRequest>>;
     sendTilBeslutter: (data?: SendTilBeslutterRequest) => void;
     fremleggsOppgaver: Ressurs<IOppgaverResponse>;
+    oppgavetyperSomKanOpprettes: OppgaveTypeForOpprettelse[] | undefined;
+    oppgavetyperSomSkalOpprettes: OppgaveTypeForOpprettelse[];
+    settOppgavetyperSomSkalOpprettes: React.Dispatch<
+        React.SetStateAction<OppgaveTypeForOpprettelse[]>
+    >;
+    årForInntektskontrollSelvstendigNæringsdrivende: number | undefined;
+    settÅrForInntektskontrollSelvstendigNæringsdrivende: React.Dispatch<
+        React.SetStateAction<number | undefined>
+    >;
 }> = ({
     open,
     setOpen,
-    oppgaverForOpprettelse,
-    sendTilBeslutterRequest,
-    settSendTilBeslutterRequest,
     sendTilBeslutter,
     fremleggsOppgaver,
+    oppgavetyperSomKanOpprettes,
+    oppgavetyperSomSkalOpprettes,
+    settOppgavetyperSomSkalOpprettes,
+    årForInntektskontrollSelvstendigNæringsdrivende,
+    settÅrForInntektskontrollSelvstendigNæringsdrivende,
 }) => {
-    const { oppgavetyperSomSkalOpprettes, årForInntektskontrollSelvstendigNæringsdrivende } =
-        sendTilBeslutterRequest;
-
-    const { oppgavetyperSomKanOpprettes } = oppgaverForOpprettelse || {};
-
-    const finnesOppgavetyperSomKanOpprettes = (oppgavetyperSomKanOpprettes ?? []).length > 0;
-
     const [oppgaverSomSkalAutomatiskFerdigstilles, settOppgaverSomSkalAutomatiskFerdigstilles] =
         useState<string[]>([]);
-
-    useEffect(() => {
-        const defaultValgtOppgavetype =
-            oppgavetyperSomKanOpprettes &&
-            oppgavetyperSomKanOpprettes.includes(
-                OppgaveTypeForOpprettelse.INNTEKTSKONTROLL_1_ÅR_FREM_I_TID
-            )
-                ? [OppgaveTypeForOpprettelse.INNTEKTSKONTROLL_1_ÅR_FREM_I_TID]
-                : [];
-
-        if (finnesOppgavetyperSomKanOpprettes) {
-            settSendTilBeslutterRequest({
-                ...settSendTilBeslutterRequest,
-                oppgavetyperSomSkalOpprettes: defaultValgtOppgavetype,
-                årForInntektskontrollSelvstendigNæringsdrivende: undefined,
-            });
-        }
-    }, [
-        finnesOppgavetyperSomKanOpprettes,
-        oppgavetyperSomKanOpprettes,
-        settSendTilBeslutterRequest,
-    ]);
 
     const handleSettOppgaverSomSkalFerdigstilles = (oppgaveId: string) =>
         settOppgaverSomSkalAutomatiskFerdigstilles((prevOppgaver) =>
@@ -66,16 +44,15 @@ export const ModalOpprettOgFerdigstilleOppgaver: FC<{
                 : [...prevOppgaver, oppgaveId]
         );
 
-    const kanVelgeMellomFlereOppgavetyper =
-        oppgavetyperSomKanOpprettes && oppgavetyperSomKanOpprettes?.length > 1;
+    const kanVelgeMellomFlereOppgavetyper = (oppgavetyperSomKanOpprettes ?? []).length > 1;
 
-    const harValgIRadioGroup =
-        kanVelgeMellomFlereOppgavetyper &&
-        oppgavetyperSomSkalOpprettes.length > 0 &&
-        (!oppgavetyperSomSkalOpprettes.includes(
-            OppgaveTypeForOpprettelse.INNTEKTSKONTROLL_SELVSTENDIG_NÆRINGSDRIVENDE
-        ) ||
-            !!årForInntektskontrollSelvstendigNæringsdrivende);
+    const erValgIRadioEllerChecboxGroupGyldig =
+        (kanVelgeMellomFlereOppgavetyper &&
+            oppgavetyperSomSkalOpprettes.length > 0 &&
+            !oppgavetyperSomSkalOpprettes.includes(
+                OppgaveTypeForOpprettelse.INNTEKTSKONTROLL_SELVSTENDIG_NÆRINGSDRIVENDE
+            )) ||
+        !!årForInntektskontrollSelvstendigNæringsdrivende;
 
     return (
         <DataViewer response={{ fremleggsOppgaver }}>
@@ -99,8 +76,12 @@ export const ModalOpprettOgFerdigstilleOppgaver: FC<{
                                     }
                                     oppgavetyperSomKanOpprettes={oppgavetyperSomKanOpprettes}
                                     oppgavetyperSomSkalOpprettes={oppgavetyperSomSkalOpprettes}
-                                    sendTilBeslutterRequest={sendTilBeslutterRequest}
-                                    settSendTilBeslutterRequest={settSendTilBeslutterRequest}
+                                    settOppgavetyperSomSkalOpprettes={
+                                        settOppgavetyperSomSkalOpprettes
+                                    }
+                                    settÅrForInntektskontrollSelvstendigNæringsdrivende={
+                                        settÅrForInntektskontrollSelvstendigNæringsdrivende
+                                    }
                                 />
                                 <Divider />
                                 <TabellFerdigstilleOppgaver
@@ -124,7 +105,7 @@ export const ModalOpprettOgFerdigstilleOppgaver: FC<{
                                         ],
                                     })
                                 }
-                                disabled={!harValgIRadioGroup}
+                                disabled={!erValgIRadioEllerChecboxGroupGyldig}
                             >
                                 Send til beslutter
                             </Button>

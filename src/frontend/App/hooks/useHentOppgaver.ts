@@ -1,8 +1,13 @@
 import { byggHenterRessurs, byggTomRessurs, Ressurs } from '../typer/ressurs';
 import { useApp } from '../context/AppContext';
 import { useCallback, useState } from 'react';
-import { IOppgaverResponse } from '../../Komponenter/Oppgavebenk/OppgaveTabell';
 import { IOppgaveRequest } from '../../Komponenter/Oppgavebenk/typer/oppgaverequest';
+import { IOppgave } from '../../Komponenter/Oppgavebenk/typer/oppgave';
+
+export interface IOppgaverResponse {
+    antallTreffTotalt: number;
+    oppgaver: IOppgave[];
+}
 
 export const useHentOppgaver = () => {
     const { axiosRequest } = useApp();

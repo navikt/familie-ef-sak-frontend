@@ -7,9 +7,8 @@ import {
 import { styled } from 'styled-components';
 
 const Container = styled.div`
-    background: #f9fccc;
+    background: var(--a-limegreen-100);
     padding: 0.5rem;
-    margin-top: 2rem;
 `;
 
 export const FremleggoppgaverSomOpprettes: FC<{

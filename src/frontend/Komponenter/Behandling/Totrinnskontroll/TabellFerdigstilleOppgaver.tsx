@@ -4,7 +4,7 @@ import { behandlingstemaTilTekst } from '../../../App/typer/behandlingstema';
 import { formaterIsoDato } from '../../../App/utils/formatter';
 import { oppgaveTypeTilTekst } from '../../Oppgavebenk/typer/oppgavetype';
 import styled from 'styled-components';
-import { IOppgaverResponse } from '../../Oppgavebenk/OppgaveTabell';
+import { IOppgaverResponse } from '../../../App/hooks/useHentOppgaver';
 
 const StyledTableDataCell = styled(Table.DataCell)`
     padding: 12px 8px 12px 0;

@@ -12,15 +12,14 @@ import { ABorderStrong } from '@navikt/ds-tokens/dist/tokens';
 import { useNavigate } from 'react-router-dom';
 import OppgaverForOpprettelse from './OppgaverForOpprettelse';
 import { Behandling } from '../../../App/typer/fagsak';
-import { IOppgaverForOpprettelse } from '../../../App/hooks/useHentOppgaverForOpprettelse';
 import { OppgaveTypeForOpprettelse } from './oppgaveForOpprettelseTyper';
-import { harVerdi } from '../../../App/utils/utils';
 import { ModalState } from '../Modal/NyEierModal';
 import { useToggles } from '../../../App/context/TogglesContext';
 import { ToggleName } from '../../../App/context/toggles';
 import { useHentOppgaver } from '../../../App/hooks/useHentOppgaver';
 import { IkkeFortroligEnhet } from '../../Oppgavebenk/typer/enhet';
 import { ModalOpprettOgFerdigstilleOppgaver } from './ModalOpprettOgFerdigstilleOppgaver';
+import { OppgaverForOpprettelseRequest } from '../../../App/hooks/useHentOppgaverForOpprettelse';
 
 const Footer = styled.footer`
     width: 100%;
@@ -47,18 +46,35 @@ export interface SendTilBeslutterRequest {
     årForInntektskontrollSelvstendigNæringsdrivende?: number;
 }
 
+const utledDefaultOppgavetyperSomSkalOpprettes = (
+    oppgaveTyperSomKanOpprettes: OppgaveTypeForOpprettelse[] | undefined
+) => {
+    if (!oppgaveTyperSomKanOpprettes) {
+        return [];
+    }
+
+    return oppgaveTyperSomKanOpprettes.includes(
+        OppgaveTypeForOpprettelse.INNTEKTSKONTROLL_1_ÅR_FREM_I_TID
+    )
+        ? [OppgaveTypeForOpprettelse.INNTEKTSKONTROLL_1_ÅR_FREM_I_TID]
+        : [];
+};
+
 const SendTilBeslutterFooter: React.FC<{
     behandling: Behandling;
     kanSendesTilBeslutter?: boolean;
     behandlingErRedigerbar: boolean;
     ferdigstillUtenBeslutter: boolean;
-    oppgaverForOpprettelse?: IOppgaverForOpprettelse;
+    oppgavetyperSomKanOpprettes?: OppgaveTypeForOpprettelse[];
+    oppgaverForOpprettelse: OppgaverForOpprettelseRequest;
+    settHentPåNytt: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({
     behandling,
     kanSendesTilBeslutter,
     behandlingErRedigerbar,
     ferdigstillUtenBeslutter,
-    oppgaverForOpprettelse,
+    oppgavetyperSomKanOpprettes,
+    settHentPåNytt,
 }) => {
     const { axiosRequest, personIdent } = useApp();
     const navigate = useNavigate();
@@ -77,22 +93,25 @@ const SendTilBeslutterFooter: React.FC<{
     const [visMarkereGodkjenneVedtakOppgaveModal, settVisMarkereGodkjenneVedtakOppgaveModal] =
         useState<boolean>(false);
     const { hentOppgaver, oppgaver: fremleggsOppgaver } = useHentOppgaver();
-    const [sendTilBeslutterRequest, settSendTilBeslutterRequest] =
-        useState<SendTilBeslutterRequest>({
-            oppgavetyperSomSkalOpprettes:
-                oppgaverForOpprettelse?.oppgavetyperSomSkalOpprettes ?? [],
-        });
+    const [oppgavetyperSomSkalOpprettes, settOppgavetyperSomSkalOpprettes] = useState<
+        OppgaveTypeForOpprettelse[]
+    >(utledDefaultOppgavetyperSomSkalOpprettes(oppgavetyperSomKanOpprettes));
+    const [
+        årForInntektskontrollSelvstendigNæringsdrivende,
+        settÅrForInntektskontrollSelvstendigNæringsdrivende,
+    ] = useState<number | undefined>();
 
     const sendTilBeslutter = () => {
         settLaster(true);
         settFeilmelding(undefined);
+        settHentPåNytt(false);
         axiosRequest<string, SendTilBeslutterRequest>({
             method: 'POST',
             url: `/familie-ef-sak/api/vedtak/${behandling.id}/send-til-beslutter`,
             data: {
-                oppgavetyperSomSkalOpprettes: sendTilBeslutterRequest.oppgavetyperSomSkalOpprettes,
+                oppgavetyperSomSkalOpprettes: oppgavetyperSomSkalOpprettes,
                 årForInntektskontrollSelvstendigNæringsdrivende:
-                    sendTilBeslutterRequest.årForInntektskontrollSelvstendigNæringsdrivende,
+                    årForInntektskontrollSelvstendigNæringsdrivende,
             },
         })
             .then((res: RessursSuksess<string> | RessursFeilet) => {
@@ -103,7 +122,7 @@ const SendTilBeslutterFooter: React.FC<{
                     hentTotrinnskontroll.rerun();
                     settVisMarkereGodkjenneVedtakOppgaveModal(false);
                     settVisModal(true);
-                    oppgaverForOpprettelse?.hentOppgaverForOpprettelse(behandling.id);
+                    settHentPåNytt(true);
                 } else {
                     settFeilmelding(res.frontendFeilmelding);
                     settNyEierModalState(ModalState.LUKKET);
@@ -144,8 +163,8 @@ const SendTilBeslutterFooter: React.FC<{
 
     const skalViseKnappForModal =
         toggleVisKnappForModal &&
-        oppgaverForOpprettelse &&
-        oppgaverForOpprettelse.oppgavetyperSomKanOpprettes.length > 0;
+        oppgavetyperSomKanOpprettes &&
+        oppgavetyperSomKanOpprettes.length > 0;
 
     return (
         <>
@@ -156,10 +175,12 @@ const SendTilBeslutterFooter: React.FC<{
                         <AlertInfo>Vedtaket vil ikke bli sendt til totrinnskontroll</AlertInfo>
                     )}
                     <FlexBox>
-                        {oppgaverForOpprettelse && (
+                        {/* TODO: Dette skal fjernes etter at ny modal er togglet på for alle */}
+                        {oppgavetyperSomKanOpprettes && (
                             <OppgaverForOpprettelse
-                                behandling={behandling}
-                                oppgaverForOpprettelse={oppgaverForOpprettelse}
+                                oppgavetyperSomKanOpprettes={oppgavetyperSomKanOpprettes}
+                                oppgavetyperSomSkalOpprettes={oppgavetyperSomSkalOpprettes}
+                                settOppgavetyperSomSkalOpprettes={settOppgavetyperSomSkalOpprettes}
                             />
                         )}
                         <MidtstiltInnhold>
@@ -175,11 +196,7 @@ const SendTilBeslutterFooter: React.FC<{
                             )}
                             <Button
                                 onClick={sendTilBeslutter}
-                                disabled={
-                                    laster ||
-                                    !kanSendesTilBeslutter ||
-                                    harVerdi(oppgaverForOpprettelse?.feilmelding)
-                                }
+                                disabled={laster || !kanSendesTilBeslutter}
                                 type={'button'}
                             >
                                 {ferdigstillTittel}
@@ -208,11 +225,17 @@ const SendTilBeslutterFooter: React.FC<{
                 <ModalOpprettOgFerdigstilleOppgaver
                     open={visMarkereGodkjenneVedtakOppgaveModal}
                     setOpen={settVisMarkereGodkjenneVedtakOppgaveModal}
-                    oppgaverForOpprettelse={oppgaverForOpprettelse}
-                    sendTilBeslutterRequest={sendTilBeslutterRequest}
-                    settSendTilBeslutterRequest={settSendTilBeslutterRequest}
                     sendTilBeslutter={sendTilBeslutter}
                     fremleggsOppgaver={fremleggsOppgaver}
+                    oppgavetyperSomKanOpprettes={oppgavetyperSomKanOpprettes}
+                    oppgavetyperSomSkalOpprettes={oppgavetyperSomSkalOpprettes}
+                    settOppgavetyperSomSkalOpprettes={settOppgavetyperSomSkalOpprettes}
+                    årForInntektskontrollSelvstendigNæringsdrivende={
+                        årForInntektskontrollSelvstendigNæringsdrivende
+                    }
+                    settÅrForInntektskontrollSelvstendigNæringsdrivende={
+                        settÅrForInntektskontrollSelvstendigNæringsdrivende
+                    }
                 />
             )}
         </>

@@ -6,7 +6,6 @@ import {
 } from './oppgaveForOpprettelseTyper';
 import { styled } from 'styled-components';
 import Årvelger from '../../../Felles/Input/MånedÅr/ÅrVelger';
-import { SendTilBeslutterRequest } from './SendTilBeslutterFooter';
 
 const StyledÅrvelger = styled(Årvelger)`
     max-width: fit-content;
@@ -22,21 +21,20 @@ export const FremleggsoppgaverForOpprettelse: FC<{
     årForInntektskontrollSelvstendigNæringsdrivende: number | undefined;
     oppgavetyperSomKanOpprettes: OppgaveTypeForOpprettelse[] | undefined;
     oppgavetyperSomSkalOpprettes: OppgaveTypeForOpprettelse[];
-    sendTilBeslutterRequest: SendTilBeslutterRequest;
-    settSendTilBeslutterRequest: React.Dispatch<React.SetStateAction<SendTilBeslutterRequest>>;
+    settOppgavetyperSomSkalOpprettes: React.Dispatch<
+        React.SetStateAction<OppgaveTypeForOpprettelse[]>
+    >;
+    settÅrForInntektskontrollSelvstendigNæringsdrivende: React.Dispatch<
+        React.SetStateAction<number | undefined>
+    >;
 }> = ({
     årForInntektskontrollSelvstendigNæringsdrivende,
     oppgavetyperSomKanOpprettes,
     oppgavetyperSomSkalOpprettes,
-    sendTilBeslutterRequest,
-    settSendTilBeslutterRequest,
+    settOppgavetyperSomSkalOpprettes,
+    settÅrForInntektskontrollSelvstendigNæringsdrivende,
 }) => {
-    const handleSettÅr = (år: number) => {
-        settSendTilBeslutterRequest({
-            ...sendTilBeslutterRequest,
-            årForInntektskontrollSelvstendigNæringsdrivende: år,
-        });
-    };
+    const handleSettÅr = (år: number) => settÅrForInntektskontrollSelvstendigNæringsdrivende(år);
 
     const kanVelgeMellomFlereOppgavetyper =
         oppgavetyperSomKanOpprettes && oppgavetyperSomKanOpprettes.length > 1;
@@ -50,12 +48,10 @@ export const FremleggsoppgaverForOpprettelse: FC<{
             {kanVelgeMellomFlereOppgavetyper ? (
                 <RadioGroup
                     legend={LEGEND_TEKST}
-                    onChange={(value) =>
-                        settSendTilBeslutterRequest({
-                            oppgavetyperSomSkalOpprettes: [value as OppgaveTypeForOpprettelse],
-                            årForInntektskontrollSelvstendigNæringsdrivende: undefined,
-                        })
-                    }
+                    onChange={(value) => {
+                        settOppgavetyperSomSkalOpprettes([value as OppgaveTypeForOpprettelse]);
+                        settÅrForInntektskontrollSelvstendigNæringsdrivende(undefined);
+                    }}
                     value={oppgavetyperSomSkalOpprettes[0]}
                 >
                     {oppgavetyperSomKanOpprettes.map((oppgavetype) => (
@@ -65,7 +61,7 @@ export const FremleggsoppgaverForOpprettelse: FC<{
                             )}
                         </Radio>
                     ))}
-                    <Radio key="ingen" value={undefined}>
+                    <Radio key="ingen" value={''}>
                         Ingen
                     </Radio>
                 </RadioGroup>
@@ -73,11 +69,8 @@ export const FremleggsoppgaverForOpprettelse: FC<{
                 <CheckboxGroup
                     legend={LEGEND_TEKST}
                     onChange={(value) => {
-                        settSendTilBeslutterRequest({
-                            ...sendTilBeslutterRequest,
-                            oppgavetyperSomSkalOpprettes: value,
-                            årForInntektskontrollSelvstendigNæringsdrivende: undefined,
-                        });
+                        settOppgavetyperSomSkalOpprettes(value);
+                        settÅrForInntektskontrollSelvstendigNæringsdrivende(undefined);
                     }}
                     value={oppgavetyperSomSkalOpprettes}
                 >
