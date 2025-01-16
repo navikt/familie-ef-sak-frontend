@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useEffect } from 'react';
 import styled from 'styled-components';
 import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import {
@@ -81,6 +81,12 @@ const TilleggsstønadValg: React.FC<Props> = ({
 }) => {
     const { settIkkePersistertKomponent } = useApp();
     const { åpenHøyremeny } = useBehandling();
+
+    useEffect(() => {
+        if (tilleggsstønad.value === ERadioValg.NEI) {
+            stønadsreduksjon.setValue(ERadioValg.IKKE_SATT);
+        }
+    }, [stønadsreduksjon, tilleggsstønad]);
 
     const oppdaterTilleggsstønadPeriode = (
         index: number,
