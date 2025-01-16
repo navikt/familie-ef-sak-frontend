@@ -246,20 +246,20 @@ const KontantstøtteValg: React.FC<Props> = ({
                             knappetekst="Legg til periode"
                         />
                     )}
-                    {(skalViseBegrunnelseLesevisning || !erLesevisning) && (
-                        <TextArea
-                            readOnly={erLesevisning}
-                            feilmelding={valideringsfeil.kontantstøtteBegrunnelse}
-                            label="Begrunnelse"
-                            maxLength={0}
-                            onChange={(event) => {
-                                settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
-                                kontantstøtteBegrunnelse?.onChange(event);
-                            }}
-                            value={kontantstøtteBegrunnelse?.value}
-                        />
-                    )}
                 </HorizontalScroll>
+            )}
+            {(skalViseBegrunnelseLesevisning || !erLesevisning) && (
+                <TextArea
+                    readOnly={erLesevisning}
+                    feilmelding={valideringsfeil.kontantstøtteBegrunnelse}
+                    label="Begrunnelse"
+                    maxLength={0}
+                    onChange={(event) => {
+                        settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+                        kontantstøtteBegrunnelse?.onChange(event);
+                    }}
+                    value={kontantstøtteBegrunnelse?.value}
+                />
             )}
         </Container>
     );

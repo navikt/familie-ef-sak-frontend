@@ -247,8 +247,7 @@ export const InnvilgeBarnetilsyn: React.FC<{
             perioder: form.utgiftsperioder,
             perioderKontantstøtte:
                 form.harKontantstøtte === ERadioValg.JA ? form.kontantstøtteperioder : [],
-            kontantstøtteBegrunnelse:
-                form.harKontantstøtte === ERadioValg.JA ? form.kontantstøtteBegrunnelse : null,
+            kontantstøtteBegrunnelse: form.kontantstøtteBegrunnelse,
             tilleggsstønad: {
                 harTilleggsstønad: form.harTilleggsstønad === ERadioValg.JA,
                 perioder:
@@ -343,7 +342,6 @@ export const InnvilgeBarnetilsyn: React.FC<{
                 tilleggsstønadBegrunnelse={tilleggsstønadBegrunnelseState}
                 tilleggsstønadPerioder={tilleggsstønadsperiodeState}
                 valideringsfeil={formState.errors}
-                behandling={behandling}
             />
             {behandlingErRedigerbar && (
                 <div>
