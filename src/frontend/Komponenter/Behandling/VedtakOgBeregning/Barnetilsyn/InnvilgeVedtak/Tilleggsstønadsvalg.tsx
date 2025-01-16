@@ -143,7 +143,7 @@ const TilleggsstønadValg: React.FC<Props> = ({
                 onChange={(event) => tilleggsstønad.onChange(event)}
                 value={tilleggsstønad.value as ERadioValg}
             />
-            {søktTilleggsstønad && (
+            {(søktTilleggsstønad || tilleggsstønad.value === ERadioValg.IKKE_SATT) && (
                 <JaNeiRadioGruppe
                     className={'spacing'}
                     error={valideringsfeil?.skalStønadReduseres}
@@ -153,7 +153,7 @@ const TilleggsstønadValg: React.FC<Props> = ({
                     value={stønadsreduksjon.value as ERadioValg}
                 />
             )}
-            {søktTilleggsstønad && stønadSkalReduseres && (
+            {stønadSkalReduseres && (
                 <HorizontalScroll
                     $synligVedLukketMeny={'785px'}
                     $synligVedÅpenMeny={'1115px'}

@@ -86,7 +86,7 @@ export type IInnvilgeVedtakForBarnetilsyn = {
 };
 
 export type ITilleggsstønad = {
-    harTilleggsstønad: boolean;
+    harTilleggsstønad: boolean | null;
     perioder: IPeriodeMedBeløp[];
     begrunnelse?: string;
 };
