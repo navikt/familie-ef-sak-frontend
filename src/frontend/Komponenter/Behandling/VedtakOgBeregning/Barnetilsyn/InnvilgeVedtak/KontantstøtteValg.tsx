@@ -122,6 +122,11 @@ const KontantstøtteValg: React.FC<Props> = ({
     const visGrid = kontantstøttePerioder.value.length > 0;
     const radioGruppeTekst =
         'Skal stønaden reduseres fordi brukeren, eller en brukeren bor med, har fått utbetalt kontantstøtte i perioden(e) det er søkt om?';
+    const skalViseBegrunnelseLesevisning =
+        erLesevisning &&
+        kontantstøtteBegrunnelse.value !== '' &&
+        kontantstøtteBegrunnelse.value !== null;
+
     return (
         <Container>
             <Heading spacing size="small" level="5">
@@ -241,17 +246,19 @@ const KontantstøtteValg: React.FC<Props> = ({
                             knappetekst="Legg til periode"
                         />
                     )}
-                    <TextArea
-                        readOnly={erLesevisning}
-                        feilmelding={valideringsfeil.kontantstøtteBegrunnelse}
-                        label="Begrunnelse"
-                        maxLength={0}
-                        onChange={(event) => {
-                            settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
-                            kontantstøtteBegrunnelse?.onChange(event);
-                        }}
-                        value={kontantstøtteBegrunnelse?.value}
-                    />
+                    {(skalViseBegrunnelseLesevisning || !erLesevisning) && (
+                        <TextArea
+                            readOnly={erLesevisning}
+                            feilmelding={valideringsfeil.kontantstøtteBegrunnelse}
+                            label="Begrunnelse"
+                            maxLength={0}
+                            onChange={(event) => {
+                                settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+                                kontantstøtteBegrunnelse?.onChange(event);
+                            }}
+                            value={kontantstøtteBegrunnelse?.value}
+                        />
+                    )}
                 </HorizontalScroll>
             )}
         </Container>
