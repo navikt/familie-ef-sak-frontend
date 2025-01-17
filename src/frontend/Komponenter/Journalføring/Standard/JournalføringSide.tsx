@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { erAvTypeFeil, RessursStatus } from '../../../App/typer/ressurs';
 import styled from 'styled-components';
 import {
+    Journalføringsaksjon,
     JournalføringStateRequest,
     useJournalføringState,
 } from '../../../App/hooks/useJournalføringState';
@@ -34,11 +35,11 @@ import {
 } from '../Felles/utils';
 import Klagebehandlinger from './Klagebehandlinger';
 import { validerJournalføring } from '../Felles/journalføringValidering';
-import BarnSomSkalFødes from './BarnSomSkalFødes';
 import NyeBarnPåBehandlingen from './NyeBarnPåBehandlingen';
 import { KlageMottatt } from '../Klage/KlageMottatt';
 import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
 import { EToast } from '../../../App/typer/toast';
+import { TerminBarnSkjema } from '../../Behandling/Førstegangsbehandling/TerminBarnSkjema';
 
 const InnerContainer = styled.div`
     display: flex;
@@ -128,6 +129,14 @@ const Journalføring: React.FC<JournalføringSideProps> = ({
         }
     };
 
+    const kanLeggeTilTerminBarn = (journalpostState: JournalføringStateRequest) => {
+        const erNyBehandling =
+            journalpostState.journalføringsaksjon == Journalføringsaksjon.OPPRETT_BEHANDLING;
+        const erPapirsøknad =
+            journalpostState.journalføringsårsak === Journalføringsårsak.PAPIRSØKNAD;
+        return erNyBehandling && erPapirsøknad;
+    };
+
     const skalViseKlagebehandlinger = journalføringGjelderKlage(journalføringsårsak);
     const erPapirSøknad = journalføringsårsak === Journalføringsårsak.PAPIRSØKNAD;
     const senderInn = journalpostState.innsending.status == RessursStatus.HENTER;
@@ -187,7 +196,12 @@ const Journalføring: React.FC<JournalføringSideProps> = ({
                             )}
                         </section>
                         <section>
-                            <BarnSomSkalFødes journalpostState={journalpostState} />
+                            {kanLeggeTilTerminBarn(journalpostState) && (
+                                <TerminBarnSkjema
+                                    barnSomSkalFødes={journalpostState.barnSomSkalFødes}
+                                    oppdaterBarnSomSkalFødes={journalpostState.settBarnSomSkalFødes}
+                                />
+                            )}
                             <NyeBarnPåBehandlingen journalpostState={journalpostState} />
                             <KlageMottatt
                                 journalpostState={journalpostState}
