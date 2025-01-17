@@ -130,20 +130,23 @@ const TilleggsstønadValg: React.FC<Props> = ({
         'Skal stønaden reduseres fordi brukeren har fått utbetalt stønad for tilsyn av barn etter tilleggsstønadsforskriften?';
     const visGrid = tilleggsstønadPerioder.value.length > 0;
 
+    const ikkeSattTillegStønad = tilleggsstønad.value === ERadioValg.IKKE_SATT;
     return (
         <Container>
             <Heading spacing size="small" level="5">
                 Tilleggsstønadsforskriften
             </Heading>
-            <JaNeiRadioGruppe
-                className={'spacing'}
-                error={valideringsfeil?.harTilleggsstønad}
-                legend={erDetSøktOmTekst}
-                lesevisning={erLesevisning}
-                onChange={(event) => tilleggsstønad.onChange(event)}
-                value={tilleggsstønad.value as ERadioValg}
-            />
-            {(søktTilleggsstønad || tilleggsstønad.value === ERadioValg.IKKE_SATT) && (
+            {!ikkeSattTillegStønad && (
+                <JaNeiRadioGruppe
+                    className={'spacing'}
+                    error={valideringsfeil?.harTilleggsstønad}
+                    legend={erDetSøktOmTekst}
+                    lesevisning={erLesevisning}
+                    onChange={(event) => tilleggsstønad.onChange(event)}
+                    value={tilleggsstønad.value as ERadioValg}
+                />
+            )}
+            {(søktTilleggsstønad || ikkeSattTillegStønad) && (
                 <JaNeiRadioGruppe
                     className={'spacing'}
                     error={valideringsfeil?.skalStønadReduseres}
@@ -259,7 +262,7 @@ const TilleggsstønadValg: React.FC<Props> = ({
                     )}
                 </HorizontalScroll>
             )}
-            {søktTilleggsstønad && (
+            {stønadsreduksjon.value !== ERadioValg.IKKE_SATT && (
                 <TextArea
                     readOnly={erLesevisning}
                     feilmelding={valideringsfeil.tilleggsstønadBegrunnelse}

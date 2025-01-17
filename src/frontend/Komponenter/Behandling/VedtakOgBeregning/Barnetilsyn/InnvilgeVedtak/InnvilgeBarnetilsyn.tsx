@@ -88,7 +88,7 @@ const initSkalStønadReduseres = (
         }
         return lagretInnvilgetVedtak.tilleggsstønad.perioder.length > 0
             ? ERadioValg.JA
-            : ERadioValg.IKKE_SATT;
+            : ERadioValg.NEI;
     }
     return ERadioValg.IKKE_SATT;
 };
@@ -266,10 +266,7 @@ export const InnvilgeBarnetilsyn: React.FC<{
                 harTilleggsstønad: null,
                 perioder:
                     form.skalStønadReduseres === ERadioValg.JA ? form.tilleggsstønadsperioder : [],
-                begrunnelse:
-                    form.harTilleggsstønad === ERadioValg.JA
-                        ? form.tilleggsstønadBegrunnelse
-                        : null,
+                begrunnelse: form.tilleggsstønadBegrunnelse,
             },
             begrunnelse: form.begrunnelse,
             _type: nullUtbetalingPgaKontantstøtte
