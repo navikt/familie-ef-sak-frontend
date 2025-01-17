@@ -19,7 +19,6 @@ import {
     oppdaterSvarIListe,
 } from './utils';
 import Begrunnelse from './Begrunnelse';
-import Delvilkår from './Delvilkår';
 import { useApp } from '../../../App/context/AppContext';
 import { Button } from '@navikt/ds-react';
 import styled from 'styled-components';
@@ -27,6 +26,7 @@ import {
     EkspandertTilstand,
     useEkspanderbareVilkårpanelContext,
 } from '../../../App/context/EkspanderbareVilkårpanelContext';
+import { Delvilkår } from './Delvilkår';
 
 /**
  * Skal resette undervilkår, men ikke rootnivå hvis en tidligere endrer seg

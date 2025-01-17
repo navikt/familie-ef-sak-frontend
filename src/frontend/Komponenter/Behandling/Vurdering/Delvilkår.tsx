@@ -1,13 +1,14 @@
 import * as React from 'react';
 import { FC } from 'react';
 import { Regel } from './typer';
-import { DelvilkårContainer } from './DelvilkårContainer';
 import { hjelpeTekstConfig } from './hjelpetekstconfig';
 import { delvilkårTypeTilTekst } from './tekster';
 import { Vurdering } from '../Inngangsvilkår/vilkår';
-import { HelpText, RadioGroup } from '@navikt/ds-react';
+import { Heading, HelpText, HStack, RadioGroup, VStack } from '@navikt/ds-react';
 import { RadioKnapper } from './RadioKnapper';
 import { RadioKnapperMedlemskapUnntak } from './RadioKnapperMedlemskapUnntak';
+import { visBeregnetInntektKalkulator } from './VurderingUtil';
+import BeregnetInntektKalkulator from '../VedtakOgBeregning/Overgangsstønad/InnvilgeVedtak/BeregnetInntektKalkulator';
 
 const utledRadioKnapper = (regel: Regel, settVurdering: (nyttSvar: Vurdering) => void) => {
     switch (regel.regelId) {
@@ -24,12 +25,26 @@ interface Props {
     settVurdering: (nyttSvar: Vurdering) => void;
 }
 
-const Delvilkår: FC<Props> = ({ regel, vurdering, settVurdering }) => {
+export const Delvilkår: FC<Props> = ({ regel, vurdering, settVurdering }) => {
     const hjelpetekst = hjelpeTekstConfig[regel.regelId];
 
+    const visKalkulator = visBeregnetInntektKalkulator(regel.regelId);
+
     return (
-        <DelvilkårContainer>
-            <RadioGroup legend={delvilkårTypeTilTekst[regel.regelId]} value={vurdering.svar || ''}>
+        <VStack>
+            <HStack justify="space-between" width="100%">
+                <Heading size="small" style={{ flex: 1, wordBreak: 'break-word' }}>
+                    {delvilkårTypeTilTekst[regel.regelId]}
+                </Heading>
+                {visKalkulator && (
+                    <div>
+                        <BeregnetInntektKalkulator
+                            leggTilBeregnetInntektTekstIBegrunnelse={() => {}}
+                        />
+                    </div>
+                )}
+            </HStack>
+            <RadioGroup legend={undefined} value={vurdering.svar || ''}>
                 {utledRadioKnapper(regel, settVurdering)}
             </RadioGroup>
             {hjelpetekst && (
@@ -37,8 +52,6 @@ const Delvilkår: FC<Props> = ({ regel, vurdering, settVurdering }) => {
                     {React.createElement(hjelpetekst.komponent)}
                 </HelpText>
             )}
-        </DelvilkårContainer>
+        </VStack>
     );
 };
-
-export default Delvilkår;
