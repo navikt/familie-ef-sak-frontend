@@ -28,7 +28,14 @@ export interface IVilkårGrunnlag {
     dokumentasjon?: IDokumentasjonGrunnlag;
     harAvsluttetArbeidsforhold: boolean;
     harKontantstøttePerioder?: boolean;
+    kontantstøttePerioder?: KsPeriode[];
     behandlingOpprettet?: string;
+}
+
+export interface KsPeriode {
+    fomMåned: string;
+    tomMåned?: string;
+    kilde: string;
 }
 
 export interface IPersonalia {

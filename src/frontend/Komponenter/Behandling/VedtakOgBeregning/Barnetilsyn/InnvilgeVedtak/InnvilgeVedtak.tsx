@@ -13,6 +13,7 @@ import {
     oppdaterVedtakMedEndretKey,
     oppdaterVedtakMedInitPeriodeOgOpphørshulll,
 } from '../Felles/utils';
+import { KsPeriode } from '../../../Inngangsvilkår/vilkår';
 
 // TODO backend må returnere InnvilgelseBarnetilsynUtenUtbetaling ?
 export const InnvilgeVedtak: FC<{
@@ -21,7 +22,15 @@ export const InnvilgeVedtak: FC<{
     barn: IBarnMedSamvær[];
     settResultatType: (val: EBehandlingResultat | undefined) => void;
     harKontantstøttePerioder: boolean | undefined;
-}> = ({ behandling, lagretVedtak, barn, settResultatType, harKontantstøttePerioder }) => {
+    kontantstøttePerioderGrunnlagsdata?: KsPeriode[];
+}> = ({
+    behandling,
+    lagretVedtak,
+    barn,
+    settResultatType,
+    harKontantstøttePerioder,
+    kontantstøttePerioderGrunnlagsdata,
+}) => {
     const { axiosRequest, settIkkePersistertKomponent } = useApp();
     const { behandlingErRedigerbar } = useBehandling();
 
@@ -85,6 +94,7 @@ export const InnvilgeVedtak: FC<{
                     settResultatType={settResultatType}
                     låsFraDatoFørsteRad={!!revurderesFra}
                     harKontantstøttePerioder={harKontantstøttePerioder}
+                    kontantstøttePerioderGrunnlagsdata={kontantstøttePerioderGrunnlagsdata}
                 />
             )}
         </>

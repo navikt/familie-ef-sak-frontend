@@ -23,6 +23,7 @@ import { useBehandling } from '../../../../../App/context/BehandlingContext';
 import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
 import { KontantstøtteAlert } from './KontantstøtteAlert';
 import JaNeiRadioGruppe from '../../Felles/JaNeiRadioGruppe';
+import { KsPeriode } from '../../../Inngangsvilkår/vilkår';
 
 const Container = styled.div`
     padding: 1rem;
@@ -59,6 +60,7 @@ interface Props {
     settValideringsFeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>;
     valideringsfeil?: FormErrors<InnvilgeVedtakForm>;
     harKontantstøttePerioder?: boolean;
+    kontantstøttePerioderGrunnlagsdata?: KsPeriode[];
 }
 
 export const tomKontantstøtteRad = (): IPeriodeMedBeløp => ({
@@ -75,6 +77,7 @@ const KontantstøtteValg: React.FC<Props> = ({
     settValideringsFeil,
     valideringsfeil,
     harKontantstøttePerioder,
+    kontantstøttePerioderGrunnlagsdata,
 }) => {
     const { settIkkePersistertKomponent } = useApp();
     const { åpenHøyremeny } = useBehandling();
@@ -122,7 +125,10 @@ const KontantstøtteValg: React.FC<Props> = ({
                 Kontantstøtte
             </Heading>
             <AlertOgRadioknappWrapper>
-                <KontantstøtteAlert harKontantstøttePerioder={harKontantstøttePerioder} />
+                <KontantstøtteAlert
+                    harKontantstøttePerioder={harKontantstøttePerioder}
+                    kontantstøttePerioderGrunnlagsdata={kontantstøttePerioderGrunnlagsdata}
+                />
 
                 <JaNeiRadioGruppe
                     error={valideringsfeil?.harKontantstøtte}

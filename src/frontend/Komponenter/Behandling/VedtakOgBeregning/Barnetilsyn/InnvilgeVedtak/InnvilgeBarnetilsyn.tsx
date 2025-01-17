@@ -31,6 +31,7 @@ import { AlertError } from '../../../../../Felles/Visningskomponenter/Alerts';
 import HovedKnapp, { Knapp } from '../../../../../Felles/Knapper/HovedKnapp';
 import { CalculatorIcon } from '@navikt/aksel-icons';
 import { ModalState } from '../../../Modal/NyEierModal';
+import { KsPeriode } from '../../../Inngangsvilkår/vilkår';
 
 export type InnvilgeVedtakForm = {
     utgiftsperioder: IUtgiftsperiode[];
@@ -105,6 +106,7 @@ export const InnvilgeBarnetilsyn: React.FC<{
     settResultatType: (val: EBehandlingResultat | undefined) => void;
     låsFraDatoFørsteRad: boolean;
     harKontantstøttePerioder: boolean | undefined;
+    kontantstøttePerioderGrunnlagsdata?: KsPeriode[];
 }> = ({
     lagretVedtak,
     behandling,
@@ -112,6 +114,7 @@ export const InnvilgeBarnetilsyn: React.FC<{
     settResultatType,
     låsFraDatoFørsteRad,
     harKontantstøttePerioder,
+    kontantstøttePerioderGrunnlagsdata,
 }) => {
     const lagretInnvilgetVedtak =
         lagretVedtak?._type === IVedtakType.InnvilgelseBarnetilsyn ||
@@ -325,6 +328,7 @@ export const InnvilgeBarnetilsyn: React.FC<{
                 settValideringsFeil={formState.setErrors}
                 valideringsfeil={formState.errors}
                 harKontantstøttePerioder={harKontantstøttePerioder}
+                kontantstøttePerioderGrunnlagsdata={kontantstøttePerioderGrunnlagsdata}
             />
             <TilleggsstønadValg
                 erLesevisning={!behandlingErRedigerbar}
