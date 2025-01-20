@@ -5,8 +5,6 @@ import { NotePencilIcon } from '@navikt/aksel-icons';
 import { LogiskeVedlegg } from './LogiskeVedlegg';
 import styled from 'styled-components';
 import { Dokumentinfo } from '../../../App/typer/dokumentliste';
-import { useToggles } from '../../../App/context/TogglesContext';
-import { ToggleName } from '../../../App/context/toggles';
 
 const Div = styled.div<{ $erHovedDokument: boolean }>`
     margin-left: ${(props) => (props.$erHovedDokument ? '0rem' : '2rem')};
@@ -35,18 +33,13 @@ export const Dokumenttittel: React.FC<Props> = ({
     settValgtDokumentId,
     erHovedDokument,
 }) => {
-    const { toggles } = useToggles();
-    const skalViseEndreTittelKnapp = toggles[ToggleName.visEndreDokumenttittelKnapp];
-
     return (
         <HStack gap="2">
-            {skalViseEndreTittelKnapp && (
-                <IkonKnapp
-                    icon={<NotePencilIcon title="Rediger" />}
-                    variant="tertiary"
-                    onClick={() => settValgtDokumentId(dokument.dokumentinfoId)}
-                />
-            )}
+            <IkonKnapp
+                icon={<NotePencilIcon title="Rediger" />}
+                variant="tertiary"
+                onClick={() => settValgtDokumentId(dokument.dokumentinfoId)}
+            />
             <Div $erHovedDokument={erHovedDokument}>
                 <Tittel
                     href={`/dokument/journalpost/${dokument.journalpostId}/dokument-pdf/${dokument.dokumentinfoId}/${tittelMedUrlGodkjenteTegn(dokument.tittel)}`}
