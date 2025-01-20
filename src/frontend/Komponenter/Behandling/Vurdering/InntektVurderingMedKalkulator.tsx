@@ -51,8 +51,8 @@ export const InntektVurderingMedKalkulator: FC<InntektVurderingMedKalkualtor> = 
    - 10 % opp: ${plusTi} kroner per måned.
 `;
 
-        const existingText = vurdering.begrunnelse || '';
-        onChange(existingText + beregnetInntektTekst);
+        const eksisterendeTekst = vurdering.begrunnelse || '';
+        onChange(eksisterendeTekst + beregnetInntektTekst);
     };
 
     return (
