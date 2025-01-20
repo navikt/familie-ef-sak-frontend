@@ -122,10 +122,7 @@ const KontantstøtteValg: React.FC<Props> = ({
     const visGrid = kontantstøttePerioder.value.length > 0;
     const radioGruppeTekst =
         'Skal stønaden reduseres fordi brukeren, eller en brukeren bor med, har fått utbetalt kontantstøtte i perioden(e) det er søkt om?';
-    const skalViseBegrunnelseLesevisning =
-        erLesevisning &&
-        kontantstøtteBegrunnelse.value !== '' &&
-        kontantstøtteBegrunnelse.value !== null;
+    const skalViseBegrunnelseLesevisning = erLesevisning && kontantstøtteBegrunnelse.value !== null;
 
     return (
         <Container>

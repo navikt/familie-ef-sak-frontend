@@ -152,7 +152,7 @@ export const InnvilgeBarnetilsyn: React.FC<{
     const tilleggsstønadBegrunnelseState = formState.getProps(
         'tilleggsstønadBegrunnelse'
     ) as FieldState;
-    const kontantstøtteBegrunnelsesState = formState.getProps(
+    const kontantstøtteBegrunnelseState = formState.getProps(
         'kontantstøtteBegrunnelse'
     ) as FieldState;
     const stønadsreduksjonState = formState.getProps('skalStønadReduseres') as FieldState;
@@ -200,7 +200,7 @@ export const InnvilgeBarnetilsyn: React.FC<{
     }, [
         utgiftsperiodeState.value,
         kontantstøtteState.value,
-        kontantstøtteBegrunnelsesState.value,
+        kontantstøtteBegrunnelseState.value,
         tilleggsstønadState.value,
         tilleggsstønadBegrunnelseState.value,
         stønadsreduksjonState.value,
@@ -332,7 +332,7 @@ export const InnvilgeBarnetilsyn: React.FC<{
                 settValideringsFeil={formState.setErrors}
                 valideringsfeil={formState.errors}
                 harKontantstøttePerioder={harKontantstøttePerioder}
-                kontantstøtteBegrunnelse={kontantstøtteBegrunnelsesState}
+                kontantstøtteBegrunnelse={kontantstøtteBegrunnelseState}
             />
             <TilleggsstønadValg
                 erLesevisning={!behandlingErRedigerbar}
