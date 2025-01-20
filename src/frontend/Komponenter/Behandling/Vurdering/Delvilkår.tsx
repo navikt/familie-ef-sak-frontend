@@ -33,7 +33,7 @@ export const Delvilkår: FC<Props> = ({ regel, vurdering, settVurdering }) => {
     return (
         <VStack>
             <HStack justify="space-between" width="100%">
-                <Heading size="small" style={{ flex: 1, wordBreak: 'break-word' }}>
+                <Heading size="xsmall" style={{ flex: 1, wordBreak: 'break-word' }}>
                     {delvilkårTypeTilTekst[regel.regelId]}
                 </Heading>
                 {visKalkulator && (
