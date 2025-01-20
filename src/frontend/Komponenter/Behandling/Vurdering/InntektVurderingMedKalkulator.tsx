@@ -9,6 +9,11 @@ import BeregnetInntektKalkulator from '../VedtakOgBeregning/Overgangsstønad/Inn
 import { hjelpeTekstConfig } from './hjelpetekstconfig';
 import { RadioKnapper } from './RadioKnapper';
 import Begrunnelse from './Begrunnelse';
+import {
+    beregnTiProsentReduksjonIMånedsinntekt,
+    beregnTiProsentØkningIMånedsinntekt,
+} from '../../../App/hooks/useVerdierForBrev';
+import { formaterTallMedTusenSkille } from '../../../App/utils/formatter';
 
 const utledRadioKnapper = (regel: Regel, settVurdering: (nyttSvar: Vurdering) => void) => {
     switch (regel.regelId) {
@@ -37,6 +42,19 @@ export const InntektVurderingMedKalkulator: FC<InntektVurderingMedKalkualtor> = 
     const begrunnelsetype = vurdering.svar && regel.svarMapping[vurdering.svar].begrunnelseType;
     const visKalkulator = (begrunnelsetype ?? BegrunnelseRegel.UTEN) === BegrunnelseRegel.UTEN;
 
+    const leggTilBeregnetInntektTekstIBegrunnelse = (årsinntekt: number) => {
+        const minusTi = beregnTiProsentReduksjonIMånedsinntekt(årsinntekt);
+        const plusTi = beregnTiProsentØkningIMånedsinntekt(årsinntekt);
+
+        const beregnetInntektTekst = `Forventet årsinntekt fra [DATO]: ${formaterTallMedTusenSkille(årsinntekt)} kroner.
+   - 10 % ned: ${minusTi} kroner per måned.
+   - 10 % opp: ${plusTi} kroner per måned.
+`;
+
+        const existingText = vurdering.begrunnelse || '';
+        onChange(existingText + beregnetInntektTekst);
+    };
+
     return (
         <VStack>
             <HStack justify="space-between" width="100%" gap="2">
@@ -46,7 +64,9 @@ export const InntektVurderingMedKalkulator: FC<InntektVurderingMedKalkualtor> = 
                 {!visKalkulator && (
                     <div>
                         <BeregnetInntektKalkulator
-                            leggTilBeregnetInntektTekstIBegrunnelse={() => {}}
+                            leggTilBeregnetInntektTekstIBegrunnelse={
+                                leggTilBeregnetInntektTekstIBegrunnelse
+                            }
                         />
                     </div>
                 )}
