@@ -46,7 +46,7 @@ export const KontantstøtteAlert: React.FC<Props> = ({
                                         ? formaterNullableIsoDato(
                                               kontantstøttePerioderGrunnlagsdata[0].tomMåned
                                           )
-                                        : 'nå'}{' '}
+                                        : ''}{' '}
                                     {'(kilde: ' +
                                         kontantstøtteKilde(
                                             kontantstøttePerioderGrunnlagsdata[0].kilde
