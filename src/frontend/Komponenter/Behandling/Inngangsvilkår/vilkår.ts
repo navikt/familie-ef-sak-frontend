@@ -34,7 +34,7 @@ export interface IVilkårGrunnlag {
 
 export interface KsPeriode {
     fomMåned: string;
-    tomMåned?: string;
+    tomMåned: string;
     kilde: string;
 }
 

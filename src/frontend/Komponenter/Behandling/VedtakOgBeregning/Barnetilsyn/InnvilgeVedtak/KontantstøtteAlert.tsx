@@ -42,11 +42,9 @@ export const KontantstøtteAlert: React.FC<Props> = ({
                                         kontantstøttePerioderGrunnlagsdata[0].fomMåned
                                     )}{' '}
                                     -{' '}
-                                    {kontantstøttePerioderGrunnlagsdata[0].tomMåned
-                                        ? formaterNullableIsoDato(
-                                              kontantstøttePerioderGrunnlagsdata[0].tomMåned
-                                          )
-                                        : 'nå'}{' '}
+                                    {formaterNullableIsoDato(
+                                        kontantstøttePerioderGrunnlagsdata[0].tomMåned
+                                    )}{' '}
                                     {'(kilde: ' +
                                         kontantstøtteKilde(
                                             kontantstøttePerioderGrunnlagsdata[0].kilde
