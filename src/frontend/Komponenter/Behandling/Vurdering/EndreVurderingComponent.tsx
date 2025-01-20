@@ -19,6 +19,7 @@ import {
     oppdaterSvarIListe,
 } from './utils';
 import Begrunnelse from './Begrunnelse';
+import Delvilkår from './Delvilkår';
 import { useApp } from '../../../App/context/AppContext';
 import { Button } from '@navikt/ds-react';
 import styled from 'styled-components';
@@ -26,7 +27,8 @@ import {
     EkspandertTilstand,
     useEkspanderbareVilkårpanelContext,
 } from '../../../App/context/EkspanderbareVilkårpanelContext';
-import { Delvilkår } from './Delvilkår';
+import { visBeregnetInntektKalkulator } from './VurderingUtil';
+import { InntektVurderingMedKalkulator } from './InntektVurderingMedKalkulator';
 
 /**
  * Skal resette undervilkår, men ikke rootnivå hvis en tidligere endrer seg
@@ -146,25 +148,59 @@ const EndreVurderingComponent: FC<{
                 return delvilkår.vurderinger.map((svar) => {
                     const regel = regler[svar.regelId];
 
+                    const visInntektVurderingMedKalkulator = visBeregnetInntektKalkulator(
+                        regel.regelId
+                    );
+
                     return (
                         <DelvilkårContainer key={regel.regelId}>
-                            <Delvilkår
-                                vurdering={svar}
-                                regel={regel}
-                                settVurdering={(nyVurdering) =>
-                                    oppdaterSvar(delvilkår.vurderinger, delvilkårIndex, nyVurdering)
-                                }
-                            />
-                            <Begrunnelse
-                                onChange={(begrunnelse) =>
-                                    oppdaterBegrunnelse(delvilkår.vurderinger, delvilkårIndex, {
-                                        ...svar,
-                                        begrunnelse,
-                                    })
-                                }
-                                svar={svar}
-                                regel={regel}
-                            />
+                            {visInntektVurderingMedKalkulator ? (
+                                <InntektVurderingMedKalkulator
+                                    vurdering={svar}
+                                    regel={regel}
+                                    settVurdering={(nyVurdering) =>
+                                        oppdaterSvar(
+                                            delvilkår.vurderinger,
+                                            delvilkårIndex,
+                                            nyVurdering
+                                        )
+                                    }
+                                    onChange={(begrunnelse) =>
+                                        oppdaterBegrunnelse(delvilkår.vurderinger, delvilkårIndex, {
+                                            ...svar,
+                                            begrunnelse,
+                                        })
+                                    }
+                                />
+                            ) : (
+                                <>
+                                    <Delvilkår
+                                        vurdering={svar}
+                                        regel={regel}
+                                        settVurdering={(nyVurdering) =>
+                                            oppdaterSvar(
+                                                delvilkår.vurderinger,
+                                                delvilkårIndex,
+                                                nyVurdering
+                                            )
+                                        }
+                                    />
+                                    <Begrunnelse
+                                        onChange={(begrunnelse) =>
+                                            oppdaterBegrunnelse(
+                                                delvilkår.vurderinger,
+                                                delvilkårIndex,
+                                                {
+                                                    ...svar,
+                                                    begrunnelse,
+                                                }
+                                            )
+                                        }
+                                        svar={svar}
+                                        regel={regel}
+                                    />
+                                </>
+                            )}
                         </DelvilkårContainer>
                     );
                 });
