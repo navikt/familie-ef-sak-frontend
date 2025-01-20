@@ -11,8 +11,6 @@ import {
     IVedtakType,
 } from '../../../App/typer/vedtak';
 import { Alert, ExpansionCard, List, VStack } from '@navikt/ds-react';
-import { useToggles } from '../../../App/context/TogglesContext';
-import { ToggleName } from '../../../App/context/toggles';
 import { mapSimuleringstabellRader } from './utils';
 import Sanksjonsperiode from './Sanksjonsperiode';
 import { useApp } from '../../../App/context/AppContext';
@@ -23,6 +21,7 @@ import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { BodyLongSmall } from '../../../Felles/Visningskomponenter/Tekster';
 import { ASurfaceWarningSubtle, ASurfaceWarningSubtleHover } from '@navikt/ds-tokens/dist/tokens';
 import { AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
+
 const Container = styled.div`
     padding: 2rem;
     display: flex;
@@ -42,7 +41,7 @@ const AlertWarning = styled(Alert)`
     max-width: 60rem;
 `;
 
-const RETTSGEBYR_BELØP = 1277;
+const RETTSGEBYR_BELØP = 1314;
 
 const Simulering: React.FC<{
     simuleringsresultat: SimuleringResultat;
@@ -50,7 +49,6 @@ const Simulering: React.FC<{
     behandling: Behandling;
 }> = ({ simuleringsresultat, behandling, lagretVedtak }) => {
     const behandlingId = behandling.id;
-    const { toggles } = useToggles();
     const { axiosRequest } = useApp();
     const muligeÅr = [...new Set(simuleringsresultat.perioder.map((p) => formaterIsoÅr(p.fom)))];
 
@@ -85,8 +83,7 @@ const Simulering: React.FC<{
 
     const skalViseValgForAutomatiskBehandlingUnder4xRettsgebyr =
         simuleringsresultat.feilutbetaling < RETTSGEBYR_BELØP * 4 &&
-        simuleringsresultat.etterbetaling === 0 &&
-        toggles[ToggleName.visAutomatiskBehandlingAvTilbakekrevingValg];
+        simuleringsresultat.etterbetaling === 0;
 
     const harManuellePosteringer = simuleringsresultat.sumManuellePosteringer
         ? simuleringsresultat.sumManuellePosteringer > 0
