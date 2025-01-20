@@ -40,7 +40,7 @@ export const InntektVurderingMedKalkulator: FC<InntektVurderingMedKalkualtor> = 
     const hjelpetekst = hjelpeTekstConfig[vurdering.regelId];
 
     const begrunnelsetype = vurdering.svar && regel.svarMapping[vurdering.svar].begrunnelseType;
-    const visKalkulator = (begrunnelsetype ?? BegrunnelseRegel.UTEN) === BegrunnelseRegel.UTEN;
+    const visKalkulator = (begrunnelsetype ?? BegrunnelseRegel.UTEN) !== BegrunnelseRegel.UTEN;
 
     const leggTilBeregnetInntektTekstIBegrunnelse = (årsinntekt: number) => {
         const minusTi = beregnTiProsentReduksjonIMånedsinntekt(årsinntekt);
@@ -62,7 +62,7 @@ Forventet årsinntekt fra [DATO]: ${formaterTallMedTusenSkille(årsinntekt)} kro
                 <Heading size="xsmall" style={{ flex: 1, wordBreak: 'break-word' }}>
                     {delvilkårTypeTilTekst[regel.regelId]}
                 </Heading>
-                {!visKalkulator && (
+                {visKalkulator && (
                     <div>
                         <BeregnetInntektKalkulator
                             leggTilBeregnetInntektTekstIBegrunnelse={
