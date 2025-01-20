@@ -46,7 +46,8 @@ export const InntektVurderingMedKalkulator: FC<InntektVurderingMedKalkualtor> = 
         const minusTi = beregnTiProsentReduksjonIMånedsinntekt(årsinntekt);
         const plusTi = beregnTiProsentØkningIMånedsinntekt(årsinntekt);
 
-        const beregnetInntektTekst = `Forventet årsinntekt fra [DATO]: ${formaterTallMedTusenSkille(årsinntekt)} kroner.
+        const beregnetInntektTekst = `
+Forventet årsinntekt fra [DATO]: ${formaterTallMedTusenSkille(årsinntekt)} kroner.
    - 10 % ned: ${minusTi} kroner per måned.
    - 10 % opp: ${plusTi} kroner per måned.
 `;
