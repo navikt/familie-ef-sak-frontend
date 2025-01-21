@@ -52,7 +52,12 @@ export const ModalOpprettOgFerdigstilleOppgaver: FC<{
             !oppgavetyperSomSkalOpprettes.includes(
                 OppgaveTypeForOpprettelse.INNTEKTSKONTROLL_SELVSTENDIG_NÆRINGSDRIVENDE
             )) ||
-        !!årForInntektskontrollSelvstendigNæringsdrivende;
+        !!årForInntektskontrollSelvstendigNæringsdrivende ||
+        (!kanVelgeMellomFlereOppgavetyper &&
+            oppgavetyperSomKanOpprettes &&
+            oppgavetyperSomKanOpprettes.includes(
+                OppgaveTypeForOpprettelse.INNTEKTSKONTROLL_1_ÅR_FREM_I_TID
+            ));
 
     return (
         <DataViewer response={{ fremleggsOppgaver }}>
@@ -84,6 +89,7 @@ export const ModalOpprettOgFerdigstilleOppgaver: FC<{
                                     }
                                 />
                                 <Divider />
+                                {/* {oppgaverSomSkalAutomatiskFerdigstilles.length > 0 && ( */}
                                 <TabellFerdigstilleOppgaver
                                     fremleggsOppgaver={fremleggsOppgaver}
                                     oppgaverSomSkalAutomatiskFerdigstilles={
@@ -93,6 +99,7 @@ export const ModalOpprettOgFerdigstilleOppgaver: FC<{
                                         handleSettOppgaverSomSkalFerdigstilles
                                     }
                                 />
+                                {/* )} */}
                             </VStack>
                         </Modal.Body>
                         <Modal.Footer>

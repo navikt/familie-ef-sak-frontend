@@ -67,14 +67,16 @@ const SendTilBeslutterFooter: React.FC<{
     ferdigstillUtenBeslutter: boolean;
     oppgavetyperSomKanOpprettes?: OppgaveTypeForOpprettelse[];
     oppgaverForOpprettelse?: OppgaverForOpprettelseRequest;
-    settHentPåNytt?: React.Dispatch<React.SetStateAction<boolean>>;
+    hentOppgaverForOpprettelseCallback: {
+        rerun: () => void;
+    };
 }> = ({
     behandling,
     kanSendesTilBeslutter,
     behandlingErRedigerbar,
     ferdigstillUtenBeslutter,
     oppgavetyperSomKanOpprettes,
-    settHentPåNytt,
+    hentOppgaverForOpprettelseCallback,
 }) => {
     const { axiosRequest, personIdent } = useApp();
     const navigate = useNavigate();
@@ -104,9 +106,6 @@ const SendTilBeslutterFooter: React.FC<{
     const sendTilBeslutter = () => {
         settLaster(true);
         settFeilmelding(undefined);
-        if (settHentPåNytt) {
-            settHentPåNytt(false);
-        }
         axiosRequest<string, SendTilBeslutterRequest>({
             method: 'POST',
             url: `/familie-ef-sak/api/vedtak/${behandling.id}/send-til-beslutter`,
@@ -123,10 +122,8 @@ const SendTilBeslutterFooter: React.FC<{
                     hentAnsvarligSaksbehandler.rerun();
                     hentTotrinnskontroll.rerun();
                     settVisMarkereGodkjenneVedtakOppgaveModal(false);
+                    hentOppgaverForOpprettelseCallback.rerun();
                     settVisModal(true);
-                    if (settHentPåNytt) {
-                        settHentPåNytt(true);
-                    }
                 } else {
                     settFeilmelding(res.frontendFeilmelding);
                     settNyEierModalState(ModalState.LUKKET);

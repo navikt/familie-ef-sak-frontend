@@ -9,11 +9,11 @@ import { useApp } from '../../../App/context/AppContext';
 import { TotrinnskontrollStatus } from '../../../App/typer/totrinnskontroll';
 import { BrevmottakereForBehandling } from '../Brevmottakere/BrevmottakereForBehandling';
 import { skalFerdigstilleUtenBeslutter } from '../VedtakOgBeregning/Felles/utils';
-import { useHentOppgaverForOpprettelse } from '../../../App/hooks/useHentOppgaverForOpprettelse';
 import { HøyreKolonne, StyledBrev, VenstreKolonne } from './StyledBrev';
 import { Behandling } from '../../../App/typer/fagsak';
 import { FremleggoppgaverSomOpprettes } from './FremleggoppgaverSomOpprettes';
 import { VStack } from '@navikt/ds-react';
+import { useHentOppgaverForOpprettelse } from '../../../App/hooks/useHentOppgaverForOpprettelse';
 
 interface Props {
     behandling: Behandling;
@@ -25,10 +25,8 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
         useBehandling();
     const [brevRessurs, settBrevRessurs] = useState<Ressurs<string>>(byggTomRessurs());
     const [kanSendesTilBeslutter, settKanSendesTilBeslutter] = useState<boolean>(false);
-    const { hentOppgaverForOpprettelse, oppgaverForOpprettelse } = useHentOppgaverForOpprettelse(
-        behandling.id
-    );
-    const [hentPåNytt, settHentPåNytt] = useState<boolean>(false);
+    const { oppgaverForOpprettelse, hentOppgaverForOpprettelseCallback } =
+        useHentOppgaverForOpprettelse(behandling.id);
 
     const lagBeslutterBrev = () => {
         axiosRequest<string, null>({
@@ -63,10 +61,6 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
         // eslint-disable-next-line
     }, [behandlingErRedigerbar, totrinnskontroll]);
 
-    useEffect(() => {
-        hentOppgaverForOpprettelse();
-    }, [hentPåNytt, hentOppgaverForOpprettelse]);
-
     return (
         <DataViewer
             response={{
@@ -87,8 +81,7 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
                                 {!behandlingErRedigerbar && (
                                     <FremleggoppgaverSomOpprettes
                                         oppgavetyperSomSkalOpprettes={
-                                            oppgaverForOpprettelse.oppgavetyperSomSkalOpprettes ??
-                                            []
+                                            oppgaverForOpprettelse.oppgavetyperSomSkalOpprettes
                                         }
                                     />
                                 )}
@@ -116,7 +109,7 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
                             oppgaverForOpprettelse.oppgavetyperSomKanOpprettes
                         }
                         oppgaverForOpprettelse={oppgaverForOpprettelse}
-                        settHentPåNytt={settHentPåNytt}
+                        hentOppgaverForOpprettelseCallback={hentOppgaverForOpprettelseCallback}
                     />
                 </>
             )}
