@@ -75,38 +75,31 @@ describe('validering av innvilget barnetilsyn', () => {
     });
 
     test('skal validere valg av tilleggsstønad', () => {
-        const underkjentForm = { ...lagForm(), harTilleggsstønad: ERadioValg.IKKE_SATT };
-        const godkjentForm = { ...lagForm(), harTilleggsstønad: ERadioValg.NEI };
-        const godkjentForm2 = { ...lagForm(), harTilleggsstønad: ERadioValg.JA };
+        const godkjentForm = { ...lagForm(), harTilleggsstønad: ERadioValg.IKKE_SATT };
+        const underkjentForm = { ...lagForm(), harTilleggsstønad: ERadioValg.NEI };
+        const underkjentForm2 = { ...lagForm(), harTilleggsstønad: ERadioValg.JA };
 
-        const underkjentValidering = validerInnvilgetVedtakForm(underkjentForm);
         const godkjentValidering = validerInnvilgetVedtakForm(godkjentForm);
-        const godkjentValidering2 = validerInnvilgetVedtakForm(godkjentForm2);
+        const underkjentValidering = validerInnvilgetVedtakForm(underkjentForm);
+        const underkjentValidering2 = validerInnvilgetVedtakForm(underkjentForm2);
 
-        expect(underkjentValidering.harTilleggsstønad).toBe('Mangler verdi');
-        expect(godkjentValidering.harTilleggsstønad).toBeUndefined;
-        expect(godkjentValidering2.harTilleggsstønad).toBeUndefined;
+        expect(underkjentValidering.harTilleggsstønad).toBeUndefined;
+        expect(godkjentValidering.harTilleggsstønad).toBe('Skal være ikke være satt');
+        expect(underkjentValidering2.harTilleggsstønad).toBe('Skal være ikke være satt');
     });
 
     test('skal validere valg av stønadsreduksjon', () => {
         const underkjentForm = { ...lagForm(), skalStønadReduseres: ERadioValg.IKKE_SATT };
         const godkjentForm = { ...lagForm(), skalStønadReduseres: ERadioValg.NEI };
         const godkjentForm2 = { ...lagForm(), skalStønadReduseres: ERadioValg.JA };
-        const godkjentForm3 = {
-            ...lagForm(),
-            harTilleggsstønad: ERadioValg.NEI,
-            skalStønadReduseres: ERadioValg.NEI,
-        };
 
         const underkjentValidering = validerInnvilgetVedtakForm(underkjentForm);
         const godkjentValidering = validerInnvilgetVedtakForm(godkjentForm);
         const godkjentValidering2 = validerInnvilgetVedtakForm(godkjentForm2);
-        const godkjentValidering3 = validerInnvilgetVedtakForm(godkjentForm3);
 
         expect(underkjentValidering.skalStønadReduseres).toBe('Mangler verdi');
         expect(godkjentValidering.skalStønadReduseres).toBeUndefined;
         expect(godkjentValidering2.skalStønadReduseres).toBeUndefined;
-        expect(godkjentValidering3.skalStønadReduseres).toBeUndefined;
     });
 });
 
@@ -357,20 +350,20 @@ describe('validering av kontantstøtteperioder for innvilget barnetilsyn', () =>
     });
 
     describe('validering av tilleggsstøndadsperioder', () => {
-        test('skal ikke valideres dersom ingen tilleggsstønad eller stønadsreduksjon', () => {
+        test('skal bare validere dersom stønad skal reduseres er valgt', () => {
             const tilleggsstønadPerioder = [
                 lagBeløpsperiode('2024-01', '2024-02', 10),
                 lagBeløpsperiode('2024-03', '2024-04', 10),
             ];
             const vedtaksform = {
                 ...lagForm(),
-                harTilleggsstønad: ERadioValg.NEI,
+                harTilleggsstønad: ERadioValg.IKKE_SATT,
                 skalStønadReduseres: ERadioValg.JA,
                 tilleggsstønadsperioder: tilleggsstønadPerioder,
             };
             const vedtaksform2 = {
                 ...lagForm(),
-                harTilleggsstønad: ERadioValg.JA,
+                harTilleggsstønad: ERadioValg.IKKE_SATT,
                 skalStønadReduseres: ERadioValg.NEI,
                 tilleggsstønadsperioder: tilleggsstønadPerioder,
             };
@@ -378,7 +371,7 @@ describe('validering av kontantstøtteperioder for innvilget barnetilsyn', () =>
             const validering2 = validerInnvilgetVedtakForm(vedtaksform2);
 
             expect(validering.tilleggsstønadsperioder).toBeDefined;
-            expect(validering.tilleggsstønadsperioder.length).toBe(1);
+            expect(validering.tilleggsstønadsperioder.length).toBe(2);
             expect(validering.tilleggsstønadsperioder[0].årMånedFra).toBe(undefined);
             expect(validering.tilleggsstønadsperioder[0].årMånedTil).toBe(undefined);
             expect(validering.tilleggsstønadsperioder[0].beløp).toBe(undefined);

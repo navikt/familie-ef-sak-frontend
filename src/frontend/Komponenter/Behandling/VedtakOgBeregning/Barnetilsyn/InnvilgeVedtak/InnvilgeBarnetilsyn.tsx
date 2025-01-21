@@ -36,7 +36,7 @@ export type InnvilgeVedtakForm = {
     utgiftsperioder: IUtgiftsperiode[];
     kontantstøtteperioder?: IPeriodeMedBeløp[];
     harKontantstøtte: ERadioValg;
-    harTilleggsstønad?: ERadioValg;
+    harTilleggsstønad: ERadioValg;
     tilleggsstønadBegrunnelse?: string;
     skalStønadReduseres: ERadioValg;
     tilleggsstønadsperioder?: IPeriodeMedBeløp[];

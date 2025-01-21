@@ -22,6 +22,7 @@ export const validerInnvilgetVedtakForm = ({
     utgiftsperioder,
     harKontantstøtte,
     kontantstøtteperioder,
+    harTilleggsstønad,
     tilleggsstønadBegrunnelse,
     skalStønadReduseres,
     tilleggsstønadsperioder,
@@ -38,6 +39,7 @@ export const validerInnvilgetVedtakForm = ({
             utgiftsperioder,
             harKontantstøtte,
             kontantstøtteperioder,
+            harTilleggsstønad,
             skalStønadReduseres,
             tilleggsstønadsperioder,
         }),
@@ -50,18 +52,21 @@ export const validerPerioder = ({
     utgiftsperioder,
     harKontantstøtte,
     kontantstøtteperioder,
+    harTilleggsstønad,
     skalStønadReduseres,
     tilleggsstønadsperioder,
 }: {
     utgiftsperioder: IUtgiftsperiode[];
     harKontantstøtte: ERadioValg;
     kontantstøtteperioder?: IPeriodeMedBeløp[];
+    harTilleggsstønad: ERadioValg;
     skalStønadReduseres: ERadioValg;
     tilleggsstønadsperioder?: IPeriodeMedBeløp[];
 }): FormErrors<{
     utgiftsperioder: IUtgiftsperiode[];
     kontantstøtteperioder?: IPeriodeMedBeløp[];
     harKontantstøtte: ERadioValg;
+    harTilleggsstønad: ERadioValg;
     skalStønadReduseres: ERadioValg;
     tilleggsstønadsperioder?: IPeriodeMedBeløp[];
 }> => {
@@ -72,6 +77,10 @@ export const validerPerioder = ({
         skalStønadReduseres:
             skalStønadReduseres === ERadioValg.IKKE_SATT ? 'Mangler verdi' : undefined,
         ...validerTilleggsstønadPerioder({ tilleggsstønadsperioder }, skalStønadReduseres),
+        harTilleggsstønad:
+            harTilleggsstønad === ERadioValg.JA || ERadioValg.NEI
+                ? 'Skal være ikke være satt'
+                : undefined,
     };
 };
 
