@@ -9,17 +9,18 @@ import BeregnetInntektKalkulator from '../VedtakOgBeregning/Overgangsstønad/Inn
 import { hjelpeTekstConfig } from './hjelpetekstconfig';
 import { RadioKnapper } from './RadioKnapper';
 import Begrunnelse from './Begrunnelse';
-import {
-    beregnTiProsentReduksjonIMånedsinntekt,
-    beregnTiProsentØkningIMånedsinntekt,
-} from '../../../App/hooks/useVerdierForBrev';
-import { formaterTallMedTusenSkille } from '../../../App/utils/formatter';
+import { genererBeregnetInntektsTekst } from '../../../App/hooks/useVerdierForBrev';
 import styled from 'styled-components';
 
 const StyledHStack = styled(HStack)`
     justify-content: space-between;
     width: 100%;
     gap: 2;
+`;
+
+const StyledHeading = styled(Heading)`
+    flex: 1;
+    word-break: break-word;
 `;
 
 const utledRadioKnapper = (regel: Regel, settVurdering: (nyttSvar: Vurdering) => void) => {
@@ -50,15 +51,7 @@ export const InntektVurderingMedKalkulator: FC<InntektVurderingMedKalkualtor> = 
     const visKalkulator = (begrunnelsetype ?? BegrunnelseRegel.UTEN) !== BegrunnelseRegel.UTEN;
 
     const leggTilBeregnetInntektTekstIBegrunnelse = (årsinntekt: number) => {
-        const minusTi = beregnTiProsentReduksjonIMånedsinntekt(årsinntekt);
-        const plusTi = beregnTiProsentØkningIMånedsinntekt(årsinntekt);
-
-        const beregnetInntektTekst = `
-Forventet årsinntekt fra [DATO]: ${formaterTallMedTusenSkille(årsinntekt)} kroner.
-   - 10 % ned: ${minusTi} kroner per måned.
-   - 10 % opp: ${plusTi} kroner per måned.
-`;
-
+        const beregnetInntektTekst = genererBeregnetInntektsTekst(årsinntekt);
         const eksisterendeTekst = vurdering.begrunnelse || '';
         onChange(eksisterendeTekst + beregnetInntektTekst);
     };
@@ -66,9 +59,7 @@ Forventet årsinntekt fra [DATO]: ${formaterTallMedTusenSkille(årsinntekt)} kro
     return (
         <VStack>
             <StyledHStack>
-                <Heading size="xsmall" style={{ flex: 1, wordBreak: 'break-word' }}>
-                    {delvilkårTypeTilTekst[regel.regelId]}
-                </Heading>
+                <StyledHeading size={'small'}>{delvilkårTypeTilTekst[regel.regelId]}</StyledHeading>
                 {visKalkulator && (
                     <div>
                         <BeregnetInntektKalkulator
