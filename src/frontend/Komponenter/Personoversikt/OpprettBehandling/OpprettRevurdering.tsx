@@ -27,11 +27,14 @@ import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { erEtterDagensDato, erGyldigDato } from '../../../App/utils/dato';
 import { Alert, Button } from '@navikt/ds-react';
 import { Datovelger } from '../../../Felles/Datovelger/Datovelger';
-import LeggTilBarnSomSkalFødes from '../../Behandling/Førstegangsbehandling/LeggTilBarnSomSkalFødes';
 import { BarnSomSkalFødes } from '../../../App/hooks/useJournalføringState';
 import { ÅrsakSelect } from './ÅrsakSelect';
+import { TerminBarnSkjema } from '../../Behandling/Førstegangsbehandling/TerminBarnSkjema';
 
 const DatoContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
     min-height: 20rem;
 `;
 
@@ -198,7 +201,7 @@ export const OpprettRevurdering: React.FunctionComponent<Props> = ({
                             )}
                             {fagsak.stønadstype !== Stønadstype.BARNETILSYN &&
                                 valgtBehandlingsårsak === Behandlingsårsak.PAPIRSØKNAD && (
-                                    <LeggTilBarnSomSkalFødes
+                                    <TerminBarnSkjema
                                         barnSomSkalFødes={barnSomSkalFødes}
                                         oppdaterBarnSomSkalFødes={settBarnSomSkalFødes}
                                         tittel={'Terminbarn'}
