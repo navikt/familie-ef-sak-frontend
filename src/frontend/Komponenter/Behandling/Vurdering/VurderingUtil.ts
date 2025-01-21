@@ -36,3 +36,7 @@ export const vilkårStatusForBarn = (vilkårsresultater: Vilkårsresultat[]): Vi
     }
     return Vilkårsresultat.IKKE_OPPFYLT;
 };
+
+export const visBeregnetInntektKalkulator = (regelId: string): boolean => {
+    return regelId === 'INNTEKT_SAMSVARER_MED_OS';
+};
