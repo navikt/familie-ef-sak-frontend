@@ -108,7 +108,6 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
                         oppgavetyperSomKanOpprettes={
                             oppgaverForOpprettelse.oppgavetyperSomKanOpprettes
                         }
-                        oppgaverForOpprettelse={oppgaverForOpprettelse}
                         hentOppgaverForOpprettelseCallback={hentOppgaverForOpprettelseCallback}
                     />
                 </>

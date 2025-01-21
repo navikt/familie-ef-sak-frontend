@@ -4,23 +4,25 @@ import { useCallback, useState } from 'react';
 import { OppgaveTypeForOpprettelse } from '../../Komponenter/Behandling/Totrinnskontroll/oppgaveForOpprettelseTyper';
 import { AxiosRequestConfig } from 'axios';
 import { useRerunnableEffect } from '../hooks/felles/useRerunnableEffect';
-export interface IOppgaverForOpprettelse {
+interface OppgaverForOpprettelseRequest {
     hentOppgaverForOpprettelseCallback: {
         rerun: () => void;
     };
-    oppgaverForOpprettelse: Ressurs<OppgaverForOpprettelseRequest>;
+    oppgaverForOpprettelse: Ressurs<OppgaverForOpprettelse>;
 }
 
-export interface OppgaverForOpprettelseRequest {
+interface OppgaverForOpprettelse {
     oppgavetyperSomKanOpprettes: OppgaveTypeForOpprettelse[];
     oppgavetyperSomSkalOpprettes: OppgaveTypeForOpprettelse[];
 }
 
-export const useHentOppgaverForOpprettelse = (behandlingId: string): IOppgaverForOpprettelse => {
+export const useHentOppgaverForOpprettelse = (
+    behandlingId: string
+): OppgaverForOpprettelseRequest => {
     const { axiosRequest } = useApp();
 
     const [oppgaverForOpprettelse, settOppgaverForOpprettelse] =
-        useState<Ressurs<OppgaverForOpprettelseRequest>>(byggTomRessurs());
+        useState<Ressurs<OppgaverForOpprettelse>>(byggTomRessurs());
 
     const hentOppgaverForOpprettelseCallback = useRerunnableEffect(
         useCallback(() => {
@@ -28,8 +30,8 @@ export const useHentOppgaverForOpprettelse = (behandlingId: string): IOppgaverFo
                 method: 'GET',
                 url: `/familie-ef-sak/api/oppgaverforopprettelse/${behandlingId}`,
             };
-            axiosRequest<OppgaverForOpprettelseRequest, null>(behandlingConfig).then(
-                (res: Ressurs<OppgaverForOpprettelseRequest>) => settOppgaverForOpprettelse(res)
+            axiosRequest<OppgaverForOpprettelse, null>(behandlingConfig).then(
+                (res: Ressurs<OppgaverForOpprettelse>) => settOppgaverForOpprettelse(res)
             );
         }, [axiosRequest, behandlingId]),
         [axiosRequest, behandlingId]

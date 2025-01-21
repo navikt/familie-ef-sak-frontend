@@ -19,7 +19,6 @@ import { ToggleName } from '../../../App/context/toggles';
 import { useHentOppgaver } from '../../../App/hooks/useHentOppgaver';
 import { IkkeFortroligEnhet } from '../../Oppgavebenk/typer/enhet';
 import { ModalOpprettOgFerdigstilleOppgaver } from './ModalOpprettOgFerdigstilleOppgaver';
-import { OppgaverForOpprettelseRequest } from '../../../App/hooks/useHentOppgaverForOpprettelse';
 
 const Footer = styled.footer`
     width: 100%;
@@ -66,8 +65,7 @@ const SendTilBeslutterFooter: React.FC<{
     behandlingErRedigerbar: boolean;
     ferdigstillUtenBeslutter: boolean;
     oppgavetyperSomKanOpprettes?: OppgaveTypeForOpprettelse[];
-    oppgaverForOpprettelse?: OppgaverForOpprettelseRequest;
-    hentOppgaverForOpprettelseCallback: {
+    hentOppgaverForOpprettelseCallback?: {
         rerun: () => void;
     };
 }> = ({
@@ -122,7 +120,7 @@ const SendTilBeslutterFooter: React.FC<{
                     hentAnsvarligSaksbehandler.rerun();
                     hentTotrinnskontroll.rerun();
                     settVisMarkereGodkjenneVedtakOppgaveModal(false);
-                    hentOppgaverForOpprettelseCallback.rerun();
+                    hentOppgaverForOpprettelseCallback?.rerun();
                     settVisModal(true);
                 } else {
                     settFeilmelding(res.frontendFeilmelding);

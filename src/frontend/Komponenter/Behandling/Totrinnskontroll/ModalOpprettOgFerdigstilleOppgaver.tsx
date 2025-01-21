@@ -35,9 +35,9 @@ export const ModalOpprettOgFerdigstilleOppgaver: FC<{
     settÅrForInntektskontrollSelvstendigNæringsdrivende,
 }) => {
     const [oppgaverSomSkalAutomatiskFerdigstilles, settOppgaverSomSkalAutomatiskFerdigstilles] =
-        useState<string[]>([]);
+        useState<number[]>([]);
 
-    const handleSettOppgaverSomSkalFerdigstilles = (oppgaveId: string) =>
+    const handleSettOppgaverSomSkalFerdigstilles = (oppgaveId: number) =>
         settOppgaverSomSkalAutomatiskFerdigstilles((prevOppgaver) =>
             prevOppgaver.includes(oppgaveId)
                 ? prevOppgaver.filter((id) => id !== oppgaveId)
@@ -89,17 +89,17 @@ export const ModalOpprettOgFerdigstilleOppgaver: FC<{
                                     }
                                 />
                                 <Divider />
-                                {/* {oppgaverSomSkalAutomatiskFerdigstilles.length > 0 && ( */}
-                                <TabellFerdigstilleOppgaver
-                                    fremleggsOppgaver={fremleggsOppgaver}
-                                    oppgaverSomSkalAutomatiskFerdigstilles={
-                                        oppgaverSomSkalAutomatiskFerdigstilles
-                                    }
-                                    handleSettOppgaverSomSkalFerdigstilles={
-                                        handleSettOppgaverSomSkalFerdigstilles
-                                    }
-                                />
-                                {/* )} */}
+                                {fremleggsOppgaver.oppgaver.length > 0 && (
+                                    <TabellFerdigstilleOppgaver
+                                        fremleggsOppgaver={fremleggsOppgaver}
+                                        oppgaverSomSkalAutomatiskFerdigstilles={
+                                            oppgaverSomSkalAutomatiskFerdigstilles
+                                        }
+                                        handleSettOppgaverSomSkalFerdigstilles={
+                                            handleSettOppgaverSomSkalFerdigstilles
+                                        }
+                                    />
+                                )}
                             </VStack>
                         </Modal.Body>
                         <Modal.Footer>

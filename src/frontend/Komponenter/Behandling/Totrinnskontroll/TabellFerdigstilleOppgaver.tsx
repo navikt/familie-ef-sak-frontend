@@ -16,8 +16,8 @@ const StyledBodyLong = styled(BodyLong)`
 
 export const TabellFerdigstilleOppgaver: FC<{
     fremleggsOppgaver: IOppgaverResponse;
-    oppgaverSomSkalAutomatiskFerdigstilles: string[];
-    handleSettOppgaverSomSkalFerdigstilles: (oppgaveId: string) => void;
+    oppgaverSomSkalAutomatiskFerdigstilles: number[];
+    handleSettOppgaverSomSkalFerdigstilles: (oppgaveId: number) => void;
 }> = ({
     fremleggsOppgaver,
     oppgaverSomSkalAutomatiskFerdigstilles,
@@ -66,12 +66,10 @@ export const TabellFerdigstilleOppgaver: FC<{
                                         <Checkbox
                                             hideLabel
                                             checked={oppgaverSomSkalAutomatiskFerdigstilles.includes(
-                                                id.toString()
+                                                id
                                             )}
                                             onChange={() =>
-                                                handleSettOppgaverSomSkalFerdigstilles(
-                                                    id.toString()
-                                                )
+                                                handleSettOppgaverSomSkalFerdigstilles(id)
                                             }
                                             aria-labelledby={`id-${id}`}
                                         >
