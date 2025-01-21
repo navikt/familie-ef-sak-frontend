@@ -23,17 +23,10 @@ export const validerInnvilgetVedtakForm = ({
     harKontantstøtte,
     kontantstøtteperioder,
     harTilleggsstønad,
-    tilleggsstønadBegrunnelse,
     skalStønadReduseres,
     tilleggsstønadsperioder,
     begrunnelse,
 }: InnvilgeVedtakForm): FormErrors<InnvilgeVedtakForm> => {
-    const skalHaBegrunnelseForTilleggsstønad = skalStønadReduseres === ERadioValg.JA;
-    const tilleggsstønadBegrunnelseFeil =
-        skalHaBegrunnelseForTilleggsstønad && !harVerdi(tilleggsstønadBegrunnelse)
-            ? 'Mangelfull utfylling av begrunnelse'
-            : undefined;
-
     return {
         ...validerPerioder({
             utgiftsperioder,
@@ -43,7 +36,6 @@ export const validerInnvilgetVedtakForm = ({
             skalStønadReduseres,
             tilleggsstønadsperioder,
         }),
-        tilleggsstønadBegrunnelse: tilleggsstønadBegrunnelseFeil,
         begrunnelse: !harVerdi(begrunnelse) ? 'Mangelfull utfylling av begrunnelse' : undefined,
     };
 };

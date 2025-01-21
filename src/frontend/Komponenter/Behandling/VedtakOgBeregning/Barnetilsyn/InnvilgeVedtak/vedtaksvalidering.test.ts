@@ -11,37 +11,15 @@ import { validerInnvilgetVedtakForm } from './vedtaksvalidering';
 
 describe('validering av innvilget barnetilsyn', () => {
     test('skal validere begrunnelsesfelt for tilleggsstønad', () => {
-        const underkjentForm = { ...lagForm(), harTilleggsstønad: ERadioValg.JA };
-        const underkjentForm2 = {
-            ...lagForm(),
-            harTilleggsstønad: ERadioValg.JA,
-            tilleggsstønadBegrunnelse: '',
-        };
-        const godkjentForm = { ...lagForm(), harTilleggsstønad: ERadioValg.NEI };
-        const godkjentForm2 = {
-            ...lagForm(),
-            harTilleggsstønad: ERadioValg.NEI,
-            tilleggsstønadBegrunnelse: '',
-        };
-        const godkjentForm3 = {
-            ...lagForm(),
-            harTilleggsstønad: ERadioValg.JA,
-            tilleggsstønadBegrunnelse: 'Begrunnelse',
-        };
+        const godkjentForm1 = { ...lagForm(), begrunnelse: undefined };
+        const godkjentForm2 = { ...lagForm(), begrunnelse: '' };
+        const godkjentForm3 = { ...lagForm(), begrunnelse: 'Fylt ut begrunnelse' };
 
-        const underkjentValidering = validerInnvilgetVedtakForm(underkjentForm);
-        const underkjentValidering2 = validerInnvilgetVedtakForm(underkjentForm2);
-        const godkjentValidering = validerInnvilgetVedtakForm(godkjentForm);
+        const godkjentValidering1 = validerInnvilgetVedtakForm(godkjentForm1);
         const godkjentValidering2 = validerInnvilgetVedtakForm(godkjentForm2);
         const godkjentValidering3 = validerInnvilgetVedtakForm(godkjentForm3);
 
-        expect(underkjentValidering.tilleggsstønadBegrunnelse).toBe(
-            'Mangelfull utfylling av begrunnelse'
-        );
-        expect(underkjentValidering2.tilleggsstønadBegrunnelse).toBe(
-            'Mangelfull utfylling av begrunnelse'
-        );
-        expect(godkjentValidering.tilleggsstønadBegrunnelse).toBeUndefined;
+        expect(godkjentValidering1.tilleggsstønadBegrunnelse).toBeUndefined;
         expect(godkjentValidering2.tilleggsstønadBegrunnelse).toBeUndefined;
         expect(godkjentValidering3.tilleggsstønadBegrunnelse).toBeUndefined;
     });
