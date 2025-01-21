@@ -14,6 +14,13 @@ import {
     beregnTiProsentØkningIMånedsinntekt,
 } from '../../../App/hooks/useVerdierForBrev';
 import { formaterTallMedTusenSkille } from '../../../App/utils/formatter';
+import styled from 'styled-components';
+
+const StyledHStack = styled(HStack)`
+    justify-content: space-between;
+    width: 100%;
+    gap: 2;
+`;
 
 const utledRadioKnapper = (regel: Regel, settVurdering: (nyttSvar: Vurdering) => void) => {
     switch (regel.regelId) {
@@ -58,7 +65,7 @@ Forventet årsinntekt fra [DATO]: ${formaterTallMedTusenSkille(årsinntekt)} kro
 
     return (
         <VStack>
-            <HStack justify="space-between" width="100%" gap="2">
+            <StyledHStack>
                 <Heading size="xsmall" style={{ flex: 1, wordBreak: 'break-word' }}>
                     {delvilkårTypeTilTekst[regel.regelId]}
                 </Heading>
@@ -71,7 +78,7 @@ Forventet årsinntekt fra [DATO]: ${formaterTallMedTusenSkille(årsinntekt)} kro
                         />
                     </div>
                 )}
-            </HStack>
+            </StyledHStack>
             <RadioGroup legend={undefined} value={vurdering.svar || ''}>
                 {utledRadioKnapper(regel, settVurdering)}
             </RadioGroup>
