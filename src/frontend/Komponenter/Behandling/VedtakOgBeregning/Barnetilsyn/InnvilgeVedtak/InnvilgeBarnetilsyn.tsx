@@ -67,13 +67,10 @@ const initHarTilleggsstønad = (
     lagretInnvilgetVedtak: IInnvilgeVedtakForBarnetilsyn | undefined,
     behandlingErRedigerbar: boolean
 ) => {
-    if (lagretInnvilgetVedtak?.tilleggsstønad.harTilleggsstønad && !behandlingErRedigerbar) {
-        return ERadioValg.JA;
-    } else if (
-        lagretInnvilgetVedtak?.tilleggsstønad.harTilleggsstønad === false &&
-        !behandlingErRedigerbar
-    ) {
-        return ERadioValg.NEI;
+    if (!behandlingErRedigerbar) {
+        return lagretInnvilgetVedtak?.tilleggsstønad.harTilleggsstønad
+            ? ERadioValg.JA
+            : ERadioValg.NEI;
     } else {
         return ERadioValg.IKKE_SATT;
     }
