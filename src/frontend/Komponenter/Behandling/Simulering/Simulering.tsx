@@ -21,6 +21,7 @@ import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { BodyLongSmall } from '../../../Felles/Visningskomponenter/Tekster';
 import { ASurfaceWarningSubtle, ASurfaceWarningSubtleHover } from '@navikt/ds-tokens/dist/tokens';
 import { AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
+
 const Container = styled.div`
     padding: 2rem;
     display: flex;
@@ -40,7 +41,7 @@ const AlertWarning = styled(Alert)`
     max-width: 60rem;
 `;
 
-const RETTSGEBYR_BELØP = 1277;
+const RETTSGEBYR_BELØP = 1314;
 
 const Simulering: React.FC<{
     simuleringsresultat: SimuleringResultat;
