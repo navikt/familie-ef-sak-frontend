@@ -22,7 +22,7 @@ import {
     validerGyldigTallverdi,
 } from '../../Felles/utils';
 
-const attenMånederFremITiden = tilÅrMåned(plusMåneder(new Date(), 18));
+const trettiMånederFremITiden = tilÅrMåned(plusMåneder(new Date(), 30));
 const syvMånederFremITiden = tilÅrMåned(plusMåneder(new Date(), 7));
 
 export const validerInnvilgetVedtakForm = ({
@@ -184,10 +184,10 @@ export const validerVedtaksperioder = ({
                 årMånedFra: `Startdato (${årMånedFra}) mer enn 7mnd frem i tid`,
             };
         }
-        if (erMånedÅrEtter(attenMånederFremITiden, årMånedFra) && harPeriodeFør7mndFremITiden) {
+        if (erMånedÅrEtter(trettiMånederFremITiden, årMånedFra) && harPeriodeFør7mndFremITiden) {
             return {
                 ...vedtaksperiodeFeil,
-                årMånedFra: `Startdato (${årMånedFra}) mer enn 18mnd frem i tid`,
+                årMånedFra: `Startdato (${årMånedFra}) mer enn 30mnd frem i tid`,
             };
         }
         return vedtaksperiodeFeil;
@@ -237,8 +237,8 @@ const validerInntektsperiode = (
             return ugyldigEtterfølgendePeriodeFeilmelding();
         }
     }
-    if (erMånedÅrEtter(attenMånederFremITiden, årMånedFra)) {
-        return `Startdato (${årMånedFra}) mer enn 18mnd frem i tid`;
+    if (erMånedÅrEtter(trettiMånederFremITiden, årMånedFra)) {
+        return `Startdato (${årMånedFra}) mer enn 30mnd frem i tid`;
     }
     const sisteMånedIVedtaksperiode = perioder[perioder.length - 1]?.årMånedTil;
     if (sisteMånedIVedtaksperiode && erMånedÅrEtter(sisteMånedIVedtaksperiode, årMånedFra)) {
