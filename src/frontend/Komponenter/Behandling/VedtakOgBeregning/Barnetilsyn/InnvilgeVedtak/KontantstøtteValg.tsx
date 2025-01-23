@@ -249,7 +249,7 @@ const KontantstøtteValg: React.FC<Props> = ({
                 <TextArea
                     readOnly={erLesevisning}
                     feilmelding={valideringsfeil.kontantstøtteBegrunnelse}
-                    label="Begrunnelse"
+                    label="Begrunnelse (hvis aktuelt)"
                     maxLength={0}
                     onChange={(event) => {
                         settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
