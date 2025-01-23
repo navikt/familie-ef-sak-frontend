@@ -15,7 +15,7 @@ import {
 } from '../../../App/typer/ressurs';
 import {
     NyeBarnSidenForrigeBehandling,
-    RevurderingInnhold,
+    RevurderingPayload,
 } from '../../../App/typer/revurderingstype';
 import { ToggleName } from '../../../App/context/toggles';
 import { useToggles } from '../../../App/context/TogglesContext';
@@ -64,7 +64,7 @@ const inneholderBarnSomErUgyldige = (barnSomSkalFødes: BarnSomSkalFødes[]) =>
 
 interface Props {
     fagsak: Fagsak;
-    opprettRevurdering: (revurderingInnhold: RevurderingInnhold) => void;
+    opprettRevurdering: (payload: RevurderingPayload) => void;
     settVisModal: (bool: boolean) => void;
 }
 
