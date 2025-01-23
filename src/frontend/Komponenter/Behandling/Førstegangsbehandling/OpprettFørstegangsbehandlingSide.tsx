@@ -158,7 +158,7 @@ export const OpprettFørstegangsbehandlingSide = () => {
                             barnSomSkalFødes={barnSomSkalFødes}
                             oppdaterBarnSomSkalFødes={settBarnSomSkalFødes}
                             tittel="Terminbarn"
-                            tekst="Dersom søkeren har terminbarn i søknaden må disse legges til her."
+                            tekst="Hvis brukeren har oppgitt terminbarn i søknaden, må du legge til termindatoen her."
                         />
                         <div>
                             <Button

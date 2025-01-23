@@ -161,8 +161,8 @@ export const OpprettRevurdering: React.FunctionComponent<Props> = ({
 
     const terminBarnSkjemaTekst =
         valgtBehandlingsårsak === Behandlingsårsak.NYE_OPPLYSNINGER
-            ? 'Dersom brukeren har meldt fra om nye terminbarn må disse legges til her.'
-            : 'Dersom søkeren har terminbarn i søknaden må disse legges til her.';
+            ? 'Hvis brukeren venter barn som ikke allerede ligger i behandlingen, må du legge til termindatoen her.'
+            : 'Hvis brukeren har oppgitt terminbarn i søknaden, må du legge til termindatoen her.';
 
     return (
         <DataViewer response={{ nyeBarnSidenForrigeBehandling }}>
