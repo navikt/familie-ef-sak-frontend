@@ -17,8 +17,9 @@ import { ModalState } from '../Modal/NyEierModal';
 import { useToggles } from '../../../App/context/TogglesContext';
 import { ToggleName } from '../../../App/context/toggles';
 import { useHentOppgaver } from '../../../App/hooks/useHentOppgaver';
-import { IkkeFortroligEnhet } from '../../Oppgavebenk/typer/enhet';
+import { utledEnhet } from '../../Oppgavebenk/typer/enhet';
 import { ModalOpprettOgFerdigstilleOppgaver } from './ModalOpprettOgFerdigstilleOppgaver';
+import { harEgenAnsattRolle, harStrengtFortroligRolle } from '../../../App/utils/roller';
 
 const Footer = styled.footer`
     width: 100%;
@@ -87,6 +88,7 @@ const SendTilBeslutterFooter: React.FC<{
         settNyEierModalState,
     } = useBehandling();
     const { toggles } = useToggles();
+    const { innloggetSaksbehandler, appEnv } = useApp();
     const [laster, settLaster] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>();
     const [visModal, settVisModal] = useState<boolean>(false);
@@ -100,6 +102,17 @@ const SendTilBeslutterFooter: React.FC<{
         årForInntektskontrollSelvstendigNæringsdrivende,
         settÅrForInntektskontrollSelvstendigNæringsdrivende,
     ] = useState<number | undefined>();
+
+    const harSaksbehandlerStrengtFortroligRolle = harStrengtFortroligRolle(
+        appEnv,
+        innloggetSaksbehandler
+    );
+    const harSaksbehandlerEgenAnsattRolle = harEgenAnsattRolle(appEnv, innloggetSaksbehandler);
+
+    const enhet = utledEnhet(
+        harSaksbehandlerStrengtFortroligRolle,
+        harSaksbehandlerEgenAnsattRolle
+    );
 
     const sendTilBeslutter = () => {
         settLaster(true);
@@ -148,17 +161,18 @@ const SendTilBeslutterFooter: React.FC<{
         : 'Vedtaket er sendt til beslutter';
 
     useEffect(() => {
-        const fetchOppgaver = () => {
+        const hentFremleggsoppgaverPåPerson = () => {
             if (!personIdent) return;
             hentOppgaver({
                 ident: personIdent,
                 oppgavetype: 'FREM',
-                enhet: IkkeFortroligEnhet.NAY,
-                behandlingstema: 'ab0071',
+                enhet: enhet,
+                behandlingstema: 'ab0071', // Skal kun hente for overgangsstønad
             });
         };
-        fetchOppgaver();
-    }, [hentOppgaver, personIdent]);
+
+        hentFremleggsoppgaverPåPerson();
+    }, [enhet, hentOppgaver, personIdent]);
 
     const skalViseKnappForModal =
         toggleVisKnappForModal &&

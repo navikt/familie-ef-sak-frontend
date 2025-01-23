@@ -37,3 +37,16 @@ export const enhetTilTekst = (
         return enhetTilTekstIkkeFortrolig;
     }
 };
+
+export const utledEnhet = (
+    harSaksbehandlerStrengtFortroligRolle: boolean,
+    harSaksbehandlerEgenAnsattRolle: boolean
+): FortroligEnhet | IkkeFortroligEnhet => {
+    if (harSaksbehandlerStrengtFortroligRolle) {
+        return FortroligEnhet.VIKAFOSSEN;
+    } else if (harSaksbehandlerEgenAnsattRolle) {
+        return IkkeFortroligEnhet.EGNE_ANSATTE;
+    } else {
+        return IkkeFortroligEnhet.NAY;
+    }
+};
