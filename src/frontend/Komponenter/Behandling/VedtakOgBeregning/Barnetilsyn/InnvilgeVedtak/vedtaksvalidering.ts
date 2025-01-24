@@ -70,9 +70,7 @@ export const validerPerioder = ({
             skalStønadReduseres === ERadioValg.IKKE_SATT ? 'Mangler verdi' : undefined,
         ...validerTilleggsstønadPerioder({ tilleggsstønadsperioder }, skalStønadReduseres),
         harTilleggsstønad:
-            harTilleggsstønad === ERadioValg.JA || ERadioValg.NEI
-                ? 'Skal være ikke være satt'
-                : undefined,
+            harTilleggsstønad !== ERadioValg.IKKE_SATT ? 'Skal være ikke være satt' : undefined,
     };
 };
 
