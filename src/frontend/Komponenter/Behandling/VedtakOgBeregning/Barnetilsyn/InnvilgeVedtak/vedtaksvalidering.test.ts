@@ -61,9 +61,9 @@ describe('validering av innvilget barnetilsyn', () => {
         const underkjentValidering = validerInnvilgetVedtakForm(underkjentForm);
         const underkjentValidering2 = validerInnvilgetVedtakForm(underkjentForm2);
 
-        expect(underkjentValidering.harTilleggsstønad).toBeUndefined;
-        expect(godkjentValidering.harTilleggsstønad).toBe('Skal være ikke være satt');
-        expect(underkjentValidering2.harTilleggsstønad).toBe('Skal være ikke være satt');
+        expect(godkjentValidering.harTilleggsstønad).toBeUndefined;
+        expect(underkjentValidering.harTilleggsstønad).toBe('Skal ikke være satt');
+        expect(underkjentValidering2.harTilleggsstønad).toBe('Skal ikke være satt');
     });
 
     test('skal validere valg av stønadsreduksjon', () => {
