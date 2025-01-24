@@ -5,7 +5,7 @@ import { BodyShort, HStack } from '@navikt/ds-react';
 import { formaterPersonIdent } from '@navikt/familie-header/dist/søk/formatter';
 import { AlertWarning } from '../Visningskomponenter/Alerts';
 import { adressebeskyttelsestyper } from './adressebeskyttelsegradering';
-import { AFontSizeSmall, AGray300, AOrange300 } from '@navikt/ds-tokens/dist/tokens';
+import { AFontSizeSmall, AGray100, AOrange300 } from '@navikt/ds-tokens/dist/tokens';
 
 const ResultatElement = styled.div<{ $fokus: boolean }>`
     list-style-type: none;
@@ -14,7 +14,7 @@ const ResultatElement = styled.div<{ $fokus: boolean }>`
     border-radius: 8px;
 
     &:hover {
-        background-color: ${AGray300};
+        background-color: ${AGray100};
         cursor: pointer;
     }
 `;
