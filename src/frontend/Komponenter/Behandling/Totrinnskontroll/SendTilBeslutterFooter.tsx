@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import { useApp } from '../../../App/context/AppContext';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
@@ -16,10 +16,7 @@ import { OppgaveTypeForOpprettelse } from './oppgaveForOpprettelseTyper';
 import { ModalState } from '../Modal/NyEierModal';
 import { useToggles } from '../../../App/context/TogglesContext';
 import { ToggleName } from '../../../App/context/toggles';
-import { useHentOppgaver } from '../../../App/hooks/useHentOppgaver';
-import { utledEnhet } from '../../Oppgavebenk/typer/enhet';
 import { ModalOpprettOgFerdigstilleOppgaver } from './ModalOpprettOgFerdigstilleOppgaver';
-import { harEgenAnsattRolle, harStrengtFortroligRolle } from '../../../App/utils/roller';
 
 const Footer = styled.footer`
     width: 100%;
@@ -77,7 +74,7 @@ const SendTilBeslutterFooter: React.FC<{
     oppgavetyperSomKanOpprettes,
     hentOppgaverForOpprettelseCallback,
 }) => {
-    const { axiosRequest, personIdent } = useApp();
+    const { axiosRequest } = useApp();
     const navigate = useNavigate();
     const {
         hentTotrinnskontroll,
@@ -88,13 +85,11 @@ const SendTilBeslutterFooter: React.FC<{
         settNyEierModalState,
     } = useBehandling();
     const { toggles } = useToggles();
-    const { innloggetSaksbehandler, appEnv } = useApp();
     const [laster, settLaster] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>();
     const [visModal, settVisModal] = useState<boolean>(false);
     const [visMarkereGodkjenneVedtakOppgaveModal, settVisMarkereGodkjenneVedtakOppgaveModal] =
         useState<boolean>(false);
-    const { hentOppgaver, oppgaver: fremleggsOppgaver } = useHentOppgaver();
     const [oppgavetyperSomSkalOpprettes, settOppgavetyperSomSkalOpprettes] = useState<
         OppgaveTypeForOpprettelse[]
     >(utledDefaultOppgavetyperSomSkalOpprettes(oppgavetyperSomKanOpprettes));
@@ -102,17 +97,6 @@ const SendTilBeslutterFooter: React.FC<{
         årForInntektskontrollSelvstendigNæringsdrivende,
         settÅrForInntektskontrollSelvstendigNæringsdrivende,
     ] = useState<number | undefined>();
-
-    const harSaksbehandlerStrengtFortroligRolle = harStrengtFortroligRolle(
-        appEnv,
-        innloggetSaksbehandler
-    );
-    const harSaksbehandlerEgenAnsattRolle = harEgenAnsattRolle(appEnv, innloggetSaksbehandler);
-
-    const enhet = utledEnhet(
-        harSaksbehandlerStrengtFortroligRolle,
-        harSaksbehandlerEgenAnsattRolle
-    );
 
     const sendTilBeslutter = () => {
         settLaster(true);
@@ -159,20 +143,6 @@ const SendTilBeslutterFooter: React.FC<{
     const modalTittel = ferdigstillUtenBeslutter
         ? 'Vedtaket er ferdigstilt'
         : 'Vedtaket er sendt til beslutter';
-
-    useEffect(() => {
-        const hentFremleggsoppgaverPåPerson = () => {
-            if (!personIdent) return;
-            hentOppgaver({
-                ident: personIdent,
-                oppgavetype: 'FREM',
-                enhet: enhet,
-                behandlingstema: 'ab0071', // Skal kun hente for overgangsstønad
-            });
-        };
-
-        hentFremleggsoppgaverPåPerson();
-    }, [enhet, hentOppgaver, personIdent]);
 
     const skalViseKnappForModal =
         toggleVisKnappForModal &&
@@ -234,12 +204,11 @@ const SendTilBeslutterFooter: React.FC<{
                     marginTop: 4,
                 }}
             />
-            {toggleVisKnappForModal && fremleggsOppgaver && (
+            {toggleVisKnappForModal && (
                 <ModalOpprettOgFerdigstilleOppgaver
                     open={visMarkereGodkjenneVedtakOppgaveModal}
                     setOpen={settVisMarkereGodkjenneVedtakOppgaveModal}
                     sendTilBeslutter={sendTilBeslutter}
-                    fremleggsOppgaver={fremleggsOppgaver}
                     oppgavetyperSomKanOpprettes={oppgavetyperSomKanOpprettes}
                     oppgavetyperSomSkalOpprettes={oppgavetyperSomSkalOpprettes}
                     settOppgavetyperSomSkalOpprettes={settOppgavetyperSomSkalOpprettes}
