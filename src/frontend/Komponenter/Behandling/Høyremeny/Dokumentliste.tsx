@@ -4,13 +4,14 @@ import { BodyShort, Button, Tag } from '@navikt/ds-react';
 import { LogiskeVedlegg } from './LogiskeVedlegg';
 import { Journalposttype } from '../../../App/typer/journalføring';
 import { LogiskVedlegg } from '../../../App/typer/dokumentliste';
+import { AFontWeightRegular } from '@navikt/ds-tokens/dist/tokens';
 
 const StyledDokumentListe = styled.ul`
     padding: 0;
     margin: 0 1rem;
     list-style-type: none;
     span {
-        font-weight: var(--a-font-weight-regular);
+        font-weight: ${AFontWeightRegular};
     }
 `;
 

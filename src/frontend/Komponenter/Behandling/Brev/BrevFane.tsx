@@ -11,6 +11,7 @@ import { BrevmottakereForBehandling } from '../Brevmottakere/BrevmottakereForBeh
 import { skalFerdigstilleUtenBeslutter } from '../VedtakOgBeregning/Felles/utils';
 import { HøyreKolonne, StyledBrev, VenstreKolonne } from './StyledBrev';
 import { Behandling } from '../../../App/typer/fagsak';
+import { OverstyrtBrevmalVarsel } from './OverstyrtBrevmalVarsel';
 import { FremleggoppgaverSomOpprettes } from './FremleggoppgaverSomOpprettes';
 import { VStack } from '@navikt/ds-react';
 import { useHentOppgaverForOpprettelse } from '../../../App/hooks/useHentOppgaverForOpprettelse';
@@ -84,6 +85,9 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
                                             oppgaverForOpprettelse.oppgavetyperSomSkalOpprettes
                                         }
                                     />
+                                )}
+                                {!behandlingErRedigerbar && (
+                                    <OverstyrtBrevmalVarsel behandlingId={behandling.id} />
                                 )}
                                 {behandlingErRedigerbar && (
                                     <Brevmeny
