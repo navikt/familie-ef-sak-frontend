@@ -15,6 +15,7 @@ import { AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
 import { oppgaveSomSkalOpprettesTilTekst } from '../Totrinnskontroll/oppgaveForOpprettelseTyper';
 import { HøyreKolonne, StyledBrev, VenstreKolonne } from './StyledBrev';
 import { Behandling } from '../../../App/typer/fagsak';
+import { OverstyrtBrevmalVarsel } from './OverstyrtBrevmalVarsel';
 
 const InfostripeGruppe = styled.div`
     display: flex;
@@ -93,6 +94,9 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
                                         )
                                     )}
                                 </InfostripeGruppe>
+                            )}
+                            {!behandlingErRedigerbar && (
+                                <OverstyrtBrevmalVarsel behandlingId={behandling.id} />
                             )}
                             {behandlingErRedigerbar && (
                                 <Brevmeny
