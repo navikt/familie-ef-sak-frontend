@@ -41,11 +41,15 @@ const enum ÅpenTilbakekrevingStatus {
 export interface TilbakekrevingProps {
     behandlingId: string;
     skalViseValgForAutomatiskBehandlingUnder4xRettsgebyr: boolean;
+    år?: number;
+    rettsgebyr?: number;
 }
 
 export const Tilbakekreving: React.FC<TilbakekrevingProps> = ({
     behandlingId,
     skalViseValgForAutomatiskBehandlingUnder4xRettsgebyr,
+    år,
+    rettsgebyr,
 }) => {
     const { axiosRequest, nullstillIkkePersisterteKomponenter, settIkkePersistertKomponent } =
         useApp();
@@ -206,6 +210,8 @@ export const Tilbakekreving: React.FC<TilbakekrevingProps> = ({
                             skalViseValgForAutomatiskBehandlingUnder4xRettsgebyr={
                                 skalViseValgForAutomatiskBehandlingUnder4xRettsgebyr
                             }
+                            år={år}
+                            rettsgebyr={rettsgebyr}
                         />
                     )}
                     {!behandlingErRedigerbar && (
