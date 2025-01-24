@@ -41,8 +41,6 @@ const AlertWarning = styled(Alert)`
     max-width: 60rem;
 `;
 
-const RETTSGEBYR_BELØP = 1314;
-
 const Simulering: React.FC<{
     simuleringsresultat: SimuleringResultat;
     lagretVedtak?: IVedtak;
@@ -82,8 +80,7 @@ const Simulering: React.FC<{
     const harFeilutbetaling = simuleringsresultat.feilutbetaling > 0;
 
     const skalViseValgForAutomatiskBehandlingUnder4xRettsgebyr =
-        simuleringsresultat.feilutbetaling < RETTSGEBYR_BELØP * 4 &&
-        simuleringsresultat.etterbetaling === 0;
+        simuleringsresultat.visUnder4rettsgebyr;
 
     const harManuellePosteringer = simuleringsresultat.sumManuellePosteringer
         ? simuleringsresultat.sumManuellePosteringer > 0
@@ -185,6 +182,8 @@ const Simulering: React.FC<{
                     skalViseValgForAutomatiskBehandlingUnder4xRettsgebyr={
                         skalViseValgForAutomatiskBehandlingUnder4xRettsgebyr
                     }
+                    år={simuleringsresultat.feilutbetalingsår}
+                    rettsgebyr={simuleringsresultat.fireRettsgebyr}
                 />
             )}
         </Container>
