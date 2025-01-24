@@ -268,7 +268,7 @@ const TilleggsstønadValg: React.FC<Props> = ({
                 <TextArea
                     readOnly={erLesevisning}
                     feilmelding={valideringsfeil.tilleggsstønadBegrunnelse}
-                    label="Begrunnelse"
+                    label="Begrunnelse (hvis aktuelt)"
                     maxLength={0}
                     onChange={(event) => {
                         settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
