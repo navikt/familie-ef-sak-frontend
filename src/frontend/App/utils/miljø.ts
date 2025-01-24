@@ -3,7 +3,7 @@ export const erProd = (): boolean => window.location.host === 'ensligmorellerfar
 export const tilbakekrevingBaseUrl = (): string =>
     erProd()
         ? 'https://familietilbakekreving.intern.nav.no'
-        : 'https://familie-tilbake-frontend.ansatt.dev.nav.no';
+        : 'https://tilbakekreving.ansatt.dev.nav.no';
 
 export const klageBaseUrl = (): string =>
     erProd() ? 'https://familie-klage.intern.nav.no' : 'https://familie-klage.ansatt.dev.nav.no';
