@@ -5,9 +5,10 @@ import {
     OppgaveTypeForOpprettelse,
 } from '../Totrinnskontroll/oppgaveForOpprettelseTyper';
 import { styled } from 'styled-components';
+import { ALimegreen100 } from '@navikt/ds-tokens/dist/tokens';
 
 const Container = styled.div`
-    background: var(--a-limegreen-100);
+    background: ${ALimegreen100};
     padding: 0.5rem;
 `;
 
