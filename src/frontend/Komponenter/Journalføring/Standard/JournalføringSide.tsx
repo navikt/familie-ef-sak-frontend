@@ -200,6 +200,8 @@ const Journalføring: React.FC<JournalføringSideProps> = ({
                                 <TerminBarnSkjema
                                     barnSomSkalFødes={journalpostState.barnSomSkalFødes}
                                     oppdaterBarnSomSkalFødes={journalpostState.settBarnSomSkalFødes}
+                                    tittel="Journalføre papirsøknad?"
+                                    tekst="Hvis brukeren har oppgitt terminbarn i søknaden, må du legge til termindatoen her."
                                 />
                             )}
                             <NyeBarnPåBehandlingen journalpostState={journalpostState} />

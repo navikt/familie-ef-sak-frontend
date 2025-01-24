@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { BarnSomSkalFødes } from '../../../App/hooks/useJournalføringState';
-import { BodyShort, Heading } from '@navikt/ds-react';
+import { BodyLong, BodyShort, Heading } from '@navikt/ds-react';
 import styled from 'styled-components';
 import { ABlue300 } from '@navikt/ds-tokens/dist/tokens';
 import { v4 as uuidv4 } from 'uuid';
@@ -33,11 +33,19 @@ const Grid = styled.div`
     }
 `;
 
-export const TerminBarnSkjema: React.FC<{
+interface Props {
     barnSomSkalFødes: BarnSomSkalFødes[];
     oppdaterBarnSomSkalFødes: (terminbarn: BarnSomSkalFødes[]) => void;
-    tittel?: string;
-}> = ({ barnSomSkalFødes, oppdaterBarnSomSkalFødes, tittel = 'Journalføre papirsøknad?' }) => {
+    tittel: string;
+    tekst: string;
+}
+
+export const TerminBarnSkjema: React.FC<Props> = ({
+    barnSomSkalFødes,
+    oppdaterBarnSomSkalFødes,
+    tittel,
+    tekst,
+}) => {
     useEffect(() => () => oppdaterBarnSomSkalFødes([]), [oppdaterBarnSomSkalFødes]);
 
     const leggTilBarn = () => oppdaterBarnSomSkalFødes([...barnSomSkalFødes, { _id: uuidv4() }]);
@@ -65,7 +73,7 @@ export const TerminBarnSkjema: React.FC<{
                 {tittel}
             </Tittel>
             <FlexColumn>
-                Dersom søkeren har terminbarn i søknaden må disse legges til her.
+                <BodyLong>{tekst}</BodyLong>
                 {barnSomSkalFødes.map((barn, index) => (
                     <Grid key={barn._id}>
                         <BodyShort>Terminbarn {index + 1}</BodyShort>

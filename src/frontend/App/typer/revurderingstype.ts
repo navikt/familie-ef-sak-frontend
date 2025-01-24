@@ -13,7 +13,7 @@ export interface BarnForRevurdering {
     fødselsdato: string;
 }
 
-export interface RevurderingInnhold {
+export interface RevurderingPayload {
     fagsakId: string;
     behandlingsårsak: Behandlingsårsak;
     kravMottatt: string;
