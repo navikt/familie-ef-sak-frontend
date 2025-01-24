@@ -6,6 +6,7 @@ import { BodyShort, Label, VStack } from '@navikt/ds-react';
 import styled from 'styled-components';
 import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
+import { AFontSizeMedium } from '@navikt/ds-tokens/dist/tokens';
 
 interface Props {
     utenlandsopphold: IUtenlandsopphold[];
@@ -18,7 +19,7 @@ const PeriodeStyling = styled(BodyShort)`
 `;
 
 const Grid = styled.div`
-    font-size: var(--a-font-size-medium);
+    font-size: ${AFontSizeMedium};
     display: grid;
     grid-template-columns: auto 1fr;
     gap: 1rem;
