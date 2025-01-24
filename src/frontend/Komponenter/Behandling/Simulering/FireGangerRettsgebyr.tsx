@@ -32,8 +32,7 @@ export const FireGangerRettsgebyr: React.FC<Props> = ({ år, rettsgebyr }) => (
             </li>
             <li>
                 <BodyLong size="small">
-                    - beløpet er under 4 rettsgebyr (Vi har brukt rettsgebyr for {år} som blir{' '}
-                    {rettsgebyr})
+                    - beløpet er under 4 rettsgebyr (4 rettsgebyr i {år} er {rettsgebyr} kroner)
                 </BodyLong>
             </li>
             <li>
