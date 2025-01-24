@@ -3,7 +3,8 @@ import React, { forwardRef, useEffect, useLayoutEffect, useRef, useState } from 
 import 'quill/dist/quill.snow.css';
 import { BlockBlot } from 'parchment';
 import { AlertError } from '../Visningskomponenter/Alerts';
-
+import styled from 'styled-components';
+import { ASurfaceDefault, ATextSubtle } from '@navikt/ds-tokens/dist/tokens';
 type Props = {
     defaultValue?: string;
     onTextChange: (html: string, renTekst: string) => void;
@@ -18,6 +19,42 @@ Block.tagName = 'div';
 // @ts-expect-error Utypet kode - usikkert hvordan vi får dette til
 Quill.register(Block);
 
+const HtmlEditorWrapper = styled.div`
+    .ql-bold {
+        &:hover::after,
+        &:active::after,
+        &:focus::after {
+            content: 'Fet skrift';
+        }
+    }
+    .ql-clean {
+        &:hover::after,
+        &:active::after,
+        &:focus::after {
+            content: 'Fjern formattering';
+        }
+    }
+    .ql-list {
+        &:hover::after,
+        &:active::after,
+        &:focus::after {
+            content: 'Liste';
+        }
+    }
+    .ql-list,
+    .ql-bold,
+    .ql-clean {
+        &:hover::after,
+        &:active::after,
+        &:focus::after {
+            font-size: 0.8rem;
+            background-color: ${ASurfaceDefault};
+            color: ${ATextSubtle} !important;
+            white-space: nowrap;
+            padding: 0.3rem;
+        }
+    }
+`;
 export const HtmlEditor = forwardRef(({ defaultValue, onTextChange }: Props, ref) => {
     const defaultValueRef = useRef(defaultValue);
     const containerRef = useRef<HTMLDivElement>(null);
@@ -38,7 +75,7 @@ export const HtmlEditor = forwardRef(({ defaultValue, onTextChange }: Props, ref
         settFeilVedOpprettelse(false);
         const editorContainer = container.appendChild(container.ownerDocument.createElement('div'));
 
-        const verktøySomSkalMed = [[{ list: 'bullet' }], ['clean']];
+        const verktøySomSkalMed = [[{ list: 'bullet' }], ['bold'], ['clean']];
 
         const quill = new Quill(editorContainer, {
             theme: 'snow',
@@ -76,7 +113,7 @@ export const HtmlEditor = forwardRef(({ defaultValue, onTextChange }: Props, ref
     return feilVedOpprettelse ? (
         <AlertError>En uventet feil oppstod ved opprettelse av tekstfelt.</AlertError>
     ) : (
-        <div ref={containerRef}></div>
+        <HtmlEditorWrapper ref={containerRef}></HtmlEditorWrapper>
     );
 });
 
