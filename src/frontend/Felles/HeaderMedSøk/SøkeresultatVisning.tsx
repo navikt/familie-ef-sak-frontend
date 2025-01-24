@@ -5,15 +5,16 @@ import { BodyShort, HStack } from '@navikt/ds-react';
 import { formaterPersonIdent } from '@navikt/familie-header/dist/søk/formatter';
 import { AlertWarning } from '../Visningskomponenter/Alerts';
 import { adressebeskyttelsestyper } from './adressebeskyttelsegradering';
+import { AFontSizeSmall, AGray300, AOrange300 } from '@navikt/ds-tokens/dist/tokens';
 
 const ResultatElement = styled.div<{ $fokus: boolean }>`
     list-style-type: none;
     padding: 0.5rem;
-    outline: ${({ $fokus }) => ($fokus ? `3px solid var(--a-orange-300)` : '')};
+    outline: ${({ $fokus }) => ($fokus ? `3px solid ${AOrange300}` : '')};
     border-radius: 8px;
 
     &:hover {
-        background-color: var(--a-gray-100);
+        background-color: ${AGray300};
         cursor: pointer;
     }
 `;
@@ -24,7 +25,7 @@ const ResultatIkonOgRolle = styled.div`
     padding-right: 1rem;
     align-items: center;
     min-width: 3.5rem;
-    font-size: var(--a-font-size-small);
+    font-size: ${AFontSizeSmall};
 
     svg {
         text-align: center;
