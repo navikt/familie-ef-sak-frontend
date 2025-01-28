@@ -13,7 +13,7 @@ import {
     oppdaterVedtakMedEndretKey,
     oppdaterVedtakMedInitPeriodeOgOpphørshulll,
 } from '../Felles/utils';
-import { KsPeriode } from '../../../Inngangsvilkår/vilkår';
+import { KontantstøttePeriode } from '../../../Inngangsvilkår/vilkår';
 
 // TODO backend må returnere InnvilgelseBarnetilsynUtenUtbetaling ?
 export const InnvilgeVedtak: FC<{
@@ -22,7 +22,7 @@ export const InnvilgeVedtak: FC<{
     barn: IBarnMedSamvær[];
     settResultatType: (val: EBehandlingResultat | undefined) => void;
     harKontantstøttePerioder: boolean | undefined;
-    kontantstøttePerioderGrunnlagsdata?: KsPeriode[];
+    kontantstøttePerioderGrunnlagsdata: KontantstøttePeriode[];
 }> = ({
     behandling,
     lagretVedtak,

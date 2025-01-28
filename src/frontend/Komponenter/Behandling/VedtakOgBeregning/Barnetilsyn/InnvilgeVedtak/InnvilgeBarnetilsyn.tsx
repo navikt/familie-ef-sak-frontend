@@ -31,7 +31,7 @@ import { AlertError } from '../../../../../Felles/Visningskomponenter/Alerts';
 import HovedKnapp, { Knapp } from '../../../../../Felles/Knapper/HovedKnapp';
 import { CalculatorIcon } from '@navikt/aksel-icons';
 import { ModalState } from '../../../Modal/NyEierModal';
-import { KsPeriode } from '../../../Inngangsvilkår/vilkår';
+import { KontantstøttePeriode } from '../../../Inngangsvilkår/vilkår';
 
 export type InnvilgeVedtakForm = {
     utgiftsperioder: IUtgiftsperiode[];
@@ -106,7 +106,7 @@ export const InnvilgeBarnetilsyn: React.FC<{
     settResultatType: (val: EBehandlingResultat | undefined) => void;
     låsFraDatoFørsteRad: boolean;
     harKontantstøttePerioder: boolean | undefined;
-    kontantstøttePerioderGrunnlagsdata?: KsPeriode[];
+    kontantstøttePerioderGrunnlagsdata: KontantstøttePeriode[];
 }> = ({
     lagretVedtak,
     behandling,

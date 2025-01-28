@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Alert, ReadMore } from '@navikt/ds-react';
-import { KsPeriode } from '../../../Inngangsvilkår/vilkår';
+import { KontantstøttePeriode } from '../../../Inngangsvilkår/vilkår';
 import { BodyShortSmall } from '../../../../../Felles/Visningskomponenter/Tekster';
 import { formaterNullableIsoDato } from '../../../../../App/utils/formatter';
 
@@ -11,19 +11,16 @@ const AlertStripe = styled(Alert)`
 `;
 
 interface Props {
-    harKontantstøttePerioder?: boolean;
-    kontantstøttePerioderGrunnlagsdata?: KsPeriode[];
+    kontantstøttePerioderGrunnlagsdata: KontantstøttePeriode[];
 }
 
 const kontantstøtteKilde = (kilde: string): string => {
     return kilde.toLowerCase();
 };
 
-export const KontantstøtteAlert: React.FC<Props> = ({
-    harKontantstøttePerioder,
-    kontantstøttePerioderGrunnlagsdata,
-}) => {
-    if (harKontantstøttePerioder === null || harKontantstøttePerioder === undefined) {
+export const KontantstøtteAlert: React.FC<Props> = ({ kontantstøttePerioderGrunnlagsdata }) => {
+    const harKontantstøttePerioder = kontantstøttePerioderGrunnlagsdata.length === 0;
+    if (!harKontantstøttePerioder) {
         return null;
     }
 
@@ -33,7 +30,7 @@ export const KontantstøtteAlert: React.FC<Props> = ({
                 {harKontantstøttePerioder
                     ? 'Brukers kontantstøtteperioder'
                     : 'Bruker har verken fått eller får kontantstøtte'}
-                {harKontantstøttePerioder && kontantstøttePerioderGrunnlagsdata && (
+                {harKontantstøttePerioder && (
                     <>
                         <div style={{ marginTop: '0.5rem', marginLeft: '0.5rem' }}>
                             <li>

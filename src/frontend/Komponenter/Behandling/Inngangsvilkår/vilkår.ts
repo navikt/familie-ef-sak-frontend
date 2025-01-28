@@ -28,11 +28,11 @@ export interface IVilkårGrunnlag {
     dokumentasjon?: IDokumentasjonGrunnlag;
     harAvsluttetArbeidsforhold: boolean;
     harKontantstøttePerioder?: boolean;
-    kontantstøttePerioder?: KsPeriode[];
+    kontantstøttePerioder: KontantstøttePeriode[];
     behandlingOpprettet?: string;
 }
 
-export interface KsPeriode {
+export interface KontantstøttePeriode {
     fomMåned: string;
     tomMåned?: string;
     kilde: string;
