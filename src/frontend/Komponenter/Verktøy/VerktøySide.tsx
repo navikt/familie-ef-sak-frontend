@@ -4,7 +4,7 @@ import { Route, Routes } from 'react-router-dom';
 import { SamværkalkulatorSide } from './SamværkalkulatorSide';
 
 const Container = styled.div`
-    margin: 1.5rem;
+    padding: 2rem;
 `;
 
 export const VerktøySide: React.FC = () => {

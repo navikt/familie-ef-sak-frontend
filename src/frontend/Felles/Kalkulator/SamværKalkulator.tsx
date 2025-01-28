@@ -10,7 +10,7 @@ import {
     VStack,
 } from '@navikt/ds-react';
 import styled from 'styled-components';
-import { ASurfaceInfoSubtle } from '@navikt/ds-tokens/dist/tokens';
+import { ABorderDivider, ASurfaceInfoSubtle } from '@navikt/ds-tokens/dist/tokens';
 
 const Div = styled.div`
     height: 1.25rem;
@@ -27,7 +27,7 @@ const Flexbox = styled.div`
 `;
 
 const Valgmuligheter = styled(VStack)`
-    margin-right: 2rem;
+    margin-right: 0.5rem;
 `;
 
 const StyledSelect = styled(Select)`
@@ -37,6 +37,11 @@ const StyledSelect = styled(Select)`
 const BeregningslengdeContainer = styled.div`
     padding: 1rem 1.5rem 1.5rem 1.5rem;
     background: ${ASurfaceInfoSubtle};
+`;
+
+const UkeContainer = styled(HStack)<{ $border: boolean }>`
+    border-right: ${(props) => props.$border && `2px solid ${ABorderDivider}`};
+    margin-bottom: 2rem;
 `;
 
 export const SamværKalkulator: React.FC = () => {
@@ -79,6 +84,7 @@ export const SamværKalkulator: React.FC = () => {
                 {samværsandelerPerUke.map((ukeSamvær, index) => (
                     <Uke
                         key={index}
+                        index={index}
                         ukeSamvær={ukeSamvær}
                         oppdaterSamværState={(dag: number, samvær: number) =>
                             oppdaterSamværsandeler(index, dag, samvær)
@@ -94,11 +100,12 @@ export const SamværKalkulator: React.FC = () => {
 
 const Uke: React.FC<{
     ukeSamvær: number[];
+    index: number;
     oppdaterSamværState: (uke: number, samvær: number) => void;
     visValgmuligheter: boolean;
-}> = ({ ukeSamvær, oppdaterSamværState, visValgmuligheter }) => {
+}> = ({ ukeSamvær, index, oppdaterSamværState, visValgmuligheter }) => {
     return (
-        <HStack gap="2">
+        <UkeContainer gap="1" $border={(index + 1) % 4 !== 0}>
             {visValgmuligheter && (
                 <Valgmuligheter gap="6">
                     <Div />
@@ -114,26 +121,28 @@ const Uke: React.FC<{
                     <Ukedag
                         key={ukedag + index}
                         identifier={ukedag + index}
-                        dagSamvær={dagSamvær}
+                        samvær={dagSamvær}
                         ukedag={ukedag}
                         oppdaterSamværState={(samvær: number) => oppdaterSamværState(index, samvær)}
                     />
                 );
             })}
-        </HStack>
+        </UkeContainer>
     );
 };
 
 const Ukedag: React.FC<{
     identifier: string;
-    dagSamvær: number;
+    samvær: number;
     ukedag: string;
     oppdaterSamværState: (samvær: number) => void;
-}> = ({ dagSamvær, ukedag, identifier, oppdaterSamværState }) => {
+}> = ({ samvær, ukedag, identifier, oppdaterSamværState }) => {
     const oppdaterSamvær = (samvær: { id: number; value: number }[]) => {
         const samværForUkedag = utledSamværForUkedag(samvær);
         oppdaterSamværState(samværForUkedag);
     };
+
+    const visningstekst = `${samvær}/8`;
 
     return (
         <VStack>
@@ -144,7 +153,7 @@ const Ukedag: React.FC<{
                     </Checkbox>
                 ))}
             </CheckboxGroup>
-            <Flexbox>{dagSamvær > 0 ? <BodyShort>{dagSamvær}</BodyShort> : <Filler />}</Flexbox>
+            <Flexbox>{samvær > 0 ? <BodyShort>{visningstekst}</BodyShort> : <Filler />}</Flexbox>
         </VStack>
     );
 };
