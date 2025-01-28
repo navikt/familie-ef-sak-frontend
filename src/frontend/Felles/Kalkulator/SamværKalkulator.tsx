@@ -73,16 +73,18 @@ export const SamværKalkulator: React.FC = () => {
                     </option>
                 ))}
             </PeriodeSelect>
-            {samværState.periodeSamvær.map((ukeSamvær, index) => (
-                <Uke
-                    key={index}
-                    ukeSamvær={ukeSamvær}
-                    oppdaterSamværState={(dag: number, samvær: number) =>
-                        oppdaterSamværState(index, dag, samvær)
-                    }
-                    visValgmuligheter={true}
-                />
-            ))}
+            <HStack gap="4">
+                {samværState.periodeSamvær.map((ukeSamvær, index) => (
+                    <Uke
+                        key={index}
+                        ukeSamvær={ukeSamvær}
+                        oppdaterSamværState={(dag: number, samvær: number) =>
+                            oppdaterSamværState(index, dag, samvær)
+                        }
+                        visValgmuligheter={index % 4 === 0}
+                    />
+                ))}
+            </HStack>
         </VStack>
     );
 };
@@ -176,11 +178,11 @@ const samværsperiodeTilAntallUker: Record<Samværsperiode, number> = {
 };
 
 const samværsperiodeTilTekst: Record<Samværsperiode, string> = {
-    TO_UKER: 'To uker',
-    FIRE_UKER: 'Fire uker',
-    SEKS_UKER: 'Seks uker',
-    ÅTTE_UKER: 'Åtte uker',
-    TOLV_UKER: 'Tolv uker',
+    TO_UKER: '2 uker',
+    FIRE_UKER: '4 uker',
+    SEKS_UKER: '6 uker',
+    ÅTTE_UKER: '8 uker',
+    TOLV_UKER: '12 uker',
 };
 
 const ukedager = ['Man', 'Tir', 'Ons', 'Tor', 'Fre', 'Lør', 'Søn'];
