@@ -1,4 +1,4 @@
-import React, { ChangeEvent, SetStateAction, useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import {
     BodyShort,
     Checkbox,
@@ -52,9 +52,29 @@ export const SamværKalkulator: React.FC = () => {
         ]);
     };
 
+    const oppdaterBeregningsperiode = (periode: Beregningsperiode) => {
+        const antallUkerForNåværendeBeregningsperiode = samværsandelerPerUke.length;
+        const antallUkerForNyBeregningsperiode = samværsperiodeTilAntallUker[periode];
+
+        if (antallUkerForNyBeregningsperiode > antallUkerForNåværendeBeregningsperiode) {
+            settSamværsandelerPerUke((prevState) => [
+                ...prevState.slice(0, antallUkerForNåværendeBeregningsperiode),
+                ...new Array(
+                    antallUkerForNyBeregningsperiode - antallUkerForNåværendeBeregningsperiode
+                )
+                    .fill(0)
+                    .map((): number[] => new Array(7).fill(0)),
+            ]);
+        } else {
+            settSamværsandelerPerUke((prevState) => [
+                ...prevState.slice(0, antallUkerForNyBeregningsperiode),
+            ]);
+        }
+    };
+
     return (
         <VStack gap="4">
-            <BeregningslengdeSelect settSamværsandeler={settSamværsandelerPerUke} />
+            <BeregningslengdeSelect oppdaterBeregningsperiode={oppdaterBeregningsperiode} />
             <HStack gap="4">
                 {samværsandelerPerUke.map((ukeSamvær, index) => (
                     <Uke
@@ -130,13 +150,13 @@ const Ukedag: React.FC<{
 };
 
 const BeregningslengdeSelect: React.FC<{
-    settSamværsandeler: (andeler: SetStateAction<number[][]>) => void;
-}> = ({ settSamværsandeler }) => (
+    oppdaterBeregningsperiode: (periode: Beregningsperiode) => void;
+}> = ({ oppdaterBeregningsperiode }) => (
     <BeregningslengdeContainer>
         <StyledSelect
             label="Beregningslengde"
             onChange={(event: ChangeEvent<HTMLSelectElement>) =>
-                settSamværsandeler(initierSamværState(event.target.value as Beregningsperiode))
+                oppdaterBeregningsperiode(event.target.value as Beregningsperiode)
             }
         >
             {Object.values(Beregningsperiode).map((samværsperiode) => (
