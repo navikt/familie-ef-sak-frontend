@@ -10,6 +10,7 @@ import { ABorderStrong } from '@navikt/ds-tokens/dist/tokens';
 import Visittkort from './Visittkort';
 import PersonTags from './PersonTags';
 import BehandlingTags from './BehandlingTags';
+import { Button, Dropdown, Link } from '@navikt/ds-react';
 
 export const Container = styled(Sticky)`
     display: flex;
@@ -93,7 +94,8 @@ export const PersonHeader: FC<Props> = (props) => {
                     vergemål={vergemål}
                 />
             </FlexContainer>
-            {harBehandling && (
+
+            {harBehandling ? (
                 <FlexContainer>
                     <BehandlingTags behandling={props.behandling} />
                     <AksjonsknapperPersonHeader
@@ -101,6 +103,17 @@ export const PersonHeader: FC<Props> = (props) => {
                         erSaksbehandler={erSaksbehandler}
                     />
                 </FlexContainer>
+            ) : (
+                <Dropdown>
+                    <Button as={Dropdown.Toggle}>Verktøy</Button>
+                    <Dropdown.Menu>
+                        <Dropdown.Menu.List>
+                            <Dropdown.Menu.List.Item as={Link} href="/verktoy/samver">
+                                Samværskalkulator
+                            </Dropdown.Menu.List.Item>
+                        </Dropdown.Menu.List>
+                    </Dropdown.Menu>
+                </Dropdown>
             )}
         </Container>
     );
