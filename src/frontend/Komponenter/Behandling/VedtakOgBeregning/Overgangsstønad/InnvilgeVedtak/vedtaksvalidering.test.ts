@@ -265,7 +265,7 @@ describe('skal feile validering av vedtaksperioder', () => {
         );
     });
 
-    test('Etterfølgende fradato kan ikke være mer enn 18mnd frem i tid.', () => {
+    test('Etterfølgende fradato kan ikke være mer enn 30mnd frem i tid.', () => {
         const vedtaksperioder = [
             lagVedtaksperiode(
                 EPeriodetype.HOVEDPERIODE,
@@ -294,7 +294,7 @@ describe('skal feile validering av vedtaksperioder', () => {
         expect(vedtaksvalidering.perioder[0].årMånedFra).toBeUndefined;
         expect(vedtaksvalidering.perioder[1].årMånedFra).toBeUndefined;
         expect(vedtaksvalidering.perioder[2].årMånedFra).toBe(
-            'Startdato (2096-07) mer enn 18mnd frem i tid'
+            'Startdato (2096-07) mer enn 30mnd frem i tid'
         );
     });
 });
@@ -378,13 +378,13 @@ describe('skal feile validering av inntektsperioder', () => {
         expect(vedtaksvalidering.inntekter[1].årMånedFra).toBe('Ugyldig periode');
     });
 
-    test('Inntektsperiode kan ikke starte mer enn 18 måneder frem i tid.', () => {
+    test('Inntektsperiode kan ikke starte mer enn 30 måneder frem i tid.', () => {
         const datoÅrMåned = datoÅrMånedFrem();
-        const datoÅrMånedNittenMånederFrem = datoÅrMånedFrem(19);
+        const datoÅrMånedTrettiEnMånederFrem = datoÅrMånedFrem(31);
 
         const inntektsperioder = [
             lagInntektsperiode(datoÅrMåned),
-            lagInntektsperiode(datoÅrMånedNittenMånederFrem),
+            lagInntektsperiode(datoÅrMånedTrettiEnMånederFrem),
         ];
         const vedtaksform = lagForm([], inntektsperioder);
 
@@ -393,7 +393,7 @@ describe('skal feile validering av inntektsperioder', () => {
         expect(vedtaksvalidering.inntekter).toHaveLength(2);
         expect(vedtaksvalidering.inntekter[0].årMånedFra).toBeUndefined;
         expect(vedtaksvalidering.inntekter[1].årMånedFra).toBe(
-            `Startdato (${datoÅrMånedNittenMånederFrem}) mer enn 18mnd frem i tid`
+            `Startdato (${datoÅrMånedTrettiEnMånederFrem}) mer enn 30mnd frem i tid`
         );
     });
 

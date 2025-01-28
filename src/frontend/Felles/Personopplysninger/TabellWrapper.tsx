@@ -1,12 +1,13 @@
 import styled from 'styled-components';
 import React from 'react';
 import { Table } from '@navikt/ds-react';
+import { AFontSizeMedium } from '@navikt/ds-tokens/dist/tokens';
 
 export const SmallTable = styled(Table).attrs({ size: 'small' })`
     max-width: max-content;
     th,
     td {
-        font-size: var(--a-font-size-medium);
+        font-size: ${AFontSizeMedium};
     }
 `;
 

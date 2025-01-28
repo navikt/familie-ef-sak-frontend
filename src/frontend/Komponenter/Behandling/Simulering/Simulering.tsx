@@ -21,6 +21,7 @@ import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { BodyLongSmall } from '../../../Felles/Visningskomponenter/Tekster';
 import { ASurfaceWarningSubtle, ASurfaceWarningSubtleHover } from '@navikt/ds-tokens/dist/tokens';
 import { AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
+
 const Container = styled.div`
     padding: 2rem;
     display: flex;
@@ -39,8 +40,6 @@ const ExpansionCardWarning = styled(ExpansionCard)`
 const AlertWarning = styled(Alert)`
     max-width: 60rem;
 `;
-
-const RETTSGEBYR_BELØP = 1277;
 
 const Simulering: React.FC<{
     simuleringsresultat: SimuleringResultat;
@@ -81,8 +80,7 @@ const Simulering: React.FC<{
     const harFeilutbetaling = simuleringsresultat.feilutbetaling > 0;
 
     const skalViseValgForAutomatiskBehandlingUnder4xRettsgebyr =
-        simuleringsresultat.feilutbetaling < RETTSGEBYR_BELØP * 4 &&
-        simuleringsresultat.etterbetaling === 0;
+        simuleringsresultat.visUnder4rettsgebyr;
 
     const harManuellePosteringer = simuleringsresultat.sumManuellePosteringer
         ? simuleringsresultat.sumManuellePosteringer > 0
@@ -184,6 +182,8 @@ const Simulering: React.FC<{
                     skalViseValgForAutomatiskBehandlingUnder4xRettsgebyr={
                         skalViseValgForAutomatiskBehandlingUnder4xRettsgebyr
                     }
+                    år={simuleringsresultat.feilutbetalingsår}
+                    rettsgebyr={simuleringsresultat.fireRettsgebyr}
                 />
             )}
         </Container>
