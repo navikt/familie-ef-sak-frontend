@@ -33,7 +33,7 @@ const Grid = styled.div`
     }
 `;
 
-const LeggTilBarnSomSkalFødes: React.FC<{
+export const TerminBarnSkjema: React.FC<{
     barnSomSkalFødes: BarnSomSkalFødes[];
     oppdaterBarnSomSkalFødes: (terminbarn: BarnSomSkalFødes[]) => void;
     tittel?: string;
@@ -94,5 +94,3 @@ const LeggTilBarnSomSkalFødes: React.FC<{
         </div>
     );
 };
-
-export default LeggTilBarnSomSkalFødes;

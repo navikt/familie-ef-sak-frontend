@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useApp } from '../../../App/context/AppContext';
-import LeggTilBarnSomSkalFødes from './LeggTilBarnSomSkalFødes';
+import { TerminBarnSkjema } from './TerminBarnSkjema';
 import { BarnSomSkalFødes } from '../../../App/hooks/useJournalføringState';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Behandling, BehandlingResultat, Fagsak } from '../../../App/typer/fagsak';
@@ -154,7 +154,7 @@ export const OpprettFørstegangsbehandlingSide = () => {
                             }
                             maksDato={new Date()}
                         />
-                        <LeggTilBarnSomSkalFødes
+                        <TerminBarnSkjema
                             barnSomSkalFødes={barnSomSkalFødes}
                             oppdaterBarnSomSkalFødes={settBarnSomSkalFødes}
                             tittel={'Terminbarn'}
