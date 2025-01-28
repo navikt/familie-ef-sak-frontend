@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, SetStateAction, useState } from 'react';
 import {
     BodyShort,
     Checkbox,
@@ -9,6 +9,7 @@ import {
     VStack,
 } from '@navikt/ds-react';
 import styled from 'styled-components';
+import { ASurfaceInfoSubtle } from '@navikt/ds-tokens/dist/tokens';
 
 const Div = styled.div`
     height: 1.25rem;
@@ -28,58 +29,38 @@ const Valgmuligheter = styled(VStack)`
     margin-right: 2rem;
 `;
 
-const PeriodeSelect = styled(Select)`
+const StyledSelect = styled(Select)`
     width: 10rem;
 `;
 
-interface SamværState {
-    periode: Samværsperiode;
-    periodeSamvær: number[][];
-}
+const BeregningslengdeContainer = styled.div`
+    padding: 1rem 1.5rem 1.5rem 1.5rem;
+    background: ${ASurfaceInfoSubtle};
+`;
 
 export const SamværKalkulator: React.FC = () => {
-    const [samværState, settSamværState] = useState<SamværState>(
-        initierSamværState(Samværsperiode.TO_UKER)
+    const [samværsandelerPerUke, settSamværsandelerPerUke] = useState<number[][]>(
+        initierSamværState(Beregningsperiode.TO_UKER)
     );
 
-    const oppdaterSamværState = (uke: number, dag: number, samvær: number) => {
-        settSamværState((prevState) => {
-            return {
-                ...prevState,
-                periodeSamvær: [
-                    ...prevState.periodeSamvær.slice(0, uke),
-                    [
-                        ...prevState.periodeSamvær[uke].slice(0, dag),
-                        samvær,
-                        ...prevState.periodeSamvær[uke].slice(dag + 1),
-                    ],
-                    ...prevState.periodeSamvær.slice(uke + 1),
-                ],
-            };
-        });
+    const oppdaterSamværsandeler = (uke: number, dag: number, samvær: number) => {
+        settSamværsandelerPerUke((prevState) => [
+            ...prevState.slice(0, uke),
+            [...prevState[uke].slice(0, dag), samvær, ...prevState[uke].slice(dag + 1)],
+            ...prevState.slice(uke + 1),
+        ]);
     };
 
     return (
         <VStack gap="2">
-            <PeriodeSelect
-                label="Velg periode"
-                onChange={(event: ChangeEvent<HTMLSelectElement>) =>
-                    settSamværState(initierSamværState(event.target.value as Samværsperiode))
-                }
-            >
-                {Object.values(Samværsperiode).map((samværsperiode) => (
-                    <option key={samværsperiode} value={samværsperiode}>
-                        {samværsperiodeTilTekst[samværsperiode]}
-                    </option>
-                ))}
-            </PeriodeSelect>
+            <BeregningslengdeSelect settSamværsandeler={settSamværsandelerPerUke} />
             <HStack gap="4">
-                {samværState.periodeSamvær.map((ukeSamvær, index) => (
+                {samværsandelerPerUke.map((ukeSamvær, index) => (
                     <Uke
                         key={index}
                         ukeSamvær={ukeSamvær}
                         oppdaterSamværState={(dag: number, samvær: number) =>
-                            oppdaterSamværState(index, dag, samvær)
+                            oppdaterSamværsandeler(index, dag, samvær)
                         }
                         visValgmuligheter={index % 4 === 0}
                     />
@@ -146,6 +127,25 @@ const Ukedag: React.FC<{
     );
 };
 
+const BeregningslengdeSelect: React.FC<{
+    settSamværsandeler: (andeler: SetStateAction<number[][]>) => void;
+}> = ({ settSamværsandeler }) => (
+    <BeregningslengdeContainer>
+        <StyledSelect
+            label="Beregningslengde"
+            onChange={(event: ChangeEvent<HTMLSelectElement>) =>
+                settSamværsandeler(initierSamværState(event.target.value as Beregningsperiode))
+            }
+        >
+            {Object.values(Beregningsperiode).map((samværsperiode) => (
+                <option key={samværsperiode} value={samværsperiode}>
+                    {samværsperiodeTilTekst[samværsperiode]}
+                </option>
+            ))}
+        </StyledSelect>
+    </BeregningslengdeContainer>
+);
+
 const utledSamværForUkedag = (verdier: { id: number; value: number }[]): number => {
     if (verdier.length === 0) {
         return 0;
@@ -153,7 +153,7 @@ const utledSamværForUkedag = (verdier: { id: number; value: number }[]): number
     return verdier.map((verdi) => Number(verdi.value)).reduce((acc, verdi) => acc + verdi);
 };
 
-enum Samværsperiode {
+enum Beregningsperiode {
     TO_UKER = 'TO_UKER',
     FIRE_UKER = 'FIRE_UKER',
     SEKS_UKER = 'SEKS_UKER',
@@ -161,15 +161,12 @@ enum Samværsperiode {
     TOLV_UKER = 'TOLV_UKER',
 }
 
-const initierSamværState = (periode: Samværsperiode): SamværState => {
+const initierSamværState = (periode: Beregningsperiode): number[][] => {
     const antallUker = samværsperiodeTilAntallUker[periode];
-    return {
-        periode: periode,
-        periodeSamvær: new Array(antallUker).fill(0).map((): number[] => new Array(7).fill(0)),
-    };
+    return new Array(antallUker).fill(0).map((): number[] => new Array(7).fill(0));
 };
 
-const samværsperiodeTilAntallUker: Record<Samværsperiode, number> = {
+const samværsperiodeTilAntallUker: Record<Beregningsperiode, number> = {
     TO_UKER: 2,
     FIRE_UKER: 4,
     SEKS_UKER: 6,
@@ -177,7 +174,7 @@ const samværsperiodeTilAntallUker: Record<Samværsperiode, number> = {
     TOLV_UKER: 12,
 };
 
-const samværsperiodeTilTekst: Record<Samværsperiode, string> = {
+const samværsperiodeTilTekst: Record<Beregningsperiode, string> = {
     TO_UKER: '2 uker',
     FIRE_UKER: '4 uker',
     SEKS_UKER: '6 uker',
