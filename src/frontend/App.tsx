@@ -88,7 +88,7 @@ const AppRoutes: React.FC<{ innloggetSaksbehandler: ISaksbehandler }> = ({
                     <Route path="/admin/*" element={<AdminSide />} />
                     <Route path="/fagsak/:fagsakId" element={<FagsakTilFagsakPersonRedirect />} />
                     <Route path="/person/:fagsakPersonId/*" element={<PersonOversiktSide />} />
-                    <Route path="/verktoy/samver" element={<VerktøySide />} />
+                    <Route path="/verktoy/*" element={<VerktøySide />} />
                     <Route path="/uttrekk/arbeidssoker" element={<UttrekkArbeidssøkerSide />} />
                     <Route
                         path={`/opprett-forstegangsbehandling`}

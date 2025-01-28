@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { SamværKalkulator } from '../../Felles/Kalkulator/SamværKalkulator';
+import { Route, Routes } from 'react-router-dom';
+import { SamværkalkulatorSide } from './SamværkalkulatorSide';
 
 const Container = styled.div`
     margin: 1.5rem;
@@ -9,7 +10,9 @@ const Container = styled.div`
 export const VerktøySide: React.FC = () => {
     return (
         <Container>
-            <SamværKalkulator />
+            <Routes>
+                <Route path="samver" element={<SamværkalkulatorSide />} />
+            </Routes>
         </Container>
     );
 };
