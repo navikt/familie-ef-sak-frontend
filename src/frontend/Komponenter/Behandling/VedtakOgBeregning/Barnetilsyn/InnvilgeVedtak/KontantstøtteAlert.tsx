@@ -11,18 +11,15 @@ const AlertStripe = styled(Alert)`
 `;
 
 interface Props {
-    kontantstøttePerioderGrunnlagsdata: KontantstøttePeriode[];
+    kontantstøttePerioderFraGrunnlagsdata: KontantstøttePeriode[];
 }
 
 const kontantstøtteKilde = (kilde: string): string => {
     return kilde.toLowerCase();
 };
 
-export const KontantstøtteAlert: React.FC<Props> = ({ kontantstøttePerioderGrunnlagsdata }) => {
-    const harKontantstøttePerioder = kontantstøttePerioderGrunnlagsdata.length === 0;
-    if (!harKontantstøttePerioder) {
-        return null;
-    }
+export const KontantstøtteAlert: React.FC<Props> = ({ kontantstøttePerioderFraGrunnlagsdata }) => {
+    const harKontantstøttePerioder = kontantstøttePerioderFraGrunnlagsdata.length > 0;
 
     return (
         <>
@@ -36,25 +33,25 @@ export const KontantstøtteAlert: React.FC<Props> = ({ kontantstøttePerioderGru
                             <li>
                                 <BodyShortSmall style={{ display: 'inline' }}>
                                     {formaterNullableIsoDato(
-                                        kontantstøttePerioderGrunnlagsdata[0].fomMåned
+                                        kontantstøttePerioderFraGrunnlagsdata[0].fomMåned
                                     )}{' '}
                                     -{' '}
-                                    {kontantstøttePerioderGrunnlagsdata[0].tomMåned
+                                    {kontantstøttePerioderFraGrunnlagsdata[0].tomMåned
                                         ? formaterNullableIsoDato(
-                                              kontantstøttePerioderGrunnlagsdata[0].tomMåned
+                                              kontantstøttePerioderFraGrunnlagsdata[0].tomMåned
                                           )
                                         : ''}{' '}
                                     {'(kilde: ' +
                                         kontantstøtteKilde(
-                                            kontantstøttePerioderGrunnlagsdata[0].kilde
+                                            kontantstøttePerioderFraGrunnlagsdata[0].kilde
                                         ) +
                                         ')'}
                                 </BodyShortSmall>
                             </li>
                         </div>
-                        {kontantstøttePerioderGrunnlagsdata.length > 1 && (
+                        {kontantstøttePerioderFraGrunnlagsdata.length > 1 && (
                             <ReadMore header="Se flere perioder">
-                                {kontantstøttePerioderGrunnlagsdata
+                                {kontantstøttePerioderFraGrunnlagsdata
                                     .slice(1)
                                     .map((periode, index) => (
                                         <li key={index}>
@@ -63,7 +60,8 @@ export const KontantstøtteAlert: React.FC<Props> = ({ kontantstøttePerioderGru
                                                 {formaterNullableIsoDato(periode.tomMåned)}
                                                 {' (kilde: ' +
                                                     kontantstøtteKilde(
-                                                        kontantstøttePerioderGrunnlagsdata[0].kilde
+                                                        kontantstøttePerioderFraGrunnlagsdata[0]
+                                                            .kilde
                                                     ) +
                                                     ')'}
                                             </BodyShortSmall>

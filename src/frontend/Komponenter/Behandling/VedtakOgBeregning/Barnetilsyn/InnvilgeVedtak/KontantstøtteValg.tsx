@@ -59,7 +59,7 @@ interface Props {
     kontantstøttePerioder: ListState<IPeriodeMedBeløp>;
     settValideringsFeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>;
     valideringsfeil?: FormErrors<InnvilgeVedtakForm>;
-    kontantstøttePerioderGrunnlagsdata: KontantstøttePeriode[];
+    kontantstøttePerioderFraGrunnlagsdata: KontantstøttePeriode[];
 }
 
 export const tomKontantstøtteRad = (): IPeriodeMedBeløp => ({
@@ -75,7 +75,7 @@ const KontantstøtteValg: React.FC<Props> = ({
     kontantstøttePerioder,
     settValideringsFeil,
     valideringsfeil,
-    kontantstøttePerioderGrunnlagsdata,
+    kontantstøttePerioderFraGrunnlagsdata,
 }) => {
     const { settIkkePersistertKomponent } = useApp();
     const { åpenHøyremeny } = useBehandling();
@@ -124,7 +124,7 @@ const KontantstøtteValg: React.FC<Props> = ({
             </Heading>
             <AlertOgRadioknappWrapper>
                 <KontantstøtteAlert
-                    kontantstøttePerioderGrunnlagsdata={kontantstøttePerioderGrunnlagsdata}
+                    kontantstøttePerioderFraGrunnlagsdata={kontantstøttePerioderFraGrunnlagsdata}
                 />
 
                 <JaNeiRadioGruppe

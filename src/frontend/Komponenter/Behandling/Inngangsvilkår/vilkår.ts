@@ -27,7 +27,6 @@ export interface IVilkårGrunnlag {
     adresseopplysninger?: IAdresseopplysninger;
     dokumentasjon?: IDokumentasjonGrunnlag;
     harAvsluttetArbeidsforhold: boolean;
-    harKontantstøttePerioder?: boolean;
     kontantstøttePerioder: KontantstøttePeriode[];
     behandlingOpprettet?: string;
 }
