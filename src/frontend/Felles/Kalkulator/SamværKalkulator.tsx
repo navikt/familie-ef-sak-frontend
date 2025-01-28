@@ -3,6 +3,7 @@ import {
     BodyShort,
     Checkbox,
     CheckboxGroup,
+    Heading,
     HStack,
     Label,
     Select,
@@ -52,7 +53,7 @@ export const SamværKalkulator: React.FC = () => {
     };
 
     return (
-        <VStack gap="2">
+        <VStack gap="4">
             <BeregningslengdeSelect settSamværsandeler={settSamværsandelerPerUke} />
             <HStack gap="4">
                 {samværsandelerPerUke.map((ukeSamvær, index) => (
@@ -66,6 +67,7 @@ export const SamværKalkulator: React.FC = () => {
                     />
                 ))}
             </HStack>
+            <Oppsummering samværsandelerPerUke={samværsandelerPerUke} />
         </VStack>
     );
 };
@@ -145,6 +147,32 @@ const BeregningslengdeSelect: React.FC<{
         </StyledSelect>
     </BeregningslengdeContainer>
 );
+
+const Oppsummering: React.FC<{ samværsandelerPerUke: number[][] }> = ({ samværsandelerPerUke }) => {
+    const summertSamvær = samværsandelerPerUke
+        .flatMap((andeler) => andeler)
+        .reduce((acc, andel) => acc + andel);
+
+    const maksimalSamværsandel = samværsandelerPerUke.length * 7 * 8;
+
+    const antallHeleDagerMedSamvær = Math.floor(summertSamvær / 8);
+
+    const rest = summertSamvær % 8;
+    const restSuffix = rest === 0 ? '' : '/8';
+
+    const prosentandel = summertSamvær / maksimalSamværsandel;
+
+    const visningstekstAntallDager = `${antallHeleDagerMedSamvær} dager og ${rest}${restSuffix} deler`;
+    const visningstekstProsentandel = `${Math.round(prosentandel * 1000) / 10}%`;
+
+    return (
+        <BeregningslengdeContainer>
+            <Heading size="medium">Total:</Heading>
+            <BodyShort size="large">{visningstekstAntallDager}</BodyShort>
+            <BodyShort size="large">{visningstekstProsentandel}</BodyShort>
+        </BeregningslengdeContainer>
+    );
+};
 
 const utledSamværForUkedag = (verdier: { id: number; value: number }[]): number => {
     if (verdier.length === 0) {
