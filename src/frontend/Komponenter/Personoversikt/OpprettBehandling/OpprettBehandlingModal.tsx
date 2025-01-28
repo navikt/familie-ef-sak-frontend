@@ -5,7 +5,7 @@ import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { useApp } from '../../../App/context/AppContext';
 import { useNavigate } from 'react-router-dom';
 import { EToast } from '../../../App/typer/toast';
-import { RevurderingInnhold } from '../../../App/typer/revurderingstype';
+import { RevurderingPayload } from '../../../App/typer/revurderingstype';
 import { Fagsak } from '../../../App/typer/fagsak';
 import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
@@ -73,15 +73,15 @@ export const OpprettBehandlingModal: React.FunctionComponent<Props> = ({
         }
     };
 
-    const opprettRevurdering = (revurderingInnhold: RevurderingInnhold) => {
+    const opprettRevurdering = (payload: RevurderingPayload) => {
         settFeilmelding('');
 
         if (!senderInnBehandling) {
             settSenderInnBehandling(true);
-            axiosRequest<Ressurs<void>, RevurderingInnhold>({
+            axiosRequest<Ressurs<void>, RevurderingPayload>({
                 method: 'POST',
                 url: `/familie-ef-sak/api/revurdering/${fagsak.id}`,
-                data: revurderingInnhold,
+                data: payload,
             })
                 .then((response) => {
                     if (response.status === RessursStatus.SUKSESS) {
