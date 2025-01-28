@@ -3,9 +3,10 @@ import React, { FC } from 'react';
 import styled from 'styled-components';
 import { IPersonalia } from '../vilkår';
 import { IBarnMedSamvær } from './typer';
+import { ATextDefault } from '@navikt/ds-tokens/dist/tokens';
 
 const StyledReadMore = styled(ReadMore)`
-    --ac-read-more-text: var(--a-text-default);
+    --ac-read-more-text: ${ATextDefault};
 `;
 
 const BostedMedReadMore: FC<{

@@ -30,7 +30,6 @@ const StyledBrevMeny = styled.div`
     display: flex;
     flex-direction: column;
     min-width: 450px;
-    margin-top: 2rem;
 `;
 
 const Brevmeny: React.FC<Props> = ({
