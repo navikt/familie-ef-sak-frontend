@@ -14,9 +14,8 @@ interface Props {
     kontantstøttePerioderFraGrunnlagsdata: KontantstøttePeriode[];
 }
 
-const kontantstøtteKilde = (kilde: string): string => {
-    return kilde.toLowerCase();
-};
+const kontantstøtteKilde = (kilde: string): string => kilde.toLowerCase();
+
 
 export const KontantstøtteAlert: React.FC<Props> = ({ kontantstøttePerioderFraGrunnlagsdata }) => {
     const harKontantstøttePerioder = kontantstøttePerioderFraGrunnlagsdata.length > 0;
