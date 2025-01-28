@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import PdfVisning from '../../../Felles/Pdf/PdfVisning';
-import styled from 'styled-components';
 import SendTilBeslutterFooter from '../Totrinnskontroll/SendTilBeslutterFooter';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import Brevmeny from './Brevmeny';
@@ -10,24 +9,12 @@ import { useApp } from '../../../App/context/AppContext';
 import { TotrinnskontrollStatus } from '../../../App/typer/totrinnskontroll';
 import { BrevmottakereForBehandling } from '../Brevmottakere/BrevmottakereForBehandling';
 import { skalFerdigstilleUtenBeslutter } from '../VedtakOgBeregning/Felles/utils';
-import { useHentOppgaverForOpprettelse } from '../../../App/hooks/useHentOppgaverForOpprettelse';
-import { AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
-import { oppgaveSomSkalOpprettesTilTekst } from '../Totrinnskontroll/oppgaveForOpprettelseTyper';
 import { HøyreKolonne, StyledBrev, VenstreKolonne } from './StyledBrev';
 import { Behandling } from '../../../App/typer/fagsak';
 import { OverstyrtBrevmalVarsel } from './OverstyrtBrevmalVarsel';
-
-const InfostripeGruppe = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    margin-top: 1rem;
-`;
-
-const StyledInfostripe = styled(AlertInfo)`
-    padding-top: 1rem;
-    width: 40rem;
-`;
+import { FremleggoppgaverSomOpprettes } from './FremleggoppgaverSomOpprettes';
+import { VStack } from '@navikt/ds-react';
+import { useHentOppgaverForOpprettelse } from '../../../App/hooks/useHentOppgaverForOpprettelse';
 
 interface Props {
     behandling: Behandling;
@@ -39,7 +26,8 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
         useBehandling();
     const [brevRessurs, settBrevRessurs] = useState<Ressurs<string>>(byggTomRessurs());
     const [kanSendesTilBeslutter, settKanSendesTilBeslutter] = useState<boolean>(false);
-    const oppgaverForOpprettelse = useHentOppgaverForOpprettelse(behandling.id);
+    const { oppgaverForOpprettelse, hentOppgaverForOpprettelseCallback } =
+        useHentOppgaverForOpprettelse(behandling.id);
 
     const lagBeslutterBrev = () => {
         axiosRequest<string, null>({
@@ -75,38 +63,42 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
     }, [behandlingErRedigerbar, totrinnskontroll]);
 
     return (
-        <DataViewer response={{ personopplysningerResponse, vedtak }}>
-            {({ personopplysningerResponse, vedtak }) => (
+        <DataViewer
+            response={{
+                personopplysningerResponse,
+                vedtak,
+                oppgaverForOpprettelse,
+            }}
+        >
+            {({ personopplysningerResponse, vedtak, oppgaverForOpprettelse }) => (
                 <>
                     <StyledBrev>
                         <VenstreKolonne>
-                            <BrevmottakereForBehandling
-                                behandlingId={behandling.id}
-                                personopplysninger={personopplysningerResponse}
-                            />
-                            {!behandlingErRedigerbar && (
-                                <InfostripeGruppe>
-                                    {oppgaverForOpprettelse.oppgavetyperSomSkalOpprettes.map(
-                                        (oppgaveType, idx) => (
-                                            <StyledInfostripe key={idx}>
-                                                {oppgaveSomSkalOpprettesTilTekst[oppgaveType]}
-                                            </StyledInfostripe>
-                                        )
-                                    )}
-                                </InfostripeGruppe>
-                            )}
-                            {!behandlingErRedigerbar && (
-                                <OverstyrtBrevmalVarsel behandlingId={behandling.id} />
-                            )}
-                            {behandlingErRedigerbar && (
-                                <Brevmeny
-                                    oppdaterBrevRessurs={oppdaterBrevRessurs}
+                            <VStack gap="4">
+                                <BrevmottakereForBehandling
+                                    behandlingId={behandling.id}
                                     personopplysninger={personopplysningerResponse}
-                                    settKanSendesTilBeslutter={settKanSendesTilBeslutter}
-                                    behandling={behandling}
-                                    vedtaksresultat={vedtak?.resultatType}
                                 />
-                            )}
+                                {!behandlingErRedigerbar && (
+                                    <FremleggoppgaverSomOpprettes
+                                        oppgavetyperSomSkalOpprettes={
+                                            oppgaverForOpprettelse.oppgavetyperSomSkalOpprettes
+                                        }
+                                    />
+                                )}
+                                {!behandlingErRedigerbar && (
+                                    <OverstyrtBrevmalVarsel behandlingId={behandling.id} />
+                                )}
+                                {behandlingErRedigerbar && (
+                                    <Brevmeny
+                                        oppdaterBrevRessurs={oppdaterBrevRessurs}
+                                        personopplysninger={personopplysningerResponse}
+                                        settKanSendesTilBeslutter={settKanSendesTilBeslutter}
+                                        behandling={behandling}
+                                        vedtaksresultat={vedtak?.resultatType}
+                                    />
+                                )}
+                            </VStack>
                         </VenstreKolonne>
                         <HøyreKolonne>
                             <PdfVisning pdfFilInnhold={brevRessurs} />
@@ -117,7 +109,10 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
                         kanSendesTilBeslutter={kanSendesTilBeslutter}
                         ferdigstillUtenBeslutter={skalFerdigstilleUtenBeslutter(vedtak)}
                         behandlingErRedigerbar={behandlingErRedigerbar}
-                        oppgaverForOpprettelse={oppgaverForOpprettelse}
+                        oppgavetyperSomKanOpprettes={
+                            oppgaverForOpprettelse.oppgavetyperSomKanOpprettes
+                        }
+                        hentOppgaverForOpprettelseCallback={hentOppgaverForOpprettelseCallback}
                     />
                 </>
             )}

@@ -18,6 +18,7 @@ export enum ToggleName {
 
     // Release-toggles
     konvertereDelmalblokkTilHtmlFelt = 'familie.ef.sak.konverter-delmalblokk-til-html-input',
+    visMarkereGodkjenneVedtakOppgaveModal = 'familie.ef.sak.vis-markere-godkjenne-vedtak-oppgave-modal',
 
     // Midlertidige toggles - kan fjernes etterhvert
 }

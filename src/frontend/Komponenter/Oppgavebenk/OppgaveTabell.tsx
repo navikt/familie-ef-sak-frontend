@@ -15,11 +15,6 @@ const PaginationContainer = styled(HStack)`
     margin-bottom: 1rem;
 `;
 
-export interface IOppgaverResponse {
-    antallTreffTotalt: number;
-    oppgaver: IOppgave[];
-}
-
 interface Props {
     oppgaver: IOppgave[];
     mapper: IMappe[];
