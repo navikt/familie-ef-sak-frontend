@@ -9,6 +9,7 @@ import { ÅpneKlager } from './Klage/ÅpneKlager';
 import { FagsakPerson } from '../../App/typer/fagsak';
 import { Heading } from '@navikt/ds-react';
 import styled from 'styled-components';
+import { SamværKalkulator } from '../../Felles/Kalkulator/SamværKalkulator';
 
 export enum BehandlingApplikasjon {
     EF_SAK = 'EF_SAK',
@@ -82,6 +83,7 @@ export const Behandlingsoversikt: React.FC<{
                             hentUtestengelser={hentUtestengelser}
                         />
                     )}
+                    <SamværKalkulator />
                 </>
             )}
         </DataViewer>
