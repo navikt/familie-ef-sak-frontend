@@ -167,3 +167,12 @@ export const beregnTiProsentØkningIMånedsinntekt = (årsinntekt: number) =>
 
 export const beregnTiProsentReduksjonIMånedsinntekt = (årsinntekt: number) =>
     formaterTallMedTusenSkille(Math.floor((årsinntekt / 12) * 0.9));
+
+export const genererBeregnetInntektsTekst = (årsinntekt: number): string => {
+    const minusTi = beregnTiProsentReduksjonIMånedsinntekt(årsinntekt);
+    const plusTi = beregnTiProsentØkningIMånedsinntekt(årsinntekt);
+
+    return `Forventet årsinntekt fra [DATO]: ${formaterTallMedTusenSkille(årsinntekt)} kroner.
+    - 10 % ned: ${minusTi} kroner per måned.
+    - 10 % opp: ${plusTi} kroner per måned.`;
+};
