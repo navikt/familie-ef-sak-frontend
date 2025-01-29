@@ -3,6 +3,9 @@ export interface SimuleringResultat {
     fomDatoNestePeriode: string;
     etterbetaling: number;
     feilutbetaling: number;
+    feilutbetalingsår?: number;
+    fireRettsgebyr?: number;
+    visUnder4rettsgebyr: boolean;
     fom: string;
     tomDatoNestePeriode: string;
     forfallsdatoNestePeriode: string;

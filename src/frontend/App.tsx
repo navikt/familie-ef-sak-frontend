@@ -34,6 +34,7 @@ import { UttrekkArbeidssøkerSide } from './Komponenter/Uttrekk/UttrekkArbeidss�
 import { VelgPersonOgStønadstypeSide } from './Komponenter/Behandling/Førstegangsbehandling/VelgPersonOgStønadstypeSide';
 import { OpprettFørstegangsbehandlingSide } from './Komponenter/Behandling/Førstegangsbehandling/OpprettFørstegangsbehandlingSide';
 import { UlagretDataModal } from './Felles/Modal/UlagretDataModal';
+import { VerktøySide } from './Komponenter/Verktøy/VerktøySide';
 
 export const App: React.FC = () => {
     const [innloggetSaksbehandler, settInnloggetSaksbehandler] = useState<ISaksbehandler>();
@@ -87,6 +88,7 @@ const AppRoutes: React.FC<{ innloggetSaksbehandler: ISaksbehandler }> = ({
                     <Route path="/admin/*" element={<AdminSide />} />
                     <Route path="/fagsak/:fagsakId" element={<FagsakTilFagsakPersonRedirect />} />
                     <Route path="/person/:fagsakPersonId/*" element={<PersonOversiktSide />} />
+                    <Route path="/verktoy/*" element={<VerktøySide />} />
                     <Route path="/uttrekk/arbeidssoker" element={<UttrekkArbeidssøkerSide />} />
                     <Route
                         path={`/opprett-forstegangsbehandling`}

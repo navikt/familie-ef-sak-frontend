@@ -4,14 +4,14 @@ import { OpprettRevurdering } from './OpprettRevurdering';
 import { OpprettTilbakekreving } from './OpprettTilbakekreving';
 import { OpprettKlagebehandling } from './OpprettKlagebehandling';
 import { Fagsak } from '../../../App/typer/fagsak';
-import { RevurderingInnhold } from '../../../App/typer/revurderingstype';
+import { RevurderingPayload } from '../../../App/typer/revurderingstype';
 import { OpprettKlagebehandlingRequest } from '../../../App/typer/klage';
 
 interface Props {
     fagsak: Fagsak;
     valgtBehandlingstype: Behandlingstype | undefined;
     settVisModal: (bool: boolean) => void;
-    opprettRevurdering: (revurderingInnhold: RevurderingInnhold) => void;
+    opprettRevurdering: (payload: RevurderingPayload) => void;
     opprettTilbakekreving: () => void;
     opprettKlagebehandling: (data: OpprettKlagebehandlingRequest) => void;
 }
