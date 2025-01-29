@@ -110,7 +110,7 @@ export const PersonHeader: FC<Props> = (props) => {
             )}
             {!harBehandling && skalViseSamværskalkulator && (
                 <Dropdown>
-                    <Button as={Dropdown.Toggle}>Verktøy</Button>
+                    <Button as={Dropdown.Toggle}>Samværskalkulator</Button>
                     <Dropdown.Menu>
                         <Dropdown.Menu.List>
                             <Dropdown.Menu.List.Item as={Link} href="/verktoy/samver">
