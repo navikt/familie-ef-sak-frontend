@@ -11,6 +11,8 @@ import Visittkort from './Visittkort';
 import PersonTags from './PersonTags';
 import BehandlingTags from './BehandlingTags';
 import { Button, Dropdown, Link } from '@navikt/ds-react';
+import { useToggles } from '../../App/context/TogglesContext';
+import { ToggleName } from '../../App/context/toggles';
 
 export const Container = styled(Sticky)`
     display: flex;
@@ -53,6 +55,8 @@ const isBehandlingProps = (props: Props): props is BehandlingProps =>
 
 export const PersonHeader: FC<Props> = (props) => {
     const { erSaksbehandler } = useApp();
+    const { toggles } = useToggles();
+    const skalViseSamværskalkulator = toggles[ToggleName.visSamværskalkulator];
 
     const {
         personIdent,
@@ -95,7 +99,7 @@ export const PersonHeader: FC<Props> = (props) => {
                 />
             </FlexContainer>
 
-            {harBehandling ? (
+            {harBehandling && (
                 <FlexContainer>
                     <BehandlingTags behandling={props.behandling} />
                     <AksjonsknapperPersonHeader
@@ -103,7 +107,8 @@ export const PersonHeader: FC<Props> = (props) => {
                         erSaksbehandler={erSaksbehandler}
                     />
                 </FlexContainer>
-            ) : (
+            )}
+            {!harBehandling && skalViseSamværskalkulator && (
                 <Dropdown>
                     <Button as={Dropdown.Toggle}>Verktøy</Button>
                     <Dropdown.Menu>

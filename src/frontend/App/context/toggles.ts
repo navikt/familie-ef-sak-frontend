@@ -18,6 +18,5 @@ export enum ToggleName {
 
     // Release-toggles
     konvertereDelmalblokkTilHtmlFelt = 'familie.ef.sak.konverter-delmalblokk-til-html-input',
-
-    // Midlertidige toggles - kan fjernes etterhvert
+    visSamværskalkulator = 'familie.ef.sak.frontend-vis-samverskalkulator',
 }
