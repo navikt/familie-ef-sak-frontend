@@ -321,13 +321,11 @@ describe('validering av kontantstøtteperioder for innvilget barnetilsyn', () =>
             ];
             const vedtaksform = {
                 ...lagForm(),
-                harTilleggsstønad: ERadioValg.IKKE_SATT,
                 skalStønadReduseres: ERadioValg.JA,
                 tilleggsstønadsperioder: tilleggsstønadPerioder,
             };
             const vedtaksform2 = {
                 ...lagForm(),
-                harTilleggsstønad: ERadioValg.IKKE_SATT,
                 skalStønadReduseres: ERadioValg.NEI,
                 tilleggsstønadsperioder: tilleggsstønadPerioder,
             };
