@@ -35,6 +35,7 @@ export interface KontantstøttePeriode {
     fomMåned: string;
     tomMåned?: string;
     kilde: string;
+    hentetDato: string;
 }
 
 export interface IPersonalia {

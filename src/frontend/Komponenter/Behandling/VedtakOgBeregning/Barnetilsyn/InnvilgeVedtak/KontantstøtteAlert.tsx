@@ -23,7 +23,9 @@ export const KontantstøtteAlert: React.FC<Props> = ({ kontantstøttePerioderFra
         <>
             <AlertStripe variant="info">
                 {harKontantstøttePerioder
-                    ? 'Brukers kontantstøtteperioder'
+                    ? 'Brukers kontantstøtteperioder (hentet ' +
+                      formaterNullableIsoDato(kontantstøttePerioderFraGrunnlagsdata[0].hentetDato) +
+                      ')'
                     : 'Bruker har verken fått eller får kontantstøtte'}
                 {harKontantstøttePerioder && (
                     <>
