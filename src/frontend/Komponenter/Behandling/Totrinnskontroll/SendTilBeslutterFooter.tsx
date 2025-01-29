@@ -12,10 +12,11 @@ import { ABorderStrong } from '@navikt/ds-tokens/dist/tokens';
 import { useNavigate } from 'react-router-dom';
 import OppgaverForOpprettelse from './OppgaverForOpprettelse';
 import { Behandling } from '../../../App/typer/fagsak';
-import { IOppgaverForOpprettelse } from '../../../App/hooks/useHentOppgaverForOpprettelse';
 import { OppgaveTypeForOpprettelse } from './oppgaveForOpprettelseTyper';
-import { harVerdi } from '../../../App/utils/utils';
 import { ModalState } from '../Modal/NyEierModal';
+import { useToggles } from '../../../App/context/TogglesContext';
+import { ToggleName } from '../../../App/context/toggles';
+import { ModalOpprettOgFerdigstilleOppgaver } from './ModalOpprettOgFerdigstilleOppgaver';
 
 const Footer = styled.footer`
     width: 100%;
@@ -39,20 +40,39 @@ const FlexBox = styled.div`
 
 export interface SendTilBeslutterRequest {
     oppgavetyperSomSkalOpprettes: OppgaveTypeForOpprettelse[];
+    årForInntektskontrollSelvstendigNæringsdrivende?: number;
 }
+
+const utledDefaultOppgavetyperSomSkalOpprettes = (
+    oppgaveTyperSomKanOpprettes: OppgaveTypeForOpprettelse[] | undefined
+) => {
+    if (!oppgaveTyperSomKanOpprettes) {
+        return [];
+    }
+
+    return oppgaveTyperSomKanOpprettes.includes(
+        OppgaveTypeForOpprettelse.INNTEKTSKONTROLL_1_ÅR_FREM_I_TID
+    )
+        ? [OppgaveTypeForOpprettelse.INNTEKTSKONTROLL_1_ÅR_FREM_I_TID]
+        : [];
+};
 
 const SendTilBeslutterFooter: React.FC<{
     behandling: Behandling;
     kanSendesTilBeslutter?: boolean;
     behandlingErRedigerbar: boolean;
     ferdigstillUtenBeslutter: boolean;
-    oppgaverForOpprettelse?: IOppgaverForOpprettelse;
+    oppgavetyperSomKanOpprettes?: OppgaveTypeForOpprettelse[];
+    hentOppgaverForOpprettelseCallback?: {
+        rerun: () => void;
+    };
 }> = ({
     behandling,
     kanSendesTilBeslutter,
     behandlingErRedigerbar,
     ferdigstillUtenBeslutter,
-    oppgaverForOpprettelse,
+    oppgavetyperSomKanOpprettes,
+    hentOppgaverForOpprettelseCallback,
 }) => {
     const { axiosRequest } = useApp();
     const navigate = useNavigate();
@@ -64,9 +84,20 @@ const SendTilBeslutterFooter: React.FC<{
         hentBehandlingshistorikk,
         settNyEierModalState,
     } = useBehandling();
+    const { toggles } = useToggles();
     const [laster, settLaster] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>();
     const [visModal, settVisModal] = useState<boolean>(false);
+    const [visMarkereGodkjenneVedtakOppgaveModal, settVisMarkereGodkjenneVedtakOppgaveModal] =
+        useState<boolean>(false);
+    const [oppgavetyperSomSkalOpprettes, settOppgavetyperSomSkalOpprettes] = useState<
+        OppgaveTypeForOpprettelse[]
+    >(utledDefaultOppgavetyperSomSkalOpprettes(oppgavetyperSomKanOpprettes));
+    const [
+        årForInntektskontrollSelvstendigNæringsdrivende,
+        settÅrForInntektskontrollSelvstendigNæringsdrivende,
+    ] = useState<number | undefined>();
+
     const sendTilBeslutter = () => {
         settLaster(true);
         settFeilmelding(undefined);
@@ -74,9 +105,9 @@ const SendTilBeslutterFooter: React.FC<{
             method: 'POST',
             url: `/familie-ef-sak/api/vedtak/${behandling.id}/send-til-beslutter`,
             data: {
-                oppgavetyperSomSkalOpprettes: oppgaverForOpprettelse
-                    ? oppgaverForOpprettelse.oppgavetyperSomSkalOpprettes
-                    : [],
+                oppgavetyperSomSkalOpprettes: oppgavetyperSomSkalOpprettes,
+                årForInntektskontrollSelvstendigNæringsdrivende:
+                    årForInntektskontrollSelvstendigNæringsdrivende,
             },
         })
             .then((res: RessursSuksess<string> | RessursFeilet) => {
@@ -85,6 +116,8 @@ const SendTilBeslutterFooter: React.FC<{
                     hentVedtak.rerun();
                     hentAnsvarligSaksbehandler.rerun();
                     hentTotrinnskontroll.rerun();
+                    settVisMarkereGodkjenneVedtakOppgaveModal(false);
+                    hentOppgaverForOpprettelseCallback?.rerun();
                     settVisModal(true);
                 } else {
                     settFeilmelding(res.frontendFeilmelding);
@@ -94,6 +127,9 @@ const SendTilBeslutterFooter: React.FC<{
             })
             .finally(() => settLaster(false));
     };
+
+    const toggleVisKnappForModal =
+        toggles[ToggleName.visMarkereGodkjenneVedtakOppgaveModal] || false;
 
     const lukkModal = () => {
         settVisModal(false);
@@ -108,6 +144,11 @@ const SendTilBeslutterFooter: React.FC<{
         ? 'Vedtaket er ferdigstilt'
         : 'Vedtaket er sendt til beslutter';
 
+    const skalViseKnappForModal =
+        toggleVisKnappForModal &&
+        oppgavetyperSomKanOpprettes &&
+        oppgavetyperSomKanOpprettes.length > 0;
+
     return (
         <>
             {behandlingErRedigerbar && (
@@ -117,20 +158,28 @@ const SendTilBeslutterFooter: React.FC<{
                         <AlertInfo>Vedtaket vil ikke bli sendt til totrinnskontroll</AlertInfo>
                     )}
                     <FlexBox>
-                        {oppgaverForOpprettelse && (
+                        {/* TODO: Dette skal fjernes etter at ny modal er togglet på for alle */}
+                        {oppgavetyperSomKanOpprettes && (
                             <OppgaverForOpprettelse
-                                behandling={behandling}
-                                oppgaverForOpprettelse={oppgaverForOpprettelse}
+                                oppgavetyperSomKanOpprettes={oppgavetyperSomKanOpprettes}
+                                oppgavetyperSomSkalOpprettes={oppgavetyperSomSkalOpprettes}
+                                settOppgavetyperSomSkalOpprettes={settOppgavetyperSomSkalOpprettes}
                             />
                         )}
                         <MidtstiltInnhold>
+                            {skalViseKnappForModal && (
+                                <Button
+                                    onClick={() => settVisMarkereGodkjenneVedtakOppgaveModal(true)}
+                                    variant="danger"
+                                    type={'button'}
+                                    disabled={!kanSendesTilBeslutter || laster}
+                                >
+                                    Opprettelse av oppgaver - TEST
+                                </Button>
+                            )}
                             <Button
                                 onClick={sendTilBeslutter}
-                                disabled={
-                                    laster ||
-                                    !kanSendesTilBeslutter ||
-                                    harVerdi(oppgaverForOpprettelse?.feilmelding)
-                                }
+                                disabled={laster || !kanSendesTilBeslutter}
                                 type={'button'}
                             >
                                 {ferdigstillTittel}
@@ -155,6 +204,22 @@ const SendTilBeslutterFooter: React.FC<{
                     marginTop: 4,
                 }}
             />
+            {toggleVisKnappForModal && (
+                <ModalOpprettOgFerdigstilleOppgaver
+                    open={visMarkereGodkjenneVedtakOppgaveModal}
+                    setOpen={settVisMarkereGodkjenneVedtakOppgaveModal}
+                    sendTilBeslutter={sendTilBeslutter}
+                    oppgavetyperSomKanOpprettes={oppgavetyperSomKanOpprettes}
+                    oppgavetyperSomSkalOpprettes={oppgavetyperSomSkalOpprettes}
+                    settOppgavetyperSomSkalOpprettes={settOppgavetyperSomSkalOpprettes}
+                    årForInntektskontrollSelvstendigNæringsdrivende={
+                        årForInntektskontrollSelvstendigNæringsdrivende
+                    }
+                    settÅrForInntektskontrollSelvstendigNæringsdrivende={
+                        settÅrForInntektskontrollSelvstendigNæringsdrivende
+                    }
+                />
+            )}
         </>
     );
 };

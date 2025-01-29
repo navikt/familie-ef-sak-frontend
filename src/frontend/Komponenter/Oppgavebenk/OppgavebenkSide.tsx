@@ -1,8 +1,7 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useApp } from '../../App/context/AppContext';
-import OppgaveTabell, { IOppgaverResponse } from './OppgaveTabell';
-import { byggHenterRessurs, byggTomRessurs, Ressurs, RessursStatus } from '../../App/typer/ressurs';
-import { IOppgaveRequest } from './typer/oppgaverequest';
+import OppgaveTabell from './OppgaveTabell';
+import { Ressurs, RessursStatus } from '../../App/typer/ressurs';
 import { OpprettDummyBehandling } from './OpprettDummyBehandling';
 import { IMappe, tomMappeListe } from './typer/mappe';
 import OppgaveFiltrering from './OppgaveFiltrering';
@@ -10,6 +9,7 @@ import { erProd } from '../../App/utils/miljø';
 import styled from 'styled-components';
 import { AlertInfo } from '../../Felles/Visningskomponenter/Alerts';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
+import { useHentOppgaver } from '../../App/hooks/useHentOppgaver';
 
 const InfoStripe = styled(AlertInfo)`
     margin: 2rem;
@@ -22,25 +22,10 @@ const Container = styled.div`
 
 export const OppgavebenkSide: React.FC = () => {
     const { axiosRequest, erSaksbehandler } = useApp();
-    const [oppgaveRessurs, settOppgaveRessurs] =
-        useState<Ressurs<IOppgaverResponse>>(byggTomRessurs());
+    const { hentOppgaver, oppgaver: oppgaveRessurs } = useHentOppgaver();
 
     const [mapper, settMapper] = useState<IMappe[]>(tomMappeListe);
     const [feilmelding, settFeilmelding] = useState<string>('');
-
-    const hentOppgaver = useCallback(
-        (data: IOppgaveRequest) => {
-            settOppgaveRessurs(byggHenterRessurs());
-            axiosRequest<IOppgaverResponse, IOppgaveRequest>({
-                method: 'POST',
-                url: `/familie-ef-sak/api/oppgave/soek`,
-                data,
-            }).then((res: Ressurs<IOppgaverResponse>) => {
-                settOppgaveRessurs(res);
-            });
-        },
-        [axiosRequest]
-    );
 
     useEffect(() => {
         axiosRequest<IMappe[], null>({
