@@ -38,7 +38,11 @@ const CheckboxGruppe = styled(CheckboxGroup)`
     width: 2.5rem;
 `;
 
-export const SamværKalkulator: React.FC = () => {
+interface Props {
+    className?: string;
+}
+
+export const SamværKalkulator: React.FC<Props> = ({ className }) => {
     const [samværsandelerPerUke, settSamværsandelerPerUke] = useState<number[][]>(
         initierSamværState(2)
     );
@@ -72,7 +76,7 @@ export const SamværKalkulator: React.FC = () => {
     };
 
     return (
-        <VStack gap="4">
+        <VStack className={className} gap="4">
             <BeregningslengdeSelect oppdaterBeregningsperiode={oppdaterBeregningsperiode} />
             <HStack gap="4">
                 {samværsandelerPerUke.map((ukeSamvær, index) => (

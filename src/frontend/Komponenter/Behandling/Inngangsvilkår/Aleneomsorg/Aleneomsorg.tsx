@@ -11,6 +11,17 @@ import { IBarnMedLøpendeStønad } from './typer';
 import DokumentasjonSendtInn from '../DokumentasjonSendtInn';
 import { VilkårpanelInnhold } from '../../Vilkårpanel/VilkårpanelInnhold';
 import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';
+import { SamværKalkulator } from '../../../../Felles/Kalkulator/SamværKalkulator';
+import styled from 'styled-components';
+import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
+import { Button, HStack } from '@navikt/ds-react';
+import { CalculatorIcon } from '@navikt/aksel-icons';
+
+const Samværskalkulator = styled(SamværKalkulator)`
+    padding: 1rem;
+    background-color: white;
+    border: 1rem solid ${AGray50};
+`;
 
 export const Aleneomsorg: React.FC<VilkårPropsMedBehandling> = ({
     vurderinger,
@@ -22,6 +33,9 @@ export const Aleneomsorg: React.FC<VilkårPropsMedBehandling> = ({
     skalViseSøknadsdata,
     behandling,
 }) => {
+    const [skalViseSamværskalkulatorPåBarn, settSkalViseSamværskalkulatorPåBarn] = useState<
+        Set<string>
+    >(new Set());
     const [barnMedLøpendeStønad, settBarnMedLøpendeStønad] =
         useState<Ressurs<IBarnMedLøpendeStønad>>(byggTomRessurs());
     const { axiosRequest } = useApp();
@@ -59,62 +73,83 @@ export const Aleneomsorg: React.FC<VilkårPropsMedBehandling> = ({
                 const erSisteBarn = indeks === grunnlag.barnMedSamvær.length - 1;
 
                 return (
-                    <VilkårpanelInnhold
-                        key={barn.barnId}
-                        borderBottom={
-                            indeks !== grunnlag.barnMedSamvær.length - 1 &&
-                            grunnlag.barnMedSamvær.length > 1
-                        }
-                    >
-                        {{
-                            venstre: (
-                                <>
-                                    <AleneomsorgInfo
-                                        gjeldendeBarn={barn}
-                                        skalViseSøknadsdata={skalViseSøknadsdata}
-                                        barnMedLøpendeStønad={barnMedLøpendeStønad}
-                                        stønadstype={behandling.stønadstype}
-                                        personalia={grunnlag.personalia}
+                    <>
+                        <VilkårpanelInnhold
+                            key={barn.barnId}
+                            borderBottom={
+                                indeks !== grunnlag.barnMedSamvær.length - 1 &&
+                                grunnlag.barnMedSamvær.length > 1
+                            }
+                        >
+                            {{
+                                venstre: (
+                                    <>
+                                        <AleneomsorgInfo
+                                            gjeldendeBarn={barn}
+                                            skalViseSøknadsdata={skalViseSøknadsdata}
+                                            barnMedLøpendeStønad={barnMedLøpendeStønad}
+                                            stønadstype={behandling.stønadstype}
+                                            personalia={grunnlag.personalia}
+                                        />
+                                        {erSisteBarn && skalViseSøknadsdata && (
+                                            <>
+                                                <DokumentasjonSendtInn
+                                                    dokumentasjon={
+                                                        grunnlag.dokumentasjon?.avtaleOmDeltBosted
+                                                    }
+                                                    tittel={'Avtale om delt fast bosted'}
+                                                />
+                                                <DokumentasjonSendtInn
+                                                    dokumentasjon={
+                                                        grunnlag.dokumentasjon
+                                                            ?.skalBarnetBoHosSøkerMenAnnenForelderSamarbeiderIkke
+                                                    }
+                                                    tittel={
+                                                        'Dokumentasjon som viser at barnet bor hos deg'
+                                                    }
+                                                />
+                                                <DokumentasjonSendtInn
+                                                    dokumentasjon={
+                                                        grunnlag.dokumentasjon?.samværsavtale
+                                                    }
+                                                    tittel={'Samværsavtale'}
+                                                />
+                                            </>
+                                        )}
+                                    </>
+                                ),
+                                høyre: (
+                                    <VisEllerEndreVurdering
+                                        key={vurdering.id}
+                                        ikkeVurderVilkår={ikkeVurderVilkår}
+                                        vurdering={vurdering}
+                                        feilmelding={feilmeldinger[vurdering.id]}
+                                        lagreVurdering={lagreVurdering}
+                                        nullstillVurdering={nullstillVurdering}
                                     />
-                                    {erSisteBarn && skalViseSøknadsdata && (
-                                        <>
-                                            <DokumentasjonSendtInn
-                                                dokumentasjon={
-                                                    grunnlag.dokumentasjon?.avtaleOmDeltBosted
-                                                }
-                                                tittel={'Avtale om delt fast bosted'}
-                                            />
-                                            <DokumentasjonSendtInn
-                                                dokumentasjon={
-                                                    grunnlag.dokumentasjon
-                                                        ?.skalBarnetBoHosSøkerMenAnnenForelderSamarbeiderIkke
-                                                }
-                                                tittel={
-                                                    'Dokumentasjon som viser at barnet bor hos deg'
-                                                }
-                                            />
-                                            <DokumentasjonSendtInn
-                                                dokumentasjon={
-                                                    grunnlag.dokumentasjon?.samværsavtale
-                                                }
-                                                tittel={'Samværsavtale'}
-                                            />
-                                        </>
-                                    )}
-                                </>
-                            ),
-                            høyre: (
-                                <VisEllerEndreVurdering
-                                    key={vurdering.id}
-                                    ikkeVurderVilkår={ikkeVurderVilkår}
-                                    vurdering={vurdering}
-                                    feilmelding={feilmeldinger[vurdering.id]}
-                                    lagreVurdering={lagreVurdering}
-                                    nullstillVurdering={nullstillVurdering}
-                                />
-                            ),
-                        }}
-                    </VilkårpanelInnhold>
+                                ),
+                            }}
+                        </VilkårpanelInnhold>
+                        {skalViseSamværskalkulatorPåBarn.has(barn.barnId) ? (
+                            <Samværskalkulator />
+                        ) : (
+                            <HStack justify="end" margin="4">
+                                <Button
+                                    type="button"
+                                    size="small"
+                                    onClick={() =>
+                                        settSkalViseSamværskalkulatorPåBarn(
+                                            new Set(skalViseSamværskalkulatorPåBarn).add(
+                                                barn.barnId
+                                            )
+                                        )
+                                    }
+                                >
+                                    <CalculatorIcon aria-hidden fontSize="1.5rem" />
+                                </Button>
+                            </HStack>
+                        )}
+                    </>
                 );
             })}
         </Vilkårpanel>
