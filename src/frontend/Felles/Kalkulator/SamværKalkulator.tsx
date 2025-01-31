@@ -16,16 +16,6 @@ const Div = styled.div`
     height: 1.25rem;
 `;
 
-const Filler = styled.div`
-    height: 1.5rem;
-`;
-
-const Flexbox = styled.div`
-    display: flex;
-    justify-self: center;
-    width: 2.5rem;
-`;
-
 const Valgmuligheter = styled(VStack)`
     margin-right: 0.5rem;
 `;
@@ -42,6 +32,10 @@ const BeregningslengdeContainer = styled.div`
 const UkeContainer = styled(HStack)<{ $border: boolean }>`
     border-right: ${(props) => props.$border && `2px solid ${ABorderDivider}`};
     margin-bottom: 2rem;
+`;
+
+const CheckboxGruppe = styled(CheckboxGroup)`
+    width: 2.5rem;
 `;
 
 export const SamværKalkulator: React.FC = () => {
@@ -114,14 +108,13 @@ const Uke: React.FC<{
                     ))}
                 </Valgmuligheter>
             )}
-            {ukeSamvær.map((dagSamvær, index) => {
+            {ukeSamvær.map((_, index) => {
                 const ukedag = ukedager[index];
 
                 return (
                     <Ukedag
                         key={ukedag + index}
                         identifier={ukedag + index}
-                        samvær={dagSamvær}
                         ukedag={ukedag}
                         oppdaterSamværState={(samvær: number) => oppdaterSamværState(index, samvær)}
                     />
@@ -133,27 +126,23 @@ const Uke: React.FC<{
 
 const Ukedag: React.FC<{
     identifier: string;
-    samvær: number;
     ukedag: string;
     oppdaterSamværState: (samvær: number) => void;
-}> = ({ samvær, ukedag, identifier, oppdaterSamværState }) => {
+}> = ({ ukedag, identifier, oppdaterSamværState }) => {
     const oppdaterSamvær = (samvær: { id: number; value: number }[]) => {
         const samværForUkedag = utledSamværForUkedag(samvær);
         oppdaterSamværState(samværForUkedag);
     };
 
-    const visningstekst = `${samvær}/8`;
-
     return (
         <VStack>
-            <CheckboxGroup legend={ukedag} onChange={oppdaterSamvær}>
+            <CheckboxGruppe legend={ukedag} onChange={oppdaterSamvær}>
                 {valgmuligheter.map((valgOption, index) => (
                     <Checkbox key={identifier + index} value={valgOption.value}>
                         {''}
                     </Checkbox>
                 ))}
-            </CheckboxGroup>
-            <Flexbox>{samvær > 0 ? <BodyShort>{visningstekst}</BodyShort> : <Filler />}</Flexbox>
+            </CheckboxGruppe>
         </VStack>
     );
 };
