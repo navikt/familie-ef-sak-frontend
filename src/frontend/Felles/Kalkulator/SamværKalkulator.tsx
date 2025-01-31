@@ -40,7 +40,7 @@ const CheckboxGruppe = styled(CheckboxGroup)`
 
 export const SamværKalkulator: React.FC = () => {
     const [samværsandelerPerUke, settSamværsandelerPerUke] = useState<number[][]>(
-        initierSamværState(Beregningsperiode.TO_UKER)
+        initierSamværState(2)
     );
 
     const oppdaterSamværsandeler = (uke: number, dag: number, samvær: number) => {
@@ -51,9 +51,9 @@ export const SamværKalkulator: React.FC = () => {
         ]);
     };
 
-    const oppdaterBeregningsperiode = (periode: Beregningsperiode) => {
+    const oppdaterBeregningsperiode = (periode: number) => {
         const antallUkerForNåværendeBeregningsperiode = samværsandelerPerUke.length;
-        const antallUkerForNyBeregningsperiode = samværsperiodeTilAntallUker[periode];
+        const antallUkerForNyBeregningsperiode = periode;
 
         if (antallUkerForNyBeregningsperiode > antallUkerForNåværendeBeregningsperiode) {
             settSamværsandelerPerUke((prevState) => [
@@ -109,7 +109,7 @@ const Uke: React.FC<{
                 </Valgmuligheter>
             )}
             {ukeSamvær.map((_, index) => {
-                const ukedag = ukedager[index];
+                const ukedag = UKEDAGER[index];
 
                 return (
                     <Ukedag
@@ -148,18 +148,18 @@ const Ukedag: React.FC<{
 };
 
 const BeregningslengdeSelect: React.FC<{
-    oppdaterBeregningsperiode: (periode: Beregningsperiode) => void;
+    oppdaterBeregningsperiode: (periode: number) => void;
 }> = ({ oppdaterBeregningsperiode }) => (
     <BeregningslengdeContainer>
         <StyledSelect
             label="Beregningslengde"
             onChange={(event: ChangeEvent<HTMLSelectElement>) =>
-                oppdaterBeregningsperiode(event.target.value as Beregningsperiode)
+                oppdaterBeregningsperiode(Number(event.target.value))
             }
         >
-            {Object.values(Beregningsperiode).map((samværsperiode) => (
-                <option key={samværsperiode} value={samværsperiode}>
-                    {samværsperiodeTilTekst[samværsperiode]}
+            {SAMVÆRSPERIODELENGDER.map((periodelengde) => (
+                <option key={periodelengde} value={periodelengde}>
+                    {periodelengde === 1 ? `${periodelengde} uke` : `${periodelengde} uker`}
                 </option>
             ))}
         </StyledSelect>
@@ -199,40 +199,16 @@ const utledSamværForUkedag = (verdier: { id: number; value: number }[]): number
     return verdier.map((verdi) => Number(verdi.value)).reduce((acc, verdi) => acc + verdi);
 };
 
-enum Beregningsperiode {
-    TO_UKER = 'TO_UKER',
-    FIRE_UKER = 'FIRE_UKER',
-    SEKS_UKER = 'SEKS_UKER',
-    ÅTTE_UKER = 'ÅTTE_UKER',
-    TOLV_UKER = 'TOLV_UKER',
-}
+const initierSamværState = (antallUker: number): number[][] =>
+    new Array(antallUker).fill(0).map((): number[] => new Array(7).fill(0));
 
-const initierSamværState = (periode: Beregningsperiode): number[][] => {
-    const antallUker = samværsperiodeTilAntallUker[periode];
-    return new Array(antallUker).fill(0).map((): number[] => new Array(7).fill(0));
-};
+const SAMVÆRSPERIODELENGDER = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
 
-const samværsperiodeTilAntallUker: Record<Beregningsperiode, number> = {
-    TO_UKER: 2,
-    FIRE_UKER: 4,
-    SEKS_UKER: 6,
-    ÅTTE_UKER: 8,
-    TOLV_UKER: 12,
-};
-
-const samværsperiodeTilTekst: Record<Beregningsperiode, string> = {
-    TO_UKER: '2 uker',
-    FIRE_UKER: '4 uker',
-    SEKS_UKER: '6 uker',
-    ÅTTE_UKER: '8 uker',
-    TOLV_UKER: '12 uker',
-};
-
-const ukedager = ['Man', 'Tir', 'Ons', 'Tor', 'Fre', 'Lør', 'Søn'];
+const UKEDAGER = ['Man', 'Tir', 'Ons', 'Tor', 'Fre', 'Lør', 'Søn'];
 
 const valgmuligheter = [
+    { label: 'Kveld/natt (4/8)', value: { id: 4, value: 4 } },
     { label: 'Morgen før bhg/skole (1/8)', value: { id: 1, value: 1 } },
     { label: 'Tiden i bhg/skole (2/8)', value: { id: 2, value: 2 } },
     { label: 'Ettermiddag etter bhg/skole (1/8)', value: { id: 3, value: 1 } },
-    { label: 'Kveld/natt (4/8)', value: { id: 4, value: 4 } },
 ];
