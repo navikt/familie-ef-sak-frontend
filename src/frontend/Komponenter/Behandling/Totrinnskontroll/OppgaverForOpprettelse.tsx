@@ -1,8 +1,5 @@
 import * as React from 'react';
 import { Checkbox, CheckboxGroup } from '@navikt/ds-react';
-import { Behandling } from '../../../App/typer/fagsak';
-import { IOppgaverForOpprettelse } from '../../../App/hooks/useHentOppgaverForOpprettelse';
-import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 import styled from 'styled-components';
 import { AGray800 } from '@navikt/ds-tokens/dist/tokens';
 import {
@@ -23,22 +20,18 @@ const CheckboxGruppe = styled(CheckboxGroup)`
 `;
 
 const OppgaverForOpprettelse: React.FC<{
-    behandling: Behandling;
-    oppgaverForOpprettelse: IOppgaverForOpprettelse;
-}> = ({ oppgaverForOpprettelse }) => {
-    const {
-        feilmelding,
-        oppgavetyperSomKanOpprettes,
-        oppgavetyperSomSkalOpprettes,
-        settOppgavetyperSomSkalOpprettes,
-    } = oppgaverForOpprettelse;
-
-    if (feilmelding) {
-        return <AlertError>{feilmelding}</AlertError>;
-    }
-
-    if (oppgavetyperSomKanOpprettes.length === 0) {
-        return null;
+    oppgavetyperSomKanOpprettes: OppgaveTypeForOpprettelse[];
+    oppgavetyperSomSkalOpprettes: OppgaveTypeForOpprettelse[];
+    settOppgavetyperSomSkalOpprettes: React.Dispatch<
+        React.SetStateAction<OppgaveTypeForOpprettelse[]>
+    >;
+}> = ({
+    oppgavetyperSomKanOpprettes,
+    oppgavetyperSomSkalOpprettes,
+    settOppgavetyperSomSkalOpprettes,
+}) => {
+    if (!oppgavetyperSomKanOpprettes || oppgavetyperSomKanOpprettes.length === 0) {
+        return;
     }
 
     return (

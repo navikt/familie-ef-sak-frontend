@@ -15,7 +15,7 @@ import {
 } from '../../../App/typer/ressurs';
 import {
     NyeBarnSidenForrigeBehandling,
-    RevurderingInnhold,
+    RevurderingPayload,
 } from '../../../App/typer/revurderingstype';
 import { ToggleName } from '../../../App/context/toggles';
 import { useToggles } from '../../../App/context/TogglesContext';
@@ -64,7 +64,7 @@ const inneholderBarnSomErUgyldige = (barnSomSkalFødes: BarnSomSkalFødes[]) =>
 
 interface Props {
     fagsak: Fagsak;
-    opprettRevurdering: (revurderingInnhold: RevurderingInnhold) => void;
+    opprettRevurdering: (payload: RevurderingPayload) => void;
     settVisModal: (bool: boolean) => void;
 }
 
@@ -154,6 +154,16 @@ export const OpprettRevurdering: React.FunctionComponent<Props> = ({
         }
     };
 
+    const skalViseTerminBarnSkjema =
+        fagsak.stønadstype !== Stønadstype.BARNETILSYN &&
+        (valgtBehandlingsårsak === Behandlingsårsak.NYE_OPPLYSNINGER ||
+            valgtBehandlingsårsak === Behandlingsårsak.PAPIRSØKNAD);
+
+    const terminBarnSkjemaTekst =
+        valgtBehandlingsårsak === Behandlingsårsak.NYE_OPPLYSNINGER
+            ? 'Hvis brukeren venter barn som ikke allerede ligger i behandlingen, må du legge til termindatoen her.'
+            : 'Hvis brukeren har oppgitt terminbarn i søknaden, må du legge til termindatoen her.';
+
     return (
         <DataViewer response={{ nyeBarnSidenForrigeBehandling }}>
             {({ nyeBarnSidenForrigeBehandling }) => {
@@ -199,14 +209,14 @@ export const OpprettRevurdering: React.FunctionComponent<Props> = ({
                                     settVilkårsbehandleNyeBarn={settVilkårsbehandleNyeBarn}
                                 />
                             )}
-                            {fagsak.stønadstype !== Stønadstype.BARNETILSYN &&
-                                valgtBehandlingsårsak === Behandlingsårsak.PAPIRSØKNAD && (
-                                    <TerminBarnSkjema
-                                        barnSomSkalFødes={barnSomSkalFødes}
-                                        oppdaterBarnSomSkalFødes={settBarnSomSkalFødes}
-                                        tittel={'Terminbarn'}
-                                    />
-                                )}
+                            {skalViseTerminBarnSkjema && (
+                                <TerminBarnSkjema
+                                    barnSomSkalFødes={barnSomSkalFødes}
+                                    oppdaterBarnSomSkalFødes={settBarnSomSkalFødes}
+                                    tittel="Terminbarn"
+                                    tekst={terminBarnSkjemaTekst}
+                                />
+                            )}
                             {feilmeldingModal && (
                                 <AlertStripe variant={'error'}>{feilmeldingModal}</AlertStripe>
                             )}

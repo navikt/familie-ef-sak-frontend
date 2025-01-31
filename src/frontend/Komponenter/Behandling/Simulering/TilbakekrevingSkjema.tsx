@@ -10,6 +10,7 @@ import { FileTextIcon } from '@navikt/aksel-icons';
 import { ABlue50, ARed500 } from '@navikt/ds-tokens/dist/tokens';
 import { HeaderBegrunnelse } from './HeaderBegrunnelse';
 import { EnsligTextArea } from '../../../Felles/Input/TekstInput/EnsligTextArea';
+import { FireGangerRettsgebyr } from './FireGangerRettsgebyr';
 
 const Container = styled(VStack)`
     margin-top: 1.5rem;
@@ -37,12 +38,6 @@ const RadioButton = styled(Radio)`
     background-color: ${ABlue50};
 `;
 
-const Liste = styled.ul`
-    list-style: none;
-    margin: 0 0 1rem 0;
-    padding: 0;
-`;
-
 const BodyLongMarginBottom = styled(BodyLong)`
     margin-bottom: 1rem;
 `;
@@ -63,6 +58,8 @@ interface Props {
     behandlingId: string;
     valideringsfeil: string;
     skalViseValgForAutomatiskBehandlingUnder4xRettsgebyr: boolean;
+    år?: number;
+    rettsgebyr?: number;
 }
 
 export const TilbakekrevingSkjema: React.FC<Props> = ({
@@ -77,6 +74,8 @@ export const TilbakekrevingSkjema: React.FC<Props> = ({
     behandlingId,
     valideringsfeil,
     skalViseValgForAutomatiskBehandlingUnder4xRettsgebyr,
+    år,
+    rettsgebyr,
 }) => {
     const { settIkkePersistertKomponent, axiosRequest } = useApp();
 
@@ -133,7 +132,7 @@ export const TilbakekrevingSkjema: React.FC<Props> = ({
                             value={ITilbakekrevingsvalg.OPPRETT_AUTOMATISK}
                             name="tilbakekrevingRadio"
                         >
-                            <FireGangerRettsgebyr />
+                            <FireGangerRettsgebyr år={år} rettsgebyr={rettsgebyr} />
                         </RadioButton>
                     )}
 
@@ -188,33 +187,6 @@ export const TilbakekrevingSkjema: React.FC<Props> = ({
         </>
     );
 };
-
-const FireGangerRettsgebyr = () => (
-    <>
-        <BodyLongMarginBottom size="large">
-            {TilbakekrevingsvalgTilTekst[ITilbakekrevingsvalg.OPPRETT_AUTOMATISK]}
-        </BodyLongMarginBottom>
-        <BodyLong size="small">Det er vurdert at</BodyLong>
-        <Liste>
-            <li>
-                <BodyLong size="small">
-                    - bruker ikke har handlet forsettlig eller grovt uaktsomt
-                </BodyLong>
-            </li>
-            <li>
-                <BodyLong size="small">- beløpet er under 4 rettsgebyr</BodyLong>
-            </li>
-            <li>
-                <BodyLong size="small">- beløpet ikke skal betales tilbake</BodyLong>
-            </li>
-        </Liste>
-        <BodyLong size="small">
-            Saken blir automatisk behandlet og bruker får et vedtak om ikke tilbakebetaling. Merk at
-            det ikke er mulig å endre brevmottaker på denne typen tilbakekrevingsbehandling. Hvis du
-            skal endre brevmottaker, må du velge et annet alternativ.
-        </BodyLong>
-    </>
-);
 
 const OpprettMedVarsel = () => (
     <>

@@ -9,6 +9,7 @@ import DataViewer from '../DataViewer/DataViewer';
 import { AnsvarligSaksbehandlerRolle } from '../../App/typer/saksbehandler';
 import { useToggles } from '../../App/context/TogglesContext';
 import { ToggleName } from '../../App/context/toggles';
+import ScrollToTop from '../ScrollToTop/ScrollToTop';
 
 const StyledHamburgermeny = styled(Hamburgermeny)`
     margin-right: -1rem;
@@ -34,7 +35,8 @@ interface Props {
 }
 
 export const AksjonsknapperPersonHeader: React.FC<Props> = ({ erSaksbehandler, behandling }) => {
-    const { ansvarligSaksbehandler, settVisHenleggModal, settVisSettPåVent } = useBehandling();
+    const { ansvarligSaksbehandler, settVisHenleggModal, settVisSettPåVent, visSettPåVent } =
+        useBehandling();
     const { toggles } = useToggles();
 
     const menyvalg = [
@@ -89,6 +91,7 @@ export const AksjonsknapperPersonHeader: React.FC<Props> = ({ erSaksbehandler, b
                             >
                                 Henlegg
                             </ButtonSmall>
+                            {visSettPåVent && <ScrollToTop />}
                         </>
                     );
                 }
