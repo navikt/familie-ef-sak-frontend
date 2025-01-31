@@ -59,6 +59,7 @@ interface Props {
     kontantstøttePerioder: ListState<IPeriodeMedBeløp>;
     settValideringsFeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>;
     valideringsfeil?: FormErrors<InnvilgeVedtakForm>;
+    harKontantstøttePerioder?: boolean;
     kontantstøttePerioderFraGrunnlagsdata: KontantstøttePeriode[];
 }
 
@@ -75,6 +76,7 @@ const KontantstøtteValg: React.FC<Props> = ({
     kontantstøttePerioder,
     settValideringsFeil,
     valideringsfeil,
+    harKontantstøttePerioder,
     kontantstøttePerioderFraGrunnlagsdata,
 }) => {
     const { settIkkePersistertKomponent } = useApp();
@@ -124,6 +126,7 @@ const KontantstøtteValg: React.FC<Props> = ({
             </Heading>
             <AlertOgRadioknappWrapper>
                 <KontantstøtteAlert
+                    harKontantstøttePerioder={harKontantstøttePerioder}
                     kontantstøttePerioderFraGrunnlagsdata={kontantstøttePerioderFraGrunnlagsdata}
                 />
 

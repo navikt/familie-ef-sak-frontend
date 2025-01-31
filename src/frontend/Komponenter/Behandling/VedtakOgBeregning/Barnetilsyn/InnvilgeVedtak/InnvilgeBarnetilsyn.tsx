@@ -105,6 +105,7 @@ export const InnvilgeBarnetilsyn: React.FC<{
     barn: IBarnMedSamvær[];
     settResultatType: (val: EBehandlingResultat | undefined) => void;
     låsFraDatoFørsteRad: boolean;
+    harKontantstøttePerioder?: boolean;
     kontantstøttePerioderFraGrunnlagsdata: KontantstøttePeriode[];
 }> = ({
     lagretVedtak,
@@ -112,6 +113,7 @@ export const InnvilgeBarnetilsyn: React.FC<{
     barn,
     settResultatType,
     låsFraDatoFørsteRad,
+    harKontantstøttePerioder,
     kontantstøttePerioderFraGrunnlagsdata,
 }) => {
     const lagretInnvilgetVedtak =
@@ -156,7 +158,6 @@ export const InnvilgeBarnetilsyn: React.FC<{
         'tilleggsstønadsperioder'
     ) as ListState<IPeriodeMedBeløp>;
     const begrunnelseState = formState.getProps('begrunnelse') as FieldState;
-    const harKontantstøttePerioder = kontantstøttePerioderFraGrunnlagsdata.length > 0;
 
     useEffect(() => {
         if (!lagretInnvilgetVedtak) {
@@ -326,6 +327,7 @@ export const InnvilgeBarnetilsyn: React.FC<{
                 kontantstøttePerioder={kontantstøttePeriodeState}
                 settValideringsFeil={formState.setErrors}
                 valideringsfeil={formState.errors}
+                harKontantstøttePerioder={harKontantstøttePerioder}
                 kontantstøttePerioderFraGrunnlagsdata={kontantstøttePerioderFraGrunnlagsdata}
             />
             <TilleggsstønadValg

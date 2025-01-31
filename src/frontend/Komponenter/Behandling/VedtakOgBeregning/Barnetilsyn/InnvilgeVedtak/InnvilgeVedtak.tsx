@@ -21,12 +21,14 @@ export const InnvilgeVedtak: FC<{
     lagretVedtak?: IvedtakForBarnetilsyn;
     barn: IBarnMedSamvær[];
     settResultatType: (val: EBehandlingResultat | undefined) => void;
+    harKontantstøttePerioder?: boolean;
     kontantstøttePerioderFraGrunnlagsdata: KontantstøttePeriode[];
 }> = ({
     behandling,
     lagretVedtak,
     barn,
     settResultatType,
+    harKontantstøttePerioder,
     kontantstøttePerioderFraGrunnlagsdata,
 }) => {
     const { axiosRequest, settIkkePersistertKomponent } = useApp();
@@ -91,6 +93,7 @@ export const InnvilgeVedtak: FC<{
                     barn={barn}
                     settResultatType={settResultatType}
                     låsFraDatoFørsteRad={!!revurderesFra}
+                    harKontantstøttePerioder={harKontantstøttePerioder}
                     kontantstøttePerioderFraGrunnlagsdata={kontantstøttePerioderFraGrunnlagsdata}
                 />
             )}

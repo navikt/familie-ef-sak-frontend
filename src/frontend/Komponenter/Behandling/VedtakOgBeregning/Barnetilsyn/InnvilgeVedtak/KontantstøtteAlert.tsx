@@ -26,27 +26,43 @@ const StyledButton = styled(Button)`
 `;
 
 interface Props {
+    harKontantstøttePerioder?: boolean;
     kontantstøttePerioderFraGrunnlagsdata: KontantstøttePeriode[];
 }
+
+const utledKontantstøtteperioderAlertTekst = (
+    kontantstøttePerioderFraGrunnlagsdata: KontantstøttePeriode[],
+    harKontantstøttePerioder?: boolean
+): string => {
+    if (!harKontantstøttePerioder && kontantstøttePerioderFraGrunnlagsdata.length === 0) {
+        return 'Bruker har verken fått eller får kontantstøtte';
+    }
+    if (kontantstøttePerioderFraGrunnlagsdata.length > 0) {
+        return `Brukers kontantstøtteperioder (hentet ${formaterNullableIsoDato(
+            kontantstøttePerioderFraGrunnlagsdata[0].hentetDato
+        )})`;
+    }
+    return 'Bruker har eller har fått kontantstøtte';
+};
 
 const kontantstøtteKilde = (kilde: string): string => {
     return kilde.toLowerCase().includes('kontantstøtte') ? 'KS sak' : kilde.toLowerCase();
 };
 
-export const KontantstøtteAlert: React.FC<Props> = ({ kontantstøttePerioderFraGrunnlagsdata }) => {
+export const KontantstøtteAlert: React.FC<Props> = ({
+    harKontantstøttePerioder,
+    kontantstøttePerioderFraGrunnlagsdata,
+}) => {
     const [ekspandert, settEkspandert] = useState(false);
-    const harKontantstøttePerioder = kontantstøttePerioderFraGrunnlagsdata.length > 0;
     const harFlereKontantstøttePerioder = kontantstøttePerioderFraGrunnlagsdata.length > 1;
 
     return (
         <AlertStripe variant="info">
-            {harKontantstøttePerioder
-                ? `Brukers kontantstøtteperioder (hentet ${formaterNullableIsoDato(
-                      kontantstøttePerioderFraGrunnlagsdata[0].hentetDato
-                  )})`
-                : 'Bruker har verken fått eller får kontantstøtte'}
-
-            {harKontantstøttePerioder && (
+            {utledKontantstøtteperioderAlertTekst(
+                kontantstøttePerioderFraGrunnlagsdata,
+                harKontantstøttePerioder
+            )}
+            {kontantstøttePerioderFraGrunnlagsdata.length > 0 && (
                 <>
                     <InnholdContainer>
                         <li>

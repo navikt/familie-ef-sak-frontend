@@ -47,6 +47,9 @@ const VedtakOgBeregningBarnetilsyn: FC<VedtakOgBeregningProps> = ({
                                     }
                                     barn={barnSomOppfyllerAlleVilkår(vilkår)}
                                     settResultatType={settResultatType}
+                                    harKontantstøttePerioder={
+                                        vilkår.grunnlag.harKontantstøttePerioder
+                                    }
                                     kontantstøttePerioderFraGrunnlagsdata={
                                         vilkår.grunnlag.kontantstøttePerioder
                                     }
