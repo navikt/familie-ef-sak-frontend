@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import styled from 'styled-components';
 import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import {
@@ -57,7 +57,6 @@ interface Props {
     erLesevisning: boolean;
     settValideringsfeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>;
     stønadsreduksjon: FieldState;
-    tilleggsstønad: FieldState;
     tilleggsstønadBegrunnelse: FieldState;
     tilleggsstønadPerioder: ListState<IPeriodeMedBeløp>;
     valideringsfeil: FormErrors<InnvilgeVedtakForm>;
@@ -74,19 +73,12 @@ const TilleggsstønadValg: React.FC<Props> = ({
     erLesevisning,
     settValideringsfeil,
     stønadsreduksjon,
-    tilleggsstønad,
     tilleggsstønadBegrunnelse,
     tilleggsstønadPerioder,
     valideringsfeil,
 }) => {
     const { settIkkePersistertKomponent } = useApp();
     const { åpenHøyremeny } = useBehandling();
-
-    useEffect(() => {
-        if (tilleggsstønad.value === ERadioValg.NEI) {
-            stønadsreduksjon.setValue(ERadioValg.IKKE_SATT);
-        }
-    }, [stønadsreduksjon, tilleggsstønad]);
 
     const oppdaterTilleggsstønadPeriode = (
         index: number,
@@ -122,13 +114,12 @@ const TilleggsstønadValg: React.FC<Props> = ({
         }
     };
 
-    const søktTilleggsstønad = tilleggsstønad.value === ERadioValg.JA;
     const stønadSkalReduseres = stønadsreduksjon.value === ERadioValg.JA;
-    const erDetSøktOmTekst =
-        'Er det søkt om, utbetales det eller har det blitt utbetalt stønad for utgifter til tilsyn av barn etter tilleggsstønadsforskriften i perioden(e) det er søkt om?';
     const skalStønadReduseresTekst =
         'Skal stønaden reduseres fordi brukeren har fått utbetalt stønad for tilsyn av barn etter tilleggsstønadsforskriften?';
     const visGrid = tilleggsstønadPerioder.value.length > 0;
+
+    const visBegrunnelsesFelt = stønadsreduksjon.value !== ERadioValg.IKKE_SATT;
 
     return (
         <Container>
@@ -137,23 +128,13 @@ const TilleggsstønadValg: React.FC<Props> = ({
             </Heading>
             <JaNeiRadioGruppe
                 className={'spacing'}
-                error={valideringsfeil?.harTilleggsstønad}
-                legend={erDetSøktOmTekst}
+                error={valideringsfeil?.skalStønadReduseres}
+                legend={skalStønadReduseresTekst}
                 lesevisning={erLesevisning}
-                onChange={(event) => tilleggsstønad.onChange(event)}
-                value={tilleggsstønad.value as ERadioValg}
+                onChange={(event) => stønadsreduksjon.onChange(event)}
+                value={stønadsreduksjon.value as ERadioValg}
             />
-            {søktTilleggsstønad && (
-                <JaNeiRadioGruppe
-                    className={'spacing'}
-                    error={valideringsfeil?.skalStønadReduseres}
-                    legend={skalStønadReduseresTekst}
-                    lesevisning={erLesevisning}
-                    onChange={(event) => stønadsreduksjon.onChange(event)}
-                    value={stønadsreduksjon.value as ERadioValg}
-                />
-            )}
-            {søktTilleggsstønad && stønadSkalReduseres && (
+            {stønadSkalReduseres && (
                 <HorizontalScroll
                     $synligVedLukketMeny={'785px'}
                     $synligVedÅpenMeny={'1115px'}
@@ -259,11 +240,11 @@ const TilleggsstønadValg: React.FC<Props> = ({
                     )}
                 </HorizontalScroll>
             )}
-            {søktTilleggsstønad && (
+            {visBegrunnelsesFelt && (
                 <TextArea
                     readOnly={erLesevisning}
                     feilmelding={valideringsfeil.tilleggsstønadBegrunnelse}
-                    label="Begrunnelse"
+                    label="Begrunnelse (hvis aktuelt)"
                     maxLength={0}
                     onChange={(event) => {
                         settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
