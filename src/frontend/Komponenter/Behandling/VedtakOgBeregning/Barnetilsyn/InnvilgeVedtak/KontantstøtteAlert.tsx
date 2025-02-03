@@ -4,7 +4,7 @@ import { Alert, Button } from '@navikt/ds-react';
 import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons';
 import { KontantstøttePeriode } from '../../../Inngangsvilkår/vilkår';
 import { BodyShortSmall } from '../../../../../Felles/Visningskomponenter/Tekster';
-import { formaterNullableIsoDato } from '../../../../../App/utils/formatter';
+import { formaterIsoDato, formaterIsoMånedÅr } from '../../../../../App/utils/formatter';
 
 const AlertStripe = styled(Alert)`
     margin-top: 0.5rem;
@@ -37,12 +37,12 @@ const utledKontantstøtteperioderAlertTekst = (
     harKontantstøttePerioder?: boolean
 ): string => {
     if (!harKontantstøttePerioder && kontantstøttePerioderFraGrunnlagsdata.length === 0) {
-        return `Bruker har verken fått eller får kontantstøtte (oppdatert ${formaterNullableIsoDato(
+        return `Bruker har verken fått eller får kontantstøtte (oppdatert ${formaterIsoDato(
             registeropplysningerOpprettetTid
         )})`;
     }
     if (kontantstøttePerioderFraGrunnlagsdata.length > 0) {
-        return `Brukers kontantstøtteperioder (hentet ${formaterNullableIsoDato(
+        return `Brukers kontantstøtteperioder (hentet ${formaterIsoDato(
             registeropplysningerOpprettetTid
         )})`;
     }
@@ -73,12 +73,12 @@ export const KontantstøtteAlert: React.FC<Props> = ({
                     <InnholdContainer>
                         <li>
                             <BodyShortSmall>
-                                {formaterNullableIsoDato(
+                                {formaterIsoMånedÅr(
                                     kontantstøttePerioderFraGrunnlagsdata[0].fomMåned
                                 )}{' '}
                                 -{' '}
                                 {kontantstøttePerioderFraGrunnlagsdata[0].tomMåned
-                                    ? formaterNullableIsoDato(
+                                    ? formaterIsoMånedÅr(
                                           kontantstøttePerioderFraGrunnlagsdata[0].tomMåned
                                       )
                                     : ''}{' '}
@@ -94,9 +94,9 @@ export const KontantstøtteAlert: React.FC<Props> = ({
                             kontantstøttePerioderFraGrunnlagsdata.slice(1).map((periode, index) => (
                                 <li key={index}>
                                     <BodyShortSmall>
-                                        {formaterNullableIsoDato(periode.fomMåned)} -{' '}
+                                        {formaterIsoMånedÅr(periode.fomMåned)} -{' '}
                                         {periode.tomMåned
-                                            ? formaterNullableIsoDato(periode.tomMåned)
+                                            ? formaterIsoMånedÅr(periode.tomMåned)
                                             : ''}{' '}
                                         {'(kilde: ' + kontantstøtteKilde(periode.kilde) + ')'}
                                     </BodyShortSmall>
