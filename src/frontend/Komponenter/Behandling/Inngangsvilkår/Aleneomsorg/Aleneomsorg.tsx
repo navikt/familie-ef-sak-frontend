@@ -13,7 +13,7 @@ import { VilkårpanelInnhold } from '../../Vilkårpanel/VilkårpanelInnhold';
 import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';
 import { SamværKalkulator } from '../../../../Felles/Kalkulator/SamværKalkulator';
 import styled from 'styled-components';
-import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
+import { AGray300, AGray50 } from '@navikt/ds-tokens/dist/tokens';
 import { Button, HStack } from '@navikt/ds-react';
 import { CalculatorIcon } from '@navikt/aksel-icons';
 
@@ -21,6 +21,15 @@ const Samværskalkulator = styled(SamværKalkulator)`
     padding: 1rem;
     background-color: white;
     border: 1rem solid ${AGray50};
+`;
+
+const StyledHStack = styled(HStack)<{ $borderBottom: boolean }>`
+    border-bottom: ${(props) => (props.$borderBottom ? `1px solid ${AGray300}` : 'none')};
+`;
+
+const Divider = styled.div`
+    margin: 1rem;
+    border-bottom: 1px solid ${AGray300};
 `;
 
 export const Aleneomsorg: React.FC<VilkårPropsMedBehandling> = ({
@@ -72,15 +81,13 @@ export const Aleneomsorg: React.FC<VilkårPropsMedBehandling> = ({
 
                 const erSisteBarn = indeks === grunnlag.barnMedSamvær.length - 1;
 
+                const skalViseBorderBottom =
+                    indeks !== grunnlag.barnMedSamvær.length - 1 &&
+                    grunnlag.barnMedSamvær.length > 1;
+
                 return (
                     <>
-                        <VilkårpanelInnhold
-                            key={barn.barnId}
-                            borderBottom={
-                                indeks !== grunnlag.barnMedSamvær.length - 1 &&
-                                grunnlag.barnMedSamvær.length > 1
-                            }
-                        >
+                        <VilkårpanelInnhold key={barn.barnId}>
                             {{
                                 venstre: (
                                     <>
@@ -131,9 +138,17 @@ export const Aleneomsorg: React.FC<VilkårPropsMedBehandling> = ({
                             }}
                         </VilkårpanelInnhold>
                         {skalViseSamværskalkulatorPåBarn.has(barn.barnId) ? (
-                            <Samværskalkulator />
+                            <>
+                                <Samværskalkulator />
+                                {skalViseBorderBottom && <Divider />}
+                            </>
                         ) : (
-                            <HStack justify="end" margin="4">
+                            <StyledHStack
+                                $borderBottom={skalViseBorderBottom}
+                                justify="end"
+                                margin="4"
+                                padding="4"
+                            >
                                 <Button
                                     type="button"
                                     size="small"
@@ -147,7 +162,7 @@ export const Aleneomsorg: React.FC<VilkårPropsMedBehandling> = ({
                                 >
                                     <CalculatorIcon aria-hidden fontSize="1.5rem" />
                                 </Button>
-                            </HStack>
+                            </StyledHStack>
                         )}
                     </>
                 );
