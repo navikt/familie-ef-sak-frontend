@@ -1,6 +1,7 @@
 import React, { ChangeEvent, useState } from 'react';
 import {
     BodyShort,
+    Button,
     Checkbox,
     CheckboxGroup,
     Heading,
@@ -11,6 +12,7 @@ import {
 } from '@navikt/ds-react';
 import styled from 'styled-components';
 import { ABorderDivider, ASurfaceInfoSubtle } from '@navikt/ds-tokens/dist/tokens';
+import { TrashIcon } from '@navikt/aksel-icons';
 
 const Div = styled.div`
     height: 1.25rem;
@@ -24,7 +26,12 @@ const StyledSelect = styled(Select)`
     width: 10rem;
 `;
 
-const BeregningslengdeContainer = styled.div`
+const SelectContainer = styled(HStack)`
+    padding: 1rem 1.5rem 1.5rem 1.5rem;
+    background: ${ASurfaceInfoSubtle};
+`;
+
+const OppsummeringContainer = styled.div`
     padding: 1rem 1.5rem 1.5rem 1.5rem;
     background: ${ASurfaceInfoSubtle};
 `;
@@ -38,11 +45,16 @@ const CheckboxGruppe = styled(CheckboxGroup)`
     width: 2.5rem;
 `;
 
+const IkonKnapp = styled(Button)`
+    height: fit-content;
+`;
+
 interface Props {
     className?: string;
+    onClose?: () => void;
 }
 
-export const SamværKalkulator: React.FC<Props> = ({ className }) => {
+export const SamværKalkulator: React.FC<Props> = ({ className, onClose }) => {
     const [samværsandelerPerUke, settSamværsandelerPerUke] = useState<number[][]>(
         initierSamværState(2)
     );
@@ -77,7 +89,10 @@ export const SamværKalkulator: React.FC<Props> = ({ className }) => {
 
     return (
         <VStack className={className} gap="4">
-            <BeregningslengdeSelect oppdaterBeregningsperiode={oppdaterBeregningsperiode} />
+            <BeregningslengdeSelect
+                oppdaterBeregningsperiode={oppdaterBeregningsperiode}
+                onClose={onClose}
+            />
             <HStack gap="4">
                 {samværsandelerPerUke.map((ukeSamvær, index) => (
                     <Uke
@@ -153,8 +168,9 @@ const Ukedag: React.FC<{
 
 const BeregningslengdeSelect: React.FC<{
     oppdaterBeregningsperiode: (periode: number) => void;
-}> = ({ oppdaterBeregningsperiode }) => (
-    <BeregningslengdeContainer>
+    onClose?: () => void;
+}> = ({ oppdaterBeregningsperiode, onClose }) => (
+    <SelectContainer justify="space-between">
         <StyledSelect
             label="Beregningslengde"
             onChange={(event: ChangeEvent<HTMLSelectElement>) =>
@@ -167,7 +183,8 @@ const BeregningslengdeSelect: React.FC<{
                 </option>
             ))}
         </StyledSelect>
-    </BeregningslengdeContainer>
+        {onClose && <IkonKnapp icon={<TrashIcon />} onClick={onClose} />}
+    </SelectContainer>
 );
 
 const Oppsummering: React.FC<{ samværsandelerPerUke: number[][] }> = ({ samværsandelerPerUke }) => {
@@ -188,11 +205,11 @@ const Oppsummering: React.FC<{ samværsandelerPerUke: number[][] }> = ({ samvær
     const visningstekstProsentandel = `${Math.round(prosentandel * 1000) / 10}%`;
 
     return (
-        <BeregningslengdeContainer>
+        <OppsummeringContainer>
             <Heading size="medium">Total:</Heading>
             <BodyShort size="large">{visningstekstAntallDager}</BodyShort>
             <BodyShort size="large">{visningstekstProsentandel}</BodyShort>
-        </BeregningslengdeContainer>
+        </OppsummeringContainer>
     );
 };
 

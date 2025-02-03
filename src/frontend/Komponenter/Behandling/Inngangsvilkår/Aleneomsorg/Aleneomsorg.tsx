@@ -65,6 +65,12 @@ export const Aleneomsorg: React.FC<VilkårPropsMedBehandling> = ({
         .map((v) => v.resultat);
     const utleddResultat = vilkårStatusForBarn(vilkårsresultatAleneomsorg);
 
+    const lukkSamværskalkulatorForBarn = (barnId: string) => {
+        const kopi = new Set(skalViseSamværskalkulatorPåBarn);
+        kopi.delete(barnId);
+        settSkalViseSamværskalkulatorPåBarn(kopi);
+    };
+
     return (
         <Vilkårpanel
             paragrafTittel="§15-4"
@@ -86,8 +92,8 @@ export const Aleneomsorg: React.FC<VilkårPropsMedBehandling> = ({
                     grunnlag.barnMedSamvær.length > 1;
 
                 return (
-                    <>
-                        <VilkårpanelInnhold key={barn.barnId}>
+                    <React.Fragment key={barn.barnId}>
+                        <VilkårpanelInnhold>
                             {{
                                 venstre: (
                                     <>
@@ -139,7 +145,9 @@ export const Aleneomsorg: React.FC<VilkårPropsMedBehandling> = ({
                         </VilkårpanelInnhold>
                         {skalViseSamværskalkulatorPåBarn.has(barn.barnId) ? (
                             <>
-                                <Samværskalkulator />
+                                <Samværskalkulator
+                                    onClose={() => lukkSamværskalkulatorForBarn(barn.barnId)}
+                                />
                                 {skalViseBorderBottom && <Divider />}
                             </>
                         ) : (
@@ -164,7 +172,7 @@ export const Aleneomsorg: React.FC<VilkårPropsMedBehandling> = ({
                                 </Button>
                             </StyledHStack>
                         )}
-                    </>
+                    </React.Fragment>
                 );
             })}
         </Vilkårpanel>
