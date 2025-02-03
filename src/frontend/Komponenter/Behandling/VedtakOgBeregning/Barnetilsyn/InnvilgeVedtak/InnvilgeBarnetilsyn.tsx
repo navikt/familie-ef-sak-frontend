@@ -37,6 +37,7 @@ export type InnvilgeVedtakForm = {
     kontantstøtteperioder?: IPeriodeMedBeløp[];
     harKontantstøtte: ERadioValg;
     tilleggsstønadBegrunnelse?: string;
+    kontantstøtteBegrunnelse?: string;
     skalStønadReduseres: ERadioValg;
     tilleggsstønadsperioder?: IPeriodeMedBeløp[];
     begrunnelse?: string;
@@ -77,14 +78,15 @@ const initTillegsstønadsperioder = (vedtak: IInnvilgeVedtakForBarnetilsyn | und
 const initUtgiftsperioder = (vedtak: IInnvilgeVedtakForBarnetilsyn | undefined) =>
     vedtak ? vedtak.perioder : [tomUtgiftsperiodeRad()];
 
-const initFormState = (lagretInnvilgetVedtak: IInnvilgeVedtakForBarnetilsyn | undefined) => ({
-    utgiftsperioder: initUtgiftsperioder(lagretInnvilgetVedtak),
-    harKontantstøtte: initKontantstøttestate(lagretInnvilgetVedtak),
-    kontantstøtteperioder: initKontantstøtteperioder(lagretInnvilgetVedtak),
-    tilleggsstønadBegrunnelse: lagretInnvilgetVedtak?.tilleggsstønad.begrunnelse || '',
-    skalStønadReduseres: initSkalStønadReduseres(lagretInnvilgetVedtak),
-    tilleggsstønadsperioder: initTillegsstønadsperioder(lagretInnvilgetVedtak),
-    begrunnelse: lagretInnvilgetVedtak?.begrunnelse || '',
+const initFormState = (vedtak: IInnvilgeVedtakForBarnetilsyn | undefined) => ({
+    utgiftsperioder: initUtgiftsperioder(vedtak),
+    harKontantstøtte: initKontantstøttestate(vedtak),
+    kontantstøtteperioder: initKontantstøtteperioder(vedtak),
+    tilleggsstønadBegrunnelse: vedtak?.tilleggsstønad.begrunnelse || '',
+    kontantstøtteBegrunnelse: vedtak?.kontantstøtteBegrunnelse || '',
+    skalStønadReduseres: initSkalStønadReduseres(vedtak),
+    tilleggsstønadsperioder: initTillegsstønadsperioder(vedtak),
+    begrunnelse: vedtak?.begrunnelse || '',
 });
 
 const initNullUtbetalingPgaKontantstøtte = (
@@ -142,6 +144,9 @@ export const InnvilgeBarnetilsyn: React.FC<{
     const tilleggsstønadBegrunnelseState = formState.getProps(
         'tilleggsstønadBegrunnelse'
     ) as FieldState;
+    const kontantstøtteBegrunnelseState = formState.getProps(
+        'kontantstøtteBegrunnelse'
+    ) as FieldState;
     const stønadsreduksjonState = formState.getProps('skalStønadReduseres') as FieldState;
     const tilleggsstønadsperiodeState = formState.getProps(
         'tilleggsstønadsperioder'
@@ -186,6 +191,7 @@ export const InnvilgeBarnetilsyn: React.FC<{
     }, [
         utgiftsperiodeState.value,
         kontantstøtteState.value,
+        kontantstøtteBegrunnelseState.value,
         tilleggsstønadBegrunnelseState.value,
         stønadsreduksjonState.value,
         tilleggsstønadsperiodeState.value,
@@ -231,6 +237,7 @@ export const InnvilgeBarnetilsyn: React.FC<{
             perioder: form.utgiftsperioder,
             perioderKontantstøtte:
                 form.harKontantstøtte === ERadioValg.JA ? form.kontantstøtteperioder : [],
+            kontantstøtteBegrunnelse: form.kontantstøtteBegrunnelse,
             tilleggsstønad: {
                 perioder:
                     form.skalStønadReduseres === ERadioValg.JA ? form.tilleggsstønadsperioder : [],
@@ -307,6 +314,7 @@ export const InnvilgeBarnetilsyn: React.FC<{
                 settValideringsFeil={formState.setErrors}
                 valideringsfeil={formState.errors}
                 harKontantstøttePerioder={harKontantstøttePerioder}
+                kontantstøtteBegrunnelse={kontantstøtteBegrunnelseState}
             />
             <TilleggsstønadValg
                 erLesevisning={!behandlingErRedigerbar}
