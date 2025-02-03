@@ -23,6 +23,7 @@ import { useBehandling } from '../../../../../App/context/BehandlingContext';
 import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
 import { KontantstøtteAlert } from './KontantstøtteAlert';
 import JaNeiRadioGruppe from '../../Felles/JaNeiRadioGruppe';
+import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
 
 const Container = styled.div`
     padding: 1rem;
@@ -52,13 +53,18 @@ const Input = styled(InputMedTusenSkille)`
     text-align: right;
 `;
 
+const TextArea = styled(EnsligTextArea)`
+    margin-top: 1rem;
+`;
+
 interface Props {
     erLesevisning: boolean;
     kontantstøtte: FieldState;
     kontantstøttePerioder: ListState<IPeriodeMedBeløp>;
     settValideringsFeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>;
-    valideringsfeil?: FormErrors<InnvilgeVedtakForm>;
+    valideringsfeil: FormErrors<InnvilgeVedtakForm>;
     harKontantstøttePerioder?: boolean;
+    kontantstøtteBegrunnelse: FieldState;
 }
 
 export const tomKontantstøtteRad = (): IPeriodeMedBeløp => ({
@@ -75,6 +81,7 @@ const KontantstøtteValg: React.FC<Props> = ({
     settValideringsFeil,
     valideringsfeil,
     harKontantstøttePerioder,
+    kontantstøtteBegrunnelse,
 }) => {
     const { settIkkePersistertKomponent } = useApp();
     const { åpenHøyremeny } = useBehandling();
@@ -112,10 +119,11 @@ const KontantstøtteValg: React.FC<Props> = ({
                 return EKontantstøttePeriodeProperty.årMånedTil;
         }
     };
-
     const visGrid = kontantstøttePerioder.value.length > 0;
     const radioGruppeTekst =
-        'Er det søkt om, utbetales det eller har det blitt utbetalt kontantstøtte til brukeren eller en brukeren bor med i perioden(e) det er søkt om?';
+        'Skal stønaden reduseres fordi brukeren, eller en brukeren bor med, har fått utbetalt kontantstøtte i perioden(e) det er søkt om?';
+    const skalViseBegrunnelseLesevisning = erLesevisning && kontantstøtteBegrunnelse.value !== null;
+
     return (
         <Container>
             <Heading spacing size="small" level="5">
@@ -236,6 +244,19 @@ const KontantstøtteValg: React.FC<Props> = ({
                         />
                     )}
                 </HorizontalScroll>
+            )}
+            {(skalViseBegrunnelseLesevisning || !erLesevisning) && (
+                <TextArea
+                    readOnly={erLesevisning}
+                    feilmelding={valideringsfeil.kontantstøtteBegrunnelse}
+                    label="Begrunnelse (hvis aktuelt)"
+                    maxLength={0}
+                    onChange={(event) => {
+                        settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
+                        kontantstøtteBegrunnelse?.onChange(event);
+                    }}
+                    value={kontantstøtteBegrunnelse?.value}
+                />
             )}
         </Container>
     );
