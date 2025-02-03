@@ -15,6 +15,9 @@ import { OverstyrtBrevmalVarsel } from './OverstyrtBrevmalVarsel';
 import { FremleggoppgaverSomOpprettes } from './FremleggoppgaverSomOpprettes';
 import { VStack } from '@navikt/ds-react';
 import { useHentOppgaverForOpprettelse } from '../../../App/hooks/useHentOppgaverForOpprettelse';
+import { OppgaverForFerdigstilling } from '../Totrinnskontroll/OppgaverForFerdigstilling';
+import { useHentFremleggsoppgaverForOvergangsstønad } from '../../../App/hooks/useHentFremleggsoppgaverForOvergangsstønad';
+import useHentOppgaveIderForFerdigstilling from '../../../App/hooks/useHentOppgaveIderForFerdigstilling';
 
 interface Props {
     behandling: Behandling;
@@ -28,6 +31,10 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
     const [kanSendesTilBeslutter, settKanSendesTilBeslutter] = useState<boolean>(false);
     const { oppgaverForOpprettelse, hentOppgaverForOpprettelseCallback } =
         useHentOppgaverForOpprettelse(behandling.id);
+    const { hentFremleggsoppgaver, fremleggsoppgaver } =
+        useHentFremleggsoppgaverForOvergangsstønad();
+    const { hentOppgaveIderForFerdigstillingCallback, oppgaveIderForFerdigstilling } =
+        useHentOppgaveIderForFerdigstilling(behandling.id);
 
     const lagBeslutterBrev = () => {
         axiosRequest<string, null>({
@@ -62,15 +69,31 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
         // eslint-disable-next-line
     }, [behandlingErRedigerbar, totrinnskontroll]);
 
+    // useEffect(() => {
+    //     hentOppgaveIderForFerdigstillingCallback().rerun();
+    // }, [behandling.id, hentOppgaveIderForFerdigstillingCallback]);
+
+    useEffect(() => {
+        hentFremleggsoppgaver(behandling.id);
+    }, [behandling.id, hentFremleggsoppgaver]);
+
     return (
         <DataViewer
             response={{
                 personopplysningerResponse,
                 vedtak,
                 oppgaverForOpprettelse,
+                fremleggsoppgaver,
+                oppgaveIderForFerdigstilling,
             }}
         >
-            {({ personopplysningerResponse, vedtak, oppgaverForOpprettelse }) => (
+            {({
+                personopplysningerResponse,
+                vedtak,
+                oppgaverForOpprettelse,
+                fremleggsoppgaver,
+                oppgaveIderForFerdigstilling,
+            }) => (
                 <>
                     <StyledBrev>
                         <VenstreKolonne>
@@ -80,11 +103,19 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
                                     personopplysninger={personopplysningerResponse}
                                 />
                                 {!behandlingErRedigerbar && (
-                                    <FremleggoppgaverSomOpprettes
-                                        oppgavetyperSomSkalOpprettes={
-                                            oppgaverForOpprettelse.oppgavetyperSomSkalOpprettes
-                                        }
-                                    />
+                                    <>
+                                        <FremleggoppgaverSomOpprettes
+                                            oppgavetyperSomSkalOpprettes={
+                                                oppgaverForOpprettelse.oppgavetyperSomSkalOpprettes
+                                            }
+                                        />
+                                        <OppgaverForFerdigstilling
+                                            fremleggsOppgaver={fremleggsoppgaver}
+                                            fremleggsoppgaveIderSomSkalFerdigstilles={
+                                                oppgaveIderForFerdigstilling.oppgaveIder
+                                            }
+                                        />
+                                    </>
                                 )}
                                 {!behandlingErRedigerbar && (
                                     <OverstyrtBrevmalVarsel behandlingId={behandling.id} />
@@ -113,6 +144,12 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
                             oppgaverForOpprettelse.oppgavetyperSomKanOpprettes
                         }
                         hentOppgaverForOpprettelseCallback={hentOppgaverForOpprettelseCallback}
+                        fremleggsoppgaveIderSomSkalFerdigstilles={
+                            oppgaveIderForFerdigstilling.oppgaveIder
+                        }
+                        hentOppgaveIderForFerdigstillingCallback={
+                            hentOppgaveIderForFerdigstillingCallback
+                        }
                     />
                 </>
             )}
