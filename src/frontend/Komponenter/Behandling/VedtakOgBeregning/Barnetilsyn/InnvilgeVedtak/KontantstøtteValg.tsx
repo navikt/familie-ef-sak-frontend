@@ -61,6 +61,7 @@ interface Props {
     valideringsfeil?: FormErrors<InnvilgeVedtakForm>;
     harKontantstøttePerioder?: boolean;
     kontantstøttePerioderFraGrunnlagsdata: KontantstøttePeriode[];
+    registeropplysningerOpprettetTid: string;
 }
 
 export const tomKontantstøtteRad = (): IPeriodeMedBeløp => ({
@@ -78,6 +79,7 @@ const KontantstøtteValg: React.FC<Props> = ({
     valideringsfeil,
     harKontantstøttePerioder,
     kontantstøttePerioderFraGrunnlagsdata,
+    registeropplysningerOpprettetTid,
 }) => {
     const { settIkkePersistertKomponent } = useApp();
     const { åpenHøyremeny } = useBehandling();
@@ -128,6 +130,7 @@ const KontantstøtteValg: React.FC<Props> = ({
                 <KontantstøtteAlert
                     harKontantstøttePerioder={harKontantstøttePerioder}
                     kontantstøttePerioderFraGrunnlagsdata={kontantstøttePerioderFraGrunnlagsdata}
+                    registeropplysningerOpprettetTid={registeropplysningerOpprettetTid}
                 />
 
                 <JaNeiRadioGruppe

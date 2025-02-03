@@ -107,6 +107,7 @@ export const InnvilgeBarnetilsyn: React.FC<{
     låsFraDatoFørsteRad: boolean;
     harKontantstøttePerioder?: boolean;
     kontantstøttePerioderFraGrunnlagsdata: KontantstøttePeriode[];
+    registeropplysningerOpprettetTid: string;
 }> = ({
     lagretVedtak,
     behandling,
@@ -115,6 +116,7 @@ export const InnvilgeBarnetilsyn: React.FC<{
     låsFraDatoFørsteRad,
     harKontantstøttePerioder,
     kontantstøttePerioderFraGrunnlagsdata,
+    registeropplysningerOpprettetTid,
 }) => {
     const lagretInnvilgetVedtak =
         lagretVedtak?._type === IVedtakType.InnvilgelseBarnetilsyn ||
@@ -329,6 +331,7 @@ export const InnvilgeBarnetilsyn: React.FC<{
                 valideringsfeil={formState.errors}
                 harKontantstøttePerioder={harKontantstøttePerioder}
                 kontantstøttePerioderFraGrunnlagsdata={kontantstøttePerioderFraGrunnlagsdata}
+                registeropplysningerOpprettetTid={registeropplysningerOpprettetTid}
             />
             <TilleggsstønadValg
                 erLesevisning={!behandlingErRedigerbar}

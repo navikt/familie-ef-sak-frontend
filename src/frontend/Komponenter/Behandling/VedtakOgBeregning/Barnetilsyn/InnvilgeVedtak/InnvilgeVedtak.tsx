@@ -23,6 +23,7 @@ export const InnvilgeVedtak: FC<{
     settResultatType: (val: EBehandlingResultat | undefined) => void;
     harKontantstøttePerioder?: boolean;
     kontantstøttePerioderFraGrunnlagsdata: KontantstøttePeriode[];
+    registeropplysningerOpprettetTid: string;
 }> = ({
     behandling,
     lagretVedtak,
@@ -30,6 +31,7 @@ export const InnvilgeVedtak: FC<{
     settResultatType,
     harKontantstøttePerioder,
     kontantstøttePerioderFraGrunnlagsdata,
+    registeropplysningerOpprettetTid,
 }) => {
     const { axiosRequest, settIkkePersistertKomponent } = useApp();
     const { behandlingErRedigerbar } = useBehandling();
@@ -95,6 +97,7 @@ export const InnvilgeVedtak: FC<{
                     låsFraDatoFørsteRad={!!revurderesFra}
                     harKontantstøttePerioder={harKontantstøttePerioder}
                     kontantstøttePerioderFraGrunnlagsdata={kontantstøttePerioderFraGrunnlagsdata}
+                    registeropplysningerOpprettetTid={registeropplysningerOpprettetTid}
                 />
             )}
         </>

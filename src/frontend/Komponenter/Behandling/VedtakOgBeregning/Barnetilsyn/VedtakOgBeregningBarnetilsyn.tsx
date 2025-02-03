@@ -53,6 +53,9 @@ const VedtakOgBeregningBarnetilsyn: FC<VedtakOgBeregningProps> = ({
                                     kontantstøttePerioderFraGrunnlagsdata={
                                         vilkår.grunnlag.kontantstøttePerioder
                                     }
+                                    registeropplysningerOpprettetTid={
+                                        vilkår.grunnlag.registeropplysningerOpprettetTid
+                                    }
                                 />
                             );
                         case EBehandlingResultat.AVSLÅ:

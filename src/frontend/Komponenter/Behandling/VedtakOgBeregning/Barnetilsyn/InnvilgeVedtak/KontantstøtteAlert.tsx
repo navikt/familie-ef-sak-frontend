@@ -28,18 +28,22 @@ const StyledButton = styled(Button)`
 interface Props {
     harKontantstøttePerioder?: boolean;
     kontantstøttePerioderFraGrunnlagsdata: KontantstøttePeriode[];
+    registeropplysningerOpprettetTid: string;
 }
 
 const utledKontantstøtteperioderAlertTekst = (
     kontantstøttePerioderFraGrunnlagsdata: KontantstøttePeriode[],
+    registeropplysningerOpprettetTid: string,
     harKontantstøttePerioder?: boolean
 ): string => {
     if (!harKontantstøttePerioder && kontantstøttePerioderFraGrunnlagsdata.length === 0) {
-        return 'Bruker har verken fått eller får kontantstøtte';
+        return `Bruker har verken fått eller får kontantstøtte (oppdatert ${formaterNullableIsoDato(
+            registeropplysningerOpprettetTid
+        )})`;
     }
     if (kontantstøttePerioderFraGrunnlagsdata.length > 0) {
         return `Brukers kontantstøtteperioder (hentet ${formaterNullableIsoDato(
-            kontantstøttePerioderFraGrunnlagsdata[0].hentetDato
+            registeropplysningerOpprettetTid
         )})`;
     }
     return 'Bruker har eller har fått kontantstøtte';
@@ -52,6 +56,7 @@ const kontantstøtteKilde = (kilde: string): string => {
 export const KontantstøtteAlert: React.FC<Props> = ({
     harKontantstøttePerioder,
     kontantstøttePerioderFraGrunnlagsdata,
+    registeropplysningerOpprettetTid,
 }) => {
     const [ekspandert, settEkspandert] = useState(false);
     const harFlereKontantstøttePerioder = kontantstøttePerioderFraGrunnlagsdata.length > 1;
@@ -60,6 +65,7 @@ export const KontantstøtteAlert: React.FC<Props> = ({
         <AlertStripe variant="info">
             {utledKontantstøtteperioderAlertTekst(
                 kontantstøttePerioderFraGrunnlagsdata,
+                registeropplysningerOpprettetTid,
                 harKontantstøttePerioder
             )}
             {kontantstøttePerioderFraGrunnlagsdata.length > 0 && (
