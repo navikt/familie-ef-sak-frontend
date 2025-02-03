@@ -39,6 +39,7 @@ export type InnvilgeVedtakForm = {
     harKontantstøtte: ERadioValg;
     harTilleggsstønad: ERadioValg;
     tilleggsstønadBegrunnelse?: string;
+    kontantstøtteBegrunnelse?: string;
     skalStønadReduseres: ERadioValg;
     tilleggsstønadsperioder?: IPeriodeMedBeløp[];
     begrunnelse?: string;
@@ -90,6 +91,7 @@ const initFormState = (vedtak: IInnvilgeVedtakForBarnetilsyn | undefined) => ({
     kontantstøtteperioder: initKontantstøtteperioder(vedtak),
     harTilleggsstønad: initHarTilleggsstønad(vedtak),
     tilleggsstønadBegrunnelse: vedtak?.tilleggsstønad.begrunnelse || '',
+    kontantstøtteBegrunnelse: vedtak?.kontantstøtteBegrunnelse || '',
     skalStønadReduseres: initSkalStønadReduseres(vedtak),
     tilleggsstønadsperioder: initTillegsstønadsperioder(vedtak),
     begrunnelse: vedtak?.begrunnelse || '',
@@ -155,6 +157,9 @@ export const InnvilgeBarnetilsyn: React.FC<{
     const tilleggsstønadBegrunnelseState = formState.getProps(
         'tilleggsstønadBegrunnelse'
     ) as FieldState;
+    const kontantstøtteBegrunnelseState = formState.getProps(
+        'kontantstøtteBegrunnelse'
+    ) as FieldState;
     const stønadsreduksjonState = formState.getProps('skalStønadReduseres') as FieldState;
     const tilleggsstønadsperiodeState = formState.getProps(
         'tilleggsstønadsperioder'
@@ -200,6 +205,7 @@ export const InnvilgeBarnetilsyn: React.FC<{
     }, [
         utgiftsperiodeState.value,
         kontantstøtteState.value,
+        kontantstøtteBegrunnelseState.value,
         tilleggsstønadState.value,
         tilleggsstønadBegrunnelseState.value,
         stønadsreduksjonState.value,
@@ -246,6 +252,7 @@ export const InnvilgeBarnetilsyn: React.FC<{
             perioder: form.utgiftsperioder,
             perioderKontantstøtte:
                 form.harKontantstøtte === ERadioValg.JA ? form.kontantstøtteperioder : [],
+            kontantstøtteBegrunnelse: form.kontantstøtteBegrunnelse,
             tilleggsstønad: {
                 harTilleggsstønad: form.harTilleggsstønad === ERadioValg.JA,
                 perioder:
@@ -330,6 +337,7 @@ export const InnvilgeBarnetilsyn: React.FC<{
                 settValideringsFeil={formState.setErrors}
                 valideringsfeil={formState.errors}
                 harKontantstøttePerioder={harKontantstøttePerioder}
+                kontantstøtteBegrunnelse={kontantstøtteBegrunnelseState}
                 kontantstøttePerioderFraGrunnlagsdata={kontantstøttePerioderFraGrunnlagsdata}
                 registeropplysningerOpprettetTid={registeropplysningerOpprettetTid}
             />
