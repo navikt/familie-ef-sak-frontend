@@ -50,7 +50,7 @@ const utledKontantstøtteperioderAlertTekst = (
 };
 
 const kontantstøtteKilde = (kilde: string): string => {
-    return kilde.toLowerCase().includes('kontantstøtte') ? 'KS sak' : kilde.toLowerCase();
+    return kilde.toLowerCase().includes('ks_sak') ? 'KS sak' : kilde.toLowerCase();
 };
 
 export const KontantstøtteAlert: React.FC<Props> = ({
