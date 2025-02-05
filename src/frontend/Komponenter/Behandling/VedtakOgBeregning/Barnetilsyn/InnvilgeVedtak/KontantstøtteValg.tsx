@@ -23,6 +23,7 @@ import { useBehandling } from '../../../../../App/context/BehandlingContext';
 import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
 import { KontantstøtteAlert } from './KontantstøtteAlert';
 import JaNeiRadioGruppe from '../../Felles/JaNeiRadioGruppe';
+import { KontantstøttePeriode } from '../../../Inngangsvilkår/vilkår';
 import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
 
 const Container = styled.div`
@@ -65,6 +66,8 @@ interface Props {
     valideringsfeil: FormErrors<InnvilgeVedtakForm>;
     harKontantstøttePerioder?: boolean;
     kontantstøtteBegrunnelse: FieldState;
+    kontantstøttePerioderFraGrunnlagsdata: KontantstøttePeriode[];
+    registeropplysningerOpprettetTid: string;
 }
 
 export const tomKontantstøtteRad = (): IPeriodeMedBeløp => ({
@@ -82,6 +85,8 @@ const KontantstøtteValg: React.FC<Props> = ({
     valideringsfeil,
     harKontantstøttePerioder,
     kontantstøtteBegrunnelse,
+    kontantstøttePerioderFraGrunnlagsdata,
+    registeropplysningerOpprettetTid,
 }) => {
     const { settIkkePersistertKomponent } = useApp();
     const { åpenHøyremeny } = useBehandling();
@@ -130,7 +135,11 @@ const KontantstøtteValg: React.FC<Props> = ({
                 Kontantstøtte
             </Heading>
             <AlertOgRadioknappWrapper>
-                <KontantstøtteAlert harKontantstøttePerioder={harKontantstøttePerioder} />
+                <KontantstøtteAlert
+                    harKontantstøttePerioder={harKontantstøttePerioder}
+                    kontantstøttePerioderFraGrunnlagsdata={kontantstøttePerioderFraGrunnlagsdata}
+                    registeropplysningerOpprettetTid={registeropplysningerOpprettetTid}
+                />
 
                 <JaNeiRadioGruppe
                     error={valideringsfeil?.harKontantstøtte}
