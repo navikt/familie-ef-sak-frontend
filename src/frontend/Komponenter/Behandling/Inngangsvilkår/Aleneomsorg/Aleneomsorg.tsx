@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { vilkårStatusForBarn } from '../../Vurdering/VurderingUtil';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import AleneomsorgInfo from './AleneomsorgInfo';
-import { VilkårPropsMedBehandling } from '../vilkårprops';
+import { VilkårPropsAleneomsorg } from '../vilkårprops';
 import { InngangsvilkårType } from '../vilkår';
 import { byggTomRessurs, Ressurs } from '../../../../App/typer/ressurs';
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
@@ -11,28 +11,14 @@ import { IBarnMedLøpendeStønad } from './typer';
 import DokumentasjonSendtInn from '../DokumentasjonSendtInn';
 import { VilkårpanelInnhold } from '../../Vilkårpanel/VilkårpanelInnhold';
 import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';
-import { SamværKalkulator } from '../../../../Felles/Kalkulator/SamværKalkulator';
-import styled from 'styled-components';
-import { AGray300, AGray50 } from '@navikt/ds-tokens/dist/tokens';
-import { Button, HStack } from '@navikt/ds-react';
-import { CalculatorIcon } from '@navikt/aksel-icons';
+import {
+    samværsandelTilTekst,
+    samværsandelTilVerdi,
+    Samværsavtale,
+} from '../../../../App/typer/samværsavtale';
+import { SamværskalkulatorAleneomsorg } from './SamværskalkulatorAleneomsorg';
 
-const Samværskalkulator = styled(SamværKalkulator)`
-    padding: 1rem;
-    background-color: white;
-    border: 1rem solid ${AGray50};
-`;
-
-const StyledHStack = styled(HStack)<{ $borderBottom: boolean }>`
-    border-bottom: ${(props) => (props.$borderBottom ? `1px solid ${AGray300}` : 'none')};
-`;
-
-const Divider = styled.div`
-    margin: 1rem;
-    border-bottom: 1px solid ${AGray300};
-`;
-
-export const Aleneomsorg: React.FC<VilkårPropsMedBehandling> = ({
+export const Aleneomsorg: React.FC<VilkårPropsAleneomsorg> = ({
     vurderinger,
     lagreVurdering,
     nullstillVurdering,
@@ -41,13 +27,17 @@ export const Aleneomsorg: React.FC<VilkårPropsMedBehandling> = ({
     ikkeVurderVilkår,
     skalViseSøknadsdata,
     behandling,
+    lagredeSamværsavtaler,
 }) => {
-    const [skalViseSamværskalkulatorPåBarn, settSkalViseSamværskalkulatorPåBarn] = useState<
-        Set<string>
-    >(new Set());
+    const { axiosRequest } = useApp();
+
     const [barnMedLøpendeStønad, settBarnMedLøpendeStønad] =
         useState<Ressurs<IBarnMedLøpendeStønad>>(byggTomRessurs());
-    const { axiosRequest } = useApp();
+    const [samværsavtaler, settSamværsavtaler] = useState<Samværsavtale[]>(lagredeSamværsavtaler);
+
+    console.log(settSamværsavtaler);
+    console.log(samværsandelTilTekst);
+    console.log(samværsandelTilVerdi);
 
     useEffect(() => {
         if (behandling.stønadstype === Stønadstype.BARNETILSYN) {
@@ -64,12 +54,6 @@ export const Aleneomsorg: React.FC<VilkårPropsMedBehandling> = ({
         .filter((vurdering) => vurdering.vilkårType === InngangsvilkårType.ALENEOMSORG)
         .map((v) => v.resultat);
     const utleddResultat = vilkårStatusForBarn(vilkårsresultatAleneomsorg);
-
-    const lukkSamværskalkulatorForBarn = (barnId: string) => {
-        const kopi = new Set(skalViseSamværskalkulatorPåBarn);
-        kopi.delete(barnId);
-        settSkalViseSamværskalkulatorPåBarn(kopi);
-    };
 
     return (
         <Vilkårpanel
@@ -90,6 +74,10 @@ export const Aleneomsorg: React.FC<VilkårPropsMedBehandling> = ({
                 const skalViseBorderBottom =
                     indeks !== grunnlag.barnMedSamvær.length - 1 &&
                     grunnlag.barnMedSamvær.length > 1;
+
+                const samværsavtale = samværsavtaler.find(
+                    (avtale) => avtale.behandlingBarnId === barn.barnId
+                );
 
                 return (
                     <React.Fragment key={barn.barnId}>
@@ -143,35 +131,10 @@ export const Aleneomsorg: React.FC<VilkårPropsMedBehandling> = ({
                                 ),
                             }}
                         </VilkårpanelInnhold>
-                        {skalViseSamværskalkulatorPåBarn.has(barn.barnId) ? (
-                            <>
-                                <Samværskalkulator
-                                    onClose={() => lukkSamværskalkulatorForBarn(barn.barnId)}
-                                />
-                                {skalViseBorderBottom && <Divider />}
-                            </>
-                        ) : (
-                            <StyledHStack
-                                $borderBottom={skalViseBorderBottom}
-                                justify="end"
-                                margin="4"
-                                padding="4"
-                            >
-                                <Button
-                                    type="button"
-                                    size="small"
-                                    onClick={() =>
-                                        settSkalViseSamværskalkulatorPåBarn(
-                                            new Set(skalViseSamværskalkulatorPåBarn).add(
-                                                barn.barnId
-                                            )
-                                        )
-                                    }
-                                >
-                                    <CalculatorIcon aria-hidden fontSize="1.5rem" />
-                                </Button>
-                            </StyledHStack>
-                        )}
+                        <SamværskalkulatorAleneomsorg
+                            samværsavtale={samværsavtale}
+                            skalViseBorderBottom={skalViseBorderBottom}
+                        />
                     </React.Fragment>
                 );
             })}

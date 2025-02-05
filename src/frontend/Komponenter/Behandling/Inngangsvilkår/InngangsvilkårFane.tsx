@@ -15,6 +15,7 @@ import { Behandling } from '../../../App/typer/fagsak';
 import { useApp } from '../../../App/context/AppContext';
 import { InngangsvilkårHeader } from './InngangsvilkårHeader';
 import { formaterIsoDatoTidMedSekunder } from '../../../App/utils/formatter';
+import { useHentSamværsavtaler } from '../../../App/hooks/useHentSamværsavtaler';
 
 interface Props {
     behandling: Behandling;
@@ -32,14 +33,16 @@ export const InngangsvilkårFane: FC<Props> = ({ behandling }) => {
         ikkeVurderVilkår,
         oppdaterGrunnlagsdataOgHentVilkår,
     } = vilkårState;
+    const { samværsavtaler, hentSamværsavtaler } = useHentSamværsavtaler();
 
     React.useEffect(() => {
         hentVilkår(behandling.id);
-    }, [hentVilkår, behandling.id]);
+        hentSamværsavtaler(behandling.id);
+    }, [hentVilkår, hentSamværsavtaler, behandling.id]);
 
     return (
-        <DataViewer response={{ vilkår }}>
-            {({ vilkår }) => {
+        <DataViewer response={{ samværsavtaler, vilkår }}>
+            {({ samværsavtaler, vilkår }) => {
                 const årsak = behandling.behandlingsårsak;
                 const skalViseSøknadsdata =
                     årsak === Behandlingsårsak.SØKNAD || årsak === Behandlingsårsak.PAPIRSØKNAD;
@@ -128,6 +131,7 @@ export const InngangsvilkårFane: FC<Props> = ({ behandling }) => {
                             ikkeVurderVilkår={ikkeVurderVilkår}
                             skalViseSøknadsdata={skalViseSøknadsdata}
                             behandling={behandling}
+                            lagredeSamværsavtaler={samværsavtaler}
                         />
                     </>
                 );
