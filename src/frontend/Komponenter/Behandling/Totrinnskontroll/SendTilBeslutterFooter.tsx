@@ -69,7 +69,7 @@ const SendTilBeslutterFooter: React.FC<{
         rerun: () => void;
     };
     fremleggsoppgaveIderSomSkalFerdigstilles?: number[];
-    hentOppgaveIderForFerdigstillingCallback: {
+    hentOppgaveIderForFerdigstillingCallback?: {
         rerun: () => void;
     };
 }> = ({
