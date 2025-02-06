@@ -37,7 +37,7 @@ export const TabellFerdigstilleOppgaver: FC<{
                         <Table.HeaderCell scope="col">Oppgavetype</Table.HeaderCell>
                         <Table.HeaderCell scope="col">Gjelder</Table.HeaderCell>
                         <Table.HeaderCell scope="col">Saksbehandler</Table.HeaderCell>
-                        <Table.HeaderCell scope="col">Sist endret</Table.HeaderCell>
+                        <Table.HeaderCell scope="col">Frist</Table.HeaderCell>
                         <Table.HeaderCell />
                     </Table.Row>
                 </Table.Header>
@@ -50,13 +50,11 @@ export const TabellFerdigstilleOppgaver: FC<{
                                 behandlingstema,
                                 // behandlingstype,
                                 tilordnetRessurs,
-                                endretTidspunkt,
-                                aktivDato,
                                 beskrivelse,
+                                fristFerdigstillelse,
                             },
                             i
                         ) => {
-                            const sistEndret = endretTidspunkt ?? aktivDato;
                             return (
                                 <Table.ExpandableRow
                                     key={i}
@@ -89,7 +87,8 @@ export const TabellFerdigstilleOppgaver: FC<{
                                     </Table.DataCell>
                                     <Table.DataCell>{tilordnetRessurs ?? '-'}</Table.DataCell>
                                     <Table.DataCell>
-                                        {sistEndret && formaterIsoDato(sistEndret)}
+                                        {fristFerdigstillelse &&
+                                            formaterIsoDato(fristFerdigstillelse)}
                                     </Table.DataCell>
                                 </Table.ExpandableRow>
                             );

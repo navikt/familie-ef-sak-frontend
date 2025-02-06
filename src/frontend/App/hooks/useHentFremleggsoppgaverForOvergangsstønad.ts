@@ -1,12 +1,7 @@
 import { byggHenterRessurs, byggTomRessurs, Ressurs } from '../typer/ressurs';
 import { useApp } from '../context/AppContext';
 import { useCallback, useState } from 'react';
-import { IOppgave } from '../../Komponenter/Oppgavebenk/typer/oppgave';
-
-export interface IOppgaverResponse {
-    antallTreffTotalt: number;
-    oppgaver: IOppgave[];
-}
+import { IOppgaverResponse } from './useHentOppgaver';
 
 export const useHentFremleggsoppgaverForOvergangsstønad = () => {
     const { axiosRequest } = useApp();

@@ -69,10 +69,6 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
         // eslint-disable-next-line
     }, [behandlingErRedigerbar, totrinnskontroll]);
 
-    // useEffect(() => {
-    //     hentOppgaveIderForFerdigstillingCallback().rerun();
-    // }, [behandling.id, hentOppgaveIderForFerdigstillingCallback]);
-
     useEffect(() => {
         hentFremleggsoppgaver(behandling.id);
     }, [behandling.id, hentFremleggsoppgaver]);
@@ -83,7 +79,6 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
                 personopplysningerResponse,
                 vedtak,
                 oppgaverForOpprettelse,
-                fremleggsoppgaver,
                 oppgaveIderForFerdigstilling,
             }}
         >
@@ -91,7 +86,6 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
                 personopplysningerResponse,
                 vedtak,
                 oppgaverForOpprettelse,
-                fremleggsoppgaver,
                 oppgaveIderForFerdigstilling,
             }) => (
                 <>
@@ -110,10 +104,11 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
                                             }
                                         />
                                         <OppgaverForFerdigstilling
-                                            fremleggsOppgaver={fremleggsoppgaver}
+                                            fremleggsoppgaver={fremleggsoppgaver}
                                             fremleggsoppgaveIderSomSkalFerdigstilles={
                                                 oppgaveIderForFerdigstilling.oppgaveIder
                                             }
+                                            behandlingId={behandling.id}
                                         />
                                     </>
                                 )}
