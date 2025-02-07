@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import { Button, HStack } from '@navikt/ds-react';
-import { CalculatorIcon } from '@navikt/aksel-icons';
+import { BodyShort, Button, Heading, HStack } from '@navikt/ds-react';
+import { CalculatorIcon, ChevronDownIcon } from '@navikt/aksel-icons';
 import styled from 'styled-components';
-import { Samværskalkulator } from '../../../../Felles/Kalkulator/Samværskalkulator';
-import { AGray300, AGray50 } from '@navikt/ds-tokens/dist/tokens';
+import {
+    Samværskalkulator,
+    kalkulerSamværsandeler,
+} from '../../../../Felles/Kalkulator/Samværskalkulator';
+import { AGray300, AGray50, ASurfaceDefault } from '@navikt/ds-tokens/dist/tokens';
 import {
     Samværsandel,
     Samværsavtale,
@@ -14,7 +17,7 @@ import { useBehandling } from '../../../../App/context/BehandlingContext';
 
 const Kalkulator = styled(Samværskalkulator)`
     padding: 1rem;
-    background-color: white;
+    background-color: ${ASurfaceDefault};
     border: 1rem solid ${AGray50};
 `;
 
@@ -25,6 +28,12 @@ const StyledHStack = styled(HStack)<{ $borderBottom: boolean }>`
 const Divider = styled.div`
     margin: 1rem;
     border-bottom: 1px solid ${AGray300};
+`;
+
+const OppsummeringContainer = styled(HStack)`
+    padding: 1rem 1.5rem 1.5rem 1.5rem;
+    background: ${ASurfaceDefault};
+    border: 1rem solid ${AGray50};
 `;
 
 enum Visningsmodus {
@@ -103,7 +112,7 @@ export const SamværskalkulatorAleneomsorg: React.FC<Props> = ({
     lagreSamværsavtale,
     slettSamværsavtale,
 }) => {
-    const { behandlingErRedigerbar } = useBehandling();
+    const { behandlingErRedigerbar, hentBehandling } = useBehandling();
 
     const [samværsavtale, settSamværsavtale] = useState<Samværsavtale>(
         utledInitiellSamværsavtale(lagretSamværsavtale, behandlingId, behandlingBarnId)
@@ -156,17 +165,16 @@ export const SamværskalkulatorAleneomsorg: React.FC<Props> = ({
     const håndterLagreSamværsavtale = () => {
         lagreSamværsavtale(samværsavtale);
         settVisningsmodus(Visningsmodus.REDIGERINGSMODUS_HAR_LAGRET_AVTALE);
+        hentBehandling.rerun();
     };
 
     const håndterSlettSamværsavtale = () => {
         slettSamværsavtale(behandlingId, behandlingBarnId);
         settVisningsmodus(Visningsmodus.REDIGERINGSMODUS_INGEN_LAGRET_AVTALE);
+        hentBehandling.rerun();
     };
 
-    if (
-        visningsmodus === Visningsmodus.REDIGERINGSMODUS_INGEN_LAGRET_AVTALE ||
-        visningsmodus === Visningsmodus.REDIGERINGSMODUS_HAR_LAGRET_AVTALE
-    ) {
+    if (visningsmodus === Visningsmodus.REDIGERINGSMODUS_INGEN_LAGRET_AVTALE) {
         return (
             <StyledHStack $borderBottom={skalViseBorderBottom} justify="end" margin="4" padding="4">
                 <Button
@@ -182,7 +190,41 @@ export const SamværskalkulatorAleneomsorg: React.FC<Props> = ({
         );
     }
 
-    if (visningsmodus === Visningsmodus.REDIGERINGSMODUS_HAR_PÅBEGYNT_AVTALE) {
+    if (visningsmodus === Visningsmodus.REDIGERINGSMODUS_HAR_LAGRET_AVTALE) {
+        const [samværsandelerDagVisning, samværsandelProsentVisning] = kalkulerSamværsandeler(
+            samværsavtale.uker
+        );
+
+        return (
+            <>
+                <OppsummeringContainer justify="space-between" align="baseline">
+                    <HStack align="baseline" gap="4">
+                        <Heading size="medium">Samværsandel:</Heading>
+                        <BodyShort size="large">{samværsandelerDagVisning}</BodyShort>
+                        <BodyShort size="large">{samværsandelProsentVisning}</BodyShort>
+                    </HStack>
+                    <HStack gap="4">
+                        <Button
+                            size="medium"
+                            variant="tertiary"
+                            icon={<ChevronDownIcon />}
+                            onClick={() =>
+                                settVisningsmodus(
+                                    Visningsmodus.REDIGERINGSMODUS_HAR_PÅBEGYNT_AVTALE
+                                )
+                            }
+                        />
+                    </HStack>
+                </OppsummeringContainer>
+                {skalViseBorderBottom && <Divider />}
+            </>
+        );
+    }
+
+    if (
+        visningsmodus === Visningsmodus.REDIGERINGSMODUS_HAR_PÅBEGYNT_AVTALE ||
+        visningsmodus === Visningsmodus.VISNINGSMODUS_HAR_LAGRET_AVTALE
+    ) {
         return (
             <>
                 <Kalkulator
@@ -196,5 +238,9 @@ export const SamværskalkulatorAleneomsorg: React.FC<Props> = ({
                 {skalViseBorderBottom && <Divider />}
             </>
         );
+    }
+
+    if (visningsmodus === Visningsmodus.VISNINGSMODUS_INGEN_LAGRET_AVTALE) {
+        return <></>;
     }
 };

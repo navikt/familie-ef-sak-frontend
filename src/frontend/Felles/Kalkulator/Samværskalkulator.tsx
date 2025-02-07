@@ -60,6 +60,28 @@ const IkonKnapp = styled(Button)`
 
 const VARIGHETER_SAMVÆRSAVTALE = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
 
+export const kalkulerSamværsandeler = (samværsuker: Samværsuke[]) => {
+    const summertSamvær = samværsuker
+        .flatMap((samværsuke) =>
+            Object.values(samværsuke).flatMap((samværsdag: Samværsdag) => samværsdag.andeler)
+        )
+        .map((andel) => samværsandelTilVerdi[andel])
+        .reduce((acc, andel) => acc + andel, 0);
+
+    const maksimalSamværsandel = samværsuker.length * 7 * 8;
+
+    const antallHeleDagerMedSamvær = Math.floor(summertSamvær / 8);
+
+    const rest = summertSamvær % 8;
+    const restSuffix = rest === 0 ? '' : '/8';
+
+    const prosentandel = summertSamvær / maksimalSamværsandel;
+
+    const visningstekstAntallDager = `${antallHeleDagerMedSamvær} dager og ${rest}${restSuffix} deler`;
+    const visningstekstProsentandel = `${Math.round(prosentandel * 1000) / 10}%`;
+    return [visningstekstAntallDager, visningstekstProsentandel];
+};
+
 interface Props {
     className?: string;
     onSave: () => void;
@@ -80,7 +102,11 @@ export const Samværskalkulator: React.FC<Props> = ({
     oppdaterVarighet,
 }) => (
     <VStack className={className} gap="4">
-        <VarighetSelect oppdaterVarighet={oppdaterVarighet} onDelete={onDelete} />
+        <VarighetSelect
+            oppdaterVarighet={oppdaterVarighet}
+            onDelete={onDelete}
+            samværsuker={samværsuker}
+        />
         <HStack gap="4">
             {samværsuker.map((samværsuke, index) => (
                 <Uke
@@ -150,13 +176,15 @@ const UkeDag: React.FC<{
 const VarighetSelect: React.FC<{
     oppdaterVarighet: (varighet: number) => void;
     onDelete: () => void;
-}> = ({ oppdaterVarighet, onDelete }) => (
+    samværsuker: Samværsuke[];
+}> = ({ oppdaterVarighet, onDelete, samværsuker }) => (
     <SelectContainer justify="space-between">
         <StyledSelect
             label="Beregningslengde"
             onChange={(event: ChangeEvent<HTMLSelectElement>) =>
                 oppdaterVarighet(Number(event.target.value))
             }
+            value={samværsuker.length}
         >
             {VARIGHETER_SAMVÆRSAVTALE.map((varighet) => (
                 <option key={varighet} value={varighet}>
@@ -182,31 +210,15 @@ const Oppsummering: React.FC<{
     onSave: () => void;
     onClose: () => void;
 }> = ({ samværsuker, onSave, onClose }) => {
-    const summertSamvær = samværsuker
-        .flatMap((samværsuke) =>
-            Object.values(samværsuke).flatMap((samværsdag: Samværsdag) => samværsdag.andeler)
-        )
-        .map((andel) => samværsandelTilVerdi[andel])
-        .reduce((acc, andel) => acc + andel, 0);
-
-    const maksimalSamværsandel = samværsuker.length * 7 * 8;
-
-    const antallHeleDagerMedSamvær = Math.floor(summertSamvær / 8);
-
-    const rest = summertSamvær % 8;
-    const restSuffix = rest === 0 ? '' : '/8';
-
-    const prosentandel = summertSamvær / maksimalSamværsandel;
-
-    const visningstekstAntallDager = `${antallHeleDagerMedSamvær} dager og ${rest}${restSuffix} deler`;
-    const visningstekstProsentandel = `${Math.round(prosentandel * 1000) / 10}%`;
+    const [samværsandelerDagVisning, samværsandelProsentVisning] =
+        kalkulerSamværsandeler(samværsuker);
 
     return (
         <OppsummeringContainer justify="space-between" align="baseline">
             <HStack align="baseline" gap="4">
                 <Heading size="medium">Total:</Heading>
-                <BodyShort size="large">{visningstekstAntallDager}</BodyShort>
-                <BodyShort size="large">{visningstekstProsentandel}</BodyShort>
+                <BodyShort size="large">{samværsandelerDagVisning}</BodyShort>
+                <BodyShort size="large">{samværsandelProsentVisning}</BodyShort>
             </HStack>
             <HStack gap="4">
                 <Button variant="tertiary" onClick={onClose}>

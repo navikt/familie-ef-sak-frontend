@@ -15,7 +15,7 @@ import { Behandling } from '../../../App/typer/fagsak';
 import { useApp } from '../../../App/context/AppContext';
 import { InngangsvilkårHeader } from './InngangsvilkårHeader';
 import { formaterIsoDatoTidMedSekunder } from '../../../App/utils/formatter';
-import { useHentSamværsavtaler } from '../../../App/hooks/useHentSamværsavtaler';
+import { useSamværsavtaler } from '../../../App/hooks/useSamværsavtaler';
 
 interface Props {
     behandling: Behandling;
@@ -34,7 +34,7 @@ export const InngangsvilkårFane: FC<Props> = ({ behandling }) => {
         oppdaterGrunnlagsdataOgHentVilkår,
     } = vilkårState;
     const { samværsavtaler, hentSamværsavtaler, lagreSamværsavtale, slettSamværsavtale } =
-        useHentSamværsavtaler();
+        useSamværsavtaler();
 
     React.useEffect(() => {
         hentVilkår(behandling.id);
