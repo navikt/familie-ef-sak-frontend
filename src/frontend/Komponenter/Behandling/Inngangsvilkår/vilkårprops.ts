@@ -31,4 +31,6 @@ export interface VilkårPropsMedBehandling extends VilkårProps {
 
 export interface VilkårPropsAleneomsorg extends VilkårPropsMedBehandling {
     lagredeSamværsavtaler: Samværsavtale[];
+    lagreSamværsavtale: (avtale: Samværsavtale) => void;
+    slettSamværsavtale: (behandlingId: string, behandlingBarnId: string) => void;
 }

@@ -91,6 +91,8 @@ interface Props {
     skalViseBorderBottom: boolean;
     behandlingBarnId: string;
     behandlingId: string;
+    lagreSamværsavtale: (avtale: Samværsavtale) => void;
+    slettSamværsavtale: (behandlingId: string, behandlingBarnId: string) => void;
 }
 
 export const SamværskalkulatorAleneomsorg: React.FC<Props> = ({
@@ -98,6 +100,8 @@ export const SamværskalkulatorAleneomsorg: React.FC<Props> = ({
     skalViseBorderBottom,
     behandlingBarnId,
     behandlingId,
+    lagreSamværsavtale,
+    slettSamværsavtale,
 }) => {
     const { behandlingErRedigerbar } = useBehandling();
 
@@ -142,6 +146,23 @@ export const SamværskalkulatorAleneomsorg: React.FC<Props> = ({
         }
     };
 
+    const håndterLukkKalkulator = () => {
+        settVisningsmodus(utledInitiellVisningsmodus(behandlingErRedigerbar, lagretSamværsavtale));
+        settSamværsavtale(
+            utledInitiellSamværsavtale(lagretSamværsavtale, behandlingId, behandlingBarnId)
+        );
+    };
+
+    const håndterLagreSamværsavtale = () => {
+        lagreSamværsavtale(samværsavtale);
+        settVisningsmodus(Visningsmodus.REDIGERINGSMODUS_HAR_LAGRET_AVTALE);
+    };
+
+    const håndterSlettSamværsavtale = () => {
+        slettSamværsavtale(behandlingId, behandlingBarnId);
+        settVisningsmodus(Visningsmodus.REDIGERINGSMODUS_INGEN_LAGRET_AVTALE);
+    };
+
     if (
         visningsmodus === Visningsmodus.REDIGERINGSMODUS_INGEN_LAGRET_AVTALE ||
         visningsmodus === Visningsmodus.REDIGERINGSMODUS_HAR_LAGRET_AVTALE
@@ -166,19 +187,9 @@ export const SamværskalkulatorAleneomsorg: React.FC<Props> = ({
             <>
                 <Kalkulator
                     samværsuker={samværsavtale?.uker}
-                    onSave={() =>
-                        settVisningsmodus(Visningsmodus.REDIGERINGSMODUS_HAR_LAGRET_AVTALE)
-                    }
-                    onDelete={() =>
-                        settVisningsmodus(Visningsmodus.REDIGERINGSMODUS_INGEN_LAGRET_AVTALE)
-                    }
-                    onClose={() =>
-                        settVisningsmodus(
-                            samværsavtale === undefined
-                                ? Visningsmodus.REDIGERINGSMODUS_INGEN_LAGRET_AVTALE
-                                : Visningsmodus.REDIGERINGSMODUS_HAR_LAGRET_AVTALE
-                        )
-                    }
+                    onSave={() => håndterLagreSamværsavtale()}
+                    onDelete={() => håndterSlettSamværsavtale()}
+                    onClose={() => håndterLukkKalkulator()}
                     oppdaterSamværsuke={oppdaterSamværsuke}
                     oppdaterVarighet={oppdaterVarighetPåSamværsavtale}
                 />

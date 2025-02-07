@@ -23,6 +23,8 @@ export const Aleneomsorg: React.FC<VilkårPropsAleneomsorg> = ({
     skalViseSøknadsdata,
     behandling,
     lagredeSamværsavtaler,
+    lagreSamværsavtale,
+    slettSamværsavtale,
 }) => {
     const { axiosRequest } = useApp();
 
@@ -126,6 +128,8 @@ export const Aleneomsorg: React.FC<VilkårPropsAleneomsorg> = ({
                             skalViseBorderBottom={skalViseBorderBottom}
                             behandlingBarnId={barn.barnId}
                             behandlingId={behandling.id}
+                            lagreSamværsavtale={lagreSamværsavtale}
+                            slettSamværsavtale={slettSamværsavtale}
                         />
                     </React.Fragment>
                 );

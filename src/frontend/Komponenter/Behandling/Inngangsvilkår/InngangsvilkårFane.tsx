@@ -33,7 +33,8 @@ export const InngangsvilkårFane: FC<Props> = ({ behandling }) => {
         ikkeVurderVilkår,
         oppdaterGrunnlagsdataOgHentVilkår,
     } = vilkårState;
-    const { samværsavtaler, hentSamværsavtaler } = useHentSamværsavtaler();
+    const { samværsavtaler, hentSamværsavtaler, lagreSamværsavtale, slettSamværsavtale } =
+        useHentSamværsavtaler();
 
     React.useEffect(() => {
         hentVilkår(behandling.id);
@@ -132,6 +133,8 @@ export const InngangsvilkårFane: FC<Props> = ({ behandling }) => {
                             skalViseSøknadsdata={skalViseSøknadsdata}
                             behandling={behandling}
                             lagredeSamværsavtaler={samværsavtaler}
+                            lagreSamværsavtale={lagreSamværsavtale}
+                            slettSamværsavtale={slettSamværsavtale}
                         />
                     </>
                 );
