@@ -12,7 +12,6 @@ import {
 } from '@navikt/ds-react';
 import styled from 'styled-components';
 import { ABorderDivider, ASurfaceInfoSubtle } from '@navikt/ds-tokens/dist/tokens';
-import { TrashIcon } from '@navikt/aksel-icons';
 import {
     Samværsandel,
     samværsandelTilTekst,
@@ -21,6 +20,7 @@ import {
     Samværsuke,
 } from '../../App/typer/samværsavtale';
 import { formaterStrengMedStorForbokstav } from '../../App/utils/formatter';
+import { TrashIcon } from '@navikt/aksel-icons';
 
 const Div = styled.div`
     height: 1.25rem;
@@ -39,7 +39,7 @@ const SelectContainer = styled(HStack)`
     background: ${ASurfaceInfoSubtle};
 `;
 
-const OppsummeringContainer = styled.div`
+const OppsummeringContainer = styled(HStack)`
     padding: 1rem 1.5rem 1.5rem 1.5rem;
     background: ${ASurfaceInfoSubtle};
 `;
@@ -54,6 +54,7 @@ const CheckboxGruppe = styled(CheckboxGroup)`
 `;
 
 const IkonKnapp = styled(Button)`
+    width: fit-content;
     height: fit-content;
 `;
 
@@ -61,9 +62,9 @@ const VARIGHETER_SAMVÆRSAVTALE = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14
 
 interface Props {
     className?: string;
-    onSave?: () => void;
-    onClose?: () => void;
-    onDelete?: () => void;
+    onSave: () => void;
+    onClose: () => void;
+    onDelete: () => void;
     samværsuker: Samværsuke[];
     oppdaterSamværsuke: (ukeIndex: number, ukedag: string, samversandeler: Samværsandel[]) => void;
     oppdaterVarighet: (varighet: number) => void;
@@ -72,12 +73,14 @@ interface Props {
 export const Samværskalkulator: React.FC<Props> = ({
     className,
     onSave,
+    onClose,
+    onDelete,
     samværsuker,
     oppdaterSamværsuke,
     oppdaterVarighet,
 }) => (
     <VStack className={className} gap="4">
-        <VarighetSelect oppdaterVarighet={oppdaterVarighet} onClose={onSave} />
+        <VarighetSelect oppdaterVarighet={oppdaterVarighet} onDelete={onDelete} />
         <HStack gap="4">
             {samværsuker.map((samværsuke, index) => (
                 <Uke
@@ -91,7 +94,7 @@ export const Samværskalkulator: React.FC<Props> = ({
                 />
             ))}
         </HStack>
-        <Oppsummering samværsuker={samværsuker} />
+        <Oppsummering samværsuker={samværsuker} onSave={onSave} onClose={onClose} />
     </VStack>
 );
 
@@ -146,8 +149,8 @@ const UkeDag: React.FC<{
 
 const VarighetSelect: React.FC<{
     oppdaterVarighet: (varighet: number) => void;
-    onClose?: () => void;
-}> = ({ oppdaterVarighet, onClose }) => (
+    onDelete: () => void;
+}> = ({ oppdaterVarighet, onDelete }) => (
     <SelectContainer justify="space-between">
         <StyledSelect
             label="Beregningslengde"
@@ -161,11 +164,24 @@ const VarighetSelect: React.FC<{
                 </option>
             ))}
         </StyledSelect>
-        {onClose && <IkonKnapp icon={<TrashIcon />} onClick={onClose} />}
+        {onDelete && (
+            <IkonKnapp
+                icon={<TrashIcon title="Slett" />}
+                variant="tertiary"
+                type="button"
+                onClick={onDelete}
+            >
+                <span>Slett</span>
+            </IkonKnapp>
+        )}
     </SelectContainer>
 );
 
-const Oppsummering: React.FC<{ samværsuker: Samværsuke[] }> = ({ samværsuker }) => {
+const Oppsummering: React.FC<{
+    samværsuker: Samværsuke[];
+    onSave: () => void;
+    onClose: () => void;
+}> = ({ samværsuker, onSave, onClose }) => {
     const summertSamvær = samværsuker
         .flatMap((samværsuke) =>
             Object.values(samværsuke).flatMap((samværsdag: Samværsdag) => samværsdag.andeler)
@@ -186,10 +202,20 @@ const Oppsummering: React.FC<{ samværsuker: Samværsuke[] }> = ({ samværsuker 
     const visningstekstProsentandel = `${Math.round(prosentandel * 1000) / 10}%`;
 
     return (
-        <OppsummeringContainer>
-            <Heading size="medium">Total:</Heading>
-            <BodyShort size="large">{visningstekstAntallDager}</BodyShort>
-            <BodyShort size="large">{visningstekstProsentandel}</BodyShort>
+        <OppsummeringContainer justify="space-between" align="baseline">
+            <HStack align="baseline" gap="4">
+                <Heading size="medium">Total:</Heading>
+                <BodyShort size="large">{visningstekstAntallDager}</BodyShort>
+                <BodyShort size="large">{visningstekstProsentandel}</BodyShort>
+            </HStack>
+            <HStack gap="4">
+                <Button variant="tertiary" onClick={onClose}>
+                    Avbryt
+                </Button>
+                <Button type="button" onClick={onSave}>
+                    Lagre
+                </Button>
+            </HStack>
         </OppsummeringContainer>
     );
 };
