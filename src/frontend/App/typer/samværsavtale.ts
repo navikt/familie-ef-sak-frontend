@@ -4,7 +4,7 @@ export interface Samværsavtale {
     uker: Samværsuke[];
 }
 
-interface Samværsuke {
+export interface Samværsuke {
     mandag: Samværsdag;
     tirsdag: Samværsdag;
     onsdag: Samværsdag;
@@ -14,11 +14,11 @@ interface Samværsuke {
     søndag: Samværsdag;
 }
 
-interface Samværsdag {
+export interface Samværsdag {
     andeler: Samværsandel[];
 }
 
-enum Samværsandel {
+export enum Samværsandel {
     KVELD_NATT = 'KVELD_NATT',
     MORGEN = 'MORGEN',
     BARNEHAGE_SKOLE = 'BARNEHAGE_SKOLE',

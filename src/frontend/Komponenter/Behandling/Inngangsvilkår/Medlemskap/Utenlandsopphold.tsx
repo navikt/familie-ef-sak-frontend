@@ -33,8 +33,8 @@ const ikon = VilkårInfoIkon.SØKNAD;
 const Utenlandsopphold: FC<Props> = ({ utenlandsopphold }) => (
     <VStack gap="4">
         <Informasjonsrad ikon={ikon} label={'Utenlandsopphold'} />
-        {utenlandsopphold.map((opphold) => (
-            <>
+        {utenlandsopphold.map((opphold, index) => (
+            <React.Fragment key={opphold.fraDato + index}>
                 <PeriodeStyling>
                     Periode {formaterNullableIsoDato(opphold.fraDato)} -{' '}
                     {formaterNullableIsoDato(opphold.tilDato)}
@@ -57,7 +57,7 @@ const Utenlandsopphold: FC<Props> = ({ utenlandsopphold }) => (
                     <Label size="small">Årsak</Label>
                     <BodyShort size="small">{opphold.årsak}</BodyShort>
                 </Grid>
-            </>
+            </React.Fragment>
         ))}
     </VStack>
 );

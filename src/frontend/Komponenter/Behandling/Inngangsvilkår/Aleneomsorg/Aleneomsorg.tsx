@@ -11,11 +11,6 @@ import { IBarnMedLøpendeStønad } from './typer';
 import DokumentasjonSendtInn from '../DokumentasjonSendtInn';
 import { VilkårpanelInnhold } from '../../Vilkårpanel/VilkårpanelInnhold';
 import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';
-import {
-    samværsandelTilTekst,
-    samværsandelTilVerdi,
-    Samværsavtale,
-} from '../../../../App/typer/samværsavtale';
 import { SamværskalkulatorAleneomsorg } from './SamværskalkulatorAleneomsorg';
 
 export const Aleneomsorg: React.FC<VilkårPropsAleneomsorg> = ({
@@ -33,11 +28,6 @@ export const Aleneomsorg: React.FC<VilkårPropsAleneomsorg> = ({
 
     const [barnMedLøpendeStønad, settBarnMedLøpendeStønad] =
         useState<Ressurs<IBarnMedLøpendeStønad>>(byggTomRessurs());
-    const [samværsavtaler, settSamværsavtaler] = useState<Samværsavtale[]>(lagredeSamværsavtaler);
-
-    console.log(settSamværsavtaler);
-    console.log(samværsandelTilTekst);
-    console.log(samværsandelTilVerdi);
 
     useEffect(() => {
         if (behandling.stønadstype === Stønadstype.BARNETILSYN) {
@@ -75,7 +65,7 @@ export const Aleneomsorg: React.FC<VilkårPropsAleneomsorg> = ({
                     indeks !== grunnlag.barnMedSamvær.length - 1 &&
                     grunnlag.barnMedSamvær.length > 1;
 
-                const samværsavtale = samværsavtaler.find(
+                const lagretSamværsavtale = lagredeSamværsavtaler.find(
                     (avtale) => avtale.behandlingBarnId === barn.barnId
                 );
 
@@ -132,8 +122,10 @@ export const Aleneomsorg: React.FC<VilkårPropsAleneomsorg> = ({
                             }}
                         </VilkårpanelInnhold>
                         <SamværskalkulatorAleneomsorg
-                            samværsavtale={samværsavtale}
+                            lagretSamværsavtale={lagretSamværsavtale}
                             skalViseBorderBottom={skalViseBorderBottom}
+                            behandlingBarnId={barn.barnId}
+                            behandlingId={behandling.id}
                         />
                     </React.Fragment>
                 );

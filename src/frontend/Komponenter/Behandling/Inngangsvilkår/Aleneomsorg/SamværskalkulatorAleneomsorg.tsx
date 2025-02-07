@@ -2,12 +2,17 @@ import React, { useState } from 'react';
 import { Button, HStack } from '@navikt/ds-react';
 import { CalculatorIcon } from '@navikt/aksel-icons';
 import styled from 'styled-components';
-import { SamværKalkulator } from '../../../../Felles/Kalkulator/SamværKalkulator';
+import { Samværskalkulator } from '../../../../Felles/Kalkulator/Samværskalkulator';
 import { AGray300, AGray50 } from '@navikt/ds-tokens/dist/tokens';
-import { Samværsavtale } from '../../../../App/typer/samværsavtale';
+import {
+    Samværsandel,
+    Samværsavtale,
+    Samværsdag,
+    Samværsuke,
+} from '../../../../App/typer/samværsavtale';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
 
-const Samværskalkulator = styled(SamværKalkulator)`
+const Kalkulator = styled(Samværskalkulator)`
     padding: 1rem;
     background-color: white;
     border: 1rem solid ${AGray50};
@@ -23,20 +28,58 @@ const Divider = styled.div`
 `;
 
 enum Visningsmodus {
-    REDIGERINGSMODUS_INGEN_PÅBEGYNT_AVTALE,
+    REDIGERINGSMODUS_INGEN_LAGRET_AVTALE,
     REDIGERINGSMODUS_HAR_PÅBEGYNT_AVTALE,
+    REDIGERINGSMODUS_HAR_LAGRET_AVTALE,
     VISNINGSMODUS_INGEN_LAGRET_AVTALE,
     VISNINGSMODUS_HAR_LAGRET_AVTALE,
 }
 
-const utledVisningsmodus = (
+const samværsdag: Samværsdag = {
+    andeler: [],
+};
+
+const samværsuke: Samværsuke = {
+    mandag: samværsdag,
+    tirsdag: samværsdag,
+    onsdag: samværsdag,
+    torsdag: samværsdag,
+    fredag: samværsdag,
+    lørdag: samværsdag,
+    søndag: samværsdag,
+};
+
+const initerSamværsuker = (antallUker: number): Samværsuke[] =>
+    new Array(antallUker).fill(samværsuke);
+
+const initierSamværsavtale = (behandlingId: string, behandlingBarnId: string): Samværsavtale => {
+    return {
+        behandlingId: behandlingId,
+        behandlingBarnId: behandlingBarnId,
+        uker: initerSamværsuker(2),
+    };
+};
+
+const utledInitiellSamværsavtale = (
+    lagretAvtale: Samværsavtale | undefined,
+    behandlingId: string,
+    behandlingBarnId: string
+) => {
+    if (lagretAvtale === undefined) {
+        return initierSamværsavtale(behandlingId, behandlingBarnId);
+    }
+
+    return lagretAvtale;
+};
+
+const utledInitiellVisningsmodus = (
     behandlingErRedigerbar: boolean,
     samværsavtale: Samværsavtale | undefined
 ) => {
     if (behandlingErRedigerbar) {
         return samværsavtale === undefined
-            ? Visningsmodus.REDIGERINGSMODUS_INGEN_PÅBEGYNT_AVTALE
-            : Visningsmodus.REDIGERINGSMODUS_HAR_PÅBEGYNT_AVTALE;
+            ? Visningsmodus.REDIGERINGSMODUS_INGEN_LAGRET_AVTALE
+            : Visningsmodus.REDIGERINGSMODUS_HAR_LAGRET_AVTALE;
     }
     return samværsavtale === undefined
         ? Visningsmodus.VISNINGSMODUS_INGEN_LAGRET_AVTALE
@@ -44,22 +87,65 @@ const utledVisningsmodus = (
 };
 
 interface Props {
-    samværsavtale: Samværsavtale | undefined;
-    oppdaterSamværsavtale: () => void;
+    lagretSamværsavtale: Samværsavtale | undefined;
     skalViseBorderBottom: boolean;
+    behandlingBarnId: string;
+    behandlingId: string;
 }
 
 export const SamværskalkulatorAleneomsorg: React.FC<Props> = ({
-    samværsavtale,
+    lagretSamværsavtale,
     skalViseBorderBottom,
+    behandlingBarnId,
+    behandlingId,
 }) => {
     const { behandlingErRedigerbar } = useBehandling();
 
+    const [samværsavtale, settSamværsavtale] = useState<Samværsavtale>(
+        utledInitiellSamværsavtale(lagretSamværsavtale, behandlingId, behandlingBarnId)
+    );
     const [visningsmodus, settVisningsmodus] = useState<Visningsmodus>(
-        utledVisningsmodus(behandlingErRedigerbar, samværsavtale)
+        utledInitiellVisningsmodus(behandlingErRedigerbar, lagretSamværsavtale)
     );
 
-    if (visningsmodus === Visningsmodus.REDIGERINGSMODUS_INGEN_PÅBEGYNT_AVTALE) {
+    const oppdaterSamværsuke = (
+        ukeIndex: number,
+        ukedag: string,
+        samværsandeler: Samværsandel[]
+    ) => {
+        settSamværsavtale((prevState) => ({
+            ...prevState,
+            uker: [
+                ...prevState.uker.slice(0, ukeIndex),
+                { ...prevState.uker[ukeIndex], [ukedag]: { andeler: samværsandeler } },
+                ...prevState.uker.slice(ukeIndex + 1),
+            ],
+        }));
+    };
+
+    const oppdaterVarighetPåSamværsavtale = (nyVarighet: number) => {
+        const nåværendeVarighet = samværsavtale.uker.length;
+
+        if (nyVarighet > nåværendeVarighet) {
+            settSamværsavtale((prevState) => ({
+                ...prevState,
+                uker: [
+                    ...prevState.uker.slice(0, nåværendeVarighet),
+                    ...initerSamværsuker(nyVarighet - nåværendeVarighet),
+                ],
+            }));
+        } else {
+            settSamværsavtale((prevState) => ({
+                ...prevState,
+                uker: prevState.uker.slice(0, nyVarighet),
+            }));
+        }
+    };
+
+    if (
+        visningsmodus === Visningsmodus.REDIGERINGSMODUS_INGEN_LAGRET_AVTALE ||
+        visningsmodus === Visningsmodus.REDIGERINGSMODUS_HAR_LAGRET_AVTALE
+    ) {
         return (
             <StyledHStack $borderBottom={skalViseBorderBottom} justify="end" margin="4" padding="4">
                 <Button
@@ -78,10 +164,23 @@ export const SamværskalkulatorAleneomsorg: React.FC<Props> = ({
     if (visningsmodus === Visningsmodus.REDIGERINGSMODUS_HAR_PÅBEGYNT_AVTALE) {
         return (
             <>
-                <Samværskalkulator
-                    onClose={() =>
-                        settVisningsmodus(Visningsmodus.REDIGERINGSMODUS_HAR_PÅBEGYNT_AVTALE)
+                <Kalkulator
+                    samværsuker={samværsavtale?.uker}
+                    onSave={() =>
+                        settVisningsmodus(Visningsmodus.REDIGERINGSMODUS_HAR_LAGRET_AVTALE)
                     }
+                    onDelete={() =>
+                        settVisningsmodus(Visningsmodus.REDIGERINGSMODUS_INGEN_LAGRET_AVTALE)
+                    }
+                    onClose={() =>
+                        settVisningsmodus(
+                            samværsavtale === undefined
+                                ? Visningsmodus.REDIGERINGSMODUS_INGEN_LAGRET_AVTALE
+                                : Visningsmodus.REDIGERINGSMODUS_HAR_LAGRET_AVTALE
+                        )
+                    }
+                    oppdaterSamværsuke={oppdaterSamværsuke}
+                    oppdaterVarighet={oppdaterVarighetPåSamværsavtale}
                 />
                 {skalViseBorderBottom && <Divider />}
             </>
