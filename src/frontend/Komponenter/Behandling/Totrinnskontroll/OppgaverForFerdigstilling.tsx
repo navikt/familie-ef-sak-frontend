@@ -7,6 +7,8 @@ import styled from 'styled-components';
 import { ALimegreen100 } from '@navikt/ds-tokens/dist/tokens';
 import { useHentOppgaverForFerdigstilling } from '../../../App/hooks/useHentOppgaverForFerdigstilling';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
+import { Ressurs } from '../../../App/typer/ressurs';
+import { IOppgaverResponse } from '../../../App/hooks/useHentOppgaver';
 
 const StyledTableDataCell = styled(Table.DataCell)`
     padding: 12px 8px 12px 0;
@@ -30,6 +32,10 @@ export const OppgaverForFerdigstilling: FC<{
     useEffect(() => {
         hentOppgaverForFerdigstilling(behandlingId);
     }, [behandlingId, hentOppgaverForFerdigstilling]);
+
+    if (skalViseOppgaverForFerdigstilling(oppgaverForFerdigstilling)) {
+        return;
+    }
 
     return (
         <DataViewer response={{ oppgaverForFerdigstilling }}>
@@ -121,5 +127,14 @@ export const OppgaverForFerdigstilling: FC<{
                 );
             }}
         </DataViewer>
+    );
+};
+
+const skalViseOppgaverForFerdigstilling = (
+    oppgaverForFerdigstilling: Ressurs<IOppgaverResponse>
+) => {
+    return !(
+        oppgaverForFerdigstilling.status === 'SUKSESS' &&
+        oppgaverForFerdigstilling.data.antallTreffTotalt > 0
     );
 };
