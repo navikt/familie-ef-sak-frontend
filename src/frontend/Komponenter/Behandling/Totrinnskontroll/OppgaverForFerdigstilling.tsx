@@ -62,6 +62,7 @@ export const OppgaverForFerdigstilling: FC<{
                                                 id,
                                                 oppgavetype,
                                                 behandlingstema,
+                                                behandlingstype,
                                                 tilordnetRessurs,
                                                 beskrivelse,
                                                 fristFerdigstillelse,
@@ -95,10 +96,11 @@ export const OppgaverForFerdigstilling: FC<{
                                                             oppgaveTypeTilTekst[oppgavetype]}
                                                     </Table.DataCell>
                                                     <Table.DataCell>
-                                                        {behandlingstema &&
-                                                            behandlingstemaTilTekst[
-                                                                behandlingstema
-                                                            ]}
+                                                        {behandlingstema
+                                                            ? behandlingstemaTilTekst[
+                                                                  behandlingstema
+                                                              ]
+                                                            : behandlingstype}
                                                     </Table.DataCell>
                                                     <Table.DataCell>
                                                         {tilordnetRessurs ?? '-'}

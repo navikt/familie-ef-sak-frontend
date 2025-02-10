@@ -5,7 +5,6 @@ import { formaterIsoDato } from '../../../App/utils/formatter';
 import { oppgaveTypeTilTekst } from '../../Oppgavebenk/typer/oppgavetype';
 import styled from 'styled-components';
 import { IOppgaverResponse } from '../../../App/hooks/useHentOppgaver';
-// import { behandlingstypeTilTekst } from '../../../App/typer/behandlingstype';
 
 const StyledTableDataCell = styled(Table.DataCell)`
     padding: 12px 8px 12px 0;
@@ -48,7 +47,7 @@ export const TabellFerdigstilleOppgaver: FC<{
                                 id,
                                 oppgavetype,
                                 behandlingstema,
-                                // behandlingstype,
+                                behandlingstype,
                                 tilordnetRessurs,
                                 beskrivelse,
                                 fristFerdigstillelse,
@@ -80,10 +79,9 @@ export const TabellFerdigstilleOppgaver: FC<{
                                         {oppgavetype && oppgaveTypeTilTekst[oppgavetype]}
                                     </Table.DataCell>
                                     <Table.DataCell>
-                                        {behandlingstema &&
-                                            behandlingstemaTilTekst[behandlingstema]}
-                                        {/* {behandlingstype &&
-                                            behandlingstypeTilTekst[behandlingstype]} */}
+                                        {behandlingstema
+                                            ? behandlingstemaTilTekst[behandlingstema]
+                                            : behandlingstype}
                                     </Table.DataCell>
                                     <Table.DataCell>{tilordnetRessurs ?? '-'}</Table.DataCell>
                                     <Table.DataCell>
