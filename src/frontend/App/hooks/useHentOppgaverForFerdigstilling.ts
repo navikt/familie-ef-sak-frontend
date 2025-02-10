@@ -3,23 +3,26 @@ import { useApp } from '../context/AppContext';
 import { byggTomRessurs, byggHenterRessurs, Ressurs } from '../typer/ressurs';
 import { IOppgaverResponse } from './useHentOppgaver';
 
-export const useHentFerdigestilteFremleggsoppgaver = () => {
+export const useHentOppgaverForFerdigstilling = () => {
     const { axiosRequest } = useApp();
-    const [ferdigstilteFremleggsoppgaver, settFerdigstilteFremleggsoppgaver] =
+    const [oppgaverForFerdigstilling, settOppgaverForFerdigstilling] =
         useState<Ressurs<IOppgaverResponse>>(byggTomRessurs());
 
-    const hentFerdigstilteFremleggsoppgaver = useCallback(
+    const hentOppgaverForFerdigstilling = useCallback(
         (behandlingId: string) => {
-            settFerdigstilteFremleggsoppgaver(byggHenterRessurs());
+            settOppgaverForFerdigstilling(byggHenterRessurs());
             axiosRequest<IOppgaverResponse, void>({
                 method: 'GET',
-                url: `/familie-ef-sak/api/oppgave/hent-ferdigstilte-fremleggsoppgaver/${behandlingId}`,
+                url: `/familie-ef-sak/api/oppgave/oppgaver-for-ferdigstilling/${behandlingId}`,
             }).then((res: Ressurs<IOppgaverResponse>) => {
-                settFerdigstilteFremleggsoppgaver(res);
+                settOppgaverForFerdigstilling(res);
             });
         },
         [axiosRequest]
     );
 
-    return { hentFerdigstilteFremleggsoppgaver, ferdigstilteFremleggsoppgaver };
+    return {
+        hentOppgaverForFerdigstilling,
+        oppgaverForFerdigstilling,
+    };
 };

@@ -101,7 +101,6 @@ export const ModalOpprettOgFerdigstilleOppgaver: FC<{
                                         }
                                     />
                                 )}
-                                {JSON.stringify(oppgaverSomSkalAutomatiskFerdigstilles)}
                             </VStack>
                         </Modal.Body>
                         <Modal.Footer>

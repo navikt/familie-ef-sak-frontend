@@ -5,7 +5,7 @@ import { formaterIsoDato } from '../../../App/utils/formatter';
 import { oppgaveTypeTilTekst } from '../../Oppgavebenk/typer/oppgavetype';
 import styled from 'styled-components';
 import { ALimegreen100 } from '@navikt/ds-tokens/dist/tokens';
-import { useHentFerdigestilteFremleggsoppgaver } from '../../../App/hooks/useHentFerdigstilteFremleggsoppgaver';
+import { useHentOppgaverForFerdigstilling } from '../../../App/hooks/useHentOppgaverForFerdigstilling';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 
 const StyledTableDataCell = styled(Table.DataCell)`
@@ -24,16 +24,16 @@ const TableContainer = styled.div`
 export const OppgaverForFerdigstilling: FC<{
     behandlingId: string;
 }> = ({ behandlingId }) => {
-    const { hentFerdigstilteFremleggsoppgaver, ferdigstilteFremleggsoppgaver } =
-        useHentFerdigestilteFremleggsoppgaver();
+    const { hentOppgaverForFerdigstilling, oppgaverForFerdigstilling } =
+        useHentOppgaverForFerdigstilling();
 
     useEffect(() => {
-        hentFerdigstilteFremleggsoppgaver(behandlingId);
-    }, [behandlingId, hentFerdigstilteFremleggsoppgaver]);
+        hentOppgaverForFerdigstilling(behandlingId);
+    }, [behandlingId, hentOppgaverForFerdigstilling]);
 
     return (
-        <DataViewer response={{ ferdigstilteFremleggsoppgaver }}>
-            {({ ferdigstilteFremleggsoppgaver }) => {
+        <DataViewer response={{ oppgaverForFerdigstilling }}>
+            {({ oppgaverForFerdigstilling }) => {
                 return (
                     <>
                         <Heading size="small">
@@ -56,7 +56,7 @@ export const OppgaverForFerdigstilling: FC<{
                                     </Table.Row>
                                 </Table.Header>
                                 <Table.Body>
-                                    {ferdigstilteFremleggsoppgaver.oppgaver.map(
+                                    {oppgaverForFerdigstilling.oppgaver.map(
                                         (
                                             {
                                                 id,
