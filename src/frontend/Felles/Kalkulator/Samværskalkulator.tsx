@@ -53,6 +53,10 @@ const CheckboxGruppe = styled(CheckboxGroup)`
     width: 2.5rem;
 `;
 
+const LegendKnapp = styled(Button)`
+    padding: 0;
+`;
+
 const IkonKnapp = styled(Button)`
     width: fit-content;
     height: fit-content;
@@ -141,7 +145,7 @@ const Uke: React.FC<{
         )}
         {Object.entries(samværsuke).map(([ukedag, samvær]: [string, Samværsdag], index) => {
             return (
-                <UkeDag
+                <Ukedag
                     key={ukedag + index}
                     ukedag={ukedag}
                     oppdaterSamværsandeler={(samværsandeler: Samværsandel[]) =>
@@ -154,24 +158,37 @@ const Uke: React.FC<{
     </UkeContainer>
 );
 
-const UkeDag: React.FC<{
+const Ukedag: React.FC<{
     ukedag: string;
     oppdaterSamværsandeler: (samværsandeler: Samværsandel[]) => void;
     samværsandeler: Samværsandel[];
-}> = ({ ukedag, oppdaterSamværsandeler, samværsandeler }) => (
-    <VStack>
-        <CheckboxGruppe
-            legend={formaterStrengMedStorForbokstav(ukedag.slice(0, 3))}
-            onChange={oppdaterSamværsandeler}
-            value={samværsandeler}
-        >
-            <Checkbox value={Samværsandel.KVELD_NATT}>{''}</Checkbox>
-            <Checkbox value={Samværsandel.MORGEN}>{''}</Checkbox>
-            <Checkbox value={Samværsandel.BARNEHAGE_SKOLE}>{''}</Checkbox>
-            <Checkbox value={Samværsandel.ETTERMIDDAG}>{''}</Checkbox>
-        </CheckboxGruppe>
-    </VStack>
-);
+}> = ({ ukedag, oppdaterSamværsandeler, samværsandeler }) => {
+    const alleSamværsandeler = Object.values(Samværsandel);
+    const samværsandelerEllerTomListe =
+        samværsandeler.length === alleSamværsandeler.length ? [] : alleSamværsandeler;
+
+    return (
+        <VStack>
+            <CheckboxGruppe
+                legend={
+                    <LegendKnapp
+                        variant="tertiary"
+                        onClick={() => oppdaterSamværsandeler(samværsandelerEllerTomListe)}
+                    >
+                        {formaterStrengMedStorForbokstav(ukedag.slice(0, 3))}
+                    </LegendKnapp>
+                }
+                onChange={oppdaterSamværsandeler}
+                value={samværsandeler}
+            >
+                <Checkbox value={Samværsandel.KVELD_NATT}>{''}</Checkbox>
+                <Checkbox value={Samværsandel.MORGEN}>{''}</Checkbox>
+                <Checkbox value={Samværsandel.BARNEHAGE_SKOLE}>{''}</Checkbox>
+                <Checkbox value={Samværsandel.ETTERMIDDAG}>{''}</Checkbox>
+            </CheckboxGruppe>
+        </VStack>
+    );
+};
 
 const VarighetSelect: React.FC<{
     oppdaterVarighet: (varighet: number) => void;
