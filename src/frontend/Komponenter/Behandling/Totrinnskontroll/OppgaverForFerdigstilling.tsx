@@ -7,8 +7,6 @@ import styled from 'styled-components';
 import { ALimegreen100 } from '@navikt/ds-tokens/dist/tokens';
 import { useHentFerdigestilteFremleggsoppgaver } from '../../../App/hooks/useHentFerdigstilteFremleggsoppgaver';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
-import { IOppgaverResponse } from '../../../App/hooks/useHentOppgaver';
-import { Ressurs } from '../../../App/typer/ressurs';
 
 const StyledTableDataCell = styled(Table.DataCell)`
     padding: 12px 8px 12px 0;
@@ -25,9 +23,7 @@ const TableContainer = styled.div`
 
 export const OppgaverForFerdigstilling: FC<{
     behandlingId: string;
-    fremleggsoppgaver: Ressurs<IOppgaverResponse>;
-    fremleggsoppgaveIderSomSkalFerdigstilles: number[];
-}> = ({ behandlingId, fremleggsoppgaver, fremleggsoppgaveIderSomSkalFerdigstilles }) => {
+}> = ({ behandlingId }) => {
     const { hentFerdigstilteFremleggsoppgaver, ferdigstilteFremleggsoppgaver } =
         useHentFerdigestilteFremleggsoppgaver();
 
@@ -35,22 +31,9 @@ export const OppgaverForFerdigstilling: FC<{
         hentFerdigstilteFremleggsoppgaver(behandlingId);
     }, [behandlingId, hentFerdigstilteFremleggsoppgaver]);
 
-    if (!fremleggsoppgaver || fremleggsoppgaveIderSomSkalFerdigstilles.length === 0) {
-        return;
-    }
-
     return (
-        <DataViewer response={{ ferdigstilteFremleggsoppgaver, fremleggsoppgaver }}>
-            {({ ferdigstilteFremleggsoppgaver, fremleggsoppgaver }) => {
-                const fremleggsOppgaverSomSkalFerdigstilles = fremleggsoppgaver?.oppgaver?.filter(
-                    ({ id }) => fremleggsoppgaveIderSomSkalFerdigstilles?.includes(id)
-                );
-
-                const oppgaver =
-                    ferdigstilteFremleggsoppgaver.oppgaver.length > 0
-                        ? ferdigstilteFremleggsoppgaver.oppgaver
-                        : fremleggsOppgaverSomSkalFerdigstilles;
-
+        <DataViewer response={{ ferdigstilteFremleggsoppgaver }}>
+            {({ ferdigstilteFremleggsoppgaver }) => {
                 return (
                     <>
                         <Heading size="small">
@@ -68,11 +51,12 @@ export const OppgaverForFerdigstilling: FC<{
                                             Saksbehandler
                                         </Table.HeaderCell>
                                         <Table.HeaderCell scope="col">Frist</Table.HeaderCell>
+                                        <Table.HeaderCell scope="col">Status</Table.HeaderCell>
                                         <Table.HeaderCell />
                                     </Table.Row>
                                 </Table.Header>
                                 <Table.Body>
-                                    {oppgaver.map(
+                                    {ferdigstilteFremleggsoppgaver.oppgaver.map(
                                         (
                                             {
                                                 id,
@@ -81,6 +65,7 @@ export const OppgaverForFerdigstilling: FC<{
                                                 tilordnetRessurs,
                                                 beskrivelse,
                                                 fristFerdigstillelse,
+                                                status,
                                             },
                                             i
                                         ) => {
@@ -122,6 +107,7 @@ export const OppgaverForFerdigstilling: FC<{
                                                         {fristFerdigstillelse &&
                                                             formaterIsoDato(fristFerdigstillelse)}
                                                     </Table.DataCell>
+                                                    <Table.DataCell>{status}</Table.DataCell>
                                                 </Table.ExpandableRow>
                                             );
                                         }

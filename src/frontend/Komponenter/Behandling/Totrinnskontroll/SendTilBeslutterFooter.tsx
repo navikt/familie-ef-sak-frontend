@@ -177,7 +177,7 @@ const SendTilBeslutterFooter: React.FC<{
                     )}
                     <FlexBox>
                         {/* TODO: Dette skal fjernes etter at ny modal er togglet på for alle */}
-                        {oppgavetyperSomKanOpprettes && (
+                        {oppgavetyperSomKanOpprettes && !toggleVisKnappForModal && (
                             <OppgaverForOpprettelse
                                 oppgavetyperSomKanOpprettes={oppgavetyperSomKanOpprettes}
                                 oppgavetyperSomSkalOpprettes={oppgavetyperSomSkalOpprettes}

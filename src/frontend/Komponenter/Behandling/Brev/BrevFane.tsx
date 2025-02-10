@@ -16,7 +16,6 @@ import { FremleggoppgaverSomOpprettes } from './FremleggoppgaverSomOpprettes';
 import { VStack } from '@navikt/ds-react';
 import { useHentOppgaverForOpprettelse } from '../../../App/hooks/useHentOppgaverForOpprettelse';
 import { OppgaverForFerdigstilling } from '../Totrinnskontroll/OppgaverForFerdigstilling';
-import { useHentFremleggsoppgaverForOvergangsstønad } from '../../../App/hooks/useHentFremleggsoppgaverForOvergangsstønad';
 import useHentOppgaveIderForFerdigstilling from '../../../App/hooks/useHentOppgaveIderForFerdigstilling';
 
 interface Props {
@@ -31,8 +30,6 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
     const [kanSendesTilBeslutter, settKanSendesTilBeslutter] = useState<boolean>(false);
     const { oppgaverForOpprettelse, hentOppgaverForOpprettelseCallback } =
         useHentOppgaverForOpprettelse(behandling.id);
-    const { hentFremleggsoppgaver, fremleggsoppgaver } =
-        useHentFremleggsoppgaverForOvergangsstønad();
     const { hentOppgaveIderForFerdigstillingCallback, oppgaveIderForFerdigstilling } =
         useHentOppgaveIderForFerdigstilling(behandling.id);
 
@@ -69,10 +66,6 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
         // eslint-disable-next-line
     }, [behandlingErRedigerbar, totrinnskontroll]);
 
-    useEffect(() => {
-        hentFremleggsoppgaver(behandling.id);
-    }, [behandling.id, hentFremleggsoppgaver]);
-
     return (
         <DataViewer
             response={{
@@ -103,13 +96,7 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
                                                 oppgaverForOpprettelse.oppgavetyperSomSkalOpprettes
                                             }
                                         />
-                                        <OppgaverForFerdigstilling
-                                            fremleggsoppgaver={fremleggsoppgaver}
-                                            fremleggsoppgaveIderSomSkalFerdigstilles={
-                                                oppgaveIderForFerdigstilling.oppgaveIder
-                                            }
-                                            behandlingId={behandling.id}
-                                        />
+                                        <OppgaverForFerdigstilling behandlingId={behandling.id} />
                                     </>
                                 )}
                                 {!behandlingErRedigerbar && (
