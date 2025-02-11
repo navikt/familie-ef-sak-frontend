@@ -174,73 +174,71 @@ export const SamværskalkulatorAleneomsorg: React.FC<Props> = ({
         hentBehandling.rerun();
     };
 
-    if (visningsmodus === Visningsmodus.REDIGERINGSMODUS_INGEN_LAGRET_AVTALE) {
-        return (
-            <StyledHStack $borderBottom={skalViseBorderBottom} justify="end" margin="4" padding="4">
-                <Button
-                    type="button"
-                    size="small"
-                    onClick={() =>
-                        settVisningsmodus(Visningsmodus.REDIGERINGSMODUS_HAR_PÅBEGYNT_AVTALE)
-                    }
+    const [samværsandelerDagVisning, samværsandelProsentVisning] = kalkulerSamværsandeler(
+        samværsavtale.uker
+    );
+
+    switch (visningsmodus) {
+        case Visningsmodus.REDIGERINGSMODUS_INGEN_LAGRET_AVTALE:
+            return (
+                <StyledHStack
+                    $borderBottom={skalViseBorderBottom}
+                    justify="end"
+                    margin="4"
+                    padding="4"
                 >
-                    <CalculatorIcon aria-hidden fontSize="1.5rem" />
-                </Button>
-            </StyledHStack>
-        );
-    }
-
-    if (visningsmodus === Visningsmodus.REDIGERINGSMODUS_HAR_LAGRET_AVTALE) {
-        const [samværsandelerDagVisning, samværsandelProsentVisning] = kalkulerSamværsandeler(
-            samværsavtale.uker
-        );
-
-        return (
-            <>
-                <OppsummeringContainer justify="space-between" align="baseline">
-                    <HStack align="baseline" gap="4">
-                        <Heading size="medium">Samværsandel:</Heading>
-                        <BodyShort size="large">{samværsandelerDagVisning}</BodyShort>
-                        <BodyShort size="large">{samværsandelProsentVisning}</BodyShort>
-                    </HStack>
-                    <HStack gap="4">
-                        <Button
-                            size="medium"
-                            variant="tertiary"
-                            icon={<ChevronDownIcon />}
-                            onClick={() =>
-                                settVisningsmodus(
-                                    Visningsmodus.REDIGERINGSMODUS_HAR_PÅBEGYNT_AVTALE
-                                )
-                            }
-                        />
-                    </HStack>
-                </OppsummeringContainer>
-                {skalViseBorderBottom && <Divider />}
-            </>
-        );
-    }
-
-    if (
-        visningsmodus === Visningsmodus.REDIGERINGSMODUS_HAR_PÅBEGYNT_AVTALE ||
-        visningsmodus === Visningsmodus.VISNINGSMODUS_HAR_LAGRET_AVTALE
-    ) {
-        return (
-            <>
-                <Kalkulator
-                    samværsuker={samværsavtale?.uker}
-                    onSave={() => håndterLagreSamværsavtale()}
-                    onDelete={() => håndterSlettSamværsavtale()}
-                    onClose={() => håndterLukkKalkulator()}
-                    oppdaterSamværsuke={oppdaterSamværsuke}
-                    oppdaterVarighet={oppdaterVarighetPåSamværsavtale}
-                />
-                {skalViseBorderBottom && <Divider />}
-            </>
-        );
-    }
-
-    if (visningsmodus === Visningsmodus.VISNINGSMODUS_INGEN_LAGRET_AVTALE) {
-        return <></>;
+                    <Button
+                        type="button"
+                        size="small"
+                        onClick={() =>
+                            settVisningsmodus(Visningsmodus.REDIGERINGSMODUS_HAR_PÅBEGYNT_AVTALE)
+                        }
+                    >
+                        <CalculatorIcon aria-hidden fontSize="1.5rem" />
+                    </Button>
+                </StyledHStack>
+            );
+        case Visningsmodus.REDIGERINGSMODUS_HAR_LAGRET_AVTALE:
+            return (
+                <>
+                    <OppsummeringContainer justify="space-between" align="baseline">
+                        <HStack align="baseline" gap="4">
+                            <Heading size="medium">Samværsandel:</Heading>
+                            <BodyShort size="large">{samværsandelerDagVisning}</BodyShort>
+                            <BodyShort size="large">{samværsandelProsentVisning}</BodyShort>
+                        </HStack>
+                        <HStack gap="4">
+                            <Button
+                                size="medium"
+                                variant="tertiary"
+                                icon={<ChevronDownIcon />}
+                                onClick={() =>
+                                    settVisningsmodus(
+                                        Visningsmodus.REDIGERINGSMODUS_HAR_PÅBEGYNT_AVTALE
+                                    )
+                                }
+                            />
+                        </HStack>
+                    </OppsummeringContainer>
+                    {skalViseBorderBottom && <Divider />}
+                </>
+            );
+        case Visningsmodus.REDIGERINGSMODUS_HAR_PÅBEGYNT_AVTALE:
+        case Visningsmodus.VISNINGSMODUS_HAR_LAGRET_AVTALE:
+            return (
+                <>
+                    <Kalkulator
+                        samværsuker={samværsavtale?.uker}
+                        onSave={() => håndterLagreSamværsavtale()}
+                        onDelete={() => håndterSlettSamværsavtale()}
+                        onClose={() => håndterLukkKalkulator()}
+                        oppdaterSamværsuke={oppdaterSamværsuke}
+                        oppdaterVarighet={oppdaterVarighetPåSamværsavtale}
+                    />
+                    {skalViseBorderBottom && <Divider />}
+                </>
+            );
+        case Visningsmodus.VISNINGSMODUS_INGEN_LAGRET_AVTALE:
+            return <></>;
     }
 };
