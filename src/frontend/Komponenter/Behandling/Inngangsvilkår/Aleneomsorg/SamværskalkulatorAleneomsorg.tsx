@@ -171,6 +171,9 @@ export const SamværskalkulatorAleneomsorg: React.FC<Props> = ({
     const håndterSlettSamværsavtale = () => {
         slettSamværsavtale(behandlingId, behandlingBarnId);
         settVisningsmodus(Visningsmodus.REDIGERINGSMODUS_INGEN_LAGRET_AVTALE);
+        settSamværsavtale(
+            utledInitiellSamværsavtale(lagretSamværsavtale, behandlingId, behandlingBarnId)
+        );
         hentBehandling.rerun();
     };
 
