@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { BodyShort, Button, HStack, Label } from '@navikt/ds-react';
+import React, { ChangeEvent, useState } from 'react';
+import { BodyShort, Button, Dropdown, HStack, Label, Select } from '@navikt/ds-react';
 import { CalculatorIcon, ChevronDownIcon } from '@navikt/aksel-icons';
 import styled from 'styled-components';
 import {
@@ -14,6 +14,8 @@ import {
     Samværsuke,
 } from '../../../../App/typer/samværsavtale';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
+import { IBarnMedSamvær } from './typer';
+import { utledNavnOgAlderForAleneomsorg } from './utils';
 
 const Kalkulator = styled(Samværskalkulator)`
     padding: 1rem;
@@ -34,6 +36,15 @@ const OppsummeringContainer = styled(HStack)`
     padding-left: 1rem;
     background: ${ASurfaceDefault};
     border: 1rem solid ${AGray50};
+`;
+
+const DropdownMenu = styled(Dropdown.Menu)`
+    padding-top: 1rem;
+    width: max-content;
+`;
+
+const BehandlingBarnSelect = styled(Select)`
+    width: max-content;
 `;
 
 enum Visningsmodus {
@@ -96,30 +107,48 @@ const utledInitiellVisningsmodus = (
 };
 
 interface Props {
-    lagretSamværsavtale: Samværsavtale | undefined;
-    skalViseBorderBottom: boolean;
-    behandlingBarnId: string;
+    gjeldendeBehandlingBarnId: string;
     behandlingId: string;
+    lagredeSamværsavtaler: Samværsavtale[];
     lagreSamværsavtale: (avtale: Samværsavtale) => void;
     slettSamværsavtale: (behandlingId: string, behandlingBarnId: string) => void;
+    alleBehandlingBarn: IBarnMedSamvær[];
+    skalViseBorderBottom: boolean;
 }
 
 export const SamværskalkulatorAleneomsorg: React.FC<Props> = ({
-    lagretSamværsavtale,
-    skalViseBorderBottom,
-    behandlingBarnId,
+    gjeldendeBehandlingBarnId,
     behandlingId,
+    lagredeSamværsavtaler,
     lagreSamværsavtale,
     slettSamværsavtale,
+    alleBehandlingBarn,
+    skalViseBorderBottom,
 }) => {
-    const { behandlingErRedigerbar, hentBehandling } = useBehandling();
+    const lagretSamværsavtale = lagredeSamværsavtaler.find(
+        (avtale) => avtale.behandlingBarnId === gjeldendeBehandlingBarnId
+    );
+
+    const { behandlingErRedigerbar } = useBehandling();
 
     const [samværsavtale, settSamværsavtale] = useState<Samværsavtale>(
-        utledInitiellSamværsavtale(lagretSamværsavtale, behandlingId, behandlingBarnId)
+        utledInitiellSamværsavtale(lagretSamværsavtale, behandlingId, gjeldendeBehandlingBarnId)
     );
     const [visningsmodus, settVisningsmodus] = useState<Visningsmodus>(
         utledInitiellVisningsmodus(behandlingErRedigerbar, lagretSamværsavtale)
     );
+    const [erDropdownÅpen, settErDropdownÅpen] = useState<boolean>(false);
+    const [samværsavtaleMal, settSamværsavtaleMal] = useState<Samværsavtale>();
+
+    const [samværsandelerDagVisning, samværsandelProsentVisning] = kalkulerSamværsandeler(
+        samværsavtale.uker
+    );
+
+    const alleAndreLagredeSamværsavtaler = lagredeSamværsavtaler.filter(
+        (avtale) => avtale.behandlingBarnId !== gjeldendeBehandlingBarnId
+    );
+
+    const kanKopiereSamværsavtale = alleAndreLagredeSamværsavtaler.length > 0;
 
     const oppdaterSamværsuke = (
         ukeIndex: number,
@@ -133,6 +162,13 @@ export const SamværskalkulatorAleneomsorg: React.FC<Props> = ({
                 { ...prevState.uker[ukeIndex], [ukedag]: { andeler: samværsandeler } },
                 ...prevState.uker.slice(ukeIndex + 1),
             ],
+        }));
+    };
+
+    const oppdaterSamværsuker = (samværsuker: Samværsuke[]) => {
+        settSamværsavtale((prevState) => ({
+            ...prevState,
+            uker: samværsuker,
         }));
     };
 
@@ -155,31 +191,33 @@ export const SamværskalkulatorAleneomsorg: React.FC<Props> = ({
         }
     };
 
+    const håndterÅpneDropdown = () => {
+        if (kanKopiereSamværsavtale) {
+            settErDropdownÅpen((prevState) => !prevState);
+        } else {
+            settVisningsmodus(Visningsmodus.REDIGERINGSMODUS_HAR_PÅBEGYNT_AVTALE);
+        }
+    };
+
     const håndterLukkKalkulator = () => {
         settVisningsmodus(utledInitiellVisningsmodus(behandlingErRedigerbar, lagretSamværsavtale));
         settSamværsavtale(
-            utledInitiellSamværsavtale(lagretSamværsavtale, behandlingId, behandlingBarnId)
+            utledInitiellSamværsavtale(lagretSamværsavtale, behandlingId, gjeldendeBehandlingBarnId)
         );
     };
 
     const håndterLagreSamværsavtale = () => {
         lagreSamværsavtale(samværsavtale);
         settVisningsmodus(Visningsmodus.REDIGERINGSMODUS_HAR_LAGRET_AVTALE);
-        hentBehandling.rerun();
     };
 
     const håndterSlettSamværsavtale = () => {
-        slettSamværsavtale(behandlingId, behandlingBarnId);
+        slettSamværsavtale(behandlingId, gjeldendeBehandlingBarnId);
         settVisningsmodus(Visningsmodus.REDIGERINGSMODUS_INGEN_LAGRET_AVTALE);
         settSamværsavtale(
-            utledInitiellSamværsavtale(lagretSamværsavtale, behandlingId, behandlingBarnId)
+            utledInitiellSamværsavtale(undefined, behandlingId, gjeldendeBehandlingBarnId)
         );
-        hentBehandling.rerun();
     };
-
-    const [samværsandelerDagVisning, samværsandelProsentVisning] = kalkulerSamværsandeler(
-        samværsavtale.uker
-    );
 
     switch (visningsmodus) {
         case Visningsmodus.REDIGERINGSMODUS_INGEN_LAGRET_AVTALE:
@@ -190,15 +228,39 @@ export const SamværskalkulatorAleneomsorg: React.FC<Props> = ({
                     margin="4"
                     padding="4"
                 >
-                    <Button
-                        type="button"
-                        size="small"
-                        onClick={() =>
-                            settVisningsmodus(Visningsmodus.REDIGERINGSMODUS_HAR_PÅBEGYNT_AVTALE)
-                        }
-                    >
-                        <CalculatorIcon aria-hidden fontSize="1.5rem" />
-                    </Button>
+                    <Dropdown open={erDropdownÅpen} onOpenChange={håndterÅpneDropdown}>
+                        <Button type="button" as={Dropdown.Toggle} size="small">
+                            <CalculatorIcon aria-hidden fontSize="1.5rem" />
+                        </Button>
+                        <DropdownMenu>
+                            <HStack gap="8" justify="space-between" align="end">
+                                <SamværsavtaleSelect
+                                    samværsavtaler={alleAndreLagredeSamværsavtaler}
+                                    behandlingBarn={alleBehandlingBarn}
+                                    settSamværsavtaleMal={settSamværsavtaleMal}
+                                />
+                                <div>
+                                    <Button
+                                        type="button"
+                                        variant="secondary"
+                                        size="small"
+                                        onClick={() => {
+                                            settErDropdownÅpen((prevState) => !prevState);
+                                            settVisningsmodus(
+                                                Visningsmodus.REDIGERINGSMODUS_HAR_PÅBEGYNT_AVTALE
+                                            );
+                                            if (samværsavtaleMal !== undefined) {
+                                                oppdaterSamværsuker(samværsavtaleMal.uker);
+                                                settSamværsavtaleMal(undefined);
+                                            }
+                                        }}
+                                    >
+                                        Åpne kalkulator
+                                    </Button>
+                                </div>
+                            </HStack>
+                        </DropdownMenu>
+                    </Dropdown>
                 </StyledHStack>
             );
         case Visningsmodus.REDIGERINGSMODUS_HAR_LAGRET_AVTALE:
@@ -248,3 +310,37 @@ export const SamværskalkulatorAleneomsorg: React.FC<Props> = ({
             return <></>;
     }
 };
+
+const SamværsavtaleSelect: React.FC<{
+    samværsavtaler: Samværsavtale[];
+    behandlingBarn: IBarnMedSamvær[];
+    settSamværsavtaleMal: React.Dispatch<React.SetStateAction<Samværsavtale | undefined>>;
+}> = ({ samværsavtaler, behandlingBarn, settSamværsavtaleMal }) => (
+    <BehandlingBarnSelect
+        label="Mal"
+        size="small"
+        onChange={(event: ChangeEvent<HTMLSelectElement>) =>
+            settSamværsavtaleMal(
+                samværsavtaler.find((avtale) => avtale.behandlingBarnId === event.target.value)
+            )
+        }
+    >
+        <option value="0">Ny kalkulator</option>
+        {samværsavtaler.map((avtale) => {
+            const gjeldendeBarn = behandlingBarn.find(
+                (barn) => barn.barnId === avtale.behandlingBarnId
+            );
+            const visningsnavn = utledNavnOgAlderForAleneomsorg(
+                gjeldendeBarn?.registergrunnlag,
+                gjeldendeBarn?.søknadsgrunnlag
+            );
+            const visningstekst = `Kopier fra ${visningsnavn}`;
+
+            return (
+                <option key={avtale.behandlingBarnId} value={avtale.behandlingBarnId}>
+                    {visningstekst}
+                </option>
+            );
+        })}
+    </BehandlingBarnSelect>
+);

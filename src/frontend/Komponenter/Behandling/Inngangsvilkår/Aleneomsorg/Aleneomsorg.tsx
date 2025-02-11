@@ -67,10 +67,6 @@ export const Aleneomsorg: React.FC<VilkårPropsAleneomsorg> = ({
                     indeks !== grunnlag.barnMedSamvær.length - 1 &&
                     grunnlag.barnMedSamvær.length > 1;
 
-                const lagretSamværsavtale = lagredeSamværsavtaler.find(
-                    (avtale) => avtale.behandlingBarnId === barn.barnId
-                );
-
                 return (
                     <React.Fragment key={barn.barnId}>
                         <VilkårpanelInnhold>
@@ -124,12 +120,13 @@ export const Aleneomsorg: React.FC<VilkårPropsAleneomsorg> = ({
                             }}
                         </VilkårpanelInnhold>
                         <SamværskalkulatorAleneomsorg
-                            lagretSamværsavtale={lagretSamværsavtale}
-                            skalViseBorderBottom={skalViseBorderBottom}
-                            behandlingBarnId={barn.barnId}
+                            gjeldendeBehandlingBarnId={barn.barnId}
                             behandlingId={behandling.id}
+                            lagredeSamværsavtaler={lagredeSamværsavtaler}
                             lagreSamværsavtale={lagreSamværsavtale}
                             slettSamværsavtale={slettSamværsavtale}
+                            alleBehandlingBarn={grunnlag.barnMedSamvær}
+                            skalViseBorderBottom={skalViseBorderBottom}
                         />
                     </React.Fragment>
                 );
