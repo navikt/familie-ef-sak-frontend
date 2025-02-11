@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BodyShort, Button, Heading, HStack } from '@navikt/ds-react';
+import { BodyShort, Button, HStack, Label } from '@navikt/ds-react';
 import { CalculatorIcon, ChevronDownIcon } from '@navikt/aksel-icons';
 import styled from 'styled-components';
 import {
@@ -31,7 +31,7 @@ const Divider = styled.div`
 `;
 
 const OppsummeringContainer = styled(HStack)`
-    padding: 1rem 1.5rem 1.5rem 1.5rem;
+    padding-left: 1rem;
     background: ${ASurfaceDefault};
     border: 1rem solid ${AGray50};
 `;
@@ -201,11 +201,14 @@ export const SamværskalkulatorAleneomsorg: React.FC<Props> = ({
         case Visningsmodus.REDIGERINGSMODUS_HAR_LAGRET_AVTALE:
             return (
                 <>
-                    <OppsummeringContainer justify="space-between" align="baseline">
-                        <HStack align="baseline" gap="4">
-                            <Heading size="medium">Samværsandel:</Heading>
-                            <BodyShort size="large">{samværsandelerDagVisning}</BodyShort>
-                            <BodyShort size="large">{samværsandelProsentVisning}</BodyShort>
+                    <OppsummeringContainer justify="space-between" align="center">
+                        <HStack align="center" gap="4">
+                            <HStack gap="2" align="center">
+                                <CalculatorIcon aria-hidden />
+                                <Label>Samværsandel:</Label>
+                            </HStack>
+                            <BodyShort size="medium">{samværsandelerDagVisning}</BodyShort>
+                            <BodyShort size="medium">{samværsandelProsentVisning}</BodyShort>
                         </HStack>
                         <HStack gap="4">
                             <Button
