@@ -65,10 +65,10 @@ const SendTilBeslutterFooter: React.FC<{
     kanSendesTilBeslutter?: boolean;
     behandlingErRedigerbar: boolean;
     ferdigstillUtenBeslutter: boolean;
-    hentOppfølgingsoppgave: {
+    hentOppfølgingsoppgave?: {
         rerun: () => void;
     };
-    oppfølgingsoppgave: Oppfølgingsoppgave;
+    oppfølgingsoppgave?: Oppfølgingsoppgave;
 }> = ({
     behandling,
     kanSendesTilBeslutter,
@@ -90,7 +90,8 @@ const SendTilBeslutterFooter: React.FC<{
     const { toggles } = useToggles();
     const { hentFremleggsoppgaver, fremleggsoppgaver } =
         useHentFremleggsoppgaverForOvergangsstønad();
-    const { oppgavetyperSomKanOpprettes } = oppfølgingsoppgave.oppgaverForOpprettelse;
+    const oppgavetyperSomKanOpprettes =
+        oppfølgingsoppgave?.oppgaverForOpprettelse?.oppgavetyperSomKanOpprettes;
     const [laster, settLaster] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>();
     const [visModal, settVisModal] = useState<boolean>(false);
@@ -104,7 +105,7 @@ const SendTilBeslutterFooter: React.FC<{
         settÅrForInntektskontrollSelvstendigNæringsdrivende,
     ] = useState<number | undefined>();
     const [oppgaverSomSkalAutomatiskFerdigstilles, settOppgaverSomSkalAutomatiskFerdigstilles] =
-        useState<number[]>(oppfølgingsoppgave.oppgaveIderForFerdigstilling || []);
+        useState<number[]>(oppfølgingsoppgave?.oppgaveIderForFerdigstilling || []);
 
     const sendTilBeslutter = () => {
         settLaster(true);
@@ -154,7 +155,10 @@ const SendTilBeslutterFooter: React.FC<{
         : 'Vedtaket er sendt til beslutter';
 
     const skalViseKnappForModal =
-        toggleVisKnappForModal && oppfølgingsoppgave && oppgavetyperSomKanOpprettes.length > 0;
+        toggleVisKnappForModal &&
+        oppfølgingsoppgave &&
+        oppgavetyperSomKanOpprettes &&
+        oppgavetyperSomKanOpprettes.length > 0;
 
     useEffect(() => {
         hentFremleggsoppgaver(behandling.id);
