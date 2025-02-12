@@ -16,6 +16,7 @@ import {
 import { IBarnMedSamvær } from './typer';
 import { utledNavnOgAlderForAleneomsorg } from './utils';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
+import { useApp } from '../../../../App/context/AppContext';
 
 const Kalkulator = styled(Samværskalkulator)`
     padding: 1rem;
@@ -130,6 +131,7 @@ export const SamværskalkulatorAleneomsorg: React.FC<Props> = ({
         (avtale) => avtale.behandlingBarnId === gjeldendeBehandlingBarnId
     );
 
+    const { nullstillIkkePersistertKomponent, settIkkePersistertKomponent } = useApp();
     const { behandlingErRedigerbar } = useBehandling();
     const [samværsavtale, settSamværsavtale] = useState<Samværsavtale>(
         utledInitiellSamværsavtale(lagretSamværsavtale, behandlingId, gjeldendeBehandlingBarnId)
@@ -155,6 +157,7 @@ export const SamværskalkulatorAleneomsorg: React.FC<Props> = ({
         ukedag: string,
         samværsandeler: Samværsandel[]
     ) => {
+        settIkkePersistertKomponent(gjeldendeBehandlingBarnId);
         settSamværsavtale((prevState) => ({
             ...prevState,
             uker: [
@@ -166,6 +169,7 @@ export const SamværskalkulatorAleneomsorg: React.FC<Props> = ({
     };
 
     const oppdaterSamværsuker = (samværsuker: Samværsuke[]) => {
+        settIkkePersistertKomponent(gjeldendeBehandlingBarnId);
         settSamværsavtale((prevState) => ({
             ...prevState,
             uker: samværsuker,
@@ -173,6 +177,8 @@ export const SamværskalkulatorAleneomsorg: React.FC<Props> = ({
     };
 
     const oppdaterVarighetPåSamværsavtale = (nyVarighet: number) => {
+        settIkkePersistertKomponent(gjeldendeBehandlingBarnId);
+
         const nåværendeVarighet = samværsavtale.uker.length;
 
         if (nyVarighet > nåværendeVarighet) {
@@ -204,11 +210,13 @@ export const SamværskalkulatorAleneomsorg: React.FC<Props> = ({
         settSamværsavtale(
             utledInitiellSamværsavtale(lagretSamværsavtale, behandlingId, gjeldendeBehandlingBarnId)
         );
+        nullstillIkkePersistertKomponent(gjeldendeBehandlingBarnId);
     };
 
     const håndterLagreSamværsavtale = () => {
         lagreSamværsavtale(samværsavtale);
         settVisningsmodus(Visningsmodus.REDIGERINGSMODUS_MINIMERT);
+        nullstillIkkePersistertKomponent(gjeldendeBehandlingBarnId);
     };
 
     const håndterSlettSamværsavtale = () => {
@@ -217,6 +225,7 @@ export const SamværskalkulatorAleneomsorg: React.FC<Props> = ({
         settSamværsavtale(
             utledInitiellSamværsavtale(undefined, behandlingId, gjeldendeBehandlingBarnId)
         );
+        nullstillIkkePersistertKomponent(gjeldendeBehandlingBarnId);
     };
 
     switch (visningsmodus) {
@@ -249,6 +258,7 @@ export const SamværskalkulatorAleneomsorg: React.FC<Props> = ({
                                             settVisningsmodus(
                                                 Visningsmodus.REDIGERINGSMODUS_EKSPANDERT
                                             );
+                                            settIkkePersistertKomponent(gjeldendeBehandlingBarnId);
                                             if (samværsavtaleMal !== undefined) {
                                                 oppdaterSamværsuker(samværsavtaleMal.uker);
                                                 settSamværsavtaleMal(undefined);
