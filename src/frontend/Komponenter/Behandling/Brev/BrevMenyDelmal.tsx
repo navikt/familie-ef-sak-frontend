@@ -16,6 +16,7 @@ import { ABorderRadiusMedium, ABorderStrong } from '@navikt/ds-tokens/dist/token
 import { HtmlEditor } from '../../../Felles/HtmlEditor/HtmlEditor';
 import { useToggles } from '../../../App/context/TogglesContext';
 import { ToggleName } from '../../../App/context/toggles';
+import { ArrowsSquarepathIcon } from '@navikt/aksel-icons';
 
 const DelmalValg = styled.div`
     display: flex;
@@ -162,12 +163,16 @@ export const BrevMenyDelmal: React.FC<Props> = ({
                                         />
                                     ))}
                             {erDelmalblokk && skalKunneKonvertereDelmalblokk && (
-                                <Button
-                                    onClick={() => overstyring.konverterTilHtml(delmal)}
-                                    size={'small'}
-                                >
-                                    Konverter til tekstfelt
-                                </Button>
+                                <div>
+                                    <Button
+                                        onClick={() => overstyring.konverterTilHtml(delmal)}
+                                        size={'small'}
+                                        variant={'secondary'}
+                                        icon={<ArrowsSquarepathIcon />}
+                                    >
+                                        Konverter til tekstfelt
+                                    </Button>
+                                </div>
                             )}
                             {overstyring.overstyrtDelmal?.skalOverstyre && (
                                 <>
@@ -177,12 +182,18 @@ export const BrevMenyDelmal: React.FC<Props> = ({
                                             oppdaterOverstyrtInnhold(delmal, nyttInnhold);
                                         }}
                                     />
-                                    <Button
-                                        onClick={() => overstyring.konverterTilDelmalblokk(delmal)}
-                                        size={'small'}
-                                    >
-                                        Konverter til brevbygger
-                                    </Button>
+                                    <div>
+                                        <Button
+                                            onClick={() =>
+                                                overstyring.konverterTilDelmalblokk(delmal)
+                                            }
+                                            size={'small'}
+                                            variant={'secondary'}
+                                            icon={<ArrowsSquarepathIcon />}
+                                        >
+                                            Konverter til brevbygger
+                                        </Button>
+                                    </div>
                                 </>
                             )}
                         </AccordionInnhold>
