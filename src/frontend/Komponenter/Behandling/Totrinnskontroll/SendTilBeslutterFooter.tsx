@@ -18,6 +18,7 @@ import { useToggles } from '../../../App/context/TogglesContext';
 import { ToggleName } from '../../../App/context/toggles';
 import { ModalOpprettOgFerdigstilleOppgaver } from './ModalOpprettOgFerdigstilleOppgaver';
 import { useHentFremleggsoppgaverForOvergangsstønad } from '../../../App/hooks/useHentFremleggsoppgaverForOvergangsstønad';
+import { Oppfølgingsoppgave } from '../../../App/hooks/useHentOppfølgingsoppgave';
 
 const Footer = styled.footer`
     width: 100%;
@@ -64,23 +65,17 @@ const SendTilBeslutterFooter: React.FC<{
     kanSendesTilBeslutter?: boolean;
     behandlingErRedigerbar: boolean;
     ferdigstillUtenBeslutter: boolean;
-    oppgavetyperSomKanOpprettes?: OppgaveTypeForOpprettelse[];
-    hentOppgaverForOpprettelseCallback?: {
+    hentOppfølgingsoppgave: {
         rerun: () => void;
     };
-    fremleggsoppgaveIderSomSkalFerdigstilles?: number[];
-    hentOppgaveIderForFerdigstillingCallback?: {
-        rerun: () => void;
-    };
+    oppfølgingsoppgave: Oppfølgingsoppgave;
 }> = ({
     behandling,
     kanSendesTilBeslutter,
     behandlingErRedigerbar,
     ferdigstillUtenBeslutter,
-    oppgavetyperSomKanOpprettes,
-    hentOppgaverForOpprettelseCallback,
-    fremleggsoppgaveIderSomSkalFerdigstilles,
-    hentOppgaveIderForFerdigstillingCallback,
+    hentOppfølgingsoppgave,
+    oppfølgingsoppgave,
 }) => {
     const { axiosRequest } = useApp();
     const navigate = useNavigate();
@@ -95,6 +90,7 @@ const SendTilBeslutterFooter: React.FC<{
     const { toggles } = useToggles();
     const { hentFremleggsoppgaver, fremleggsoppgaver } =
         useHentFremleggsoppgaverForOvergangsstønad();
+    const { oppgavetyperSomKanOpprettes } = oppfølgingsoppgave.oppgaverForOpprettelse;
     const [laster, settLaster] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>();
     const [visModal, settVisModal] = useState<boolean>(false);
@@ -108,7 +104,7 @@ const SendTilBeslutterFooter: React.FC<{
         settÅrForInntektskontrollSelvstendigNæringsdrivende,
     ] = useState<number | undefined>();
     const [oppgaverSomSkalAutomatiskFerdigstilles, settOppgaverSomSkalAutomatiskFerdigstilles] =
-        useState<number[]>(fremleggsoppgaveIderSomSkalFerdigstilles || []);
+        useState<number[]>(oppfølgingsoppgave.oppgaveIderForFerdigstilling || []);
 
     const sendTilBeslutter = () => {
         settLaster(true);
@@ -130,8 +126,7 @@ const SendTilBeslutterFooter: React.FC<{
                     hentAnsvarligSaksbehandler.rerun();
                     hentTotrinnskontroll.rerun();
                     settVisMarkereGodkjenneVedtakOppgaveModal(false);
-                    hentOppgaverForOpprettelseCallback?.rerun();
-                    hentOppgaveIderForFerdigstillingCallback?.rerun();
+                    hentOppfølgingsoppgave?.rerun();
                     settVisModal(true);
                 } else {
                     settFeilmelding(res.frontendFeilmelding);
@@ -159,9 +154,7 @@ const SendTilBeslutterFooter: React.FC<{
         : 'Vedtaket er sendt til beslutter';
 
     const skalViseKnappForModal =
-        toggleVisKnappForModal &&
-        oppgavetyperSomKanOpprettes &&
-        oppgavetyperSomKanOpprettes.length > 0;
+        toggleVisKnappForModal && oppfølgingsoppgave && oppgavetyperSomKanOpprettes.length > 0;
 
     useEffect(() => {
         hentFremleggsoppgaver(behandling.id);

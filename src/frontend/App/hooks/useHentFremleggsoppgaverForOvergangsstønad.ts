@@ -13,7 +13,7 @@ export const useHentFremleggsoppgaverForOvergangsstønad = () => {
             settFremleggsoppgaver(byggHenterRessurs());
             axiosRequest<IOppgaverResponse, { behandlingId: string }>({
                 method: 'GET',
-                url: `/familie-ef-sak/api/oppgave/hent-fremleggsoppgaver/${behandlingId}`,
+                url: `/familie-ef-sak/api/oppgave/fremleggsoppgaver/${behandlingId}`,
             }).then((res: Ressurs<IOppgaverResponse>) => {
                 settFremleggsoppgaver(res);
             });
