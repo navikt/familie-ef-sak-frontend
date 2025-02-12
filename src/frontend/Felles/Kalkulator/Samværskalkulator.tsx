@@ -94,6 +94,7 @@ interface Props {
     samværsuker: Samværsuke[];
     oppdaterSamværsuke: (ukeIndex: number, ukedag: string, samversandeler: Samværsandel[]) => void;
     oppdaterVarighet: (varighet: number) => void;
+    erLesevisning: boolean;
 }
 
 export const Samværskalkulator: React.FC<Props> = ({
@@ -104,12 +105,14 @@ export const Samværskalkulator: React.FC<Props> = ({
     samværsuker,
     oppdaterSamværsuke,
     oppdaterVarighet,
+    erLesevisning,
 }) => (
     <VStack className={className} gap="4">
         <VarighetSelect
             oppdaterVarighet={oppdaterVarighet}
             onDelete={onDelete}
             samværsuker={samværsuker}
+            erLesevisning={erLesevisning}
         />
         <HStack gap="4">
             {samværsuker.map((samværsuke, index) => (
@@ -121,10 +124,16 @@ export const Samværskalkulator: React.FC<Props> = ({
                         oppdaterSamværsuke(index, dag, samværsandeler)
                     }
                     visValgmuligheter={index % 4 === 0}
+                    erLesevisning={erLesevisning}
                 />
             ))}
         </HStack>
-        <Oppsummering samværsuker={samværsuker} onSave={onSave} onClose={onClose} />
+        <Oppsummering
+            samværsuker={samværsuker}
+            onSave={onSave}
+            onClose={onClose}
+            erLesevisning={erLesevisning}
+        />
     </VStack>
 );
 
@@ -133,7 +142,8 @@ const Uke: React.FC<{
     index: number;
     oppdaterSamværsdag: (dag: string, samværsandeler: Samværsandel[]) => void;
     visValgmuligheter: boolean;
-}> = ({ samværsuke, index, oppdaterSamværsdag, visValgmuligheter }) => (
+    erLesevisning: boolean;
+}> = ({ samværsuke, index, oppdaterSamværsdag, visValgmuligheter, erLesevisning }) => (
     <UkeContainer gap="1" $border={(index + 1) % 4 !== 0}>
         {visValgmuligheter && (
             <Valgmuligheter gap="6">
@@ -152,6 +162,7 @@ const Uke: React.FC<{
                         oppdaterSamværsdag(ukedag, samværsandeler)
                     }
                     samværsandeler={samvær.andeler}
+                    erLesevisning={erLesevisning}
                 />
             );
         })}
@@ -162,29 +173,44 @@ const Ukedag: React.FC<{
     ukedag: string;
     oppdaterSamværsandeler: (samværsandeler: Samværsandel[]) => void;
     samværsandeler: Samværsandel[];
-}> = ({ ukedag, oppdaterSamværsandeler, samværsandeler }) => {
+    erLesevisning: boolean;
+}> = ({ ukedag, oppdaterSamværsandeler, samværsandeler, erLesevisning }) => {
     const alleSamværsandeler = Object.values(Samværsandel);
     const samværsandelerEllerTomListe =
         samværsandeler.length === alleSamværsandeler.length ? [] : alleSamværsandeler;
 
+    const visningstekstLegend = formaterStrengMedStorForbokstav(ukedag.slice(0, 3));
+    const legend = erLesevisning ? (
+        visningstekstLegend
+    ) : (
+        <LegendKnapp
+            variant="tertiary"
+            onClick={() => oppdaterSamværsandeler(samværsandelerEllerTomListe)}
+            disabled={erLesevisning}
+        >
+            {visningstekstLegend}
+        </LegendKnapp>
+    );
+
     return (
         <VStack>
             <CheckboxGruppe
-                legend={
-                    <LegendKnapp
-                        variant="tertiary"
-                        onClick={() => oppdaterSamværsandeler(samværsandelerEllerTomListe)}
-                    >
-                        {formaterStrengMedStorForbokstav(ukedag.slice(0, 3))}
-                    </LegendKnapp>
-                }
+                legend={legend}
                 onChange={oppdaterSamværsandeler}
                 value={samværsandeler}
             >
-                <Checkbox value={Samværsandel.KVELD_NATT}>{''}</Checkbox>
-                <Checkbox value={Samværsandel.MORGEN}>{''}</Checkbox>
-                <Checkbox value={Samværsandel.BARNEHAGE_SKOLE}>{''}</Checkbox>
-                <Checkbox value={Samværsandel.ETTERMIDDAG}>{''}</Checkbox>
+                <Checkbox readOnly={erLesevisning} value={Samværsandel.KVELD_NATT}>
+                    {''}
+                </Checkbox>
+                <Checkbox readOnly={erLesevisning} value={Samværsandel.MORGEN}>
+                    {''}
+                </Checkbox>
+                <Checkbox readOnly={erLesevisning} value={Samværsandel.BARNEHAGE_SKOLE}>
+                    {''}
+                </Checkbox>
+                <Checkbox readOnly={erLesevisning} value={Samværsandel.ETTERMIDDAG}>
+                    {''}
+                </Checkbox>
             </CheckboxGruppe>
         </VStack>
     );
@@ -194,7 +220,8 @@ const VarighetSelect: React.FC<{
     oppdaterVarighet: (varighet: number) => void;
     onDelete: () => void;
     samværsuker: Samværsuke[];
-}> = ({ oppdaterVarighet, onDelete, samværsuker }) => (
+    erLesevisning: boolean;
+}> = ({ oppdaterVarighet, onDelete, samværsuker, erLesevisning }) => (
     <SelectContainer justify="space-between">
         <StyledSelect
             label="Beregningslengde"
@@ -202,6 +229,7 @@ const VarighetSelect: React.FC<{
                 oppdaterVarighet(Number(event.target.value))
             }
             value={samværsuker.length}
+            readOnly={erLesevisning}
         >
             {VARIGHETER_SAMVÆRSAVTALE.map((varighet) => (
                 <option key={varighet} value={varighet}>
@@ -209,7 +237,7 @@ const VarighetSelect: React.FC<{
                 </option>
             ))}
         </StyledSelect>
-        {onDelete && (
+        {onDelete && !erLesevisning && (
             <IkonKnapp
                 icon={<TrashIcon title="Slett" />}
                 variant="tertiary"
@@ -226,9 +254,11 @@ const Oppsummering: React.FC<{
     samværsuker: Samværsuke[];
     onSave: () => void;
     onClose: () => void;
-}> = ({ samværsuker, onSave, onClose }) => {
+    erLesevisning: boolean;
+}> = ({ samværsuker, onSave, onClose, erLesevisning }) => {
     const [samværsandelerDagVisning, samværsandelProsentVisning] =
         kalkulerSamværsandeler(samværsuker);
+    const visningstekstAvbrytKnapp = erLesevisning ? 'Lukk' : 'Avbryt';
 
     return (
         <OppsummeringContainer justify="space-between" align="baseline">
@@ -239,11 +269,13 @@ const Oppsummering: React.FC<{
             </HStack>
             <HStack gap="4">
                 <Button variant="tertiary" onClick={onClose}>
-                    Avbryt
+                    {visningstekstAvbrytKnapp}
                 </Button>
-                <Button type="button" onClick={onSave}>
-                    Lagre
-                </Button>
+                {!erLesevisning && (
+                    <Button type="button" onClick={onSave} disabled={erLesevisning}>
+                        Lagre
+                    </Button>
+                )}
             </HStack>
         </OppsummeringContainer>
     );

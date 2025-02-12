@@ -13,9 +13,9 @@ import {
     Samværsdag,
     Samværsuke,
 } from '../../../../App/typer/samværsavtale';
-import { useBehandling } from '../../../../App/context/BehandlingContext';
 import { IBarnMedSamvær } from './typer';
 import { utledNavnOgAlderForAleneomsorg } from './utils';
+import { useBehandling } from '../../../../App/context/BehandlingContext';
 
 const Kalkulator = styled(Samværskalkulator)`
     padding: 1rem;
@@ -49,10 +49,11 @@ const BehandlingBarnSelect = styled(Select)`
 
 enum Visningsmodus {
     REDIGERINGSMODUS_INGEN_LAGRET_AVTALE,
-    REDIGERINGSMODUS_HAR_PÅBEGYNT_AVTALE,
-    REDIGERINGSMODUS_HAR_LAGRET_AVTALE,
-    VISNINGSMODUS_INGEN_LAGRET_AVTALE,
-    VISNINGSMODUS_HAR_LAGRET_AVTALE,
+    REDIGERINGSMODUS_EKSPANDERT,
+    REDIGERINGSMODUS_MINIMERT,
+    LESEVISNING_INGEN_LAGRET_AVTALE,
+    LESEVISNING_EKSPANDERT,
+    LESEVISNING_MINIMERT,
 }
 
 const samværsdag: Samværsdag = {
@@ -99,11 +100,11 @@ const utledInitiellVisningsmodus = (
     if (behandlingErRedigerbar) {
         return samværsavtale === undefined
             ? Visningsmodus.REDIGERINGSMODUS_INGEN_LAGRET_AVTALE
-            : Visningsmodus.REDIGERINGSMODUS_HAR_LAGRET_AVTALE;
+            : Visningsmodus.REDIGERINGSMODUS_MINIMERT;
     }
     return samværsavtale === undefined
-        ? Visningsmodus.VISNINGSMODUS_INGEN_LAGRET_AVTALE
-        : Visningsmodus.VISNINGSMODUS_HAR_LAGRET_AVTALE;
+        ? Visningsmodus.LESEVISNING_INGEN_LAGRET_AVTALE
+        : Visningsmodus.LESEVISNING_MINIMERT;
 };
 
 interface Props {
@@ -130,14 +131,13 @@ export const SamværskalkulatorAleneomsorg: React.FC<Props> = ({
     );
 
     const { behandlingErRedigerbar } = useBehandling();
-
     const [samværsavtale, settSamværsavtale] = useState<Samværsavtale>(
         utledInitiellSamværsavtale(lagretSamværsavtale, behandlingId, gjeldendeBehandlingBarnId)
     );
     const [visningsmodus, settVisningsmodus] = useState<Visningsmodus>(
         utledInitiellVisningsmodus(behandlingErRedigerbar, lagretSamværsavtale)
     );
-    const [erDropdownÅpen, settErDropdownÅpen] = useState<boolean>(false);
+    const [erDropdownEkspandert, settErDropdownEkspandert] = useState<boolean>(false);
     const [samværsavtaleMal, settSamværsavtaleMal] = useState<Samværsavtale>();
 
     const [samværsandelerDagVisning, samværsandelProsentVisning] = kalkulerSamværsandeler(
@@ -193,9 +193,9 @@ export const SamværskalkulatorAleneomsorg: React.FC<Props> = ({
 
     const håndterÅpneDropdown = () => {
         if (kanKopiereSamværsavtale) {
-            settErDropdownÅpen((prevState) => !prevState);
+            settErDropdownEkspandert((prevState) => !prevState);
         } else {
-            settVisningsmodus(Visningsmodus.REDIGERINGSMODUS_HAR_PÅBEGYNT_AVTALE);
+            settVisningsmodus(Visningsmodus.REDIGERINGSMODUS_EKSPANDERT);
         }
     };
 
@@ -208,7 +208,7 @@ export const SamværskalkulatorAleneomsorg: React.FC<Props> = ({
 
     const håndterLagreSamværsavtale = () => {
         lagreSamværsavtale(samværsavtale);
-        settVisningsmodus(Visningsmodus.REDIGERINGSMODUS_HAR_LAGRET_AVTALE);
+        settVisningsmodus(Visningsmodus.REDIGERINGSMODUS_MINIMERT);
     };
 
     const håndterSlettSamværsavtale = () => {
@@ -228,7 +228,7 @@ export const SamværskalkulatorAleneomsorg: React.FC<Props> = ({
                     margin="4"
                     padding="4"
                 >
-                    <Dropdown open={erDropdownÅpen} onOpenChange={håndterÅpneDropdown}>
+                    <Dropdown open={erDropdownEkspandert} onOpenChange={håndterÅpneDropdown}>
                         <Button type="button" as={Dropdown.Toggle} size="small">
                             <CalculatorIcon aria-hidden fontSize="1.5rem" />
                         </Button>
@@ -245,9 +245,9 @@ export const SamværskalkulatorAleneomsorg: React.FC<Props> = ({
                                         variant="secondary"
                                         size="small"
                                         onClick={() => {
-                                            settErDropdownÅpen((prevState) => !prevState);
+                                            settErDropdownEkspandert((prevState) => !prevState);
                                             settVisningsmodus(
-                                                Visningsmodus.REDIGERINGSMODUS_HAR_PÅBEGYNT_AVTALE
+                                                Visningsmodus.REDIGERINGSMODUS_EKSPANDERT
                                             );
                                             if (samværsavtaleMal !== undefined) {
                                                 oppdaterSamværsuker(samværsavtaleMal.uker);
@@ -263,7 +263,8 @@ export const SamværskalkulatorAleneomsorg: React.FC<Props> = ({
                     </Dropdown>
                 </StyledHStack>
             );
-        case Visningsmodus.REDIGERINGSMODUS_HAR_LAGRET_AVTALE:
+        case Visningsmodus.REDIGERINGSMODUS_MINIMERT:
+        case Visningsmodus.LESEVISNING_MINIMERT:
             return (
                 <>
                     <OppsummeringContainer justify="space-between" align="center">
@@ -282,7 +283,9 @@ export const SamværskalkulatorAleneomsorg: React.FC<Props> = ({
                                 icon={<ChevronDownIcon />}
                                 onClick={() =>
                                     settVisningsmodus(
-                                        Visningsmodus.REDIGERINGSMODUS_HAR_PÅBEGYNT_AVTALE
+                                        behandlingErRedigerbar
+                                            ? Visningsmodus.REDIGERINGSMODUS_EKSPANDERT
+                                            : Visningsmodus.LESEVISNING_EKSPANDERT
                                     )
                                 }
                             />
@@ -291,8 +294,8 @@ export const SamværskalkulatorAleneomsorg: React.FC<Props> = ({
                     {skalViseBorderBottom && <Divider />}
                 </>
             );
-        case Visningsmodus.REDIGERINGSMODUS_HAR_PÅBEGYNT_AVTALE:
-        case Visningsmodus.VISNINGSMODUS_HAR_LAGRET_AVTALE:
+        case Visningsmodus.REDIGERINGSMODUS_EKSPANDERT:
+        case Visningsmodus.LESEVISNING_EKSPANDERT:
             return (
                 <>
                     <Kalkulator
@@ -302,11 +305,12 @@ export const SamværskalkulatorAleneomsorg: React.FC<Props> = ({
                         onClose={() => håndterLukkKalkulator()}
                         oppdaterSamværsuke={oppdaterSamværsuke}
                         oppdaterVarighet={oppdaterVarighetPåSamværsavtale}
+                        erLesevisning={!behandlingErRedigerbar}
                     />
                     {skalViseBorderBottom && <Divider />}
                 </>
             );
-        case Visningsmodus.VISNINGSMODUS_INGEN_LAGRET_AVTALE:
+        case Visningsmodus.LESEVISNING_INGEN_LAGRET_AVTALE:
             return <></>;
     }
 };
