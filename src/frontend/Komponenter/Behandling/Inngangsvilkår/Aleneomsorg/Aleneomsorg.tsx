@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { vilkårStatusForBarn } from '../../Vurdering/VurderingUtil';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import AleneomsorgInfo from './AleneomsorgInfo';
-import { VilkårPropsMedBehandling } from '../vilkårprops';
+import { VilkårPropsAleneomsorg } from '../vilkårprops';
 import { InngangsvilkårType } from '../vilkår';
 import { byggTomRessurs, Ressurs } from '../../../../App/typer/ressurs';
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
@@ -11,8 +11,11 @@ import { IBarnMedLøpendeStønad } from './typer';
 import DokumentasjonSendtInn from '../DokumentasjonSendtInn';
 import { VilkårpanelInnhold } from '../../Vilkårpanel/VilkårpanelInnhold';
 import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';
+import { SamværskalkulatorAleneomsorg } from './SamværskalkulatorAleneomsorg';
+import { useToggles } from '../../../../App/context/TogglesContext';
+import { ToggleName } from '../../../../App/context/toggles';
 
-export const Aleneomsorg: React.FC<VilkårPropsMedBehandling> = ({
+export const Aleneomsorg: React.FC<VilkårPropsAleneomsorg> = ({
     vurderinger,
     lagreVurdering,
     nullstillVurdering,
@@ -21,10 +24,16 @@ export const Aleneomsorg: React.FC<VilkårPropsMedBehandling> = ({
     ikkeVurderVilkår,
     skalViseSøknadsdata,
     behandling,
+    lagredeSamværsavtaler,
+    lagreSamværsavtale,
+    slettSamværsavtale,
 }) => {
+    const { axiosRequest } = useApp();
+    const { toggles } = useToggles();
+    const skalViseSamværskalkulator = toggles[ToggleName.visSamværskalkulator];
+
     const [barnMedLøpendeStønad, settBarnMedLøpendeStønad] =
         useState<Ressurs<IBarnMedLøpendeStønad>>(byggTomRessurs());
-    const { axiosRequest } = useApp();
 
     useEffect(() => {
         if (behandling.stønadstype === Stønadstype.BARNETILSYN) {
@@ -58,63 +67,76 @@ export const Aleneomsorg: React.FC<VilkårPropsMedBehandling> = ({
 
                 const erSisteBarn = indeks === grunnlag.barnMedSamvær.length - 1;
 
+                const skalViseBorderBottom =
+                    indeks !== grunnlag.barnMedSamvær.length - 1 &&
+                    grunnlag.barnMedSamvær.length > 1;
+
                 return (
-                    <VilkårpanelInnhold
-                        key={barn.barnId}
-                        borderBottom={
-                            indeks !== grunnlag.barnMedSamvær.length - 1 &&
-                            grunnlag.barnMedSamvær.length > 1
-                        }
-                    >
-                        {{
-                            venstre: (
-                                <>
-                                    <AleneomsorgInfo
-                                        gjeldendeBarn={barn}
-                                        skalViseSøknadsdata={skalViseSøknadsdata}
-                                        barnMedLøpendeStønad={barnMedLøpendeStønad}
-                                        stønadstype={behandling.stønadstype}
-                                        personalia={grunnlag.personalia}
+                    <React.Fragment key={barn.barnId}>
+                        <VilkårpanelInnhold
+                            borderBottom={skalViseSamværskalkulator ? false : skalViseBorderBottom}
+                        >
+                            {{
+                                venstre: (
+                                    <>
+                                        <AleneomsorgInfo
+                                            gjeldendeBarn={barn}
+                                            skalViseSøknadsdata={skalViseSøknadsdata}
+                                            barnMedLøpendeStønad={barnMedLøpendeStønad}
+                                            stønadstype={behandling.stønadstype}
+                                            personalia={grunnlag.personalia}
+                                        />
+                                        {erSisteBarn && skalViseSøknadsdata && (
+                                            <>
+                                                <DokumentasjonSendtInn
+                                                    dokumentasjon={
+                                                        grunnlag.dokumentasjon?.avtaleOmDeltBosted
+                                                    }
+                                                    tittel={'Avtale om delt fast bosted'}
+                                                />
+                                                <DokumentasjonSendtInn
+                                                    dokumentasjon={
+                                                        grunnlag.dokumentasjon
+                                                            ?.skalBarnetBoHosSøkerMenAnnenForelderSamarbeiderIkke
+                                                    }
+                                                    tittel={
+                                                        'Dokumentasjon som viser at barnet bor hos deg'
+                                                    }
+                                                />
+                                                <DokumentasjonSendtInn
+                                                    dokumentasjon={
+                                                        grunnlag.dokumentasjon?.samværsavtale
+                                                    }
+                                                    tittel={'Samværsavtale'}
+                                                />
+                                            </>
+                                        )}
+                                    </>
+                                ),
+                                høyre: (
+                                    <VisEllerEndreVurdering
+                                        key={vurdering.id}
+                                        ikkeVurderVilkår={ikkeVurderVilkår}
+                                        vurdering={vurdering}
+                                        feilmelding={feilmeldinger[vurdering.id]}
+                                        lagreVurdering={lagreVurdering}
+                                        nullstillVurdering={nullstillVurdering}
                                     />
-                                    {erSisteBarn && skalViseSøknadsdata && (
-                                        <>
-                                            <DokumentasjonSendtInn
-                                                dokumentasjon={
-                                                    grunnlag.dokumentasjon?.avtaleOmDeltBosted
-                                                }
-                                                tittel={'Avtale om delt fast bosted'}
-                                            />
-                                            <DokumentasjonSendtInn
-                                                dokumentasjon={
-                                                    grunnlag.dokumentasjon
-                                                        ?.skalBarnetBoHosSøkerMenAnnenForelderSamarbeiderIkke
-                                                }
-                                                tittel={
-                                                    'Dokumentasjon som viser at barnet bor hos deg'
-                                                }
-                                            />
-                                            <DokumentasjonSendtInn
-                                                dokumentasjon={
-                                                    grunnlag.dokumentasjon?.samværsavtale
-                                                }
-                                                tittel={'Samværsavtale'}
-                                            />
-                                        </>
-                                    )}
-                                </>
-                            ),
-                            høyre: (
-                                <VisEllerEndreVurdering
-                                    key={vurdering.id}
-                                    ikkeVurderVilkår={ikkeVurderVilkår}
-                                    vurdering={vurdering}
-                                    feilmelding={feilmeldinger[vurdering.id]}
-                                    lagreVurdering={lagreVurdering}
-                                    nullstillVurdering={nullstillVurdering}
-                                />
-                            ),
-                        }}
-                    </VilkårpanelInnhold>
+                                ),
+                            }}
+                        </VilkårpanelInnhold>
+                        {skalViseSamværskalkulator && (
+                            <SamværskalkulatorAleneomsorg
+                                gjeldendeBehandlingBarnId={barn.barnId}
+                                behandlingId={behandling.id}
+                                lagredeSamværsavtaler={lagredeSamværsavtaler}
+                                lagreSamværsavtale={lagreSamværsavtale}
+                                slettSamværsavtale={slettSamværsavtale}
+                                alleBehandlingBarn={grunnlag.barnMedSamvær}
+                                skalViseBorderBottom={skalViseBorderBottom}
+                            />
+                        )}
+                    </React.Fragment>
                 );
             })}
         </Vilkårpanel>

@@ -15,12 +15,17 @@ import { Behandling } from '../../../App/typer/fagsak';
 import { useApp } from '../../../App/context/AppContext';
 import { InngangsvilkårHeader } from './InngangsvilkårHeader';
 import { formaterIsoDatoTidMedSekunder } from '../../../App/utils/formatter';
+import { useSamværsavtaler } from '../../../App/hooks/useSamværsavtaler';
+import { useToggles } from '../../../App/context/TogglesContext';
+import { ToggleName } from '../../../App/context/toggles';
 
 interface Props {
     behandling: Behandling;
 }
 
 export const InngangsvilkårFane: FC<Props> = ({ behandling }) => {
+    const { toggles } = useToggles();
+    const skalViseSamværskalkulator = toggles[ToggleName.visSamværskalkulator];
     const { behandlingErRedigerbar, vilkårState } = useBehandling();
     const { erSaksbehandler } = useApp();
     const {
@@ -32,14 +37,19 @@ export const InngangsvilkårFane: FC<Props> = ({ behandling }) => {
         ikkeVurderVilkår,
         oppdaterGrunnlagsdataOgHentVilkår,
     } = vilkårState;
+    const { samværsavtaler, hentSamværsavtaler, lagreSamværsavtale, slettSamværsavtale } =
+        useSamværsavtaler(skalViseSamværskalkulator);
 
     React.useEffect(() => {
         hentVilkår(behandling.id);
-    }, [hentVilkår, behandling.id]);
+        if (skalViseSamværskalkulator) {
+            hentSamværsavtaler(behandling.id);
+        }
+    }, [hentVilkår, hentSamværsavtaler, behandling.id, skalViseSamværskalkulator]);
 
     return (
-        <DataViewer response={{ vilkår }}>
-            {({ vilkår }) => {
+        <DataViewer response={{ samværsavtaler, vilkår }}>
+            {({ samværsavtaler, vilkår }) => {
                 const årsak = behandling.behandlingsårsak;
                 const skalViseSøknadsdata =
                     årsak === Behandlingsårsak.SØKNAD || årsak === Behandlingsårsak.PAPIRSØKNAD;
@@ -128,6 +138,9 @@ export const InngangsvilkårFane: FC<Props> = ({ behandling }) => {
                             ikkeVurderVilkår={ikkeVurderVilkår}
                             skalViseSøknadsdata={skalViseSøknadsdata}
                             behandling={behandling}
+                            lagredeSamværsavtaler={samværsavtaler}
+                            lagreSamværsavtale={lagreSamværsavtale}
+                            slettSamværsavtale={slettSamværsavtale}
                         />
                     </>
                 );

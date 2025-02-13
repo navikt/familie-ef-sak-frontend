@@ -10,10 +10,10 @@ import { Ressurs } from '../../../../App/typer/ressurs';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
 import { Tag } from '@navikt/ds-react';
-import { utledNavnOgAlder } from '../utils';
 import { BarneInfoWrapper, VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
 import { IPersonalia } from '../vilkår';
+import { utledNavnOgAlderForAleneomsorg } from './utils';
 
 const AleneomsorgInfo: FC<{
     gjeldendeBarn: IBarnMedSamvær;
@@ -41,15 +41,7 @@ const AleneomsorgInfo: FC<{
         );
     };
 
-    const navnOgAlderPåBarn = registergrunnlag.navn
-        ? utledNavnOgAlder(
-              registergrunnlag.navn,
-              registergrunnlag.fødselsdato,
-              registergrunnlag.dødsdato
-          )
-        : søknadsgrunnlag.navn
-          ? 'Ikke utfylt'
-          : 'Ikke født';
+    const navnOgAlderPåBarn = utledNavnOgAlderForAleneomsorg(registergrunnlag, søknadsgrunnlag);
 
     return (
         <BarneInfoWrapper
