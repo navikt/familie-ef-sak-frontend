@@ -22,28 +22,18 @@ export const validerInnvilgetVedtakForm = ({
     utgiftsperioder,
     harKontantstøtte,
     kontantstøtteperioder,
-    harTilleggsstønad,
-    tilleggsstønadBegrunnelse,
     skalStønadReduseres,
     tilleggsstønadsperioder,
     begrunnelse,
 }: InnvilgeVedtakForm): FormErrors<InnvilgeVedtakForm> => {
-    const skalHaBegrunnelseForTilleggsstønad = harTilleggsstønad === ERadioValg.JA;
-    const tilleggsstønadBegrunnelseFeil =
-        skalHaBegrunnelseForTilleggsstønad && !harVerdi(tilleggsstønadBegrunnelse)
-            ? 'Mangelfull utfylling av begrunnelse'
-            : undefined;
-
     return {
         ...validerPerioder({
             utgiftsperioder,
             harKontantstøtte,
             kontantstøtteperioder,
-            harTilleggsstønad,
             skalStønadReduseres,
             tilleggsstønadsperioder,
         }),
-        tilleggsstønadBegrunnelse: tilleggsstønadBegrunnelseFeil,
         begrunnelse: !harVerdi(begrunnelse) ? 'Mangelfull utfylling av begrunnelse' : undefined,
     };
 };
@@ -52,21 +42,18 @@ export const validerPerioder = ({
     utgiftsperioder,
     harKontantstøtte,
     kontantstøtteperioder,
-    harTilleggsstønad,
     skalStønadReduseres,
     tilleggsstønadsperioder,
 }: {
     utgiftsperioder: IUtgiftsperiode[];
     harKontantstøtte: ERadioValg;
     kontantstøtteperioder?: IPeriodeMedBeløp[];
-    harTilleggsstønad: ERadioValg;
     skalStønadReduseres: ERadioValg;
     tilleggsstønadsperioder?: IPeriodeMedBeløp[];
 }): FormErrors<{
     utgiftsperioder: IUtgiftsperiode[];
     kontantstøtteperioder?: IPeriodeMedBeløp[];
     harKontantstøtte: ERadioValg;
-    harTilleggsstønad: ERadioValg;
     skalStønadReduseres: ERadioValg;
     tilleggsstønadsperioder?: IPeriodeMedBeløp[];
 }> => {
@@ -74,16 +61,9 @@ export const validerPerioder = ({
         ...validerUtgiftsperioder({ utgiftsperioder }),
         harKontantstøtte: harKontantstøtte === ERadioValg.IKKE_SATT ? 'Mangler verdi' : undefined,
         ...validerKontantstøttePerioder({ kontantstøtteperioder }, harKontantstøtte),
-        harTilleggsstønad: harTilleggsstønad === ERadioValg.IKKE_SATT ? 'Mangler verdi' : undefined,
         skalStønadReduseres:
-            harTilleggsstønad === ERadioValg.JA && skalStønadReduseres === ERadioValg.IKKE_SATT
-                ? 'Mangler verdi'
-                : undefined,
-        ...validerTilleggsstønadPerioder(
-            { tilleggsstønadsperioder },
-            harTilleggsstønad,
-            skalStønadReduseres
-        ),
+            skalStønadReduseres === ERadioValg.IKKE_SATT ? 'Mangler verdi' : undefined,
+        ...validerTilleggsstønadPerioder({ tilleggsstønadsperioder }, skalStønadReduseres),
     };
 };
 
@@ -244,14 +224,9 @@ const validerTilleggsstønadPerioder = (
     }: {
         tilleggsstønadsperioder: IPeriodeMedBeløp[] | undefined;
     },
-    tilleggsstønad: ERadioValg,
     stønadsreduksjon: ERadioValg
 ): FormErrors<{ tilleggsstønadsperioder: IPeriodeMedBeløp[] }> => {
-    if (
-        !tilleggsstønadsperioder ||
-        tilleggsstønad === ERadioValg.NEI ||
-        stønadsreduksjon === ERadioValg.NEI
-    ) {
+    if (!tilleggsstønadsperioder || stønadsreduksjon === ERadioValg.NEI) {
         const tilleggsstønadsperiodeFeil: FormErrors<IPeriodeMedBeløp> = {
             årMånedFra: undefined,
             årMånedTil: undefined,

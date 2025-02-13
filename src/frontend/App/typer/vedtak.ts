@@ -81,12 +81,12 @@ export type IInnvilgeVedtakForBarnetilsyn = {
     begrunnelse?: string;
     perioder: IUtgiftsperiode[];
     perioderKontantstøtte: IPeriodeMedBeløp[];
+    kontantstøtteBegrunnelse?: string;
     tilleggsstønad: ITilleggsstønad;
     _type?: IVedtakType.InnvilgelseBarnetilsyn | IVedtakType.InnvilgelseBarnetilsynUtenUtbetaling;
 };
 
 export type ITilleggsstønad = {
-    harTilleggsstønad: boolean;
     perioder: IPeriodeMedBeløp[];
     begrunnelse?: string;
 };

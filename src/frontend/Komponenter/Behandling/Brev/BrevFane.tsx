@@ -14,7 +14,8 @@ import { Behandling } from '../../../App/typer/fagsak';
 import { OverstyrtBrevmalVarsel } from './OverstyrtBrevmalVarsel';
 import { FremleggoppgaverSomOpprettes } from './FremleggoppgaverSomOpprettes';
 import { VStack } from '@navikt/ds-react';
-import { useHentOppgaverForOpprettelse } from '../../../App/hooks/useHentOppgaverForOpprettelse';
+import { OppgaverForFerdigstilling } from '../Totrinnskontroll/OppgaverForFerdigstilling';
+import { useHentOppfølgingsoppgave } from '../../../App/hooks/useHentOppfølgingsoppgave';
 
 interface Props {
     behandling: Behandling;
@@ -26,8 +27,7 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
         useBehandling();
     const [brevRessurs, settBrevRessurs] = useState<Ressurs<string>>(byggTomRessurs());
     const [kanSendesTilBeslutter, settKanSendesTilBeslutter] = useState<boolean>(false);
-    const { oppgaverForOpprettelse, hentOppgaverForOpprettelseCallback } =
-        useHentOppgaverForOpprettelse(behandling.id);
+    const { hentOppfølgingsoppgave, oppfølgingsoppgave } = useHentOppfølgingsoppgave(behandling.id);
 
     const lagBeslutterBrev = () => {
         axiosRequest<string, null>({
@@ -67,10 +67,10 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
             response={{
                 personopplysningerResponse,
                 vedtak,
-                oppgaverForOpprettelse,
+                oppfølgingsoppgave,
             }}
         >
-            {({ personopplysningerResponse, vedtak, oppgaverForOpprettelse }) => (
+            {({ personopplysningerResponse, vedtak, oppfølgingsoppgave }) => (
                 <>
                     <StyledBrev>
                         <VenstreKolonne>
@@ -80,11 +80,15 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
                                     personopplysninger={personopplysningerResponse}
                                 />
                                 {!behandlingErRedigerbar && (
-                                    <FremleggoppgaverSomOpprettes
-                                        oppgavetyperSomSkalOpprettes={
-                                            oppgaverForOpprettelse.oppgavetyperSomSkalOpprettes
-                                        }
-                                    />
+                                    <>
+                                        <FremleggoppgaverSomOpprettes
+                                            oppgavetyperSomSkalOpprettes={
+                                                oppfølgingsoppgave.oppgaverForOpprettelse
+                                                    .oppgavetyperSomSkalOpprettes
+                                            }
+                                        />
+                                        <OppgaverForFerdigstilling behandlingId={behandling.id} />
+                                    </>
                                 )}
                                 {!behandlingErRedigerbar && (
                                     <OverstyrtBrevmalVarsel behandlingId={behandling.id} />
@@ -109,10 +113,8 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
                         kanSendesTilBeslutter={kanSendesTilBeslutter}
                         ferdigstillUtenBeslutter={skalFerdigstilleUtenBeslutter(vedtak)}
                         behandlingErRedigerbar={behandlingErRedigerbar}
-                        oppgavetyperSomKanOpprettes={
-                            oppgaverForOpprettelse.oppgavetyperSomKanOpprettes
-                        }
-                        hentOppgaverForOpprettelseCallback={hentOppgaverForOpprettelseCallback}
+                        hentOppfølgingsoppgave={hentOppfølgingsoppgave}
+                        oppfølgingsoppgave={oppfølgingsoppgave}
                     />
                 </>
             )}

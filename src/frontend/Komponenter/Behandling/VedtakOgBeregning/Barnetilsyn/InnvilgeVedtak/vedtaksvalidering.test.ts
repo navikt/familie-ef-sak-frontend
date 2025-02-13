@@ -11,37 +11,15 @@ import { validerInnvilgetVedtakForm } from './vedtaksvalidering';
 
 describe('validering av innvilget barnetilsyn', () => {
     test('skal validere begrunnelsesfelt for tilleggsstønad', () => {
-        const underkjentForm = { ...lagForm(), harTilleggsstønad: ERadioValg.JA };
-        const underkjentForm2 = {
-            ...lagForm(),
-            harTilleggsstønad: ERadioValg.JA,
-            tilleggsstønadBegrunnelse: '',
-        };
-        const godkjentForm = { ...lagForm(), harTilleggsstønad: ERadioValg.NEI };
-        const godkjentForm2 = {
-            ...lagForm(),
-            harTilleggsstønad: ERadioValg.NEI,
-            tilleggsstønadBegrunnelse: '',
-        };
-        const godkjentForm3 = {
-            ...lagForm(),
-            harTilleggsstønad: ERadioValg.JA,
-            tilleggsstønadBegrunnelse: 'Begrunnelse',
-        };
+        const godkjentForm1 = { ...lagForm(), begrunnelse: undefined };
+        const godkjentForm2 = { ...lagForm(), begrunnelse: '' };
+        const godkjentForm3 = { ...lagForm(), begrunnelse: 'Fylt ut begrunnelse' };
 
-        const underkjentValidering = validerInnvilgetVedtakForm(underkjentForm);
-        const underkjentValidering2 = validerInnvilgetVedtakForm(underkjentForm2);
-        const godkjentValidering = validerInnvilgetVedtakForm(godkjentForm);
+        const godkjentValidering1 = validerInnvilgetVedtakForm(godkjentForm1);
         const godkjentValidering2 = validerInnvilgetVedtakForm(godkjentForm2);
         const godkjentValidering3 = validerInnvilgetVedtakForm(godkjentForm3);
 
-        expect(underkjentValidering.tilleggsstønadBegrunnelse).toBe(
-            'Mangelfull utfylling av begrunnelse'
-        );
-        expect(underkjentValidering2.tilleggsstønadBegrunnelse).toBe(
-            'Mangelfull utfylling av begrunnelse'
-        );
-        expect(godkjentValidering.tilleggsstønadBegrunnelse).toBeUndefined;
+        expect(godkjentValidering1.tilleggsstønadBegrunnelse).toBeUndefined;
         expect(godkjentValidering2.tilleggsstønadBegrunnelse).toBeUndefined;
         expect(godkjentValidering3.tilleggsstønadBegrunnelse).toBeUndefined;
     });
@@ -74,39 +52,18 @@ describe('validering av innvilget barnetilsyn', () => {
         expect(godkjentValidering2.harKontantstøtte).toBeUndefined;
     });
 
-    test('skal validere valg av tilleggsstønad', () => {
-        const underkjentForm = { ...lagForm(), harTilleggsstønad: ERadioValg.IKKE_SATT };
-        const godkjentForm = { ...lagForm(), harTilleggsstønad: ERadioValg.NEI };
-        const godkjentForm2 = { ...lagForm(), harTilleggsstønad: ERadioValg.JA };
-
-        const underkjentValidering = validerInnvilgetVedtakForm(underkjentForm);
-        const godkjentValidering = validerInnvilgetVedtakForm(godkjentForm);
-        const godkjentValidering2 = validerInnvilgetVedtakForm(godkjentForm2);
-
-        expect(underkjentValidering.harTilleggsstønad).toBe('Mangler verdi');
-        expect(godkjentValidering.harTilleggsstønad).toBeUndefined;
-        expect(godkjentValidering2.harTilleggsstønad).toBeUndefined;
-    });
-
     test('skal validere valg av stønadsreduksjon', () => {
         const underkjentForm = { ...lagForm(), skalStønadReduseres: ERadioValg.IKKE_SATT };
         const godkjentForm = { ...lagForm(), skalStønadReduseres: ERadioValg.NEI };
         const godkjentForm2 = { ...lagForm(), skalStønadReduseres: ERadioValg.JA };
-        const godkjentForm3 = {
-            ...lagForm(),
-            harTilleggsstønad: ERadioValg.NEI,
-            skalStønadReduseres: ERadioValg.NEI,
-        };
 
         const underkjentValidering = validerInnvilgetVedtakForm(underkjentForm);
         const godkjentValidering = validerInnvilgetVedtakForm(godkjentForm);
         const godkjentValidering2 = validerInnvilgetVedtakForm(godkjentForm2);
-        const godkjentValidering3 = validerInnvilgetVedtakForm(godkjentForm3);
 
         expect(underkjentValidering.skalStønadReduseres).toBe('Mangler verdi');
         expect(godkjentValidering.skalStønadReduseres).toBeUndefined;
         expect(godkjentValidering2.skalStønadReduseres).toBeUndefined;
-        expect(godkjentValidering3.skalStønadReduseres).toBeUndefined;
     });
 });
 
@@ -357,20 +314,18 @@ describe('validering av kontantstøtteperioder for innvilget barnetilsyn', () =>
     });
 
     describe('validering av tilleggsstøndadsperioder', () => {
-        test('skal ikke valideres dersom ingen tilleggsstønad eller stønadsreduksjon', () => {
+        test('skal bare validere dersom stønad skal reduseres er valgt', () => {
             const tilleggsstønadPerioder = [
                 lagBeløpsperiode('2024-01', '2024-02', 10),
                 lagBeløpsperiode('2024-03', '2024-04', 10),
             ];
             const vedtaksform = {
                 ...lagForm(),
-                harTilleggsstønad: ERadioValg.NEI,
                 skalStønadReduseres: ERadioValg.JA,
                 tilleggsstønadsperioder: tilleggsstønadPerioder,
             };
             const vedtaksform2 = {
                 ...lagForm(),
-                harTilleggsstønad: ERadioValg.JA,
                 skalStønadReduseres: ERadioValg.NEI,
                 tilleggsstønadsperioder: tilleggsstønadPerioder,
             };
@@ -378,7 +333,7 @@ describe('validering av kontantstøtteperioder for innvilget barnetilsyn', () =>
             const validering2 = validerInnvilgetVedtakForm(vedtaksform2);
 
             expect(validering.tilleggsstønadsperioder).toBeDefined;
-            expect(validering.tilleggsstønadsperioder.length).toBe(1);
+            expect(validering.tilleggsstønadsperioder.length).toBe(2);
             expect(validering.tilleggsstønadsperioder[0].årMånedFra).toBe(undefined);
             expect(validering.tilleggsstønadsperioder[0].årMånedTil).toBe(undefined);
             expect(validering.tilleggsstønadsperioder[0].beløp).toBe(undefined);
@@ -475,7 +430,6 @@ const lagBeløpsperiode = (
 const lagForm = (
     utgiftsperioder?: IUtgiftsperiode[],
     harKontantstøtte?: ERadioValg,
-    harTilleggsstønad?: ERadioValg,
     skalStønadReduseres?: ERadioValg,
     tilleggsstønadBegrunnelse?: string,
     kontantstøtteperioder?: IPeriodeMedBeløp[],
@@ -486,7 +440,6 @@ const lagForm = (
         utgiftsperioder: utgiftsperioder ?? [],
         kontantstøtteperioder: kontantstøtteperioder,
         harKontantstøtte: harKontantstøtte ?? ERadioValg.JA,
-        harTilleggsstønad: harTilleggsstønad ?? ERadioValg.JA,
         tilleggsstønadBegrunnelse: tilleggsstønadBegrunnelse,
         skalStønadReduseres: skalStønadReduseres ?? ERadioValg.JA,
         tilleggsstønadsperioder: tilleggsstønadsperioder,
