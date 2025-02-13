@@ -2,6 +2,7 @@ import { useApp } from '../context/AppContext';
 import { useCallback, useState } from 'react';
 import {
     byggHenterRessurs,
+    byggSuksessRessurs,
     byggTomRessurs,
     Ressurs,
     RessursFeilet,
@@ -18,10 +19,11 @@ interface SamværsavtaleResponse {
     feilmelding: string;
 }
 
-export const useSamværsavtaler = (): SamværsavtaleResponse => {
+export const useSamværsavtaler = (skalViseSamværskalkulator: boolean): SamværsavtaleResponse => {
     const { axiosRequest } = useApp();
-    const [samværsavtaler, settSamværsavtaler] =
-        useState<Ressurs<Samværsavtale[]>>(byggTomRessurs());
+    const [samværsavtaler, settSamværsavtaler] = useState<Ressurs<Samværsavtale[]>>(
+        skalViseSamværskalkulator ? byggTomRessurs() : byggSuksessRessurs([])
+    );
     const [feilmelding, settFeilmelding] = useState<string>('');
 
     const hentSamværsavtaler = useCallback(

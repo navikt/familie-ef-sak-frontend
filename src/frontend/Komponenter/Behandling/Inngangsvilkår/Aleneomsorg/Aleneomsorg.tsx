@@ -12,6 +12,8 @@ import DokumentasjonSendtInn from '../DokumentasjonSendtInn';
 import { VilkårpanelInnhold } from '../../Vilkårpanel/VilkårpanelInnhold';
 import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';
 import { SamværskalkulatorAleneomsorg } from './SamværskalkulatorAleneomsorg';
+import { useToggles } from '../../../../App/context/TogglesContext';
+import { ToggleName } from '../../../../App/context/toggles';
 
 export const Aleneomsorg: React.FC<VilkårPropsAleneomsorg> = ({
     vurderinger,
@@ -27,6 +29,8 @@ export const Aleneomsorg: React.FC<VilkårPropsAleneomsorg> = ({
     slettSamværsavtale,
 }) => {
     const { axiosRequest } = useApp();
+    const { toggles } = useToggles();
+    const skalViseSamværskalkulator = toggles[ToggleName.visSamværskalkulator];
 
     const [barnMedLøpendeStønad, settBarnMedLøpendeStønad] =
         useState<Ressurs<IBarnMedLøpendeStønad>>(byggTomRessurs());
@@ -69,7 +73,9 @@ export const Aleneomsorg: React.FC<VilkårPropsAleneomsorg> = ({
 
                 return (
                     <React.Fragment key={barn.barnId}>
-                        <VilkårpanelInnhold>
+                        <VilkårpanelInnhold
+                            borderBottom={skalViseSamværskalkulator ? false : skalViseBorderBottom}
+                        >
                             {{
                                 venstre: (
                                     <>
@@ -119,15 +125,17 @@ export const Aleneomsorg: React.FC<VilkårPropsAleneomsorg> = ({
                                 ),
                             }}
                         </VilkårpanelInnhold>
-                        <SamværskalkulatorAleneomsorg
-                            gjeldendeBehandlingBarnId={barn.barnId}
-                            behandlingId={behandling.id}
-                            lagredeSamværsavtaler={lagredeSamværsavtaler}
-                            lagreSamværsavtale={lagreSamværsavtale}
-                            slettSamværsavtale={slettSamværsavtale}
-                            alleBehandlingBarn={grunnlag.barnMedSamvær}
-                            skalViseBorderBottom={skalViseBorderBottom}
-                        />
+                        {skalViseSamværskalkulator && (
+                            <SamværskalkulatorAleneomsorg
+                                gjeldendeBehandlingBarnId={barn.barnId}
+                                behandlingId={behandling.id}
+                                lagredeSamværsavtaler={lagredeSamværsavtaler}
+                                lagreSamværsavtale={lagreSamværsavtale}
+                                slettSamværsavtale={slettSamværsavtale}
+                                alleBehandlingBarn={grunnlag.barnMedSamvær}
+                                skalViseBorderBottom={skalViseBorderBottom}
+                            />
+                        )}
                     </React.Fragment>
                 );
             })}
