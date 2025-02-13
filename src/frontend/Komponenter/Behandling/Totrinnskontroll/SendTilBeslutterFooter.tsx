@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useApp } from '../../../App/context/AppContext';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
@@ -17,6 +17,8 @@ import { ModalState } from '../Modal/NyEierModal';
 import { useToggles } from '../../../App/context/TogglesContext';
 import { ToggleName } from '../../../App/context/toggles';
 import { ModalOpprettOgFerdigstilleOppgaver } from './ModalOpprettOgFerdigstilleOppgaver';
+import { useHentFremleggsoppgaverForOvergangsstønad } from '../../../App/hooks/useHentFremleggsoppgaverForOvergangsstønad';
+import { Oppfølgingsoppgave } from '../../../App/hooks/useHentOppfølgingsoppgave';
 
 const Footer = styled.footer`
     width: 100%;
@@ -41,6 +43,7 @@ const FlexBox = styled.div`
 export interface SendTilBeslutterRequest {
     oppgavetyperSomSkalOpprettes: OppgaveTypeForOpprettelse[];
     årForInntektskontrollSelvstendigNæringsdrivende?: number;
+    fremleggsoppgaveIderSomSkalFerdigstilles: number[];
 }
 
 const utledDefaultOppgavetyperSomSkalOpprettes = (
@@ -62,17 +65,17 @@ const SendTilBeslutterFooter: React.FC<{
     kanSendesTilBeslutter?: boolean;
     behandlingErRedigerbar: boolean;
     ferdigstillUtenBeslutter: boolean;
-    oppgavetyperSomKanOpprettes?: OppgaveTypeForOpprettelse[];
-    hentOppgaverForOpprettelseCallback?: {
+    hentOppfølgingsoppgave?: {
         rerun: () => void;
     };
+    oppfølgingsoppgave?: Oppfølgingsoppgave;
 }> = ({
     behandling,
     kanSendesTilBeslutter,
     behandlingErRedigerbar,
     ferdigstillUtenBeslutter,
-    oppgavetyperSomKanOpprettes,
-    hentOppgaverForOpprettelseCallback,
+    hentOppfølgingsoppgave,
+    oppfølgingsoppgave,
 }) => {
     const { axiosRequest } = useApp();
     const navigate = useNavigate();
@@ -85,6 +88,10 @@ const SendTilBeslutterFooter: React.FC<{
         settNyEierModalState,
     } = useBehandling();
     const { toggles } = useToggles();
+    const { hentFremleggsoppgaver, fremleggsoppgaver } =
+        useHentFremleggsoppgaverForOvergangsstønad();
+    const oppgavetyperSomKanOpprettes =
+        oppfølgingsoppgave?.oppgaverForOpprettelse?.oppgavetyperSomKanOpprettes;
     const [laster, settLaster] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>();
     const [visModal, settVisModal] = useState<boolean>(false);
@@ -97,6 +104,8 @@ const SendTilBeslutterFooter: React.FC<{
         årForInntektskontrollSelvstendigNæringsdrivende,
         settÅrForInntektskontrollSelvstendigNæringsdrivende,
     ] = useState<number | undefined>();
+    const [oppgaverSomSkalAutomatiskFerdigstilles, settOppgaverSomSkalAutomatiskFerdigstilles] =
+        useState<number[]>(oppfølgingsoppgave?.oppgaveIderForFerdigstilling || []);
 
     const sendTilBeslutter = () => {
         settLaster(true);
@@ -108,6 +117,7 @@ const SendTilBeslutterFooter: React.FC<{
                 oppgavetyperSomSkalOpprettes: oppgavetyperSomSkalOpprettes,
                 årForInntektskontrollSelvstendigNæringsdrivende:
                     årForInntektskontrollSelvstendigNæringsdrivende,
+                fremleggsoppgaveIderSomSkalFerdigstilles: oppgaverSomSkalAutomatiskFerdigstilles,
             },
         })
             .then((res: RessursSuksess<string> | RessursFeilet) => {
@@ -117,7 +127,7 @@ const SendTilBeslutterFooter: React.FC<{
                     hentAnsvarligSaksbehandler.rerun();
                     hentTotrinnskontroll.rerun();
                     settVisMarkereGodkjenneVedtakOppgaveModal(false);
-                    hentOppgaverForOpprettelseCallback?.rerun();
+                    hentOppfølgingsoppgave?.rerun();
                     settVisModal(true);
                 } else {
                     settFeilmelding(res.frontendFeilmelding);
@@ -146,8 +156,13 @@ const SendTilBeslutterFooter: React.FC<{
 
     const skalViseKnappForModal =
         toggleVisKnappForModal &&
+        oppfølgingsoppgave &&
         oppgavetyperSomKanOpprettes &&
         oppgavetyperSomKanOpprettes.length > 0;
+
+    useEffect(() => {
+        hentFremleggsoppgaver(behandling.id);
+    }, [behandling.id, hentFremleggsoppgaver]);
 
     return (
         <>
@@ -159,7 +174,7 @@ const SendTilBeslutterFooter: React.FC<{
                     )}
                     <FlexBox>
                         {/* TODO: Dette skal fjernes etter at ny modal er togglet på for alle */}
-                        {oppgavetyperSomKanOpprettes && (
+                        {oppgavetyperSomKanOpprettes && !toggleVisKnappForModal && (
                             <OppgaverForOpprettelse
                                 oppgavetyperSomKanOpprettes={oppgavetyperSomKanOpprettes}
                                 oppgavetyperSomSkalOpprettes={oppgavetyperSomSkalOpprettes}
@@ -217,6 +232,11 @@ const SendTilBeslutterFooter: React.FC<{
                     }
                     settÅrForInntektskontrollSelvstendigNæringsdrivende={
                         settÅrForInntektskontrollSelvstendigNæringsdrivende
+                    }
+                    fremleggsOppgaver={fremleggsoppgaver}
+                    oppgaverSomSkalAutomatiskFerdigstilles={oppgaverSomSkalAutomatiskFerdigstilles}
+                    settOppgaverSomSkalAutomatiskFerdigstilles={
+                        settOppgaverSomSkalAutomatiskFerdigstilles
                     }
                 />
             )}
