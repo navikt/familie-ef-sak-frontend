@@ -154,6 +154,7 @@ export const HeaderMedSøk: React.FunctionComponent<IHeaderMedSøkProps> = ({
                 }}
                 brukerPopoverItems={[{ name: 'Logg ut', href: `${window.origin}/auth/logout` }]}
                 eksterneLenker={eksterneLenker}
+                skalViseLabelsOgIkonPåLenker={true}
             >
                 {innloggetSaksbehandler && <PersonSøk />}
                 {innloggetSaksbehandler?.navIdent && (
