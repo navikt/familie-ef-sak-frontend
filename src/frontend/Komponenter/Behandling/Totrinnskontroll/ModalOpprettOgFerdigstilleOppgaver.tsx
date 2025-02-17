@@ -46,19 +46,22 @@ export const ModalOpprettOgFerdigstilleOppgaver: FC<{
         );
 
     const kanVelgeMellomFlereOppgavetyper = (oppgavetyperSomKanOpprettes ?? []).length > 1;
+    const harValgtAnnetEnnInntektskontroll =
+        kanVelgeMellomFlereOppgavetyper &&
+        !oppgavetyperSomSkalOpprettes.includes(
+            OppgaveTypeForOpprettelse.INNTEKTSKONTROLL_SELVSTENDIG_NÆRINGSDRIVENDE
+        );
+
+    const harValgtInntektskontrollOgÅr =
+        oppgavetyperSomSkalOpprettes.includes(
+            OppgaveTypeForOpprettelse.INNTEKTSKONTROLL_SELVSTENDIG_NÆRINGSDRIVENDE
+        ) && årForInntektskontrollSelvstendigNæringsdrivende;
+
+    const harValgtIngen =
+        !kanVelgeMellomFlereOppgavetyper && oppgavetyperSomSkalOpprettes.length === 0;
 
     const erValgIRadioEllerChecboxGroupGyldig =
-        (kanVelgeMellomFlereOppgavetyper &&
-            oppgavetyperSomSkalOpprettes.length > 0 &&
-            !oppgavetyperSomSkalOpprettes.includes(
-                OppgaveTypeForOpprettelse.INNTEKTSKONTROLL_SELVSTENDIG_NÆRINGSDRIVENDE
-            )) ||
-        !!årForInntektskontrollSelvstendigNæringsdrivende ||
-        (!kanVelgeMellomFlereOppgavetyper &&
-            oppgavetyperSomKanOpprettes &&
-            oppgavetyperSomKanOpprettes.includes(
-                OppgaveTypeForOpprettelse.INNTEKTSKONTROLL_1_ÅR_FREM_I_TID
-            ));
+        harValgtAnnetEnnInntektskontroll || harValgtInntektskontrollOgÅr || harValgtIngen;
 
     return (
         <DataViewer response={{ fremleggsOppgaver }}>
