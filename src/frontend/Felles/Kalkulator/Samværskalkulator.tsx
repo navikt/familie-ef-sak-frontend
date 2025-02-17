@@ -70,6 +70,13 @@ const Spacer = styled.div`
     }
 `;
 
+const UkeTittel = styled(Label)<{ $marginLeft: boolean }>`
+    text-decoration: underline;
+    text-decoration-thickness: 0.125rem;
+    text-underline-offset: 0.25rem;
+    margin-left: ${(props) => props.$marginLeft && `16.8rem`};
+`;
+
 const VARIGHETER_SAMVÆRSAVTALE = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
 
 export const kalkulerSamværsandeler = (samværsuker: Samværsuke[]) => {
@@ -155,29 +162,32 @@ const Uke: React.FC<{
     visValgmuligheter: boolean;
     erLesevisning: boolean;
 }> = ({ samværsuke, index, oppdaterSamværsdag, visValgmuligheter, erLesevisning }) => (
-    <UkeContainer gap="1" $border={(index + 1) % 4 !== 0}>
-        {visValgmuligheter && (
-            <Valgmuligheter gap="6">
-                <Div />
-                {Object.keys(Samværsandel).map((andel) => (
-                    <Label key={andel}>{samværsandelTilTekst[andel as Samværsandel]}</Label>
-                ))}
-            </Valgmuligheter>
-        )}
-        {Object.entries(samværsuke).map(([ukedag, samvær]: [string, Samværsdag], index) => {
-            return (
-                <Ukedag
-                    key={ukedag + index}
-                    ukedag={ukedag}
-                    oppdaterSamværsandeler={(samværsandeler: Samværsandel[]) =>
-                        oppdaterSamværsdag(ukedag, samværsandeler)
-                    }
-                    samværsandeler={samvær.andeler}
-                    erLesevisning={erLesevisning}
-                />
-            );
-        })}
-    </UkeContainer>
+    <VStack gap="2">
+        <UkeTittel $marginLeft={visValgmuligheter}>{`Uke ${index + 1}`}</UkeTittel>
+        <UkeContainer gap="1" $border={(index + 1) % 4 !== 0}>
+            {visValgmuligheter && (
+                <Valgmuligheter gap="6">
+                    <Div />
+                    {Object.keys(Samværsandel).map((andel) => (
+                        <Label key={andel}>{samværsandelTilTekst[andel as Samværsandel]}</Label>
+                    ))}
+                </Valgmuligheter>
+            )}
+            {Object.entries(samværsuke).map(([ukedag, samvær]: [string, Samværsdag], index) => {
+                return (
+                    <Ukedag
+                        key={ukedag + index}
+                        ukedag={ukedag}
+                        oppdaterSamværsandeler={(samværsandeler: Samværsandel[]) =>
+                            oppdaterSamværsdag(ukedag, samværsandeler)
+                        }
+                        samværsandeler={samvær.andeler}
+                        erLesevisning={erLesevisning}
+                    />
+                );
+            })}
+        </UkeContainer>
+    </VStack>
 );
 
 const Ukedag: React.FC<{
