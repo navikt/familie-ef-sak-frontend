@@ -14,6 +14,7 @@ import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';
 import { SamværskalkulatorAleneomsorg } from './SamværskalkulatorAleneomsorg';
 import { useToggles } from '../../../../App/context/TogglesContext';
 import { ToggleName } from '../../../../App/context/toggles';
+import { useBehandling } from '../../../../App/context/BehandlingContext';
 
 export const Aleneomsorg: React.FC<VilkårPropsAleneomsorg> = ({
     vurderinger,
@@ -29,6 +30,7 @@ export const Aleneomsorg: React.FC<VilkårPropsAleneomsorg> = ({
     slettSamværsavtale,
 }) => {
     const { axiosRequest } = useApp();
+    const { behandlingErRedigerbar } = useBehandling();
     const { toggles } = useToggles();
     const skalViseSamværskalkulator = toggles[ToggleName.visSamværskalkulator];
 
@@ -71,11 +73,18 @@ export const Aleneomsorg: React.FC<VilkårPropsAleneomsorg> = ({
                     indeks !== grunnlag.barnMedSamvær.length - 1 &&
                     grunnlag.barnMedSamvær.length > 1;
 
+                const lagretSamværsavtale = lagredeSamværsavtaler.find(
+                    (avtale) => avtale.behandlingBarnId === barn.barnId
+                );
+
+                // TODO: Fjern når feature toggle for skalViseSamværskalkulator fjernes
+                const vilkårpanelSkalViseBorderBottom = skalViseSamværskalkulator
+                    ? !behandlingErRedigerbar && !lagretSamværsavtale && skalViseBorderBottom
+                    : skalViseBorderBottom;
+
                 return (
                     <React.Fragment key={barn.barnId}>
-                        <VilkårpanelInnhold
-                            borderBottom={skalViseSamværskalkulator ? false : skalViseBorderBottom}
-                        >
+                        <VilkårpanelInnhold borderBottom={vilkårpanelSkalViseBorderBottom}>
                             {{
                                 venstre: (
                                     <>
