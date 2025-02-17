@@ -62,6 +62,14 @@ const IkonKnapp = styled(Button)`
     height: fit-content;
 `;
 
+const Spacer = styled.div`
+    width: calc(100% - 1600px);
+
+    @media screen and (max-width: 1900px) {
+        display: none;
+    }
+`;
+
 const VARIGHETER_SAMVÆRSAVTALE = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
 
 export const kalkulerSamværsandeler = (samværsuker: Samværsuke[]) => {
@@ -116,16 +124,19 @@ export const Samværskalkulator: React.FC<Props> = ({
         />
         <HStack gap="4">
             {samværsuker.map((samværsuke, index) => (
-                <Uke
-                    key={index}
-                    index={index}
-                    samværsuke={samværsuke}
-                    oppdaterSamværsdag={(dag: string, samværsandeler: Samværsandel[]) =>
-                        oppdaterSamværsuke(index, dag, samværsandeler)
-                    }
-                    visValgmuligheter={index % 4 === 0}
-                    erLesevisning={erLesevisning}
-                />
+                <>
+                    <Uke
+                        key={index}
+                        index={index}
+                        samværsuke={samværsuke}
+                        oppdaterSamværsdag={(dag: string, samværsandeler: Samværsandel[]) =>
+                            oppdaterSamværsuke(index, dag, samværsandeler)
+                        }
+                        visValgmuligheter={index % 4 === 0}
+                        erLesevisning={erLesevisning}
+                    />
+                    {(index + 1) % 4 === 0 && <Spacer />}
+                </>
             ))}
         </HStack>
         <Oppsummering
