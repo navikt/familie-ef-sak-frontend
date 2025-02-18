@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 interface HamburgerMenyInnholdProps {
     $åpen: boolean;
+    $plassering: 'bottom-center' | 'right';
 }
 
 const HamburgerMenyIkon = styled(MenuHamburgerIcon)`
@@ -33,7 +34,8 @@ const HamburgerMenyInnhold = styled.div<HamburgerMenyInnholdProps>`
 
     background-color: white;
 
-    right: 1rem;
+    ${(props) =>
+        props.$plassering === 'bottom-center' ? 'right: 1rem;' : 'left: 3rem; bottom: 0.25rem;'}
 
     border: 1px solid grey;
 
@@ -77,10 +79,16 @@ export interface MenyItem {
 export interface Props {
     className?: string;
     items: MenyItem[];
+    plasseringItems?: 'bottom-center' | 'right';
     type?: 'hamburger' | 'ellipsisV';
 }
 
-export const Hamburgermeny: FC<Props> = ({ className, items, type = 'hamburger' }) => {
+export const Hamburgermeny: FC<Props> = ({
+    className,
+    items,
+    type = 'hamburger',
+    plasseringItems = 'bottom-center',
+}) => {
     const ref = useRef(null);
     const [åpenHamburgerMeny, settÅpenHamburgerMeny] = useState<boolean>(false);
 
@@ -118,7 +126,7 @@ export const Hamburgermeny: FC<Props> = ({ className, items, type = 'hamburger' 
                     }}
                 />
             )}
-            <HamburgerMenyInnhold $åpen={åpenHamburgerMeny}>
+            <HamburgerMenyInnhold $åpen={åpenHamburgerMeny} $plassering={plasseringItems}>
                 <ul>
                     {items.map((p) => (
                         <li key={p.tekst}>
