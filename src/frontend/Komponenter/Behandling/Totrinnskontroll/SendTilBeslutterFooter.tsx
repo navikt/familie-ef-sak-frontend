@@ -19,6 +19,7 @@ import { ToggleName } from '../../../App/context/toggles';
 import { ModalOpprettOgFerdigstilleOppgaver } from './ModalOpprettOgFerdigstilleOppgaver';
 import { useHentFremleggsoppgaverForOvergangsstønad } from '../../../App/hooks/useHentFremleggsoppgaverForOvergangsstønad';
 import { Oppfølgingsoppgave } from '../../../App/hooks/useHentOppfølgingsoppgave';
+import { BeskrivelseMarkeringer } from './BeskrivelseOppgave';
 
 const Footer = styled.footer`
     width: 100%;
@@ -43,7 +44,8 @@ const FlexBox = styled.div`
 export interface SendTilBeslutterRequest {
     oppgavetyperSomSkalOpprettes: OppgaveTypeForOpprettelse[];
     årForInntektskontrollSelvstendigNæringsdrivende?: number;
-    fremleggsoppgaveIderSomSkalFerdigstilles: number[];
+    fremleggsoppgaveIderSomSkalFerdigstilles?: number[];
+    beskrivelseMarkeringer?: BeskrivelseMarkeringer[];
 }
 
 const utledDefaultOppgavetyperSomSkalOpprettes = (
@@ -100,25 +102,16 @@ const SendTilBeslutterFooter: React.FC<{
     const [oppgavetyperSomSkalOpprettes, settOppgavetyperSomSkalOpprettes] = useState<
         OppgaveTypeForOpprettelse[]
     >(utledDefaultOppgavetyperSomSkalOpprettes(oppgavetyperSomKanOpprettes));
-    const [
-        årForInntektskontrollSelvstendigNæringsdrivende,
-        settÅrForInntektskontrollSelvstendigNæringsdrivende,
-    ] = useState<number | undefined>();
     const [oppgaverSomSkalAutomatiskFerdigstilles, settOppgaverSomSkalAutomatiskFerdigstilles] =
         useState<number[]>(oppfølgingsoppgave?.oppgaveIderForFerdigstilling || []);
 
-    const sendTilBeslutter = () => {
+    const sendTilBeslutter = (data: SendTilBeslutterRequest) => {
         settLaster(true);
         settFeilmelding(undefined);
         axiosRequest<string, SendTilBeslutterRequest>({
             method: 'POST',
             url: `/familie-ef-sak/api/vedtak/${behandling.id}/send-til-beslutter`,
-            data: {
-                oppgavetyperSomSkalOpprettes: oppgavetyperSomSkalOpprettes,
-                årForInntektskontrollSelvstendigNæringsdrivende:
-                    årForInntektskontrollSelvstendigNæringsdrivende,
-                fremleggsoppgaveIderSomSkalFerdigstilles: oppgaverSomSkalAutomatiskFerdigstilles,
-            },
+            data: data,
         })
             .then((res: RessursSuksess<string> | RessursFeilet) => {
                 if (res.status === RessursStatus.SUKSESS) {
@@ -193,7 +186,11 @@ const SendTilBeslutterFooter: React.FC<{
                                 </Button>
                             )}
                             <Button
-                                onClick={sendTilBeslutter}
+                                onClick={() =>
+                                    sendTilBeslutter({
+                                        oppgavetyperSomSkalOpprettes: oppgavetyperSomSkalOpprettes,
+                                    })
+                                }
                                 disabled={laster || !kanSendesTilBeslutter}
                                 type={'button'}
                             >
@@ -227,12 +224,6 @@ const SendTilBeslutterFooter: React.FC<{
                     oppgavetyperSomKanOpprettes={oppgavetyperSomKanOpprettes}
                     oppgavetyperSomSkalOpprettes={oppgavetyperSomSkalOpprettes}
                     settOppgavetyperSomSkalOpprettes={settOppgavetyperSomSkalOpprettes}
-                    årForInntektskontrollSelvstendigNæringsdrivende={
-                        årForInntektskontrollSelvstendigNæringsdrivende
-                    }
-                    settÅrForInntektskontrollSelvstendigNæringsdrivende={
-                        settÅrForInntektskontrollSelvstendigNæringsdrivende
-                    }
                     fremleggsOppgaver={fremleggsoppgaver}
                     oppgaverSomSkalAutomatiskFerdigstilles={oppgaverSomSkalAutomatiskFerdigstilles}
                     settOppgaverSomSkalAutomatiskFerdigstilles={
