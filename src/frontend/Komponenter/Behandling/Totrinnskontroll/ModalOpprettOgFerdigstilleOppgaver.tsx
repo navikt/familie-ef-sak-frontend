@@ -1,5 +1,5 @@
 import { Modal, Button, VStack } from '@navikt/ds-react';
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { Divider } from '../../../Felles/Divider/Divider';
 import { Ressurs } from '../../../App/typer/ressurs';
 import { IOppgaverResponse } from '../../../App/hooks/useHentOppgaver';
@@ -8,20 +8,17 @@ import { SendTilBeslutterRequest } from './SendTilBeslutterFooter';
 import { OppgaveTypeForOpprettelse } from './oppgaveForOpprettelseTyper';
 import { FremleggsoppgaverForOpprettelse } from './FremleggsoppgaverForOpprettelse';
 import { TabellFerdigstilleOppgaver } from './TabellFerdigstilleOppgaver';
+import { BeskrivelseMarkeringer, BeskrivelseOppgave } from './BeskrivelseOppgave';
 
 export const ModalOpprettOgFerdigstilleOppgaver: FC<{
     open: boolean;
     setOpen: (open: boolean) => void;
-    sendTilBeslutter: (data?: SendTilBeslutterRequest) => void;
+    sendTilBeslutter: (data: SendTilBeslutterRequest) => void;
     fremleggsOppgaver: Ressurs<IOppgaverResponse>;
     oppgavetyperSomKanOpprettes: OppgaveTypeForOpprettelse[] | undefined;
     oppgavetyperSomSkalOpprettes: OppgaveTypeForOpprettelse[];
     settOppgavetyperSomSkalOpprettes: React.Dispatch<
         React.SetStateAction<OppgaveTypeForOpprettelse[]>
-    >;
-    årForInntektskontrollSelvstendigNæringsdrivende: number | undefined;
-    settÅrForInntektskontrollSelvstendigNæringsdrivende: React.Dispatch<
-        React.SetStateAction<number | undefined>
     >;
     oppgaverSomSkalAutomatiskFerdigstilles: number[];
     settOppgaverSomSkalAutomatiskFerdigstilles: React.Dispatch<React.SetStateAction<number[]>>;
@@ -33,11 +30,17 @@ export const ModalOpprettOgFerdigstilleOppgaver: FC<{
     oppgavetyperSomKanOpprettes,
     oppgavetyperSomSkalOpprettes,
     settOppgavetyperSomSkalOpprettes,
-    årForInntektskontrollSelvstendigNæringsdrivende,
-    settÅrForInntektskontrollSelvstendigNæringsdrivende,
     oppgaverSomSkalAutomatiskFerdigstilles,
     settOppgaverSomSkalAutomatiskFerdigstilles,
 }) => {
+    const [
+        årForInntektskontrollSelvstendigNæringsdrivende,
+        settÅrForInntektskontrollSelvstendigNæringsdrivende,
+    ] = useState<number | undefined>();
+    const [beskrivelseMarkeringer, settBeskrivelseMarkeringer] = useState<BeskrivelseMarkeringer[]>(
+        []
+    );
+
     const handleSettOppgaverSomSkalFerdigstilles = (oppgaveId: number) =>
         settOppgaverSomSkalAutomatiskFerdigstilles((prevOppgaver) =>
             prevOppgaver.includes(oppgaveId)
@@ -104,6 +107,11 @@ export const ModalOpprettOgFerdigstilleOppgaver: FC<{
                                         }
                                     />
                                 )}
+                                <Divider />
+                                <BeskrivelseOppgave
+                                    beskrivelseMarkeringer={beskrivelseMarkeringer}
+                                    settBeskrivelseMarkeringer={settBeskrivelseMarkeringer}
+                                />
                             </VStack>
                         </Modal.Body>
                         <Modal.Footer>
@@ -118,6 +126,7 @@ export const ModalOpprettOgFerdigstilleOppgaver: FC<{
                                             årForInntektskontrollSelvstendigNæringsdrivende,
                                         fremleggsoppgaveIderSomSkalFerdigstilles:
                                             oppgaverSomSkalAutomatiskFerdigstilles,
+                                        beskrivelseMarkeringer: beskrivelseMarkeringer,
                                     })
                                 }
                                 disabled={!erValgIRadioEllerChecboxGroupGyldig}
