@@ -66,6 +66,7 @@ const UtestengelseTabell: FC<{
                                                                 ),
                                                         },
                                                     ]}
+                                                    plasseringItems="right"
                                                 />
                                             )}
                                         </Table.DataCell>
