@@ -335,7 +335,7 @@ const SamværsavtaleSelect: React.FC<{
     settSamværsavtaleMal: React.Dispatch<React.SetStateAction<Samværsavtale | undefined>>;
 }> = ({ samværsavtaler, behandlingBarn, settSamværsavtaleMal }) => (
     <BehandlingBarnSelect
-        label="Mal"
+        label="Velg mal"
         size="small"
         onChange={(event: ChangeEvent<HTMLSelectElement>) =>
             settSamværsavtaleMal(
