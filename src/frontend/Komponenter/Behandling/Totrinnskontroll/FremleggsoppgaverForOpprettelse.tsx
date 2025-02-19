@@ -14,8 +14,7 @@ const StyledÅrvelger = styled(Årvelger)`
 const MAKS_ANTALL_ÅR_TILBAKE = 0;
 const MAKS_ANTALL_ÅR_FREM = 2;
 
-const LEGEND_TEKST =
-    'Følgende oppgaver skal opprettes automatisk ved godkjenning av dette vedtaket:';
+const LEGEND_TEKST = 'Følgende oppgave skal opprettes automatisk når vedtaket er godkjent:';
 
 export const FremleggsoppgaverForOpprettelse: FC<{
     årForInntektskontrollSelvstendigNæringsdrivende: number | undefined;
