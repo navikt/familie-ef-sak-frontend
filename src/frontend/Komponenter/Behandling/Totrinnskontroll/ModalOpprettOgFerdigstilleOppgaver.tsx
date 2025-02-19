@@ -120,7 +120,9 @@ export const ModalOpprettOgFerdigstilleOppgaver: FC<{
                                 onClick={() =>
                                     sendTilBeslutter({
                                         oppgavetyperSomSkalOpprettes: [
-                                            oppgavetyperSomSkalOpprettes[0],
+                                            oppgavetyperSomSkalOpprettes.filter(
+                                                (type) => type && type.trim() !== ''
+                                            )[0],
                                         ],
                                         årForInntektskontrollSelvstendigNæringsdrivende:
                                             årForInntektskontrollSelvstendigNæringsdrivende,
