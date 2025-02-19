@@ -4,7 +4,6 @@ import {
     Button,
     Checkbox,
     CheckboxGroup,
-    Heading,
     HStack,
     Label,
     Select,
@@ -20,7 +19,7 @@ import {
     Samværsuke,
 } from '../../App/typer/samværsavtale';
 import { formaterStrengMedStorForbokstav } from '../../App/utils/formatter';
-import { TrashIcon } from '@navikt/aksel-icons';
+import { CalculatorIcon, TrashIcon } from '@navikt/aksel-icons';
 
 const Div = styled.div`
     height: 1.25rem;
@@ -40,7 +39,7 @@ const SelectContainer = styled(HStack)`
 `;
 
 const OppsummeringContainer = styled(HStack)`
-    padding: 1rem 1.5rem 1.5rem 1.5rem;
+    padding: 1rem 1.5rem 1rem 1.5rem;
     background: ${ASurfaceInfoSubtle};
 `;
 
@@ -260,6 +259,7 @@ const VarighetSelect: React.FC<{
         </StyledSelect>
         {onDelete && !erLesevisning && (
             <IkonKnapp
+                size="small"
                 icon={<TrashIcon title="Slett" />}
                 variant="tertiary"
                 type="button"
@@ -282,18 +282,20 @@ const Oppsummering: React.FC<{
     const visningstekstAvbrytKnapp = erLesevisning ? 'Lukk' : 'Avbryt';
 
     return (
-        <OppsummeringContainer justify="space-between" align="baseline">
-            <HStack align="baseline" gap="4">
-                <Heading size="medium">Total:</Heading>
-                <BodyShort size="large">{samværsandelerDagVisning}</BodyShort>
-                <BodyShort size="large">{samværsandelProsentVisning}</BodyShort>
+        <OppsummeringContainer justify="space-between" align="center">
+            <HStack align="center" gap="4">
+                <HStack gap="2" align="center">
+                    <CalculatorIcon aria-hidden />
+                    <Label>Samvær:</Label>
+                </HStack>
+                <BodyShort size="medium">{`${samværsandelerDagVisning} = ${samværsandelProsentVisning}`}</BodyShort>
             </HStack>
             <HStack gap="4">
-                <Button variant="tertiary" onClick={onClose}>
+                <Button size="small" variant="tertiary" onClick={onClose}>
                     {visningstekstAvbrytKnapp}
                 </Button>
                 {!erLesevisning && (
-                    <Button type="button" onClick={onSave} disabled={erLesevisning}>
+                    <Button size="small" type="button" onClick={onSave} disabled={erLesevisning}>
                         Lagre
                     </Button>
                 )}

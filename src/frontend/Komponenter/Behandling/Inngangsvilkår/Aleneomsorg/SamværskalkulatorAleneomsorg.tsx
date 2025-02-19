@@ -281,10 +281,9 @@ export const SamværskalkulatorAleneomsorg: React.FC<Props> = ({
                         <HStack align="center" gap="4">
                             <HStack gap="2" align="center">
                                 <CalculatorIcon aria-hidden />
-                                <Label>Samværsandel:</Label>
+                                <Label>Samvær:</Label>
                             </HStack>
-                            <BodyShort size="medium">{samværsandelerDagVisning}</BodyShort>
-                            <BodyShort size="medium">{samværsandelProsentVisning}</BodyShort>
+                            <BodyShort size="medium">{`${samværsandelerDagVisning} = ${samværsandelProsentVisning}`}</BodyShort>
                         </HStack>
                         <HStack gap="4">
                             <Button
