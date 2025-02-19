@@ -25,9 +25,10 @@ export const TabellFerdigstilleOppgaver: FC<{
 }) => {
     return (
         <>
-            <Heading size="small">
-                Bruker har følgende åpne fremleggsoppgaver. Huk av om du ønsker at noen av disse
-                automatisk skal ferdigstilles ved godkjenning av dette vedtaket:
+            <Heading size="xsmall">
+                Bruker har disse fremleggsoppgavene som gjelder overgangsstønad. Huk av hvis du
+                ønsker å ferdigstille noen av oppgavene. Oppgavene blir ferdigstilt når vedtaket er
+                godkjent.
             </Heading>
             <Table>
                 <Table.Header>
