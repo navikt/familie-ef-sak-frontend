@@ -22,7 +22,7 @@ import { formaterStrengMedStorForbokstav } from '../../App/utils/formatter';
 import { CalculatorIcon, TrashIcon } from '@navikt/aksel-icons';
 
 const Div = styled.div`
-    height: 1.25rem;
+    height: 3.25rem;
 `;
 
 const StyledSelect = styled(Select)`
