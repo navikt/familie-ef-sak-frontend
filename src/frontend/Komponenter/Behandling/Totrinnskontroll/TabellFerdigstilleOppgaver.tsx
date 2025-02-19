@@ -25,7 +25,7 @@ export const TabellFerdigstilleOppgaver: FC<{
 }) => {
     return (
         <>
-            <Heading size="small">
+            <Heading size="xsmall">
                 Bruker har disse fremleggsoppgavene som gjelder overgangsstønad. Huk av hvis du
                 ønsker å ferdigstille noen av oppgavene. Oppgavene blir ferdigstilt når vedtaket er
                 godkjent.
