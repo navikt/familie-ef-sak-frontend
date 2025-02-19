@@ -6,7 +6,12 @@ import {
     Samværskalkulator,
     kalkulerSamværsandeler,
 } from '../../../../Felles/Kalkulator/Samværskalkulator';
-import { AGray300, AGray50, ASurfaceDefault } from '@navikt/ds-tokens/dist/tokens';
+import {
+    AGray300,
+    AGray50,
+    ASurfaceDefault,
+    ASurfaceInfoSubtle,
+} from '@navikt/ds-tokens/dist/tokens';
 import {
     Samværsandel,
     Samværsavtale,
@@ -35,7 +40,7 @@ const Divider = styled.div`
 
 const OppsummeringContainer = styled(HStack)`
     padding-left: 1rem;
-    background: ${ASurfaceDefault};
+    background: ${ASurfaceInfoSubtle};
     border: 1rem solid ${AGray50};
 `;
 
