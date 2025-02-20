@@ -95,7 +95,7 @@ const Grid = styled.div`
         }
     }
 
-    // Styler interne borders for gridden
+    // Styler interne borders mellom elementene
     .gridItem {
         position: relative;
     }
@@ -121,10 +121,6 @@ const Grid = styled.div`
         inset-inline-start: 0;
         inset-block-start: -1rem;
     }
-`;
-
-const UkedagContainer = styled(HStack)`
-    // border-right: solid 2px ${ABorderDivider};
 `;
 
 const VARIGHETER_SAMVÆRSAVTALE = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
@@ -171,47 +167,51 @@ export const Samværskalkulator: React.FC<Props> = ({
     oppdaterSamværsuke,
     oppdaterVarighet,
     erLesevisning,
-}) => (
-    <VStack className={className} gap="4">
-        <VarighetSelect
-            oppdaterVarighet={oppdaterVarighet}
-            onDelete={onDelete}
-            samværsuker={samværsuker}
-            erLesevisning={erLesevisning}
-        />
-        <Grid>
-            {samværsuker.map((samværsuke, index) => (
-                <>
-                    <span className="gridItem">
-                        <VStack gap="6">
-                            <Div />
-                            {Object.keys(Samværsandel).map((andel) => (
-                                <Label key={andel}>
-                                    {samværsandelTilTekst[andel as Samværsandel]}
-                                </Label>
-                            ))}
-                        </VStack>
-                    </span>
-                    <Uke
-                        key={index}
-                        ukenummer={index + 1}
-                        samværsuke={samværsuke}
-                        oppdaterSamværsdag={(dag: string, samværsandeler: Samværsandel[]) =>
-                            oppdaterSamværsuke(index, dag, samværsandeler)
-                        }
-                        erLesevisning={erLesevisning}
-                    />
-                </>
-            ))}
-        </Grid>
-        <Oppsummering
-            samværsuker={samværsuker}
-            onSave={onSave}
-            onClose={onClose}
-            erLesevisning={erLesevisning}
-        />
-    </VStack>
-);
+}) => {
+    const samværsandeler = Object.keys(Samværsandel);
+
+    return (
+        <VStack className={className} gap="4">
+            <VarighetSelect
+                oppdaterVarighet={oppdaterVarighet}
+                onDelete={onDelete}
+                samværsuker={samværsuker}
+                erLesevisning={erLesevisning}
+            />
+            <Grid>
+                {samværsuker.map((samværsuke, index) => (
+                    <>
+                        <span className="gridItem">
+                            <VStack gap="6">
+                                <Div />
+                                {samværsandeler.map((andel) => (
+                                    <Label key={andel}>
+                                        {samværsandelTilTekst[andel as Samværsandel]}
+                                    </Label>
+                                ))}
+                            </VStack>
+                        </span>
+                        <Uke
+                            key={index}
+                            ukenummer={index + 1}
+                            samværsuke={samværsuke}
+                            oppdaterSamværsdag={(dag: string, samværsandeler: Samværsandel[]) =>
+                                oppdaterSamværsuke(index, dag, samværsandeler)
+                            }
+                            erLesevisning={erLesevisning}
+                        />
+                    </>
+                ))}
+            </Grid>
+            <Oppsummering
+                samværsuker={samværsuker}
+                onSave={onSave}
+                onClose={onClose}
+                erLesevisning={erLesevisning}
+            />
+        </VStack>
+    );
+};
 
 const Uke: React.FC<{
     samværsuke: Samværsuke;
@@ -221,7 +221,7 @@ const Uke: React.FC<{
 }> = ({ samværsuke, ukenummer, oppdaterSamværsdag, erLesevisning }) => (
     <VStack gap="2" className="gridItem">
         <UkeTittel>{`Uke ${ukenummer}`}</UkeTittel>
-        <UkedagContainer gap="1">
+        <HStack gap="1">
             {Object.entries(samværsuke).map(([ukedag, samvær]: [string, Samværsdag], index) => (
                 <Ukedag
                     key={ukedag + index}
@@ -233,7 +233,7 @@ const Uke: React.FC<{
                     erLesevisning={erLesevisning}
                 />
             ))}
-        </UkedagContainer>
+        </HStack>
     </VStack>
 );
 
