@@ -6,7 +6,12 @@ import {
     Samværskalkulator,
     kalkulerSamværsandeler,
 } from '../../../../Felles/Kalkulator/Samværskalkulator';
-import { AGray300, AGray50, ASurfaceDefault } from '@navikt/ds-tokens/dist/tokens';
+import {
+    AGray300,
+    AGray50,
+    ASurfaceDefault,
+    ASurfaceInfoSubtle,
+} from '@navikt/ds-tokens/dist/tokens';
 import {
     Samværsandel,
     Samværsavtale,
@@ -35,7 +40,7 @@ const Divider = styled.div`
 
 const OppsummeringContainer = styled(HStack)`
     padding-left: 1rem;
-    background: ${ASurfaceDefault};
+    background: ${ASurfaceInfoSubtle};
     border: 1rem solid ${AGray50};
 `;
 
@@ -281,10 +286,9 @@ export const SamværskalkulatorAleneomsorg: React.FC<Props> = ({
                         <HStack align="center" gap="4">
                             <HStack gap="2" align="center">
                                 <CalculatorIcon aria-hidden />
-                                <Label>Samværsandel:</Label>
+                                <Label>Samvær:</Label>
                             </HStack>
-                            <BodyShort size="medium">{samværsandelerDagVisning}</BodyShort>
-                            <BodyShort size="medium">{samværsandelProsentVisning}</BodyShort>
+                            <BodyShort size="medium">{`${samværsandelerDagVisning} = ${samværsandelProsentVisning}`}</BodyShort>
                         </HStack>
                         <HStack gap="4">
                             <Button
@@ -331,7 +335,7 @@ const SamværsavtaleSelect: React.FC<{
     settSamværsavtaleMal: React.Dispatch<React.SetStateAction<Samværsavtale | undefined>>;
 }> = ({ samværsavtaler, behandlingBarn, settSamværsavtaleMal }) => (
     <BehandlingBarnSelect
-        label="Mal"
+        label="Velg mal"
         size="small"
         onChange={(event: ChangeEvent<HTMLSelectElement>) =>
             settSamværsavtaleMal(
