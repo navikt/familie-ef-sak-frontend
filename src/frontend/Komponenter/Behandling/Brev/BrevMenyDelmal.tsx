@@ -170,7 +170,7 @@ export const BrevMenyDelmal: React.FC<Props> = ({
                                         variant={'secondary'}
                                         icon={<ArrowsSquarepathIcon />}
                                     >
-                                        Konverter til tekstfelt
+                                        Gjør om til tekstfelt
                                     </Button>
                                 </div>
                             )}
@@ -191,7 +191,7 @@ export const BrevMenyDelmal: React.FC<Props> = ({
                                             variant={'secondary'}
                                             icon={<ArrowsSquarepathIcon />}
                                         >
-                                            Konverter til brevbygger
+                                            Gjør om til brevbygger
                                         </Button>
                                     </div>
                                 </>
