@@ -64,6 +64,8 @@ const Grid = styled.div`
     column-gap: 1rem;
     overflow: hidden;
 
+    // Styler slik at første element på hver rad er beskrivelsestekster
+    // Støtter fra to kolonner ved smal skjerm og opp til fem kolonner ved bred skjerm
     span {
         display: none;
     }
@@ -93,6 +95,7 @@ const Grid = styled.div`
         }
     }
 
+    // Styler interne borders for gridden
     .gridItem {
         position: relative;
     }
@@ -191,7 +194,7 @@ export const Samværskalkulator: React.FC<Props> = ({
                     </span>
                     <Uke
                         key={index}
-                        index={index}
+                        ukenummer={index + 1}
                         samværsuke={samværsuke}
                         oppdaterSamværsdag={(dag: string, samværsandeler: Samværsandel[]) =>
                             oppdaterSamværsuke(index, dag, samværsandeler)
@@ -212,12 +215,12 @@ export const Samværskalkulator: React.FC<Props> = ({
 
 const Uke: React.FC<{
     samværsuke: Samværsuke;
-    index: number;
+    ukenummer: number;
     oppdaterSamværsdag: (dag: string, samværsandeler: Samværsandel[]) => void;
     erLesevisning: boolean;
-}> = ({ samværsuke, index, oppdaterSamværsdag, erLesevisning }) => (
+}> = ({ samværsuke, ukenummer, oppdaterSamværsdag, erLesevisning }) => (
     <VStack gap="2" className="gridItem">
-        <UkeTittel>{`Uke ${index + 1}`}</UkeTittel>
+        <UkeTittel>{`Uke ${ukenummer}`}</UkeTittel>
         <UkedagContainer gap="1">
             {Object.entries(samværsuke).map(([ukedag, samvær]: [string, Samværsdag], index) => (
                 <Ukedag
