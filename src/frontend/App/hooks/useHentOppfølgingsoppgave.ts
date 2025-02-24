@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { useApp } from '../context/AppContext';
-import { byggTomRessurs, byggHenterRessurs, Ressurs } from '../typer/ressurs';
+import { Ressurs, RessursStatus } from '../typer/ressurs';
 import { OppgaveTypeForOpprettelse } from '../../Komponenter/Behandling/Totrinnskontroll/oppgaveForOpprettelseTyper';
 import { useRerunnableEffect } from './felles/useRerunnableEffect';
 
@@ -17,17 +17,15 @@ export interface Oppfølgingsoppgave {
 
 export const useHentOppfølgingsoppgave = (behandlingId: string) => {
     const { axiosRequest } = useApp();
-    const [oppfølgingsoppgave, settOppfølgingsoppgave] =
-        useState<Ressurs<Oppfølgingsoppgave>>(byggTomRessurs());
+    const [oppfølgingsoppgave, settOppfølgingsoppgave] = useState<Oppfølgingsoppgave>();
 
     const hentOppfølgingsoppgave = useRerunnableEffect(
         useCallback(() => {
-            settOppfølgingsoppgave(byggHenterRessurs());
             axiosRequest<Oppfølgingsoppgave, void>({
                 method: 'GET',
                 url: `/familie-ef-sak/api/oppfolgingsoppgave/${behandlingId}`,
             }).then((res: Ressurs<Oppfølgingsoppgave>) => {
-                settOppfølgingsoppgave(res);
+                settOppfølgingsoppgave(res.status === RessursStatus.SUKSESS ? res.data : undefined);
             });
         }, [axiosRequest, behandlingId]),
         [axiosRequest, behandlingId]

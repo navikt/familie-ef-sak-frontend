@@ -67,10 +67,9 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
             response={{
                 personopplysningerResponse,
                 vedtak,
-                oppfølgingsoppgave,
             }}
         >
-            {({ personopplysningerResponse, vedtak, oppfølgingsoppgave }) => (
+            {({ personopplysningerResponse, vedtak }) => (
                 <>
                     <StyledBrev>
                         <VenstreKolonne>
@@ -83,7 +82,7 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
                                     <>
                                         <FremleggoppgaverSomOpprettes
                                             oppgavetyperSomSkalOpprettes={
-                                                oppfølgingsoppgave.oppgaverForOpprettelse
+                                                oppfølgingsoppgave?.oppgaverForOpprettelse
                                                     .oppgavetyperSomSkalOpprettes
                                             }
                                         />
