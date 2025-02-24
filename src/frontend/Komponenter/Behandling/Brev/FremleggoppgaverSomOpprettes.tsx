@@ -13,7 +13,7 @@ const Container = styled.div`
 `;
 
 export const FremleggoppgaverSomOpprettes: FC<{
-    oppgavetyperSomSkalOpprettes?: OppgaveTypeForOpprettelse[];
+    oppgavetyperSomSkalOpprettes: OppgaveTypeForOpprettelse[];
 }> = ({ oppgavetyperSomSkalOpprettes }) => {
     if (!oppgavetyperSomSkalOpprettes || oppgavetyperSomSkalOpprettes.length === 0) {
         return;

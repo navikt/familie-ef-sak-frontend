@@ -83,7 +83,7 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
                                         <FremleggoppgaverSomOpprettes
                                             oppgavetyperSomSkalOpprettes={
                                                 oppfølgingsoppgave?.oppgaverForOpprettelse
-                                                    .oppgavetyperSomSkalOpprettes
+                                                    .oppgavetyperSomSkalOpprettes ?? []
                                             }
                                         />
                                         <OppgaverForFerdigstilling behandlingId={behandling.id} />
