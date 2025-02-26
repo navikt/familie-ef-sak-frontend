@@ -16,6 +16,7 @@ import { FremleggoppgaverSomOpprettes } from './FremleggoppgaverSomOpprettes';
 import { VStack } from '@navikt/ds-react';
 import { OppgaverForFerdigstilling } from '../Totrinnskontroll/OppgaverForFerdigstilling';
 import { useHentOppfølgingsoppgave } from '../../../App/hooks/useHentOppfølgingsoppgave';
+import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 
 interface Props {
     behandling: Behandling;
@@ -27,7 +28,9 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
         useBehandling();
     const [brevRessurs, settBrevRessurs] = useState<Ressurs<string>>(byggTomRessurs());
     const [kanSendesTilBeslutter, settKanSendesTilBeslutter] = useState<boolean>(false);
-    const { hentOppfølgingsoppgave, oppfølgingsoppgave } = useHentOppfølgingsoppgave(behandling.id);
+    const { hentOppfølgingsoppgave, oppfølgingsoppgave, feilmelding } = useHentOppfølgingsoppgave(
+        behandling.id
+    );
 
     const lagBeslutterBrev = () => {
         axiosRequest<string, null>({
@@ -67,13 +70,13 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
             response={{
                 personopplysningerResponse,
                 vedtak,
-                oppfølgingsoppgave,
             }}
         >
-            {({ personopplysningerResponse, vedtak, oppfølgingsoppgave }) => (
+            {({ personopplysningerResponse, vedtak }) => (
                 <>
                     <StyledBrev>
                         <VenstreKolonne>
+                            {feilmelding && <AlertError size="small">{feilmelding}</AlertError>}
                             <VStack gap="4">
                                 <BrevmottakereForBehandling
                                     behandlingId={behandling.id}
@@ -83,8 +86,8 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
                                     <>
                                         <FremleggoppgaverSomOpprettes
                                             oppgavetyperSomSkalOpprettes={
-                                                oppfølgingsoppgave.oppgaverForOpprettelse
-                                                    .oppgavetyperSomSkalOpprettes
+                                                oppfølgingsoppgave?.oppgaverForOpprettelse
+                                                    .oppgavetyperSomSkalOpprettes ?? []
                                             }
                                         />
                                         <OppgaverForFerdigstilling behandlingId={behandling.id} />
