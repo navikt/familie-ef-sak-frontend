@@ -18,6 +18,7 @@ export interface Oppfølgingsoppgave {
 export const useHentOppfølgingsoppgave = (behandlingId: string) => {
     const { axiosRequest } = useApp();
     const [oppfølgingsoppgave, settOppfølgingsoppgave] = useState<Oppfølgingsoppgave>();
+    const [feilmelding, settFeilmelding] = useState<string>('');
 
     const hentOppfølgingsoppgave = useRerunnableEffect(
         useCallback(() => {
@@ -25,7 +26,11 @@ export const useHentOppfølgingsoppgave = (behandlingId: string) => {
                 method: 'GET',
                 url: `/familie-ef-sak/api/oppfolgingsoppgave/${behandlingId}`,
             }).then((res: Ressurs<Oppfølgingsoppgave>) => {
-                settOppfølgingsoppgave(res.status === RessursStatus.SUKSESS ? res.data : undefined);
+                if (res.status === RessursStatus.SUKSESS) {
+                    settOppfølgingsoppgave(res.data);
+                } else if (res.status === RessursStatus.FEILET) {
+                    settFeilmelding(res.frontendFeilmelding);
+                }
             });
         }, [axiosRequest, behandlingId]),
         [axiosRequest, behandlingId]
@@ -34,5 +39,6 @@ export const useHentOppfølgingsoppgave = (behandlingId: string) => {
     return {
         hentOppfølgingsoppgave,
         oppfølgingsoppgave,
+        feilmelding,
     };
 };
