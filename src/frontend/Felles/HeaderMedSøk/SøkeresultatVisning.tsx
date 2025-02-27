@@ -4,7 +4,7 @@ import { ISøkeresultat } from '@navikt/familie-header';
 import { BodyShort, HStack } from '@navikt/ds-react';
 import { formaterPersonIdent } from '@navikt/familie-header/dist/søk/formatter';
 import { AlertWarning } from '../Visningskomponenter/Alerts';
-import { adressebeskyttelsestyper } from './adressebeskyttelsegradering';
+import { adressebeskyttelsestyper } from './utils';
 import { AFontSizeSmall, AGray100, AOrange300 } from '@navikt/ds-tokens/dist/tokens';
 
 const ResultatElement = styled.div<{ $fokus: boolean }>`
