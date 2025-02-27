@@ -1602,13 +1602,13 @@
     classnames "^2.5.1"
     react-select "5.9.0"
 
-"@navikt/familie-header@^15.1.0":
-  version "15.1.0"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-header/15.1.0/c0c7247d205cc76f02abb3e835e8c17b47b53445#c0c7247d205cc76f02abb3e835e8c17b47b53445"
-  integrity sha512-u52LLWlfVyPMJQ5EE/iIpM1Ruyu5l6uNlelz1XX7TtulX79p1iRDD48ZBZdI/hhXxozxgaDmo1wiKYpoJ9eyxg==
+"@navikt/familie-header@^16.0.1":
+  version "16.0.1"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-header/16.0.1/df52430bedf03046090225aabb0e51e7a096cd44#df52430bedf03046090225aabb0e51e7a096cd44"
+  integrity sha512-l+iVJUZe9xWaFMDxgKji92QUjHU2d8dE3+VB/wUu/ZSqBl1vGrwV9bSPzdiArr9PQxTd2WTCnNM5da5TfX4rZg==
   dependencies:
-    "@navikt/familie-ikoner" "^9.1.0"
-    "@navikt/familie-typer" "^8.0.2"
+    "@navikt/familie-ikoner" "^9.1.1"
+    "@navikt/familie-typer" "^8.0.3"
     "@navikt/fnrvalidator" "^2.1.5"
 
 "@navikt/familie-ikoner@^9.1.0":
@@ -1617,6 +1617,13 @@
   integrity sha512-pd0YiRNZTJQFAXVDnUSV4zQWe+OKHfgWxwYqh3HwRBcldWgwa0lxhiEW/7jumVoodag6E2x2POcMRzAfSKVRyQ==
   dependencies:
     "@navikt/familie-typer" "^8.0.2"
+
+"@navikt/familie-ikoner@^9.1.1":
+  version "9.1.1"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-ikoner/9.1.1/f8066f4bfbbfddac297deb3e211a972e396b0b1b#f8066f4bfbbfddac297deb3e211a972e396b0b1b"
+  integrity sha512-ysoU7jFPTcwwDbWCqSigm4YfN6LG/FX+N2/z1r258k953fm/5wQlnY2RAOB2U7h5HN4u3DUaHwbKioy6O11pHA==
+  dependencies:
+    "@navikt/familie-typer" "^8.0.3"
 
 "@navikt/familie-logging@^7.0.3":
   version "7.0.3"
@@ -1629,6 +1636,11 @@
   version "8.0.2"
   resolved "https://npm.pkg.github.com/download/@navikt/familie-typer/8.0.2/21bcc780c35b6a8699d1c52b54e61d83580736f7#21bcc780c35b6a8699d1c52b54e61d83580736f7"
   integrity sha512-pKSpCzryJE6eiN/Ssox1oLLKPW5ezsT+/gTHbhgxOtM/frFSZLguSjwhgiDp2kovckJ84nxhnQurK6igw8GEHw==
+
+"@navikt/familie-typer@^8.0.3":
+  version "8.0.3"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-typer/8.0.3/af354ab37c1b52c9f09ce690c72ace25f00131df#af354ab37c1b52c9f09ce690c72ace25f00131df"
+  integrity sha512-DoTtJolQm9SvDt7/VkhqiQ0WXbj9584V+gN1GhouPQtecHK8RF7dxkuep4We1mOhfSCxC5mGrHxu2nveCN1AqA==
 
 "@navikt/familie-visittkort@^15.1.4":
   version "15.1.4"
