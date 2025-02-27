@@ -157,6 +157,12 @@ const SendTilBeslutterFooter: React.FC<{
         hentFremleggsoppgaver(behandling.id);
     }, [behandling.id, hentFremleggsoppgaver]);
 
+    useEffect(() => {
+        settOppgavetyperSomSkalOpprettes(
+            utledDefaultOppgavetyperSomSkalOpprettes(oppgavetyperSomKanOpprettes)
+        );
+    }, [oppgavetyperSomKanOpprettes]);
+
     return (
         <>
             {behandlingErRedigerbar && (
