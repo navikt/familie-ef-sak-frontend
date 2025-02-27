@@ -23,6 +23,7 @@ export const HeaderMedSøk: React.FunctionComponent<Props> = ({ innloggetSaksbeh
     const erSaksbehandler = harTilgangTilRolle(appEnv, innloggetSaksbehandler, 'saksbehandler');
     const kanOppretteBehandlingForFerdigstiltJournalpost =
         toggles[ToggleName.opprettBehandlingForFerdigstiltJournalpost];
+    const visSamværskalkulator = toggles[ToggleName.visSamværskalkulator];
 
     const headerLenker = useMemo(
         () =>
@@ -30,6 +31,7 @@ export const HeaderMedSøk: React.FunctionComponent<Props> = ({ innloggetSaksbeh
                 axiosRequest,
                 appEnv,
                 kanOppretteBehandlingForFerdigstiltJournalpost,
+                visSamværskalkulator,
                 erSaksbehandler,
                 valgtFagsakId,
                 valgtFagsakPersonId,
@@ -43,6 +45,7 @@ export const HeaderMedSøk: React.FunctionComponent<Props> = ({ innloggetSaksbeh
             personIdent,
             erSaksbehandler,
             kanOppretteBehandlingForFerdigstiltJournalpost,
+            visSamværskalkulator,
         ]
     );
 
@@ -80,15 +83,15 @@ const lagHeaderLenker = (
     axiosRequest: AxiosRequestCallback,
     appEnv: AppEnv,
     kanOppretteBehandlingForFerdigstiltJournalpost: boolean,
+    visSamværskalkulator: boolean,
     erSaksbehandler: boolean,
     fagsakId: string | undefined,
     fagsakPersonId: string | undefined,
     personIdent: string | undefined
 ): PopoverItem[] => {
-    const interneLenker = lagInterneLenker(
-        erSaksbehandler,
-        kanOppretteBehandlingForFerdigstiltJournalpost
-    );
+    const interneLenker = erSaksbehandler
+        ? lagInterneLenker(kanOppretteBehandlingForFerdigstiltJournalpost)
+        : [];
 
     const eksterneLenker = lagEksterneLenker(
         axiosRequest,
@@ -98,7 +101,7 @@ const lagHeaderLenker = (
         personIdent
     );
 
-    const arbeidsverktøyLenker = lagArbeidsverktøyLenker();
+    const arbeidsverktøyLenker = visSamværskalkulator ? lagArbeidsverktøyLenker() : [];
 
     return eksterneLenker.concat(interneLenker).concat(arbeidsverktøyLenker);
 };

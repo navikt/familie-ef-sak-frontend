@@ -147,18 +147,13 @@ export const lagEksterneLenker = (
 ];
 
 export const lagInterneLenker = (
-    erSaksbehandler: boolean,
     kanOppretteBehandlingForFerdigstiltJournalpost: boolean
 ): PopoverItem[] =>
-    erSaksbehandler
-        ? [
-              lagUttrekkArbeidssøkerLenke(),
-              lagOpprettBehandlingManueltLenke(),
-              kanOppretteBehandlingForFerdigstiltJournalpost
-                  ? lagBehandlingFraJournalpostLenke()
-                  : null,
-              lagÅpneEldreBehandlingerLenke(),
-          ].filter((lenke) => lenke !== null)
-        : [];
+    [
+        lagUttrekkArbeidssøkerLenke(),
+        lagOpprettBehandlingManueltLenke(),
+        kanOppretteBehandlingForFerdigstiltJournalpost ? lagBehandlingFraJournalpostLenke() : null,
+        lagÅpneEldreBehandlingerLenke(),
+    ].filter((lenke) => lenke !== null);
 
 export const lagArbeidsverktøyLenker = (): PopoverItem[] => [lagSamværskalkulatorLenke()];
