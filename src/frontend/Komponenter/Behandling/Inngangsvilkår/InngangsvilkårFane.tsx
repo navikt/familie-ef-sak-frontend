@@ -16,16 +16,12 @@ import { useApp } from '../../../App/context/AppContext';
 import { InngangsvilkårHeader } from './InngangsvilkårHeader';
 import { formaterIsoDatoTidMedSekunder } from '../../../App/utils/formatter';
 import { useSamværsavtaler } from '../../../App/hooks/useSamværsavtaler';
-import { useToggles } from '../../../App/context/TogglesContext';
-import { ToggleName } from '../../../App/context/toggles';
 
 interface Props {
     behandling: Behandling;
 }
 
 export const InngangsvilkårFane: FC<Props> = ({ behandling }) => {
-    const { toggles } = useToggles();
-    const skalViseSamværskalkulator = toggles[ToggleName.visSamværskalkulator];
     const { behandlingErRedigerbar, vilkårState } = useBehandling();
     const { erSaksbehandler } = useApp();
     const {
@@ -38,14 +34,12 @@ export const InngangsvilkårFane: FC<Props> = ({ behandling }) => {
         oppdaterGrunnlagsdataOgHentVilkår,
     } = vilkårState;
     const { samværsavtaler, hentSamværsavtaler, lagreSamværsavtale, slettSamværsavtale } =
-        useSamværsavtaler(skalViseSamværskalkulator);
+        useSamværsavtaler();
 
     React.useEffect(() => {
         hentVilkår(behandling.id);
-        if (skalViseSamværskalkulator) {
-            hentSamværsavtaler(behandling.id);
-        }
-    }, [hentVilkår, hentSamværsavtaler, behandling.id, skalViseSamværskalkulator]);
+        hentSamværsavtaler(behandling.id);
+    }, [hentVilkår, hentSamværsavtaler, behandling.id]);
 
     return (
         <DataViewer response={{ samværsavtaler, vilkår }}>
