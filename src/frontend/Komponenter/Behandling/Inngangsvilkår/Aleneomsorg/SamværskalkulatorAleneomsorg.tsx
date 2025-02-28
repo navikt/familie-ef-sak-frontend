@@ -272,7 +272,7 @@ export const SamværskalkulatorAleneomsorg: React.FC<Props> = ({
             return (
                 <>
                     <Kalkulator
-                        samværsuker={samværsavtale?.uker}
+                        samværsuker={samværsavtale.uker}
                         onSave={() => håndterLagreSamværsavtale()}
                         onDelete={() => håndterSlettSamværsavtale()}
                         onClose={() => håndterLukkKalkulator()}
