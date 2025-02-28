@@ -12,16 +12,17 @@ import {
     ASurfaceDefault,
     ASurfaceInfoSubtle,
 } from '@navikt/ds-tokens/dist/tokens';
-import {
-    Samværsandel,
-    Samværsavtale,
-    Samværsdag,
-    Samværsuke,
-} from '../../../../App/typer/samværsavtale';
+import { Samværsandel, Samværsavtale, Samværsuke } from '../../../../App/typer/samværsavtale';
 import { IBarnMedSamvær } from './typer';
 import { utledNavnOgAlderForAleneomsorg } from './utils';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
 import { useApp } from '../../../../App/context/AppContext';
+import {
+    oppdaterSamværsuke,
+    oppdaterSamværsuker,
+    oppdaterVarighetPåSamværsavtale,
+    utledInitiellSamværsavtale,
+} from '../../../../Felles/Kalkulator/utils';
 
 const Kalkulator = styled(Samværskalkulator)`
     padding: 1rem;
@@ -61,43 +62,6 @@ enum Visningsmodus {
     LESEVISNING_EKSPANDERT,
     LESEVISNING_MINIMERT,
 }
-
-const samværsdag: Samværsdag = {
-    andeler: [],
-};
-
-const samværsuke: Samværsuke = {
-    mandag: samværsdag,
-    tirsdag: samværsdag,
-    onsdag: samværsdag,
-    torsdag: samværsdag,
-    fredag: samværsdag,
-    lørdag: samværsdag,
-    søndag: samværsdag,
-};
-
-const initerSamværsuker = (antallUker: number): Samværsuke[] =>
-    new Array(antallUker).fill(samværsuke);
-
-const initierSamværsavtale = (behandlingId: string, behandlingBarnId: string): Samværsavtale => {
-    return {
-        behandlingId: behandlingId,
-        behandlingBarnId: behandlingBarnId,
-        uker: initerSamværsuker(2),
-    };
-};
-
-const utledInitiellSamværsavtale = (
-    lagretAvtale: Samværsavtale | undefined,
-    behandlingId: string,
-    behandlingBarnId: string
-) => {
-    if (lagretAvtale === undefined) {
-        return initierSamværsavtale(behandlingId, behandlingBarnId);
-    }
-
-    return lagretAvtale;
-};
 
 const utledInitiellVisningsmodus = (
     behandlingErRedigerbar: boolean,
@@ -157,49 +121,23 @@ export const SamværskalkulatorAleneomsorg: React.FC<Props> = ({
 
     const kanKopiereSamværsavtale = alleAndreLagredeSamværsavtaler.length > 0;
 
-    const oppdaterSamværsuke = (
+    const håndterOppdaterSamværsuke = (
         ukeIndex: number,
         ukedag: string,
         samværsandeler: Samværsandel[]
     ) => {
         settIkkePersistertKomponent(gjeldendeBehandlingBarnId);
-        settSamværsavtale((prevState) => ({
-            ...prevState,
-            uker: [
-                ...prevState.uker.slice(0, ukeIndex),
-                { ...prevState.uker[ukeIndex], [ukedag]: { andeler: samværsandeler } },
-                ...prevState.uker.slice(ukeIndex + 1),
-            ],
-        }));
+        oppdaterSamværsuke(ukeIndex, ukedag, samværsandeler, settSamværsavtale);
     };
 
-    const oppdaterSamværsuker = (samværsuker: Samværsuke[]) => {
+    const håndterOppdaterSamværsuker = (samværsuker: Samværsuke[]) => {
         settIkkePersistertKomponent(gjeldendeBehandlingBarnId);
-        settSamværsavtale((prevState) => ({
-            ...prevState,
-            uker: samværsuker,
-        }));
+        oppdaterSamværsuker(samværsuker, settSamværsavtale);
     };
 
-    const oppdaterVarighetPåSamværsavtale = (nyVarighet: number) => {
+    const håndterOppdaterVarighetPåSamværsavtale = (nyVarighet: number) => {
         settIkkePersistertKomponent(gjeldendeBehandlingBarnId);
-
-        const nåværendeVarighet = samværsavtale.uker.length;
-
-        if (nyVarighet > nåværendeVarighet) {
-            settSamværsavtale((prevState) => ({
-                ...prevState,
-                uker: [
-                    ...prevState.uker.slice(0, nåværendeVarighet),
-                    ...initerSamværsuker(nyVarighet - nåværendeVarighet),
-                ],
-            }));
-        } else {
-            settSamværsavtale((prevState) => ({
-                ...prevState,
-                uker: prevState.uker.slice(0, nyVarighet),
-            }));
-        }
+        oppdaterVarighetPåSamværsavtale(samværsavtale.uker.length, nyVarighet, settSamværsavtale);
     };
 
     const håndterÅpneDropdown = () => {
@@ -265,7 +203,7 @@ export const SamværskalkulatorAleneomsorg: React.FC<Props> = ({
                                             );
                                             settIkkePersistertKomponent(gjeldendeBehandlingBarnId);
                                             if (samværsavtaleMal !== undefined) {
-                                                oppdaterSamværsuker(samværsavtaleMal.uker);
+                                                håndterOppdaterSamværsuker(samværsavtaleMal.uker);
                                                 settSamværsavtaleMal(undefined);
                                             }
                                         }}
@@ -313,12 +251,12 @@ export const SamværskalkulatorAleneomsorg: React.FC<Props> = ({
             return (
                 <>
                     <Kalkulator
-                        samværsuker={samværsavtale?.uker}
+                        samværsuker={samværsavtale.uker}
                         onSave={() => håndterLagreSamværsavtale()}
                         onDelete={() => håndterSlettSamværsavtale()}
                         onClose={() => håndterLukkKalkulator()}
-                        oppdaterSamværsuke={oppdaterSamværsuke}
-                        oppdaterVarighet={oppdaterVarighetPåSamværsavtale}
+                        oppdaterSamværsuke={håndterOppdaterSamværsuke}
+                        oppdaterVarighet={håndterOppdaterVarighetPåSamværsavtale}
                         erLesevisning={!behandlingErRedigerbar}
                     />
                     {skalViseBorderBottom && <Divider />}
