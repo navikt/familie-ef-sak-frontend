@@ -20,6 +20,7 @@ export interface IEndringer {
     utflyttingFraNorge: IEndring;
     oppholdstillatelse: IEndring;
     vergemål: IEndring;
+    perioder: IEndring;
 }
 
 export interface IEndring {
@@ -60,4 +61,5 @@ export const endringerKeyTilTekst: Record<keyof IEndringer, string> = {
     utflyttingFraNorge: 'Utflytting fra Norge',
     oppholdstillatelse: 'Oppholdstillatelse',
     vergemål: 'Vergemål',
+    perioder: 'Vedtaksperioder',
 };
