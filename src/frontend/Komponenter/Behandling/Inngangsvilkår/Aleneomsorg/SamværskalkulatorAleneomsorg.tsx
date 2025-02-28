@@ -12,16 +12,12 @@ import {
     ASurfaceDefault,
     ASurfaceInfoSubtle,
 } from '@navikt/ds-tokens/dist/tokens';
-import {
-    Samværsandel,
-    Samværsavtale,
-    Samværsdag,
-    Samværsuke,
-} from '../../../../App/typer/samværsavtale';
+import { Samværsandel, Samværsavtale, Samværsuke } from '../../../../App/typer/samværsavtale';
 import { IBarnMedSamvær } from './typer';
 import { utledNavnOgAlderForAleneomsorg } from './utils';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
 import { useApp } from '../../../../App/context/AppContext';
+import { initerSamværsuker, utledInitiellSamværsavtale } from '../../../../Felles/Kalkulator/utils';
 
 const Kalkulator = styled(Samværskalkulator)`
     padding: 1rem;
@@ -61,43 +57,6 @@ enum Visningsmodus {
     LESEVISNING_EKSPANDERT,
     LESEVISNING_MINIMERT,
 }
-
-const samværsdag: Samværsdag = {
-    andeler: [],
-};
-
-const samværsuke: Samværsuke = {
-    mandag: samværsdag,
-    tirsdag: samværsdag,
-    onsdag: samværsdag,
-    torsdag: samværsdag,
-    fredag: samværsdag,
-    lørdag: samværsdag,
-    søndag: samværsdag,
-};
-
-const initerSamværsuker = (antallUker: number): Samværsuke[] =>
-    new Array(antallUker).fill(samværsuke);
-
-const initierSamværsavtale = (behandlingId: string, behandlingBarnId: string): Samværsavtale => {
-    return {
-        behandlingId: behandlingId,
-        behandlingBarnId: behandlingBarnId,
-        uker: initerSamværsuker(2),
-    };
-};
-
-const utledInitiellSamværsavtale = (
-    lagretAvtale: Samværsavtale | undefined,
-    behandlingId: string,
-    behandlingBarnId: string
-) => {
-    if (lagretAvtale === undefined) {
-        return initierSamværsavtale(behandlingId, behandlingBarnId);
-    }
-
-    return lagretAvtale;
-};
 
 const utledInitiellVisningsmodus = (
     behandlingErRedigerbar: boolean,
