@@ -3,7 +3,12 @@ import { AxiosRequestCallback } from '../../App/typer/axiosRequest';
 import { AppEnv } from '../../App/api/env';
 import { PopoverItem } from '@navikt/familie-header/dist/header/Header';
 import { LenkeType } from '@navikt/familie-header';
-import { lagAInntektLink, lagGosysLink, lagModiaLink } from '../Lenker/Lenker';
+import {
+    lagAInntektLink,
+    lagGosysLink,
+    lagModiaLink,
+    lagSamværskalkulatorLink,
+} from '../Lenker/Lenker';
 
 export const adressebeskyttelsestyper: Record<Adressebeskyttelsegradering, string> = {
     STRENGT_FORTROLIG: 'strengt fortrolig',
@@ -124,11 +129,20 @@ export const lagÅpneEldreBehandlingerLenke = (): PopoverItem => {
     };
 };
 
-export const lagSamværskalkulatorLenke = (): PopoverItem => {
+export const lagSamværskalkulatorLenke = (personIdent: string | undefined): PopoverItem => {
+    if (!personIdent) {
+        return {
+            name: 'Samværskalkulator',
+            href: '/verktoy/samvaerskalkulator',
+            type: LenkeType.ARBEIDSVERKTØY,
+        };
+    }
     return {
         name: 'Samværskalkulator',
-        href: '/verktoy/samvaerskalkulator',
         type: LenkeType.ARBEIDSVERKTØY,
+        onSelect: async () => {
+            window.open(lagSamværskalkulatorLink(personIdent));
+        },
     };
 };
 
@@ -156,4 +170,6 @@ export const lagInterneLenker = (
         lagÅpneEldreBehandlingerLenke(),
     ].filter((lenke) => lenke !== null);
 
-export const lagArbeidsverktøyLenker = (): PopoverItem[] => [lagSamværskalkulatorLenke()];
+export const lagArbeidsverktøyLenker = (personIdent: string | undefined): PopoverItem[] => [
+    lagSamværskalkulatorLenke(personIdent),
+];

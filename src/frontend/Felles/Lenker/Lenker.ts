@@ -51,3 +51,7 @@ export const lagGosysLink = (appEnv: AppEnv, personIdent: string): string => {
 export const lagModiaLink = (appEnv: AppEnv, personIdent: string): string => {
     return `${appEnv.modia}/person/${personIdent}`;
 };
+
+export const lagSamværskalkulatorLink = (personIdent: string): string => {
+    return `/verktoy/samvaerskalkulator/${personIdent}`;
+};
