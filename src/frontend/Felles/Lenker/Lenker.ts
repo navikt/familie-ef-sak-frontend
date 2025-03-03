@@ -43,11 +43,3 @@ export const lagArbeidsforholdLink = async (
             return appEnv.aInntekt;
         });
 };
-
-export const lagGosysLink = (appEnv: AppEnv, personIdent: string): string => {
-    return `${appEnv.gosys}/personoversikt/fnr=${personIdent}`;
-};
-
-export const lagModiaLink = (appEnv: AppEnv, personIdent: string): string => {
-    return `${appEnv.modia}/person/${personIdent}`;
-};

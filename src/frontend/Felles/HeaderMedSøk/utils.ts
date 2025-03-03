@@ -3,7 +3,7 @@ import { AxiosRequestCallback } from '../../App/typer/axiosRequest';
 import { AppEnv } from '../../App/api/env';
 import { PopoverItem } from '@navikt/familie-header/dist/header/Header';
 import { LenkeType } from '@navikt/familie-header';
-import { lagAInntektLink, lagGosysLink, lagModiaLink } from '../Lenker/Lenker';
+import { lagAInntektLink } from '../Lenker/Lenker';
 
 export const adressebeskyttelsestyper: Record<Adressebeskyttelsegradering, string> = {
     STRENGT_FORTROLIG: 'strengt fortrolig',
@@ -37,40 +37,26 @@ export const lagAInntektLenke = (
 };
 
 export const lagGosysLenke = (appEnv: AppEnv, personIdent: string | undefined): PopoverItem => {
-    if (!personIdent) {
-        return {
-            name: 'Gosys',
-            href: appEnv.gosys,
-            type: LenkeType.EKSTERN,
-            isExternal: true,
-        };
-    }
+    const urlSuffix = personIdent ? `/personoversikt/fnr=${personIdent}` : '';
 
     return {
         name: 'Gosys',
-        type: LenkeType.EKSTERN,
-        onSelect: async () => {
-            window.open(lagGosysLink(appEnv, personIdent));
+        onSelect: () => {
+            window.open(`${appEnv.gosys}${urlSuffix}`);
         },
+        type: LenkeType.EKSTERN,
     };
 };
 
 export const lagModiaLenke = (appEnv: AppEnv, personIdent: string | undefined): PopoverItem => {
-    if (!personIdent) {
-        return {
-            name: 'Modia',
-            href: appEnv.modia,
-            type: LenkeType.EKSTERN,
-            isExternal: true,
-        };
-    }
+    const urlSuffix = personIdent ? `/person/${personIdent}` : '';
 
     return {
         name: 'Modia',
-        type: LenkeType.EKSTERN,
-        onSelect: async () => {
-            window.open(lagModiaLink(appEnv, personIdent));
+        onSelect: () => {
+            window.open(`${appEnv.modia}${urlSuffix}`);
         },
+        type: LenkeType.EKSTERN,
     };
 };
 
@@ -124,11 +110,15 @@ export const lagÅpneEldreBehandlingerLenke = (): PopoverItem => {
     };
 };
 
-export const lagSamværskalkulatorLenke = (): PopoverItem => {
+export const lagSamværskalkulatorLenke = (personIdent: string | undefined): PopoverItem => {
+    const urlSuffix = personIdent ? personIdent : '';
+
     return {
         name: 'Samværskalkulator',
-        href: '/verktoy/samvaerskalkulator',
         type: LenkeType.ARBEIDSVERKTØY,
+        onSelect: () => {
+            window.open(`/verktoy/samvaerskalkulator/${urlSuffix}`);
+        },
     };
 };
 
@@ -156,4 +146,6 @@ export const lagInterneLenker = (
         lagÅpneEldreBehandlingerLenke(),
     ].filter((lenke) => lenke !== null);
 
-export const lagArbeidsverktøyLenker = (): PopoverItem[] => [lagSamværskalkulatorLenke()];
+export const lagArbeidsverktøyLenker = (personIdent: string | undefined): PopoverItem[] => [
+    lagSamværskalkulatorLenke(personIdent),
+];

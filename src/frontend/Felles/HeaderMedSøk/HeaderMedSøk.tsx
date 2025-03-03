@@ -101,7 +101,7 @@ const lagHeaderLenker = (
         personIdent
     );
 
-    const arbeidsverktøyLenker = visSamværskalkulator ? lagArbeidsverktøyLenker() : [];
+    const arbeidsverktøyLenker = visSamværskalkulator ? lagArbeidsverktøyLenker(personIdent) : [];
 
     return eksterneLenker.concat(interneLenker).concat(arbeidsverktøyLenker);
 };
