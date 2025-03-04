@@ -22,6 +22,7 @@ export const ModalOpprettOgFerdigstilleOppgaver: FC<{
     >;
     oppgaverSomSkalAutomatiskFerdigstilles: number[];
     settOppgaverSomSkalAutomatiskFerdigstilles: React.Dispatch<React.SetStateAction<number[]>>;
+    ferdigstillUtenBeslutter: boolean;
 }> = ({
     open,
     setOpen,
@@ -32,6 +33,7 @@ export const ModalOpprettOgFerdigstilleOppgaver: FC<{
     settOppgavetyperSomSkalOpprettes,
     oppgaverSomSkalAutomatiskFerdigstilles,
     settOppgaverSomSkalAutomatiskFerdigstilles,
+    ferdigstillUtenBeslutter,
 }) => {
     const [
         årForInntektskontrollSelvstendigNæringsdrivende,
@@ -66,6 +68,10 @@ export const ModalOpprettOgFerdigstilleOppgaver: FC<{
     const erValgIRadioEllerChecboxGroupGyldig =
         harValgtAnnetEnnInntektskontroll || harValgtInntektskontrollOgÅr || harValgtIngen;
 
+    const ferdigstillTittel = ferdigstillUtenBeslutter
+        ? 'Ferdigstill behandling'
+        : 'Send til beslutter';
+
     return (
         <DataViewer response={{ fremleggsOppgaver }}>
             {({ fremleggsOppgaver }) => {
@@ -73,11 +79,7 @@ export const ModalOpprettOgFerdigstilleOppgaver: FC<{
                     <Modal
                         open={open}
                         onClose={() => setOpen(false)}
-                        header={{
-                            heading: '',
-                            size: 'small',
-                            closeButton: false,
-                        }}
+                        header={{ heading: '', size: 'small', closeButton: false }}
                         width={`${55}${'rem'}`}
                     >
                         <Modal.Body>
@@ -107,11 +109,15 @@ export const ModalOpprettOgFerdigstilleOppgaver: FC<{
                                         }
                                     />
                                 )}
-                                <Divider />
-                                <BeskrivelseOppgave
-                                    beskrivelseMarkeringer={beskrivelseMarkeringer}
-                                    settBeskrivelseMarkeringer={settBeskrivelseMarkeringer}
-                                />
+                                {!ferdigstillUtenBeslutter && (
+                                    <>
+                                        <Divider />
+                                        <BeskrivelseOppgave
+                                            beskrivelseMarkeringer={beskrivelseMarkeringer}
+                                            settBeskrivelseMarkeringer={settBeskrivelseMarkeringer}
+                                        />
+                                    </>
+                                )}
                             </VStack>
                         </Modal.Body>
                         <Modal.Footer>
@@ -133,7 +139,7 @@ export const ModalOpprettOgFerdigstilleOppgaver: FC<{
                                 }
                                 disabled={!erValgIRadioEllerChecboxGroupGyldig}
                             >
-                                Send til beslutter
+                                {ferdigstillTittel}
                             </Button>
                             <Button type="button" variant="tertiary" onClick={() => setOpen(false)}>
                                 Avbryt

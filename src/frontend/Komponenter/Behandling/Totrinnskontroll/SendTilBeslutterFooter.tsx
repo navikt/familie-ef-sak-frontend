@@ -67,9 +67,7 @@ const SendTilBeslutterFooter: React.FC<{
     kanSendesTilBeslutter?: boolean;
     behandlingErRedigerbar: boolean;
     ferdigstillUtenBeslutter: boolean;
-    hentOppfølgingsoppgave?: {
-        rerun: () => void;
-    };
+    hentOppfølgingsoppgave?: { rerun: () => void };
     oppfølgingsoppgave?: Oppfølgingsoppgave;
 }> = ({
     behandling,
@@ -181,27 +179,28 @@ const SendTilBeslutterFooter: React.FC<{
                             />
                         )}
                         <MidtstiltInnhold>
-                            {skalViseKnappForModal && (
+                            {skalViseKnappForModal ? (
                                 <Button
                                     onClick={() => settVisMarkereGodkjenneVedtakOppgaveModal(true)}
-                                    variant="danger"
                                     type={'button'}
                                     disabled={!kanSendesTilBeslutter || laster}
                                 >
-                                    Opprettelse av oppgaver - TEST
+                                    {ferdigstillTittel}
+                                </Button>
+                            ) : (
+                                <Button
+                                    onClick={() =>
+                                        sendTilBeslutter({
+                                            oppgavetyperSomSkalOpprettes:
+                                                oppgavetyperSomSkalOpprettes,
+                                        })
+                                    }
+                                    disabled={laster || !kanSendesTilBeslutter}
+                                    type={'button'}
+                                >
+                                    {ferdigstillTittel}
                                 </Button>
                             )}
-                            <Button
-                                onClick={() =>
-                                    sendTilBeslutter({
-                                        oppgavetyperSomSkalOpprettes: oppgavetyperSomSkalOpprettes,
-                                    })
-                                }
-                                disabled={laster || !kanSendesTilBeslutter}
-                                type={'button'}
-                            >
-                                {ferdigstillTittel}
-                            </Button>
                         </MidtstiltInnhold>
                     </FlexBox>
                 </Footer>
@@ -215,10 +214,7 @@ const SendTilBeslutterFooter: React.FC<{
                         onClick: () => navigate('/oppgavebenk'),
                         tekst: 'Til oppgavebenk',
                     },
-                    lukkKnapp: {
-                        onClick: () => lukkModal(),
-                        tekst: 'Lukk',
-                    },
+                    lukkKnapp: { onClick: () => lukkModal(), tekst: 'Lukk' },
                     marginTop: 4,
                 }}
             />
@@ -235,6 +231,7 @@ const SendTilBeslutterFooter: React.FC<{
                     settOppgaverSomSkalAutomatiskFerdigstilles={
                         settOppgaverSomSkalAutomatiskFerdigstilles
                     }
+                    ferdigstillUtenBeslutter={ferdigstillUtenBeslutter}
                 />
             )}
         </>
