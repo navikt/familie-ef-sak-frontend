@@ -7,12 +7,27 @@ import {
     utledInitiellSamværsavtale,
 } from '../../Felles/Kalkulator/utils';
 import { useApp } from '../../App/context/AppContext';
-import { useParams } from 'react-router-dom';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useParams } from 'react-router-dom';
+import { EndrePersonModal } from './EndrePersonModal';
+import { BrukerPanel } from '../../Felles/BrukerPanel/BrukerPanel';
+import { PanelHeaderType } from '../../Felles/BrukerPanel/PanelHeader';
+
+export interface FinnNavnHer {
+    personIdent: string;
+    navn: string;
+}
 
 const SamværskalkulatorMedPersonIdent: React.FC = () => {
     const personIdent = useParams<Params>().personIdent as string;
-    console.log(personIdent);
+    const [finnNavnHer, settFinnNavnHer] = useState<FinnNavnHer>({
+        personIdent: personIdent,
+        navn: 'ok',
+    });
+    const [visEndrePersonModal, settVisEndrePersonModal] = useState<boolean>(false);
+
+    const håndterEndrePersonModal = () => {
+        settVisEndrePersonModal(true);
+    };
 
     const { settIkkePersistertKomponent } = useApp();
     const [samværsavtale, settSamværsavtale] = useState<Samværsavtale>(
@@ -34,15 +49,30 @@ const SamværskalkulatorMedPersonIdent: React.FC = () => {
     };
 
     return (
-        <Samværskalkulator
-            onSave={() => null}
-            onClose={() => null}
-            onDelete={() => null}
-            samværsuker={samværsavtale.uker}
-            oppdaterSamværsuke={håndterOppdaterSamværsuke}
-            oppdaterVarighet={håndterOppdaterVarighetPåSamværsavtale}
-            erLesevisning={false}
-        />
+        <>
+            <BrukerPanel
+                navn={''}
+                personIdent={personIdent}
+                type={PanelHeaderType.Samværsavtale}
+                onClick={håndterEndrePersonModal}
+            />
+            <Samværskalkulator
+                onSave={() => null}
+                onClose={() => null}
+                onDelete={() => null}
+                samværsuker={samværsavtale.uker}
+                oppdaterSamværsuke={håndterOppdaterSamværsuke}
+                oppdaterVarighet={håndterOppdaterVarighetPåSamværsavtale}
+                erLesevisning={false}
+            />
+            {visEndrePersonModal && (
+                <EndrePersonModal
+                    finnNavnHer={finnNavnHer}
+                    settFinnNavnHer={settFinnNavnHer}
+                    settVisBrevmottakereModal={settVisEndrePersonModal}
+                />
+            )}
+        </>
     );
 };
 
