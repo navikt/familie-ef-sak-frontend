@@ -22,7 +22,6 @@ import JournalføringWrapper, {
 } from '../Felles/JournalføringWrapper';
 import JournalføringPdfVisning from '../Felles/JournalføringPdfVisning';
 import JournalpostPanel from './JournalpostPanel';
-import BrukerPanel from './BrukerPanel';
 import AvsenderPanel from './AvsenderPanel';
 import Dokumenter from './Dokumenter';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
@@ -40,6 +39,8 @@ import { KlageMottatt } from '../Klage/KlageMottatt';
 import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
 import { EToast } from '../../../App/typer/toast';
 import { TerminBarnSkjema } from '../../Behandling/Førstegangsbehandling/TerminBarnSkjema';
+import { BrukerPanel } from '../../../Felles/BrukerPanel/BrukerPanel';
+import { PanelHeaderType } from '../../../Felles/BrukerPanel/PanelHeader';
 
 const InnerContainer = styled.div`
     display: flex;
@@ -168,7 +169,11 @@ const Journalføring: React.FC<JournalføringSideProps> = ({
                             <Tittel size={'small'} level={'2'}>
                                 Bruker
                             </Tittel>
-                            <BrukerPanel journalpostResponse={journalResponse} />
+                            <BrukerPanel
+                                navn={journalResponse.navn}
+                                personIdent={journalResponse.personIdent}
+                                type={PanelHeaderType.Bruker}
+                            />
                         </section>
                         <section>
                             <Tittel size={'small'} level={'2'}>

@@ -13,7 +13,7 @@ import { IJournalpostResponse } from '../../../App/typer/journalføring';
 import { EnvelopeClosedFillIcon, EnvelopeClosedIcon } from '@navikt/aksel-icons';
 import { ABlue500 } from '@navikt/ds-tokens/dist/tokens';
 import { JournalføringStateRequest } from '../../../App/hooks/useJournalføringState';
-import { PanelHeader, PanelHeaderType } from './PanelHeader';
+import { PanelHeader, PanelHeaderType } from '../../../Felles/BrukerPanel/PanelHeader';
 
 const ExpansionCardHeader = styled(ExpansionCard.Header)`
     padding-bottom: 0.35rem;
