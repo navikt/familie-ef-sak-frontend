@@ -7,8 +7,9 @@ import {
     utledInitiellSamværsavtale,
 } from '../../Felles/Kalkulator/utils';
 import { useApp } from '../../App/context/AppContext';
-import { useParams } from 'react-router-dom';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useParams } from 'react-router-dom';
+import { BrukerPanel } from '../../Felles/BrukerPanel/BrukerPanel';
+import { PanelHeaderType } from '../../Felles/BrukerPanel/PanelHeader';
 
 const SamværskalkulatorMedPersonIdent: React.FC = () => {
     const personIdent = useParams<Params>().personIdent as string;
@@ -34,15 +35,22 @@ const SamværskalkulatorMedPersonIdent: React.FC = () => {
     };
 
     return (
-        <Samværskalkulator
-            onSave={() => null}
-            onClose={() => null}
-            onDelete={() => null}
-            samværsuker={samværsavtale.uker}
-            oppdaterSamværsuke={håndterOppdaterSamværsuke}
-            oppdaterVarighet={håndterOppdaterVarighetPåSamværsavtale}
-            erLesevisning={false}
-        />
+        <>
+            <BrukerPanel
+                navn={''}
+                personIdent={''}
+                type={PanelHeaderType.Samværsavtale}
+            ></BrukerPanel>
+            <Samværskalkulator
+                onSave={() => null}
+                onClose={() => null}
+                onDelete={() => null}
+                samværsuker={samværsavtale.uker}
+                oppdaterSamværsuke={håndterOppdaterSamværsuke}
+                oppdaterVarighet={håndterOppdaterVarighetPåSamværsavtale}
+                erLesevisning={false}
+            />
+        </>
     );
 };
 
