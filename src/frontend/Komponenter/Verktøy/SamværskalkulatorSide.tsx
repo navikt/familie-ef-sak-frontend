@@ -18,6 +18,10 @@ const Notat = styled(Textarea)`
     width: 40rem;
 `;
 
+const StyledBrukerPanel = styled(BrukerPanel)`
+    width: max-content;
+`;
+
 export const SamværskalkulatorSide: React.FC = () => {
     return (
         <Routes>
@@ -71,11 +75,11 @@ const SamværskalkulatorSkjema: React.FC = () => {
     return (
         <VStack gap="4">
             <Heading size="large">Samværskalkulator</Heading>
-            <BrukerPanel
-                navn={''}
-                personIdent={''}
+            <StyledBrukerPanel
+                navn={'Dummy Navn Dummesen'}
+                personIdent={personIdent}
                 type={PanelHeaderType.Samværsavtale}
-            ></BrukerPanel>
+            />
             <Samværskalkulator
                 onDelete={håndterNullstillSamværsavtale}
                 samværsuker={samværsavtale.uker}

@@ -16,6 +16,7 @@ const IkonContainer = styled.div`
 
 const IkonKnapp = styled(Button)`
     padding: 0;
+    margin-left: 5px;
     width: fit-content;
     height: fit-content;
 `;

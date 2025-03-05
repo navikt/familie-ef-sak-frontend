@@ -7,10 +7,11 @@ interface Props {
     personIdent: string;
     type: PanelHeaderType;
     onClick?: () => void;
+    className?: string;
 }
 
-export const BrukerPanel: React.FC<Props> = ({ navn, personIdent, type, onClick }) => (
-    <Panel border>
+export const BrukerPanel: React.FC<Props> = ({ navn, personIdent, type, onClick, className }) => (
+    <Panel className={className} border>
         <PanelHeader navn={navn} personIdent={personIdent} type={type} onClick={onClick} />
     </Panel>
 );
