@@ -22,7 +22,11 @@ export const ModalOpprettOgFerdigstilleOppgaver: FC<{
     >;
     oppgaverSomSkalAutomatiskFerdigstilles: number[];
     settOppgaverSomSkalAutomatiskFerdigstilles: React.Dispatch<React.SetStateAction<number[]>>;
-    ferdigstillUtenBeslutter: boolean;
+    avslagValg: {
+        ferdigstillUtenBeslutter: boolean;
+        erAvslagSkalSendeTilBeslutter: boolean;
+        erAvslag: boolean;
+    };
 }> = ({
     open,
     setOpen,
@@ -33,7 +37,7 @@ export const ModalOpprettOgFerdigstilleOppgaver: FC<{
     settOppgavetyperSomSkalOpprettes,
     oppgaverSomSkalAutomatiskFerdigstilles,
     settOppgaverSomSkalAutomatiskFerdigstilles,
-    ferdigstillUtenBeslutter,
+    avslagValg,
 }) => {
     const [
         årForInntektskontrollSelvstendigNæringsdrivende,
@@ -42,6 +46,8 @@ export const ModalOpprettOgFerdigstilleOppgaver: FC<{
     const [beskrivelseMarkeringer, settBeskrivelseMarkeringer] = useState<BeskrivelseMarkeringer[]>(
         []
     );
+
+    const { ferdigstillUtenBeslutter, erAvslagSkalSendeTilBeslutter, erAvslag } = avslagValg;
 
     const handleSettOppgaverSomSkalFerdigstilles = (oppgaveId: number) =>
         settOppgaverSomSkalAutomatiskFerdigstilles((prevOppgaver) =>
@@ -72,6 +78,9 @@ export const ModalOpprettOgFerdigstilleOppgaver: FC<{
         ? 'Ferdigstill behandling'
         : 'Send til beslutter';
 
+    const skalViseFremleggsoppgaverForOpprettelseOgFerdigstilling =
+        !erAvslag || !erAvslagSkalSendeTilBeslutter;
+
     return (
         <DataViewer response={{ fremleggsOppgaver }}>
             {({ fremleggsOppgaver }) => {
@@ -84,34 +93,45 @@ export const ModalOpprettOgFerdigstilleOppgaver: FC<{
                     >
                         <Modal.Body>
                             <VStack gap="4">
-                                <FremleggsoppgaverForOpprettelse
-                                    årForInntektskontrollSelvstendigNæringsdrivende={
-                                        årForInntektskontrollSelvstendigNæringsdrivende
-                                    }
-                                    oppgavetyperSomKanOpprettes={oppgavetyperSomKanOpprettes}
-                                    oppgavetyperSomSkalOpprettes={oppgavetyperSomSkalOpprettes}
-                                    settOppgavetyperSomSkalOpprettes={
-                                        settOppgavetyperSomSkalOpprettes
-                                    }
-                                    settÅrForInntektskontrollSelvstendigNæringsdrivende={
-                                        settÅrForInntektskontrollSelvstendigNæringsdrivende
-                                    }
-                                />
-                                <Divider />
-                                {fremleggsOppgaver.oppgaver.length > 0 && (
-                                    <TabellFerdigstilleOppgaver
-                                        fremleggsOppgaver={fremleggsOppgaver}
-                                        oppgaverSomSkalAutomatiskFerdigstilles={
-                                            oppgaverSomSkalAutomatiskFerdigstilles
-                                        }
-                                        handleSettOppgaverSomSkalFerdigstilles={
-                                            handleSettOppgaverSomSkalFerdigstilles
-                                        }
-                                    />
+                                {skalViseFremleggsoppgaverForOpprettelseOgFerdigstilling && (
+                                    <>
+                                        <FremleggsoppgaverForOpprettelse
+                                            årForInntektskontrollSelvstendigNæringsdrivende={
+                                                årForInntektskontrollSelvstendigNæringsdrivende
+                                            }
+                                            oppgavetyperSomKanOpprettes={
+                                                oppgavetyperSomKanOpprettes
+                                            }
+                                            oppgavetyperSomSkalOpprettes={
+                                                oppgavetyperSomSkalOpprettes
+                                            }
+                                            settOppgavetyperSomSkalOpprettes={
+                                                settOppgavetyperSomSkalOpprettes
+                                            }
+                                            settÅrForInntektskontrollSelvstendigNæringsdrivende={
+                                                settÅrForInntektskontrollSelvstendigNæringsdrivende
+                                            }
+                                        />
+                                        <Divider />
+                                        {fremleggsOppgaver.oppgaver.length > 0 && (
+                                            <TabellFerdigstilleOppgaver
+                                                fremleggsOppgaver={fremleggsOppgaver}
+                                                oppgaverSomSkalAutomatiskFerdigstilles={
+                                                    oppgaverSomSkalAutomatiskFerdigstilles
+                                                }
+                                                handleSettOppgaverSomSkalFerdigstilles={
+                                                    handleSettOppgaverSomSkalFerdigstilles
+                                                }
+                                            />
+                                        )}
+                                    </>
                                 )}
+
                                 {!ferdigstillUtenBeslutter && (
                                     <>
-                                        <Divider />
+                                        {skalViseFremleggsoppgaverForOpprettelseOgFerdigstilling && (
+                                            <Divider />
+                                        )}
                                         <BeskrivelseOppgave
                                             beskrivelseMarkeringer={beskrivelseMarkeringer}
                                             settBeskrivelseMarkeringer={settBeskrivelseMarkeringer}
