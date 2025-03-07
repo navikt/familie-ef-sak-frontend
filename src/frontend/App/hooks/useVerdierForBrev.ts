@@ -172,7 +172,7 @@ export const genererBeregnetInntektsTekst = (årsinntekt: number): string => {
     const minusTi = beregnTiProsentReduksjonIMånedsinntekt(årsinntekt);
     const plusTi = beregnTiProsentØkningIMånedsinntekt(årsinntekt);
 
-    return `Forventet årsinntekt fra [DATO]: ${formaterTallMedTusenSkille(årsinntekt)} kroner.
+    return `\nForventet årsinntekt fra [DATO]: ${formaterTallMedTusenSkille(årsinntekt)} kroner.
     - 10 % ned: ${minusTi} kroner per måned.
     - 10 % opp: ${plusTi} kroner per måned.`;
 };
