@@ -2,7 +2,7 @@ import React from 'react';
 import SendTilBeslutterFooter from '../Totrinnskontroll/SendTilBeslutterFooter';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
-import { skalFerdigstilleUtenBeslutter } from '../VedtakOgBeregning/Felles/utils';
+import { utledAvslagValg } from '../VedtakOgBeregning/Felles/utils';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { Behandlingsårsak } from '../../../App/typer/behandlingsårsak';
 import { Behandling } from '../../../App/typer/fagsak';
@@ -27,7 +27,7 @@ export const KorrigeringFane: React.FC<Props> = ({ behandling }) => {
                         behandling={behandling}
                         kanSendesTilBeslutter={behandlingErRedigerbar}
                         behandlingErRedigerbar={behandlingErRedigerbar}
-                        ferdigstillUtenBeslutter={skalFerdigstilleUtenBeslutter(vedtak)}
+                        avslagValg={utledAvslagValg(vedtak)}
                     />
                 </>
             )}
