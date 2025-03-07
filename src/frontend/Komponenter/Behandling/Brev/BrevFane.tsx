@@ -8,7 +8,7 @@ import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { useApp } from '../../../App/context/AppContext';
 import { TotrinnskontrollStatus } from '../../../App/typer/totrinnskontroll';
 import { BrevmottakereForBehandling } from '../Brevmottakere/BrevmottakereForBehandling';
-import { skalFerdigstilleUtenBeslutter } from '../VedtakOgBeregning/Felles/utils';
+import { utledAvslagValg } from '../VedtakOgBeregning/Felles/utils';
 import { HøyreKolonne, StyledBrev, VenstreKolonne } from './StyledBrev';
 import { Behandling } from '../../../App/typer/fagsak';
 import { OverstyrtBrevmalVarsel } from './OverstyrtBrevmalVarsel';
@@ -72,55 +72,61 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
                 vedtak,
             }}
         >
-            {({ personopplysningerResponse, vedtak }) => (
-                <>
-                    <StyledBrev>
-                        <VenstreKolonne>
-                            {feilmelding && <AlertError size="small">{feilmelding}</AlertError>}
-                            <VStack gap="4">
-                                <BrevmottakereForBehandling
-                                    behandlingId={behandling.id}
-                                    personopplysninger={personopplysningerResponse}
-                                />
-                                {!behandlingErRedigerbar && (
-                                    <>
-                                        <FremleggoppgaverSomOpprettes
-                                            oppgavetyperSomSkalOpprettes={
-                                                oppfølgingsoppgave?.oppgaverForOpprettelse
-                                                    .oppgavetyperSomSkalOpprettes ?? []
-                                            }
-                                        />
-                                        <OppgaverForFerdigstilling behandlingId={behandling.id} />
-                                    </>
-                                )}
-                                {!behandlingErRedigerbar && (
-                                    <OverstyrtBrevmalVarsel behandlingId={behandling.id} />
-                                )}
-                                {behandlingErRedigerbar && (
-                                    <Brevmeny
-                                        oppdaterBrevRessurs={oppdaterBrevRessurs}
+            {({ personopplysningerResponse, vedtak }) => {
+                const avslagValg = utledAvslagValg(vedtak);
+
+                return (
+                    <>
+                        <StyledBrev>
+                            <VenstreKolonne>
+                                {feilmelding && <AlertError size="small">{feilmelding}</AlertError>}
+                                <VStack gap="4">
+                                    <BrevmottakereForBehandling
+                                        behandlingId={behandling.id}
                                         personopplysninger={personopplysningerResponse}
-                                        settKanSendesTilBeslutter={settKanSendesTilBeslutter}
-                                        behandling={behandling}
-                                        vedtaksresultat={vedtak?.resultatType}
                                     />
-                                )}
-                            </VStack>
-                        </VenstreKolonne>
-                        <HøyreKolonne>
-                            <PdfVisning pdfFilInnhold={brevRessurs} />
-                        </HøyreKolonne>
-                    </StyledBrev>
-                    <SendTilBeslutterFooter
-                        behandling={behandling}
-                        kanSendesTilBeslutter={kanSendesTilBeslutter}
-                        ferdigstillUtenBeslutter={skalFerdigstilleUtenBeslutter(vedtak)}
-                        behandlingErRedigerbar={behandlingErRedigerbar}
-                        hentOppfølgingsoppgave={hentOppfølgingsoppgave}
-                        oppfølgingsoppgave={oppfølgingsoppgave}
-                    />
-                </>
-            )}
+                                    {!behandlingErRedigerbar && (
+                                        <>
+                                            <FremleggoppgaverSomOpprettes
+                                                oppgavetyperSomSkalOpprettes={
+                                                    oppfølgingsoppgave?.oppgaverForOpprettelse
+                                                        .oppgavetyperSomSkalOpprettes ?? []
+                                                }
+                                            />
+                                            <OppgaverForFerdigstilling
+                                                behandlingId={behandling.id}
+                                            />
+                                        </>
+                                    )}
+                                    {!behandlingErRedigerbar && (
+                                        <OverstyrtBrevmalVarsel behandlingId={behandling.id} />
+                                    )}
+                                    {behandlingErRedigerbar && (
+                                        <Brevmeny
+                                            oppdaterBrevRessurs={oppdaterBrevRessurs}
+                                            personopplysninger={personopplysningerResponse}
+                                            settKanSendesTilBeslutter={settKanSendesTilBeslutter}
+                                            behandling={behandling}
+                                            vedtaksresultat={vedtak?.resultatType}
+                                        />
+                                    )}
+                                </VStack>
+                            </VenstreKolonne>
+                            <HøyreKolonne>
+                                <PdfVisning pdfFilInnhold={brevRessurs} />
+                            </HøyreKolonne>
+                        </StyledBrev>
+                        <SendTilBeslutterFooter
+                            behandling={behandling}
+                            kanSendesTilBeslutter={kanSendesTilBeslutter}
+                            avslagValg={avslagValg}
+                            behandlingErRedigerbar={behandlingErRedigerbar}
+                            hentOppfølgingsoppgave={hentOppfølgingsoppgave}
+                            oppfølgingsoppgave={oppfølgingsoppgave}
+                        />
+                    </>
+                );
+            }}
         </DataViewer>
     );
 };

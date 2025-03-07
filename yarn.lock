@@ -1602,10 +1602,10 @@
     classnames "^2.5.1"
     react-select "5.9.0"
 
-"@navikt/familie-header@^16.0.1":
-  version "16.0.1"
-  resolved "https://npm.pkg.github.com/download/@navikt/familie-header/16.0.1/df52430bedf03046090225aabb0e51e7a096cd44#df52430bedf03046090225aabb0e51e7a096cd44"
-  integrity sha512-l+iVJUZe9xWaFMDxgKji92QUjHU2d8dE3+VB/wUu/ZSqBl1vGrwV9bSPzdiArr9PQxTd2WTCnNM5da5TfX4rZg==
+"@navikt/familie-header@^16.0.2":
+  version "16.0.2"
+  resolved "https://npm.pkg.github.com/download/@navikt/familie-header/16.0.2/a36fa50db13145db1c549d9943afe27329a46296#a36fa50db13145db1c549d9943afe27329a46296"
+  integrity sha512-3XVLq9UDIMdMVDN7pDnqVRiWq9pLD0rzY30P1r3fZwF9D9ZdN4gBQovW+UM/CNJ0HgCCkdRzQOYjdhQ3nU6jbQ==
   dependencies:
     "@navikt/familie-ikoner" "^9.1.1"
     "@navikt/familie-typer" "^8.0.3"
