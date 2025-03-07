@@ -1,13 +1,14 @@
 # familie-ef-sak-frontend
 
 Frontend app for enslig forsørger saksbehandling (overgangsstønad)
+Test
 
 # Kom i gang med utvikling
 
--   Installere avhengigheter `yarn`
--   Starte dev-server `yarn start:dev`
--   Starte mock-server `yarn start:mock`
--   Åpne `http://localhost:8000` i nettleseren din
+- Installere avhengigheter `yarn`
+- Starte dev-server `yarn start:dev`
+- Starte mock-server `yarn start:mock`
+- Åpne `http://localhost:8000` i nettleseren din
 
 For å kunne installere avhengigheter fra navikt registry må man være logget inn i github packages. Kjør kommando:
 `npm login --scope=@navikt --registry=https://npm.pkg.github.com`
