@@ -3,11 +3,12 @@ import styled from 'styled-components';
 import { KopierbartNullableFødselsnummer } from '../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
 import FjernKnapp from '../../Felles/Knapper/FjernKnapp';
 import { BodyShort, Ingress } from '@navikt/ds-react';
-import { FinnNavnHer } from './SamværskalkulatorSide';
 
 interface Props {
-    valgtPerson: FinnNavnHer;
-    settValgtPerson: Dispatch<SetStateAction<FinnNavnHer>>;
+    valgtPersonIdent: string;
+    settValgtPersonIdent: Dispatch<SetStateAction<string>>;
+    valgtNavn: string;
+    settValgtNavn: Dispatch<SetStateAction<string>>;
 }
 
 const Undertittel = styled(Ingress)`
@@ -27,18 +28,24 @@ const Flexboks = styled.div`
     flex-direction: column;
 `;
 
-export const ValgtPerson: FC<Props> = ({ valgtPerson, settValgtPerson }) => {
+export const ValgtPerson: FC<Props> = ({
+    valgtPersonIdent,
+    settValgtPersonIdent,
+    valgtNavn,
+    settValgtNavn,
+}) => {
     const fjernPersonMottaker = () => () => {
-        settValgtPerson({ personIdent: '', navn: '' });
+        settValgtPersonIdent('');
+        settValgtNavn('');
     };
     return (
         <>
             <Undertittel>Brevmottakere</Undertittel>
-            <StyledMottakerBoks key={valgtPerson.personIdent}>
+            <StyledMottakerBoks key={valgtPersonIdent}>
                 <Flexboks>
                     <BodyShort>
-                        {valgtPerson.navn}
-                        <KopierbartNullableFødselsnummer fødselsnummer={valgtPerson.personIdent} />
+                        {valgtNavn}
+                        <KopierbartNullableFødselsnummer fødselsnummer={valgtPersonIdent} />
                     </BodyShort>
                 </Flexboks>
                 <FjernKnapp

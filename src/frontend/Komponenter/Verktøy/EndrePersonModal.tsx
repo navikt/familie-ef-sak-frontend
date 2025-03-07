@@ -1,18 +1,13 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import styled from 'styled-components';
 import { ModalWrapper } from '../../Felles/Modal/ModalWrapper';
 import { Button } from '@navikt/ds-react';
 import { SøkPersonTODO } from './SøkPersonTODO';
-import { ValgtPerson } from './ValgtPerson';
-import { FinnNavnHer } from './SamværskalkulatorSide';
 
 const GridContainer = styled.div`
     display: grid;
-    grid-template-columns: 100fr 1fr 100fr;
     column-gap: 2rem;
 `;
-const Venstrekolonne = styled.div``;
-const Høyrekolonne = styled.div``;
 
 const SentrerKnapper = styled.div`
     display: flex;
@@ -33,46 +28,32 @@ const HorisontalLinje = styled.div`
     margin-bottom: 1.5rem;
 `;
 
-const VertikalLinje = styled.div`
-    border-left: 2px solid #f3f3f3;
-    width: 5px;
-    margin-bottom: 1rem;
-`;
-
 export const EndrePersonModal: FC<{
-    finnNavnHer: FinnNavnHer;
-    settFinnNavnHer: React.Dispatch<React.SetStateAction<FinnNavnHer>>;
-    settVisBrevmottakereModal: (verdi: boolean) => void;
-}> = ({ finnNavnHer, settVisBrevmottakereModal, settFinnNavnHer }) => {
-    const [valgtPerson, settValgtPerson] = useState<FinnNavnHer>(finnNavnHer);
-    console.log(valgtPerson.navn);
-
+    personIdent: string;
+    settPersonIdent: React.Dispatch<React.SetStateAction<string>>;
+    settVisEndrePersonModal: React.Dispatch<React.SetStateAction<boolean>>;
+}> = ({ personIdent, settVisEndrePersonModal, settPersonIdent }) => {
     return (
         <ModalWrapper
-            tittel={'Hvem skal motta brevet?'}
+            tittel={'Velg person'}
             visModal={true}
             onClose={() => {
-                settVisBrevmottakereModal(false);
+                settVisEndrePersonModal(false);
             }}
-            maxWidth={70}
-            ariaLabel={'Velg brevmottakere'}
+            maxWidth={40}
+            ariaLabel={'Velg person'}
         >
             <GridContainer>
-                <Venstrekolonne>
-                    <SøkPersonTODO valgtPerson={valgtPerson} settValgtPerson={settValgtPerson} />
-                    <HorisontalLinje />
-                </Venstrekolonne>
-                <VertikalLinje />
-                <Høyrekolonne>
-                    <ValgtPerson valgtPerson={valgtPerson} settValgtPerson={settValgtPerson} />
-                </Høyrekolonne>
+                <SøkPersonTODO
+                    personIdent={personIdent}
+                    settPersonIdent={settPersonIdent}
+                    settVisEndrePersonModal={settVisEndrePersonModal}
+                />
+                <HorisontalLinje />
             </GridContainer>
             <SentrerKnapper>
-                <Button variant="tertiary" onClick={() => settVisBrevmottakereModal(false)}>
+                <Button variant="tertiary" onClick={() => settVisEndrePersonModal(false)}>
                     Avbryt
-                </Button>
-                <Button variant="primary" onClick={() => settFinnNavnHer(valgtPerson)}>
-                    Sett mottakere
                 </Button>
             </SentrerKnapper>
         </ModalWrapper>

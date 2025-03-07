@@ -1,14 +1,14 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useApp } from '../../App/context/AppContext';
 import { byggTomRessurs, Ressurs } from '../../App/typer/ressurs';
-import { Søkefelt, Søkeresultat } from '../Behandling/Brevmottakere/brevmottakereStyling';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
-import { BodyShort, Button, HStack } from '@navikt/ds-react';
-import { FinnNavnHer } from './SamværskalkulatorSide';
+import { BodyShort, Button, HStack, TextField, VStack } from '@navikt/ds-react';
+import styled from 'styled-components';
 
 interface Props {
-    valgtPerson: FinnNavnHer;
-    settValgtPerson: Dispatch<SetStateAction<FinnNavnHer>>;
+    personIdent: string;
+    settPersonIdent: Dispatch<SetStateAction<string>>;
+    settVisEndrePersonModal: Dispatch<React.SetStateAction<boolean>>;
 }
 
 interface PersonSøk {
@@ -16,11 +16,20 @@ interface PersonSøk {
     navn: string;
 }
 
-export const SøkPersonTODO: React.FC<Props> = ({ settValgtPerson, valgtPerson }) => {
+export const SøkeresultatTODO = styled.div`
+    display: flex;
+    background: rgba(196, 196, 196, 0.2);
+    flex-direction: column;
+`;
+
+export const StyledVStack = styled(VStack)`
+    padding: 10px;
+`;
+
+export const SøkPersonTODO: React.FC<Props> = ({ settPersonIdent, settVisEndrePersonModal }) => {
     const { axiosRequest } = useApp();
     const [søkIdent, settSøkIdent] = useState('');
     const [søkRessurs, settSøkRessurs] = useState(byggTomRessurs<PersonSøk>());
-    console.log(valgtPerson.navn);
 
     useEffect(() => {
         if (søkIdent && søkIdent.length === 11) {
@@ -36,16 +45,17 @@ export const SøkPersonTODO: React.FC<Props> = ({ settValgtPerson, valgtPerson }
         }
     }, [axiosRequest, søkIdent]);
 
-    const velgPerson = (personIdent: string, navn: string) => () => {
-        settValgtPerson({ personIdent: personIdent, navn: navn });
+    const velgPerson = (personIdent: string) => () => {
+        settPersonIdent(personIdent);
+        settVisEndrePersonModal(false);
     };
 
     return (
         <>
-            <Søkefelt
+            <TextField
                 label={'Personident'}
                 htmlSize={26}
-                placeholder={'Personen som skal ha brevet'}
+                placeholder={'Skriv inn personident'}
                 value={søkIdent}
                 onChange={(e) => settSøkIdent(e.target.value)}
                 autoComplete="off"
@@ -54,24 +64,21 @@ export const SøkPersonTODO: React.FC<Props> = ({ settValgtPerson, valgtPerson }
                 {({ søkRessurs }) => {
                     return (
                         <>
-                            <Søkeresultat>
-                                <div>
+                            <SøkeresultatTODO>
+                                <StyledVStack>
                                     <BodyShort>{søkRessurs.navn}</BodyShort>
                                     {søkRessurs.personIdent}
-                                </div>
+                                </StyledVStack>
                                 <HStack align="center">
                                     <Button
                                         variant="secondary"
                                         size="small"
-                                        onClick={velgPerson(
-                                            søkRessurs.personIdent,
-                                            søkRessurs.navn
-                                        )}
+                                        onClick={velgPerson(søkRessurs.personIdent)}
                                     >
-                                        Legg til
+                                        Velg person
                                     </Button>
                                 </HStack>
-                            </Søkeresultat>
+                            </SøkeresultatTODO>
                         </>
                     );
                 }}
