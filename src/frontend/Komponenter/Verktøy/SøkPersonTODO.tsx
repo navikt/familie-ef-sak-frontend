@@ -4,6 +4,7 @@ import { byggTomRessurs, Ressurs } from '../../App/typer/ressurs';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { BodyShort, Button, HStack, TextField, VStack } from '@navikt/ds-react';
 import styled from 'styled-components';
+import { Søkeresultat } from '../Behandling/Brevmottakere/brevmottakereStyling';
 
 interface Props {
     settPersonIdent: Dispatch<SetStateAction<string>>;
@@ -14,12 +15,6 @@ interface PersonSøk {
     personIdent: string;
     navn: string;
 }
-
-export const SøkeresultatTODO = styled.div`
-    display: flex;
-    background: rgba(196, 196, 196, 0.2);
-    flex-direction: column;
-`;
 
 export const StyledVStack = styled(VStack)`
     padding: 10px;
@@ -63,7 +58,7 @@ export const SøkPersonTODO: React.FC<Props> = ({ settPersonIdent, settVisEndreP
                 {({ søkRessurs }) => {
                     return (
                         <>
-                            <SøkeresultatTODO>
+                            <Søkeresultat>
                                 <StyledVStack>
                                     <BodyShort>{søkRessurs.navn}</BodyShort>
                                     {søkRessurs.personIdent}
@@ -77,7 +72,7 @@ export const SøkPersonTODO: React.FC<Props> = ({ settPersonIdent, settVisEndreP
                                         Velg person
                                     </Button>
                                 </HStack>
-                            </SøkeresultatTODO>
+                            </Søkeresultat>
                         </>
                     );
                 }}
