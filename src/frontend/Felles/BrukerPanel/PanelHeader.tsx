@@ -5,19 +5,9 @@ import { EnvelopeClosedIcon, PersonCircleIcon } from '@navikt/aksel-icons';
 import { ABlue500 } from '@navikt/ds-tokens/dist/tokens';
 import { NotePencilIcon } from '@navikt/aksel-icons';
 
-const Container = styled.div`
-    display: flex;
-    gap: 1rem;
-`;
-
 const IkonContainer = styled.div`
     color: ${ABlue500};
-`;
-
-const IkonKnapp = styled(Button)`
-    padding: 0;
-    width: fit-content;
-    height: fit-content;
+    padding-right: 1rem;
 `;
 
 export enum PanelHeaderType {
@@ -27,7 +17,7 @@ export enum PanelHeaderType {
 }
 interface Props {
     navn: string;
-    personIdent: string;
+    personIdent?: string;
     type: PanelHeaderType;
     onClick?: () => void;
 }
@@ -44,12 +34,12 @@ export const PanelHeader: React.FC<Props> = ({ navn, personIdent, type, onClick 
     const panelIkon = utledPanelIkon(type);
 
     return (
-        <Container>
+        <HStack>
             <IkonContainer>{panelIkon}</IkonContainer>
-            <HStack align="center">
+            <HStack align="center" gap={'1'}>
                 <Label as={'p'}>{tittel}</Label>
-                {type === PanelHeaderType.Samværsavtale ? (
-                    <IkonKnapp
+                {type === PanelHeaderType.Samværsavtale || !personIdent ? (
+                    <Button
                         icon={<NotePencilIcon title="Rediger" />}
                         variant="tertiary"
                         onClick={onClick}
@@ -58,6 +48,6 @@ export const PanelHeader: React.FC<Props> = ({ navn, personIdent, type, onClick 
                     <CopyButton copyText={personIdent} variant="action" />
                 )}
             </HStack>
-        </Container>
+        </HStack>
     );
 };
