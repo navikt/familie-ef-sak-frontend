@@ -121,7 +121,6 @@ const SamværskalkulatorSkjema: React.FC = () => {
             />
             {visEndrePersonModal && (
                 <EndrePersonModal
-                    personIdent={personIdent}
                     settPersonIdent={settPersonIdent}
                     settVisEndrePersonModal={settVisEndrePersonModal}
                 />

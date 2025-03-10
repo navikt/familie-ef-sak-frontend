@@ -29,7 +29,6 @@ const HorisontalLinje = styled.div`
 `;
 
 export const EndrePersonModal: FC<{
-    personIdent: string;
     settPersonIdent: React.Dispatch<React.SetStateAction<string>>;
     settVisEndrePersonModal: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({ settVisEndrePersonModal, settPersonIdent }) => {

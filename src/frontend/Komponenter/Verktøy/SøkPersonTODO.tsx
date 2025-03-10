@@ -52,9 +52,9 @@ export const SøkPersonTODO: React.FC<Props> = ({ settPersonIdent, settVisEndreP
     return (
         <>
             <TextField
-                label={'Personident'}
+                label={'Fødselsnummer'}
                 htmlSize={26}
-                placeholder={'Skriv inn personident'}
+                placeholder={'Skriv inn fødselsnummer'}
                 value={søkIdent}
                 onChange={(e) => settSøkIdent(e.target.value)}
                 autoComplete="off"
