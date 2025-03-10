@@ -66,16 +66,20 @@ const SendTilBeslutterFooter: React.FC<{
     behandling: Behandling;
     kanSendesTilBeslutter?: boolean;
     behandlingErRedigerbar: boolean;
-    ferdigstillUtenBeslutter: boolean;
     hentOppfølgingsoppgave?: { rerun: () => void };
     oppfølgingsoppgave?: Oppfølgingsoppgave;
+    avslagValg: {
+        ferdigstillUtenBeslutter: boolean;
+        erAvslagSkalSendeTilBeslutter: boolean;
+        erAvslag: boolean;
+    };
 }> = ({
     behandling,
     kanSendesTilBeslutter,
     behandlingErRedigerbar,
-    ferdigstillUtenBeslutter,
     hentOppfølgingsoppgave,
     oppfølgingsoppgave,
+    avslagValg,
 }) => {
     const { axiosRequest } = useApp();
     const navigate = useNavigate();
@@ -102,6 +106,8 @@ const SendTilBeslutterFooter: React.FC<{
     >(utledDefaultOppgavetyperSomSkalOpprettes(oppgavetyperSomKanOpprettes));
     const [oppgaverSomSkalAutomatiskFerdigstilles, settOppgaverSomSkalAutomatiskFerdigstilles] =
         useState<number[]>(oppfølgingsoppgave?.oppgaveIderForFerdigstilling || []);
+
+    const { ferdigstillUtenBeslutter } = avslagValg;
 
     const sendTilBeslutter = (data: SendTilBeslutterRequest) => {
         settLaster(true);
@@ -231,7 +237,7 @@ const SendTilBeslutterFooter: React.FC<{
                     settOppgaverSomSkalAutomatiskFerdigstilles={
                         settOppgaverSomSkalAutomatiskFerdigstilles
                     }
-                    ferdigstillUtenBeslutter={ferdigstillUtenBeslutter}
+                    avslagValg={avslagValg}
                 />
             )}
         </>

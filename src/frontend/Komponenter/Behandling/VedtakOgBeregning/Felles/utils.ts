@@ -191,6 +191,26 @@ export const skalFerdigstilleUtenBeslutter = (vedtak?: IVedtak | undefined): boo
     );
 };
 
+export const utledErAvslagSkalSendeTilBeslutter = (vedtak?: IVedtak | undefined): boolean => {
+    return (
+        !!vedtak &&
+        vedtak._type === IVedtakType.Avslag &&
+        vedtak.resultatType === EBehandlingResultat.AVSLÅ &&
+        vedtak.avslåÅrsak !== EAvslagÅrsak.MINDRE_INNTEKTSENDRINGER
+    );
+};
+
+export const utledAvslagValg = (vedtak?: IVedtak | undefined) => {
+    return {
+        ferdigstillUtenBeslutter: skalFerdigstilleUtenBeslutter(vedtak),
+        erAvslagSkalSendeTilBeslutter: utledErAvslagSkalSendeTilBeslutter(vedtak),
+        erAvslag:
+            !!vedtak &&
+            vedtak._type === IVedtakType.Avslag &&
+            vedtak.resultatType === EBehandlingResultat.AVSLÅ,
+    };
+};
+
 export const validerGyldigTallverdi = (verdi: string | number | undefined | null) => {
     const ugyldigVerdiFeilmelding = `Ugyldig verdi - kun heltall tillatt`;
     if (typeof verdi === 'number') {
