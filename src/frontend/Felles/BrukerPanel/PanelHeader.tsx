@@ -17,7 +17,7 @@ export enum PanelHeaderType {
 }
 interface Props {
     navn: string;
-    personIdent: string;
+    personIdent?: string;
     type: PanelHeaderType;
     onClick?: () => void;
 }
@@ -38,7 +38,7 @@ export const PanelHeader: React.FC<Props> = ({ navn, personIdent, type, onClick 
             <IkonContainer>{panelIkon}</IkonContainer>
             <HStack align="center" gap={'1'}>
                 <Label as={'p'}>{tittel}</Label>
-                {type === PanelHeaderType.Samværsavtale ? (
+                {type === PanelHeaderType.Samværsavtale || !personIdent ? (
                     <Button
                         icon={<NotePencilIcon title="Rediger" />}
                         variant="tertiary"
