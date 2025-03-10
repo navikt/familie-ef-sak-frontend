@@ -1,5 +1,5 @@
 import React from 'react';
-import { Panel } from '@navikt/ds-react';
+import { Box } from '@navikt/ds-react';
 import { PanelHeader, PanelHeaderType } from './PanelHeader';
 
 interface Props {
@@ -7,11 +7,11 @@ interface Props {
     personIdent: string;
     type: PanelHeaderType;
     onClick?: () => void;
-    className?: string;
+    width?: string;
 }
 
-export const BrukerPanel: React.FC<Props> = ({ navn, personIdent, type, onClick, className }) => (
-    <Panel className={className} border>
+export const BrukerPanel: React.FC<Props> = ({ navn, personIdent, type, onClick, width }) => (
+    <Box borderWidth="1" width={width} paddingBlock="4 4" padding="3">
         <PanelHeader navn={navn} personIdent={personIdent} type={type} onClick={onClick} />
-    </Panel>
+    </Box>
 );

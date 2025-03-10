@@ -79,6 +79,7 @@ const SamværskalkulatorSkjema: React.FC = () => {
                 navn={'Dummy Navn Dummesen'}
                 personIdent={personIdent}
                 type={PanelHeaderType.Samværsavtale}
+                width="max-content"
             />
             <Samværskalkulator
                 onDelete={håndterNullstillSamværsavtale}
