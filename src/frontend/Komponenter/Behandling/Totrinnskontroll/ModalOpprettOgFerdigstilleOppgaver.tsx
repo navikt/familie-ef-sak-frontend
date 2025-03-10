@@ -112,17 +112,19 @@ export const ModalOpprettOgFerdigstilleOppgaver: FC<{
                                                 settÅrForInntektskontrollSelvstendigNæringsdrivende
                                             }
                                         />
-                                        <Divider />
                                         {fremleggsOppgaver.oppgaver.length > 0 && (
-                                            <TabellFerdigstilleOppgaver
-                                                fremleggsOppgaver={fremleggsOppgaver}
-                                                oppgaverSomSkalAutomatiskFerdigstilles={
-                                                    oppgaverSomSkalAutomatiskFerdigstilles
-                                                }
-                                                handleSettOppgaverSomSkalFerdigstilles={
-                                                    handleSettOppgaverSomSkalFerdigstilles
-                                                }
-                                            />
+                                            <>
+                                                <Divider />
+                                                <TabellFerdigstilleOppgaver
+                                                    fremleggsOppgaver={fremleggsOppgaver}
+                                                    oppgaverSomSkalAutomatiskFerdigstilles={
+                                                        oppgaverSomSkalAutomatiskFerdigstilles
+                                                    }
+                                                    handleSettOppgaverSomSkalFerdigstilles={
+                                                        handleSettOppgaverSomSkalFerdigstilles
+                                                    }
+                                                />
+                                            </>
                                         )}
                                     </>
                                 )}
