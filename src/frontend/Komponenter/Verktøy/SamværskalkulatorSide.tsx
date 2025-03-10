@@ -7,14 +7,19 @@ import {
     utledInitiellSamværsavtale,
 } from '../../Felles/Kalkulator/utils';
 import { useApp } from '../../App/context/AppContext';
-import { useNavigate, useParams } from 'react-router-dom';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate, useParams } from 'react-router-dom';
 import { Heading, HStack, Textarea, VStack } from '@navikt/ds-react';
 import { Knapp } from '../../Felles/Knapper/HovedKnapp';
 import styled from 'styled-components';
+import { BrukerPanel } from '../../Felles/BrukerPanel/BrukerPanel';
+import { PanelHeaderType } from '../../Felles/BrukerPanel/PanelHeader';
 
 const Notat = styled(Textarea)`
     width: 40rem;
+`;
+
+const StyledBrukerPanel = styled(BrukerPanel)`
+    width: max-content;
 `;
 
 export const SamværskalkulatorSide: React.FC = () => {
@@ -70,6 +75,12 @@ const SamværskalkulatorSkjema: React.FC = () => {
     return (
         <VStack gap="4">
             <Heading size="large">Samværskalkulator</Heading>
+            <StyledBrukerPanel
+                navn={'Dummy Navn Dummesen'}
+                personIdent={personIdent}
+                type={PanelHeaderType.Samværsavtale}
+                width="max-content"
+            />
             <Samværskalkulator
                 onDelete={håndterNullstillSamværsavtale}
                 samværsuker={samværsavtale.uker}
