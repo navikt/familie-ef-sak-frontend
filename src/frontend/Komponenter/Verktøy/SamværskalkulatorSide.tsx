@@ -7,17 +7,36 @@ import {
     utledInitiellSamværsavtale,
 } from '../../Felles/Kalkulator/utils';
 import { useApp } from '../../App/context/AppContext';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Route, Routes } from 'react-router-dom';
+import { Heading, HStack, Textarea, VStack } from '@navikt/ds-react';
+import { Knapp } from '../../Felles/Knapper/HovedKnapp';
+import styled from 'styled-components';
 
-const SamværskalkulatorMedPersonIdent: React.FC = () => {
-    const personIdent = useParams<Params>().personIdent as string;
-    console.log(personIdent);
+const Notat = styled(Textarea)`
+    width: 40rem;
+`;
 
-    const { settIkkePersistertKomponent } = useApp();
+export const SamværskalkulatorSide: React.FC = () => {
+    return (
+        <Routes>
+            <Route path=":personIdent" element={<SamværskalkulatorSkjema />} />
+            <Route path="/" element={<SamværskalkulatorSkjema />} />
+        </Routes>
+    );
+};
+
+const SamværskalkulatorSkjema: React.FC = () => {
+    const personIdent = useParams<{ personIdent: string | undefined }>().personIdent as string;
+    const navigate = useNavigate();
+    console.log('ident', personIdent);
+
+    const { settIkkePersistertKomponent, nullstillIkkePersistertKomponent } = useApp();
     const [samværsavtale, settSamværsavtale] = useState<Samværsavtale>(
         utledInitiellSamværsavtale(undefined, '', '')
     );
+    const [notat, settNotat] = useState<string>('');
+    const [senderInnJournalføring, settSenderInnJournalføring] = useState<boolean>(false);
 
     const håndterOppdaterSamværsuke = (
         ukeIndex: number,
@@ -33,41 +52,51 @@ const SamværskalkulatorMedPersonIdent: React.FC = () => {
         oppdaterVarighetPåSamværsavtale(samværsavtale.uker.length, nyVarighet, settSamværsavtale);
     };
 
-    return (
-        <Samværskalkulator
-            onSave={() => null}
-            onClose={() => null}
-            onDelete={() => null}
-            samværsuker={samværsavtale.uker}
-            oppdaterSamværsuke={håndterOppdaterSamværsuke}
-            oppdaterVarighet={håndterOppdaterVarighetPåSamværsavtale}
-            erLesevisning={false}
-        />
-    );
-};
+    const håndterJournalførSamværsavtale = () => {
+        if (senderInnJournalføring) {
+            return;
+        }
+        //TODO
+        //journalførSamværsavtale()
+        nullstillIkkePersistertKomponent('samværskalkulator');
+        settSenderInnJournalføring(false);
+    };
 
-type Params = {
-    personIdent: string | undefined;
-};
+    const håndterNullstillSamværsavtale = () => {
+        settSamværsavtale(utledInitiellSamværsavtale(undefined, '', ''));
+        nullstillIkkePersistertKomponent('samværskalkulator');
+    };
 
-export const SamværskalkulatorSide: React.FC = () => {
     return (
-        <Routes>
-            <Route path=":personIdent" element={<SamværskalkulatorMedPersonIdent />} />
-            <Route
-                path="/"
-                element={
-                    <Samværskalkulator
-                        onSave={() => null}
-                        onClose={() => null}
-                        onDelete={() => null}
-                        samværsuker={[]}
-                        oppdaterSamværsuke={() => null}
-                        oppdaterVarighet={() => null}
-                        erLesevisning={false}
-                    />
-                }
+        <VStack gap="4">
+            <Heading size="large">Samværskalkulator</Heading>
+            <Samværskalkulator
+                onDelete={håndterNullstillSamværsavtale}
+                samværsuker={samværsavtale.uker}
+                oppdaterSamværsuke={håndterOppdaterSamværsuke}
+                oppdaterVarighet={håndterOppdaterVarighetPåSamværsavtale}
+                erLesevisning={false}
             />
-        </Routes>
+            <Notat
+                label={'Notat'}
+                value={notat}
+                onChange={(e) => settNotat(e.target.value)}
+                maxLength={0}
+            />
+            <HStack gap="4">
+                <Knapp size={'small'} variant={'tertiary'} onClick={() => navigate('/oppgavebenk')}>
+                    Avbryt
+                </Knapp>
+                <Knapp
+                    size={'small'}
+                    variant={'primary'}
+                    onClick={håndterJournalførSamværsavtale}
+                    loading={senderInnJournalføring}
+                    disabled={senderInnJournalføring}
+                >
+                    Journalfør
+                </Knapp>
+            </HStack>
+        </VStack>
     );
 };

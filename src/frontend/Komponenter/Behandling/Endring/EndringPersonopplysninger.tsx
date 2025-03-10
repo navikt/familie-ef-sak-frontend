@@ -121,11 +121,11 @@ const Personopplysningsendringer: React.FC<{ behandlingId: string }> = ({ behand
                 return (
                     <Advarsel>
                         <Heading spacing size="small" level="2">
-                            Opplysninger fra Folkeregisteret er endret
+                            Opplysninger er endret
                         </Heading>
                         <BodyLongMedium>
-                            Bruker sine opplysninger fra Folkeregisteret har endret seg siden denne
-                            behandlingen ble påbegynt. Endringen gjelder:
+                            Bruker sine opplysninger har endret seg siden denne behandlingen ble
+                            påbegynt. Endringen gjelder:
                         </BodyLongMedium>
                         <ul>
                             {endringer.map((personopplysning) => (

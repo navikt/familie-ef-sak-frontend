@@ -66,18 +66,20 @@ const SendTilBeslutterFooter: React.FC<{
     behandling: Behandling;
     kanSendesTilBeslutter?: boolean;
     behandlingErRedigerbar: boolean;
-    ferdigstillUtenBeslutter: boolean;
-    hentOppfølgingsoppgave?: {
-        rerun: () => void;
-    };
+    hentOppfølgingsoppgave?: { rerun: () => void };
     oppfølgingsoppgave?: Oppfølgingsoppgave;
+    avslagValg: {
+        ferdigstillUtenBeslutter: boolean;
+        erAvslagSkalSendeTilBeslutter: boolean;
+        erAvslag: boolean;
+    };
 }> = ({
     behandling,
     kanSendesTilBeslutter,
     behandlingErRedigerbar,
-    ferdigstillUtenBeslutter,
     hentOppfølgingsoppgave,
     oppfølgingsoppgave,
+    avslagValg,
 }) => {
     const { axiosRequest } = useApp();
     const navigate = useNavigate();
@@ -104,6 +106,8 @@ const SendTilBeslutterFooter: React.FC<{
     >(utledDefaultOppgavetyperSomSkalOpprettes(oppgavetyperSomKanOpprettes));
     const [oppgaverSomSkalAutomatiskFerdigstilles, settOppgaverSomSkalAutomatiskFerdigstilles] =
         useState<number[]>(oppfølgingsoppgave?.oppgaveIderForFerdigstilling || []);
+
+    const { ferdigstillUtenBeslutter } = avslagValg;
 
     const sendTilBeslutter = (data: SendTilBeslutterRequest) => {
         settLaster(true);
@@ -181,27 +185,28 @@ const SendTilBeslutterFooter: React.FC<{
                             />
                         )}
                         <MidtstiltInnhold>
-                            {skalViseKnappForModal && (
+                            {skalViseKnappForModal ? (
                                 <Button
                                     onClick={() => settVisMarkereGodkjenneVedtakOppgaveModal(true)}
-                                    variant="danger"
                                     type={'button'}
                                     disabled={!kanSendesTilBeslutter || laster}
                                 >
-                                    Opprettelse av oppgaver - TEST
+                                    {ferdigstillTittel}
+                                </Button>
+                            ) : (
+                                <Button
+                                    onClick={() =>
+                                        sendTilBeslutter({
+                                            oppgavetyperSomSkalOpprettes:
+                                                oppgavetyperSomSkalOpprettes,
+                                        })
+                                    }
+                                    disabled={laster || !kanSendesTilBeslutter}
+                                    type={'button'}
+                                >
+                                    {ferdigstillTittel}
                                 </Button>
                             )}
-                            <Button
-                                onClick={() =>
-                                    sendTilBeslutter({
-                                        oppgavetyperSomSkalOpprettes: oppgavetyperSomSkalOpprettes,
-                                    })
-                                }
-                                disabled={laster || !kanSendesTilBeslutter}
-                                type={'button'}
-                            >
-                                {ferdigstillTittel}
-                            </Button>
                         </MidtstiltInnhold>
                     </FlexBox>
                 </Footer>
@@ -215,10 +220,7 @@ const SendTilBeslutterFooter: React.FC<{
                         onClick: () => navigate('/oppgavebenk'),
                         tekst: 'Til oppgavebenk',
                     },
-                    lukkKnapp: {
-                        onClick: () => lukkModal(),
-                        tekst: 'Lukk',
-                    },
+                    lukkKnapp: { onClick: () => lukkModal(), tekst: 'Lukk' },
                     marginTop: 4,
                 }}
             />
@@ -235,6 +237,7 @@ const SendTilBeslutterFooter: React.FC<{
                     settOppgaverSomSkalAutomatiskFerdigstilles={
                         settOppgaverSomSkalAutomatiskFerdigstilles
                     }
+                    avslagValg={avslagValg}
                 />
             )}
         </>

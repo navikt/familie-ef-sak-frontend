@@ -149,9 +149,9 @@ export const kalkulerSamværsandeler = (samværsuker: Samværsuke[]) => {
 
 interface Props {
     className?: string;
-    onSave: () => void;
-    onClose: () => void;
-    onDelete: () => void;
+    onSave?: () => void;
+    onClose?: () => void;
+    onDelete?: () => void;
     samværsuker: Samværsuke[];
     oppdaterSamværsuke: (ukeIndex: number, ukedag: string, samversandeler: Samværsandel[]) => void;
     oppdaterVarighet: (varighet: number) => void;
@@ -180,7 +180,7 @@ export const Samværskalkulator: React.FC<Props> = ({
             />
             <Grid>
                 {samværsuker.map((samværsuke, index) => (
-                    <>
+                    <React.Fragment key={index}>
                         <span className="gridItem">
                             <VStack gap="6">
                                 <Div />
@@ -200,7 +200,7 @@ export const Samværskalkulator: React.FC<Props> = ({
                             }
                             erLesevisning={erLesevisning}
                         />
-                    </>
+                    </React.Fragment>
                 ))}
             </Grid>
             <Oppsummering
@@ -286,7 +286,7 @@ const Ukedag: React.FC<{
 
 const VarighetSelect: React.FC<{
     oppdaterVarighet: (varighet: number) => void;
-    onDelete: () => void;
+    onDelete?: () => void;
     samværsuker: Samværsuke[];
     erLesevisning: boolean;
 }> = ({ oppdaterVarighet, onDelete, samværsuker, erLesevisning }) => (
@@ -321,8 +321,8 @@ const VarighetSelect: React.FC<{
 
 const Oppsummering: React.FC<{
     samværsuker: Samværsuke[];
-    onSave: () => void;
-    onClose: () => void;
+    onSave?: () => void;
+    onClose?: () => void;
     erLesevisning: boolean;
 }> = ({ samværsuker, onSave, onClose, erLesevisning }) => {
     const [samværsandelerDagVisning, samværsandelProsentVisning] =
@@ -339,10 +339,12 @@ const Oppsummering: React.FC<{
                 <BodyShort size="medium">{`${samværsandelerDagVisning} = ${samværsandelProsentVisning}`}</BodyShort>
             </HStack>
             <HStack gap="4">
-                <Button size="small" variant="tertiary" onClick={onClose}>
-                    {visningstekstAvbrytKnapp}
-                </Button>
-                {!erLesevisning && (
+                {onClose && (
+                    <Button size="small" variant="tertiary" onClick={onClose}>
+                        {visningstekstAvbrytKnapp}
+                    </Button>
+                )}
+                {onSave && !erLesevisning && (
                     <Button size="small" type="button" onClick={onSave} disabled={erLesevisning}>
                         Lagre
                     </Button>

@@ -22,6 +22,11 @@ export const ModalOpprettOgFerdigstilleOppgaver: FC<{
     >;
     oppgaverSomSkalAutomatiskFerdigstilles: number[];
     settOppgaverSomSkalAutomatiskFerdigstilles: React.Dispatch<React.SetStateAction<number[]>>;
+    avslagValg: {
+        ferdigstillUtenBeslutter: boolean;
+        erAvslagSkalSendeTilBeslutter: boolean;
+        erAvslag: boolean;
+    };
 }> = ({
     open,
     setOpen,
@@ -32,6 +37,7 @@ export const ModalOpprettOgFerdigstilleOppgaver: FC<{
     settOppgavetyperSomSkalOpprettes,
     oppgaverSomSkalAutomatiskFerdigstilles,
     settOppgaverSomSkalAutomatiskFerdigstilles,
+    avslagValg,
 }) => {
     const [
         årForInntektskontrollSelvstendigNæringsdrivende,
@@ -40,6 +46,8 @@ export const ModalOpprettOgFerdigstilleOppgaver: FC<{
     const [beskrivelseMarkeringer, settBeskrivelseMarkeringer] = useState<BeskrivelseMarkeringer[]>(
         []
     );
+
+    const { ferdigstillUtenBeslutter, erAvslagSkalSendeTilBeslutter, erAvslag } = avslagValg;
 
     const handleSettOppgaverSomSkalFerdigstilles = (oppgaveId: number) =>
         settOppgaverSomSkalAutomatiskFerdigstilles((prevOppgaver) =>
@@ -66,6 +74,13 @@ export const ModalOpprettOgFerdigstilleOppgaver: FC<{
     const erValgIRadioEllerChecboxGroupGyldig =
         harValgtAnnetEnnInntektskontroll || harValgtInntektskontrollOgÅr || harValgtIngen;
 
+    const ferdigstillTittel = ferdigstillUtenBeslutter
+        ? 'Ferdigstill behandling'
+        : 'Send til beslutter';
+
+    const skalViseFremleggsoppgaverForOpprettelseOgFerdigstilling =
+        !erAvslag || !erAvslagSkalSendeTilBeslutter;
+
     return (
         <DataViewer response={{ fremleggsOppgaver }}>
             {({ fremleggsOppgaver }) => {
@@ -73,45 +88,58 @@ export const ModalOpprettOgFerdigstilleOppgaver: FC<{
                     <Modal
                         open={open}
                         onClose={() => setOpen(false)}
-                        header={{
-                            heading: '',
-                            size: 'small',
-                            closeButton: false,
-                        }}
+                        header={{ heading: '', size: 'small', closeButton: false }}
                         width={`${55}${'rem'}`}
                     >
                         <Modal.Body>
                             <VStack gap="4">
-                                <FremleggsoppgaverForOpprettelse
-                                    årForInntektskontrollSelvstendigNæringsdrivende={
-                                        årForInntektskontrollSelvstendigNæringsdrivende
-                                    }
-                                    oppgavetyperSomKanOpprettes={oppgavetyperSomKanOpprettes}
-                                    oppgavetyperSomSkalOpprettes={oppgavetyperSomSkalOpprettes}
-                                    settOppgavetyperSomSkalOpprettes={
-                                        settOppgavetyperSomSkalOpprettes
-                                    }
-                                    settÅrForInntektskontrollSelvstendigNæringsdrivende={
-                                        settÅrForInntektskontrollSelvstendigNæringsdrivende
-                                    }
-                                />
-                                <Divider />
-                                {fremleggsOppgaver.oppgaver.length > 0 && (
-                                    <TabellFerdigstilleOppgaver
-                                        fremleggsOppgaver={fremleggsOppgaver}
-                                        oppgaverSomSkalAutomatiskFerdigstilles={
-                                            oppgaverSomSkalAutomatiskFerdigstilles
-                                        }
-                                        handleSettOppgaverSomSkalFerdigstilles={
-                                            handleSettOppgaverSomSkalFerdigstilles
-                                        }
-                                    />
+                                {skalViseFremleggsoppgaverForOpprettelseOgFerdigstilling && (
+                                    <>
+                                        <FremleggsoppgaverForOpprettelse
+                                            årForInntektskontrollSelvstendigNæringsdrivende={
+                                                årForInntektskontrollSelvstendigNæringsdrivende
+                                            }
+                                            oppgavetyperSomKanOpprettes={
+                                                oppgavetyperSomKanOpprettes
+                                            }
+                                            oppgavetyperSomSkalOpprettes={
+                                                oppgavetyperSomSkalOpprettes
+                                            }
+                                            settOppgavetyperSomSkalOpprettes={
+                                                settOppgavetyperSomSkalOpprettes
+                                            }
+                                            settÅrForInntektskontrollSelvstendigNæringsdrivende={
+                                                settÅrForInntektskontrollSelvstendigNæringsdrivende
+                                            }
+                                        />
+                                        {fremleggsOppgaver.oppgaver.length > 0 && (
+                                            <>
+                                                <Divider />
+                                                <TabellFerdigstilleOppgaver
+                                                    fremleggsOppgaver={fremleggsOppgaver}
+                                                    oppgaverSomSkalAutomatiskFerdigstilles={
+                                                        oppgaverSomSkalAutomatiskFerdigstilles
+                                                    }
+                                                    handleSettOppgaverSomSkalFerdigstilles={
+                                                        handleSettOppgaverSomSkalFerdigstilles
+                                                    }
+                                                />
+                                            </>
+                                        )}
+                                    </>
                                 )}
-                                <Divider />
-                                <BeskrivelseOppgave
-                                    beskrivelseMarkeringer={beskrivelseMarkeringer}
-                                    settBeskrivelseMarkeringer={settBeskrivelseMarkeringer}
-                                />
+
+                                {!ferdigstillUtenBeslutter && (
+                                    <>
+                                        {skalViseFremleggsoppgaverForOpprettelseOgFerdigstilling && (
+                                            <Divider />
+                                        )}
+                                        <BeskrivelseOppgave
+                                            beskrivelseMarkeringer={beskrivelseMarkeringer}
+                                            settBeskrivelseMarkeringer={settBeskrivelseMarkeringer}
+                                        />
+                                    </>
+                                )}
                             </VStack>
                         </Modal.Body>
                         <Modal.Footer>
@@ -133,7 +161,7 @@ export const ModalOpprettOgFerdigstilleOppgaver: FC<{
                                 }
                                 disabled={!erValgIRadioEllerChecboxGroupGyldig}
                             >
-                                Send til beslutter
+                                {ferdigstillTittel}
                             </Button>
                             <Button type="button" variant="tertiary" onClick={() => setOpen(false)}>
                                 Avbryt
