@@ -6,7 +6,6 @@ import { BodyShort, Button, HStack, TextField, VStack } from '@navikt/ds-react';
 import styled from 'styled-components';
 
 interface Props {
-    personIdent: string;
     settPersonIdent: Dispatch<SetStateAction<string>>;
     settVisEndrePersonModal: Dispatch<React.SetStateAction<boolean>>;
 }

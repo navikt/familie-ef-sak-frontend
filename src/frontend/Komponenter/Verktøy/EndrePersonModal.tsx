@@ -32,7 +32,7 @@ export const EndrePersonModal: FC<{
     personIdent: string;
     settPersonIdent: React.Dispatch<React.SetStateAction<string>>;
     settVisEndrePersonModal: React.Dispatch<React.SetStateAction<boolean>>;
-}> = ({ personIdent, settVisEndrePersonModal, settPersonIdent }) => {
+}> = ({ settVisEndrePersonModal, settPersonIdent }) => {
     return (
         <ModalWrapper
             tittel={'Velg person'}
@@ -45,7 +45,6 @@ export const EndrePersonModal: FC<{
         >
             <GridContainer>
                 <SøkPersonTODO
-                    personIdent={personIdent}
                     settPersonIdent={settPersonIdent}
                     settVisEndrePersonModal={settVisEndrePersonModal}
                 />
