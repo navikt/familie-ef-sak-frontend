@@ -13,6 +13,7 @@ export enum Behandlingsårsak {
     PAPIRSØKNAD = 'PAPIRSØKNAD',
     MANUELT_OPPRETTET = 'MANUELT_OPPRETTET',
     SATSENDRING = 'SATSENDRING',
+    AUTOMATISK_INNTEKTSENDRING = 'AUTOMATISK_INNTEKTSENDRING',
 }
 
 export const behandlingsårsakTilTekst: Record<Behandlingsårsak, string> = {
@@ -27,6 +28,7 @@ export const behandlingsårsakTilTekst: Record<Behandlingsårsak, string> = {
     PAPIRSØKNAD: 'Papirsøknad',
     MANUELT_OPPRETTET: 'Manuelt opprettet',
     SATSENDRING: 'Satsendring',
+    AUTOMATISK_INNTEKTSENDRING: 'Automatisk inntektsendring',
 };
 
 export const behandlingsårsakerForRevurdering: Behandlingsårsak[] = [
@@ -39,6 +41,7 @@ export const behandlingsårsakerForRevurdering: Behandlingsårsak[] = [
     Behandlingsårsak.IVERKSETTE_KA_VEDTAK,
     Behandlingsårsak.KORRIGERING_UTEN_BREV,
     Behandlingsårsak.SATSENDRING,
+    Behandlingsårsak.AUTOMATISK_INNTEKTSENDRING,
 ];
 
 export const behandlingOgTilbakekrevingsårsakTilTekst: Record<
@@ -69,6 +72,7 @@ export const behandlingOgTilbakekrevingsårsakTilTekst: Record<
     FEIL_PROSESSUELL: 'Feil prosessuell',
     KØET_BEHANDLING: 'Køet behandling',
     ANNET: 'Annet',
+    AUTOMATISK_INNTEKTSENDRING: 'Automatisk inntektsendring',
 };
 
 export enum EHenlagtårsak {
