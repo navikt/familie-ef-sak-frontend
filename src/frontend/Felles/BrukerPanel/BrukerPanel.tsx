@@ -4,7 +4,7 @@ import { PanelHeader, PanelHeaderType } from './PanelHeader';
 
 interface Props {
     navn: string;
-    personIdent?: string;
+    personIdent: string;
     type: PanelHeaderType;
     onClick?: () => void;
     width?: string;

@@ -8,14 +8,20 @@ import {
 } from '../../Felles/Kalkulator/utils';
 import { useApp } from '../../App/context/AppContext';
 import { Route, Routes, useNavigate, useParams } from 'react-router-dom';
-import { BodyShort, Heading, HStack, Textarea, VStack } from '@navikt/ds-react';
+import { Heading, HStack, Textarea, VStack } from '@navikt/ds-react';
 import { Knapp } from '../../Felles/Knapper/HovedKnapp';
 import styled from 'styled-components';
 import { BrukerPanel } from '../../Felles/BrukerPanel/BrukerPanel';
 import { PanelHeaderType } from '../../Felles/BrukerPanel/PanelHeader';
-import { EndrePersonModal } from './EndrePersonModal';
-import { byggTomRessurs, Ressurs } from '../../App/typer/ressurs';
+import { OppdaterPersonModal } from './OppdaterPersonModal';
+import {
+    byggSuksessRessurs,
+    byggTomRessurs,
+    Ressurs,
+    RessursStatus,
+} from '../../App/typer/ressurs';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
+import { PersonSøk } from '../Behandling/Brevmottakere/SøkPerson';
 
 const Notat = styled(Textarea)`
     width: 40rem;
@@ -34,37 +40,43 @@ export const SamværskalkulatorSide: React.FC = () => {
     );
 };
 
-interface PersonSøk {
-    personIdent: string;
-    navn: string;
-}
-
 const SamværskalkulatorSkjema: React.FC = () => {
-    const initPersonIdent = useParams<{ personIdent: string | undefined }>().personIdent as string;
+    const initiellPersonIdent = useParams<{ personIdent: string }>().personIdent as string;
     const navigate = useNavigate();
     const { axiosRequest } = useApp();
 
-    const [personIdent, settPersonIdent] = useState<string>(initPersonIdent);
     const [visEndrePersonModal, settVisEndrePersonModal] = useState<boolean>(false);
 
     const håndterEndrePersonModal = () => {
         settVisEndrePersonModal(true);
     };
 
-    const [søkRessurs, settSøkRessurs] = useState(byggTomRessurs<PersonSøk>());
+    const [søkRessurs, settSøkRessurs] = useState(
+        initiellPersonIdent
+            ? byggTomRessurs<PersonSøk>()
+            : byggSuksessRessurs<PersonSøk>({ personIdent: '', navn: '' })
+    );
+
+    const oppdaterPerson = (personIdent: string, navn: string) => {
+        settSøkRessurs({
+            status: RessursStatus.SUKSESS,
+            data: { personIdent, navn },
+        });
+    };
+
     useEffect(() => {
-        if (personIdent && personIdent.length === 11) {
+        if (initiellPersonIdent && initiellPersonIdent.length === 11) {
             axiosRequest<PersonSøk, { personIdent: string }>({
                 method: 'POST',
                 url: 'familie-ef-sak/api/sok/person/uten-fagsak',
                 data: {
-                    personIdent: personIdent,
+                    personIdent: initiellPersonIdent,
                 },
             }).then((resp: Ressurs<PersonSøk>) => {
                 settSøkRessurs(resp);
             });
         }
-    }, [axiosRequest, personIdent]);
+    }, [axiosRequest, initiellPersonIdent]);
 
     const { settIkkePersistertKomponent, nullstillIkkePersistertKomponent } = useApp();
     const [samværsavtale, settSamværsavtale] = useState<Samværsavtale>(
@@ -103,53 +115,58 @@ const SamværskalkulatorSkjema: React.FC = () => {
     };
 
     return (
-        <VStack gap="4">
-            <Heading size="large">Samværskalkulator</Heading>
-            <StyledBrukerPanel
-                navn={'Dummy Navn Dummesen'}
-                personIdent={personIdent}
-                type={PanelHeaderType.Samværsavtale}
-                width="max-content"
-            />
-            <Knapp onClick={håndterEndrePersonModal}>Dummy Endre Person Knapp</Knapp>
-            <DataViewer response={{ søkRessurs }}>
-                {({ søkRessurs }) => {
-                    return <BodyShort>{søkRessurs.navn}</BodyShort>;
-                }}
-            </DataViewer>
-            <Samværskalkulator
-                onDelete={håndterNullstillSamværsavtale}
-                samværsuker={samværsavtale.uker}
-                oppdaterSamværsuke={håndterOppdaterSamværsuke}
-                oppdaterVarighet={håndterOppdaterVarighetPåSamværsavtale}
-                erLesevisning={false}
-            />
-            <Notat
-                label={'Notat'}
-                value={notat}
-                onChange={(e) => settNotat(e.target.value)}
-                maxLength={0}
-            />
-            {visEndrePersonModal && (
-                <EndrePersonModal
-                    settPersonIdent={settPersonIdent}
-                    settVisEndrePersonModal={settVisEndrePersonModal}
-                />
-            )}
-            <HStack gap="4">
-                <Knapp size={'small'} variant={'tertiary'} onClick={() => navigate('/oppgavebenk')}>
-                    Avbryt
-                </Knapp>
-                <Knapp
-                    size={'small'}
-                    variant={'primary'}
-                    onClick={håndterJournalførSamværsavtale}
-                    loading={senderInnJournalføring}
-                    disabled={senderInnJournalføring}
-                >
-                    Journalfør
-                </Knapp>
-            </HStack>
-        </VStack>
+        <DataViewer response={{ søkRessurs }}>
+            {({ søkRessurs }) => {
+                return (
+                    <VStack gap="4">
+                        <Heading size="large">Samværskalkulator</Heading>
+                        <StyledBrukerPanel
+                            navn={søkRessurs.navn}
+                            personIdent={søkRessurs.personIdent}
+                            type={PanelHeaderType.Samværsavtale}
+                            width="max-content"
+                            onClick={håndterEndrePersonModal}
+                        />
+                        <Samværskalkulator
+                            onDelete={håndterNullstillSamværsavtale}
+                            samværsuker={samværsavtale.uker}
+                            oppdaterSamværsuke={håndterOppdaterSamværsuke}
+                            oppdaterVarighet={håndterOppdaterVarighetPåSamværsavtale}
+                            erLesevisning={false}
+                        />
+                        <Notat
+                            label={'Notat'}
+                            value={notat}
+                            onChange={(e) => settNotat(e.target.value)}
+                            maxLength={0}
+                        />
+                        {visEndrePersonModal && (
+                            <OppdaterPersonModal
+                                oppdaterPerson={oppdaterPerson}
+                                lukkModal={() => settVisEndrePersonModal(false)}
+                            />
+                        )}
+                        <HStack gap="4">
+                            <Knapp
+                                size={'small'}
+                                variant={'tertiary'}
+                                onClick={() => navigate('/oppgavebenk')}
+                            >
+                                Avbryt
+                            </Knapp>
+                            <Knapp
+                                size={'small'}
+                                variant={'primary'}
+                                onClick={håndterJournalførSamværsavtale}
+                                loading={senderInnJournalføring}
+                                disabled={senderInnJournalføring}
+                            >
+                                Journalfør
+                            </Knapp>
+                        </HStack>
+                    </VStack>
+                );
+            }}
+        </DataViewer>
     );
 };

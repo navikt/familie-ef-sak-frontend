@@ -7,17 +7,28 @@ import { BodyShort, Button, HStack } from '@navikt/ds-react';
 import { Søkefelt, Søkeresultat } from './brevmottakereStyling';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 
-interface Props {
-    valgtePersonMottakere: IBrevmottaker[];
-    settValgteMottakere: Dispatch<SetStateAction<IBrevmottaker[]>>;
-}
+type Props =
+    | {
+          valgtePersonMottakere: IBrevmottaker[];
+          settValgteMottakere: Dispatch<SetStateAction<IBrevmottaker[]>>;
+          oppdaterPerson?: never;
+      }
+    | {
+          valgtePersonMottakere?: never;
+          settValgteMottakere?: never;
+          oppdaterPerson: (personIdent: string, navn: string) => void;
+      };
 
-interface PersonSøk {
+export interface PersonSøk {
     personIdent: string;
     navn: string;
 }
 
-export const SøkPerson: React.FC<Props> = ({ settValgteMottakere, valgtePersonMottakere }) => {
+export const SøkPerson: React.FC<Props> = ({
+    settValgteMottakere,
+    valgtePersonMottakere,
+    oppdaterPerson,
+}) => {
     const { axiosRequest } = useApp();
     const [søkIdent, settSøkIdent] = useState('');
     const [søkRessurs, settSøkRessurs] = useState(byggTomRessurs<PersonSøk>());
@@ -37,12 +48,12 @@ export const SøkPerson: React.FC<Props> = ({ settValgteMottakere, valgtePersonM
         }
     }, [axiosRequest, søkIdent]);
 
-    const leggTilBrevmottaker = (personIdent: string, navn: string) => () => {
-        const finnesAllerede = valgtePersonMottakere.some(
+    const leggTilBrevmottaker = (personIdent: string, navn: string) => {
+        const finnesAllerede = valgtePersonMottakere?.some(
             (mottaker) => mottaker.personIdent === personIdent
         );
 
-        if (!finnesAllerede) {
+        if (!finnesAllerede && settValgteMottakere) {
             settValgteMottakere((prevState) => [
                 ...prevState,
                 { navn, personIdent, mottakerRolle: EBrevmottakerRolle.VERGE },
@@ -52,6 +63,11 @@ export const SøkPerson: React.FC<Props> = ({ settValgteMottakere, valgtePersonM
             settFeilmelding('Personen er allerede lagt til');
         }
     };
+
+    const håndterLeggTilBrevmottakerEllerPersonIdent = (personIdent: string, navn: string) =>
+        settValgteMottakere !== undefined
+            ? leggTilBrevmottaker(personIdent, navn)
+            : oppdaterPerson(personIdent, navn);
 
     return (
         <>
@@ -76,10 +92,12 @@ export const SøkPerson: React.FC<Props> = ({ settValgteMottakere, valgtePersonM
                                     <Button
                                         variant="secondary"
                                         size="small"
-                                        onClick={leggTilBrevmottaker(
-                                            søkRessurs.personIdent,
-                                            søkRessurs.navn
-                                        )}
+                                        onClick={() =>
+                                            håndterLeggTilBrevmottakerEllerPersonIdent(
+                                                søkRessurs.personIdent,
+                                                søkRessurs.navn
+                                            )
+                                        }
                                     >
                                         Legg til
                                     </Button>
