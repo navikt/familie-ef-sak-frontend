@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Samværskalkulator } from '../../Felles/Kalkulator/Samværskalkulator';
-import { Samværsandel, Samværsavtale } from '../../App/typer/samværsavtale';
+import {
+    JournalførBeregnetSamværRequest,
+    Samværsandel,
+    Samværsavtale,
+} from '../../App/typer/samværsavtale';
 import {
     oppdaterSamværsuke,
     oppdaterVarighetPåSamværsavtale,
@@ -22,6 +26,8 @@ import {
 } from '../../App/typer/ressurs';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { PersonSøk } from '../Behandling/Brevmottakere/SøkPerson';
+import { useSamværsavtaler } from '../../App/hooks/useSamværsavtaler';
+import { AlertError } from '../../Felles/Visningskomponenter/Alerts';
 
 const Notat = styled(Textarea)`
     width: 40rem;
@@ -31,38 +37,32 @@ const StyledBrukerPanel = styled(BrukerPanel)`
     width: max-content;
 `;
 
-export const SamværskalkulatorSide: React.FC = () => {
-    return (
-        <Routes>
-            <Route path=":personIdent" element={<SamværskalkulatorSkjema />} />
-            <Route path="/" element={<SamværskalkulatorSkjema />} />
-        </Routes>
-    );
-};
+export const SamværskalkulatorSide: React.FC = () => (
+    <Routes>
+        <Route path=":personIdent" element={<SamværskalkulatorSkjema />} />
+        <Route path="/" element={<SamværskalkulatorSkjema />} />
+    </Routes>
+);
 
 const SamværskalkulatorSkjema: React.FC = () => {
     const initiellPersonIdent = useParams<{ personIdent: string }>().personIdent as string;
     const navigate = useNavigate();
-    const { axiosRequest } = useApp();
+    const { axiosRequest, settIkkePersistertKomponent, nullstillIkkePersistertKomponent } =
+        useApp();
+    const { journalførBeregnetSamvær } = useSamværsavtaler();
 
     const [visEndrePersonModal, settVisEndrePersonModal] = useState<boolean>(false);
-
-    const håndterEndrePersonModal = () => {
-        settVisEndrePersonModal(true);
-    };
-
     const [søkRessurs, settSøkRessurs] = useState(
         initiellPersonIdent
             ? byggTomRessurs<PersonSøk>()
             : byggSuksessRessurs<PersonSøk>({ personIdent: '', navn: '' })
     );
-
-    const oppdaterPerson = (personIdent: string, navn: string) => {
-        settSøkRessurs({
-            status: RessursStatus.SUKSESS,
-            data: { personIdent, navn },
-        });
-    };
+    const [samværsavtale, settSamværsavtale] = useState<Samværsavtale>(
+        utledInitiellSamværsavtale(undefined, '', '')
+    );
+    const [notat, settNotat] = useState<string>('');
+    const [senderInnJournalføring, settSenderInnJournalføring] = useState<boolean>(false);
+    const [feilmelding, settFeilmelding] = useState<string>('');
 
     useEffect(() => {
         if (initiellPersonIdent && initiellPersonIdent.length === 11) {
@@ -78,12 +78,12 @@ const SamværskalkulatorSkjema: React.FC = () => {
         }
     }, [axiosRequest, initiellPersonIdent]);
 
-    const { settIkkePersistertKomponent, nullstillIkkePersistertKomponent } = useApp();
-    const [samværsavtale, settSamværsavtale] = useState<Samværsavtale>(
-        utledInitiellSamværsavtale(undefined, '', '')
-    );
-    const [notat, settNotat] = useState<string>('');
-    const [senderInnJournalføring, settSenderInnJournalføring] = useState<boolean>(false);
+    const oppdaterPerson = (personIdent: string, navn: string) => {
+        settSøkRessurs({
+            status: RessursStatus.SUKSESS,
+            data: { personIdent, navn },
+        });
+    };
 
     const håndterOppdaterSamværsuke = (
         ukeIndex: number,
@@ -99,12 +99,26 @@ const SamværskalkulatorSkjema: React.FC = () => {
         oppdaterVarighetPåSamværsavtale(samværsavtale.uker.length, nyVarighet, settSamværsavtale);
     };
 
-    const håndterJournalførSamværsavtale = () => {
+    const håndterJournalførSamværsavtale = (personIdent: string) => {
+        settFeilmelding('');
+
         if (senderInnJournalføring) {
             return;
         }
-        //TODO
-        //journalførSamværsavtale()
+
+        if (personIdent.length !== 11) {
+            settFeilmelding('Ugyldig fødselsnummer');
+            return;
+        }
+
+        const request: JournalførBeregnetSamværRequest = {
+            personIdent: personIdent,
+            uker: samværsavtale.uker,
+            notat: notat,
+        };
+
+        journalførBeregnetSamvær(request);
+
         nullstillIkkePersistertKomponent('samværskalkulator');
         settSenderInnJournalføring(false);
     };
@@ -114,12 +128,16 @@ const SamværskalkulatorSkjema: React.FC = () => {
         nullstillIkkePersistertKomponent('samværskalkulator');
     };
 
+    const håndterEndrePersonModal = () => {
+        settVisEndrePersonModal(true);
+    };
+
     return (
         <DataViewer response={{ søkRessurs }}>
             {({ søkRessurs }) => {
                 return (
                     <VStack gap="4">
-                        <Heading size="large">Samværskalkulator</Heading>
+                        <Heading size="large">Beregn samvær</Heading>
                         <StyledBrukerPanel
                             navn={søkRessurs.navn}
                             personIdent={søkRessurs.personIdent}
@@ -140,12 +158,6 @@ const SamværskalkulatorSkjema: React.FC = () => {
                             onChange={(e) => settNotat(e.target.value)}
                             maxLength={0}
                         />
-                        {visEndrePersonModal && (
-                            <OppdaterPersonModal
-                                oppdaterPerson={oppdaterPerson}
-                                lukkModal={() => settVisEndrePersonModal(false)}
-                            />
-                        )}
                         <HStack gap="4">
                             <Knapp
                                 size={'small'}
@@ -157,13 +169,22 @@ const SamværskalkulatorSkjema: React.FC = () => {
                             <Knapp
                                 size={'small'}
                                 variant={'primary'}
-                                onClick={håndterJournalførSamværsavtale}
+                                onClick={() =>
+                                    håndterJournalførSamværsavtale(søkRessurs.personIdent)
+                                }
                                 loading={senderInnJournalføring}
                                 disabled={senderInnJournalføring}
                             >
                                 Journalfør
                             </Knapp>
                         </HStack>
+                        {feilmelding && <AlertError>{feilmelding}</AlertError>}
+                        {visEndrePersonModal && (
+                            <OppdaterPersonModal
+                                oppdaterPerson={oppdaterPerson}
+                                lukkModal={() => settVisEndrePersonModal(false)}
+                            />
+                        )}
                     </VStack>
                 );
             }}

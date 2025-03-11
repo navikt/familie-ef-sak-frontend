@@ -4,6 +4,12 @@ export interface Samværsavtale {
     uker: Samværsuke[];
 }
 
+export interface JournalførBeregnetSamværRequest {
+    personIdent: string;
+    uker: Samværsuke[];
+    notat: string;
+}
+
 export interface Samværsuke {
     mandag: Samværsdag;
     tirsdag: Samværsdag;

@@ -8,13 +8,14 @@ import {
     RessursStatus,
     RessursSuksess,
 } from '../typer/ressurs';
-import { Samværsavtale } from '../typer/samværsavtale';
+import { JournalførBeregnetSamværRequest, Samværsavtale } from '../typer/samværsavtale';
 
 interface SamværsavtaleResponse {
     samværsavtaler: Ressurs<Samværsavtale[]>;
     hentSamværsavtaler: (behandlingId: string) => void;
     lagreSamværsavtale: (avtale: Samværsavtale) => void;
     slettSamværsavtale: (behandlingId: string, behandlingBarnId: string) => void;
+    journalførBeregnetSamvær: (request: JournalførBeregnetSamværRequest) => void;
     feilmelding: string;
 }
 
@@ -70,11 +71,29 @@ export const useSamværsavtaler = (): SamværsavtaleResponse => {
         [axiosRequest]
     );
 
+    const journalførBeregnetSamvær = useCallback(
+        (request: JournalførBeregnetSamværRequest) => {
+            axiosRequest<string, JournalførBeregnetSamværRequest>({
+                method: 'POST',
+                url: `/familie-ef-sak/api/samvaersavtale/journalfor`,
+                data: request,
+            }).then((res: RessursSuksess<string> | RessursFeilet) => {
+                if (res.status === RessursStatus.SUKSESS) {
+                    settFeilmelding('');
+                } else {
+                    settFeilmelding(res.frontendFeilmelding);
+                }
+            });
+        },
+        [axiosRequest]
+    );
+
     return {
         samværsavtaler,
         hentSamværsavtaler,
         lagreSamværsavtale,
         slettSamværsavtale,
+        journalførBeregnetSamvær,
         feilmelding,
     };
 };

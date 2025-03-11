@@ -1,6 +1,12 @@
 import React, { FC } from 'react';
 import { ModalWrapper } from '../../Felles/Modal/ModalWrapper';
 import { SøkPerson } from '../Behandling/Brevmottakere/SøkPerson';
+import styled from 'styled-components';
+
+const InnerContainer = styled.div`
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+`;
 
 export const OppdaterPersonModal: FC<{
     oppdaterPerson: (personIdent: string, navn: string) => void;
@@ -14,12 +20,14 @@ export const OppdaterPersonModal: FC<{
             maxWidth={40}
             ariaLabel={'Velg person'}
         >
-            <SøkPerson
-                oppdaterPerson={(personIdent: string, navn: string) => {
-                    oppdaterPerson(personIdent, navn);
-                    lukkModal();
-                }}
-            />
+            <InnerContainer>
+                <SøkPerson
+                    oppdaterPerson={(personIdent: string, navn: string) => {
+                        oppdaterPerson(personIdent, navn);
+                        lukkModal();
+                    }}
+                />
+            </InnerContainer>
         </ModalWrapper>
     );
 };
