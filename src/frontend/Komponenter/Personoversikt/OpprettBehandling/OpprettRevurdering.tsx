@@ -122,6 +122,11 @@ export const OpprettRevurdering: React.FunctionComponent<Props> = ({
                     toggles[ToggleName.visSatsendring] &&
                     fagsak.stønadstype === Stønadstype.BARNETILSYN
                 );
+            case Behandlingsårsak.AUTOMATISK_INNTEKTSENDRING:
+                return (
+                    toggles[ToggleName.visAutomatiskInntektsendring] &&
+                    fagsak.stønadstype === Stønadstype.OVERGANGSSTØNAD
+                );
             default:
                 return true;
         }
