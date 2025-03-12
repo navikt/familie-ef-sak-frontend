@@ -110,6 +110,8 @@ const SendTilBeslutterFooter: React.FC<{
     const { ferdigstillUtenBeslutter } = avslagValg;
 
     const sendTilBeslutter = (data: SendTilBeslutterRequest) => {
+        if (laster) return;
+
         settLaster(true);
         settFeilmelding(undefined);
         axiosRequest<string, SendTilBeslutterRequest>({
