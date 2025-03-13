@@ -2,10 +2,7 @@ import React, { ChangeEvent, useState } from 'react';
 import { BodyShort, Button, Dropdown, HStack, Label, Select } from '@navikt/ds-react';
 import { CalculatorIcon, ChevronDownIcon } from '@navikt/aksel-icons';
 import styled from 'styled-components';
-import {
-    Samværskalkulator,
-    kalkulerSamværsandeler,
-} from '../../../../Felles/Kalkulator/Samværskalkulator';
+import { Samværskalkulator } from '../../../../Felles/Kalkulator/Samværskalkulator';
 import {
     AGray300,
     AGray50,
@@ -22,6 +19,7 @@ import {
     oppdaterSamværsuker,
     oppdaterVarighetPåSamværsavtale,
     utledInitiellSamværsavtale,
+    utledVisningstekst,
 } from '../../../../Felles/Kalkulator/utils';
 
 const Kalkulator = styled(Samværskalkulator)`
@@ -111,9 +109,7 @@ export const SamværskalkulatorAleneomsorg: React.FC<Props> = ({
     const [erDropdownEkspandert, settErDropdownEkspandert] = useState<boolean>(false);
     const [samværsavtaleMal, settSamværsavtaleMal] = useState<Samværsavtale>();
 
-    const [samværsandelerDagVisning, samværsandelProsentVisning] = kalkulerSamværsandeler(
-        samværsavtale.uker
-    );
+    const oppsummering = utledVisningstekst(samværsavtale.uker);
 
     const alleAndreLagredeSamværsavtaler = lagredeSamværsavtaler.filter(
         (avtale) => avtale.behandlingBarnId !== gjeldendeBehandlingBarnId
@@ -226,7 +222,7 @@ export const SamværskalkulatorAleneomsorg: React.FC<Props> = ({
                                 <CalculatorIcon aria-hidden />
                                 <Label>Samvær:</Label>
                             </HStack>
-                            <BodyShort size="medium">{`${samværsandelerDagVisning} = ${samværsandelProsentVisning}`}</BodyShort>
+                            <BodyShort size="medium">{oppsummering}</BodyShort>
                         </HStack>
                         <HStack gap="4">
                             <Button

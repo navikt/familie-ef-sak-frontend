@@ -9,6 +9,7 @@ import {
     oppdaterSamværsuke,
     oppdaterVarighetPåSamværsavtale,
     utledInitiellSamværsavtale,
+    utledVisningstekst,
 } from '../../Felles/Kalkulator/utils';
 import { useApp } from '../../App/context/AppContext';
 import { Route, Routes, useNavigate, useParams } from 'react-router-dom';
@@ -115,6 +116,7 @@ const SamværskalkulatorSkjema: React.FC = () => {
             personIdent: personIdent,
             uker: samværsavtale.uker,
             notat: notat,
+            oppsummering: `${utledVisningstekst(samværsavtale.uker)} samvær.`,
         };
 
         journalførBeregnetSamvær(request);

@@ -8,6 +8,7 @@ export interface JournalførBeregnetSamværRequest {
     personIdent: string;
     uker: Samværsuke[];
     notat: string;
+    oppsummering: string;
 }
 
 export interface Samværsuke {

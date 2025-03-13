@@ -14,12 +14,12 @@ import { ABorderDivider, ASurfaceInfoSubtle } from '@navikt/ds-tokens/dist/token
 import {
     Samværsandel,
     samværsandelTilTekst,
-    samværsandelTilVerdi,
     Samværsdag,
     Samværsuke,
 } from '../../App/typer/samværsavtale';
 import { formaterStrengMedStorForbokstav } from '../../App/utils/formatter';
 import { CalculatorIcon, TrashIcon } from '@navikt/aksel-icons';
+import { utledVisningstekst } from './utils';
 
 const Div = styled.div`
     height: 3.25rem;
@@ -124,28 +124,6 @@ const Grid = styled.div`
 `;
 
 const VARIGHETER_SAMVÆRSAVTALE = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
-
-export const kalkulerSamværsandeler = (samværsuker: Samværsuke[]) => {
-    const summertSamvær = samværsuker
-        .flatMap((samværsuke) =>
-            Object.values(samværsuke).flatMap((samværsdag: Samværsdag) => samværsdag.andeler)
-        )
-        .map((andel) => samværsandelTilVerdi[andel])
-        .reduce((acc, andel) => acc + andel, 0);
-
-    const maksimalSamværsandel = samværsuker.length * 7 * 8;
-
-    const antallHeleDagerMedSamvær = Math.floor(summertSamvær / 8);
-
-    const rest = summertSamvær % 8;
-    const restSuffix = rest === 0 ? '' : '/8';
-
-    const prosentandel = summertSamvær / maksimalSamværsandel;
-
-    const visningstekstAntallDager = `${antallHeleDagerMedSamvær} dager og ${rest}${restSuffix} deler`;
-    const visningstekstProsentandel = `${Math.round(prosentandel * 1000) / 10}%`;
-    return [visningstekstAntallDager, visningstekstProsentandel];
-};
 
 interface Props {
     className?: string;
@@ -325,8 +303,7 @@ const Oppsummering: React.FC<{
     onClose?: () => void;
     erLesevisning: boolean;
 }> = ({ samværsuker, onSave, onClose, erLesevisning }) => {
-    const [samværsandelerDagVisning, samværsandelProsentVisning] =
-        kalkulerSamværsandeler(samværsuker);
+    const oppsummering = utledVisningstekst(samværsuker);
     const visningstekstAvbrytKnapp = erLesevisning ? 'Lukk' : 'Avbryt';
 
     return (
@@ -336,7 +313,7 @@ const Oppsummering: React.FC<{
                     <CalculatorIcon aria-hidden />
                     <Label>Samvær:</Label>
                 </HStack>
-                <BodyShort size="medium">{`${samværsandelerDagVisning} = ${samværsandelProsentVisning}`}</BodyShort>
+                <BodyShort size="medium">{oppsummering}</BodyShort>
             </HStack>
             <HStack gap="4">
                 {onClose && (
