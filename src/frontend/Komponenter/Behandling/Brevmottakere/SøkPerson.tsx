@@ -74,7 +74,11 @@ export const SøkPerson: React.FC<Props> = ({
             <Søkefelt
                 label={'Personident'}
                 htmlSize={26}
-                placeholder={'Personen som skal ha brevet'}
+                placeholder={
+                    settValgteMottakere !== undefined
+                        ? 'Personen som skal ha brevet'
+                        : 'Personen for beregningen'
+                }
                 value={søkIdent}
                 onChange={(e) => settSøkIdent(e.target.value)}
                 autoComplete="off"
