@@ -15,8 +15,12 @@ interface SamværsavtaleResponse {
     hentSamværsavtaler: (behandlingId: string) => void;
     lagreSamværsavtale: (avtale: Samværsavtale) => void;
     slettSamværsavtale: (behandlingId: string, behandlingBarnId: string) => void;
-    journalførBeregnetSamvær: (request: JournalførBeregnetSamværRequest) => void;
+    journalførBeregnetSamvær: (
+        request: JournalførBeregnetSamværRequest,
+        handleSuccess: () => void
+    ) => void;
     feilmelding: string;
+    settFeilmelding: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export const useSamværsavtaler = (): SamværsavtaleResponse => {
@@ -72,13 +76,14 @@ export const useSamværsavtaler = (): SamværsavtaleResponse => {
     );
 
     const journalførBeregnetSamvær = useCallback(
-        (request: JournalførBeregnetSamværRequest) => {
+        (request: JournalførBeregnetSamværRequest, handleSuccess: () => void) => {
             axiosRequest<string, JournalførBeregnetSamværRequest>({
                 method: 'POST',
                 url: `/familie-ef-sak/api/samvaersavtale/journalfor`,
                 data: request,
             }).then((res: RessursSuksess<string> | RessursFeilet) => {
                 if (res.status === RessursStatus.SUKSESS) {
+                    handleSuccess();
                     settFeilmelding('');
                 } else {
                     settFeilmelding(res.frontendFeilmelding);
@@ -95,5 +100,6 @@ export const useSamværsavtaler = (): SamværsavtaleResponse => {
         slettSamværsavtale,
         journalførBeregnetSamvær,
         feilmelding,
+        settFeilmelding,
     };
 };
