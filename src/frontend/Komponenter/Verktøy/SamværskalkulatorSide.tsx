@@ -29,6 +29,8 @@ import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { PersonSøk } from '../Behandling/Brevmottakere/SøkPerson';
 import { useSamværsavtaler } from '../../App/hooks/useSamværsavtaler';
 import { AlertError } from '../../Felles/Visningskomponenter/Alerts';
+import { useRedirectEtterLagring } from '../../App/hooks/felles/useRedirectEtterLagring';
+import { EToast } from '../../App/typer/toast';
 
 const Notat = styled(Textarea)`
     width: 40rem;
@@ -48,9 +50,14 @@ export const SamværskalkulatorSide: React.FC = () => (
 const SamværskalkulatorSkjema: React.FC = () => {
     const initiellPersonIdent = useParams<{ personIdent: string }>().personIdent as string;
     const navigate = useNavigate();
-    const { axiosRequest, settIkkePersistertKomponent, nullstillIkkePersistertKomponent } =
-        useApp();
-    const { journalførBeregnetSamvær } = useSamværsavtaler();
+    const { utførRedirect } = useRedirectEtterLagring(`/oppgavebenk`);
+    const {
+        axiosRequest,
+        settIkkePersistertKomponent,
+        nullstillIkkePersistertKomponent,
+        settToast,
+    } = useApp();
+    const { journalførBeregnetSamvær, feilmelding, settFeilmelding } = useSamværsavtaler();
 
     const [visEndrePersonModal, settVisEndrePersonModal] = useState<boolean>(false);
     const [søkRessurs, settSøkRessurs] = useState(
@@ -63,7 +70,6 @@ const SamværskalkulatorSkjema: React.FC = () => {
     );
     const [notat, settNotat] = useState<string>('');
     const [senderInnJournalføring, settSenderInnJournalføring] = useState<boolean>(false);
-    const [feilmelding, settFeilmelding] = useState<string>('');
 
     useEffect(() => {
         if (initiellPersonIdent && initiellPersonIdent.length === 11) {
@@ -100,9 +106,13 @@ const SamværskalkulatorSkjema: React.FC = () => {
         oppdaterVarighetPåSamværsavtale(samværsavtale.uker.length, nyVarighet, settSamværsavtale);
     };
 
-    const håndterJournalførSamværsavtale = (personIdent: string) => {
-        settFeilmelding('');
+    const håndterJournalføringSuksess = () => {
+        nullstillIkkePersistertKomponent('samværskalkulator');
+        settToast(EToast.JOURNALFØRING_VELLYKKET);
+        utførRedirect();
+    };
 
+    const håndterJournalførSamværsavtale = (personIdent: string) => {
         if (senderInnJournalføring) {
             return;
         }
@@ -119,9 +129,7 @@ const SamværskalkulatorSkjema: React.FC = () => {
             oppsummering: `${utledVisningstekst(samværsavtale.uker)} samvær.`,
         };
 
-        journalførBeregnetSamvær(request);
-
-        nullstillIkkePersistertKomponent('samværskalkulator');
+        journalførBeregnetSamvær(request, håndterJournalføringSuksess);
         settSenderInnJournalføring(false);
     };
 
