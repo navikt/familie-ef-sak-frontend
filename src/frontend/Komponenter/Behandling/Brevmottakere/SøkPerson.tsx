@@ -77,7 +77,7 @@ export const SøkPerson: React.FC<Props> = ({
                 placeholder={
                     settValgteMottakere !== undefined
                         ? 'Personen som skal ha brevet'
-                        : 'Personen for beregningen'
+                        : 'Fnr til bruker'
                 }
                 value={søkIdent}
                 onChange={(e) => settSøkIdent(e.target.value)}
