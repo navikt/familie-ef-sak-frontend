@@ -31,6 +31,9 @@ import { useSamværsavtaler } from '../../App/hooks/useSamværsavtaler';
 import { AlertError } from '../../Felles/Visningskomponenter/Alerts';
 import { useRedirectEtterLagring } from '../../App/hooks/felles/useRedirectEtterLagring';
 import { EToast } from '../../App/typer/toast';
+import { useSetValgtFagsakPersonId } from '../../App/hooks/useSetValgtFagsakPersonId';
+import { useHentFagsakPerson } from '../../App/hooks/useHentFagsakPerson';
+import { utledPersonIdent } from './utils';
 
 const Notat = styled(Textarea)`
     width: 40rem;
@@ -42,13 +45,14 @@ const StyledBrukerPanel = styled(BrukerPanel)`
 
 export const SamværskalkulatorSide: React.FC = () => (
     <Routes>
-        <Route path=":personIdent" element={<SamværskalkulatorSkjema />} />
+        <Route path=":fagsakPersonId" element={<SamværskalkulatorSkjema />} />
         <Route path="/" element={<SamværskalkulatorSkjema />} />
     </Routes>
 );
 
 const SamværskalkulatorSkjema: React.FC = () => {
-    const initiellPersonIdent = useParams<{ personIdent: string }>().personIdent as string;
+    const initiellFagsakPersonId = useParams<{ fagsakPersonId: string }>().fagsakPersonId as string;
+    useSetValgtFagsakPersonId(initiellFagsakPersonId);
     const navigate = useNavigate();
     const { utførRedirect } = useRedirectEtterLagring(`/oppgavebenk`);
     const {
@@ -58,10 +62,11 @@ const SamværskalkulatorSkjema: React.FC = () => {
         settToast,
     } = useApp();
     const { journalførBeregnetSamvær, feilmelding, settFeilmelding } = useSamværsavtaler();
+    const { hentFagsakPerson, fagsakPerson } = useHentFagsakPerson();
 
     const [visEndrePersonModal, settVisEndrePersonModal] = useState<boolean>(false);
     const [søkRessurs, settSøkRessurs] = useState(
-        initiellPersonIdent
+        initiellFagsakPersonId
             ? byggTomRessurs<PersonSøk>()
             : byggSuksessRessurs<PersonSøk>({ personIdent: '', navn: '' })
     );
@@ -72,18 +77,30 @@ const SamværskalkulatorSkjema: React.FC = () => {
     const [senderInnJournalføring, settSenderInnJournalføring] = useState<boolean>(false);
 
     useEffect(() => {
-        if (initiellPersonIdent && initiellPersonIdent.length === 11) {
-            axiosRequest<PersonSøk, { personIdent: string }>({
-                method: 'POST',
-                url: 'familie-ef-sak/api/sok/person/uten-fagsak',
-                data: {
-                    personIdent: initiellPersonIdent,
-                },
-            }).then((resp: Ressurs<PersonSøk>) => {
-                settSøkRessurs(resp);
-            });
+        if (fagsakPerson.status === RessursStatus.SUKSESS) {
+            const personIdent = fagsakPerson.data ? utledPersonIdent(fagsakPerson.data) : undefined;
+
+            if (personIdent) {
+                axiosRequest<PersonSøk, { personIdent: string }>({
+                    method: 'POST',
+                    url: 'familie-ef-sak/api/sok/person/uten-fagsak',
+                    data: {
+                        personIdent: personIdent,
+                    },
+                }).then((resp: Ressurs<PersonSøk>) => {
+                    settSøkRessurs(resp);
+                });
+            }
         }
-    }, [axiosRequest, initiellPersonIdent]);
+    }, [axiosRequest, fagsakPerson]);
+
+    useEffect(() => {
+        hentFagsakPerson(initiellFagsakPersonId);
+    }, [hentFagsakPerson, initiellFagsakPersonId]);
+
+    useEffect(() => {
+        document.title = 'Samværsberegning';
+    }, []);
 
     const oppdaterPerson = (personIdent: string, navn: string) => {
         settSøkRessurs({

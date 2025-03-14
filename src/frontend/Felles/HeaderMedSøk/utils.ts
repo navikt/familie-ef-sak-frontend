@@ -110,8 +110,8 @@ export const lagÅpneEldreBehandlingerLenke = (): PopoverItem => {
     };
 };
 
-export const lagSamværskalkulatorLenke = (personIdent: string | undefined): PopoverItem => {
-    const urlSuffix = personIdent ? personIdent : '';
+export const lagSamværskalkulatorLenke = (fagsakPersonId: string | undefined): PopoverItem => {
+    const urlSuffix = fagsakPersonId ? fagsakPersonId : '';
 
     return {
         name: 'Samværskalkulator',
@@ -146,6 +146,6 @@ export const lagInterneLenker = (
         lagÅpneEldreBehandlingerLenke(),
     ].filter((lenke) => lenke !== null);
 
-export const lagArbeidsverktøyLenker = (personIdent: string | undefined): PopoverItem[] => [
-    lagSamværskalkulatorLenke(personIdent),
+export const lagArbeidsverktøyLenker = (fagsakPersonId: string | undefined): PopoverItem[] => [
+    lagSamværskalkulatorLenke(fagsakPersonId),
 ];
