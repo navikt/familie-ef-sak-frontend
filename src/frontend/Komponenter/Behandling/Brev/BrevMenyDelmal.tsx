@@ -77,7 +77,7 @@ export const BrevMenyDelmal: React.FC<Props> = ({
             const årsinntektRef = finnFlettefeltRefFraFlettefeltApiNavn(dokument, 'arsinntekt');
             const månedsinntektGangerTolv = (parseInt(verdi) * 12).toString();
 
-            oppdaterFlettefeltÅrsinntekt(årsinntektRef, månedsinntektGangerTolv);
+            oppdaterFlettefeltForGittRef(årsinntektRef, månedsinntektGangerTolv);
         }
 
         settFlettefelter((prevState) =>
@@ -86,7 +86,7 @@ export const BrevMenyDelmal: React.FC<Props> = ({
         settBrevOppdatert(false);
     };
 
-    const oppdaterFlettefeltÅrsinntekt = (flettefeltRef: string, verdi: string) => {
+    const oppdaterFlettefeltForGittRef = (flettefeltRef: string, verdi: string) => {
         settFlettefelter((prevState) =>
             prevState.map((felt) =>
                 felt._ref === flettefeltRef
