@@ -25,7 +25,11 @@ interface Props {
     settValgteFelt: Dispatch<SetStateAction<ValgtFelt>>;
     settFlettefelter: Dispatch<SetStateAction<FlettefeltMedVerdi[]>>;
     flettefelter: FlettefeltMedVerdi[];
-    handleFlettefeltInput: (verdi: string, flettefelt: Flettefeltreferanse) => void;
+    handleFlettefeltInput: (
+        verdi: string,
+        flettefelt: Flettefeltreferanse,
+        flettefeltApiNavn?: string
+    ) => void;
     delmal: Delmal;
     settKanSendeTilBeslutter: (kanSendeTilBeslutter: boolean) => void;
 }

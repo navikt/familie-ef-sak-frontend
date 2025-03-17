@@ -22,7 +22,11 @@ import { delmalTilUtregningstabellBT } from './UtregningstabellBarnetilsyn';
 export const finnFlettefeltNavnOgBeskrivelseFraRef = (
     dokument: BrevStruktur,
     ref: string
-): { flettefeltNavn: string; flettefeltBeskrivelse?: string } => {
+): {
+    flettefeltNavn: string;
+    flettefeltBeskrivelse?: string;
+    flettefeltApiNavn?: string;
+} => {
     const flettefeltFraRef = dokument?.flettefelter?.flettefeltReferanse?.find(
         (felt) => felt._id === ref
     );
@@ -34,7 +38,16 @@ export const finnFlettefeltNavnOgBeskrivelseFraRef = (
             ? flettefeltFraRef.feltVisningsnavn
             : flettefeltFraRef.felt,
         flettefeltBeskrivelse: flettefeltFraRef.beskrivelse,
+        flettefeltApiNavn: flettefeltFraRef.felt,
     };
+};
+
+export const finnFlettefeltRefFraFlettefeltApiNavn = (dokument: BrevStruktur, felt: string) => {
+    const flettefeltFraRef = dokument?.flettefelter?.flettefeltReferanse?.find(
+        (feltRef) => feltRef.felt === felt
+    );
+
+    return flettefeltFraRef ? flettefeltFraRef._id : '';
 };
 
 export const finnFletteFeltApinavnFraRef = (dokument: BrevStruktur, ref: string): string => {

@@ -15,6 +15,7 @@ import { Accordion, Button, Checkbox } from '@navikt/ds-react';
 import { ABorderRadiusMedium, ABorderStrong } from '@navikt/ds-tokens/dist/tokens';
 import { HtmlEditor } from '../../../Felles/HtmlEditor/HtmlEditor';
 import { ArrowsSquarepathIcon } from '@navikt/aksel-icons';
+import { finnFlettefeltRefFraFlettefeltApiNavn } from './BrevUtils';
 
 const DelmalValg = styled.div`
     display: flex;
@@ -67,11 +68,32 @@ export const BrevMenyDelmal: React.FC<Props> = ({
 
     const [ekspanderbartPanelÅpen, settEkspanderbartPanelÅpen] = useState(false);
 
-    const handleFlettefeltInput = (verdi: string, flettefelt: Flettefeltreferanse) => {
+    const handleFlettefeltInput = (
+        verdi: string,
+        flettefelt: Flettefeltreferanse,
+        flettefeltApiNavn?: string
+    ) => {
+        if (flettefeltApiNavn === 'belopIMaaneden') {
+            const årsinntektRef = finnFlettefeltRefFraFlettefeltApiNavn(dokument, 'arsinntekt');
+            const månedsinntektGangerTolv = (parseInt(verdi) * 12).toString();
+
+            oppdaterFlettefeltForGittRef(årsinntektRef, månedsinntektGangerTolv);
+        }
+
         settFlettefelter((prevState) =>
             prevState.map((felt) => (felt._ref === flettefelt._ref ? { ...felt, verdi } : felt))
         );
         settBrevOppdatert(false);
+    };
+
+    const oppdaterFlettefeltForGittRef = (flettefeltRef: string, verdi: string) => {
+        settFlettefelter((prevState) =>
+            prevState.map((felt) =>
+                felt._ref === flettefeltRef
+                    ? { ...felt, verdi: verdi === 'NaN' ? '' : verdi }
+                    : felt
+            )
+        );
     };
 
     const oppdaterOverstyrtInnhold = (delmal: Delmal, htmlInnhold: string) => {
