@@ -20,7 +20,11 @@ interface Props {
     flettefelt: Flettefeltreferanse;
     dokument: BrevStruktur;
     flettefelter: FlettefeltMedVerdi[];
-    handleFlettefeltInput: (verdi: string, flettefelt: Flettefeltreferanse) => void;
+    handleFlettefeltInput: (
+        verdi: string,
+        flettefelt: Flettefeltreferanse,
+        flettefeltApiNavn?: string
+    ) => void;
 }
 
 export const Flettefelt: React.FC<Props> = ({
@@ -31,17 +35,15 @@ export const Flettefelt: React.FC<Props> = ({
     handleFlettefeltInput,
 }) => {
     const flettefeltMedVerdi = flettefelter?.find((felt) => felt._ref === flettefelt._ref);
-    const { flettefeltNavn, flettefeltBeskrivelse } = finnFlettefeltNavnOgBeskrivelseFraRef(
-        dokument,
-        flettefelt._ref
-    );
+    const { flettefeltNavn, flettefeltBeskrivelse, flettefeltApiNavn } =
+        finnFlettefeltNavnOgBeskrivelseFraRef(dokument, flettefelt._ref);
 
     if (erFlettefeltFritektsfelt(dokument, flettefelt._ref)) {
         return (
             <Textarea
                 label={flettefeltNavn}
                 onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-                    handleFlettefeltInput(e.target.value, flettefelt);
+                    handleFlettefeltInput(e.target.value, flettefelt, flettefeltApiNavn);
                 }}
                 value={flettefeltMedVerdi?.verdi || ''}
                 maxLength={0}
@@ -62,7 +64,7 @@ export const Flettefelt: React.FC<Props> = ({
                 description={flettefeltBeskrivelse}
                 label={flettefeltNavn}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                    handleFlettefeltInput(e.target.value, flettefelt);
+                    handleFlettefeltInput(e.target.value, flettefelt, flettefeltApiNavn);
                 }}
                 value={flettefeltMedVerdi?.verdi || ''}
             />
