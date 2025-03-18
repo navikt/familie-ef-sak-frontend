@@ -16,6 +16,7 @@ import { ABorderRadiusMedium, ABorderStrong } from '@navikt/ds-tokens/dist/token
 import { HtmlEditor } from '../../../Felles/HtmlEditor/HtmlEditor';
 import { ArrowsSquarepathIcon } from '@navikt/aksel-icons';
 import { finnFlettefeltRefFraFlettefeltApiNavn } from './BrevUtils';
+import { formaterTallMedTusenSkille } from '../../../App/utils/formatter';
 
 const DelmalValg = styled.div`
     display: flex;
@@ -74,9 +75,12 @@ export const BrevMenyDelmal: React.FC<Props> = ({
         flettefeltApiNavn?: string
     ) => {
         if (flettefeltApiNavn === 'belopIMaaneden') {
+            const sanititertVerdi = verdi.replace(/\s/g, '');
             const årsinntektRef = finnFlettefeltRefFraFlettefeltApiNavn(dokument, 'arsinntekt');
-            const månedsinntektGangerTolv = (parseInt(verdi) * 12).toString();
 
+            const månedsinntektGangerTolv = formaterTallMedTusenSkille(
+                parseInt(sanititertVerdi) * 12
+            ).toString();
             oppdaterFlettefeltForGittRef(årsinntektRef, månedsinntektGangerTolv);
         }
 
