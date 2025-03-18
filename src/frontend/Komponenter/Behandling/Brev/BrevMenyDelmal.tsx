@@ -75,11 +75,11 @@ export const BrevMenyDelmal: React.FC<Props> = ({
         flettefeltApiNavn?: string
     ) => {
         if (flettefeltApiNavn === 'belopIMaaneden') {
-            const sanititertVerdi = verdi.replace(/\s/g, '');
+            const sanitertVerdi = verdi.replace(/\s/g, '');
             const årsinntektRef = finnFlettefeltRefFraFlettefeltApiNavn(dokument, 'arsinntekt');
 
             const månedsinntektGangerTolv = formaterTallMedTusenSkille(
-                parseInt(sanititertVerdi) * 12
+                parseInt(sanitertVerdi) * 12
             ).toString();
             oppdaterFlettefeltForGittRef(årsinntektRef, månedsinntektGangerTolv);
         }
