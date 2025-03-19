@@ -10,7 +10,7 @@ import {
 } from '../typer/ressurs';
 import { JournalførBeregnetSamværRequest, Samværsavtale } from '../typer/samværsavtale';
 
-interface SamværsavtaleResponse {
+export interface SamværsavtaleResponse {
     samværsavtaler: Ressurs<Samværsavtale[]>;
     hentSamværsavtaler: (behandlingId: string) => void;
     lagreSamværsavtale: (avtale: Samværsavtale) => void;

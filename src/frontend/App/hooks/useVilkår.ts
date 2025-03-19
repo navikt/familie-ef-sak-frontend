@@ -8,6 +8,7 @@ import {
 import { useApp } from '../context/AppContext';
 import { useCallback, useState } from 'react';
 import {
+    InngangsvilkårType,
     IVilkår,
     IVurdering,
     OppdaterVilkårsvurdering,
@@ -47,7 +48,7 @@ export interface UseVilkår {
     gjenbrukbareVilkårsvurderinger: string[];
 }
 
-export const useVilkår = (): UseVilkår => {
+export const useVilkår = (hentSamværsavtaler: (behandlingId: string) => void): UseVilkår => {
     const { axiosRequest } = useApp();
     const { hentAlleGjenbrukbareVilkårsvurderinger, gjenbrukbareVilkårsvurderinger } =
         useHentGjenbrukbareVilkårsvurderinger();
@@ -171,12 +172,15 @@ export const useVilkår = (): UseVilkår => {
                             respons.data
                         )
                     );
+                    if (respons.data.vilkårType === InngangsvilkårType.ALENEOMSORG) {
+                        hentSamværsavtaler(behandlingId);
+                    }
                 } else {
                     leggTilFeilmelding(vilkårId, respons.frontendFeilmelding);
                 }
             });
         },
-        [axiosRequest]
+        [axiosRequest, hentSamværsavtaler]
     );
 
     return {
