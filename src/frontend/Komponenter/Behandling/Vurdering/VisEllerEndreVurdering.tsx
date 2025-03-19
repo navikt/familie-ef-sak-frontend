@@ -11,23 +11,13 @@ import VisVurdering from './VisVurdering';
 import { Ressurs, RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { useApp } from '../../../App/context/AppContext';
-import { Button } from '@navikt/ds-react';
-import styled from 'styled-components';
 import {
     EkspandertTilstand,
     useEkspanderbareVilkårpanelContext,
 } from '../../../App/context/EkspanderbareVilkårpanelContext';
 import { ModalState } from '../Modal/NyEierModal';
-import { skalViseGjenbrukKnapp } from './utils';
-
-const KnappWrapper = styled.div`
-    display: flex;
-    flex-direction: row;
-`;
-
-const Knapp = styled(Button)`
-    margin-right: 1rem;
-`;
+import { utledSkalViseGjenbrukKnapp } from './utils';
+import { IkkePåstartetVurdering } from './IkkePåstartetVurdering';
 
 export enum Redigeringsmodus {
     REDIGERING = 'REDIGERING',
@@ -98,7 +88,7 @@ const VisEllerEndreVurdering: FC<Props> = ({
         settRedigeringsmodus(utledRedigeringsmodus(feilmelding, vurdering, behandlingErRedigerbar));
     }, [vurdering, feilmelding, behandlingErRedigerbar]);
 
-    const ikkeVurder = () => {
+    const håndterIkkeVurderVilkår = () => {
         nullstillIkkePersistertKomponent(vurdering.id);
         ikkeVurderVilkår({
             id: vurdering.id,
@@ -139,31 +129,27 @@ const VisEllerEndreVurdering: FC<Props> = ({
             }
         });
 
-    const startRedigering = () => {
+    const startVilkårsredigering = () => {
         settRedigeringsmodus(Redigeringsmodus.REDIGERING);
         settPanelITilstand(vurdering.vilkårType, EkspandertTilstand.KAN_IKKE_LUKKES);
     };
 
+    const skalViseGjenbrukKnapp = utledSkalViseGjenbrukKnapp(
+        vurdering,
+        gjenbrukbareVilkårsvurderinger
+    );
+
     switch (redigeringsmodus) {
         case Redigeringsmodus.IKKE_PÅSTARTET:
             return (
-                <KnappWrapper>
-                    <Knapp onClick={startRedigering} variant={'secondary'} type={'button'}>
-                        {venstreKnappetekst ? venstreKnappetekst : 'Vurder vilkår'}
-                    </Knapp>
-                    <Button onClick={ikkeVurder} variant={'tertiary'} type={'button'}>
-                        {høyreKnappetekst ? høyreKnappetekst : 'Ikke vurder vilkår'}
-                    </Button>
-                    {skalViseGjenbrukKnapp(vurdering, gjenbrukbareVilkårsvurderinger) && (
-                        <Button
-                            onClick={gjenbrukVilkårsvurdering}
-                            variant={'tertiary'}
-                            type={'button'}
-                        >
-                            Gjenbruk
-                        </Button>
-                    )}
-                </KnappWrapper>
+                <IkkePåstartetVurdering
+                    skalViseGjenbrukKnapp={skalViseGjenbrukKnapp}
+                    håndterIkkeVurderVilkår={håndterIkkeVurderVilkår}
+                    startVilkårsredigering={startVilkårsredigering}
+                    gjenbrukVilkårsvurdering={gjenbrukVilkårsvurdering}
+                    venstreKnappetekst={venstreKnappetekst}
+                    høyreKnappetekst={høyreKnappetekst}
+                />
             );
         case Redigeringsmodus.REDIGERING:
             return (
@@ -179,7 +165,7 @@ const VisEllerEndreVurdering: FC<Props> = ({
             return (
                 <VisVurdering
                     vurdering={vurdering}
-                    startRedigering={startRedigering}
+                    startRedigering={startVilkårsredigering}
                     resetVurdering={resetVurdering}
                     feilmelding={feilmelding || resetFeilmelding}
                     behandlingErRedigerbar={behandlingErRedigerbar && erSaksbehandler}
