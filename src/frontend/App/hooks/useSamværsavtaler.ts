@@ -21,6 +21,7 @@ export interface SamværsavtaleResponse {
     ) => void;
     feilmelding: string;
     settFeilmelding: React.Dispatch<React.SetStateAction<string>>;
+    settSamværsavtaler: React.Dispatch<React.SetStateAction<Ressurs<Samværsavtale[]>>>;
 }
 
 export const useSamværsavtaler = (): SamværsavtaleResponse => {
@@ -101,5 +102,6 @@ export const useSamværsavtaler = (): SamværsavtaleResponse => {
         journalførBeregnetSamvær,
         feilmelding,
         settFeilmelding,
+        settSamværsavtaler,
     };
 };

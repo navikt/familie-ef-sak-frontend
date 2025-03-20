@@ -119,7 +119,7 @@ const [BehandlingProvider, useBehandling] = constate(() => {
     }, [behandling, ansvarligSaksbehandler, innloggetSaksbehandler]);
 
     const samværsavtaleState = useSamværsavtaler();
-    const vilkårState = useVilkår(samværsavtaleState.hentSamværsavtaler);
+    const vilkårState = useVilkår(samværsavtaleState.settSamværsavtaler);
 
     return {
         ansvarligSaksbehandler,
