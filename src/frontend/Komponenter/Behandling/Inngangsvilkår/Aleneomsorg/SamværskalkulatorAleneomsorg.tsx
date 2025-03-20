@@ -123,7 +123,8 @@ export const SamværskalkulatorAleneomsorg: React.FC<Props> = ({
         settSamværsavtale(
             utledInitiellSamværsavtale(lagretSamværsavtale, behandlingId, gjeldendeBehandlingBarnId)
         );
-    }, [lagretSamværsavtale, behandlingId, gjeldendeBehandlingBarnId]);
+        settVisningsmodus(utledInitiellVisningsmodus(behandlingErRedigerbar, lagretSamværsavtale));
+    }, [lagretSamværsavtale, behandlingId, gjeldendeBehandlingBarnId, behandlingErRedigerbar]);
 
     const håndterOppdaterSamværsuke = (
         ukeIndex: number,
