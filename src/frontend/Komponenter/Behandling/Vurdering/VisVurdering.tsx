@@ -21,8 +21,8 @@ import {
     SmallTextLabel,
 } from '../../../Felles/Visningskomponenter/Tekster';
 import { ATextSubtle } from '@navikt/ds-tokens/dist/tokens';
-import ModalGjenbrukVilkårsvurdering from './ModalGjenbrukVilkårsvurdering';
-import { skalViseGjenbrukKnapp } from './utils';
+import { utledSkalViseGjenbrukKnapp } from './utils';
+import { ModalGjenbrukVilkårsvurdering } from './ModalGjenbrukVilkårsvurdering';
 
 const StyledVilkår = styled.div`
     grid-column: 2/4;
@@ -131,7 +131,10 @@ const VisVurdering: FC<Props> = ({
                             >
                                 <span>Slett</span>
                             </Button>
-                            {skalViseGjenbrukKnapp(vurdering, gjenbrukbareVilkårsvurderinger) && (
+                            {utledSkalViseGjenbrukKnapp(
+                                vurdering,
+                                gjenbrukbareVilkårsvurderinger
+                            ) && (
                                 <Button
                                     type={'button'}
                                     variant={'tertiary'}
@@ -158,6 +161,7 @@ const VisVurdering: FC<Props> = ({
                 visModal={visModal}
                 settVisModal={settVisModal}
                 gjenbrukVilkårsvurdering={gjenbrukVilkårsvurdering}
+                vilkårType={vurdering.vilkårType}
             />
 
             <VertikalStrek />
