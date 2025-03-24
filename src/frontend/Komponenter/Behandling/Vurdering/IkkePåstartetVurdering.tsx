@@ -1,15 +1,5 @@
 import React from 'react';
-import { Button } from '@navikt/ds-react';
-import styled from 'styled-components';
-
-const KnappWrapper = styled.div`
-    display: flex;
-    flex-direction: row;
-`;
-
-const Knapp = styled(Button)`
-    margin-right: 1rem;
-`;
+import { Button, HStack } from '@navikt/ds-react';
 
 interface Props {
     skalViseGjenbrukKnapp: boolean;
@@ -28,10 +18,10 @@ export const IkkePåstartetVurdering: React.FC<Props> = ({
     venstreKnappetekst,
     høyreKnappetekst,
 }) => (
-    <KnappWrapper>
-        <Knapp onClick={startVilkårsredigering} variant={'secondary'} type={'button'}>
+    <HStack gap="4">
+        <Button onClick={startVilkårsredigering} variant={'secondary'} type={'button'}>
             {venstreKnappetekst ? venstreKnappetekst : 'Vurder vilkår'}
-        </Knapp>
+        </Button>
         <Button onClick={håndterIkkeVurderVilkår} variant={'tertiary'} type={'button'}>
             {høyreKnappetekst ? høyreKnappetekst : 'Ikke vurder vilkår'}
         </Button>
@@ -40,5 +30,5 @@ export const IkkePåstartetVurdering: React.FC<Props> = ({
                 Gjenbruk
             </Button>
         )}
-    </KnappWrapper>
+    </HStack>
 );

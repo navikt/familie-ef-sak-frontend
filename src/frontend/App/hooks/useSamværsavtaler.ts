@@ -10,7 +10,7 @@ import {
 } from '../typer/ressurs';
 import { JournalførBeregnetSamværRequest, Samværsavtale } from '../typer/samværsavtale';
 
-export interface SamværsavtaleResponse {
+export interface SamværsavtaleState {
     samværsavtaler: Ressurs<Samværsavtale[]>;
     hentSamværsavtaler: (behandlingId: string) => void;
     lagreSamværsavtale: (avtale: Samværsavtale) => void;
@@ -24,7 +24,7 @@ export interface SamværsavtaleResponse {
     settSamværsavtaler: React.Dispatch<React.SetStateAction<Ressurs<Samværsavtale[]>>>;
 }
 
-export const useSamværsavtaler = (): SamværsavtaleResponse => {
+export const useSamværsavtaler = (): SamværsavtaleState => {
     const { axiosRequest } = useApp();
     const [samværsavtaler, settSamværsavtaler] =
         useState<Ressurs<Samværsavtale[]>>(byggTomRessurs());
