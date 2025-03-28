@@ -8,6 +8,7 @@ import {
 import { useApp } from '../context/AppContext';
 import { useCallback, useState } from 'react';
 import {
+    InngangsvilkårType,
     IVilkår,
     IVurdering,
     OppdaterVilkårsvurdering,
@@ -15,6 +16,7 @@ import {
     Vurderingsfeilmelding,
 } from '../../Komponenter/Behandling/Inngangsvilkår/vilkår';
 import { useHentGjenbrukbareVilkårsvurderinger } from './useHentGjenbrukbareVilkårsvurderinger';
+import { Samværsavtale } from '../typer/samværsavtale';
 
 const oppdaterInngangsvilkårMedVurdering = (
     vilkår: RessursSuksess<IVilkår>,
@@ -28,6 +30,11 @@ const oppdaterInngangsvilkårMedVurdering = (
         ),
     },
 });
+
+interface GjenbruktVilkårResponse {
+    vilkårsvurdering: IVurdering;
+    samværsavtaler: Samværsavtale[];
+}
 
 export interface UseVilkår {
     vilkår: Ressurs<IVilkår>;
@@ -47,7 +54,9 @@ export interface UseVilkår {
     gjenbrukbareVilkårsvurderinger: string[];
 }
 
-export const useVilkår = (): UseVilkår => {
+export const useVilkår = (
+    settSamværsavtaler: React.Dispatch<React.SetStateAction<Ressurs<Samværsavtale[]>>>
+): UseVilkår => {
     const { axiosRequest } = useApp();
     const { hentAlleGjenbrukbareVilkårsvurderinger, gjenbrukbareVilkårsvurderinger } =
         useHentGjenbrukbareVilkårsvurderinger();
@@ -159,24 +168,30 @@ export const useVilkår = (): UseVilkår => {
 
     const gjenbrukEnkelVilkårsvurdering = useCallback(
         (behandlingId: string, vilkårId: string) => {
-            axiosRequest<IVurdering, { behandlingId: string; vilkårId: string }>({
+            axiosRequest<GjenbruktVilkårResponse, { behandlingId: string; vilkårId: string }>({
                 method: 'POST',
                 url: `/familie-ef-sak/api/vurdering/gjenbruk-enkelt-vilkar`,
                 data: { behandlingId: behandlingId, vilkårId: vilkårId },
-            }).then((respons: RessursSuksess<IVurdering> | RessursFeilet) => {
+            }).then((respons: RessursSuksess<GjenbruktVilkårResponse> | RessursFeilet) => {
                 if (respons.status === RessursStatus.SUKSESS) {
+                    const gjenbruktVilkår = respons.data.vilkårsvurdering;
+                    const samværsavtaler = respons.data.samværsavtaler;
+
                     settVilkår((prevInngangsvilkår) =>
                         oppdaterInngangsvilkårMedVurdering(
                             prevInngangsvilkår as RessursSuksess<IVilkår>,
-                            respons.data
+                            gjenbruktVilkår
                         )
                     );
+                    if (gjenbruktVilkår.vilkårType === InngangsvilkårType.ALENEOMSORG) {
+                        settSamværsavtaler({ data: samværsavtaler, status: RessursStatus.SUKSESS });
+                    }
                 } else {
                     leggTilFeilmelding(vilkårId, respons.frontendFeilmelding);
                 }
             });
         },
-        [axiosRequest]
+        [axiosRequest, settSamværsavtaler]
     );
 
     return {
