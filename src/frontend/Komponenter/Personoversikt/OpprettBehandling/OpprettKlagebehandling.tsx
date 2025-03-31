@@ -79,8 +79,8 @@ export const OpprettKlagebehandling: React.FunctionComponent<Props> = ({
                 />
             )}
             <Datovelger
-                id={'krav-mottatt'}
-                label={'Krav mottatt'}
+                id={'klage-mottatt'}
+                label={'Klage mottatt'}
                 settVerdi={(dato) => {
                     settValgtDato(dato as string);
                 }}
