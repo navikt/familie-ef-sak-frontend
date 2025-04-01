@@ -10,15 +10,27 @@ interface Props {
     dokumentasjon?: IDokumentasjonGrunnlag;
 }
 
+const dokumentasjonUtdanning = (dokumentasjon: IDokumentasjonGrunnlag) => {
+    return [
+        { tittel: 'Utgifter til skolepenger', dokumentasjon: dokumentasjon.utdanningsutgifter },
+        { tittel: 'Dokumentasjon på utdanning', dokumentasjon: dokumentasjon.utdanningstilbud },
+    ];
+};
+
 const DokumentasjonUtdanningInfo: FC<Props> = ({ aktivitet, dokumentasjon }) => {
     return (
         <InformasjonContainer>
             <Dokumentasjonsvisning aktivitet={aktivitet} />
-
-            <DokumentasjonSendtInn
-                dokumentasjon={dokumentasjon?.utdanningsutgifter}
-                tittel={'Utgifter til skolepenger'}
-            />
+            {dokumentasjon &&
+                dokumentasjonUtdanning(dokumentasjon).map((dokumentasjon, index) => {
+                    return (
+                        <DokumentasjonSendtInn
+                            key={index}
+                            dokumentasjon={dokumentasjon.dokumentasjon}
+                            tittel={dokumentasjon.tittel}
+                        />
+                    );
+                })}
         </InformasjonContainer>
     );
 };

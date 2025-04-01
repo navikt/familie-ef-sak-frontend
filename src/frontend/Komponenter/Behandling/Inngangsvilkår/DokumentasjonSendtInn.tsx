@@ -1,20 +1,16 @@
 import React, { FC } from 'react';
 import { IDokumentasjon } from '../../../App/typer/felles';
 import { Alert, BodyLong, Heading } from '@navikt/ds-react';
-import styled from 'styled-components';
 
 interface Props {
     tittel: string;
     dokumentasjon?: IDokumentasjon;
 }
 
-const DokumentasjonSendtInnWrapper = styled.div`
-    margin-bottom: 1rem;
-`;
-
 const DokumentasjonSendtInn: FC<Props> = ({ tittel, dokumentasjon }) => {
-    return dokumentasjon && dokumentasjon.harSendtInn ? (
-        <DokumentasjonSendtInnWrapper>
+    return (
+        dokumentasjon &&
+        dokumentasjon.harSendtInn && (
             <Alert variant={'info'} size={'small'}>
                 <Heading size={'xsmall'} level={'4'}>
                     {tittel}
@@ -24,7 +20,7 @@ const DokumentasjonSendtInn: FC<Props> = ({ tittel, dokumentasjon }) => {
                     tidligere
                 </BodyLong>
             </Alert>
-        </DokumentasjonSendtInnWrapper>
-    ) : null;
+        )
+    );
 };
 export default DokumentasjonSendtInn;

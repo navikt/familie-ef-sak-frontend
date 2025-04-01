@@ -156,6 +156,10 @@ const AktivitetInfo: FC<Props> = ({ aktivitet, stønadstype, dokumentasjon }) =>
                 dokumentasjon={dokumentasjon?.virksomhet}
                 tittel={'Næringsfaglig vurdering av virksomheten du etablerer'}
             />
+            <DokumentasjonSendtInn
+                dokumentasjon={dokumentasjon?.utdanningstilbud}
+                tittel={'Dokumentasjon på utdanning'}
+            />
         </InformasjonContainer>
     );
 };
