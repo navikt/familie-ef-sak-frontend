@@ -12,8 +12,8 @@ interface Props {
 
 const dokumentasjonUtdanning = (dokumentasjon: IDokumentasjonGrunnlag) => {
     return [
-        { tittel: 'Utgifter til utdanning', dokumentasjon: dokumentasjon.utdanningsutgifter },
-        { tittel: 'Dokumentasjon utdanning tilbud', dokumentasjon: dokumentasjon.utdanningstilbud },
+        { tittel: 'Utgifter til skolepenger', dokumentasjon: dokumentasjon.utdanningsutgifter },
+        { tittel: 'Dokumentasjon på utdanning', dokumentasjon: dokumentasjon.utdanningstilbud },
     ];
 };
 
