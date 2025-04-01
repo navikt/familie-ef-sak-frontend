@@ -24,7 +24,7 @@ export interface SamværsavtaleState {
     settSamværsavtaler: React.Dispatch<React.SetStateAction<Ressurs<Samværsavtale[]>>>;
 }
 
-export const useSamværsavtaler = (): SamværsavtaleState => {
+export const useSamværsavtale = (): SamværsavtaleState => {
     const { axiosRequest } = useApp();
     const [samværsavtaler, settSamværsavtaler] =
         useState<Ressurs<Samværsavtale[]>>(byggTomRessurs());

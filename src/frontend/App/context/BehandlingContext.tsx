@@ -22,7 +22,7 @@ import { useApp } from './AppContext';
 import { ModalState, utledModalState } from '../../Komponenter/Behandling/Modal/NyEierModal';
 import { useHentVedtak } from '../hooks/useHentVedtak';
 import { useHentFagsak } from '../hooks/useHentFagsak';
-import { useSamværsavtaler } from '../hooks/useSamværsavtaler';
+import { useSamværsavtale } from '../hooks/useSamværsavtale';
 
 const [BehandlingProvider, useBehandling] = constate(() => {
     const { innloggetSaksbehandler } = useApp();
@@ -118,7 +118,7 @@ const [BehandlingProvider, useBehandling] = constate(() => {
         }
     }, [behandling, ansvarligSaksbehandler, innloggetSaksbehandler]);
 
-    const samværsavtaleState = useSamværsavtaler();
+    const samværsavtaleState = useSamværsavtale();
     const vilkårState = useVilkår(samværsavtaleState.settSamværsavtaler);
 
     return {

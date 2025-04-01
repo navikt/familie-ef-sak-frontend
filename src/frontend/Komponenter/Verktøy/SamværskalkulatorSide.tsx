@@ -27,7 +27,7 @@ import {
 } from '../../App/typer/ressurs';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { PersonSøk } from '../Behandling/Brevmottakere/SøkPerson';
-import { useSamværsavtaler } from '../../App/hooks/useSamværsavtaler';
+import { useSamværsavtale } from '../../App/hooks/useSamværsavtale';
 import { AlertError } from '../../Felles/Visningskomponenter/Alerts';
 import { useRedirectEtterLagring } from '../../App/hooks/felles/useRedirectEtterLagring';
 import { EToast } from '../../App/typer/toast';
@@ -61,7 +61,7 @@ const SamværskalkulatorSkjema: React.FC = () => {
         nullstillIkkePersistertKomponent,
         settToast,
     } = useApp();
-    const { journalførBeregnetSamvær, feilmelding, settFeilmelding } = useSamværsavtaler();
+    const { journalførBeregnetSamvær, feilmelding, settFeilmelding } = useSamværsavtale();
     const { hentFagsakPerson, fagsakPerson } = useHentFagsakPerson();
 
     const [visEndrePersonModal, settVisEndrePersonModal] = useState<boolean>(false);
