@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import PdfVisning from '../../../Felles/Pdf/PdfVisning';
-import { SendTilBeslutter } from '../Totrinnskontroll/SendTilBeslutter';
+import SendTilBeslutter from '../Totrinnskontroll/SendTilBeslutter';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import Brevmeny from './Brevmeny';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';

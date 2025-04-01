@@ -46,7 +46,7 @@ const utledDefaultOppgavetyperSomSkalOpprettes = (
         : [];
 };
 
-export const SendTilBeslutter: React.FC<{
+const SendTilBeslutter: React.FC<{
     behandling: Behandling;
     kanSendesTilBeslutter?: boolean;
     behandlingErRedigerbar: boolean;
@@ -229,3 +229,5 @@ export const SendTilBeslutter: React.FC<{
         </>
     );
 };
+
+export default SendTilBeslutter;
