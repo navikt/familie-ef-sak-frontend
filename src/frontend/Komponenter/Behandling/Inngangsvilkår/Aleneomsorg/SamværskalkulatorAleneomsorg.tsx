@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import { BodyShort, Button, Dropdown, HStack, Label, Select } from '@navikt/ds-react';
 import { CalculatorIcon, ChevronDownIcon } from '@navikt/aksel-icons';
 import styled from 'styled-components';
@@ -103,6 +103,7 @@ export const SamværskalkulatorAleneomsorg: React.FC<Props> = ({
     const [samværsavtale, settSamværsavtale] = useState<Samværsavtale>(
         utledInitiellSamværsavtale(lagretSamværsavtale, behandlingId, gjeldendeBehandlingBarnId)
     );
+
     const [visningsmodus, settVisningsmodus] = useState<Visningsmodus>(
         utledInitiellVisningsmodus(behandlingErRedigerbar, lagretSamværsavtale)
     );
@@ -116,6 +117,14 @@ export const SamværskalkulatorAleneomsorg: React.FC<Props> = ({
     );
 
     const kanKopiereSamværsavtale = alleAndreLagredeSamværsavtaler.length > 0;
+
+    // Oppdaterer samværsavtalene ved gjenbruk
+    useEffect(() => {
+        settSamværsavtale(
+            utledInitiellSamværsavtale(lagretSamværsavtale, behandlingId, gjeldendeBehandlingBarnId)
+        );
+        settVisningsmodus(utledInitiellVisningsmodus(behandlingErRedigerbar, lagretSamværsavtale));
+    }, [lagretSamværsavtale, behandlingId, gjeldendeBehandlingBarnId, behandlingErRedigerbar]);
 
     const håndterOppdaterSamværsuke = (
         ukeIndex: number,

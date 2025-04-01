@@ -1,27 +1,36 @@
-import { Button, Modal, BodyLong } from '@navikt/ds-react';
+import { BodyLong, Button, Modal } from '@navikt/ds-react';
 import React, { FC } from 'react';
+import { InngangsvilkårType, VilkårType } from '../Inngangsvilkår/vilkår';
 
-const ModalGjenbrukVilkårsvurdering: FC<{
+export const ModalGjenbrukVilkårsvurdering: FC<{
     visModal: boolean;
     settVisModal: React.Dispatch<React.SetStateAction<boolean>>;
     gjenbrukVilkårsvurdering: () => void;
-}> = ({ visModal, settVisModal, gjenbrukVilkårsvurdering }) => {
+    vilkårType: VilkårType;
+}> = ({ visModal, settVisModal, gjenbrukVilkårsvurdering, vilkårType }) => {
     if (!visModal) {
         return null;
     }
+
+    const headerTekst =
+        vilkårType === InngangsvilkårType.ALENEOMSORG
+            ? 'Gjenbruk av vilkårsvurdering og samværsavtale'
+            : 'Gjenbruk av vilkårsvurdering';
+
+    const bodyTekst =
+        vilkårType === InngangsvilkårType.ALENEOMSORG
+            ? 'Er du sikker på at du vil gjenbruke vilkårsvurdering og tilhørende samværsavtale fra tidligere behandling? Inngangsvilkåret og samværsavtalen vil bli overskrevet.'
+            : 'Er du sikker på at du vil gjenbruke vilkårsvurdering fra tidligere behandling? Inngangsvilkåret vil bli overskrevet.';
 
     return (
         <Modal
             onClose={() => settVisModal(false)}
             open={visModal}
             aria-labelledby="modal-heading"
-            header={{ heading: 'Gjenbruk av vilkårsvurdering' }}
+            header={{ heading: headerTekst }}
         >
             <Modal.Body>
-                <BodyLong>
-                    Er du sikker på at du vil gjenbruke vilkårsvurdering fra tidligere behandling?
-                    Inngangsvilkåret vil bli overskrevet.
-                </BodyLong>
+                <BodyLong>{bodyTekst}</BodyLong>
             </Modal.Body>
             <Modal.Footer>
                 <Button
@@ -40,5 +49,3 @@ const ModalGjenbrukVilkårsvurdering: FC<{
         </Modal>
     );
 };
-
-export default ModalGjenbrukVilkårsvurdering;
