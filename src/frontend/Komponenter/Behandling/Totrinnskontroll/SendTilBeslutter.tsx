@@ -8,7 +8,6 @@ import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStr
 import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
 import { Button } from '@navikt/ds-react';
 import { AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
-import { ABorderStrong } from '@navikt/ds-tokens/dist/tokens';
 import { useNavigate } from 'react-router-dom';
 import OppgaverForOpprettelse from './OppgaverForOpprettelse';
 import { Behandling } from '../../../App/typer/fagsak';
@@ -20,21 +19,6 @@ import { ModalOpprettOgFerdigstilleOppgaver } from './ModalOpprettOgFerdigstille
 import { useHentFremleggsoppgaverForOvergangsstønad } from '../../../App/hooks/useHentFremleggsoppgaverForOvergangsstønad';
 import { Oppfølgingsoppgave } from '../../../App/hooks/useHentOppfølgingsoppgave';
 import { BeskrivelseMarkeringer } from './BeskrivelseOppgave';
-
-const Footer = styled.footer`
-    width: 100%;
-    position: fixed;
-    bottom: 0;
-    background-color: ${ABorderStrong};
-    z-index: 1;
-`;
-
-const MidtstiltInnhold = styled.div`
-    display: flex;
-    align-items: center;
-    margin-left: auto;
-    margin-right: 50%;
-`;
 
 const FlexBox = styled.div`
     display: flex;
@@ -62,7 +46,7 @@ const utledDefaultOppgavetyperSomSkalOpprettes = (
         : [];
 };
 
-const SendTilBeslutterFooter: React.FC<{
+const SendTilBeslutter: React.FC<{
     behandling: Behandling;
     kanSendesTilBeslutter?: boolean;
     behandlingErRedigerbar: boolean;
@@ -172,7 +156,7 @@ const SendTilBeslutterFooter: React.FC<{
     return (
         <>
             {behandlingErRedigerbar && (
-                <Footer>
+                <>
                     {feilmelding && <AlertStripeFeilPreWrap>{feilmelding}</AlertStripeFeilPreWrap>}
                     {ferdigstillUtenBeslutter && (
                         <AlertInfo>Vedtaket vil ikke bli sendt til totrinnskontroll</AlertInfo>
@@ -186,7 +170,7 @@ const SendTilBeslutterFooter: React.FC<{
                                 settOppgavetyperSomSkalOpprettes={settOppgavetyperSomSkalOpprettes}
                             />
                         )}
-                        <MidtstiltInnhold>
+                        <div>
                             {skalViseKnappForModal ? (
                                 <Button
                                     onClick={() => settVisMarkereGodkjenneVedtakOppgaveModal(true)}
@@ -209,9 +193,9 @@ const SendTilBeslutterFooter: React.FC<{
                                     {ferdigstillTittel}
                                 </Button>
                             )}
-                        </MidtstiltInnhold>
+                        </div>
                     </FlexBox>
-                </Footer>
+                </>
             )}
             <ModalWrapper
                 tittel={modalTittel}
@@ -246,4 +230,4 @@ const SendTilBeslutterFooter: React.FC<{
     );
 };
 
-export default SendTilBeslutterFooter;
+export default SendTilBeslutter;

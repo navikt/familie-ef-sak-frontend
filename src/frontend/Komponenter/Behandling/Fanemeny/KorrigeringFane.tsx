@@ -1,5 +1,5 @@
 import React from 'react';
-import SendTilBeslutterFooter from '../Totrinnskontroll/SendTilBeslutterFooter';
+import SendTilBeslutter from '../Totrinnskontroll/SendTilBeslutter';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
 import { utledAvslagValg } from '../VedtakOgBeregning/Felles/utils';
@@ -23,7 +23,7 @@ export const KorrigeringFane: React.FC<Props> = ({ behandling }) => {
                             ? 'Iverksette KA-vedtak (uten brev)'
                             : 'Korrigering av vedtak uten brevutsendelse'}
                     </AlertInfo>
-                    <SendTilBeslutterFooter
+                    <SendTilBeslutter
                         behandling={behandling}
                         kanSendesTilBeslutter={behandlingErRedigerbar}
                         behandlingErRedigerbar={behandlingErRedigerbar}

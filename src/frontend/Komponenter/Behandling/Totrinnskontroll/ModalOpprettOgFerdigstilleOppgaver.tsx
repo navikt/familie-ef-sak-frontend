@@ -4,7 +4,7 @@ import { Divider } from '../../../Felles/Divider/Divider';
 import { Ressurs } from '../../../App/typer/ressurs';
 import { IOppgaverResponse } from '../../../App/hooks/useHentOppgaver';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
-import { SendTilBeslutterRequest } from './SendTilBeslutterFooter';
+import { SendTilBeslutterRequest } from './SendTilBeslutter';
 import { OppgaveTypeForOpprettelse } from './oppgaveForOpprettelseTyper';
 import { FremleggsoppgaverForOpprettelse } from './FremleggsoppgaverForOpprettelse';
 import { TabellFerdigstilleOppgaver } from './TabellFerdigstilleOppgaver';

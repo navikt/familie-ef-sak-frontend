@@ -24,18 +24,6 @@ const StyledDokument = styled(Document)`
             0px 0px 2px rgb(0 0 0 / 25%);
         margin: 0 auto;
     }
-
-    margin: 0.5rem auto;
-`;
-
-const DokumentWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    min-width: 600px;
-    position: sticky;
-    top: 100px;
 `;
 
 const PdfVisning: React.FC<PdfVisningProps> = ({ pdfFilInnhold }) => {
@@ -54,7 +42,7 @@ const PdfVisning: React.FC<PdfVisningProps> = ({ pdfFilInnhold }) => {
     return (
         <DataViewer response={{ pdfFilInnhold }}>
             {({ pdfFilInnhold }) => (
-                <DokumentWrapper>
+                <>
                     {skalVisePaginering && (
                         <Pagination
                             page={sidenummer}
@@ -82,7 +70,7 @@ const PdfVisning: React.FC<PdfVisningProps> = ({ pdfFilInnhold }) => {
                             size="xsmall"
                         />
                     )}
-                </DokumentWrapper>
+                </>
             )}
         </DataViewer>
     );
