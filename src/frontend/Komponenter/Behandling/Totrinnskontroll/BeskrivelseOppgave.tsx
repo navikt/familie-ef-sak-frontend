@@ -4,12 +4,14 @@ import React, { FC } from 'react';
 export type BeskrivelseMarkeringer =
     | 'Særlig tilsynskrevende barn'
     | 'Selvstendig næringsdrivende'
-    | 'EØS';
+    | 'EØS'
+    | 'Kontrollsak';
 
 const beskrivelseMarkeringerValg: BeskrivelseMarkeringer[] = [
     'Særlig tilsynskrevende barn',
     'Selvstendig næringsdrivende',
     'EØS',
+    'Kontrollsak',
 ] as const;
 
 export const BeskrivelseOppgave: FC<{
