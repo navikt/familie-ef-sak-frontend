@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import PdfVisning from '../../../Felles/Pdf/PdfVisning';
-import SendTilBeslutterFooter from '../Totrinnskontroll/SendTilBeslutterFooter';
+import { SendTilBeslutter } from '../Totrinnskontroll/SendTilBeslutter';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import Brevmeny from './Brevmeny';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
@@ -113,17 +113,20 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
                                 </VStack>
                             </VenstreKolonne>
                             <HøyreKolonne>
-                                <PdfVisning pdfFilInnhold={brevRessurs} />
+                                <VStack gap="8" align={'center'}>
+                                    <PdfVisning pdfFilInnhold={brevRessurs} />
+
+                                    <SendTilBeslutter
+                                        behandling={behandling}
+                                        kanSendesTilBeslutter={kanSendesTilBeslutter}
+                                        avslagValg={avslagValg}
+                                        behandlingErRedigerbar={behandlingErRedigerbar}
+                                        hentOppfølgingsoppgave={hentOppfølgingsoppgave}
+                                        oppfølgingsoppgave={oppfølgingsoppgave}
+                                    />
+                                </VStack>
                             </HøyreKolonne>
                         </StyledBrev>
-                        <SendTilBeslutterFooter
-                            behandling={behandling}
-                            kanSendesTilBeslutter={kanSendesTilBeslutter}
-                            avslagValg={avslagValg}
-                            behandlingErRedigerbar={behandlingErRedigerbar}
-                            hentOppfølgingsoppgave={hentOppfølgingsoppgave}
-                            oppfølgingsoppgave={oppfølgingsoppgave}
-                        />
                     </>
                 );
             }}

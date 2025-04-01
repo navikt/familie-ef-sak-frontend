@@ -1,5 +1,5 @@
 import React from 'react';
-import SendTilBeslutterFooter from '../Totrinnskontroll/SendTilBeslutterFooter';
+import SendTilBeslutterFooter from '../Totrinnskontroll/SendTilBeslutter';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
 import { utledAvslagValg } from '../VedtakOgBeregning/Felles/utils';
