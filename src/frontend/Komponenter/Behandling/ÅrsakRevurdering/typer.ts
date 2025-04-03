@@ -158,6 +158,7 @@ export enum Opplysningskilde {
     INNSENDT_DOKUMENTASJON = 'INNSENDT_DOKUMENTASJON',
     BESKJED_ANNEN_ENHET = 'BESKJED_ANNEN_ENHET',
     OPPLYSNINGER_INTERNE_KONTROLLER = 'OPPLYSNINGER_INTERNE_KONTROLLER',
+    AUTOMATISK_OPPRETTET_BEHANDLING = 'AUTOMATISK_OPPRETTET_BEHANDLING',
 }
 
 export const opplysningskildeTilTekst: Record<Opplysningskilde, string> = {
@@ -166,6 +167,7 @@ export const opplysningskildeTilTekst: Record<Opplysningskilde, string> = {
     INNSENDT_DOKUMENTASJON: 'Innsendt dokumentasjon',
     BESKJED_ANNEN_ENHET: 'Beskjed fra annen enhet',
     OPPLYSNINGER_INTERNE_KONTROLLER: 'Opplysninger fra intern kontroll',
+    AUTOMATISK_OPPRETTET_BEHANDLING: 'Automatisk opprettet behandling',
 };
 
 export const årsakerForStønadstype = (stønadstype: Stønadstype): Årsak[] => {
