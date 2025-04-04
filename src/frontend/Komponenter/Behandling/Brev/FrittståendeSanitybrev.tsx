@@ -26,14 +26,14 @@ import { Alert } from '@navikt/ds-react';
 import { finnDokumenttittelForBrevmal } from './BrevUtils';
 import { BrevmottakereFrittståendeBrev } from '../Brevmottakere/BrevmottakereFrittståendeBrev';
 
-type FrittståendeSanitybrevProps = {
+type Props = {
     fagsakId: string;
     personopplysninger: IPersonopplysninger;
     oppdaterBrevRessurs: (brevRessurs: Ressurs<string>) => void;
     brevRessurs: Ressurs<string>;
 };
 
-export const FrittståendeSanitybrev: React.FC<FrittståendeSanitybrevProps> = ({
+export const FrittståendeSanitybrev: React.FC<Props> = ({
     fagsakId,
     oppdaterBrevRessurs,
     personopplysninger,

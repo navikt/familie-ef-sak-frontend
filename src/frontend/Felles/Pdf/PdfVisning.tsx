@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import { Ressurs } from '../../App/typer/ressurs';
 import styled from 'styled-components';
 import { Document, Page, pdfjs } from 'react-pdf';
@@ -13,8 +13,10 @@ pdfjs.GlobalWorkerOptions.workerSrc = new URL(
     import.meta.url
 ).toString();
 
-interface PdfVisningProps {
+interface Props {
     pdfFilInnhold: Ressurs<string>;
+    erDokumentInnlastet: boolean;
+    settErDokumentInnlastet: Dispatch<SetStateAction<boolean>>;
 }
 
 const StyledDokument = styled(Document)`
@@ -26,17 +28,22 @@ const StyledDokument = styled(Document)`
     }
 `;
 
-const PdfVisning: React.FC<PdfVisningProps> = ({ pdfFilInnhold }) => {
-    const [antallSider, setAntallSider] = useState(1);
-    const [sidenummer, setSidenummer] = useState(1);
+const PdfVisning: React.FC<Props> = ({
+    pdfFilInnhold,
+    erDokumentInnlastet,
+    settErDokumentInnlastet,
+}) => {
+    const [antallSider, settAntallSider] = useState(1);
+    const [sidenummer, settSidenummer] = useState(1);
 
     const skalVisePaginering = antallSider > 1;
 
     const onDocumentLoadSuccess = ({ numPages }: { numPages: number }) => {
         if (sidenummer > numPages) {
-            setSidenummer(numPages);
+            settSidenummer(numPages);
         }
-        setAntallSider(numPages);
+        settAntallSider(numPages);
+        settErDokumentInnlastet(true);
     };
 
     return (
@@ -47,7 +54,7 @@ const PdfVisning: React.FC<PdfVisningProps> = ({ pdfFilInnhold }) => {
                         <Pagination
                             page={sidenummer}
                             count={antallSider}
-                            onPageChange={setSidenummer}
+                            onPageChange={settSidenummer}
                             size="xsmall"
                         />
                     )}
@@ -61,13 +68,15 @@ const PdfVisning: React.FC<PdfVisningProps> = ({ pdfFilInnhold }) => {
                             <Loader size={'xlarge'} variant="interaction" transparent={true} />
                         }
                     >
-                        <Page pageNumber={sidenummer} renderTextLayer={true} />
+                        {erDokumentInnlastet && (
+                            <Page pageNumber={sidenummer} renderTextLayer={true} />
+                        )}
                     </StyledDokument>
                     {skalVisePaginering && (
                         <Pagination
                             page={sidenummer}
                             count={antallSider}
-                            onPageChange={setSidenummer}
+                            onPageChange={settSidenummer}
                             size="xsmall"
                         />
                     )}

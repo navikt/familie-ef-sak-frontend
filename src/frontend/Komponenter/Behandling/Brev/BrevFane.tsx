@@ -31,6 +31,7 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
     const { hentOppfølgingsoppgave, oppfølgingsoppgave, feilmelding } = useHentOppfølgingsoppgave(
         behandling.id
     );
+    const [erDokumentInnlastet, settErDokumentInnlastet] = useState(false);
 
     const lagBeslutterBrev = () => {
         axiosRequest<string, null>({
@@ -38,6 +39,7 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
             url: `/familie-ef-sak/api/brev/${behandling.id}`,
         }).then((respons: Ressurs<string>) => {
             settBrevRessurs(respons);
+            settErDokumentInnlastet(false);
         });
     };
 
@@ -47,11 +49,13 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
             url: `/familie-ef-sak/api/brev/${behandling.id}`,
         }).then((respons: Ressurs<string>) => {
             settBrevRessurs(respons);
+            settErDokumentInnlastet(false);
         });
     };
 
     const oppdaterBrevRessurs = (respons: Ressurs<string>) => {
         settBrevRessurs(respons);
+        settErDokumentInnlastet(false);
     };
 
     useEffect(() => {
@@ -114,7 +118,11 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
                             </VenstreKolonne>
                             <HøyreKolonne>
                                 <VStack gap="8" align={'center'}>
-                                    <PdfVisning pdfFilInnhold={brevRessurs} />
+                                    <PdfVisning
+                                        pdfFilInnhold={brevRessurs}
+                                        erDokumentInnlastet={erDokumentInnlastet}
+                                        settErDokumentInnlastet={settErDokumentInnlastet}
+                                    />
 
                                     <SendTilBeslutter
                                         behandling={behandling}

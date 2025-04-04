@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useApp } from '../../../App/context/AppContext';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
@@ -57,6 +57,7 @@ const SendTilBeslutter: React.FC<{
         erAvslagSkalSendeTilBeslutter: boolean;
         erAvslag: boolean;
     };
+    settErDokumentInnlastet?: Dispatch<SetStateAction<boolean>>;
 }> = ({
     behandling,
     kanSendesTilBeslutter,
@@ -64,6 +65,7 @@ const SendTilBeslutter: React.FC<{
     hentOppfølgingsoppgave,
     oppfølgingsoppgave,
     avslagValg,
+    settErDokumentInnlastet,
 }) => {
     const { axiosRequest } = useApp();
     const navigate = useNavigate();
@@ -105,6 +107,7 @@ const SendTilBeslutter: React.FC<{
         })
             .then((res: RessursSuksess<string> | RessursFeilet) => {
                 if (res.status === RessursStatus.SUKSESS) {
+                    settErDokumentInnlastet && settErDokumentInnlastet(false);
                     hentBehandling.rerun();
                     hentVedtak.rerun();
                     hentAnsvarligSaksbehandler.rerun();
