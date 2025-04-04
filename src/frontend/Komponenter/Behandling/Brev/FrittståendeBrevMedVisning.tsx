@@ -15,7 +15,13 @@ export const FrittståendeBrevMedVisning: React.FC<Props> = ({
     fagsakId,
     personopplysninger,
 }: Props) => {
-    const [brevRessurs, oppdaterBrevressurs] = useState<Ressurs<string>>(byggTomRessurs());
+    const [brevRessurs, settBrevRessurs] = useState<Ressurs<string>>(byggTomRessurs());
+    const [erDokumentInnlastet, settErDokumentInnlastet] = useState(false);
+
+    const oppdaterBrevRessurs = (brevRessurs: Ressurs<string>) => {
+        settBrevRessurs(brevRessurs);
+        settErDokumentInnlastet(false);
+    };
 
     return (
         <StyledBrev>
@@ -24,11 +30,15 @@ export const FrittståendeBrevMedVisning: React.FC<Props> = ({
                     fagsakId={fagsakId}
                     personopplysninger={personopplysninger}
                     brevRessurs={brevRessurs}
-                    oppdaterBrevRessurs={oppdaterBrevressurs}
+                    oppdaterBrevRessurs={oppdaterBrevRessurs}
                 />
             </VenstreKolonne>
             <HøyreKolonne>
-                <PdfVisning pdfFilInnhold={brevRessurs} />
+                <PdfVisning
+                    pdfFilInnhold={brevRessurs}
+                    erDokumentInnlastet={erDokumentInnlastet}
+                    settErDokumentInnlastet={settErDokumentInnlastet}
+                />
             </HøyreKolonne>
         </StyledBrev>
     );
