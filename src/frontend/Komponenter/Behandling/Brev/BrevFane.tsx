@@ -17,6 +17,12 @@ import { VStack } from '@navikt/ds-react';
 import { OppgaverForFerdigstilling } from '../Totrinnskontroll/OppgaverForFerdigstilling';
 import { useHentOppfølgingsoppgave } from '../../../App/hooks/useHentOppfølgingsoppgave';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
+import styled from 'styled-components';
+
+const StyledVStack = styled(VStack)`
+    position: sticky;
+    top: 100px;
+`;
 
 interface Props {
     behandling: Behandling;
@@ -117,7 +123,7 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
                                 </VStack>
                             </VenstreKolonne>
                             <HøyreKolonne>
-                                <VStack gap="8" align={'center'}>
+                                <StyledVStack gap="8" align={'center'}>
                                     <PdfVisning
                                         pdfFilInnhold={brevRessurs}
                                         erDokumentInnlastet={erDokumentInnlastet}
@@ -132,7 +138,7 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
                                         hentOppfølgingsoppgave={hentOppfølgingsoppgave}
                                         oppfølgingsoppgave={oppfølgingsoppgave}
                                     />
-                                </VStack>
+                                </StyledVStack>
                             </HøyreKolonne>
                         </StyledBrev>
                     </>
