@@ -11,7 +11,6 @@ import {
     TableHeaderCellSmall,
     historikkEndring,
     HistorikkRad,
-    HistorikkTabell,
 } from './vedtakshistorikkUtil';
 import {
     EUtgiftsperiodetype,
@@ -122,7 +121,7 @@ const historikkRad = (andel: AndelHistorikk, index: number) => {
 
 const VedtaksperioderBarnetilsyn: React.FC<{ andeler: AndelHistorikk[] }> = ({ andeler }) => {
     return (
-        <HistorikkTabell size="small">
+        <Table size="small" style={{ marginBottom: '1rem' }}>
             <Table.Header>
                 <Table.Row>
                     <TableHeaderCellSmall>Periode (fom-tom)</TableHeaderCellSmall>
@@ -139,7 +138,7 @@ const VedtaksperioderBarnetilsyn: React.FC<{ andeler: AndelHistorikk[] }> = ({ a
                 </Table.Row>
             </Table.Header>
             <Table.Body>{andeler.map((periode, index) => historikkRad(periode, index))}</Table.Body>
-        </HistorikkTabell>
+        </Table>
     );
 };
 

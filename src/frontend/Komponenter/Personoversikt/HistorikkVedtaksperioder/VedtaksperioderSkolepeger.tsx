@@ -6,12 +6,14 @@ import {
     skolepengerStudietypeTilTekst,
     SkolepengerUtgift,
 } from '../../../App/typer/vedtak';
-import React from 'react';
+import React, { FC } from 'react';
 import {
     beregnSkoleår,
     formatterSkoleår,
 } from '../../Behandling/VedtakOgBeregning/Skolepenger/Felles/skoleår';
 import { Table } from '@navikt/ds-react';
+import { TableDataCellSmall, TableHeaderCellSmall } from './vedtakshistorikkUtil';
+import { TableMedMarginBottom } from './VedtaksperioderOvergangsstønad';
 
 const lagSkoleår = (periode: ISkoleårsperiodeSkolepenger): string => {
     if (periode.perioder.length === 0) {
@@ -27,44 +29,49 @@ const lagSkoleår = (periode: ISkoleårsperiodeSkolepenger): string => {
 const lagStudietype = (periode: ISkoleårsperiodeSkolepenger) =>
     periode.perioder.length > 0 ? periode.perioder[0].studietype : undefined;
 
-const rad = (
-    utgift: SkolepengerUtgift,
-    skoleår: string,
-    studietype: ESkolepengerStudietype | undefined
-) => {
+const Rad: FC<{
+    utgift: SkolepengerUtgift;
+    skoleår: string;
+    studietype: ESkolepengerStudietype | undefined;
+}> = ({ utgift, skoleår, studietype }) => {
     return (
         <Table.Row key={utgift.id}>
-            <Table.DataCell>{skoleår}</Table.DataCell>
-            <Table.DataCell>
+            <TableDataCellSmall>{skoleår}</TableDataCellSmall>
+            <TableDataCellSmall>
                 {studietype && skolepengerStudietypeTilTekst[studietype]}
-            </Table.DataCell>
-            <Table.DataCell>{formaterIsoMånedÅrFull(utgift.årMånedFra)}</Table.DataCell>
-            <Table.DataCell>{formaterTallMedTusenSkille(utgift.stønad)}</Table.DataCell>
+            </TableDataCellSmall>
+            <TableDataCellSmall>{formaterIsoMånedÅrFull(utgift.årMånedFra)}</TableDataCellSmall>
+            <TableDataCellSmall>{formaterTallMedTusenSkille(utgift.stønad)}</TableDataCellSmall>
         </Table.Row>
     );
 };
 
 const VedtaksperioderSkolepenger: React.FC<{ vedtak: IVedtakForSkolepenger }> = ({ vedtak }) => {
     return (
-        <Table zebraStripes={true} style={{ width: '800px' }}>
+        <TableMedMarginBottom size="small">
             <Table.Header>
                 <Table.Row>
-                    <Table.HeaderCell scope="col">Skoleår</Table.HeaderCell>
-                    <Table.HeaderCell scope="col">Studietype</Table.HeaderCell>
-                    <Table.HeaderCell scope="col">Utbetalingsmåned</Table.HeaderCell>
-                    <Table.HeaderCell scope="col">Stønadsbeløp</Table.HeaderCell>
+                    <TableHeaderCellSmall scope="col">Skoleår</TableHeaderCellSmall>
+                    <TableHeaderCellSmall scope="col">Studietype</TableHeaderCellSmall>
+                    <TableHeaderCellSmall scope="col">Utbetalingsmåned</TableHeaderCellSmall>
+                    <TableHeaderCellSmall scope="col">Stønadsbeløp</TableHeaderCellSmall>
                 </Table.Row>
             </Table.Header>
             <Table.Body>
                 {vedtak.skoleårsperioder.map((periode) => {
                     const formattertSkoleår = lagSkoleår(periode);
                     const studietype = lagStudietype(periode);
-                    return periode.utgiftsperioder.map((utgift) =>
-                        rad(utgift, formattertSkoleår, studietype)
-                    );
+                    return periode.utgiftsperioder.map((utgift, index) => (
+                        <Rad
+                            key={index}
+                            utgift={utgift}
+                            skoleår={formattertSkoleår}
+                            studietype={studietype}
+                        />
+                    ));
                 })}
             </Table.Body>
-        </Table>
+        </TableMedMarginBottom>
     );
 };
 

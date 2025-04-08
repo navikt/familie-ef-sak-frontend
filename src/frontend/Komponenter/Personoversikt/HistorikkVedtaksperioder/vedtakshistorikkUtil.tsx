@@ -13,10 +13,6 @@ import { TagProps, Table, HeaderCellProps } from '@navikt/ds-react';
 import { OverlappMedOvergangsstønad } from '../../Behandling/TidligereVedtaksperioder/typer';
 import { DataCellProps } from '@navikt/ds-react';
 
-export const HistorikkTabell = styled(Table)`
-    margin-top: 1rem;
-`;
-
 export const HistorikkRad = styled(Table.Row)<{ $type?: AndelEndringType }>`
     opacity: ${(props) => (skalMarkeresSomFjernet(props.$type) ? '50%' : '100%')};
 `;
