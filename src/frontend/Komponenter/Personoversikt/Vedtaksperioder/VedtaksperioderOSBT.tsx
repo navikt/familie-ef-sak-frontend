@@ -11,6 +11,7 @@ import { styled } from 'styled-components';
 import { filtrerOgSorterBehandlinger } from '../utils';
 import TittelOgValg from './TittelOgValg';
 import { VStack } from '@navikt/ds-react';
+import { finnesEnFerdigBehandling } from './utils';
 
 export const Container = styled(VStack)`
     border: 1px solid #efefef;
@@ -37,6 +38,10 @@ const VedtaksperioderOSBT: FC<VedtaksperioderProps> = ({ fagsak }) => {
         () => (fagsak ? filtrerOgSorterBehandlinger(fagsak) : []),
         [fagsak]
     );
+
+    if (!finnesEnFerdigBehandling(fagsak)) {
+        return;
+    }
 
     return (
         <Container gap={'4'}>

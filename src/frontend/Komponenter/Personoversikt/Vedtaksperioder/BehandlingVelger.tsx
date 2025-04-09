@@ -6,11 +6,6 @@ import { behandlingstypeTilTekst } from '../../../App/typer/behandlingstype';
 import { formaterNullableIsoDatoTid } from '../../../App/utils/formatter';
 import { Behandling, Fagsak } from '../../../App/typer/fagsak';
 
-const BehandlingSelect = styled(Select)`
-    width: 22rem;
-    padding-top: 0.75rem;
-`;
-
 const StyledCheckbox = styled(Checkbox)`
     align-content: end;
 `;
@@ -24,7 +19,7 @@ const BehandlingVelger: FC<{
 }> = ({ valgtFagsak, behandlinger, settValgtBehandlingId, visUaktuelle, settVisUaktuelle }) => {
     return (
         <HStack gap="4">
-            <BehandlingSelect
+            <Select
                 size="small"
                 label=""
                 className="flex-item"
@@ -39,7 +34,7 @@ const BehandlingVelger: FC<{
                         {formaterNullableIsoDatoTid(b.vedtaksdato)}
                     </option>
                 ))}
-            </BehandlingSelect>
+            </Select>
 
             {valgtFagsak && valgtFagsak.stønadstype !== Stønadstype.SKOLEPENGER && (
                 <StyledCheckbox

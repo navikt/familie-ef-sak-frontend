@@ -8,6 +8,7 @@ import { Fagsak } from '../../../App/typer/fagsak';
 import { filtrerOgSorterBehandlinger } from '../utils';
 import TittelOgValg from './TittelOgValg';
 import { Container } from './VedtaksperioderOSBT';
+import { finnesEnFerdigBehandling } from './utils';
 
 export const VedtaksperioderSP: FC<{
     fagsak: Fagsak;
@@ -21,7 +22,7 @@ export const VedtaksperioderSP: FC<{
         [fagsak]
     );
 
-    const defaultBehandlingId = valgtBehandlingId ?? behandlinger[0].id;
+    const defaultBehandlingId = valgtBehandlingId ?? behandlinger[0]?.id;
 
     const requestConfig: AxiosRequestConfig = useMemo(
         () => ({
@@ -32,11 +33,7 @@ export const VedtaksperioderSP: FC<{
     );
     const vedtak = useDataHenter<IVedtakForSkolepenger, null>(requestConfig);
 
-    const finnesEnFerdigBehandling = fagsak.behandlinger.some(
-        (behandling) => behandling.resultat === 'INNVILGET' && behandling.status === 'FERDIGSTILT'
-    );
-
-    if (!finnesEnFerdigBehandling) {
+    if (!finnesEnFerdigBehandling(fagsak)) {
         return;
     }
 

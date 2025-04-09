@@ -46,7 +46,7 @@ const Rad: FC<{
     );
 };
 
-const VedtaksperioderSkolepenger: React.FC<{ vedtak: IVedtakForSkolepenger }> = ({ vedtak }) => {
+const VedtaksperioderSkolepenger: FC<{ vedtak: IVedtakForSkolepenger }> = ({ vedtak }) => {
     return (
         <TableMedMarginBottom size="small">
             <Table.Header>

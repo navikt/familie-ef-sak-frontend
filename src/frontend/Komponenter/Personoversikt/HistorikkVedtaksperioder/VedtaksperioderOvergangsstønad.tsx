@@ -96,7 +96,7 @@ const historikkRad = (andel: AndelHistorikk, index: number) => {
 
 const VedtaksperioderOvergangsstønad: React.FC<{ andeler: AndelHistorikk[] }> = ({ andeler }) => {
     return (
-        <TableMedMarginBottom size="small" style={{ marginBottom: '1rem' }}>
+        <TableMedMarginBottom size="small">
             <Table.Header>
                 <Table.Row>
                     <TableHeaderCellSmall>Periode (fom-tom)</TableHeaderCellSmall>
