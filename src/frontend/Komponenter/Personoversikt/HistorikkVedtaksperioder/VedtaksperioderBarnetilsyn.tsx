@@ -11,7 +11,6 @@ import {
     TableHeaderCellSmall,
     historikkEndring,
     HistorikkRad,
-    HistorikkTabell,
 } from './vedtakshistorikkUtil';
 import {
     EUtgiftsperiodetype,
@@ -21,7 +20,7 @@ import {
 import { utledHjelpetekstForBeløpFørFratrekkOgSatsjusteringForVedtaksside } from '../../Behandling/VedtakOgBeregning/Felles/utils';
 import { HelpText, HStack, Table, Tag } from '@navikt/ds-react';
 import styled from 'styled-components';
-import { AntallMånederTag } from './VedtaksperioderOvergangsstønad';
+import { AntallMånederTag, TableMedMarginBottom } from './VedtaksperioderOvergangsstønad';
 
 const Rad = styled.div`
     display: grid;
@@ -122,7 +121,7 @@ const historikkRad = (andel: AndelHistorikk, index: number) => {
 
 const VedtaksperioderBarnetilsyn: React.FC<{ andeler: AndelHistorikk[] }> = ({ andeler }) => {
     return (
-        <HistorikkTabell size="small">
+        <TableMedMarginBottom>
             <Table.Header>
                 <Table.Row>
                     <TableHeaderCellSmall>Periode (fom-tom)</TableHeaderCellSmall>
@@ -139,7 +138,7 @@ const VedtaksperioderBarnetilsyn: React.FC<{ andeler: AndelHistorikk[] }> = ({ a
                 </Table.Row>
             </Table.Header>
             <Table.Body>{andeler.map((periode, index) => historikkRad(periode, index))}</Table.Body>
-        </HistorikkTabell>
+        </TableMedMarginBottom>
     );
 };
 

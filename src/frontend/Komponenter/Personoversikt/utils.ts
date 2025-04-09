@@ -1,8 +1,9 @@
-import { BehandlingResultat, Fagsak } from '../../App/typer/fagsak';
+import { Behandling, BehandlingResultat, Fagsak } from '../../App/typer/fagsak';
 import { BehandlingStatus } from '../../App/typer/behandlingstatus';
 import { Behandlingstype } from '../../App/typer/behandlingstype';
 import { VedleggRequest } from './vedleggRequest';
 import { Dokumentinfo } from '../../App/typer/dokumentliste';
+import { sorterBehandlinger } from '../../App/utils/behandlingutil';
 
 export const alleBehandlingerErFerdigstiltEllerSattPåVent = (fagsak: Fagsak) =>
     fagsak.behandlinger.every(
@@ -49,3 +50,14 @@ export const oppdaterVedleggFilter = (
 };
 
 export const skalViseLenke = (dokument: Dokumentinfo): boolean => dokument.harSaksbehandlerTilgang;
+
+const innvilgetEllerOpphørt = (b: Behandling) =>
+    b.resultat === BehandlingResultat.INNVILGET || b.resultat === BehandlingResultat.OPPHØRT;
+
+const filtrerBehandlinger = (fagsak: Fagsak): Behandling[] =>
+    fagsak.behandlinger.filter(
+        (b) => innvilgetEllerOpphørt(b) && b.status === BehandlingStatus.FERDIGSTILT
+    );
+
+export const filtrerOgSorterBehandlinger = (fagsak: Fagsak): Behandling[] =>
+    filtrerBehandlinger(fagsak).sort(sorterBehandlinger);
