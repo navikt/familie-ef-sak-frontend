@@ -20,6 +20,7 @@ const ValgteStønaderCheckbox: FC<{
             <CheckboxGroup
                 legend=""
                 hideLegend
+                disabled={!valgteStønader.includes(ValgtStønad.OVERGANGSSTØNAD)}
                 value={valgteStønader}
                 onChange={() => handleValgteStønader(ValgtStønad.OVERGANGSSTØNAD)}
             >
@@ -28,6 +29,7 @@ const ValgteStønaderCheckbox: FC<{
             <CheckboxGroup
                 legend=""
                 hideLegend
+                disabled={!valgteStønader.includes(ValgtStønad.BARNETILSYN)}
                 value={valgteStønader}
                 onChange={() => handleValgteStønader(ValgtStønad.BARNETILSYN)}
             >
@@ -36,6 +38,7 @@ const ValgteStønaderCheckbox: FC<{
             <CheckboxGroup
                 legend=""
                 hideLegend
+                disabled={!valgteStønader.includes(ValgtStønad.SKOLEPENGER)}
                 value={valgteStønader}
                 onChange={() => handleValgteStønader(ValgtStønad.SKOLEPENGER)}
             >
