@@ -1,11 +1,12 @@
 import { HStack, CheckboxGroup, Checkbox } from '@navikt/ds-react';
 import React, { FC } from 'react';
-import { ValgtStønad } from './utils';
+import { harBehandling, ValgtStønad } from './utils';
 
 const ValgteStønaderCheckbox: FC<{
     valgteStønader: ValgtStønad[];
     settValgteStønader: React.Dispatch<React.SetStateAction<ValgtStønad[]>>;
-}> = ({ valgteStønader, settValgteStønader }) => {
+    stønaderMedBehandling: ValgtStønad[];
+}> = ({ valgteStønader, settValgteStønader, stønaderMedBehandling }) => {
     const handleValgteStønader = (valg: ValgtStønad) => {
         settValgteStønader((prevState) => {
             if (prevState.includes(valg)) {
@@ -15,12 +16,13 @@ const ValgteStønaderCheckbox: FC<{
             return [...prevState, valg];
         });
     };
+
     return (
         <HStack gap={'4'}>
             <CheckboxGroup
                 legend=""
                 hideLegend
-                disabled={!valgteStønader.includes(ValgtStønad.OVERGANGSSTØNAD)}
+                disabled={!harBehandling(stønaderMedBehandling, ValgtStønad.OVERGANGSSTØNAD)}
                 value={valgteStønader}
                 onChange={() => handleValgteStønader(ValgtStønad.OVERGANGSSTØNAD)}
             >
@@ -29,7 +31,7 @@ const ValgteStønaderCheckbox: FC<{
             <CheckboxGroup
                 legend=""
                 hideLegend
-                disabled={!valgteStønader.includes(ValgtStønad.BARNETILSYN)}
+                disabled={!harBehandling(stønaderMedBehandling, ValgtStønad.BARNETILSYN)}
                 value={valgteStønader}
                 onChange={() => handleValgteStønader(ValgtStønad.BARNETILSYN)}
             >
@@ -38,7 +40,7 @@ const ValgteStønaderCheckbox: FC<{
             <CheckboxGroup
                 legend=""
                 hideLegend
-                disabled={!valgteStønader.includes(ValgtStønad.SKOLEPENGER)}
+                disabled={!harBehandling(stønaderMedBehandling, ValgtStønad.SKOLEPENGER)}
                 value={valgteStønader}
                 onChange={() => handleValgteStønader(ValgtStønad.SKOLEPENGER)}
             >

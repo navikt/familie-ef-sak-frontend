@@ -46,3 +46,7 @@ export const utledDefaultValgtStønad = (fagsakPerson: FagsakPerson): ValgtStøn
 
     return defaultStønader;
 };
+
+export const harBehandling = (stønaderMedBehandling: ValgtStønad[], stønad: ValgtStønad) => {
+    return stønaderMedBehandling.includes(stønad);
+};
