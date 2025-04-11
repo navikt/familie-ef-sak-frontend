@@ -74,6 +74,7 @@ export const ValgfeltSelect: React.FC<Props> = ({
         <Container>
             {valgFelt.valgMuligheter.length > 1 ? (
                 <Select
+                    size="small"
                     label={valgFelt.valgfeltVisningsnavn}
                     defaultValue={valgteFelt[valgFelt.valgFeltApiNavn]?.valgmulighet}
                     onChange={(e) =>
