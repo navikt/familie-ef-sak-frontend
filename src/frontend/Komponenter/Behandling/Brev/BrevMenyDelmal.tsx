@@ -128,10 +128,12 @@ export const BrevMenyDelmal: React.FC<Props> = ({
 
     return (
         <DelmalValg>
-            <Checkbox hideLabel onChange={håndterToggleDelmal} checked={valgt}>
+            <Checkbox hideLabel onChange={håndterToggleDelmal} checked={valgt} size="small">
                 Velg delmal
             </Checkbox>
             <Accordion
+                headingSize="xsmall"
+                size="small"
                 style={{
                     width: '100%',
                     border: `1px solid ${ABorderStrong}`,

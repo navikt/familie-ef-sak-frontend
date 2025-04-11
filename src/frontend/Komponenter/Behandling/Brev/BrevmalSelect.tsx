@@ -55,6 +55,7 @@ export const BrevmalSelect: React.FC<BrevmalSelectProps> = ({
                     settBrevmal(e.target.value);
                 }}
                 value={brevmal}
+                size="small"
             >
                 <option value="">Ikke valgt</option>
 
