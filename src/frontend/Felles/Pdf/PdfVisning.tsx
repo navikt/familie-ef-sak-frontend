@@ -59,7 +59,7 @@ const PdfVisning: React.FC<Props> = ({
                         />
                     )}
                     <StyledDokument
-                        key={new Date().getTime().toString()}
+                        key={this}
                         file={`data:application/pdf;base64,${pdfFilInnhold}`}
                         onLoadSuccess={onDocumentLoadSuccess}
                         error={<AlertError>Ukjent feil ved henting av dokument</AlertError>}
