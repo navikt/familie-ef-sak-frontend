@@ -58,7 +58,7 @@
         "express": "^5.0.1",
         "express-static-gzip": "^2.2.0",
         "file-loader": "^6.2.0",
-        "http-proxy-middleware": "^3.0.3",
+        "http-proxy-middleware": "^3.0.5",
         "https-proxy-agent": "^7.0.6",
         "loglevel": "^1.9.2",
         "passport": "^0.7.0",
