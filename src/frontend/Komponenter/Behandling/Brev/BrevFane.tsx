@@ -9,7 +9,6 @@ import { useApp } from '../../../App/context/AppContext';
 import { TotrinnskontrollStatus } from '../../../App/typer/totrinnskontroll';
 import { BrevmottakereForBehandling } from '../Brevmottakere/BrevmottakereForBehandling';
 import { utledAvslagValg } from '../VedtakOgBeregning/Felles/utils';
-import { HøyreKolonne, StyledBrev, VenstreKolonne } from './StyledBrev';
 import { Behandling } from '../../../App/typer/fagsak';
 import { OverstyrtBrevmalVarsel } from './OverstyrtBrevmalVarsel';
 import { FremleggoppgaverSomOpprettes } from './FremleggoppgaverSomOpprettes';
@@ -22,6 +21,22 @@ import styled from 'styled-components';
 const StyledVStack = styled(VStack)`
     position: sticky;
     top: 100px;
+`;
+
+const Container = styled.div`
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: #f2f2f2;
+
+    @media (max-width: 1400px) {
+        flex-direction: column;
+        padding: 3rem;
+    }
+`;
+
+const LikDelContainer = styled.div`
+    flex: 1;
 `;
 
 interface Props {
@@ -86,62 +101,59 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
                 const avslagValg = utledAvslagValg(vedtak);
 
                 return (
-                    <>
-                        <StyledBrev>
-                            <VenstreKolonne>
-                                {feilmelding && <AlertError size="small">{feilmelding}</AlertError>}
-                                <VStack gap="4">
-                                    <BrevmottakereForBehandling
-                                        behandlingId={behandling.id}
-                                        personopplysninger={personopplysningerResponse}
-                                    />
-                                    {!behandlingErRedigerbar && (
-                                        <>
-                                            <FremleggoppgaverSomOpprettes
-                                                oppgavetyperSomSkalOpprettes={
-                                                    oppfølgingsoppgave?.oppgaverForOpprettelse
-                                                        .oppgavetyperSomSkalOpprettes ?? []
-                                                }
-                                            />
-                                            <OppgaverForFerdigstilling
-                                                behandlingId={behandling.id}
-                                            />
-                                        </>
-                                    )}
-                                    {!behandlingErRedigerbar && (
-                                        <OverstyrtBrevmalVarsel behandlingId={behandling.id} />
-                                    )}
-                                    {behandlingErRedigerbar && (
-                                        <Brevmeny
-                                            oppdaterBrevRessurs={oppdaterBrevRessurs}
-                                            personopplysninger={personopplysningerResponse}
-                                            settKanSendesTilBeslutter={settKanSendesTilBeslutter}
-                                            behandling={behandling}
-                                            vedtaksresultat={vedtak?.resultatType}
+                    <Container>
+                        <LikDelContainer>
+                            {feilmelding && <AlertError size="small">{feilmelding}</AlertError>}
+                            <VStack gap="4">
+                                <BrevmottakereForBehandling
+                                    behandlingId={behandling.id}
+                                    personopplysninger={personopplysningerResponse}
+                                />
+                                {!behandlingErRedigerbar && (
+                                    <>
+                                        <FremleggoppgaverSomOpprettes
+                                            oppgavetyperSomSkalOpprettes={
+                                                oppfølgingsoppgave?.oppgaverForOpprettelse
+                                                    .oppgavetyperSomSkalOpprettes ?? []
+                                            }
                                         />
-                                    )}
-                                </VStack>
-                            </VenstreKolonne>
-                            <HøyreKolonne>
-                                <StyledVStack gap="8" align={'center'}>
-                                    <PdfVisning
-                                        pdfFilInnhold={brevRessurs}
-                                        erDokumentInnlastet={erDokumentInnlastet}
-                                        settErDokumentInnlastet={settErDokumentInnlastet}
-                                    />
-
-                                    <SendTilBeslutter
+                                        <OppgaverForFerdigstilling behandlingId={behandling.id} />
+                                    </>
+                                )}
+                                {!behandlingErRedigerbar && (
+                                    <OverstyrtBrevmalVarsel behandlingId={behandling.id} />
+                                )}
+                                {behandlingErRedigerbar && (
+                                    <Brevmeny
+                                        oppdaterBrevRessurs={oppdaterBrevRessurs}
+                                        personopplysninger={personopplysningerResponse}
+                                        settKanSendesTilBeslutter={settKanSendesTilBeslutter}
                                         behandling={behandling}
-                                        kanSendesTilBeslutter={kanSendesTilBeslutter}
-                                        avslagValg={avslagValg}
-                                        behandlingErRedigerbar={behandlingErRedigerbar}
-                                        hentOppfølgingsoppgave={hentOppfølgingsoppgave}
-                                        oppfølgingsoppgave={oppfølgingsoppgave}
+                                        vedtaksresultat={vedtak?.resultatType}
                                     />
-                                </StyledVStack>
-                            </HøyreKolonne>
-                        </StyledBrev>
-                    </>
+                                )}
+                            </VStack>
+                        </LikDelContainer>
+
+                        <LikDelContainer>
+                            <StyledVStack gap="8" align={'center'}>
+                                <PdfVisning
+                                    pdfFilInnhold={brevRessurs}
+                                    erDokumentInnlastet={erDokumentInnlastet}
+                                    settErDokumentInnlastet={settErDokumentInnlastet}
+                                />
+
+                                <SendTilBeslutter
+                                    behandling={behandling}
+                                    kanSendesTilBeslutter={kanSendesTilBeslutter}
+                                    avslagValg={avslagValg}
+                                    behandlingErRedigerbar={behandlingErRedigerbar}
+                                    hentOppfølgingsoppgave={hentOppfølgingsoppgave}
+                                    oppfølgingsoppgave={oppfølgingsoppgave}
+                                />
+                            </StyledVStack>
+                        </LikDelContainer>
+                    </Container>
                 );
             }}
         </DataViewer>
