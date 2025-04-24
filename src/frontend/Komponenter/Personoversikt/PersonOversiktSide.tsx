@@ -13,7 +13,7 @@ import { useHentFagsakPerson } from '../../App/hooks/useHentFagsakPerson';
 import { Tabs } from '@navikt/ds-react';
 import { InntektForPerson } from './InntektForPerson';
 import { loggNavigereTabEvent } from '../../App/utils/amplitude/amplitudeLoggEvents';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 import { PersonHeader } from '../../Felles/PersonHeader/PersonHeader';
 import { Personopplysninger } from './Personopplysninger';
 import { Vedtaksperioderoversikt } from './Vedtaksperioderoversikt';
@@ -21,6 +21,10 @@ import { Behandlingsoversikt } from './Behandlingsoversikt';
 import { FrittståendeBrevMedVisning } from '../Behandling/Brev/FrittståendeBrevMedVisning';
 import { Dokumenter } from './Dokumenter';
 import { OpprettFagsak } from '../Behandling/Førstegangsbehandling/OpprettFagsak';
+
+const StyledSide = styled.div`
+    padding: 0 1rem;
+`;
 
 interface FaneProps {
     label: string;
@@ -107,10 +111,6 @@ const faner: FaneProps[] = [
     },
 ];
 
-const Container = styled.div`
-    margin: 0.5rem;
-`;
-
 export const PersonOversiktSide: React.FC = () => {
     const fagsakPersonId = useParams<{ fagsakPersonId: string }>().fagsakPersonId as string;
     useSetValgtFagsakPersonId(fagsakPersonId);
@@ -171,24 +171,25 @@ const PersonOversikt: React.FC<Props> = ({
     return (
         <>
             <PersonHeader fagsakPerson={fagsakPerson} personopplysninger={personopplysninger} />
-            <Container>
-                <Tabs
-                    value={path}
-                    onChange={(fane) => {
-                        navigate(`/person/${fagsakPersonId}/${fane}`);
-                        loggNavigereTabEvent({
-                            side: 'person',
-                            forrigeFane: path,
-                            nesteFane: fane,
-                        });
-                    }}
-                >
-                    <Tabs.List>
-                        {faner.map((fane) => (
-                            <Tabs.Tab key={fane.path} value={fane.path} label={fane.label} />
-                        ))}
-                    </Tabs.List>
-                </Tabs>
+
+            <Tabs
+                value={path}
+                onChange={(fane) => {
+                    navigate(`/person/${fagsakPersonId}/${fane}`);
+                    loggNavigereTabEvent({
+                        side: 'person',
+                        forrigeFane: path,
+                        nesteFane: fane,
+                    });
+                }}
+            >
+                <Tabs.List>
+                    {faner.map((fane) => (
+                        <Tabs.Tab key={fane.path} value={fane.path} label={fane.label} />
+                    ))}
+                </Tabs.List>
+            </Tabs>
+            <StyledSide>
                 <Routes>
                     {faner.map((fane) => (
                         <Route
@@ -212,7 +213,7 @@ const PersonOversikt: React.FC<Props> = ({
                         }
                     />
                 </Routes>
-            </Container>
+            </StyledSide>
         </>
     );
 };

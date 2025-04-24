@@ -20,12 +20,12 @@ interface Props {
 }
 
 const StyledDokument = styled(Document)`
-    .react-pdf__Page__canvas {
-        box-shadow:
-            0px 4px 4px rgba(0, 0, 0, 0.25),
-            0px 0px 2px rgb(0 0 0 / 25%);
-        margin: 0 auto;
-    }
+    width: fit-content;
+    margin: 0 auto;
+
+    box-shadow:
+        0px 4px 4px rgba(0, 0, 0, 0.25),
+        0px 0px 2px rgb(0 0 0 / 25%);
 `;
 
 const PdfVisning: React.FC<Props> = ({
