@@ -3,8 +3,24 @@ import { byggTomRessurs, Ressurs } from '../../../App/typer/ressurs';
 import PdfVisning from '../../../Felles/Pdf/PdfVisning';
 import { IPersonopplysninger } from '../../../App/typer/personopplysninger';
 import { FrittståendeSanitybrev } from './FrittståendeSanitybrev';
+import { styled } from 'styled-components';
+import { VStack } from '@navikt/ds-react';
 
-import { HøyreKolonne, StyledBrev, VenstreKolonne } from './StyledBrev';
+const Container = styled.div`
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: #f2f2f2;
+
+    @media (max-width: 1400px) {
+        flex-direction: column;
+        padding: 3rem;
+    }
+`;
+
+const LikDelContainer = styled.div`
+    flex: 1;
+`;
 
 type Props = {
     fagsakId: string;
@@ -24,22 +40,24 @@ export const FrittståendeBrevMedVisning: React.FC<Props> = ({
     };
 
     return (
-        <StyledBrev>
-            <VenstreKolonne>
+        <Container>
+            <LikDelContainer>
                 <FrittståendeSanitybrev
                     fagsakId={fagsakId}
                     personopplysninger={personopplysninger}
                     brevRessurs={brevRessurs}
                     oppdaterBrevRessurs={oppdaterBrevRessurs}
                 />
-            </VenstreKolonne>
-            <HøyreKolonne>
-                <PdfVisning
-                    pdfFilInnhold={brevRessurs}
-                    erDokumentInnlastet={erDokumentInnlastet}
-                    settErDokumentInnlastet={settErDokumentInnlastet}
-                />
-            </HøyreKolonne>
-        </StyledBrev>
+            </LikDelContainer>
+            <LikDelContainer>
+                <VStack gap="2" align="center">
+                    <PdfVisning
+                        pdfFilInnhold={brevRessurs}
+                        erDokumentInnlastet={erDokumentInnlastet}
+                        settErDokumentInnlastet={settErDokumentInnlastet}
+                    />
+                </VStack>
+            </LikDelContainer>
+        </Container>
     );
 };

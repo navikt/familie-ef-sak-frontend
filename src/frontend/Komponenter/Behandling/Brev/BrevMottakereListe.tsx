@@ -62,7 +62,7 @@ const BrevMottakereListe: React.FC<{
     );
 
     return flereBrevmottakereErValgt || !brukerErBrevmottaker ? (
-        <Alert variant={'info'}>
+        <Alert variant={'info'} size="small">
             <InfoHeader>
                 <Label>Brevmottakere:</Label>
                 {kanEndreBrevmottakere && (

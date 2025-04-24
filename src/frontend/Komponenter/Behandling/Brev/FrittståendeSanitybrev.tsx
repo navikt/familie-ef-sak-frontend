@@ -22,7 +22,7 @@ import { IBrevmottakere } from '../Brevmottakere/typer';
 import { useApp } from '../../../App/context/AppContext';
 import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
 import { Knapp } from '../../../Felles/Knapper/HovedKnapp';
-import { Alert } from '@navikt/ds-react';
+import { Alert, VStack } from '@navikt/ds-react';
 import { finnDokumenttittelForBrevmal } from './BrevUtils';
 import { BrevmottakereFrittståendeBrev } from '../Brevmottakere/BrevmottakereFrittståendeBrev';
 
@@ -100,7 +100,7 @@ export const FrittståendeSanitybrev: React.FC<Props> = ({
     };
 
     return (
-        <>
+        <VStack gap={'2'}>
             <BrevmottakereFrittståendeBrev
                 personopplysninger={personopplysninger}
                 fagsakId={fagsakId}
@@ -161,6 +161,6 @@ export const FrittståendeSanitybrev: React.FC<Props> = ({
             >
                 {feilmelding && <Alert variant={'error'}>Utsending feilet. {feilmelding}</Alert>}
             </ModalWrapper>
-        </>
+        </VStack>
     );
 };
