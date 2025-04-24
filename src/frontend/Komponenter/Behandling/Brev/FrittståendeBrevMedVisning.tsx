@@ -6,6 +6,11 @@ import { FrittståendeSanitybrev } from './FrittståendeSanitybrev';
 import { styled } from 'styled-components';
 import { VStack } from '@navikt/ds-react';
 
+const StyledVStack = styled(VStack)`
+    position: sticky;
+    top: 100px;
+`;
+
 const Container = styled.div`
     display: flex;
     gap: 1rem;
@@ -50,13 +55,13 @@ export const FrittståendeBrevMedVisning: React.FC<Props> = ({
                 />
             </LikDelContainer>
             <LikDelContainer>
-                <VStack gap="2" align="center">
+                <StyledVStack gap="2" align="center">
                     <PdfVisning
                         pdfFilInnhold={brevRessurs}
                         erDokumentInnlastet={erDokumentInnlastet}
                         settErDokumentInnlastet={settErDokumentInnlastet}
                     />
-                </VStack>
+                </StyledVStack>
             </LikDelContainer>
         </Container>
     );
