@@ -7,6 +7,7 @@ import { brevProxyUrl, endringsloggProxyUrl, sakProxyUrl } from './config.js';
 import { addRequestInfo, attachToken, doProxy } from './proxy.js';
 import setupRouter from './router.js';
 import { logError, logInfo } from '@navikt/familie-logging';
+import { ensuredAuthenticatedByOasis } from './token';
 
 const port = 8000;
 
@@ -14,7 +15,7 @@ export const setupServerFelles = ({ app, azureAuthClient, router }: IApp) => {
     app.use(
         '/familie-ef-sak/api',
         addRequestInfo(),
-        ensureAuthenticated(azureAuthClient, true),
+        ensuredAuthenticatedByOasis(),
         attachToken(azureAuthClient),
         doProxy(sakProxyUrl)
     );
