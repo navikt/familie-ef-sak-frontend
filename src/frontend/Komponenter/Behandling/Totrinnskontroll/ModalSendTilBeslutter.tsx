@@ -9,8 +9,15 @@ import { OppgaveTypeForOpprettelse } from './oppgaveForOpprettelseTyper';
 import { FremleggsoppgaverForOpprettelse } from './FremleggsoppgaverForOpprettelse';
 import { TabellFerdigstilleOppgaver } from './TabellFerdigstilleOppgaver';
 import { BeskrivelseMarkeringer, BeskrivelseOppgave } from './BeskrivelseOppgave';
+import { AutomatiskBrev, AutomatiskBrevValg } from './AutomatiskBrev';
+import { Behandling } from '../../../App/typer/fagsak';
+import { IVilkår } from '../Inngangsvilkår/vilkår';
+import { harBarnMellomSeksOgTolvMåneder, utledAutomatiskBrev } from './utils';
+import { Stønadstype } from '../../../App/typer/behandlingstema';
 
-export const ModalOpprettOgFerdigstilleOppgaver: FC<{
+export const ModalSendTilBeslutter: FC<{
+    behandling: Behandling;
+    vilkår: IVilkår;
     open: boolean;
     setOpen: (open: boolean) => void;
     sendTilBeslutter: (data: SendTilBeslutterRequest) => void;
@@ -28,6 +35,8 @@ export const ModalOpprettOgFerdigstilleOppgaver: FC<{
         erAvslag: boolean;
     };
 }> = ({
+    behandling,
+    vilkår,
     open,
     setOpen,
     sendTilBeslutter,
@@ -46,7 +55,9 @@ export const ModalOpprettOgFerdigstilleOppgaver: FC<{
     const [beskrivelseMarkeringer, settBeskrivelseMarkeringer] = useState<BeskrivelseMarkeringer[]>(
         []
     );
-
+    const [automatiskBrev, settAutomatiskBrev] = useState<AutomatiskBrevValg[]>(
+        utledAutomatiskBrev(vilkår, behandling)
+    );
     const { ferdigstillUtenBeslutter, erAvslagSkalSendeTilBeslutter, erAvslag } = avslagValg;
 
     const handleSettOppgaverSomSkalFerdigstilles = (oppgaveId: number) =>
@@ -80,6 +91,9 @@ export const ModalOpprettOgFerdigstilleOppgaver: FC<{
 
     const skalViseFremleggsoppgaverForOpprettelseOgFerdigstilling =
         !erAvslag || !erAvslagSkalSendeTilBeslutter;
+
+    const harBarnMellomSeksOgTolvMnder = harBarnMellomSeksOgTolvMåneder(vilkår);
+    const erOvergangsstønad = behandling.stønadstype === Stønadstype.OVERGANGSSTØNAD;
 
     return (
         <DataViewer response={{ fremleggsOppgaver }}>
@@ -140,6 +154,17 @@ export const ModalOpprettOgFerdigstilleOppgaver: FC<{
                                         />
                                     </>
                                 )}
+
+                                {harBarnMellomSeksOgTolvMnder && erOvergangsstønad && (
+                                    <>
+                                        <Divider />
+                                        {JSON.stringify(automatiskBrev)}
+                                        <AutomatiskBrev
+                                            automatiskBrev={automatiskBrev}
+                                            settAutomatiskBrev={settAutomatiskBrev}
+                                        />
+                                    </>
+                                )}
                             </VStack>
                         </Modal.Body>
                         <Modal.Footer>
@@ -157,6 +182,7 @@ export const ModalOpprettOgFerdigstilleOppgaver: FC<{
                                         fremleggsoppgaveIderSomSkalFerdigstilles:
                                             oppgaverSomSkalAutomatiskFerdigstilles,
                                         beskrivelseMarkeringer: beskrivelseMarkeringer,
+                                        automatiskBrev: automatiskBrev,
                                     })
                                 }
                                 disabled={!erValgIRadioEllerChecboxGroupGyldig}

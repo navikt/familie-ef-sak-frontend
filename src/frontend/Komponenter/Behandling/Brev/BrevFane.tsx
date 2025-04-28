@@ -45,8 +45,14 @@ interface Props {
 
 export const BrevFane: React.FC<Props> = ({ behandling }) => {
     const { axiosRequest } = useApp();
-    const { behandlingErRedigerbar, vedtak, personopplysningerResponse, totrinnskontroll } =
-        useBehandling();
+    const {
+        behandlingErRedigerbar,
+        vedtak,
+        personopplysningerResponse,
+        totrinnskontroll,
+        vilkårState,
+    } = useBehandling();
+    const { vilkår, hentVilkår } = vilkårState;
     const [brevRessurs, settBrevRessurs] = useState<Ressurs<string>>(byggTomRessurs());
     const [kanSendesTilBeslutter, settKanSendesTilBeslutter] = useState<boolean>(false);
     const { hentOppfølgingsoppgave, oppfølgingsoppgave, feilmelding } = useHentOppfølgingsoppgave(
@@ -90,14 +96,19 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
         // eslint-disable-next-line
     }, [behandlingErRedigerbar, totrinnskontroll]);
 
+    useEffect(() => {
+        hentVilkår(behandling.id);
+    }, [behandling.id, hentVilkår]);
+
     return (
         <DataViewer
             response={{
                 personopplysningerResponse,
                 vedtak,
+                vilkår,
             }}
         >
-            {({ personopplysningerResponse, vedtak }) => {
+            {({ personopplysningerResponse, vedtak, vilkår }) => {
                 const avslagValg = utledAvslagValg(vedtak);
 
                 return (
@@ -145,6 +156,7 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
 
                                 <SendTilBeslutter
                                     behandling={behandling}
+                                    vilkår={vilkår}
                                     kanSendesTilBeslutter={kanSendesTilBeslutter}
                                     avslagValg={avslagValg}
                                     behandlingErRedigerbar={behandlingErRedigerbar}

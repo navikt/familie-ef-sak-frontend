@@ -15,10 +15,12 @@ import { OppgaveTypeForOpprettelse } from './oppgaveForOpprettelseTyper';
 import { ModalState } from '../Modal/NyEierModal';
 import { useToggles } from '../../../App/context/TogglesContext';
 import { ToggleName } from '../../../App/context/toggles';
-import { ModalOpprettOgFerdigstilleOppgaver } from './ModalOpprettOgFerdigstilleOppgaver';
+import { ModalSendTilBeslutter } from './ModalSendTilBeslutter';
 import { useHentFremleggsoppgaverForOvergangsstønad } from '../../../App/hooks/useHentFremleggsoppgaverForOvergangsstønad';
 import { Oppfølgingsoppgave } from '../../../App/hooks/useHentOppfølgingsoppgave';
 import { BeskrivelseMarkeringer } from './BeskrivelseOppgave';
+import { AutomatiskBrevValg } from './AutomatiskBrev';
+import { IVilkår } from '../Inngangsvilkår/vilkår';
 
 const FlexBox = styled.div`
     display: flex;
@@ -30,6 +32,7 @@ export interface SendTilBeslutterRequest {
     årForInntektskontrollSelvstendigNæringsdrivende?: number;
     fremleggsoppgaveIderSomSkalFerdigstilles?: number[];
     beskrivelseMarkeringer?: BeskrivelseMarkeringer[];
+    automatiskBrev?: AutomatiskBrevValg[];
 }
 
 const utledDefaultOppgavetyperSomSkalOpprettes = (
@@ -48,6 +51,7 @@ const utledDefaultOppgavetyperSomSkalOpprettes = (
 
 const SendTilBeslutter: React.FC<{
     behandling: Behandling;
+    vilkår: IVilkår;
     kanSendesTilBeslutter?: boolean;
     behandlingErRedigerbar: boolean;
     hentOppfølgingsoppgave?: { rerun: () => void };
@@ -60,6 +64,7 @@ const SendTilBeslutter: React.FC<{
     settErDokumentInnlastet?: Dispatch<SetStateAction<boolean>>;
 }> = ({
     behandling,
+    vilkår,
     kanSendesTilBeslutter,
     behandlingErRedigerbar,
     hentOppfølgingsoppgave,
@@ -214,7 +219,9 @@ const SendTilBeslutter: React.FC<{
                 }}
             />
             {toggleVisKnappForModal && (
-                <ModalOpprettOgFerdigstilleOppgaver
+                <ModalSendTilBeslutter
+                    behandling={behandling}
+                    vilkår={vilkår}
                     open={visMarkereGodkjenneVedtakOppgaveModal}
                     setOpen={settVisMarkereGodkjenneVedtakOppgaveModal}
                     sendTilBeslutter={sendTilBeslutter}
