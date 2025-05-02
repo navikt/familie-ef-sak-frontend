@@ -1,4 +1,4 @@
-import { logRequest } from '@navikt/familie-backend';
+import { Client, ensureAuthenticated, logRequest } from '@navikt/familie-backend';
 import { NextFunction, Request, Response, Router } from 'express';
 import path from 'path';
 import {
@@ -12,7 +12,6 @@ import {
 } from './config';
 import { prometheusTellere } from './metrikker';
 import { LOG_LEVEL } from '@navikt/familie-logging';
-import { attachTokenByOasis } from './token';
 
 export const redirectHvisInternUrlIPreprod = () => {
     return async (req: Request, res: Response, next: NextFunction) => {
@@ -27,7 +26,7 @@ export const redirectHvisInternUrlIPreprod = () => {
     };
 };
 
-export default (router: Router): Router => {
+export default (authClient: Client, router: Router): Router => {
     router.get('/version', (_req: Request, res: Response) => {
         res.status(200).send({ version: process.env.APP_VERSION }).end();
     });
@@ -57,7 +56,7 @@ export default (router: Router): Router => {
     router.get(
         '*global',
         redirectHvisInternUrlIPreprod(),
-        attachTokenByOasis(),
+        ensureAuthenticated(authClient, false),
         (_req: Request, res: Response) => {
             prometheusTellere.appLoad.inc();
 
