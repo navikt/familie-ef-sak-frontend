@@ -7,26 +7,55 @@ import { addRequestInfo, doProxy } from './proxy.js';
 import setupRouter from './router.js';
 import { logError, logInfo } from '@navikt/familie-logging';
 import { Express, Router } from 'express';
+import { authenticateToken } from './token';
 
 const port = 8000;
 
-export const setupServerFelles = (app: Express, router: Router) => {
-    app.use('/familie-ef-sak/api', addRequestInfo(), doProxy(sakProxyUrl));
+export const setupBackend = (app: Express, router: Router) => {
+    app.use(
+        '/familie-ef-sak/api',
+        addRequestInfo(),
+        authenticateToken(utledTargetAudience('familie-ef-sak')),
+        doProxy(sakProxyUrl)
+    );
 
-    app.use('/dokument', addRequestInfo(), doProxy(sakProxyUrl));
+    app.use(
+        '/dokument',
+        addRequestInfo(),
+        authenticateToken(utledTargetAudience('familie-dokument')),
+        doProxy(sakProxyUrl)
+    );
 
-    app.use('/familie-brev/api', addRequestInfo(), doProxy(brevProxyUrl));
+    app.use(
+        '/familie-brev/api',
+        addRequestInfo(),
+        authenticateToken(utledTargetAudience('familie-brev')),
+        doProxy(brevProxyUrl)
+    );
 
-    app.use('/familie-endringslogg', addRequestInfo(), doProxy(endringsloggProxyUrl, ''));
+    app.use(
+        '/familie-endringslogg',
+        addRequestInfo(),
+        authenticateToken(utledTargetAudience('familie-endringslogg')),
+        doProxy(endringsloggProxyUrl, '')
+    );
 
-    // Sett opp bodyParser og router etter proxy. Spesielt viktig med tanke på større payloads som blir parset av bodyParser
+    // Set up bodyParser and router after proxy. Especially important for larger payloads parsed by bodyParser
     app.use(bodyParser.json({ limit: '200mb' }));
     app.use(bodyParser.urlencoded({ limit: '200mb', extended: true }));
     app.use('/', setupRouter(router));
 
     app.listen(port, '0.0.0.0', () => {
-        logInfo(`server startet på port ${port}. Build version: ${process.env.APP_VERSION}.`);
+        logInfo(`Server started on port ${port}. Build version: ${process.env.APP_VERSION}.`);
     }).on('error', (err: Error) => {
-        logError(`server startup failed - ${err}`);
+        logError(`Server startup failed - ${err}`);
     });
+};
+
+export const utledTargetAudience = (applicationNavn: string) => {
+    const miljø = process.env.ENV;
+    const cluster = miljø === 'dev' ? 'dev-gcp' : 'prod-gcp';
+
+    const audience = `${cluster}:teamfamilie:${applicationNavn}/.default`;
+    return audience;
 };

@@ -115,29 +115,6 @@ const Environment = (): IEnvironment => {
 };
 const env = Environment();
 
-export const sessionConfig: ISessionKonfigurasjon = {
-    cookieSecret: [`${process.env.COOKIE_KEY1}`, `${process.env.COOKIE_KEY2}`],
-    navn: 'familie-ef-sak-v2',
-    redisFullUrl: process.env.REDIS_URI_SESSIONS,
-    redisBrukernavn: process.env.REDIS_USERNAME_SESSIONS,
-    redisPassord: process.env.REDIS_PASSWORD_SESSIONS,
-    secureCookie: !(
-        process.env.ENV === 'local' ||
-        process.env.ENV === 'e2e' ||
-        process.env.ENV === 'lokalt-mot-preprod'
-    ),
-    sessionMaxAgeSekunder: 12 * 60 * 60,
-};
-
-if (!process.env.EF_SAK_SCOPE) {
-    throw new Error('Scope mot familie-ef-sak er ikke konfigurert');
-}
-
-export const oboConfig: IApi = {
-    clientId: appConfig.clientId,
-    scopes: [process.env.EF_SAK_SCOPE],
-};
-
 export const buildPath = env.buildPath;
 export const sakProxyUrl = env.sakProxyUrl;
 export const brevProxyUrl = env.brevProxyUrl;
