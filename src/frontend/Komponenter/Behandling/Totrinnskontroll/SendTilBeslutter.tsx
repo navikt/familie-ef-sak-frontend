@@ -51,7 +51,7 @@ const utledDefaultOppgavetyperSomSkalOpprettes = (
 
 const SendTilBeslutter: React.FC<{
     behandling: Behandling;
-    vilkår: IVilkår;
+    vilkår?: IVilkår;
     kanSendesTilBeslutter?: boolean;
     behandlingErRedigerbar: boolean;
     hentOppfølgingsoppgave?: { rerun: () => void };

@@ -40,13 +40,13 @@ export const harBarnMellomSeksOgTolvMåneder = (vilkår: IVilkår) => {
 };
 
 export const utledAutomatiskBrev = (
-    vilkår: IVilkår,
     behandling: Behandling,
-    lagretAutomatiskBrev: string[] | undefined
+    lagretAutomatiskBrev: string[] | undefined,
+    vilkår?: IVilkår
 ) => {
     lagretAutomatiskBrev;
 
-    const harBarnMellomSeksOgTolvMnder = harBarnMellomSeksOgTolvMåneder(vilkår);
+    const harBarnMellomSeksOgTolvMnder = vilkår && harBarnMellomSeksOgTolvMåneder(vilkår);
     const erOvergangsstønad = behandling.stønadstype === Stønadstype.OVERGANGSSTØNAD;
 
     const automatiskBrev: Set<AutomatiskBrevValg> = new Set();

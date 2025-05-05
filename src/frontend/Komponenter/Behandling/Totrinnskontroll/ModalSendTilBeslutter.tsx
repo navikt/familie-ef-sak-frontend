@@ -18,7 +18,7 @@ import { Oppfølgingsoppgave } from '../../../App/hooks/useHentOppfølgingsoppga
 
 export const ModalSendTilBeslutter: FC<{
     behandling: Behandling;
-    vilkår: IVilkår;
+    vilkår?: IVilkår;
     open: boolean;
     setOpen: (open: boolean) => void;
     sendTilBeslutter: (data: SendTilBeslutterRequest) => void;
@@ -59,7 +59,7 @@ export const ModalSendTilBeslutter: FC<{
         []
     );
     const [automatiskBrev, settAutomatiskBrev] = useState<AutomatiskBrevValg[]>(
-        utledAutomatiskBrev(vilkår, behandling, oppfølgingsoppgave?.automatiskBrev)
+        utledAutomatiskBrev(behandling, oppfølgingsoppgave?.automatiskBrev, vilkår)
     );
     const { ferdigstillUtenBeslutter, erAvslagSkalSendeTilBeslutter, erAvslag } = avslagValg;
 
@@ -95,7 +95,7 @@ export const ModalSendTilBeslutter: FC<{
     const skalViseFremleggsoppgaverForOpprettelseOgFerdigstilling =
         !erAvslag || !erAvslagSkalSendeTilBeslutter;
 
-    const harBarnMellomSeksOgTolvMnder = harBarnMellomSeksOgTolvMåneder(vilkår);
+    const harBarnMellomSeksOgTolvMnder = vilkår && harBarnMellomSeksOgTolvMåneder(vilkår);
     const erOvergangsstønad = behandling.stønadstype === Stønadstype.OVERGANGSSTØNAD;
 
     return (
