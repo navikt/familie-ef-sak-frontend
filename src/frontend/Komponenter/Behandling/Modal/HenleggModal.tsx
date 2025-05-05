@@ -19,6 +19,7 @@ import { ABorderSubtle } from '@navikt/ds-tokens/dist/tokens';
 import { VStack, Stack } from '@navikt/ds-react';
 import { IPersonopplysninger } from '../../../App/typer/personopplysninger';
 import { erEtterDagensDato } from '../../../App/utils/dato';
+import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 
 const AlertStripe = styled(Alert)`
     margin-top: 1rem;
@@ -195,9 +196,7 @@ export const HenleggModal: FC<{
                                     </Link>
                                 </>
                             )}
-                            {feilmelding && (
-                                <AlertStripe variant={'error'}>{feilmelding}</AlertStripe>
-                            )}
+                            {feilmelding && <AlertError>{feilmelding}</AlertError>}
                             {vergemål.length > 0 && henlagtårsakTrukketTilbake && (
                                 <AlertStripe size={'small'} variant={'warning'}>
                                     {

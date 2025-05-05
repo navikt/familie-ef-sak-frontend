@@ -1,7 +1,35 @@
 import React, { forwardRef, ReactNode, useEffect, useState } from 'react';
-import { Alert, AlertProps } from '@navikt/ds-react';
+import { Alert, AlertProps, CopyButton, HStack } from '@navikt/ds-react';
+import { BodyShortSmall } from './Tekster';
+import styled from 'styled-components';
+import { useToggles } from '../../App/context/TogglesContext';
+import { ToggleName } from '../../App/context/toggles';
+
+const AlertErrorStyled = styled(Alert)`
+    width: fit-content;
+`;
 
 export const AlertError = forwardRef<HTMLDivElement, Omit<AlertProps, 'variant'>>((props, ref) => {
+    const { toggles } = useToggles();
+    const skalBrukeErrorAlertMedKopierKnapp =
+        toggles[ToggleName.brukErrorAlertMedKopierKnapp] || false;
+    if (skalBrukeErrorAlertMedKopierKnapp) {
+        return (
+            <AlertErrorStyled variant={'error'} ref={ref}>
+                <HStack gap={'1'} align={'center'}>
+                    <BodyShortSmall>{props.children}</BodyShortSmall>
+                    {props.children && (
+                        <CopyButton
+                            size={'xsmall'}
+                            copyText={props.children.toString()}
+                            variant={'action'}
+                            activeText={'kopiert'}
+                        />
+                    )}
+                </HStack>
+            </AlertErrorStyled>
+        );
+    }
     return <Alert variant={'error'} {...props} ref={ref} />;
 });
 
