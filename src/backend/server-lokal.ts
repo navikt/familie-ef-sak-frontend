@@ -1,6 +1,5 @@
 import './konfigurerApp.js';
 
-import backend, { IApp } from '@navikt/familie-backend';
 import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';

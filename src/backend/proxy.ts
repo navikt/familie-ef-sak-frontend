@@ -2,9 +2,8 @@ import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { ClientRequest, IncomingMessage } from 'http';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import { v4 as uuidv4 } from 'uuid';
-import { oboConfig, sakProxyUrl } from './config';
-import { stdoutLogger } from '@navikt/familie-logging';
-import { requestOboToken, validateToken } from '@navikt/oasis';
+import { oboConfig } from './config';
+import { logError, logInfo, stdoutLogger } from '@navikt/familie-logging';
 
 const restream = (proxyReq: ClientRequest, req: IncomingMessage) => {
     const requestBody = (req as Request).body;
@@ -39,30 +38,28 @@ export const addRequestInfo = (): RequestHandler => {
     };
 };
 
-export const attachToken = (): RequestHandler => {
-    return async (req: Request, res: Response, next: NextFunction) => {
-        const token = req.session.passport.user.tokenSets['self'].access_token;
-
-        if (!token) {
-            return res.redirect('/oauth2/login');
-        }
-
-        const validation = await validateToken(token);
-
-        if (!validation.ok) {
-            return res.redirect('/oauth2/login');
-        }
-
-        // 'api://dev-gcp.teamfamilie.familie-ef-sak/.default'
-        console.log(`oboConfigScopes: ${oboConfig.scopes[0]}`);
-        console.log(`client: ${oboConfig.clientId}`);
-
-        const obo = await requestOboToken(token, sakProxyUrl);
-
-        if (!obo.ok) {
-            return res.redirect('/oauth2/login');
-        }
-        req.headers.Authorization = `Bearer ${obo.token}`;
-        return next();
+export const attachToken = (authClient: Client): RequestHandler => {
+    return async (req: Request, _res: Response, next: NextFunction) => {
+        getOnBehalfOfAccessToken(authClient, req, oboConfig)
+            .then((accessToken: string) => {
+                req.headers.Authorization = `Bearer ${accessToken}`;
+                return next();
+            })
+            .catch((e) => {
+                if (e.error === 'invalid_grant') {
+                    logInfo(`invalid_grant`);
+                    _res.status(500).json({
+                        status: 'IKKE_TILGANG',
+                        frontendFeilmelding:
+                            'Uventet feil. Det er mulig at du ikke har tilgang til applikasjonen.',
+                    });
+                } else {
+                    logError(`Uventet feil - getOnBehalfOfAccessToken  ${e}`);
+                    _res.status(500).json({
+                        status: 'FEILET',
+                        frontendFeilmelding: 'Uventet feil. Vennligst prøv på nytt.',
+                    });
+                }
+            });
     };
 };

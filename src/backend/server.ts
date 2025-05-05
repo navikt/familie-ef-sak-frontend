@@ -1,6 +1,5 @@
 import './konfigurerApp.js';
 
-import backend, { IApp } from '@navikt/familie-backend';
 import path from 'path';
 
 import { buildPath, sessionConfig } from './config.js';

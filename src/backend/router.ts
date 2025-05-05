@@ -1,4 +1,3 @@
-import { Client, ensureAuthenticated, logRequest } from '@navikt/familie-backend';
 import { NextFunction, Request, Response, Router } from 'express';
 import path from 'path';
 import {
@@ -11,7 +10,6 @@ import {
     urlModia,
 } from './config';
 import { prometheusTellere } from './metrikker';
-import { LOG_LEVEL } from '@navikt/familie-logging';
 
 export const redirectHvisInternUrlIPreprod = () => {
     return async (req: Request, res: Response, next: NextFunction) => {
@@ -26,7 +24,7 @@ export const redirectHvisInternUrlIPreprod = () => {
     };
 };
 
-export default (authClient: Client, router: Router): Router => {
+export default (router: Router): Router => {
     router.get('/version', (_req: Request, res: Response) => {
         res.status(200).send({ version: process.env.APP_VERSION }).end();
     });
@@ -48,21 +46,17 @@ export default (authClient: Client, router: Router): Router => {
         res.sendFile('error.html', { root: path.join(`assets/`) });
     });
 
-    router.post('/logg-feil', (req: Request, res: Response) => {
-        logRequest(req, req.body.melding, req.body.isWarning ? LOG_LEVEL.WARNING : LOG_LEVEL.ERROR);
+    router.post('/logg-feil', (_req: Request, res: Response) => {
+        // TODO: Denne burde være med.
+        // logRequest(req, req.body.melding, req.body.isWarning ? LOG_LEVEL.WARNING : LOG_LEVEL.ERROR);
         res.status(200).send();
     });
 
-    router.get(
-        '*global',
-        redirectHvisInternUrlIPreprod(),
-        ensureAuthenticated(authClient, false),
-        (_req: Request, res: Response) => {
-            prometheusTellere.appLoad.inc();
+    router.get('*global', redirectHvisInternUrlIPreprod(), (_req: Request, res: Response) => {
+        prometheusTellere.appLoad.inc();
 
-            res.sendFile('index.html', { root: path.join(process.cwd(), buildPath) });
-        }
-    );
+        res.sendFile('index.html', { root: path.join(process.cwd(), buildPath) });
+    });
 
     return router;
 };
