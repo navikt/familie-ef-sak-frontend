@@ -13,6 +13,7 @@ export interface Oppfølgingsoppgave {
     behandlingid: string;
     oppgaverForOpprettelse: OppgaverForOpprettelse;
     oppgaveIderForFerdigstilling: number[];
+    automatiskBrev: string[];
 }
 
 export const useHentOppfølgingsoppgave = (behandlingId: string) => {

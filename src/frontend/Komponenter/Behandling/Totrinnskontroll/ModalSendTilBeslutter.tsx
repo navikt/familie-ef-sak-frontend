@@ -14,6 +14,7 @@ import { Behandling } from '../../../App/typer/fagsak';
 import { IVilkår } from '../Inngangsvilkår/vilkår';
 import { harBarnMellomSeksOgTolvMåneder, utledAutomatiskBrev } from './utils';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
+import { Oppfølgingsoppgave } from '../../../App/hooks/useHentOppfølgingsoppgave';
 
 export const ModalSendTilBeslutter: FC<{
     behandling: Behandling;
@@ -34,6 +35,7 @@ export const ModalSendTilBeslutter: FC<{
         erAvslagSkalSendeTilBeslutter: boolean;
         erAvslag: boolean;
     };
+    oppfølgingsoppgave: Oppfølgingsoppgave | undefined;
 }> = ({
     behandling,
     vilkår,
@@ -47,6 +49,7 @@ export const ModalSendTilBeslutter: FC<{
     oppgaverSomSkalAutomatiskFerdigstilles,
     settOppgaverSomSkalAutomatiskFerdigstilles,
     avslagValg,
+    oppfølgingsoppgave,
 }) => {
     const [
         årForInntektskontrollSelvstendigNæringsdrivende,
@@ -56,7 +59,7 @@ export const ModalSendTilBeslutter: FC<{
         []
     );
     const [automatiskBrev, settAutomatiskBrev] = useState<AutomatiskBrevValg[]>(
-        utledAutomatiskBrev(vilkår, behandling)
+        utledAutomatiskBrev(vilkår, behandling, oppfølgingsoppgave?.automatiskBrev)
     );
     const { ferdigstillUtenBeslutter, erAvslagSkalSendeTilBeslutter, erAvslag } = avslagValg;
 

@@ -39,15 +39,29 @@ export const harBarnMellomSeksOgTolvMåneder = (vilkår: IVilkår) => {
     });
 };
 
-export const utledAutomatiskBrev = (vilkår: IVilkår, behandling: Behandling) => {
+export const utledAutomatiskBrev = (
+    vilkår: IVilkår,
+    behandling: Behandling,
+    lagretAutomatiskBrev: string[] | undefined
+) => {
+    lagretAutomatiskBrev;
+
     const harBarnMellomSeksOgTolvMnder = harBarnMellomSeksOgTolvMåneder(vilkår);
     const erOvergangsstønad = behandling.stønadstype === Stønadstype.OVERGANGSSTØNAD;
 
-    const automatiskBrev: AutomatiskBrevValg[] = [];
+    const automatiskBrev: Set<AutomatiskBrevValg> = new Set();
 
-    if (harBarnMellomSeksOgTolvMnder && erOvergangsstønad) {
-        automatiskBrev.push('Varsel om aktivitetsplikt');
+    if (lagretAutomatiskBrev && lagretAutomatiskBrev.length > 0) {
+        lagretAutomatiskBrev.forEach((brev) => {
+            automatiskBrev.add(brev as AutomatiskBrevValg);
+        });
     }
 
-    return automatiskBrev;
+    if (harBarnMellomSeksOgTolvMnder && erOvergangsstønad) {
+        automatiskBrev.add('Varsel om aktivitetsplikt');
+    } else {
+        automatiskBrev.delete('Varsel om aktivitetsplikt');
+    }
+
+    return Array.from(automatiskBrev);
 };

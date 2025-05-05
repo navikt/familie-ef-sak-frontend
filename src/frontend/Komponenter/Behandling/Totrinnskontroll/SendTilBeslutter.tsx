@@ -234,6 +234,7 @@ const SendTilBeslutter: React.FC<{
                         settOppgaverSomSkalAutomatiskFerdigstilles
                     }
                     avslagValg={avslagValg}
+                    oppfølgingsoppgave={oppfølgingsoppgave}
                 />
             )}
         </>
