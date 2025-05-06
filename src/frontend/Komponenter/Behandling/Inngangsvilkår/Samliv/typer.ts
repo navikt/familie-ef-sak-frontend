@@ -33,12 +33,14 @@ export enum ESagtOppEllerRedusert {
     sagtOpp = 'sagtOpp',
     redusertStilling = 'redusertStilling',
     nei = 'nei',
+    ikkeRelevant = 'ikkeRelevant',
 }
 
 export const SagtOppEllerRedusertTilTekst: Record<ESagtOppEllerRedusert, string> = {
     sagtOpp: 'Ja, har sagt opp jobben eller tatt frivillig permisjon (ikke foreldrepermisjon)',
     redusertStilling: 'Ja, har redusert arbeidstiden',
     nei: 'Nei',
+    ikkeRelevant: 'Ikke relevant',
 };
 
 export interface ISivilstandsplaner {

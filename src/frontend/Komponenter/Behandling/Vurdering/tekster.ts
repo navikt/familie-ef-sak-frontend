@@ -60,6 +60,7 @@ export const svarTypeTilTekst: Record<string, string> = {
     JA: 'Ja',
     NEI: 'Nei',
     IKKE_OPPFYLT: 'Nei',
+    IKKE_RELEVANT: 'Ikke relevant',
     ARBEID_NORSK_ARBEIDSGIVER: 'Arbeid for norsk arbeidsgiver',
     UTENLANDSOPPHOLD_MINDRE_ENN_6_UKER: 'Utenlandsopphold på mindre enn 6 uker',
     OPPHOLDER_SEG_I_ANNET_EØS_LAND: 'Oppholder seg i annet EØS-land',
