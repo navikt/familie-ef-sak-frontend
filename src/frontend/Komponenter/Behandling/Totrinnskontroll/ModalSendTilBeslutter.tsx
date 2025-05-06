@@ -35,7 +35,7 @@ export const ModalSendTilBeslutter: FC<{
         erAvslagSkalSendeTilBeslutter: boolean;
         erAvslag: boolean;
     };
-    oppfølgingsoppgave: Oppfølgingsoppgave | undefined;
+    oppfølgingsoppgave?: Oppfølgingsoppgave;
 }> = ({
     behandling,
     vilkår,
@@ -161,7 +161,6 @@ export const ModalSendTilBeslutter: FC<{
                                 {harBarnMellomSeksOgTolvMnder && erOvergangsstønad && (
                                     <>
                                         <Divider />
-                                        {JSON.stringify(automatiskBrev)}
                                         <AutomatiskBrev
                                             automatiskBrev={automatiskBrev}
                                             settAutomatiskBrev={settAutomatiskBrev}
