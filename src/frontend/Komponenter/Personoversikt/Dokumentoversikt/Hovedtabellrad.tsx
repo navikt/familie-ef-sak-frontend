@@ -23,9 +23,16 @@ export const IkkeTilgang = styled.div`
 interface Props {
     dokument: Dokumentinfo;
     settValgtDokumentId: Dispatch<SetStateAction<string>>;
+    dokumentHarBlittBesøkt: boolean;
+    oppdaterBesøkteDokumentLenker: () => void;
 }
 
-export const HovedTabellrad: React.FC<Props> = ({ dokument, settValgtDokumentId }) => {
+export const HovedTabellrad: React.FC<Props> = ({
+    dokument,
+    settValgtDokumentId,
+    dokumentHarBlittBesøkt,
+    oppdaterBesøkteDokumentLenker,
+}) => {
     return (
         <Table.Row>
             <Table.DataCell>{formaterNullableIsoDatoTid(dokument.dato)}</Table.DataCell>
@@ -41,6 +48,8 @@ export const HovedTabellrad: React.FC<Props> = ({ dokument, settValgtDokumentId 
                         dokument={dokument}
                         settValgtDokumentId={settValgtDokumentId}
                         erHovedDokument={true}
+                        dokumentHarBlittBesøkt={dokumentHarBlittBesøkt}
+                        oppdaterBesøkteDokumentLenker={oppdaterBesøkteDokumentLenker}
                     />
                 ) : (
                     <>

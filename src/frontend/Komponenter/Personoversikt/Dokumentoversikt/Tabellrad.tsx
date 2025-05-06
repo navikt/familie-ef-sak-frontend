@@ -9,9 +9,16 @@ import { Dokumenttittel } from './Dokumenttittel';
 interface Props {
     dokument: Dokumentinfo;
     settValgtDokumentId: Dispatch<SetStateAction<string>>;
+    dokumentHarBlittBesøkt: boolean;
+    oppdaterBesøkteDokumentLenker: () => void;
 }
 
-export const Tabellrad: React.FC<Props> = ({ dokument, settValgtDokumentId }) => {
+export const Tabellrad: React.FC<Props> = ({
+    dokument,
+    settValgtDokumentId,
+    dokumentHarBlittBesøkt,
+    oppdaterBesøkteDokumentLenker,
+}) => {
     return (
         <Table.Row>
             <Table.DataCell></Table.DataCell>
@@ -24,6 +31,8 @@ export const Tabellrad: React.FC<Props> = ({ dokument, settValgtDokumentId }) =>
                         dokument={dokument}
                         settValgtDokumentId={settValgtDokumentId}
                         erHovedDokument={false}
+                        dokumentHarBlittBesøkt={dokumentHarBlittBesøkt}
+                        oppdaterBesøkteDokumentLenker={oppdaterBesøkteDokumentLenker}
                     />
                 ) : (
                     <IkkeTilgang>

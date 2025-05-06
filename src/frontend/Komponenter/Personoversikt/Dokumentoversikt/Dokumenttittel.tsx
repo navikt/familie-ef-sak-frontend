@@ -10,10 +10,8 @@ const Div = styled.div<{ $erHovedDokument: boolean }>`
     margin-left: ${(props) => (props.$erHovedDokument ? '0rem' : '2rem')};
 `;
 
-const Tittel = styled.a`
-    &:visited {
-        color: purple;
-    }
+const Tittel = styled.a<{ $harBlittBesøkt: boolean }>`
+    color: ${(props) => (props.$harBlittBesøkt ? 'purple' : '#0067c5')};
 `;
 
 const IkonKnapp = styled(Button)`
@@ -26,13 +24,18 @@ interface Props {
     dokument: Dokumentinfo;
     settValgtDokumentId: Dispatch<SetStateAction<string>>;
     erHovedDokument: boolean;
+    dokumentHarBlittBesøkt: boolean;
+    oppdaterBesøkteDokumentLenker: () => void;
 }
 
 export const Dokumenttittel: React.FC<Props> = ({
     dokument,
     settValgtDokumentId,
     erHovedDokument,
+    dokumentHarBlittBesøkt,
+    oppdaterBesøkteDokumentLenker,
 }) => {
+    console.log('harBlittBesøkt', dokumentHarBlittBesøkt, dokument.dokumentinfoId);
     return (
         <HStack gap="2">
             <IkonKnapp
@@ -42,9 +45,11 @@ export const Dokumenttittel: React.FC<Props> = ({
             />
             <Div $erHovedDokument={erHovedDokument}>
                 <Tittel
+                    $harBlittBesøkt={dokumentHarBlittBesøkt}
                     href={`/dokument/journalpost/${dokument.journalpostId}/dokument-pdf/${dokument.dokumentinfoId}/${tittelMedUrlGodkjenteTegn(dokument.tittel)}`}
                     target={'_blank'}
                     rel={'noreferrer'}
+                    onClick={oppdaterBesøkteDokumentLenker}
                 >
                     {dokument.tittel}
                 </Tittel>

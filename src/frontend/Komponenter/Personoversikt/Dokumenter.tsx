@@ -18,6 +18,11 @@ import { Tabellrad } from './Dokumentoversikt/Tabellrad';
 import { KolonneTitler } from '../../Felles/Personopplysninger/TabellWrapper';
 import { EndreDokumenttittelModal } from './Dokumentoversikt/EndreDokumenttittelModal';
 import { useHentDokumenter } from '../../App/hooks/useHentDokumenter';
+import {
+    dokumentOversiktRequestKey,
+    hentFraLocalStorage,
+    lagreTilLocalStorage,
+} from '../../App/utils/localStorage';
 
 const FiltreringGrid = styled.div`
     display: grid;
@@ -69,10 +74,39 @@ export const Dokumenter: React.FC<{ fagsakPersonId: string }> = ({ fagsakPersonI
     });
     const { dokumenter, hentDokumenterCallback } = useHentDokumenter();
     const [valgtDokumentId, settValgtDokumentId] = useState<string>('');
+    const [besøkteDokumentLenker, settBesøkteDokumentLenker] = useState<string[]>(
+        hentFraLocalStorage<{ besøkteDokumentLenker: string[] }>(
+            dokumentOversiktRequestKey(fagsakPersonId),
+            { besøkteDokumentLenker: [] }
+        ).besøkteDokumentLenker
+    );
+
+    console.log('besøkte lenker', besøkteDokumentLenker);
 
     useEffect(() => {
         hentDokumenterCallback(vedleggRequest);
     }, [hentDokumenterCallback, vedleggRequest]);
+
+    const oppdaterBesøkteDokumentLenker = (journalpostId: string) => {
+        if (besøkteDokumentLenker.includes(journalpostId)) {
+            return;
+        }
+
+        console.log('lagrer til local storage', journalpostId);
+
+        lagreTilLocalStorage<{ besøkteDokumentLenker: string[] }>(
+            dokumentOversiktRequestKey(fagsakPersonId),
+            {
+                besøkteDokumentLenker: [...besøkteDokumentLenker, journalpostId],
+            }
+        );
+        settBesøkteDokumentLenker(
+            hentFraLocalStorage<{ besøkteDokumentLenker: string[] }>(
+                dokumentOversiktRequestKey(fagsakPersonId),
+                { besøkteDokumentLenker: [] }
+            ).besøkteDokumentLenker
+        );
+    };
 
     const settVedlegg = (key: keyof VedleggRequest) => {
         return (val?: string | number) =>
@@ -213,23 +247,44 @@ export const Dokumenter: React.FC<{ fagsakPersonId: string }> = ({ fagsakPersonI
                                         .map((journalpostId: string) => {
                                             return grupperteDokumenter[journalpostId].map(
                                                 (dokument: Dokumentinfo, indeks: number) => {
+                                                    const dokumentHarBlittBesøkt =
+                                                        besøkteDokumentLenker.includes(
+                                                            dokument.dokumentinfoId
+                                                        );
+
                                                     if (indeks === 0) {
                                                         return (
                                                             <HovedTabellrad
-                                                                key={`${journalpostId}-${indeks}`}
+                                                                key={`${journalpostId}-${dokument.dokumentinfoId}`}
                                                                 dokument={dokument}
                                                                 settValgtDokumentId={
                                                                     settValgtDokumentId
+                                                                }
+                                                                dokumentHarBlittBesøkt={
+                                                                    dokumentHarBlittBesøkt
+                                                                }
+                                                                oppdaterBesøkteDokumentLenker={() =>
+                                                                    oppdaterBesøkteDokumentLenker(
+                                                                        dokument.dokumentinfoId
+                                                                    )
                                                                 }
                                                             />
                                                         );
                                                     } else
                                                         return (
                                                             <Tabellrad
-                                                                key={`${journalpostId}-${indeks}`}
+                                                                key={`${journalpostId}-${dokument.dokumentinfoId}`}
                                                                 dokument={dokument}
                                                                 settValgtDokumentId={
                                                                     settValgtDokumentId
+                                                                }
+                                                                dokumentHarBlittBesøkt={
+                                                                    dokumentHarBlittBesøkt
+                                                                }
+                                                                oppdaterBesøkteDokumentLenker={() =>
+                                                                    oppdaterBesøkteDokumentLenker(
+                                                                        dokument.dokumentinfoId
+                                                                    )
                                                                 }
                                                             />
                                                         );
