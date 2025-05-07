@@ -48,7 +48,7 @@ const KlageInfo: React.FunctionComponent<{ fagsakPersonId: string }> = ({ fagsak
                     <>
                         {åpneKlagerNavKlageinstans.length > 0 && (
                             <AdvarselVisning variant={'warning'} size={'small'}>
-                                Merk at en klage er til behandling hos NAV Klageinstans på
+                                Merk at en klage er til behandling hos Nav Klageinstans på
                                 stønadstype: {åpneKlagerNavKlageinstansTekst}
                             </AdvarselVisning>
                         )}

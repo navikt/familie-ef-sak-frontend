@@ -7,7 +7,7 @@
       "journalstatus": "MOTTATT",
       "tema": "ENF",
       "behandlingstema": "ab0071",
-      "tittel": "NAV 33-00.15 Norsk sokkel - Årlig differanseutbetaling av barnetrygd",
+      "tittel": "Nav 33-00.15 Norsk sokkel - Årlig differanseutbetaling av barnetrygd",
       "sak": null,
       "bruker": {
         "id": "12345678911",
@@ -18,8 +18,8 @@
       "dokumenter": [
         {
           "dokumentInfoId": "454011935",
-          "tittel": "NAV 33-00.15 Norsk sokkel - Årlig differanseutbetaling av barnetrygd",
-          "brevkode": "NAV 33-00.15",
+          "tittel": "Nav 33-00.15 Norsk sokkel - Årlig differanseutbetaling av barnetrygd",
+          "brevkode": "Nav 33-00.15",
           "dokumentstatus": null,
           "dokumentvarianter": [
             {
@@ -30,8 +30,8 @@
         },
         {
           "dokumentInfoId": "454011936",
-          "tittel": "NAV 33-00.15 Test dokument",
-          "brevkode": "NAV 33-00.15",
+          "tittel": "Nav 33-00.15 Test dokument",
+          "brevkode": "Nav 33-00.15",
           "dokumentstatus": null,
           "dokumentvarianter": [
             {
@@ -42,8 +42,8 @@
         },
         {
           "dokumentInfoId": "454011937",
-          "tittel": "NAV 33-00.15 Test dokument 2",
-          "brevkode": "NAV 33-00.15",
+          "tittel": "Nav 33-00.15 Test dokument 2",
+          "brevkode": "Nav 33-00.15",
           "dokumentstatus": null,
           "dokumentvarianter": [
             {

@@ -12,7 +12,7 @@ import {
     hentFraLocalStorage,
     lagreTilLocalStorage,
     oppgaveRequestKey,
-} from './oppgavefilterStorage';
+} from '../../App/utils/localStorage';
 import MappeVelger from './MappeVelger';
 import { IMappe } from './typer/mappe';
 import { harEgenAnsattRolle, harStrengtFortroligRolle } from '../../App/utils/roller';

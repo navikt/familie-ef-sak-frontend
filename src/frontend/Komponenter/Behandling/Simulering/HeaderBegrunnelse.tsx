@@ -35,7 +35,7 @@ export const HeaderBegrunnelse: React.FC = () => (
             </li>
             <li>
                 <ListeTekst textColor="subtle">
-                    Hvem som oppdaget feilutbetalingen (bruker eller NAV)
+                    Hvem som oppdaget feilutbetalingen (bruker eller Nav)
                 </ListeTekst>
             </li>
             <li>

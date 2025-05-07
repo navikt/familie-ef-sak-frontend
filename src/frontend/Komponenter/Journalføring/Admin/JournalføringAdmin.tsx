@@ -13,7 +13,7 @@ import {
     hentFraLocalStorage,
     lagreTilLocalStorage,
     oppgaveRequestKey,
-} from '../../Oppgavebenk/oppgavefilterStorage';
+} from '../../../App/utils/localStorage';
 import { IJournalpostResponse, journalstatusTilTekst } from '../../../App/typer/journalføring';
 import { formaterIsoDatoTid } from '../../../App/utils/formatter';
 import { UtledEllerVelgFagsak } from '../Felles/UtledEllerVelgFagsak';

@@ -301,8 +301,8 @@ const Behandlingsresultat: React.FC<{
                 </Tooltip>
             )}
             {erKlageFeilregistrertAvKA(behandling) && (
-                <Tooltip content="Klagen er feilregistrert av NAV klageinstans. Gå inn på klagebehandlingens resultatside for å se detaljer">
-                    <AdvarselIkon title={'Behandling feilregistrert av NAV klageinstans'} />
+                <Tooltip content="Klagen er feilregistrert av Nav klageinstans. Gå inn på klagebehandlingens resultatside for å se detaljer">
+                    <AdvarselIkon title={'Behandling feilregistrert av Nav klageinstans'} />
                 </Tooltip>
             )}
         </>
