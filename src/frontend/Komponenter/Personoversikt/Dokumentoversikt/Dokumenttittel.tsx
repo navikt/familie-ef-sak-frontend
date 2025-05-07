@@ -5,14 +5,18 @@ import { NotePencilIcon } from '@navikt/aksel-icons';
 import { LogiskeVedlegg } from './LogiskeVedlegg';
 import styled from 'styled-components';
 import { Dokumentinfo } from '../../../App/typer/dokumentliste';
+import { ABlue500, ATextVisited } from '@navikt/ds-tokens/dist/tokens';
 
 const Div = styled.div<{ $erHovedDokument: boolean }>`
     margin-left: ${(props) => (props.$erHovedDokument ? '0rem' : '2rem')};
 `;
 
-// Standard farger for ikke besøkte og besøkte lenker
+const standardFargeIkkeBesøktLenke = ABlue500;
+const standardFargeBesøktLenke = ATextVisited;
+
 const Tittel = styled.a<{ $harBlittBesøkt: boolean }>`
-    color: ${(props) => (props.$harBlittBesøkt ? '#800080' : '#0067c5')};
+    color: ${(props) =>
+        props.$harBlittBesøkt ? standardFargeBesøktLenke : standardFargeIkkeBesøktLenke};
 `;
 
 const IkonKnapp = styled(Button)`

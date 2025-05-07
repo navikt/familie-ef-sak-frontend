@@ -33,14 +33,14 @@ export const lagreBesøkteLenkerTilLocalStorage = (
 
 export const slettForeldedeInnslagFraLocalStorage = () => {
     const nåværendeTidspunkt = Date.now();
-    const utløpstidspunkt = 14 * 24 * 60 * 60 * 1000; // 14 dager
+    const utløpstidspunktFjortenDager = 14 * 24 * 60 * 60 * 1000;
 
     for (const key of Object.keys(localStorage)) {
         if (key.startsWith(dokumentOversiktKeyPrefix)) {
             const besøkteDokumenter = hentFraLocalStorage<BesøkteDokumenter>(key, fallbackVerdi);
             const endretTidspunkt = new Date(besøkteDokumenter.endretTidspunkt).getTime();
 
-            if (nåværendeTidspunkt - endretTidspunkt > utløpstidspunkt) {
+            if (nåværendeTidspunkt - endretTidspunkt > utløpstidspunktFjortenDager) {
                 slettElementFraLocalStorage(key);
             }
         }
