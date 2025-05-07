@@ -1,17 +1,30 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { Dokumentinfo } from '../../../App/typer/dokumentliste';
 import { skalViseLenke } from '../utils';
-import { IkkeTilgang } from './Hovedtabellrad';
 import { PadlockLockedIcon } from '@navikt/aksel-icons';
 import { Table } from '@navikt/ds-react';
 import { Dokumenttittel } from './Dokumenttittel';
+import styled from 'styled-components';
 
 interface Props {
     dokument: Dokumentinfo;
     settValgtDokumentId: Dispatch<SetStateAction<string>>;
+    dokumentHarBlittBesøkt: boolean;
+    oppdaterBesøkteDokumentLenker: () => void;
 }
 
-export const Tabellrad: React.FC<Props> = ({ dokument, settValgtDokumentId }) => {
+const IkkeTilgang = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+`;
+
+export const Tabellrad: React.FC<Props> = ({
+    dokument,
+    settValgtDokumentId,
+    dokumentHarBlittBesøkt,
+    oppdaterBesøkteDokumentLenker,
+}) => {
     return (
         <Table.Row>
             <Table.DataCell></Table.DataCell>
@@ -24,6 +37,8 @@ export const Tabellrad: React.FC<Props> = ({ dokument, settValgtDokumentId }) =>
                         dokument={dokument}
                         settValgtDokumentId={settValgtDokumentId}
                         erHovedDokument={false}
+                        dokumentHarBlittBesøkt={dokumentHarBlittBesøkt}
+                        oppdaterBesøkteDokumentLenker={oppdaterBesøkteDokumentLenker}
                     />
                 ) : (
                     <IkkeTilgang>
