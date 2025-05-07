@@ -16,6 +16,7 @@ import { OppgaverForFerdigstilling } from '../Totrinnskontroll/OppgaverForFerdig
 import { useHentOppfølgingsoppgave } from '../../../App/hooks/useHentOppfølgingsoppgave';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 import styled from 'styled-components';
+import { AutomatiskBrevSomSendes } from './AutomatiskBrevSomSendes';
 
 const StyledVStack = styled(VStack)`
     position: sticky;
@@ -126,6 +127,10 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
                                             }
                                         />
                                         <OppgaverForFerdigstilling behandlingId={behandling.id} />
+
+                                        <AutomatiskBrevSomSendes
+                                            automatiskBrev={oppfølgingsoppgave?.automatiskBrev}
+                                        />
                                     </>
                                 )}
                                 {!behandlingErRedigerbar && (
