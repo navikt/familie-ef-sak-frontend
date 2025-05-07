@@ -16,7 +16,7 @@ const enhetTilTekstEgenAnsatte: Record<IkkeFortroligEnhet.EGNE_ANSATTE, string> 
 };
 
 const enhetTilTekstFortrolig: Record<FortroligEnhet, string> = {
-    '2103': '2103 NAV Vikafossen',
+    '2103': '2103 Nav Vikafossen',
 };
 
 export const enhetTilTekstPåString: Record<string, string> = {
