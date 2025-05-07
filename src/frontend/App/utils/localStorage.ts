@@ -23,3 +23,11 @@ export const hentFraLocalStorage = <T>(key: string, fallbackVerdi: T): T => {
         return fallbackVerdi;
     }
 };
+
+export const slettElementFraLocalStorage = (key: string) => {
+    try {
+        localStorage.removeItem(key);
+    } catch {
+        // Ingen skade skjedd
+    }
+};

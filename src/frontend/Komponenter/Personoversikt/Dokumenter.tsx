@@ -21,6 +21,7 @@ import { useHentDokumenter } from '../../App/hooks/useHentDokumenter';
 import {
     hentBesøkteLenkerFraLocalStorage,
     lagreBesøkteLenkerTilLocalStorage,
+    slettForeldedeInnslagFraLocalStorage,
 } from './Dokumentoversikt/utils';
 
 const FiltreringGrid = styled.div`
@@ -78,6 +79,7 @@ export const Dokumenter: React.FC<{ fagsakPersonId: string }> = ({ fagsakPersonI
     );
 
     useEffect(() => {
+        slettForeldedeInnslagFraLocalStorage();
         hentDokumenterCallback(vedleggRequest);
     }, [hentDokumenterCallback, vedleggRequest]);
 
