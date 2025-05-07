@@ -84,7 +84,7 @@ Appen bygges på github actions, og gir beskjed til nais deploy om å deployere 
 
 Spørsmål knyttet til koden eller prosjektet kan stilles som issues her på GitHub
 
-## For NAV-ansatte
+## For Nav-ansatte
 
 Interne henvendelser kan sendes via Slack i kanalen #team-familie.
 
