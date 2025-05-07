@@ -10,8 +10,9 @@ const Div = styled.div<{ $erHovedDokument: boolean }>`
     margin-left: ${(props) => (props.$erHovedDokument ? '0rem' : '2rem')};
 `;
 
+// Standard farger for ikke besøkte og besøkte lenker
 const Tittel = styled.a<{ $harBlittBesøkt: boolean }>`
-    color: ${(props) => (props.$harBlittBesøkt ? 'purple' : '#0067c5')};
+    color: ${(props) => (props.$harBlittBesøkt ? '#800080' : '#0067c5')};
 `;
 
 const IkonKnapp = styled(Button)`
