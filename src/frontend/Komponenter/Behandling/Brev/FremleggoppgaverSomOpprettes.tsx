@@ -22,7 +22,7 @@ export const FremleggoppgaverSomOpprettes: FC<{
     return (
         <Container>
             <CheckboxGroup
-                legend="Følgende fremleggsoppgaver opprettes ved godkjenning av dette vedtaket:"
+                legend="Følgende oppgave skal opprettes automatisk når vedtaket er godkjent:"
                 value={oppgavetyperSomSkalOpprettes}
                 readOnly
             >

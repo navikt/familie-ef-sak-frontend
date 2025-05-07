@@ -14,7 +14,7 @@ export const AutomatiskBrevSomSendes: FC<{
     return (
         <Container>
             <CheckboxGroup
-                legend="Følgende brev sendes automatisk ved godkjenning av dette vedtaket:"
+                legend="Send brev automatisk når vedtaket er godkjent:"
                 value={automatiskBrev}
                 readOnly
             >
