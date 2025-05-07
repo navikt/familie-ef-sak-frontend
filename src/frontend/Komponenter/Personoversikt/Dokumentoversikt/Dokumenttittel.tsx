@@ -34,27 +34,24 @@ export const Dokumenttittel: React.FC<Props> = ({
     erHovedDokument,
     dokumentHarBlittBesøkt,
     oppdaterBesøkteDokumentLenker,
-}) => {
-    console.log('harBlittBesøkt', dokumentHarBlittBesøkt, dokument.dokumentinfoId);
-    return (
-        <HStack gap="2">
-            <IkonKnapp
-                icon={<NotePencilIcon title="Rediger" />}
-                variant="tertiary"
-                onClick={() => settValgtDokumentId(dokument.dokumentinfoId)}
-            />
-            <Div $erHovedDokument={erHovedDokument}>
-                <Tittel
-                    $harBlittBesøkt={dokumentHarBlittBesøkt}
-                    href={`/dokument/journalpost/${dokument.journalpostId}/dokument-pdf/${dokument.dokumentinfoId}/${tittelMedUrlGodkjenteTegn(dokument.tittel)}`}
-                    target={'_blank'}
-                    rel={'noreferrer'}
-                    onClick={oppdaterBesøkteDokumentLenker}
-                >
-                    {dokument.tittel}
-                </Tittel>
-                <LogiskeVedlegg logiskeVedlegg={dokument.logiskeVedlegg} />
-            </Div>
-        </HStack>
-    );
-};
+}) => (
+    <HStack gap="2">
+        <IkonKnapp
+            icon={<NotePencilIcon title="Rediger" />}
+            variant="tertiary"
+            onClick={() => settValgtDokumentId(dokument.dokumentinfoId)}
+        />
+        <Div $erHovedDokument={erHovedDokument}>
+            <Tittel
+                $harBlittBesøkt={dokumentHarBlittBesøkt}
+                href={`/dokument/journalpost/${dokument.journalpostId}/dokument-pdf/${dokument.dokumentinfoId}/${tittelMedUrlGodkjenteTegn(dokument.tittel)}`}
+                target={'_blank'}
+                rel={'noreferrer'}
+                onClick={oppdaterBesøkteDokumentLenker}
+            >
+                {dokument.tittel}
+            </Tittel>
+            <LogiskeVedlegg logiskeVedlegg={dokument.logiskeVedlegg} />
+        </Div>
+    </HStack>
+);

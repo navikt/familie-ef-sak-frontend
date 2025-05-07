@@ -19,10 +19,9 @@ import { KolonneTitler } from '../../Felles/Personopplysninger/TabellWrapper';
 import { EndreDokumenttittelModal } from './Dokumentoversikt/EndreDokumenttittelModal';
 import { useHentDokumenter } from '../../App/hooks/useHentDokumenter';
 import {
-    dokumentOversiktRequestKey,
-    hentFraLocalStorage,
-    lagreTilLocalStorage,
-} from '../../App/utils/localStorage';
+    hentBesøkteLenkerFraLocalStorage,
+    lagreBesøkteLenkerTilLocalStorage,
+} from './Dokumentoversikt/utils';
 
 const FiltreringGrid = styled.div`
     display: grid;
@@ -74,14 +73,9 @@ export const Dokumenter: React.FC<{ fagsakPersonId: string }> = ({ fagsakPersonI
     });
     const { dokumenter, hentDokumenterCallback } = useHentDokumenter();
     const [valgtDokumentId, settValgtDokumentId] = useState<string>('');
-    const [besøkteDokumentLenker, settBesøkteDokumentLenker] = useState<string[]>(
-        hentFraLocalStorage<{ besøkteDokumentLenker: string[] }>(
-            dokumentOversiktRequestKey(fagsakPersonId),
-            { besøkteDokumentLenker: [] }
-        ).besøkteDokumentLenker
+    const [besøkteDokumentLenker, settbesøkteDokumentLenker] = useState<string[]>(
+        hentBesøkteLenkerFraLocalStorage(fagsakPersonId)
     );
-
-    console.log('besøkte lenker', besøkteDokumentLenker);
 
     useEffect(() => {
         hentDokumenterCallback(vedleggRequest);
@@ -92,20 +86,11 @@ export const Dokumenter: React.FC<{ fagsakPersonId: string }> = ({ fagsakPersonI
             return;
         }
 
-        console.log('lagrer til local storage', journalpostId);
-
-        lagreTilLocalStorage<{ besøkteDokumentLenker: string[] }>(
-            dokumentOversiktRequestKey(fagsakPersonId),
-            {
-                besøkteDokumentLenker: [...besøkteDokumentLenker, journalpostId],
-            }
-        );
-        settBesøkteDokumentLenker(
-            hentFraLocalStorage<{ besøkteDokumentLenker: string[] }>(
-                dokumentOversiktRequestKey(fagsakPersonId),
-                { besøkteDokumentLenker: [] }
-            ).besøkteDokumentLenker
-        );
+        lagreBesøkteLenkerTilLocalStorage(fagsakPersonId, [
+            ...besøkteDokumentLenker,
+            journalpostId,
+        ]);
+        settbesøkteDokumentLenker(hentBesøkteLenkerFraLocalStorage(fagsakPersonId));
     };
 
     const settVedlegg = (key: keyof VedleggRequest) => {

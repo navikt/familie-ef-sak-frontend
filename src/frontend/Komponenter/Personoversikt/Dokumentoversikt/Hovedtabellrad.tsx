@@ -7,18 +7,11 @@ import {
     avsenderMottakerIdTypeTilTekst,
     journalstatusTilTekst,
 } from '../../../App/typer/journalføring';
-import styled from 'styled-components';
 import { skalViseLenke } from '../utils';
 import { PadlockLockedIcon } from '@navikt/aksel-icons';
 import { Table } from '@navikt/ds-react';
 import { JournalpostTag } from '../../Behandling/Høyremeny/Dokumentliste';
 import { Dokumenttittel } from './Dokumenttittel';
-
-export const IkkeTilgang = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-`;
 
 interface Props {
     dokument: Dokumentinfo;
