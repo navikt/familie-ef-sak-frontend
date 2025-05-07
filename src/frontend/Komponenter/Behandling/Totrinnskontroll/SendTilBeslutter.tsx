@@ -21,6 +21,8 @@ import { Oppfølgingsoppgave } from '../../../App/hooks/useHentOppfølgingsoppga
 import { BeskrivelseMarkeringer } from './BeskrivelseOppgave';
 import { AutomatiskBrevValg } from './AutomatiskBrev';
 import { IVilkår } from '../Inngangsvilkår/vilkår';
+import { IVedtak } from '../../../App/typer/vedtak';
+import { utledAvslagValg } from '../VedtakOgBeregning/Felles/utils';
 
 const FlexBox = styled.div`
     display: flex;
@@ -52,24 +54,20 @@ const utledDefaultOppgavetyperSomSkalOpprettes = (
 const SendTilBeslutter: React.FC<{
     behandling: Behandling;
     vilkår?: IVilkår;
+    vedtak?: IVedtak;
     kanSendesTilBeslutter?: boolean;
     behandlingErRedigerbar: boolean;
     hentOppfølgingsoppgave?: { rerun: () => void };
     oppfølgingsoppgave?: Oppfølgingsoppgave;
-    avslagValg: {
-        ferdigstillUtenBeslutter: boolean;
-        erAvslagSkalSendeTilBeslutter: boolean;
-        erAvslag: boolean;
-    };
     settErDokumentInnlastet?: Dispatch<SetStateAction<boolean>>;
 }> = ({
     behandling,
     vilkår,
+    vedtak,
     kanSendesTilBeslutter,
     behandlingErRedigerbar,
     hentOppfølgingsoppgave,
     oppfølgingsoppgave,
-    avslagValg,
     settErDokumentInnlastet,
 }) => {
     const { axiosRequest } = useApp();
@@ -97,6 +95,11 @@ const SendTilBeslutter: React.FC<{
     >(utledDefaultOppgavetyperSomSkalOpprettes(oppgavetyperSomKanOpprettes));
     const [oppgaverSomSkalAutomatiskFerdigstilles, settOppgaverSomSkalAutomatiskFerdigstilles] =
         useState<number[]>(oppfølgingsoppgave?.oppgaveIderForFerdigstilling || []);
+    const [avslagValg, settAvslagValg] = useState<{
+        ferdigstillUtenBeslutter: boolean;
+        erAvslagSkalSendeTilBeslutter: boolean;
+        erAvslag: boolean;
+    }>(utledAvslagValg(vedtak));
 
     const { ferdigstillUtenBeslutter } = avslagValg;
 
@@ -160,6 +163,10 @@ const SendTilBeslutter: React.FC<{
             utledDefaultOppgavetyperSomSkalOpprettes(oppgavetyperSomKanOpprettes)
         );
     }, [oppgavetyperSomKanOpprettes]);
+
+    useEffect(() => {
+        settAvslagValg(utledAvslagValg(vedtak));
+    }, [vedtak]);
 
     return (
         <>

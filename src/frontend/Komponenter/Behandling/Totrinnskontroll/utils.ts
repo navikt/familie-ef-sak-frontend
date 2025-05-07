@@ -42,8 +42,13 @@ export const harBarnMellomSeksOgTolvMåneder = (vilkår: IVilkår) => {
 export const utledAutomatiskBrev = (
     behandling: Behandling,
     lagretAutomatiskBrev: string[] | undefined,
+    erAvslag: boolean,
     vilkår?: IVilkår
 ) => {
+    if (erAvslag) {
+        return [];
+    }
+
     lagretAutomatiskBrev;
 
     const harBarnMellomSeksOgTolvMnder = vilkår && harBarnMellomSeksOgTolvMåneder(vilkår);

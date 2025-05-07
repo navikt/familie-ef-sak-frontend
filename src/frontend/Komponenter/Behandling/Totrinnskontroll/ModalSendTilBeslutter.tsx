@@ -1,5 +1,5 @@
 import { Modal, Button, VStack } from '@navikt/ds-react';
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Divider } from '../../../Felles/Divider/Divider';
 import { Ressurs } from '../../../App/typer/ressurs';
 import { IOppgaverResponse } from '../../../App/hooks/useHentOppgaver';
@@ -58,10 +58,10 @@ export const ModalSendTilBeslutter: FC<{
     const [beskrivelseMarkeringer, settBeskrivelseMarkeringer] = useState<BeskrivelseMarkeringer[]>(
         []
     );
-    const [automatiskBrev, settAutomatiskBrev] = useState<AutomatiskBrevValg[]>(
-        utledAutomatiskBrev(behandling, oppfølgingsoppgave?.automatiskBrev, vilkår)
-    );
     const { ferdigstillUtenBeslutter, erAvslagSkalSendeTilBeslutter, erAvslag } = avslagValg;
+    const [automatiskBrev, settAutomatiskBrev] = useState<AutomatiskBrevValg[]>(
+        utledAutomatiskBrev(behandling, oppfølgingsoppgave?.automatiskBrev, erAvslag, vilkår)
+    );
 
     const handleSettOppgaverSomSkalFerdigstilles = (oppgaveId: number) =>
         settOppgaverSomSkalAutomatiskFerdigstilles((prevOppgaver) =>
@@ -97,6 +97,12 @@ export const ModalSendTilBeslutter: FC<{
 
     const harBarnMellomSeksOgTolvMnder = vilkår && harBarnMellomSeksOgTolvMåneder(vilkår);
     const erOvergangsstønad = behandling.stønadstype === Stønadstype.OVERGANGSSTØNAD;
+
+    useEffect(() => {
+        settAutomatiskBrev(
+            utledAutomatiskBrev(behandling, oppfølgingsoppgave?.automatiskBrev, erAvslag, vilkår)
+        );
+    }, [behandling, erAvslag, oppfølgingsoppgave?.automatiskBrev, vilkår]);
 
     return (
         <DataViewer response={{ fremleggsOppgaver }}>
@@ -158,7 +164,9 @@ export const ModalSendTilBeslutter: FC<{
                                     </>
                                 )}
 
-                                {harBarnMellomSeksOgTolvMnder && erOvergangsstønad && (
+                                {JSON.stringify(automatiskBrev)}
+                                {JSON.stringify(`erAvslag: ${erAvslag}`)}
+                                {!erAvslag && harBarnMellomSeksOgTolvMnder && erOvergangsstønad && (
                                     <>
                                         <Divider />
                                         <AutomatiskBrev

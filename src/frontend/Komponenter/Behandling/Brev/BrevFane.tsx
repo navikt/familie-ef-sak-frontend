@@ -8,7 +8,6 @@ import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { useApp } from '../../../App/context/AppContext';
 import { TotrinnskontrollStatus } from '../../../App/typer/totrinnskontroll';
 import { BrevmottakereForBehandling } from '../Brevmottakere/BrevmottakereForBehandling';
-import { utledAvslagValg } from '../VedtakOgBeregning/Felles/utils';
 import { Behandling } from '../../../App/typer/fagsak';
 import { OverstyrtBrevmalVarsel } from './OverstyrtBrevmalVarsel';
 import { FremleggoppgaverSomOpprettes } from './FremleggoppgaverSomOpprettes';
@@ -109,8 +108,6 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
             }}
         >
             {({ personopplysningerResponse, vedtak, vilkår }) => {
-                const avslagValg = utledAvslagValg(vedtak);
-
                 return (
                     <Container>
                         <LikDelContainer>
@@ -157,8 +154,8 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
                                 <SendTilBeslutter
                                     behandling={behandling}
                                     vilkår={vilkår}
+                                    vedtak={vedtak}
                                     kanSendesTilBeslutter={kanSendesTilBeslutter}
-                                    avslagValg={avslagValg}
                                     behandlingErRedigerbar={behandlingErRedigerbar}
                                     hentOppfølgingsoppgave={hentOppfølgingsoppgave}
                                     oppfølgingsoppgave={oppfølgingsoppgave}
