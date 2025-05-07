@@ -5,15 +5,18 @@ import { NotePencilIcon } from '@navikt/aksel-icons';
 import { LogiskeVedlegg } from './LogiskeVedlegg';
 import styled from 'styled-components';
 import { Dokumentinfo } from '../../../App/typer/dokumentliste';
+import { ABlue500, ATextVisited } from '@navikt/ds-tokens/dist/tokens';
 
 const Div = styled.div<{ $erHovedDokument: boolean }>`
     margin-left: ${(props) => (props.$erHovedDokument ? '0rem' : '2rem')};
 `;
 
-const Tittel = styled.a`
-    &:visited {
-        color: purple;
-    }
+const standardFargeIkkeBesøktLenke = ABlue500;
+const standardFargeBesøktLenke = ATextVisited;
+
+const Tittel = styled.a<{ $harBlittBesøkt: boolean }>`
+    color: ${(props) =>
+        props.$harBlittBesøkt ? standardFargeBesøktLenke : standardFargeIkkeBesøktLenke};
 `;
 
 const IkonKnapp = styled(Button)`
@@ -26,30 +29,34 @@ interface Props {
     dokument: Dokumentinfo;
     settValgtDokumentId: Dispatch<SetStateAction<string>>;
     erHovedDokument: boolean;
+    dokumentHarBlittBesøkt: boolean;
+    oppdaterBesøkteDokumentLenker: () => void;
 }
 
 export const Dokumenttittel: React.FC<Props> = ({
     dokument,
     settValgtDokumentId,
     erHovedDokument,
-}) => {
-    return (
-        <HStack gap="2">
-            <IkonKnapp
-                icon={<NotePencilIcon title="Rediger" />}
-                variant="tertiary"
-                onClick={() => settValgtDokumentId(dokument.dokumentinfoId)}
-            />
-            <Div $erHovedDokument={erHovedDokument}>
-                <Tittel
-                    href={`/dokument/journalpost/${dokument.journalpostId}/dokument-pdf/${dokument.dokumentinfoId}/${tittelMedUrlGodkjenteTegn(dokument.tittel)}`}
-                    target={'_blank'}
-                    rel={'noreferrer'}
-                >
-                    {dokument.tittel}
-                </Tittel>
-                <LogiskeVedlegg logiskeVedlegg={dokument.logiskeVedlegg} />
-            </Div>
-        </HStack>
-    );
-};
+    dokumentHarBlittBesøkt,
+    oppdaterBesøkteDokumentLenker,
+}) => (
+    <HStack gap="2">
+        <IkonKnapp
+            icon={<NotePencilIcon title="Rediger" />}
+            variant="tertiary"
+            onClick={() => settValgtDokumentId(dokument.dokumentinfoId)}
+        />
+        <Div $erHovedDokument={erHovedDokument}>
+            <Tittel
+                $harBlittBesøkt={dokumentHarBlittBesøkt}
+                href={`/dokument/journalpost/${dokument.journalpostId}/dokument-pdf/${dokument.dokumentinfoId}/${tittelMedUrlGodkjenteTegn(dokument.tittel)}`}
+                target={'_blank'}
+                rel={'noreferrer'}
+                onClick={oppdaterBesøkteDokumentLenker}
+            >
+                {dokument.tittel}
+            </Tittel>
+            <LogiskeVedlegg logiskeVedlegg={dokument.logiskeVedlegg} />
+        </Div>
+    </HStack>
+);
