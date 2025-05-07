@@ -50,7 +50,7 @@ export const HeaderMedSøk: React.FunctionComponent<Props> = ({ innloggetSaksbeh
         <Sticky>
             <Header
                 tittelHref={'/'}
-                tittel="NAV Enslig mor eller far"
+                tittel="Nav Enslig mor eller far"
                 brukerinfo={{
                     navn: innloggetSaksbehandler?.displayName || 'Ukjent',
                 }}

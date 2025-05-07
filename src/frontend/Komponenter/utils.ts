@@ -27,7 +27,7 @@ export const dokumentTitler: string[] = [
     'Søknad om overgangsstønad',
     'Søknad om skolepenger',
     'Søknad om barnetilsyn',
-    'Tilmelding til NAV som reell arbeidssøker ved krav om overgangsstønad',
+    'Tilmelding til Nav som reell arbeidssøker ved krav om overgangsstønad',
     'Uttalelse',
     'Uttalelse tilbakekreving',
 ];
