@@ -2,7 +2,7 @@ import { Checkbox, CheckboxGroup } from '@navikt/ds-react';
 import { ALimegreen100 } from '@navikt/ds-tokens/dist/tokens';
 import React, { FC } from 'react';
 import styled from 'styled-components';
-import { AutomatiskBrevValg } from '../Totrinnskontroll/AutomatiskBrev';
+import { AutomatiskBrevValg, automatiskBrevValgTekst } from '../Totrinnskontroll/AutomatiskBrev';
 
 const Container = styled.div`
     background: ${ALimegreen100};
@@ -26,7 +26,7 @@ export const AutomatiskBrevSomSendes: FC<{
                 {automatiskBrev &&
                     automatiskBrev.map((brev, idx) => (
                         <Checkbox key={idx} value={brev}>
-                            {brev}
+                            {automatiskBrevValgTekst[brev]}
                         </Checkbox>
                     ))}
             </CheckboxGroup>

@@ -5,7 +5,7 @@ export enum AutomatiskBrevValg {
     VARSEL_OM_AKTIVITETSPLIKT = 'VARSEL_OM_AKTIVITETSPLIKT',
 }
 
-const automatiskBrevValgTekst: Record<AutomatiskBrevValg, string> = {
+export const automatiskBrevValgTekst: Record<AutomatiskBrevValg, string> = {
     [AutomatiskBrevValg.VARSEL_OM_AKTIVITETSPLIKT]: 'Varsel om aktivitetsplikt',
 };
 
