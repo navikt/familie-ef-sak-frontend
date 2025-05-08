@@ -1,9 +1,15 @@
 import { CheckboxGroup, Checkbox } from '@navikt/ds-react';
 import React, { FC } from 'react';
 
-export type AutomatiskBrevValg = 'Varsel om aktivitetsplikt';
+export enum AutomatiskBrevValg {
+    VARSEL_OM_AKTIVITETSPLIKT = 'VARSEL_OM_AKTIVITETSPLIKT',
+}
 
-const automatiskBrevAlternativer: AutomatiskBrevValg[] = ['Varsel om aktivitetsplikt'] as const;
+const automatiskBrevValgTekst: Record<AutomatiskBrevValg, string> = {
+    [AutomatiskBrevValg.VARSEL_OM_AKTIVITETSPLIKT]: 'Varsel om aktivitetsplikt',
+};
+
+const automatiskBrevAlternativer: AutomatiskBrevValg[] = Object.values(AutomatiskBrevValg);
 
 export const AutomatiskBrev: FC<{
     automatiskBrev: AutomatiskBrevValg[];
@@ -12,12 +18,12 @@ export const AutomatiskBrev: FC<{
     return (
         <CheckboxGroup
             legend="Send brev automatisk når vedtaket er godkjent:"
-            onChange={settAutomatiskBrev}
+            onChange={(val) => settAutomatiskBrev(val as AutomatiskBrevValg[])}
             value={automatiskBrev}
         >
             {automatiskBrevAlternativer.map((valg) => (
                 <Checkbox key={valg} value={valg}>
-                    {valg}
+                    {automatiskBrevValgTekst[valg]}
                 </Checkbox>
             ))}
         </CheckboxGroup>

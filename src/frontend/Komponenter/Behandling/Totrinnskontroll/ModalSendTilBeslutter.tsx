@@ -34,6 +34,7 @@ export const ModalSendTilBeslutter: FC<{
         ferdigstillUtenBeslutter: boolean;
         erAvslagSkalSendeTilBeslutter: boolean;
         erAvslag: boolean;
+        erInnvilgelseOvergangsstønad: boolean;
     };
     oppfølgingsoppgave?: Oppfølgingsoppgave;
 }> = ({
@@ -55,12 +56,24 @@ export const ModalSendTilBeslutter: FC<{
         årForInntektskontrollSelvstendigNæringsdrivende,
         settÅrForInntektskontrollSelvstendigNæringsdrivende,
     ] = useState<number | undefined>();
+
     const [beskrivelseMarkeringer, settBeskrivelseMarkeringer] = useState<BeskrivelseMarkeringer[]>(
         []
     );
-    const { ferdigstillUtenBeslutter, erAvslagSkalSendeTilBeslutter, erAvslag } = avslagValg;
+
+    const {
+        ferdigstillUtenBeslutter,
+        erAvslagSkalSendeTilBeslutter,
+        erAvslag,
+        erInnvilgelseOvergangsstønad,
+    } = avslagValg;
+
     const [automatiskBrev, settAutomatiskBrev] = useState<AutomatiskBrevValg[]>(
-        utledAutomatiskBrev(behandling, oppfølgingsoppgave?.automatiskBrev, erAvslag, vilkår)
+        utledAutomatiskBrev(
+            oppfølgingsoppgave?.automatiskBrev,
+            erInnvilgelseOvergangsstønad,
+            vilkår
+        )
     );
 
     const handleSettOppgaverSomSkalFerdigstilles = (oppgaveId: number) =>
@@ -100,9 +113,13 @@ export const ModalSendTilBeslutter: FC<{
 
     useEffect(() => {
         settAutomatiskBrev(
-            utledAutomatiskBrev(behandling, oppfølgingsoppgave?.automatiskBrev, erAvslag, vilkår)
+            utledAutomatiskBrev(
+                oppfølgingsoppgave?.automatiskBrev,
+                erInnvilgelseOvergangsstønad,
+                vilkår
+            )
         );
-    }, [behandling, erAvslag, oppfølgingsoppgave?.automatiskBrev, vilkår]);
+    }, [behandling, erInnvilgelseOvergangsstønad, oppfølgingsoppgave?.automatiskBrev, vilkår]);
 
     return (
         <DataViewer response={{ fremleggsOppgaver }}>
@@ -164,17 +181,17 @@ export const ModalSendTilBeslutter: FC<{
                                     </>
                                 )}
 
-                                {JSON.stringify(automatiskBrev)}
-                                {JSON.stringify(`erAvslag: ${erAvslag}`)}
-                                {!erAvslag && harBarnMellomSeksOgTolvMnder && erOvergangsstønad && (
-                                    <>
-                                        <Divider />
-                                        <AutomatiskBrev
-                                            automatiskBrev={automatiskBrev}
-                                            settAutomatiskBrev={settAutomatiskBrev}
-                                        />
-                                    </>
-                                )}
+                                {erInnvilgelseOvergangsstønad &&
+                                    harBarnMellomSeksOgTolvMnder &&
+                                    erOvergangsstønad && (
+                                        <>
+                                            <Divider />
+                                            <AutomatiskBrev
+                                                automatiskBrev={automatiskBrev}
+                                                settAutomatiskBrev={settAutomatiskBrev}
+                                            />
+                                        </>
+                                    )}
                             </VStack>
                         </Modal.Body>
                         <Modal.Footer>

@@ -1,6 +1,5 @@
-import { Stønadstype } from '../../../App/typer/behandlingstema';
-import { Behandling } from '../../../App/typer/fagsak';
-import { InngangsvilkårType, IVilkår, IVurdering, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
+import { antallMånederSidenDato } from '../../../App/utils/dato';
+import { InngangsvilkårType, IVilkår, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
 import { AutomatiskBrevValg } from './AutomatiskBrev';
 
 const aleneomsorgVurderingerOppfylt = (vilkår: IVilkår) => {
@@ -13,46 +12,40 @@ const aleneomsorgVurderingerOppfylt = (vilkår: IVilkår) => {
     });
 };
 
-const oppfyltBarnMedSamvær = (vilkår: IVilkår, oppfyltAleneomsorgVurderinger: IVurdering[]) => {
+const oppfyltBarnMedSamvær = (vilkår: IVilkår) => {
+    const oppfyltAleneomsorgVurderinger = aleneomsorgVurderingerOppfylt(vilkår);
+
     return vilkår.grunnlag.barnMedSamvær.filter((barn) =>
         oppfyltAleneomsorgVurderinger.some((oppfyltBarn) => oppfyltBarn.barnId === barn.barnId)
     );
 };
 
 export const harBarnMellomSeksOgTolvMåneder = (vilkår: IVilkår) => {
-    const oppfyltAleneomsorgVurderinger = aleneomsorgVurderingerOppfylt(vilkår);
-    const barnMedSamvær = oppfyltBarnMedSamvær(vilkår, oppfyltAleneomsorgVurderinger);
+    const barnMedSamvær = oppfyltBarnMedSamvær(vilkår);
 
     return barnMedSamvær.some((barn) => {
-        const barnFødselsdato = barn.registergrunnlag.fødselsdato
-            ? new Date(barn.registergrunnlag.fødselsdato)
-            : null;
+        const fødselsdato = barn.registergrunnlag.fødselsdato;
 
-        const nåværendeDato = new Date();
+        if (!fødselsdato) {
+            return false;
+        }
 
-        const alderMåneder = Math.floor(
-            barnFødselsdato
-                ? (nåværendeDato.getTime() - barnFødselsdato.getTime()) / (1000 * 3600 * 24 * 30)
-                : 0
-        );
+        const alderMåneder = antallMånederSidenDato(fødselsdato);
+
         return alderMåneder >= 6 && alderMåneder <= 12;
     });
 };
 
 export const utledAutomatiskBrev = (
-    behandling: Behandling,
     lagretAutomatiskBrev: string[] | undefined,
-    erAvslag: boolean,
+    erInnvilgelseOvergangsstønad: boolean,
     vilkår?: IVilkår
 ) => {
-    if (erAvslag) {
+    if (!erInnvilgelseOvergangsstønad) {
         return [];
     }
 
-    lagretAutomatiskBrev;
-
     const harBarnMellomSeksOgTolvMnder = vilkår && harBarnMellomSeksOgTolvMåneder(vilkår);
-    const erOvergangsstønad = behandling.stønadstype === Stønadstype.OVERGANGSSTØNAD;
 
     const automatiskBrev: Set<AutomatiskBrevValg> = new Set();
 
@@ -62,10 +55,10 @@ export const utledAutomatiskBrev = (
         });
     }
 
-    if (harBarnMellomSeksOgTolvMnder && erOvergangsstønad) {
-        automatiskBrev.add('Varsel om aktivitetsplikt');
+    if (harBarnMellomSeksOgTolvMnder) {
+        automatiskBrev.add(AutomatiskBrevValg.VARSEL_OM_AKTIVITETSPLIKT);
     } else {
-        automatiskBrev.delete('Varsel om aktivitetsplikt');
+        automatiskBrev.delete(AutomatiskBrevValg.VARSEL_OM_AKTIVITETSPLIKT);
     }
 
     return Array.from(automatiskBrev);

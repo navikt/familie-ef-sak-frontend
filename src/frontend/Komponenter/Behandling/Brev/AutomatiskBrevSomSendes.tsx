@@ -11,6 +11,10 @@ const Container = styled.div`
 export const AutomatiskBrevSomSendes: FC<{
     automatiskBrev: string[] | undefined;
 }> = ({ automatiskBrev }) => {
+    if (!automatiskBrev || automatiskBrev.length === 0) {
+        return null;
+    }
+
     return (
         <Container>
             <CheckboxGroup

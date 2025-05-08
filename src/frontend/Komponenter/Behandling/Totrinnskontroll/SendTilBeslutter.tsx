@@ -99,6 +99,7 @@ const SendTilBeslutter: React.FC<{
         ferdigstillUtenBeslutter: boolean;
         erAvslagSkalSendeTilBeslutter: boolean;
         erAvslag: boolean;
+        erInnvilgelseOvergangsstønad: boolean;
     }>(utledAvslagValg(vedtak));
 
     const { ferdigstillUtenBeslutter } = avslagValg;

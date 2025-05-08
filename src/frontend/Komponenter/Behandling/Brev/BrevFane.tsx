@@ -129,7 +129,9 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
                                         <OppgaverForFerdigstilling behandlingId={behandling.id} />
 
                                         <AutomatiskBrevSomSendes
-                                            automatiskBrev={oppfølgingsoppgave?.automatiskBrev}
+                                            automatiskBrev={
+                                                oppfølgingsoppgave?.automatiskBrev ?? []
+                                            }
                                         />
                                     </>
                                 )}
