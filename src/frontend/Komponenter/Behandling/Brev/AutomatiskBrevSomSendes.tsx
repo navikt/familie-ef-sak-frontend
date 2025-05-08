@@ -2,6 +2,7 @@ import { Checkbox, CheckboxGroup } from '@navikt/ds-react';
 import { ALimegreen100 } from '@navikt/ds-tokens/dist/tokens';
 import React, { FC } from 'react';
 import styled from 'styled-components';
+import { AutomatiskBrevValg } from '../Totrinnskontroll/AutomatiskBrev';
 
 const Container = styled.div`
     background: ${ALimegreen100};
@@ -9,7 +10,7 @@ const Container = styled.div`
 `;
 
 export const AutomatiskBrevSomSendes: FC<{
-    automatiskBrev: string[] | undefined;
+    automatiskBrev?: AutomatiskBrevValg[];
 }> = ({ automatiskBrev }) => {
     if (!automatiskBrev || automatiskBrev.length === 0) {
         return null;

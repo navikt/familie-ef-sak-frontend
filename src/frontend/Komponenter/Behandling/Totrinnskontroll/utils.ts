@@ -37,7 +37,7 @@ export const harBarnMellomSeksOgTolvMåneder = (vilkår: IVilkår) => {
 };
 
 export const utledAutomatiskBrev = (
-    lagretAutomatiskBrev: string[] | undefined,
+    lagretAutomatiskBrev: AutomatiskBrevValg[] | undefined,
     erInnvilgelseOvergangsstønad: boolean,
     vilkår?: IVilkår
 ) => {
