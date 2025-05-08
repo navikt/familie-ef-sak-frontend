@@ -3,6 +3,7 @@ import { useApp } from '../context/AppContext';
 import { Ressurs, RessursStatus } from '../typer/ressurs';
 import { OppgaveTypeForOpprettelse } from '../../Komponenter/Behandling/Totrinnskontroll/oppgaveForOpprettelseTyper';
 import { useRerunnableEffect } from './felles/useRerunnableEffect';
+import { AutomatiskBrevValg } from '../../Komponenter/Behandling/Totrinnskontroll/AutomatiskBrev';
 
 interface OppgaverForOpprettelse {
     oppgavetyperSomKanOpprettes: OppgaveTypeForOpprettelse[];
@@ -13,6 +14,7 @@ export interface Oppfølgingsoppgave {
     behandlingid: string;
     oppgaverForOpprettelse: OppgaverForOpprettelse;
     oppgaveIderForFerdigstilling: number[];
+    automatiskBrev: AutomatiskBrevValg[];
 }
 
 export const useHentOppfølgingsoppgave = (behandlingId: string) => {
