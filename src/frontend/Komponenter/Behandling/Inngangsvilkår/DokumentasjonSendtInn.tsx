@@ -16,7 +16,7 @@ const DokumentasjonSendtInn: FC<Props> = ({ tittel, dokumentasjon }) => {
                     {tittel}
                 </Heading>
                 <BodyLong size={'small'}>
-                    Bruker har i søknad krysset av for at dokumentasjonen er sendt inn til NAV
+                    Bruker har i søknad krysset av for at dokumentasjonen er sendt inn til Nav
                     tidligere
                 </BodyLong>
             </Alert>
