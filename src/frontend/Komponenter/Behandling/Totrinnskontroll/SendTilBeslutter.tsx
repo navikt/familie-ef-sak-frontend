@@ -15,10 +15,14 @@ import { OppgaveTypeForOpprettelse } from './oppgaveForOpprettelseTyper';
 import { ModalState } from '../Modal/NyEierModal';
 import { useToggles } from '../../../App/context/TogglesContext';
 import { ToggleName } from '../../../App/context/toggles';
-import { ModalOpprettOgFerdigstilleOppgaver } from './ModalOpprettOgFerdigstilleOppgaver';
+import { ModalSendTilBeslutter } from './ModalSendTilBeslutter';
 import { useHentFremleggsoppgaverForOvergangsstønad } from '../../../App/hooks/useHentFremleggsoppgaverForOvergangsstønad';
 import { Oppfølgingsoppgave } from '../../../App/hooks/useHentOppfølgingsoppgave';
 import { BeskrivelseMarkeringer } from './BeskrivelseOppgave';
+import { AutomatiskBrevValg } from './AutomatiskBrev';
+import { IVilkår } from '../Inngangsvilkår/vilkår';
+import { IVedtak } from '../../../App/typer/vedtak';
+import { utledAvslagValg } from '../VedtakOgBeregning/Felles/utils';
 
 const FlexBox = styled.div`
     display: flex;
@@ -30,6 +34,7 @@ export interface SendTilBeslutterRequest {
     årForInntektskontrollSelvstendigNæringsdrivende?: number;
     fremleggsoppgaveIderSomSkalFerdigstilles?: number[];
     beskrivelseMarkeringer?: BeskrivelseMarkeringer[];
+    automatiskBrev?: AutomatiskBrevValg[];
 }
 
 const utledDefaultOppgavetyperSomSkalOpprettes = (
@@ -48,23 +53,21 @@ const utledDefaultOppgavetyperSomSkalOpprettes = (
 
 const SendTilBeslutter: React.FC<{
     behandling: Behandling;
+    vilkår?: IVilkår;
+    vedtak?: IVedtak;
     kanSendesTilBeslutter?: boolean;
     behandlingErRedigerbar: boolean;
     hentOppfølgingsoppgave?: { rerun: () => void };
     oppfølgingsoppgave?: Oppfølgingsoppgave;
-    avslagValg: {
-        ferdigstillUtenBeslutter: boolean;
-        erAvslagSkalSendeTilBeslutter: boolean;
-        erAvslag: boolean;
-    };
     settErDokumentInnlastet?: Dispatch<SetStateAction<boolean>>;
 }> = ({
     behandling,
+    vilkår,
+    vedtak,
     kanSendesTilBeslutter,
     behandlingErRedigerbar,
     hentOppfølgingsoppgave,
     oppfølgingsoppgave,
-    avslagValg,
     settErDokumentInnlastet,
 }) => {
     const { axiosRequest } = useApp();
@@ -92,6 +95,12 @@ const SendTilBeslutter: React.FC<{
     >(utledDefaultOppgavetyperSomSkalOpprettes(oppgavetyperSomKanOpprettes));
     const [oppgaverSomSkalAutomatiskFerdigstilles, settOppgaverSomSkalAutomatiskFerdigstilles] =
         useState<number[]>(oppfølgingsoppgave?.oppgaveIderForFerdigstilling || []);
+    const [avslagValg, settAvslagValg] = useState<{
+        ferdigstillUtenBeslutter: boolean;
+        erAvslagSkalSendeTilBeslutter: boolean;
+        erAvslag: boolean;
+        erInnvilgelseOvergangsstønad: boolean;
+    }>(utledAvslagValg(vedtak));
 
     const { ferdigstillUtenBeslutter } = avslagValg;
 
@@ -156,6 +165,10 @@ const SendTilBeslutter: React.FC<{
         );
     }, [oppgavetyperSomKanOpprettes]);
 
+    useEffect(() => {
+        settAvslagValg(utledAvslagValg(vedtak));
+    }, [vedtak]);
+
     return (
         <>
             {behandlingErRedigerbar && (
@@ -214,7 +227,9 @@ const SendTilBeslutter: React.FC<{
                 }}
             />
             {toggleVisKnappForModal && (
-                <ModalOpprettOgFerdigstilleOppgaver
+                <ModalSendTilBeslutter
+                    behandling={behandling}
+                    vilkår={vilkår}
                     open={visMarkereGodkjenneVedtakOppgaveModal}
                     setOpen={settVisMarkereGodkjenneVedtakOppgaveModal}
                     sendTilBeslutter={sendTilBeslutter}
@@ -227,6 +242,7 @@ const SendTilBeslutter: React.FC<{
                         settOppgaverSomSkalAutomatiskFerdigstilles
                     }
                     avslagValg={avslagValg}
+                    oppfølgingsoppgave={oppfølgingsoppgave}
                 />
             )}
         </>

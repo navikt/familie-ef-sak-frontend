@@ -126,3 +126,9 @@ export const kalkulerAntallMåneder = (
     }
     return undefined;
 };
+
+export const antallMånederSidenDato = (dato: string | Date): number => {
+    const datoSomDate = tilDato(dato);
+    const nåværendeDato = new Date();
+    return Math.abs(differenceInMonths(nåværendeDato, datoSomDate));
+};
