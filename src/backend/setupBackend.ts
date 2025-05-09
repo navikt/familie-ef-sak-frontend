@@ -6,12 +6,16 @@ import { brevProxyUrl, endringsloggProxyUrl, sakProxyUrl } from './config.js';
 import { addRequestInfo, doProxy } from './proxy.js';
 import setupRouter from './router.js';
 import { logError, logInfo } from '@navikt/familie-logging';
-import { Express, Router } from 'express';
+import { Express, Request, Response, Router } from 'express';
 import { authenticateToken } from './token';
 
 const port = 8001;
 
 export const setupBackend = (app: Express, router: Router) => {
+    app.get(['/isAlive', '/isReady'], (_req: Request, res: Response) => {
+        res.status(200).end();
+    });
+
     app.use(
         '/familie-ef-sak/api',
         addRequestInfo(),
