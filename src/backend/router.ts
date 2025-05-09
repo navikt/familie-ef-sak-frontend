@@ -41,6 +41,10 @@ export default (router: Router): Router => {
             .end();
     });
 
+    router.get(['/isAlive', '/isReady'], (_req: Request, res: Response) => {
+        res.status(200).end();
+    });
+
     router.get('/error', (_req: Request, res: Response) => {
         prometheusTellere.errorRoute.inc();
         res.sendFile('error.html', { root: path.join(`assets/`) });
