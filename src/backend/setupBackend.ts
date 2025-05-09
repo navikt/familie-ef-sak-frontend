@@ -9,7 +9,7 @@ import { logError, logInfo } from '@navikt/familie-logging';
 import { Express, Router } from 'express';
 import { authenticateToken } from './token';
 
-const port = 8000;
+const port = 8001;
 
 export const setupBackend = (app: Express, router: Router) => {
     app.use(
@@ -53,9 +53,9 @@ export const setupBackend = (app: Express, router: Router) => {
 };
 
 export const utledTargetAudience = (applicationNavn: string) => {
-    const miljø = process.env.ENV;
-    const cluster = miljø === 'dev' ? 'dev-gcp' : 'prod-gcp';
+    const miljø = process.env.NODE_ENV;
+    const cluster = miljø === 'development' ? 'dev-gcp' : 'prod-gcp';
 
-    const audience = `${cluster}:teamfamilie:${applicationNavn}/.default`;
+    const audience = `api://${cluster}.teamfamilie.${applicationNavn}/.default`;
     return audience;
 };

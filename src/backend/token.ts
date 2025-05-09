@@ -1,24 +1,28 @@
 import { NextFunction, Request, Response } from 'express';
 import { getToken, requestOboToken, validateToken } from '@navikt/oasis';
 
-export const authenticateToken = (audience: string) => {
-    return async (req: Request, res: Response, next: NextFunction) => {
+export const authenticateToken = (targetAudience: string) => {
+    return async (req: Request, _res: Response, next: NextFunction) => {
         const token = getToken(req);
         if (!token) {
             console.error('Klarte ikke å hente token gjennom Oasis.');
-            return res.redirect('/oauth2/login');
+            return;
         }
 
         const validation = await validateToken(token);
         if (!validation.ok) {
             console.error('Klarte ikke å validere token gjennom Oasis.');
-            return res.redirect('/oauth2/login');
+            console.error(`Validering error tilsier: ${validation.error}`);
+            console.error(`Validering errorType tilsier: ${validation.errorType}`);
+            return;
         }
 
-        const obo = await requestOboToken(token, audience);
+        const obo = await requestOboToken(token, targetAudience);
+
         if (!obo.ok) {
-            console.error('Klarte ikke å hente onBehalfOf token gjennom Oasis.');
-            return res.redirect('/oauth2/login');
+            console.error('OBO-token kunne ikke hentes.');
+            console.error(`Feil: ${obo.error}`);
+            return;
         }
 
         req.headers['authorization'] = `Bearer ${obo.token}`;

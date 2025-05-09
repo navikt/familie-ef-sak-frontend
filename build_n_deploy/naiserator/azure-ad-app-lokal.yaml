@@ -16,6 +16,8 @@ metadata:
 spec:
   logoutUrl: 'http://localhost:8000'
   tenant: trygdeetaten.no
+  replyUrls:
+    - url: 'http://localhost:8000/auth/openid/callback'
     - url: 'http://localhost:8000/oauth2/callback'
   secretName: azuread-familie-ef-sak-frontend-lokal
   claims:
