@@ -54,7 +54,7 @@ export const setupBackend = (app: Express, router: Router) => {
 
 export const utledTargetAudience = (applicationNavn: string) => {
     const miljø = process.env.NODE_ENV;
-    const cluster = miljø === 'development' ? 'dev-gcp' : 'prod-gcp';
+    const cluster = miljø === 'lokalt-mot-preprod' ? 'dev-gcp' : 'prod-gcp';
 
     const audience = `api://${cluster}.teamfamilie.${applicationNavn}/.default`;
     return audience;
