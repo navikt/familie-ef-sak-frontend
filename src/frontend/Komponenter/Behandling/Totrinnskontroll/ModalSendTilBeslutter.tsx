@@ -1,5 +1,5 @@
 import { Modal, Button, VStack } from '@navikt/ds-react';
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { Divider } from '../../../Felles/Divider/Divider';
 import { Ressurs } from '../../../App/typer/ressurs';
 import { IOppgaverResponse } from '../../../App/hooks/useHentOppgaver';
@@ -9,8 +9,16 @@ import { OppgaveTypeForOpprettelse } from './oppgaveForOpprettelseTyper';
 import { FremleggsoppgaverForOpprettelse } from './FremleggsoppgaverForOpprettelse';
 import { TabellFerdigstilleOppgaver } from './TabellFerdigstilleOppgaver';
 import { BeskrivelseMarkeringer, BeskrivelseOppgave } from './BeskrivelseOppgave';
+import { AutomatiskBrev, AutomatiskBrevValg } from './AutomatiskBrev';
+import { Behandling } from '../../../App/typer/fagsak';
+import { IVilkår } from '../Inngangsvilkår/vilkår';
+import { harBarnMellomSeksOgTolvMåneder, utledAutomatiskBrev } from './utils';
+import { Stønadstype } from '../../../App/typer/behandlingstema';
+import { Oppfølgingsoppgave } from '../../../App/hooks/useHentOppfølgingsoppgave';
 
-export const ModalOpprettOgFerdigstilleOppgaver: FC<{
+export const ModalSendTilBeslutter: FC<{
+    behandling: Behandling;
+    vilkår?: IVilkår;
     open: boolean;
     setOpen: (open: boolean) => void;
     sendTilBeslutter: (data: SendTilBeslutterRequest) => void;
@@ -26,8 +34,12 @@ export const ModalOpprettOgFerdigstilleOppgaver: FC<{
         ferdigstillUtenBeslutter: boolean;
         erAvslagSkalSendeTilBeslutter: boolean;
         erAvslag: boolean;
+        erInnvilgelseOvergangsstønad: boolean;
     };
+    oppfølgingsoppgave?: Oppfølgingsoppgave;
 }> = ({
+    behandling,
+    vilkår,
     open,
     setOpen,
     sendTilBeslutter,
@@ -38,16 +50,31 @@ export const ModalOpprettOgFerdigstilleOppgaver: FC<{
     oppgaverSomSkalAutomatiskFerdigstilles,
     settOppgaverSomSkalAutomatiskFerdigstilles,
     avslagValg,
+    oppfølgingsoppgave,
 }) => {
     const [
         årForInntektskontrollSelvstendigNæringsdrivende,
         settÅrForInntektskontrollSelvstendigNæringsdrivende,
     ] = useState<number | undefined>();
+
     const [beskrivelseMarkeringer, settBeskrivelseMarkeringer] = useState<BeskrivelseMarkeringer[]>(
         []
     );
 
-    const { ferdigstillUtenBeslutter, erAvslagSkalSendeTilBeslutter, erAvslag } = avslagValg;
+    const {
+        ferdigstillUtenBeslutter,
+        erAvslagSkalSendeTilBeslutter,
+        erAvslag,
+        erInnvilgelseOvergangsstønad,
+    } = avslagValg;
+
+    const [automatiskBrev, settAutomatiskBrev] = useState<AutomatiskBrevValg[]>(
+        utledAutomatiskBrev(
+            oppfølgingsoppgave?.automatiskBrev,
+            erInnvilgelseOvergangsstønad,
+            vilkår
+        )
+    );
 
     const handleSettOppgaverSomSkalFerdigstilles = (oppgaveId: number) =>
         settOppgaverSomSkalAutomatiskFerdigstilles((prevOppgaver) =>
@@ -80,6 +107,19 @@ export const ModalOpprettOgFerdigstilleOppgaver: FC<{
 
     const skalViseFremleggsoppgaverForOpprettelseOgFerdigstilling =
         !erAvslag || !erAvslagSkalSendeTilBeslutter;
+
+    const harBarnMellomSeksOgTolvMnder = vilkår && harBarnMellomSeksOgTolvMåneder(vilkår);
+    const erOvergangsstønad = behandling.stønadstype === Stønadstype.OVERGANGSSTØNAD;
+
+    useEffect(() => {
+        settAutomatiskBrev(
+            utledAutomatiskBrev(
+                oppfølgingsoppgave?.automatiskBrev,
+                erInnvilgelseOvergangsstønad,
+                vilkår
+            )
+        );
+    }, [behandling, erInnvilgelseOvergangsstønad, oppfølgingsoppgave?.automatiskBrev, vilkår]);
 
     return (
         <DataViewer response={{ fremleggsOppgaver }}>
@@ -140,6 +180,18 @@ export const ModalOpprettOgFerdigstilleOppgaver: FC<{
                                         />
                                     </>
                                 )}
+
+                                {erInnvilgelseOvergangsstønad &&
+                                    harBarnMellomSeksOgTolvMnder &&
+                                    erOvergangsstønad && (
+                                        <>
+                                            <Divider />
+                                            <AutomatiskBrev
+                                                automatiskBrev={automatiskBrev}
+                                                settAutomatiskBrev={settAutomatiskBrev}
+                                            />
+                                        </>
+                                    )}
                             </VStack>
                         </Modal.Body>
                         <Modal.Footer>
@@ -157,6 +209,7 @@ export const ModalOpprettOgFerdigstilleOppgaver: FC<{
                                         fremleggsoppgaveIderSomSkalFerdigstilles:
                                             oppgaverSomSkalAutomatiskFerdigstilles,
                                         beskrivelseMarkeringer: beskrivelseMarkeringer,
+                                        automatiskBrev: automatiskBrev,
                                     })
                                 }
                                 disabled={!erValgIRadioEllerChecboxGroupGyldig}

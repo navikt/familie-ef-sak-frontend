@@ -208,6 +208,10 @@ export const utledAvslagValg = (vedtak?: IVedtak | undefined) => {
             !!vedtak &&
             vedtak._type === IVedtakType.Avslag &&
             vedtak.resultatType === EBehandlingResultat.AVSLÅ,
+        erInnvilgelseOvergangsstønad:
+            !!vedtak &&
+            vedtak._type === IVedtakType.InnvilgelseOvergangsstønad &&
+            vedtak.resultatType === EBehandlingResultat.INNVILGE,
     };
 };
 
