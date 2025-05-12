@@ -32,7 +32,7 @@ export const harBarnMellomSeksOgTolvMåneder = (vilkår: IVilkår) => {
 
         const alderMåneder = antallMånederSidenDato(fødselsdato);
 
-        return alderMåneder >= 6 && alderMåneder <= 12;
+        return alderMåneder >= 6 && alderMåneder <= 11;
     });
 };
 
