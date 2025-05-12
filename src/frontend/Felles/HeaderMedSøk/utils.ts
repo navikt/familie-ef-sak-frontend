@@ -122,7 +122,7 @@ export const lagSamværskalkulatorLenke = (fagsakPersonId: string | undefined): 
     };
 };
 
-export const lagInntektsKalkulatorLenke = (): PopoverItem => {
+export const lagInntektskalkulatorLenke = (): PopoverItem => {
     return {
         name: 'Inntektskalkulator',
         type: LenkeType.ARBEIDSVERKTØY,
@@ -158,5 +158,5 @@ export const lagInterneLenker = (
 
 export const lagArbeidsverktøyLenker = (fagsakPersonId: string | undefined): PopoverItem[] => [
     lagSamværskalkulatorLenke(fagsakPersonId),
-    lagInntektsKalkulatorLenke(),
+    lagInntektskalkulatorLenke(),
 ];

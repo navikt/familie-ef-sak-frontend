@@ -9,7 +9,7 @@ import BeregnetInntektKalkulator from '../VedtakOgBeregning/Overgangsstønad/Inn
 import { hjelpeTekstConfig } from './hjelpetekstconfig';
 import { RadioKnapper } from './RadioKnapper';
 import Begrunnelse from './Begrunnelse';
-import { genererBeregnetInntektsTekst } from '../../../App/hooks/useVerdierForBrev';
+import { genererBeregnetInntektTekst } from '../../../App/hooks/useVerdierForBrev';
 import styled from 'styled-components';
 
 const StyledHStack = styled(HStack)`
@@ -51,7 +51,7 @@ export const InntektVurderingMedKalkulator: FC<InntektVurderingMedKalkualtor> = 
     const visKalkulator = (begrunnelsetype ?? BegrunnelseRegel.UTEN) !== BegrunnelseRegel.UTEN;
 
     const leggTilBeregnetInntektTekstIBegrunnelse = (årsinntekt: number) => {
-        const beregnetInntektTekst = genererBeregnetInntektsTekst(årsinntekt);
+        const beregnetInntektTekst = genererBeregnetInntektTekst(årsinntekt);
         const eksisterendeTekst = vurdering.begrunnelse || '';
         onChange(eksisterendeTekst + beregnetInntektTekst);
     };

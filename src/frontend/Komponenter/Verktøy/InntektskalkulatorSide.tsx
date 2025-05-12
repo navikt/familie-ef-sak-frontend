@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { genererBeregnetInntektsTekst } from '../../App/hooks/useVerdierForBrev';
+import { genererBeregnetInntektTekst } from '../../App/hooks/useVerdierForBrev';
 import { Textarea } from '@navikt/ds-react';
 import useFieldState, { FieldState } from '../../App/hooks/felles/useFieldState';
 import Inntektskalkulator from '../../Felles/Kalkulator/Inntektskalkulator';
@@ -14,7 +14,7 @@ const TextAreaLiten = styled(Textarea)`
 export const InntektskalkulatorSide: React.FC = () => {
     const inntektBegrunnelseState: FieldState = useFieldState('');
     const leggTilBeregnetInntektTekstIBegrunnelse = (årsinntekt: number) => {
-        const beregnetInntektTekst = genererBeregnetInntektsTekst(årsinntekt);
+        const beregnetInntektTekst = genererBeregnetInntektTekst(årsinntekt);
         inntektBegrunnelseState.setValue((prevState) => prevState + beregnetInntektTekst);
     };
 
