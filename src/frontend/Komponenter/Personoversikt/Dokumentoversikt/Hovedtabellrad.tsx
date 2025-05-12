@@ -7,25 +7,25 @@ import {
     avsenderMottakerIdTypeTilTekst,
     journalstatusTilTekst,
 } from '../../../App/typer/journalføring';
-import styled from 'styled-components';
 import { skalViseLenke } from '../utils';
 import { PadlockLockedIcon } from '@navikt/aksel-icons';
 import { Table } from '@navikt/ds-react';
 import { JournalpostTag } from '../../Behandling/Høyremeny/Dokumentliste';
 import { Dokumenttittel } from './Dokumenttittel';
 
-export const IkkeTilgang = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-`;
-
 interface Props {
     dokument: Dokumentinfo;
     settValgtDokumentId: Dispatch<SetStateAction<string>>;
+    dokumentHarBlittBesøkt: boolean;
+    oppdaterBesøkteDokumentLenker: () => void;
 }
 
-export const HovedTabellrad: React.FC<Props> = ({ dokument, settValgtDokumentId }) => {
+export const HovedTabellrad: React.FC<Props> = ({
+    dokument,
+    settValgtDokumentId,
+    dokumentHarBlittBesøkt,
+    oppdaterBesøkteDokumentLenker,
+}) => {
     return (
         <Table.Row>
             <Table.DataCell>{formaterNullableIsoDatoTid(dokument.dato)}</Table.DataCell>
@@ -41,6 +41,8 @@ export const HovedTabellrad: React.FC<Props> = ({ dokument, settValgtDokumentId 
                         dokument={dokument}
                         settValgtDokumentId={settValgtDokumentId}
                         erHovedDokument={true}
+                        dokumentHarBlittBesøkt={dokumentHarBlittBesøkt}
+                        oppdaterBesøkteDokumentLenker={oppdaterBesøkteDokumentLenker}
                     />
                 ) : (
                     <>

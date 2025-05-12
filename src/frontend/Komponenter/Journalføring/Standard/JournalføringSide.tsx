@@ -12,7 +12,7 @@ import {
     hentFraLocalStorage,
     lagreTilLocalStorage,
     oppgaveRequestKey,
-} from '../../Oppgavebenk/oppgavefilterStorage';
+} from '../../../App/utils/localStorage';
 import { BodyShort, Heading, HStack } from '@navikt/ds-react';
 import JournalføringWrapper, {
     Høyrekolonne,

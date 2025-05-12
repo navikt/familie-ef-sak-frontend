@@ -8,7 +8,6 @@ import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { useApp } from '../../../App/context/AppContext';
 import { TotrinnskontrollStatus } from '../../../App/typer/totrinnskontroll';
 import { BrevmottakereForBehandling } from '../Brevmottakere/BrevmottakereForBehandling';
-import { utledAvslagValg } from '../VedtakOgBeregning/Felles/utils';
 import { Behandling } from '../../../App/typer/fagsak';
 import { OverstyrtBrevmalVarsel } from './OverstyrtBrevmalVarsel';
 import { FremleggoppgaverSomOpprettes } from './FremleggoppgaverSomOpprettes';
@@ -17,6 +16,7 @@ import { OppgaverForFerdigstilling } from '../Totrinnskontroll/OppgaverForFerdig
 import { useHentOppfølgingsoppgave } from '../../../App/hooks/useHentOppfølgingsoppgave';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 import styled from 'styled-components';
+import { AutomatiskBrevSomSendes } from './AutomatiskBrevSomSendes';
 
 const StyledVStack = styled(VStack)`
     position: sticky;
@@ -45,8 +45,14 @@ interface Props {
 
 export const BrevFane: React.FC<Props> = ({ behandling }) => {
     const { axiosRequest } = useApp();
-    const { behandlingErRedigerbar, vedtak, personopplysningerResponse, totrinnskontroll } =
-        useBehandling();
+    const {
+        behandlingErRedigerbar,
+        vedtak,
+        personopplysningerResponse,
+        totrinnskontroll,
+        vilkårState,
+    } = useBehandling();
+    const { vilkår, hentVilkår } = vilkårState;
     const [brevRessurs, settBrevRessurs] = useState<Ressurs<string>>(byggTomRessurs());
     const [kanSendesTilBeslutter, settKanSendesTilBeslutter] = useState<boolean>(false);
     const { hentOppfølgingsoppgave, oppfølgingsoppgave, feilmelding } = useHentOppfølgingsoppgave(
@@ -90,16 +96,19 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
         // eslint-disable-next-line
     }, [behandlingErRedigerbar, totrinnskontroll]);
 
+    useEffect(() => {
+        hentVilkår(behandling.id);
+    }, [behandling.id, hentVilkår]);
+
     return (
         <DataViewer
             response={{
                 personopplysningerResponse,
                 vedtak,
+                vilkår,
             }}
         >
-            {({ personopplysningerResponse, vedtak }) => {
-                const avslagValg = utledAvslagValg(vedtak);
-
+            {({ personopplysningerResponse, vedtak, vilkår }) => {
                 return (
                     <Container>
                         <LikDelContainer>
@@ -118,6 +127,12 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
                                             }
                                         />
                                         <OppgaverForFerdigstilling behandlingId={behandling.id} />
+
+                                        <AutomatiskBrevSomSendes
+                                            automatiskBrev={
+                                                oppfølgingsoppgave?.automatiskBrev ?? []
+                                            }
+                                        />
                                     </>
                                 )}
                                 {!behandlingErRedigerbar && (
@@ -145,8 +160,9 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
 
                                 <SendTilBeslutter
                                     behandling={behandling}
+                                    vilkår={vilkår}
+                                    vedtak={vedtak}
                                     kanSendesTilBeslutter={kanSendesTilBeslutter}
-                                    avslagValg={avslagValg}
                                     behandlingErRedigerbar={behandlingErRedigerbar}
                                     hentOppfølgingsoppgave={hentOppfølgingsoppgave}
                                     oppfølgingsoppgave={oppfølgingsoppgave}

@@ -366,7 +366,7 @@ export const infotrygdSakNivåTilTekst: Record<InfotrygdSakNivå, string> = {
     KI: '(KI)',
     RIKSTRYGDEVERKET: 'Rikstrygdeverket (RTV)',
     SFK: '(SFK)',
-    NAV_KONTOR: 'NAV-kontor (trygdekontor) (TK)',
+    NAV_KONTOR: 'Nav-kontor (trygdekontor) (TK)',
     TRYGDERETTEN: 'Trygderetten (TR)',
 };
 
