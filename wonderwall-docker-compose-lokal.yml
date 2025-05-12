@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+
+  wonderwall:
+    image: ghcr.io/nais/wonderwall:latest
+    ports:
+      - "8000:8000"
+    command: >
+      --openid.provider=azure
+      --openid.scopes=openid profile email
+      --openid.client-id=${AZURE_APP_CLIENT_ID}
+      --openid.client-secret=${AZURE_APP_CLIENT_SECRET}
+      --openid.well-known-url=${AZURE_APP_WELL_KNOWN_URL}
+      --ingress=http://localhost:8000
+      --bind-address=0.0.0.0:8000
+      --upstream-host=host.docker.internal:8001
+      --redis.uri=redis://redis:6379
+      --auto-login=true
+      --cookie.secure=false
+      --log-level=debug
+      --log-format=text
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      - redis
+
+  upstream:
+    image: mendhak/http-https-echo:30
+    ports:
+      - "4000:4000"
+    environment:
+      HTTP_PORT: 4000
+      JWT_HEADER: Authorization
+      LOG_IGNORE_PATH: /
