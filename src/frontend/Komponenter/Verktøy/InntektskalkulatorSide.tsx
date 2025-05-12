@@ -38,7 +38,6 @@ export const InntektskalkulatorSide: React.FC = () => {
                     inntektBegrunnelseState.onChange(event);
                 }}
                 label=""
-                maxLength={0}
             />
         </>
     );
