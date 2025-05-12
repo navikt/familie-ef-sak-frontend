@@ -52,9 +52,9 @@ describe('Har barn mellom seks og tolv måneder', () => {
         expect(harBarnMellomSeksOgTolvMåneder(vilkår as IVilkår)).toBe(false);
     });
 
-    it('skal returnere false når et barn er over 12 måneder', () => {
+    it('skal returnere false når et barn er 12 måneder eller mer', () => {
         const fødselsdato = new Date();
-        fødselsdato.setMonth(fødselsdato.getMonth() - 13);
+        fødselsdato.setMonth(fødselsdato.getMonth() - 12);
         const vilkår = lagVilkår(fødselsdato.toISOString());
 
         expect(harBarnMellomSeksOgTolvMåneder(vilkår as IVilkår)).toBe(false);
