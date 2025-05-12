@@ -50,9 +50,9 @@ export const setupBackend = (app: Express, router: Router) => {
     app.use('/', setupRouter(router));
 
     app.listen(port, '0.0.0.0', () => {
-        logInfo(`Server started on port ${port}. Build version: ${process.env.APP_VERSION}.`);
+        logInfo(`Server startet med port: ${port}`);
     }).on('error', (err: Error) => {
-        logError(`Server startup failed - ${err}`);
+        logError(`Server start feilet med feil: ${err}`);
     });
 };
 
