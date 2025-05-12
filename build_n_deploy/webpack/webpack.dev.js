@@ -1,4 +1,5 @@
 import path from 'path';
+import process from 'process';
 import webpack from 'webpack';
 import { mergeWithCustomize } from 'webpack-merge';
 import common from './webpack.common';
