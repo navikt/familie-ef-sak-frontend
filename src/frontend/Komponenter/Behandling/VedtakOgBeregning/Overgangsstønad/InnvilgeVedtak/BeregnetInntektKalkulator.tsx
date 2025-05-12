@@ -2,7 +2,7 @@ import { CalculatorIcon } from '@navikt/aksel-icons';
 import { Dropdown, Button, Tooltip } from '@navikt/ds-react';
 import React, { FC, useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
-import InntektsKalkulator from '../../../../../Felles/Kalkulator/Inntektskalkulator';
+import Inntektskalkulator from '../../../../../Felles/Kalkulator/Inntektskalkulator';
 
 const StyledDropdownMenu = styled(Dropdown.Menu)`
     width: 23rem;
@@ -56,11 +56,11 @@ const BeregnetInntektKalkulator: FC<{
                 </Button>
             </Tooltip>
             <StyledDropdownMenu>
-                <InntektsKalkulator
+                <Inntektskalkulator
                     leggTilBeregnetInntektTekstIBegrunnelse={
                         leggTilBeregnetInntektTekstIBegrunnelse
                     }
-                ></InntektsKalkulator>
+                ></Inntektskalkulator>
             </StyledDropdownMenu>
         </Dropdown>
     );

@@ -1,9 +1,15 @@
 import React, { useEffect } from 'react';
 import { genererBeregnetInntektsTekst } from '../../App/hooks/useVerdierForBrev';
-import { Button } from '@navikt/ds-react';
+import { Textarea } from '@navikt/ds-react';
 import useFieldState, { FieldState } from '../../App/hooks/felles/useFieldState';
-import InntektsKalkulator from '../../Felles/Kalkulator/Inntektskalkulator';
-import { EnsligTextArea } from '../../Felles/Input/TekstInput/EnsligTextArea';
+import Inntektskalkulator from '../../Felles/Kalkulator/Inntektskalkulator';
+import styled from 'styled-components';
+
+const TextAreaLiten = styled(Textarea)`
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    max-width: 40rem;
+`;
 
 export const InntektskalkulatorSide: React.FC = () => {
     const inntektBegrunnelseState: FieldState = useFieldState('');
@@ -12,7 +18,7 @@ export const InntektskalkulatorSide: React.FC = () => {
         inntektBegrunnelseState.setValue((prevState) => prevState + beregnetInntektTekst);
     };
 
-    const nullstillKalkulator = () => {
+    const nullstillBegrunnelse = () => {
         inntektBegrunnelseState.setValue(() => '');
     };
 
@@ -22,13 +28,11 @@ export const InntektskalkulatorSide: React.FC = () => {
 
     return (
         <>
-            <InntektsKalkulator
+            <Inntektskalkulator
                 leggTilBeregnetInntektTekstIBegrunnelse={leggTilBeregnetInntektTekstIBegrunnelse}
+                nullstillBegrunnelse={nullstillBegrunnelse}
             />
-            <Button type="button" variant="tertiary" size="xsmall" onClick={nullstillKalkulator}>
-                Nullstill
-            </Button>
-            <EnsligTextArea
+            <TextAreaLiten
                 value={inntektBegrunnelseState.value}
                 onChange={(event) => {
                     inntektBegrunnelseState.onChange(event);

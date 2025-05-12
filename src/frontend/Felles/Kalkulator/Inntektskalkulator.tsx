@@ -1,18 +1,17 @@
-import { Button, HStack } from '@navikt/ds-react';
-import React, { FC, useEffect, useRef, useState } from 'react';
+import { Button, HStack, VStack } from '@navikt/ds-react';
+import React, { FC, useRef, useState } from 'react';
 import { BodyShortSmall } from '../Visningskomponenter/Tekster';
 import ForwardedTextField from '../../Komponenter/Behandling/VedtakOgBeregning/Overgangsstønad/InnvilgeVedtak/ForwardedTextField';
 import { EnsligErrorMessage } from '../ErrorMessage/EnsligErrorMessage';
 
-const TASTATURTAST_K = 'k';
 const TASTATURTAST_ENTER = 'Enter';
 
-const InntektsKalkulator: FC<{
+const Inntektskalkulator: FC<{
     leggTilBeregnetInntektTekstIBegrunnelse: (årsinntekt: number) => void;
-}> = ({ leggTilBeregnetInntektTekstIBegrunnelse }) => {
+    nullstillBegrunnelse?: () => void;
+}> = ({ leggTilBeregnetInntektTekstIBegrunnelse, nullstillBegrunnelse }) => {
     const [årsinntekt, settÅrsinntekt] = useState<string>('');
     const textFieldRef = useRef<HTMLInputElement>(null);
-    const [erDropdownÅpen, settErDropdownÅpen] = useState<boolean>(false);
     const [feilmedling, settFeilmedling] = useState<string>('');
 
     const oppdaterÅrsinntekt = () => {
@@ -26,7 +25,6 @@ const InntektsKalkulator: FC<{
 
         leggTilBeregnetInntektTekstIBegrunnelse(årsinntektTall);
         settÅrsinntekt('');
-        settErDropdownÅpen(false);
     };
 
     const handleRegnUtOgLeggTilTekst = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -45,35 +43,17 @@ const InntektsKalkulator: FC<{
         }
     };
 
-    useEffect(() => {
-        if (textFieldRef.current) {
-            textFieldRef.current.focus();
+    const nullstillKalkulator = () => {
+        if (nullstillBegrunnelse !== undefined) {
+            nullstillBegrunnelse();
         }
-    }, [erDropdownÅpen]);
-
-    useEffect(() => {
-        const handleKeyDown = (event: KeyboardEvent) => {
-            if (
-                document.activeElement === document.body &&
-                !(event.target instanceof HTMLInputElement) &&
-                event.key === TASTATURTAST_K
-            ) {
-                event.preventDefault();
-                settErDropdownÅpen((prev) => !prev);
-            }
-        };
-
-        window.addEventListener('keydown', handleKeyDown);
-
-        return () => {
-            window.removeEventListener('keydown', handleKeyDown);
-        };
-    }, []);
+        settÅrsinntekt('');
+    };
 
     return (
-        <>
+        <VStack gap="3">
             <BodyShortSmall>Legg inn årsinntekt for å regne ut +/- 10 prosent.</BodyShortSmall>
-            <HStack gap="2" justify="space-between">
+            <HStack gap="4" justify={nullstillBegrunnelse ? 'start' : 'space-between'}>
                 <ForwardedTextField
                     ref={textFieldRef}
                     placeholder="Årsinntekt"
@@ -94,10 +74,20 @@ const InntektsKalkulator: FC<{
                 >
                     Beregn
                 </Button>
+                {nullstillBegrunnelse !== undefined && (
+                    <Button
+                        type="button"
+                        variant="tertiary"
+                        size="xsmall"
+                        onClick={nullstillKalkulator}
+                    >
+                        Nullstill
+                    </Button>
+                )}
                 <EnsligErrorMessage>{feilmedling}</EnsligErrorMessage>
             </HStack>
-        </>
+        </VStack>
     );
 };
 
-export default InntektsKalkulator;
+export default Inntektskalkulator;
