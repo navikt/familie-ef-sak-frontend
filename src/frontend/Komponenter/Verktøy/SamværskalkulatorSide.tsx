@@ -51,7 +51,8 @@ export const SamværskalkulatorSide: React.FC = () => (
 );
 
 const SamværskalkulatorSkjema: React.FC = () => {
-    const initiellFagsakPersonId = useParams<{ fagsakPersonId: string }>().fagsakPersonId as string;
+    const initiellFagsakPersonId = useParams<{ fagsakPersonId: string | undefined }>()
+        .fagsakPersonId as string | undefined;
     useSetValgtFagsakPersonId(initiellFagsakPersonId);
     const navigate = useNavigate();
     const { utførRedirect } = useRedirectEtterLagring(`/oppgavebenk`);
@@ -95,7 +96,9 @@ const SamværskalkulatorSkjema: React.FC = () => {
     }, [axiosRequest, fagsakPerson]);
 
     useEffect(() => {
-        hentFagsakPerson(initiellFagsakPersonId);
+        if (initiellFagsakPersonId) {
+            hentFagsakPerson(initiellFagsakPersonId);
+        }
     }, [hentFagsakPerson, initiellFagsakPersonId]);
 
     useEffect(() => {
