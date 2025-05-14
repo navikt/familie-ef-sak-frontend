@@ -53,33 +53,37 @@ const Skoleårsperioder: React.FC<Props> = ({
 
     return (
         <>
-            {skoleårsperioder.value.map((skoleårsperiode, index) => {
-                return (
-                    <Skoleårsperiode
-                        låsteUtgiftIder={låsteUtgiftIder}
-                        customValidate={customValidate}
-                        fjernSkoleårsperiode={() => fjernSkoleårsperiode(index)}
-                        key={index}
-                        skoleårsperiode={skoleårsperiode}
-                        oppdaterSkoleårsperiode={(
-                            property: keyof ISkoleårsperiodeSkolepenger,
-                            value: ISkoleårsperiodeSkolepenger[keyof ISkoleårsperiodeSkolepenger]
-                        ) => oppdaterSkoleårsperiode(index, property, value)}
-                        oppdaterValideringsfeil={(
-                            property: keyof ISkoleårsperiodeSkolepenger,
-                            oppdaterteFeil
-                        ) =>
-                            oppdaterValideringsfeil(
-                                settValideringsFeil,
-                                index,
-                                property,
+            {skoleårsperioder.value
+                .map((skoleårsperiode) => skoleårsperiode)
+                .reverse()
+                .map((skoleårsperiode, index) => {
+                    const originalIndex = skoleårsperioder.value.length - index - 1;
+                    return (
+                        <Skoleårsperiode
+                            låsteUtgiftIder={låsteUtgiftIder}
+                            customValidate={customValidate}
+                            fjernSkoleårsperiode={() => fjernSkoleårsperiode(index)}
+                            key={originalIndex}
+                            skoleårsperiode={skoleårsperiode}
+                            oppdaterSkoleårsperiode={(
+                                property: keyof ISkoleårsperiodeSkolepenger,
+                                value: ISkoleårsperiodeSkolepenger[keyof ISkoleårsperiodeSkolepenger]
+                            ) => oppdaterSkoleårsperiode(originalIndex, property, value)}
+                            oppdaterValideringsfeil={(
+                                property: keyof ISkoleårsperiodeSkolepenger,
                                 oppdaterteFeil
-                            )
-                        }
-                        valideringsfeil={valideringsfeil && valideringsfeil[index]}
-                    />
-                );
-            })}
+                            ) =>
+                                oppdaterValideringsfeil(
+                                    settValideringsFeil,
+                                    originalIndex,
+                                    property,
+                                    oppdaterteFeil
+                                )
+                            }
+                            valideringsfeil={valideringsfeil && valideringsfeil[originalIndex]}
+                        />
+                    );
+                })}
             {behandlingErRedigerbar && (
                 <LeggTilKnapp
                     ikonPosisjon={'right'}
