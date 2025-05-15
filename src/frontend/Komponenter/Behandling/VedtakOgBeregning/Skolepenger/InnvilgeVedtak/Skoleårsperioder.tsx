@@ -58,6 +58,9 @@ const Skoleårsperioder: React.FC<Props> = ({
         (skoleårsperiode) => !skoleårsperiode.erHentetFraBackend
     ).length;
 
+    const harMinstToLagredeSkoleårsperioder =
+        skoleårsperioder.value.length - antallUlagredeSkoleårsperioder > 1;
+
     const skoleårsperioderReversert = skoleårsperioder.value.toReversed();
 
     return (
@@ -105,18 +108,20 @@ const Skoleårsperioder: React.FC<Props> = ({
                     />
                 ) : null;
             })}
-            <Knapp
-                icon={visTidligereSkoleår ? <ChevronUpIcon /> : <ChevronDownIcon />}
-                variant={'tertiary'}
-                size={'medium'}
-                iconPosition={'left'}
-                type={'button'}
-                onClick={() => {
-                    settVisTidligereSkoleår((prevState) => !prevState);
-                }}
-            >
-                {visTidligereSkoleår ? 'Skjul tidligere skoleår' : 'Vis tidligere skoleår'}
-            </Knapp>
+            {harMinstToLagredeSkoleårsperioder && (
+                <Knapp
+                    icon={visTidligereSkoleår ? <ChevronUpIcon /> : <ChevronDownIcon />}
+                    variant={'tertiary'}
+                    size={'medium'}
+                    iconPosition={'left'}
+                    type={'button'}
+                    onClick={() => {
+                        settVisTidligereSkoleår((prevState) => !prevState);
+                    }}
+                >
+                    {visTidligereSkoleår ? 'Skjul tidligere skoleår' : 'Vis tidligere skoleår'}
+                </Knapp>
+            )}
         </>
     );
 };
