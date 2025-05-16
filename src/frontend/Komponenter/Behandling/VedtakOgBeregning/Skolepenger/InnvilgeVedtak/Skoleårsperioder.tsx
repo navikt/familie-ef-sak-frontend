@@ -1,5 +1,5 @@
 import { ISkoleårsperiodeSkolepenger } from '../../../../../App/typer/vedtak';
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import { useBehandling } from '../../../../../App/context/BehandlingContext';
 import { ListState } from '../../../../../App/hooks/felles/useListState';
 import { FormErrors, Valideringsfunksjon } from '../../../../../App/hooks/felles/useFormState';
@@ -9,6 +9,8 @@ import { InnvilgeVedtakForm, tomSkoleårsperiodeSkolepenger } from '../Felles/ty
 import { oppdaterValideringsfeil } from '../Felles/utils';
 import LeggTilKnapp from '../../../../../Felles/Knapper/LeggTilKnapp';
 import Skoleårsperiode from './Skoleårsperiode';
+import { Knapp } from '../../../../../Felles/Knapper/HovedKnapp';
+import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons';
 
 interface Props {
     customValidate: (fn: Valideringsfunksjon<InnvilgeVedtakForm>) => boolean;
@@ -29,6 +31,7 @@ const Skoleårsperioder: React.FC<Props> = ({
 }) => {
     const { behandlingErRedigerbar } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
+    const [visTidligereSkoleår, settVisTidligereSkoleår] = useState<boolean>(false);
 
     const fjernSkoleårsperiode = (index: number) => {
         skoleårsperioder.remove(index);
@@ -51,35 +54,17 @@ const Skoleårsperioder: React.FC<Props> = ({
         oppdaterHarUtførtBeregning(false);
     };
 
+    const antallUlagredeSkoleårsperioder = skoleårsperioder.value.filter(
+        (skoleårsperiode) => !skoleårsperiode.erHentetFraBackend
+    ).length;
+
+    const harMinstToLagredeSkoleårsperioder =
+        skoleårsperioder.value.length - antallUlagredeSkoleårsperioder > 1;
+
+    const skoleårsperioderReversert = skoleårsperioder.value.toReversed();
+
     return (
         <>
-            {skoleårsperioder.value.map((skoleårsperiode, index) => {
-                return (
-                    <Skoleårsperiode
-                        låsteUtgiftIder={låsteUtgiftIder}
-                        customValidate={customValidate}
-                        fjernSkoleårsperiode={() => fjernSkoleårsperiode(index)}
-                        key={index}
-                        skoleårsperiode={skoleårsperiode}
-                        oppdaterSkoleårsperiode={(
-                            property: keyof ISkoleårsperiodeSkolepenger,
-                            value: ISkoleårsperiodeSkolepenger[keyof ISkoleårsperiodeSkolepenger]
-                        ) => oppdaterSkoleårsperiode(index, property, value)}
-                        oppdaterValideringsfeil={(
-                            property: keyof ISkoleårsperiodeSkolepenger,
-                            oppdaterteFeil
-                        ) =>
-                            oppdaterValideringsfeil(
-                                settValideringsFeil,
-                                index,
-                                property,
-                                oppdaterteFeil
-                            )
-                        }
-                        valideringsfeil={valideringsfeil && valideringsfeil[index]}
-                    />
-                );
-            })}
             {behandlingErRedigerbar && (
                 <LeggTilKnapp
                     ikonPosisjon={'right'}
@@ -87,6 +72,55 @@ const Skoleårsperioder: React.FC<Props> = ({
                     onClick={() => skoleårsperioder.push(tomSkoleårsperiodeSkolepenger())}
                     variant="tertiary"
                 />
+            )}
+            {skoleårsperioderReversert.map((skoleårsperiode, indexReversertListe) => {
+                const indexOriginalListe = skoleårsperioder.value.length - indexReversertListe - 1;
+
+                const skalViseSkoleår =
+                    visTidligereSkoleår ||
+                    indexReversertListe === 0 ||
+                    !skoleårsperiode.erHentetFraBackend ||
+                    indexReversertListe === antallUlagredeSkoleårsperioder;
+
+                return skalViseSkoleår ? (
+                    <Skoleårsperiode
+                        låsteUtgiftIder={låsteUtgiftIder}
+                        customValidate={customValidate}
+                        fjernSkoleårsperiode={() => fjernSkoleårsperiode(indexOriginalListe)}
+                        key={indexOriginalListe}
+                        skoleårsperiode={skoleårsperiode}
+                        oppdaterSkoleårsperiode={(
+                            property: keyof ISkoleårsperiodeSkolepenger,
+                            value: ISkoleårsperiodeSkolepenger[keyof ISkoleårsperiodeSkolepenger]
+                        ) => oppdaterSkoleårsperiode(indexOriginalListe, property, value)}
+                        oppdaterValideringsfeil={(
+                            property: keyof ISkoleårsperiodeSkolepenger,
+                            oppdaterteFeil
+                        ) =>
+                            oppdaterValideringsfeil(
+                                settValideringsFeil,
+                                indexOriginalListe,
+                                property,
+                                oppdaterteFeil
+                            )
+                        }
+                        valideringsfeil={valideringsfeil && valideringsfeil[indexOriginalListe]}
+                    />
+                ) : null;
+            })}
+            {harMinstToLagredeSkoleårsperioder && (
+                <Knapp
+                    icon={visTidligereSkoleår ? <ChevronUpIcon /> : <ChevronDownIcon />}
+                    variant={'tertiary'}
+                    size={'medium'}
+                    iconPosition={'left'}
+                    type={'button'}
+                    onClick={() => {
+                        settVisTidligereSkoleår((prevState) => !prevState);
+                    }}
+                >
+                    {visTidligereSkoleår ? 'Skjul tidligere skoleår' : 'Vis tidligere skoleår'}
+                </Knapp>
             )}
         </>
     );
