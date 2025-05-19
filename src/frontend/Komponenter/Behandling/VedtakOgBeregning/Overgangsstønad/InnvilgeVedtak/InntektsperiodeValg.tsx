@@ -39,7 +39,7 @@ import { ABorderDivider, AGray50 } from '@navikt/ds-tokens/dist/tokens';
 import { IngenBegrunnelseOppgitt } from './IngenBegrunnelseOppgitt';
 import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
 import BeregnetInntektKalkulator from './BeregnetInntektKalkulator';
-import { genererBeregnetInntektsTekst } from '../../../../../App/hooks/useVerdierForBrev';
+import { genererBeregnetInntektTekst } from '../../../../../App/hooks/useVerdierForBrev';
 
 const Container = styled.div`
     padding: 1rem;
@@ -193,7 +193,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
     };
 
     const leggTilBeregnetInntektTekstIBegrunnelse = (årsinntekt: number) => {
-        const beregnetInntektTekst = genererBeregnetInntektsTekst(årsinntekt);
+        const beregnetInntektTekst = genererBeregnetInntektTekst(årsinntekt);
         inntektBegrunnelseState.setValue((prevState) => prevState + beregnetInntektTekst);
     };
 

@@ -9,7 +9,7 @@ import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
 import HovedKnapp from '../../../../../Felles/Knapper/HovedKnapp';
 import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
 import BeregnetInntektKalkulator from '../../Overgangsstønad/InnvilgeVedtak/BeregnetInntektKalkulator';
-import { genererBeregnetInntektsTekst } from '../../../../../App/hooks/useVerdierForBrev';
+import { genererBeregnetInntektTekst } from '../../../../../App/hooks/useVerdierForBrev';
 import { HStack } from '@navikt/ds-react';
 
 const Form = styled.form`
@@ -58,7 +58,7 @@ export const AvslåVedtakForm: React.FC<Props> = ({
     }, [skalVelgeÅrsak, settAvslagÅrsak]);
 
     const leggTilBeregnetInntektTekstIBegrunnelse = (årsinntekt: number) => {
-        const beregnetInntektTekst = genererBeregnetInntektsTekst(årsinntekt);
+        const beregnetInntektTekst = genererBeregnetInntektTekst(årsinntekt);
         settAvslagBegrunnelse((prev: string) => prev + beregnetInntektTekst);
     };
 
