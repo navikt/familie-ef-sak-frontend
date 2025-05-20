@@ -12,7 +12,6 @@ services:
       - "8000:8000"
     command: >
       --openid.provider=azure
-      --openid.scopes=openid profile email
       --openid.client-id=${AZURE_APP_CLIENT_ID}
       --openid.client-secret=${AZURE_APP_CLIENT_SECRET}
       --openid.well-known-url=${AZURE_APP_WELL_KNOWN_URL}
