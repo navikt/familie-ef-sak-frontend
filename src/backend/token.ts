@@ -17,7 +17,7 @@ export const authenticateToken = (targetAudience: string) => {
             return;
         }
 
-        const obo = await requestOboToken(token, targetAudience);
+        const obo = await requestOboToken(token, utledTargetAudience(targetAudience));
 
         if (!obo.ok) {
             console.error('OBO-token kunne ikke hentes.');
@@ -28,4 +28,10 @@ export const authenticateToken = (targetAudience: string) => {
         req.headers['authorization'] = `Bearer ${obo.token}`;
         next();
     };
+};
+
+export const utledTargetAudience = (applicationNavn: string) => {
+    // TODO: Fix meg.
+    const audience = `api://dev-gcp.teamfamilie.${applicationNavn}/.default`;
+    return audience;
 };

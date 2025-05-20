@@ -19,28 +19,28 @@ export const setupBackend = (app: Express, router: Router) => {
     app.use(
         '/familie-ef-sak/api',
         addRequestInfo(),
-        authenticateToken(utledTargetAudience('familie-ef-sak')),
+        authenticateToken('familie-ef-sak'),
         doProxy(sakProxyUrl)
     );
 
     app.use(
         '/dokument',
         addRequestInfo(),
-        authenticateToken(utledTargetAudience('familie-dokument')),
+        authenticateToken('familie-dokument'),
         doProxy(sakProxyUrl)
     );
 
     app.use(
         '/familie-brev/api',
         addRequestInfo(),
-        authenticateToken(utledTargetAudience('familie-brev')),
+        authenticateToken('familie-brev'),
         doProxy(brevProxyUrl)
     );
 
     app.use(
         '/familie-endringslogg',
         addRequestInfo(),
-        authenticateToken(utledTargetAudience('familie-endringslogg')),
+        authenticateToken('familie-endringslogg'),
         doProxy(endringsloggProxyUrl, '')
     );
 
@@ -54,10 +54,4 @@ export const setupBackend = (app: Express, router: Router) => {
     }).on('error', (err: Error) => {
         logError(`Server start feilet med feil: ${err}`);
     });
-};
-
-export const utledTargetAudience = (applicationNavn: string) => {
-    // TODO: Fix meg.
-    const audience = `api://dev-gcp.teamfamilie.${applicationNavn}/.default`;
-    return audience;
 };
