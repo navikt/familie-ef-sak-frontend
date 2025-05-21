@@ -9,6 +9,15 @@ export interface ISaksbehandler {
     enhet: string;
 }
 
+export interface Saksbehandler {
+    azureId: string;
+    navIdent: string;
+    fornavn: string;
+    etternavn: string;
+    enhet: string;
+    enhetsnavn: string;
+}
+
 export enum AnsvarligSaksbehandlerRolle {
     IKKE_SATT = 'IKKE_SATT',
     INNLOGGET_SAKSBEHANDLER = 'INNLOGGET_SAKSBEHANDLER',

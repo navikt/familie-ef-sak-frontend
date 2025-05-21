@@ -2,8 +2,8 @@ import { BodyLong } from '@navikt/ds-react';
 import * as React from 'react';
 import { useState } from 'react';
 import { AppProvider, useApp } from './App/context/AppContext';
-import { hentInnloggetBruker } from './App/api/saksbehandler';
-import { ISaksbehandler } from './App/typer/saksbehandler';
+import { hentInnloggetBruker, hentSaksbehandlerInfo } from './App/api/saksbehandler';
+import { ISaksbehandler, Saksbehandler } from './App/typer/saksbehandler';
 import ErrorBoundary from './Felles/ErrorBoundary/ErrorBoundary';
 import { TogglesProvider } from './App/context/TogglesContext';
 import { HeaderMedSøk } from './Felles/HeaderMedSøk/HeaderMedSøk';
@@ -38,11 +38,19 @@ import { VerktøySide } from './Komponenter/Verktøy/VerktøySide';
 
 export const App: React.FC = () => {
     const [innloggetSaksbehandler, settInnloggetSaksbehandler] = useState<ISaksbehandler>();
+    const [enhancedSaksbehandler, settEnhancedSaksbehandler] = useState<Saksbehandler>();
+    enhancedSaksbehandler;
+
     const [appEnv, settAppEnv] = useState<AppEnv>();
 
     React.useEffect(() => {
         hentInnloggetBruker().then((innhentetInnloggetSaksbehandler: ISaksbehandler) => {
             settInnloggetSaksbehandler(innhentetInnloggetSaksbehandler);
+        });
+        hentSaksbehandlerInfo().then((saksbehandler) => {
+            console.log(`Saksbehandler hentet fra EF-SAK er:`, saksbehandler);
+            console.log(saksbehandler);
+            settEnhancedSaksbehandler(saksbehandler);
         });
     }, []);
 
