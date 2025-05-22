@@ -17,7 +17,6 @@ export enum ToggleName {
     visTildelOppgaveKnapp = 'familie.ef.sak.frontend-tildel-oppgave-knapp',
 
     // Release-toggles
-    visMarkereGodkjenneVedtakOppgaveModal = 'familie.ef.sak.vis-markere-godkjenne-vedtak-oppgave-modal',
     brukErrorAlertMedKopierKnapp = 'familie.ef.sak.frontend-alert-error-med-copy-button',
     visAutomatiskInntektsendring = 'familie.ef.sak.frontend-vis-automatisk-inntektsendring',
 }
