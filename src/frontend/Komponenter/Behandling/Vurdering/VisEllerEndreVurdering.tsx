@@ -105,7 +105,11 @@ const VisEllerEndreVurdering: FC<Props> = ({
     };
 
     const gjenbrukVilkårsvurdering = () => {
-        gjenbrukEnkelVilkårsvurdering(vurdering.behandlingId, vurdering.id);
+        gjenbrukEnkelVilkårsvurdering(vurdering.behandlingId, vurdering.id).then((response) => {
+            if (response.status === RessursStatus.SUKSESS) {
+                hentBehandling.rerun();
+            }
+        });
     };
 
     const initiellRedigeringsmodus =

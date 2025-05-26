@@ -9,12 +9,9 @@ import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
 import { Button } from '@navikt/ds-react';
 import { AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
 import { useNavigate } from 'react-router-dom';
-import OppgaverForOpprettelse from './OppgaverForOpprettelse';
 import { Behandling } from '../../../App/typer/fagsak';
 import { OppgaveTypeForOpprettelse } from './oppgaveForOpprettelseTyper';
 import { ModalState } from '../Modal/NyEierModal';
-import { useToggles } from '../../../App/context/TogglesContext';
-import { ToggleName } from '../../../App/context/toggles';
 import { ModalSendTilBeslutter } from './ModalSendTilBeslutter';
 import { useHentFremleggsoppgaverForOvergangsstønad } from '../../../App/hooks/useHentFremleggsoppgaverForOvergangsstønad';
 import { Oppfølgingsoppgave } from '../../../App/hooks/useHentOppfølgingsoppgave';
@@ -80,10 +77,9 @@ const SendTilBeslutter: React.FC<{
         hentBehandlingshistorikk,
         settNyEierModalState,
     } = useBehandling();
-    const { toggles } = useToggles();
     const { hentFremleggsoppgaver, fremleggsoppgaver } =
         useHentFremleggsoppgaverForOvergangsstønad();
-    const oppgavetyperSomKanOpprettes =
+    const oppgavetyperSomKanOpprettesOvergangsstønad =
         oppfølgingsoppgave?.oppgaverForOpprettelse?.oppgavetyperSomKanOpprettes;
     const [laster, settLaster] = useState<boolean>(false);
     const [feilmelding, settFeilmelding] = useState<string>();
@@ -92,7 +88,7 @@ const SendTilBeslutter: React.FC<{
         useState<boolean>(false);
     const [oppgavetyperSomSkalOpprettes, settOppgavetyperSomSkalOpprettes] = useState<
         OppgaveTypeForOpprettelse[]
-    >(utledDefaultOppgavetyperSomSkalOpprettes(oppgavetyperSomKanOpprettes));
+    >(utledDefaultOppgavetyperSomSkalOpprettes(oppgavetyperSomKanOpprettesOvergangsstønad));
     const [oppgaverSomSkalAutomatiskFerdigstilles, settOppgaverSomSkalAutomatiskFerdigstilles] =
         useState<number[]>(oppfølgingsoppgave?.oppgaveIderForFerdigstilling || []);
     const [avslagValg, settAvslagValg] = useState<{
@@ -133,9 +129,6 @@ const SendTilBeslutter: React.FC<{
             .finally(() => settLaster(false));
     };
 
-    const toggleVisKnappForModal =
-        toggles[ToggleName.visMarkereGodkjenneVedtakOppgaveModal] || false;
-
     const lukkModal = () => {
         settVisModal(false);
         hentBehandling.rerun();
@@ -150,10 +143,9 @@ const SendTilBeslutter: React.FC<{
         : 'Vedtaket er sendt til beslutter';
 
     const skalViseKnappForModal =
-        toggleVisKnappForModal &&
         oppfølgingsoppgave &&
-        oppgavetyperSomKanOpprettes &&
-        oppgavetyperSomKanOpprettes.length > 0;
+        oppgavetyperSomKanOpprettesOvergangsstønad &&
+        oppgavetyperSomKanOpprettesOvergangsstønad.length > 0;
 
     useEffect(() => {
         hentFremleggsoppgaver(behandling.id);
@@ -161,9 +153,9 @@ const SendTilBeslutter: React.FC<{
 
     useEffect(() => {
         settOppgavetyperSomSkalOpprettes(
-            utledDefaultOppgavetyperSomSkalOpprettes(oppgavetyperSomKanOpprettes)
+            utledDefaultOppgavetyperSomSkalOpprettes(oppgavetyperSomKanOpprettesOvergangsstønad)
         );
-    }, [oppgavetyperSomKanOpprettes]);
+    }, [oppgavetyperSomKanOpprettesOvergangsstønad]);
 
     useEffect(() => {
         settAvslagValg(utledAvslagValg(vedtak));
@@ -178,14 +170,6 @@ const SendTilBeslutter: React.FC<{
                         <AlertInfo>Vedtaket vil ikke bli sendt til totrinnskontroll</AlertInfo>
                     )}
                     <FlexBox>
-                        {/* TODO: Dette skal fjernes etter at ny modal er togglet på for alle */}
-                        {oppgavetyperSomKanOpprettes && !toggleVisKnappForModal && (
-                            <OppgaverForOpprettelse
-                                oppgavetyperSomKanOpprettes={oppgavetyperSomKanOpprettes}
-                                oppgavetyperSomSkalOpprettes={oppgavetyperSomSkalOpprettes}
-                                settOppgavetyperSomSkalOpprettes={settOppgavetyperSomSkalOpprettes}
-                            />
-                        )}
                         <div>
                             {skalViseKnappForModal ? (
                                 <Button
@@ -226,25 +210,23 @@ const SendTilBeslutter: React.FC<{
                     marginTop: 4,
                 }}
             />
-            {toggleVisKnappForModal && (
-                <ModalSendTilBeslutter
-                    behandling={behandling}
-                    vilkår={vilkår}
-                    open={visMarkereGodkjenneVedtakOppgaveModal}
-                    setOpen={settVisMarkereGodkjenneVedtakOppgaveModal}
-                    sendTilBeslutter={sendTilBeslutter}
-                    oppgavetyperSomKanOpprettes={oppgavetyperSomKanOpprettes}
-                    oppgavetyperSomSkalOpprettes={oppgavetyperSomSkalOpprettes}
-                    settOppgavetyperSomSkalOpprettes={settOppgavetyperSomSkalOpprettes}
-                    fremleggsOppgaver={fremleggsoppgaver}
-                    oppgaverSomSkalAutomatiskFerdigstilles={oppgaverSomSkalAutomatiskFerdigstilles}
-                    settOppgaverSomSkalAutomatiskFerdigstilles={
-                        settOppgaverSomSkalAutomatiskFerdigstilles
-                    }
-                    avslagValg={avslagValg}
-                    oppfølgingsoppgave={oppfølgingsoppgave}
-                />
-            )}
+            <ModalSendTilBeslutter
+                behandling={behandling}
+                vilkår={vilkår}
+                open={visMarkereGodkjenneVedtakOppgaveModal}
+                setOpen={settVisMarkereGodkjenneVedtakOppgaveModal}
+                sendTilBeslutter={sendTilBeslutter}
+                oppgavetyperSomKanOpprettes={oppgavetyperSomKanOpprettesOvergangsstønad}
+                oppgavetyperSomSkalOpprettes={oppgavetyperSomSkalOpprettes}
+                settOppgavetyperSomSkalOpprettes={settOppgavetyperSomSkalOpprettes}
+                fremleggsOppgaver={fremleggsoppgaver}
+                oppgaverSomSkalAutomatiskFerdigstilles={oppgaverSomSkalAutomatiskFerdigstilles}
+                settOppgaverSomSkalAutomatiskFerdigstilles={
+                    settOppgaverSomSkalAutomatiskFerdigstilles
+                }
+                avslagValg={avslagValg}
+                oppfølgingsoppgave={oppfølgingsoppgave}
+            />
         </>
     );
 };
