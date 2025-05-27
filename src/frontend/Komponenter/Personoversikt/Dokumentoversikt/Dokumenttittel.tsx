@@ -53,6 +53,14 @@ export const Dokumenttittel: React.FC<Props> = ({
                 target={'_blank'}
                 rel={'noreferrer'}
                 onClick={oppdaterBesøkteDokumentLenker}
+                onAuxClick={(e) => {
+                    if (e.button === 1) {
+                        oppdaterBesøkteDokumentLenker();
+                    }
+                }}
+                onContextMenu={() => {
+                    oppdaterBesøkteDokumentLenker();
+                }}
             >
                 {dokument.tittel}
             </Tittel>
