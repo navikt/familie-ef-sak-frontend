@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY assets ./assets
 COPY node_modules ./node_modules
-COPY build_n_deploy ./build_n_deploy
+COPY .nais ./.nais
 COPY node_dist ./node_dist
 COPY frontend_production ./frontend_production
 COPY package.json .
