@@ -20,7 +20,10 @@
         "set-node-options": "NODE_OPTIONS='--import=./node_dist/backend/register.js --es-module-specifier-resolution=node'"
     },
     "lint-staged": {
-        "src/**/*.{js,jsx,ts,tsx,json,css}": ["prettier --write", "eslint --fix --max-warnings=0"]
+        "src/**/*.{js,jsx,ts,tsx,json,css}": [
+            "prettier --write",
+            "eslint --fix --max-warnings=0"
+        ]
     },
     "dependencyComments": {
         "color-string": "Overrider versjon som brukes av winston, som kommer fra familie-frontend-backend",
@@ -74,7 +77,8 @@
         "svg-inline-loader": "^0.8.2",
         "ts-node": "^10.9.2",
         "use-debounce": "^10.0.4",
-        "uuid": "^11.1.0"
+        "uuid": "^11.1.0",
+        "webpack-dev-server": "^5.2.1"
     },
     "devDependencies": {
         "@axe-core/react": "4.10.1",
