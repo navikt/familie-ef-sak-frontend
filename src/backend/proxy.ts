@@ -4,7 +4,8 @@ import { ClientRequest, IncomingMessage } from 'http';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import { v4 as uuidv4 } from 'uuid';
 import { oboConfig } from './config';
-import { logError, logInfo, stdoutLogger } from '@navikt/familie-logging';
+import { logError, logInfo } from '@navikt/familie-logging';
+import winston from 'winston';
 
 const restream = (proxyReq: ClientRequest, req: IncomingMessage) => {
     const requestBody = (req as Request).body;
@@ -17,9 +18,18 @@ const restream = (proxyReq: ClientRequest, req: IncomingMessage) => {
 };
 
 export const doProxy = (targetUrl: string, pathPrefix = '/api'): RequestHandler => {
+    const logger = winston.createLogger({
+        format: winston.format.combine(winston.format.splat(), winston.format.simple()),
+        transports: [
+            new winston.transports.Console({
+                format: winston.format.json(),
+            }),
+        ],
+    });
+
     return createProxyMiddleware({
         changeOrigin: true,
-        logger: stdoutLogger,
+        logger: logger,
         on: {
             proxyReq: restream,
         },
