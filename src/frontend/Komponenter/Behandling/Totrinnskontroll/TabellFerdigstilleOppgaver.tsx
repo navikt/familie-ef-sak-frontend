@@ -16,10 +16,12 @@ const StyledBodyLong = styled(BodyLong)`
 
 export const TabellFerdigstilleOppgaver: FC<{
     fremleggsOppgaver: IOppgaverResponse;
+    // oppgaveforBeslutter: IOppgaverResponse[];
     oppgaverSomSkalAutomatiskFerdigstilles: number[];
     handleSettOppgaverSomSkalFerdigstilles: (oppgaveId: number) => void;
 }> = ({
     fremleggsOppgaver,
+    // oppgaveForBeslutter,
     oppgaverSomSkalAutomatiskFerdigstilles,
     handleSettOppgaverSomSkalFerdigstilles,
 }) => {

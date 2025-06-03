@@ -20,6 +20,7 @@ import { AutomatiskBrevValg } from './AutomatiskBrev';
 import { IVilkår } from '../Inngangsvilkår/vilkår';
 import { IVedtak } from '../../../App/typer/vedtak';
 import { utledAvslagValg } from '../VedtakOgBeregning/Felles/utils';
+import { useHentOppgaveForBeslutter } from '../../../App/hooks/useHentOppgaveForBeslutter';
 
 const FlexBox = styled.div`
     display: flex;
@@ -79,6 +80,7 @@ const SendTilBeslutter: React.FC<{
     } = useBehandling();
     const { hentFremleggsoppgaver, fremleggsoppgaver } =
         useHentFremleggsoppgaverForOvergangsstønad();
+    const { hentOppgaverForBeslutter, oppgaverForBeslutter } = useHentOppgaveForBeslutter();
     const oppgavetyperSomKanOpprettesOvergangsstønad =
         oppfølgingsoppgave?.oppgaverForOpprettelse?.oppgavetyperSomKanOpprettes;
     const [laster, settLaster] = useState<boolean>(false);
@@ -100,6 +102,7 @@ const SendTilBeslutter: React.FC<{
 
     const { ferdigstillUtenBeslutter } = avslagValg;
 
+    // need to fix here to save oppgavetype, not only for fremlegg
     const sendTilBeslutter = (data: SendTilBeslutterRequest) => {
         if (laster) return;
 
@@ -143,13 +146,18 @@ const SendTilBeslutter: React.FC<{
         : 'Vedtaket er sendt til beslutter';
 
     const skalViseKnappForModal =
-        oppfølgingsoppgave &&
-        oppgavetyperSomKanOpprettesOvergangsstønad &&
-        oppgavetyperSomKanOpprettesOvergangsstønad.length > 0;
+        // (oppfølgingsoppgave &&
+        //     oppgavetyperSomKanOpprettesOvergangsstønad &&
+        //     oppgavetyperSomKanOpprettesOvergangsstønad.length > 0) ||
+        behandling.stønadstype.toString() !== 'SKOLEPENGER';
 
     useEffect(() => {
         hentFremleggsoppgaver(behandling.id);
     }, [behandling.id, hentFremleggsoppgaver]);
+
+    useEffect(() => {
+        hentOppgaverForBeslutter(behandling.id);
+    }, [behandling.id, hentOppgaverForBeslutter]);
 
     useEffect(() => {
         settOppgavetyperSomSkalOpprettes(
@@ -220,6 +228,7 @@ const SendTilBeslutter: React.FC<{
                 oppgavetyperSomSkalOpprettes={oppgavetyperSomSkalOpprettes}
                 settOppgavetyperSomSkalOpprettes={settOppgavetyperSomSkalOpprettes}
                 fremleggsOppgaver={fremleggsoppgaver}
+                oppgaverForBeslutter={oppgaverForBeslutter}
                 oppgaverSomSkalAutomatiskFerdigstilles={oppgaverSomSkalAutomatiskFerdigstilles}
                 settOppgaverSomSkalAutomatiskFerdigstilles={
                     settOppgaverSomSkalAutomatiskFerdigstilles

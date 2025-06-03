@@ -1,7 +1,7 @@
-import { Modal, Button, VStack } from '@navikt/ds-react';
+import { Button, Modal, VStack } from '@navikt/ds-react';
 import React, { FC, useEffect, useState } from 'react';
 import { Divider } from '../../../Felles/Divider/Divider';
-import { Ressurs } from '../../../App/typer/ressurs';
+import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { IOppgaverResponse } from '../../../App/hooks/useHentOppgaver';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { SendTilBeslutterRequest } from './SendTilBeslutter';
@@ -23,6 +23,7 @@ export const ModalSendTilBeslutter: FC<{
     setOpen: (open: boolean) => void;
     sendTilBeslutter: (data: SendTilBeslutterRequest) => void;
     fremleggsOppgaver: Ressurs<IOppgaverResponse>;
+    oppgaverForBeslutter: Ressurs<IOppgaverResponse>;
     oppgavetyperSomKanOpprettes: OppgaveTypeForOpprettelse[] | undefined;
     oppgavetyperSomSkalOpprettes: OppgaveTypeForOpprettelse[];
     settOppgavetyperSomSkalOpprettes: React.Dispatch<
@@ -44,6 +45,7 @@ export const ModalSendTilBeslutter: FC<{
     setOpen,
     sendTilBeslutter,
     fremleggsOppgaver,
+    oppgaverForBeslutter,
     oppgavetyperSomKanOpprettes,
     oppgavetyperSomSkalOpprettes,
     settOppgavetyperSomSkalOpprettes,
@@ -82,6 +84,12 @@ export const ModalSendTilBeslutter: FC<{
                 ? prevOppgaver.filter((id) => id !== oppgaveId)
                 : [...prevOppgaver, oppgaveId]
         );
+
+    const hasOppgaver =
+        oppgaverForBeslutter.status === RessursStatus.SUKSESS &&
+        oppgaverForBeslutter.data.oppgaver.length > 0;
+
+    // console.log(JSON.stringify(oppgaverForBeslutter, null, 2));
 
     const kanVelgeMellomFlereOppgavetyper = (oppgavetyperSomKanOpprettes ?? []).length > 1;
     const harValgtAnnetEnnInntektskontroll =
@@ -152,11 +160,13 @@ export const ModalSendTilBeslutter: FC<{
                                                 settÅrForInntektskontrollSelvstendigNæringsdrivende
                                             }
                                         />
-                                        {fremleggsOppgaver.oppgaver.length > 0 && (
+                                        {/*{hasOppgaver && (*/}
+                                        {hasOppgaver && (
                                             <>
                                                 <Divider />
                                                 <TabellFerdigstilleOppgaver
                                                     fremleggsOppgaver={fremleggsOppgaver}
+                                                    // oppgaveForBeslutter={oppgaverForBeslutter}
                                                     oppgaverSomSkalAutomatiskFerdigstilles={
                                                         oppgaverSomSkalAutomatiskFerdigstilles
                                                     }
