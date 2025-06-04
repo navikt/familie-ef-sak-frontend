@@ -16,15 +16,16 @@ const StyledBodyLong = styled(BodyLong)`
 
 export const TabellFerdigstilleOppgaver: FC<{
     fremleggsOppgaver: IOppgaverResponse;
-    // oppgaveforBeslutter: IOppgaverResponse[];
+    oppgaverforBeslutter: IOppgaverResponse;
     oppgaverSomSkalAutomatiskFerdigstilles: number[];
     handleSettOppgaverSomSkalFerdigstilles: (oppgaveId: number) => void;
 }> = ({
     fremleggsOppgaver,
-    // oppgaveForBeslutter,
+    oppgaverforBeslutter,
     oppgaverSomSkalAutomatiskFerdigstilles,
     handleSettOppgaverSomSkalFerdigstilles,
 }) => {
+    console.log('fremleggsoppgave er ', fremleggsOppgaver);
     return (
         <>
             <Heading size="xsmall">
@@ -44,7 +45,7 @@ export const TabellFerdigstilleOppgaver: FC<{
                     </Table.Row>
                 </Table.Header>
                 <Table.Body>
-                    {fremleggsOppgaver.oppgaver.map(
+                    {oppgaverforBeslutter.oppgaver.map(
                         (
                             {
                                 id,

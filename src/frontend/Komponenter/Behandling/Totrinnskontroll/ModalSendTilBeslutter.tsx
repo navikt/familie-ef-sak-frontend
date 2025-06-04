@@ -89,8 +89,6 @@ export const ModalSendTilBeslutter: FC<{
         oppgaverForBeslutter.status === RessursStatus.SUKSESS &&
         oppgaverForBeslutter.data.oppgaver.length > 0;
 
-    // console.log(JSON.stringify(oppgaverForBeslutter, null, 2));
-
     const kanVelgeMellomFlereOppgavetyper = (oppgavetyperSomKanOpprettes ?? []).length > 1;
     const harValgtAnnetEnnInntektskontroll =
         kanVelgeMellomFlereOppgavetyper &&
@@ -160,13 +158,12 @@ export const ModalSendTilBeslutter: FC<{
                                                 settÅrForInntektskontrollSelvstendigNæringsdrivende
                                             }
                                         />
-                                        {/*{hasOppgaver && (*/}
                                         {hasOppgaver && (
                                             <>
                                                 <Divider />
                                                 <TabellFerdigstilleOppgaver
                                                     fremleggsOppgaver={fremleggsOppgaver}
-                                                    // oppgaveForBeslutter={oppgaverForBeslutter}
+                                                    oppgaverforBeslutter={oppgaverForBeslutter.data}
                                                     oppgaverSomSkalAutomatiskFerdigstilles={
                                                         oppgaverSomSkalAutomatiskFerdigstilles
                                                     }

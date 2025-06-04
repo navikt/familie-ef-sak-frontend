@@ -6,7 +6,7 @@ import { IOppgaverResponse } from './useHentOppgaver';
 export const useHentOppgaveForBeslutter = () => {
     const { axiosRequest } = useApp();
     const [oppgaverForBeslutter, settOppgaverForBeslutter] =
-        useState<Ressurs<IOppgaverResponse>>(byggTomRessurs<IOppgaverResponse>());
+        useState<Ressurs<IOppgaverResponse>>(byggTomRessurs());
 
     const hentOppgaverForBeslutter = useCallback(
         (behandlingId: string) => {
