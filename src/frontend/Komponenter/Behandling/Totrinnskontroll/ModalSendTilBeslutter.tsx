@@ -22,7 +22,6 @@ export const ModalSendTilBeslutter: FC<{
     open: boolean;
     setOpen: (open: boolean) => void;
     sendTilBeslutter: (data: SendTilBeslutterRequest) => void;
-    fremleggsOppgaver: Ressurs<IOppgaverResponse>;
     oppgaverForBeslutter: Ressurs<IOppgaverResponse>;
     oppgavetyperSomKanOpprettes: OppgaveTypeForOpprettelse[] | undefined;
     oppgavetyperSomSkalOpprettes: OppgaveTypeForOpprettelse[];
@@ -44,7 +43,6 @@ export const ModalSendTilBeslutter: FC<{
     open,
     setOpen,
     sendTilBeslutter,
-    fremleggsOppgaver,
     oppgaverForBeslutter,
     oppgavetyperSomKanOpprettes,
     oppgavetyperSomSkalOpprettes,
@@ -128,8 +126,8 @@ export const ModalSendTilBeslutter: FC<{
     }, [behandling, erInnvilgelseOvergangsstønad, oppfølgingsoppgave?.automatiskBrev, vilkår]);
 
     return (
-        <DataViewer response={{ fremleggsOppgaver }}>
-            {({ fremleggsOppgaver }) => {
+        <DataViewer response={{ oppgaverForBeslutter }}>
+            {({ oppgaverForBeslutter }) => {
                 return (
                     <Modal
                         open={open}
@@ -162,8 +160,7 @@ export const ModalSendTilBeslutter: FC<{
                                             <>
                                                 <Divider />
                                                 <TabellFerdigstilleOppgaver
-                                                    fremleggsOppgaver={fremleggsOppgaver}
-                                                    oppgaverforBeslutter={oppgaverForBeslutter.data}
+                                                    oppgaverforBeslutter={oppgaverForBeslutter}
                                                     oppgaverSomSkalAutomatiskFerdigstilles={
                                                         oppgaverSomSkalAutomatiskFerdigstilles
                                                     }
@@ -213,7 +210,7 @@ export const ModalSendTilBeslutter: FC<{
                                                 : [],
                                         årForInntektskontrollSelvstendigNæringsdrivende:
                                             årForInntektskontrollSelvstendigNæringsdrivende,
-                                        fremleggsoppgaveIderSomSkalFerdigstilles:
+                                        oppgaverIderSomSkalFerdigstilles:
                                             oppgaverSomSkalAutomatiskFerdigstilles,
                                         beskrivelseMarkeringer: beskrivelseMarkeringer,
                                         automatiskBrev: automatiskBrev,

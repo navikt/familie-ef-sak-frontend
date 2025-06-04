@@ -13,7 +13,6 @@ import { Behandling } from '../../../App/typer/fagsak';
 import { OppgaveTypeForOpprettelse } from './oppgaveForOpprettelseTyper';
 import { ModalState } from '../Modal/NyEierModal';
 import { ModalSendTilBeslutter } from './ModalSendTilBeslutter';
-import { useHentFremleggsoppgaverForOvergangsstønad } from '../../../App/hooks/useHentFremleggsoppgaverForOvergangsstønad';
 import { Oppfølgingsoppgave } from '../../../App/hooks/useHentOppfølgingsoppgave';
 import { BeskrivelseMarkeringer } from './BeskrivelseOppgave';
 import { AutomatiskBrevValg } from './AutomatiskBrev';
@@ -30,7 +29,7 @@ const FlexBox = styled.div`
 export interface SendTilBeslutterRequest {
     oppgavetyperSomSkalOpprettes: OppgaveTypeForOpprettelse[];
     årForInntektskontrollSelvstendigNæringsdrivende?: number;
-    fremleggsoppgaveIderSomSkalFerdigstilles?: number[];
+    oppgaverIderSomSkalFerdigstilles?: number[];
     beskrivelseMarkeringer?: BeskrivelseMarkeringer[];
     automatiskBrev?: AutomatiskBrevValg[];
 }
@@ -78,8 +77,6 @@ const SendTilBeslutter: React.FC<{
         hentBehandlingshistorikk,
         settNyEierModalState,
     } = useBehandling();
-    const { hentFremleggsoppgaver, fremleggsoppgaver } =
-        useHentFremleggsoppgaverForOvergangsstønad();
     const { hentOppgaverForBeslutter, oppgaverForBeslutter } = useHentOppgaveForBeslutter();
     const oppgavetyperSomKanOpprettesOvergangsstønad =
         oppfølgingsoppgave?.oppgaverForOpprettelse?.oppgavetyperSomKanOpprettes;
@@ -102,7 +99,6 @@ const SendTilBeslutter: React.FC<{
 
     const { ferdigstillUtenBeslutter } = avslagValg;
 
-    // need to fix here to save oppgavetype, not only for fremlegg
     const sendTilBeslutter = (data: SendTilBeslutterRequest) => {
         if (laster) return;
 
@@ -145,15 +141,7 @@ const SendTilBeslutter: React.FC<{
         ? 'Vedtaket er ferdigstilt'
         : 'Vedtaket er sendt til beslutter';
 
-    const skalViseKnappForModal =
-        // (oppfølgingsoppgave &&
-        //     oppgavetyperSomKanOpprettesOvergangsstønad &&
-        //     oppgavetyperSomKanOpprettesOvergangsstønad.length > 0) ||
-        behandling.stønadstype.toString() !== 'SKOLEPENGER';
-
-    useEffect(() => {
-        hentFremleggsoppgaver(behandling.id);
-    }, [behandling.id, hentFremleggsoppgaver]);
+    const skalViseKnappForModal = behandling.stønadstype.toString() !== 'SKOLEPENGER';
 
     useEffect(() => {
         hentOppgaverForBeslutter(behandling.id);
@@ -227,7 +215,6 @@ const SendTilBeslutter: React.FC<{
                 oppgavetyperSomKanOpprettes={oppgavetyperSomKanOpprettesOvergangsstønad}
                 oppgavetyperSomSkalOpprettes={oppgavetyperSomSkalOpprettes}
                 settOppgavetyperSomSkalOpprettes={settOppgavetyperSomSkalOpprettes}
-                fremleggsOppgaver={fremleggsoppgaver}
                 oppgaverForBeslutter={oppgaverForBeslutter}
                 oppgaverSomSkalAutomatiskFerdigstilles={oppgaverSomSkalAutomatiskFerdigstilles}
                 settOppgaverSomSkalAutomatiskFerdigstilles={
