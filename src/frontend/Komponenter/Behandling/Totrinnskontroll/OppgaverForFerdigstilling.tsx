@@ -43,8 +43,7 @@ export const OppgaverForFerdigstilling: FC<{
                 return (
                     <>
                         <Heading size="small">
-                            Følgende fremleggsoppgaver ferdigstilles ved godkjenning av dette
-                            vedtaket:
+                            Følgende oppgaver blir ferdigstilt når vedtaket er godkjent:
                         </Heading>
                         <TableContainer>
                             <Table>
