@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import Dokumentoversikt from './Dokumentoversikt';
+import { Dokumentoversikt } from './Dokumentoversikt/Dokumentoversikt';
 import Valgvisning from './Valgvisning';
 import styled from 'styled-components';
 import BehandlingHistorikk from './BehandlingHistorikk';

@@ -4,7 +4,7 @@ import { tittelMedUrlGodkjenteTegn } from '../../../App/utils/utils';
 import { NotePencilIcon } from '@navikt/aksel-icons';
 import { LogiskeVedlegg } from './LogiskeVedlegg';
 import styled from 'styled-components';
-import { Dokumentinfo } from '../../../App/typer/dokumentliste';
+import { Dokumentinfo } from '../../../App/typer/dokument';
 import { ABlue500 } from '@navikt/ds-tokens/dist/tokens';
 
 const Div = styled.div<{ $erHovedDokument: boolean }>`

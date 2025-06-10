@@ -2,7 +2,7 @@ import { Behandling, BehandlingResultat, Fagsak } from '../../App/typer/fagsak';
 import { BehandlingStatus } from '../../App/typer/behandlingstatus';
 import { Behandlingstype } from '../../App/typer/behandlingstype';
 import { VedleggRequest } from './vedleggRequest';
-import { Dokumentinfo } from '../../App/typer/dokumentliste';
+import { Dokumentinfo } from '../../App/typer/dokument';
 import { sorterBehandlinger } from '../../App/utils/behandlingutil';
 
 export const alleBehandlingerErFerdigstiltEllerSattPåVent = (fagsak: Fagsak) =>

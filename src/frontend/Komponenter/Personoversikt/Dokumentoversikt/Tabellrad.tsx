@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import { Dokumentinfo } from '../../../App/typer/dokumentliste';
+import { Dokumentinfo } from '../../../App/typer/dokument';
 import { skalViseLenke } from '../utils';
 import { PadlockLockedIcon } from '@navikt/aksel-icons';
 import { Table } from '@navikt/ds-react';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { LogiskVedlegg } from '../../../App/typer/dokumentliste';
+import { LogiskVedlegg } from '../../../App/typer/dokument';
 
 interface Props {
     logiskeVedlegg: LogiskVedlegg[];
