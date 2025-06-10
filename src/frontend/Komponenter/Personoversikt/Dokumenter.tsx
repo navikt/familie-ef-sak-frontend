@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import styled from 'styled-components';
-import { Dokumentinfo } from '../../App/typer/dokumentliste';
+import { Dokumentinfo, erFeilregistrertEllerAvbrutt } from '../../App/typer/dokument';
 import { groupBy } from '../../App/utils/utils';
 import {
     gyldigeJournalstatuserTilTekst,
@@ -114,10 +114,9 @@ export const Dokumenter: React.FC<{ fagsakPersonId: string }> = ({ fagsakPersonI
         settVedlegg('journalpostStatus')('');
     };
 
-    const dokumentGruppeSkalVises = (dokumenter: Dokumentinfo[]): boolean => {
-        const harFeilregistrerteEllerAvbrutte = dokumenter.some(
-            (dokument) =>
-                dokument.journalstatus === 'FEILREGISTRERT' || dokument.journalstatus === 'AVBRUTT'
+    const skalViseDokumentGruppe = (dokumenter: Dokumentinfo[]): boolean => {
+        const harFeilregistrerteEllerAvbrutte = dokumenter.some((dokument) =>
+            erFeilregistrertEllerAvbrutt(dokument)
         );
 
         return visFeilregistrerteOgAvbruttValgt
@@ -227,7 +226,7 @@ export const Dokumenter: React.FC<{ fagsakPersonId: string }> = ({ fagsakPersonI
                                             return datoA > datoB ? -1 : 1;
                                         })
                                         .filter((journalPostId: string) =>
-                                            dokumentGruppeSkalVises(
+                                            skalViseDokumentGruppe(
                                                 grupperteDokumenter[journalPostId]
                                             )
                                         )

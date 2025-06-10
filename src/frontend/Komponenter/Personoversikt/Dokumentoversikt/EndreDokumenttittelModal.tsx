@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
 import { DokumentPanelEndreTittel } from './DokumentPanelEndreTittel';
-import { Dokumentinfo } from '../../../App/typer/dokumentliste';
+import { Dokumentinfo } from '../../../App/typer/dokument';
 import { v4 as uuidv4 } from 'uuid';
 import { LogiskVedlegg } from '../../../App/typer/journalføring';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
