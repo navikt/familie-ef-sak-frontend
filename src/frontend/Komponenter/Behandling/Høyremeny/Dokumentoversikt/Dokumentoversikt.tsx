@@ -6,7 +6,7 @@ import { useDataHenter } from '../../../../App/hooks/felles/useDataHenter';
 import { useParams } from 'react-router-dom';
 import { åpneFilIEgenTab } from '../../../../App/utils/utils';
 import { Dokumentliste } from './Dokumentliste';
-import { Dokumentinfo, sorterDokumenter } from '../../../../App/typer/dokument';
+import { Dokumentinfo, sorterOgFiltrerDokumenter } from '../../../../App/typer/dokument';
 
 type AlleDokument = {
     dokumenterKnyttetTilBehandlingen: Dokumentinfo[];
@@ -41,11 +41,9 @@ export const Dokumentoversikt: React.FC = () => {
                     ...dokumentResponse.andreDokumenter,
                 ];
 
-                const sortertDokumentliste = sorterDokumenter(alleDokumenter);
+                const dokumentListe = sorterOgFiltrerDokumenter(alleDokumenter);
 
-                return (
-                    <Dokumentliste dokumenter={sortertDokumentliste} onClick={lastNedDokument} />
-                );
+                return <Dokumentliste dokumenter={dokumentListe} onClick={lastNedDokument} />;
             }}
         </DataViewer>
     );

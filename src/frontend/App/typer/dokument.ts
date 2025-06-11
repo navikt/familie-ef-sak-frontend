@@ -23,7 +23,7 @@ export interface LogiskVedlegg {
     logiskVedleggId: string;
 }
 
-export const sorterDokumenter = (dokumenter: Dokumentinfo[]) => {
+export const sorterOgFiltrerDokumenter = (dokumenter: Dokumentinfo[]) => {
     return dokumenter
         .sort((a, b) => {
             if (!a.dato) {
@@ -33,7 +33,7 @@ export const sorterDokumenter = (dokumenter: Dokumentinfo[]) => {
             }
             return compareDesc(new Date(a.dato), new Date(b.dato));
         })
-        .filter((dokument) => erFeilregistrertEllerAvbrutt(dokument))
+        .filter((dokument) => !erFeilregistrertEllerAvbrutt(dokument))
         .map((dokument) => {
             return { ...dokument, dato: formaterNullableIsoDatoTid(dokument.dato) };
         });
