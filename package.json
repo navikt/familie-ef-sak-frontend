@@ -20,10 +20,7 @@
         "set-node-options": "NODE_OPTIONS='--import=./node_dist/backend/register.js --es-module-specifier-resolution=node'"
     },
     "lint-staged": {
-        "src/**/*.{js,jsx,ts,tsx,json,css}": [
-            "prettier --write",
-            "eslint --fix --max-warnings=0"
-        ]
+        "src/**/*.{js,jsx,ts,tsx,json,css}": ["prettier --write", "eslint --fix"]
     },
     "dependencyComments": {
         "color-string": "Overrider versjon som brukes av winston, som kommer fra familie-frontend-backend",

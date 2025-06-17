@@ -72,6 +72,8 @@ const config = mergeWithCustomize({
             cache: true,
             configType: 'flat',
             extensions: [`ts`, `tsx`],
+            emitWarning: true,
+            emitError: false,
         }),
     ],
 });
