@@ -13,13 +13,14 @@ import { Behandling } from '../../../App/typer/fagsak';
 import { OppgaveTypeForOpprettelse } from './oppgaveForOpprettelseTyper';
 import { ModalState } from '../Modal/NyEierModal';
 import { ModalSendTilBeslutter } from './ModalSendTilBeslutter';
-import { useHentFremleggsoppgaverForOvergangsstønad } from '../../../App/hooks/useHentFremleggsoppgaverForOvergangsstønad';
 import { Oppfølgingsoppgave } from '../../../App/hooks/useHentOppfølgingsoppgave';
 import { BeskrivelseMarkeringer } from './BeskrivelseOppgave';
 import { AutomatiskBrevValg } from './AutomatiskBrev';
 import { IVilkår } from '../Inngangsvilkår/vilkår';
 import { IVedtak } from '../../../App/typer/vedtak';
 import { utledAvslagValg } from '../VedtakOgBeregning/Felles/utils';
+import { useHentOppgaverForAutomatiskFerdigstilling } from '../../../App/hooks/useHentOppgaverForAutomatiskFerdigstilling';
+import { Stønadstype } from '../../../App/typer/behandlingstema';
 
 const FlexBox = styled.div`
     display: flex;
@@ -29,7 +30,7 @@ const FlexBox = styled.div`
 export interface SendTilBeslutterRequest {
     oppgavetyperSomSkalOpprettes: OppgaveTypeForOpprettelse[];
     årForInntektskontrollSelvstendigNæringsdrivende?: number;
-    fremleggsoppgaveIderSomSkalFerdigstilles?: number[];
+    oppgaverIderSomSkalFerdigstilles?: number[];
     beskrivelseMarkeringer?: BeskrivelseMarkeringer[];
     automatiskBrev?: AutomatiskBrevValg[];
 }
@@ -77,8 +78,8 @@ const SendTilBeslutter: React.FC<{
         hentBehandlingshistorikk,
         settNyEierModalState,
     } = useBehandling();
-    const { hentFremleggsoppgaver, fremleggsoppgaver } =
-        useHentFremleggsoppgaverForOvergangsstønad();
+    const { hentOppgaverForAutomatiskFerdigstilling, oppgaverForAutomatiskFerdigstilling } =
+        useHentOppgaverForAutomatiskFerdigstilling();
     const oppgavetyperSomKanOpprettesOvergangsstønad =
         oppfølgingsoppgave?.oppgaverForOpprettelse?.oppgavetyperSomKanOpprettes;
     const [laster, settLaster] = useState<boolean>(false);
@@ -142,14 +143,11 @@ const SendTilBeslutter: React.FC<{
         ? 'Vedtaket er ferdigstilt'
         : 'Vedtaket er sendt til beslutter';
 
-    const skalViseKnappForModal =
-        oppfølgingsoppgave &&
-        oppgavetyperSomKanOpprettesOvergangsstønad &&
-        oppgavetyperSomKanOpprettesOvergangsstønad.length > 0;
+    const skalViseKnappForModal = behandling.stønadstype == Stønadstype.OVERGANGSSTØNAD;
 
     useEffect(() => {
-        hentFremleggsoppgaver(behandling.id);
-    }, [behandling.id, hentFremleggsoppgaver]);
+        hentOppgaverForAutomatiskFerdigstilling(behandling.id);
+    }, [behandling.id, hentOppgaverForAutomatiskFerdigstilling]);
 
     useEffect(() => {
         settOppgavetyperSomSkalOpprettes(
@@ -219,7 +217,7 @@ const SendTilBeslutter: React.FC<{
                 oppgavetyperSomKanOpprettes={oppgavetyperSomKanOpprettesOvergangsstønad}
                 oppgavetyperSomSkalOpprettes={oppgavetyperSomSkalOpprettes}
                 settOppgavetyperSomSkalOpprettes={settOppgavetyperSomSkalOpprettes}
-                fremleggsOppgaver={fremleggsoppgaver}
+                oppgaverForAutomatiskFerdigstilling={oppgaverForAutomatiskFerdigstilling}
                 oppgaverSomSkalAutomatiskFerdigstilles={oppgaverSomSkalAutomatiskFerdigstilles}
                 settOppgaverSomSkalAutomatiskFerdigstilles={
                     settOppgaverSomSkalAutomatiskFerdigstilles

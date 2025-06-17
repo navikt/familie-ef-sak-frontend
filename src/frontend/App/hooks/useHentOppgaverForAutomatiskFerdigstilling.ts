@@ -3,23 +3,23 @@ import { useApp } from '../context/AppContext';
 import { useCallback, useState } from 'react';
 import { IOppgaverResponse } from './useHentOppgaver';
 
-export const useHentFremleggsoppgaverForOvergangsstønad = () => {
+export const useHentOppgaverForAutomatiskFerdigstilling = () => {
     const { axiosRequest } = useApp();
-    const [fremleggsoppgaver, settFremleggsoppgaver] =
+    const [oppgaverForAutomatiskFerdigstilling, settOppgaverForAutomatiskFerdigstilling] =
         useState<Ressurs<IOppgaverResponse>>(byggTomRessurs());
 
-    const hentFremleggsoppgaver = useCallback(
+    const hentOppgaverForAutomatiskFerdigstilling = useCallback(
         (behandlingId: string) => {
-            settFremleggsoppgaver(byggHenterRessurs());
+            settOppgaverForAutomatiskFerdigstilling(byggHenterRessurs());
             axiosRequest<IOppgaverResponse, { behandlingId: string }>({
                 method: 'GET',
-                url: `/familie-ef-sak/api/oppgave/fremleggsoppgaver/${behandlingId}`,
+                url: `/familie-ef-sak/api/oppgave/oppgaver-for-automatisk-ferdigstilling/${behandlingId}`,
             }).then((res: Ressurs<IOppgaverResponse>) => {
-                settFremleggsoppgaver(res);
+                settOppgaverForAutomatiskFerdigstilling(res);
             });
         },
         [axiosRequest]
     );
 
-    return { hentFremleggsoppgaver, fremleggsoppgaver };
+    return { hentOppgaverForAutomatiskFerdigstilling, oppgaverForAutomatiskFerdigstilling };
 };
