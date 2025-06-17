@@ -13,7 +13,7 @@ export const useHentOppgaverForAutomatiskFerdigstilling = () => {
             settOppgaverForAutomatiskFerdigstilling(byggHenterRessurs());
             axiosRequest<IOppgaverResponse, { behandlingId: string }>({
                 method: 'GET',
-                url: `/familie-ef-sak/api/oppgave/flereoppgaver/${behandlingId}`,
+                url: `/familie-ef-sak/api/oppgave/oppgaver-for-automatisk-ferdigstilling/${behandlingId}`,
             }).then((res: Ressurs<IOppgaverResponse>) => {
                 settOppgaverForAutomatiskFerdigstilling(res);
             });
