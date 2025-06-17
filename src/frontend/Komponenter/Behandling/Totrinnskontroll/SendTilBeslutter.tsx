@@ -20,6 +20,7 @@ import { IVilkår } from '../Inngangsvilkår/vilkår';
 import { IVedtak } from '../../../App/typer/vedtak';
 import { utledAvslagValg } from '../VedtakOgBeregning/Felles/utils';
 import { useHentOppgaveForBeslutter } from '../../../App/hooks/useHentOppgaveForBeslutter';
+import { Stønadstype } from '../../../App/typer/behandlingstema';
 
 const FlexBox = styled.div`
     display: flex;
@@ -141,7 +142,7 @@ const SendTilBeslutter: React.FC<{
         ? 'Vedtaket er ferdigstilt'
         : 'Vedtaket er sendt til beslutter';
 
-    const skalViseKnappForModal = behandling.stønadstype.toString() == 'OVERGANGSSTØNAD';
+    const skalViseKnappForModal = behandling.stønadstype == Stønadstype.OVERGANGSSTØNAD;
 
     useEffect(() => {
         hentOppgaverForBeslutter(behandling.id);

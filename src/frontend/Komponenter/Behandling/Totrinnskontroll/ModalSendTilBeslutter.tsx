@@ -83,7 +83,7 @@ export const ModalSendTilBeslutter: FC<{
                 : [...prevOppgaver, oppgaveId]
         );
 
-    const hasOppgaver =
+    const harOppgaver =
         oppgaverForBeslutter.status === RessursStatus.SUKSESS &&
         oppgaverForBeslutter.data.oppgaver.length > 0;
 
@@ -156,7 +156,7 @@ export const ModalSendTilBeslutter: FC<{
                                                 settÅrForInntektskontrollSelvstendigNæringsdrivende
                                             }
                                         />
-                                        {hasOppgaver && (
+                                        {harOppgaver && (
                                             <>
                                                 <Divider />
                                                 <TabellFerdigstilleOppgaver
