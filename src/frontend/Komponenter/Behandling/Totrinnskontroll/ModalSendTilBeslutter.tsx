@@ -22,7 +22,7 @@ export const ModalSendTilBeslutter: FC<{
     open: boolean;
     setOpen: (open: boolean) => void;
     sendTilBeslutter: (data: SendTilBeslutterRequest) => void;
-    oppgaverForBeslutter: Ressurs<IOppgaverResponse>;
+    oppgaverForAutomatiskFerdigstilling: Ressurs<IOppgaverResponse>;
     oppgavetyperSomKanOpprettes: OppgaveTypeForOpprettelse[] | undefined;
     oppgavetyperSomSkalOpprettes: OppgaveTypeForOpprettelse[];
     settOppgavetyperSomSkalOpprettes: React.Dispatch<
@@ -43,7 +43,7 @@ export const ModalSendTilBeslutter: FC<{
     open,
     setOpen,
     sendTilBeslutter,
-    oppgaverForBeslutter,
+    oppgaverForAutomatiskFerdigstilling,
     oppgavetyperSomKanOpprettes,
     oppgavetyperSomSkalOpprettes,
     settOppgavetyperSomSkalOpprettes,
@@ -84,8 +84,8 @@ export const ModalSendTilBeslutter: FC<{
         );
 
     const harOppgaver =
-        oppgaverForBeslutter.status === RessursStatus.SUKSESS &&
-        oppgaverForBeslutter.data.oppgaver.length > 0;
+        oppgaverForAutomatiskFerdigstilling.status === RessursStatus.SUKSESS &&
+        oppgaverForAutomatiskFerdigstilling.data.oppgaver.length > 0;
 
     const kanVelgeMellomFlereOppgavetyper = (oppgavetyperSomKanOpprettes ?? []).length > 1;
     const harValgtAnnetEnnInntektskontroll =
@@ -126,8 +126,8 @@ export const ModalSendTilBeslutter: FC<{
     }, [behandling, erInnvilgelseOvergangsstønad, oppfølgingsoppgave?.automatiskBrev, vilkår]);
 
     return (
-        <DataViewer response={{ oppgaverForBeslutter }}>
-            {({ oppgaverForBeslutter }) => {
+        <DataViewer response={{ oppgaverForAutomatiskFerdigstilling }}>
+            {({ oppgaverForAutomatiskFerdigstilling }) => {
                 return (
                     <Modal
                         open={open}
@@ -160,7 +160,9 @@ export const ModalSendTilBeslutter: FC<{
                                             <>
                                                 <Divider />
                                                 <TabellFerdigstilleOppgaver
-                                                    oppgaverforBeslutter={oppgaverForBeslutter}
+                                                    oppgaverForAutomatiskFerdigstilling={
+                                                        oppgaverForAutomatiskFerdigstilling
+                                                    }
                                                     oppgaverSomSkalAutomatiskFerdigstilles={
                                                         oppgaverSomSkalAutomatiskFerdigstilles
                                                     }

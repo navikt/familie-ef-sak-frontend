@@ -15,11 +15,11 @@ const StyledBodyLong = styled(BodyLong)`
 `;
 
 export const TabellFerdigstilleOppgaver: FC<{
-    oppgaverforBeslutter: IOppgaverResponse;
+    oppgaverForAutomatiskFerdigstilling: IOppgaverResponse;
     oppgaverSomSkalAutomatiskFerdigstilles: number[];
     handleSettOppgaverSomSkalFerdigstilles: (oppgaveId: number) => void;
 }> = ({
-    oppgaverforBeslutter,
+    oppgaverForAutomatiskFerdigstilling,
     oppgaverSomSkalAutomatiskFerdigstilles,
     handleSettOppgaverSomSkalFerdigstilles,
 }) => {
@@ -41,7 +41,7 @@ export const TabellFerdigstilleOppgaver: FC<{
                     </Table.Row>
                 </Table.Header>
                 <Table.Body>
-                    {oppgaverforBeslutter.oppgaver.map(
+                    {oppgaverForAutomatiskFerdigstilling.oppgaver.map(
                         (
                             {
                                 id,

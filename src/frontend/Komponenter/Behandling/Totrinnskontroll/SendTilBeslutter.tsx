@@ -19,7 +19,7 @@ import { AutomatiskBrevValg } from './AutomatiskBrev';
 import { IVilkår } from '../Inngangsvilkår/vilkår';
 import { IVedtak } from '../../../App/typer/vedtak';
 import { utledAvslagValg } from '../VedtakOgBeregning/Felles/utils';
-import { useHentOppgaveForBeslutter } from '../../../App/hooks/useHentOppgaveForBeslutter';
+import { useHentOppgaverForAutomatiskFerdigstilling } from '../../../App/hooks/useHentOppgaverForAutomatiskFerdigstilling';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
 
 const FlexBox = styled.div`
@@ -78,7 +78,8 @@ const SendTilBeslutter: React.FC<{
         hentBehandlingshistorikk,
         settNyEierModalState,
     } = useBehandling();
-    const { hentOppgaverForBeslutter, oppgaverForBeslutter } = useHentOppgaveForBeslutter();
+    const { hentOppgaverForAutomatiskFerdigstilling, oppgaverForAutomatiskFerdigstilling } =
+        useHentOppgaverForAutomatiskFerdigstilling();
     const oppgavetyperSomKanOpprettesOvergangsstønad =
         oppfølgingsoppgave?.oppgaverForOpprettelse?.oppgavetyperSomKanOpprettes;
     const [laster, settLaster] = useState<boolean>(false);
@@ -145,8 +146,8 @@ const SendTilBeslutter: React.FC<{
     const skalViseKnappForModal = behandling.stønadstype == Stønadstype.OVERGANGSSTØNAD;
 
     useEffect(() => {
-        hentOppgaverForBeslutter(behandling.id);
-    }, [behandling.id, hentOppgaverForBeslutter]);
+        hentOppgaverForAutomatiskFerdigstilling(behandling.id);
+    }, [behandling.id, hentOppgaverForAutomatiskFerdigstilling]);
 
     useEffect(() => {
         settOppgavetyperSomSkalOpprettes(
@@ -216,7 +217,7 @@ const SendTilBeslutter: React.FC<{
                 oppgavetyperSomKanOpprettes={oppgavetyperSomKanOpprettesOvergangsstønad}
                 oppgavetyperSomSkalOpprettes={oppgavetyperSomSkalOpprettes}
                 settOppgavetyperSomSkalOpprettes={settOppgavetyperSomSkalOpprettes}
-                oppgaverForBeslutter={oppgaverForBeslutter}
+                oppgaverForAutomatiskFerdigstilling={oppgaverForAutomatiskFerdigstilling}
                 oppgaverSomSkalAutomatiskFerdigstilles={oppgaverSomSkalAutomatiskFerdigstilles}
                 settOppgaverSomSkalAutomatiskFerdigstilles={
                     settOppgaverSomSkalAutomatiskFerdigstilles

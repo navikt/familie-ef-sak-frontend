@@ -3,23 +3,23 @@ import { useApp } from '../context/AppContext';
 import { useCallback, useState } from 'react';
 import { IOppgaverResponse } from './useHentOppgaver';
 
-export const useHentOppgaveForBeslutter = () => {
+export const useHentOppgaverForAutomatiskFerdigstilling = () => {
     const { axiosRequest } = useApp();
-    const [oppgaverForBeslutter, settOppgaverForBeslutter] =
+    const [oppgaverForAutomatiskFerdigstilling, settOppgaverForAutomatiskFerdigstilling] =
         useState<Ressurs<IOppgaverResponse>>(byggTomRessurs());
 
-    const hentOppgaverForBeslutter = useCallback(
+    const hentOppgaverForAutomatiskFerdigstilling = useCallback(
         (behandlingId: string) => {
-            settOppgaverForBeslutter(byggHenterRessurs());
+            settOppgaverForAutomatiskFerdigstilling(byggHenterRessurs());
             axiosRequest<IOppgaverResponse, { behandlingId: string }>({
                 method: 'GET',
                 url: `/familie-ef-sak/api/oppgave/flereoppgaver/${behandlingId}`,
             }).then((res: Ressurs<IOppgaverResponse>) => {
-                settOppgaverForBeslutter(res);
+                settOppgaverForAutomatiskFerdigstilling(res);
             });
         },
         [axiosRequest]
     );
 
-    return { hentOppgaverForBeslutter, oppgaverForBeslutter };
+    return { hentOppgaverForAutomatiskFerdigstilling, oppgaverForAutomatiskFerdigstilling };
 };
