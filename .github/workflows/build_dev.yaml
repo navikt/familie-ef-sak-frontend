@@ -17,6 +17,8 @@ jobs:
         run: yarn --prefer-offline --frozen-lockfile
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
+      - name: Yarn lint (eslint feil)
+        run: yarn lint --max-warnings=0
       - name: Yarn test
         run: yarn test
       - name: Yarn build
