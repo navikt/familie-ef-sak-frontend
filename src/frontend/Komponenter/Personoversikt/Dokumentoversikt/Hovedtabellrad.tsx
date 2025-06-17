@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction } from 'react';
-import { Dokumentinfo } from '../../../App/typer/dokumentliste';
+import { Dokumentinfo } from '../../../App/typer/dokument';
 import { formaterNullableIsoDatoTid } from '../../../App/utils/formatter';
 import { Arkivtema, arkivtemaerTilTekst } from '../../../App/typer/arkivtema';
 import { tekstMapping } from '../../../App/utils/tekstmapping';
@@ -10,8 +10,8 @@ import {
 import { skalViseLenke } from '../utils';
 import { PadlockLockedIcon } from '@navikt/aksel-icons';
 import { Table } from '@navikt/ds-react';
-import { JournalpostTag } from '../../Behandling/Høyremeny/Dokumentliste';
 import { Dokumenttittel } from './Dokumenttittel';
+import { JournalpostTag } from '../../../Felles/JournalpostTag/JournalpostTag';
 
 interface Props {
     dokument: Dokumentinfo;

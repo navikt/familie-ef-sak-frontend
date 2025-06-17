@@ -1,7 +1,7 @@
 import { useApp } from '../context/AppContext';
 import { useCallback, useState } from 'react';
 import { byggHenterRessurs, byggTomRessurs, Ressurs } from '../typer/ressurs';
-import { Dokumentinfo } from '../typer/dokumentliste';
+import { Dokumentinfo } from '../typer/dokument';
 import { VedleggRequest } from '../../Komponenter/Personoversikt/vedleggRequest';
 
 export interface DokumenterInterface {
