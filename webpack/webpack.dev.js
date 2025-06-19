@@ -33,9 +33,25 @@ const config = mergeWithCustomize({
                 },
             },
             {
-                test: /\.(less|css)$/,
+                test: /\.module\.css$/,
                 use: [
-                    { loader: 'style-loader' },
+                    'style-loader',
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            modules: {
+                                namedExport: false,
+                            },
+                            importLoaders: 1,
+                        },
+                    },
+                ],
+            },
+            {
+                test: /\.css$/,
+                exclude: /\.module\.css$/,
+                use: [
+                    'style-loader',
                     {
                         loader: 'css-loader',
                         options: {
@@ -45,7 +61,27 @@ const config = mergeWithCustomize({
                             importLoaders: 2,
                         },
                     },
-                    { loader: 'less-loader' },
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            postcssOptions: {
+                                plugins: [['autoprefixer']],
+                            },
+                        },
+                    },
+                ],
+            },
+            {
+                test: /\.less$/,
+                use: [
+                    'style-loader',
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            importLoaders: 1,
+                        },
+                    },
+                    'less-loader',
                 ],
             },
         ],
