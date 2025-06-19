@@ -18,5 +18,6 @@ export interface IOrganisasjonMottaker {
 export enum EBrevmottakerRolle {
     BRUKER = 'BRUKER',
     VERGE = 'VERGE',
-    FULLMAKT = 'FULLMAKT',
+    FULLMAKT = 'FULLMAKT', // Usikker på om denne kanskje bare kan endres til FULLMEKTIG
+    FULLMEKTIG = 'FULLMEKTIG',
 }
