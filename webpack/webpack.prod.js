@@ -7,6 +7,7 @@ import TerserPlugin from 'terser-webpack-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
 import CompressionPlugin from 'compression-webpack-plugin';
 import ESLintPlugin from 'eslint-webpack-plugin';
+import process from 'process';
 
 const config = mergeWithCustomize({
     'entry.familie-ef-sak': 'prepend',
@@ -25,6 +26,19 @@ const config = mergeWithCustomize({
                 test: /\.(jsx|tsx|ts|js)?$/,
                 exclude: /node_modules/,
                 loader: 'babel-loader',
+            },
+            {
+                test: /\.module\.css$/,
+                use: [
+                    'style-loader',
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            modules: true,
+                            importLoaders: 1,
+                        },
+                    },
+                ],
             },
             {
                 test: /\.(css|less)$/,
