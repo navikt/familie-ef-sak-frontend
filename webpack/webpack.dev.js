@@ -2,7 +2,7 @@ import path from 'path';
 import process from 'process';
 import webpack from 'webpack';
 import { mergeWithCustomize } from 'webpack-merge';
-import common from './webpack.common';
+import common from './webpack.common.js';
 import CopyPlugin from 'copy-webpack-plugin';
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import ESLintPlugin from 'eslint-webpack-plugin';

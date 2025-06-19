@@ -9,15 +9,16 @@
     "scripts": {
         "start": "yarn set-node-options NODE_ENV=production node node_dist/backend/server.js",
         "start:mock": "yarn set-node-options NODE_ENV=development node dev-server/mock-server.js",
-        "start:dev": "tsc && yarn set-node-options NODE_ENV=development node --trace-deprecation node_dist/backend/server-lokal.js",
-        "build": "yarn lint && yarn build:prod",
+        "start:dev": "tsc && yarn tsc-alias && yarn set-node-options NODE_ENV=development node --trace-deprecation node_dist/backend/server-lokal.js",
+        "build": "yarn lint && yarn build:prod && yarn tsc-alias",
         "build:dev": "tsc & NODE_ENV=development webpack --config ./webpack/webpack.dev.js",
         "build:prod": "tsc & NODE_ENV=production webpack --config ./webpack/webpack.prod.js",
         "lint": "tsc --project ./src/frontend/tsconfig.json --noEmit && eslint './src/**/*.{js,ts,tsx}'",
         "lint:fix": "eslint './src/**/*.{js,ts,tsx}' --fix",
         "test": "vitest run --exclude '**/frontend_production/**'",
         "prepare": "husky",
-        "set-node-options": "NODE_OPTIONS='--import=./node_dist/backend/register.js --es-module-specifier-resolution=node'"
+        "set-node-options": "NODE_OPTIONS='--es-module-specifier-resolution=node'",
+        "tsc-alias": "tsc-alias -p tsconfig.json"
     },
     "lint-staged": {
         "src/**/*.{js,jsx,ts,tsx,json}": ["prettier --write", "eslint --fix"]
@@ -32,11 +33,11 @@
         "@navikt/ds-css": "7.22.0",
         "@navikt/ds-react": "7.22.0",
         "@navikt/ds-tokens": "7.22.0",
-        "@navikt/familie-backend": "10.1.6",
+        "@navikt/familie-backend": "10.1.7",
         "@navikt/familie-endringslogg": "^14.0.0",
         "@navikt/familie-form-elements": "^21.0.4",
         "@navikt/familie-header": "^16.0.2",
-        "@navikt/familie-logging": "^7.0.3",
+        "@navikt/familie-logging": "^7.0.4",
         "@navikt/familie-visittkort": "^15.1.5",
         "@navikt/fnrvalidator": "^2.1.5",
         "@sentry/browser": "^9.29.0",
@@ -72,7 +73,7 @@
         "react-select": "^5.10.1",
         "styled-components": "^6.1.19",
         "svg-inline-loader": "^0.8.2",
-        "ts-node": "^10.9.2",
+        "tsc-alias": "^1.8.16",
         "use-debounce": "^10.0.5",
         "uuid": "^11.1.0",
         "webpack-dev-server": "^5.2.2",
