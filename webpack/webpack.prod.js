@@ -30,26 +30,27 @@ const config = mergeWithCustomize({
             {
                 test: /\.module\.css$/,
                 use: [
-                    'style-loader',
+                    MiniCssExtractPlugin.loader,
                     {
                         loader: 'css-loader',
                         options: {
-                            modules: true,
+                            modules: {
+                                namedExport: false,
+                            },
                             importLoaders: 1,
                         },
                     },
                 ],
             },
             {
-                test: /\.(css|less)$/,
+                test: /\.css$/,
+                exclude: /\.module\.css$/,
                 use: [
                     MiniCssExtractPlugin.loader,
                     {
                         loader: 'css-loader',
                         options: {
-                            modules: {
-                                mode: 'icss',
-                            },
+                            modules: false,
                             importLoaders: 2,
                         },
                     },
@@ -61,9 +62,19 @@ const config = mergeWithCustomize({
                             },
                         },
                     },
+                ],
+            },
+            {
+                test: /\.less$/,
+                use: [
+                    MiniCssExtractPlugin.loader,
                     {
-                        loader: 'less-loader',
+                        loader: 'css-loader',
+                        options: {
+                            importLoaders: 1,
+                        },
                     },
+                    'less-loader',
                 ],
             },
         ],
