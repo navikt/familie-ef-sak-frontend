@@ -10,7 +10,7 @@ export const vergemålTilBrevmottaker = (vergemål: IVergemål): IBrevmottaker =
 export const fullmaktTilBrevMottaker = (fullmakt: IFullmakt): IBrevmottaker => ({
     navn: fullmakt.navn || '',
     personIdent: fullmakt.motpartsPersonident,
-    mottakerRolle: EBrevmottakerRolle.FULLMAKT,
+    mottakerRolle: EBrevmottakerRolle.FULLMEKTIG,
 });
 
 export const mottakereEllerBruker = (
