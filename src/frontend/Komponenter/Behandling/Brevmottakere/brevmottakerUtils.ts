@@ -10,7 +10,7 @@ export const vergemålTilBrevmottaker = (vergemål: IVergemål): IBrevmottaker =
 export const fullmaktTilBrevMottaker = (fullmakt: IFullmakt): IBrevmottaker => ({
     navn: fullmakt.navn || '',
     personIdent: fullmakt.motpartsPersonident,
-    mottakerRolle: EBrevmottakerRolle.FULLMAKT,
+    mottakerRolle: EBrevmottakerRolle.FULLMEKTIG,
 });
 
 export const mottakereEllerBruker = (
@@ -37,4 +37,14 @@ export const brevmottakereMedBruker = (personopplysninger: IPersonopplysninger) 
         ],
         organisasjoner: [],
     };
+};
+
+export const visMottakerRolleVergeFullmektigHvisVerge = (
+    mottakerRolle: EBrevmottakerRolle
+): string => {
+    if (mottakerRolle === EBrevmottakerRolle.VERGE) {
+        return `${EBrevmottakerRolle.VERGE}/${EBrevmottakerRolle.FULLMEKTIG}`;
+    }
+
+    return mottakerRolle;
 };
