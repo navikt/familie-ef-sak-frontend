@@ -2,7 +2,7 @@ import { init } from '@sentry/browser';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import axe from '@axe-core/react';
-import './index.less';
+import './index.css';
 import '@navikt/ds-css';
 import { createRoot } from 'react-dom/client';
 import { App } from './App';
