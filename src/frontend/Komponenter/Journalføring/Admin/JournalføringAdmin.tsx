@@ -111,7 +111,7 @@ export const JournalføringAdmin: React.FC = () => {
             </DataViewer>
             <DataViewer response={{ journalResponse, fagsak }}>
                 {({ journalResponse, fagsak }) => (
-                    <SideLayout className={'container'}>
+                    <SideLayout>
                         <Heading size={'xlarge'} level={'1'}>
                             Opprett ny behandling for journalpost
                         </Heading>

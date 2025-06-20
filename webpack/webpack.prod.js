@@ -64,19 +64,6 @@ const config = mergeWithCustomize({
                     },
                 ],
             },
-            {
-                test: /\.less$/,
-                use: [
-                    MiniCssExtractPlugin.loader,
-                    {
-                        loader: 'css-loader',
-                        options: {
-                            importLoaders: 1,
-                        },
-                    },
-                    'less-loader',
-                ],
-            },
         ],
     },
     plugins: [
