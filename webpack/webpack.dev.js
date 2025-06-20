@@ -71,19 +71,6 @@ const config = mergeWithCustomize({
                     },
                 ],
             },
-            {
-                test: /\.less$/,
-                use: [
-                    'style-loader',
-                    {
-                        loader: 'css-loader',
-                        options: {
-                            importLoaders: 1,
-                        },
-                    },
-                    'less-loader',
-                ],
-            },
         ],
     },
     devtool: 'eval-cheap-module-source-map',

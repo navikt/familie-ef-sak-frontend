@@ -104,8 +104,6 @@
         "fork-ts-checker-webpack-plugin": "^9.1.0",
         "html-webpack-plugin": "^5.6.3",
         "husky": "^9.1.7",
-        "less": "^4.3.0",
-        "less-loader": "^12.3.0",
         "lint-staged": "^16.1.1",
         "mini-css-extract-plugin": "^2.9.2",
         "postcss": "^8.5.5",

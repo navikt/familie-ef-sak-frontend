@@ -31,7 +31,7 @@ export const JournalføringAdminVelger: React.FC = () => {
     };
 
     return (
-        <SideLayout className={'container'}>
+        <SideLayout>
             <Heading size={'large'} level={'2'}>
                 Opprett ny behandling for journalpost
             </Heading>
