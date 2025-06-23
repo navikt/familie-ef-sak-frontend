@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { MenuHamburgerIcon, MenuElipsisVerticalIcon } from '@navikt/aksel-icons';
 import styled from 'styled-components';
+import { Button } from '@navikt/ds-react';
 
 interface HamburgerMenyInnholdProps {
     $åpen: boolean;
@@ -56,19 +57,6 @@ const HamburgerMenyInnhold = styled.div<HamburgerMenyInnholdProps>`
 
         list-style-type: none;
     }
-
-    li:hover {
-        background-color: #0166c5;
-        color: white;
-        cursor: pointer;
-    }
-`;
-
-const Knapp = styled.button`
-    height: 100%;
-    width: 100%;
-
-    text-align: left;
 `;
 
 export interface MenyItem {
@@ -130,14 +118,16 @@ export const Hamburgermeny: FC<Props> = ({
                 <ul>
                     {items.map((p) => (
                         <li key={p.tekst}>
-                            <Knapp
+                            <Button
+                                variant="tertiary"
+                                size="xsmall"
                                 onClick={() => {
                                     settÅpenHamburgerMeny(false);
                                     p.onClick();
                                 }}
                             >
                                 {p.tekst}
-                            </Knapp>
+                            </Button>
                         </li>
                     ))}
                 </ul>
