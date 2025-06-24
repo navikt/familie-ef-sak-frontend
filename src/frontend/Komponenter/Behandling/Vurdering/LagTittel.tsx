@@ -15,6 +15,9 @@ export const LagTittel: FC<{
 }> = ({ vurdering, erAutomatiskVurdert }) => {
     const erAleneomsorg = vurdering.vilkårType === InngangsvilkårType.ALENEOMSORG;
     const erVurderingOppfylt = vurdering.resultat === Vilkårsresultat.OPPFYLT;
+    const erVurderingIkkeOppfylt = vurdering.resultat === Vilkårsresultat.IKKE_OPPFYLT;
+    const skalViseCheckmarkIkon = erAleneomsorg && erVurderingOppfylt;
+    const skalViseXMarkIkon = erAleneomsorg && erVurderingIkkeOppfylt;
 
     const tittel = () => {
         let tittel = '';
@@ -25,16 +28,17 @@ export const LagTittel: FC<{
         return tittel;
     };
 
-    const skalViseCheckmarkIkon = erAleneomsorg && erVurderingOppfylt;
-
     return (
         <HStack gap="1">
             <Heading size={'small'} level={'3'}>
                 {tittel()}
             </Heading>
-            {skalViseCheckmarkIkon ? (
+
+            {skalViseCheckmarkIkon && (
                 <CheckmarkCircleIcon title="check-success" fontSize="1.5rem" color={AIconSuccess} />
-            ) : (
+            )}
+
+            {skalViseXMarkIkon && (
                 <XMarkOctagonIcon title="x-danger" fontSize="1.5rem" color={AIconDanger} />
             )}
         </HStack>
