@@ -44,9 +44,12 @@ export const Aleneomsorg: React.FC<VilkårPropsAleneomsorg> = ({
         }
     }, [axiosRequest, behandling.stønadstype, behandling.id, settBarnMedLøpendeStønad]);
 
-    const vilkårsresultatAleneomsorg = vurderinger
-        .filter((vurdering) => vurdering.vilkårType === InngangsvilkårType.ALENEOMSORG)
-        .map((v) => v.resultat);
+    const inngangsvilkårAleneomsorg = vurderinger.filter(
+        (vurdering) => vurdering.vilkårType === InngangsvilkårType.ALENEOMSORG
+    );
+
+    const vilkårsresultatAleneomsorg = inngangsvilkårAleneomsorg.map((v) => v.resultat);
+
     const utleddResultat = vilkårStatusForBarn(vilkårsresultatAleneomsorg);
 
     return (

@@ -1,10 +1,10 @@
 import React, { FC, ReactNode } from 'react';
 import styled from 'styled-components';
 import { AGray300 } from '@navikt/ds-tokens/dist/tokens';
+import { Box } from '@navikt/ds-react';
 
 const Container = styled.div<{ $borderBottom: boolean }>`
     display: flex;
-    margin: 0 1rem;
     border-bottom: ${(props) => (props.$borderBottom ? `1px solid ${AGray300}` : 'none')};
 
     @media (max-width: 1600px) {
@@ -12,7 +12,6 @@ const Container = styled.div<{ $borderBottom: boolean }>`
     }
 
     .venstreKolonne {
-        padding: 1.5rem 0;
         width: 50%;
 
         @media (max-width: 1600px) {
@@ -20,7 +19,6 @@ const Container = styled.div<{ $borderBottom: boolean }>`
         }
     }
     .høyreKolonne {
-        padding: 1.5rem 0;
         width: 50%;
         max-width: 50rem;
         margin-left: auto;
@@ -44,9 +42,11 @@ export const VilkårpanelInnhold: FC<Props> = ({
     children: { venstre, høyre },
 }) => {
     return (
-        <Container $borderBottom={borderBottom}>
-            {venstre && <div className="venstreKolonne">{venstre}</div>}
-            <div className="høyreKolonne">{høyre}</div>
-        </Container>
+        <Box padding={'space-16'}>
+            <Container $borderBottom={borderBottom}>
+                {venstre && <div className="venstreKolonne">{venstre}</div>}
+                <div className="høyreKolonne">{høyre}</div>
+            </Container>
+        </Box>
     );
 };

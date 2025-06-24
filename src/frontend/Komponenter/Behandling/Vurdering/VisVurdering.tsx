@@ -3,10 +3,10 @@ import { FC } from 'react';
 import styled from 'styled-components';
 import { delvilkårTypeTilTekst, svarTypeTilTekst } from './tekster';
 import { BrukerMedBlyantIkon, CogIkon } from '../../../Felles/Ikoner/DataGrunnlagIkoner';
-import { IVurdering, resultatTilTekst, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
+import { IVurdering, Vilkårsresultat } from '../Inngangsvilkår/vilkår';
 import { BreakWordBodyLongSmall } from '../../../Felles/Visningskomponenter/BreakWordBodyLongSmall';
 import { formaterIsoDatoTidMedSekunder } from '../../../App/utils/formatter';
-import { Button, ErrorMessage, Heading } from '@navikt/ds-react';
+import { Button, ErrorMessage } from '@navikt/ds-react';
 import { TrashIcon, PencilIcon, RecycleIcon } from '@navikt/aksel-icons';
 
 import {
@@ -23,6 +23,7 @@ import {
 import { ATextSubtle } from '@navikt/ds-tokens/dist/tokens';
 import { utledSkalViseGjenbrukKnapp } from './utils';
 import { ModalGjenbrukVilkårsvurdering } from './ModalGjenbrukVilkårsvurdering';
+import { LagTittel } from './LagTittel';
 
 const StyledVilkår = styled.div`
     grid-column: 2/4;
@@ -44,15 +45,6 @@ const StyledFeilmelding = styled.div`
     max-width: 30rem;
 `;
 
-const StyledIkonOgTittel = styled.span`
-    margin-bottom: 0.5rem;
-    display: flex;
-
-    svg {
-        margin-right: 1rem;
-    }
-`;
-
 const SistOppdatertTekst = styled(DetailSmall)`
     color: ${ATextSubtle};
 `;
@@ -63,7 +55,6 @@ interface Props {
     feilmelding: string | undefined;
     startRedigering: () => void;
     behandlingErRedigerbar: boolean;
-    tittelTekst?: string;
     gjenbrukVilkårsvurdering: () => void;
     gjenbrukbareVilkårsvurderinger: string[];
 }
@@ -74,7 +65,6 @@ const VisVurdering: FC<Props> = ({
     resetVurdering,
     feilmelding,
     behandlingErRedigerbar,
-    tittelTekst,
     gjenbrukVilkårsvurdering,
     gjenbrukbareVilkårsvurderinger,
 }) => {
@@ -99,14 +89,7 @@ const VisVurdering: FC<Props> = ({
             {!erAutomatiskVurdert && <BrukerMedBlyantIkon />}
 
             <TittelOgKnappWrapper>
-                <StyledIkonOgTittel>
-                    <Heading size={'small'} level={'3'}>
-                        {tittelTekst
-                            ? tittelTekst
-                            : `Vilkår ${resultatTilTekst[vurdering.resultat]}`}
-                        {erAutomatiskVurdert ? ` (automatisk)` : ``}
-                    </Heading>
-                </StyledIkonOgTittel>
+                <LagTittel vurdering={vurdering} erAutomatiskVurdert={erAutomatiskVurdert} />
                 {behandlingErRedigerbar && (
                     <>
                         <div>
