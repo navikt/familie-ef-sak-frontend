@@ -3,7 +3,7 @@ import { vilkårStatusForBarn } from '../../Vurdering/VurderingUtil';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import AleneomsorgInfo from './AleneomsorgInfo';
 import { VilkårPropsAleneomsorg } from '../vilkårprops';
-import { InngangsvilkårType } from '../vilkår';
+import { InngangsvilkårType, Vilkårsresultat } from '../vilkår';
 import { byggTomRessurs, Ressurs } from '../../../../App/typer/ressurs';
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
 import { useApp } from '../../../../App/context/AppContext';
@@ -44,10 +44,23 @@ export const Aleneomsorg: React.FC<VilkårPropsAleneomsorg> = ({
         }
     }, [axiosRequest, behandling.stønadstype, behandling.id, settBarnMedLøpendeStønad]);
 
-    const vilkårsresultatAleneomsorg = vurderinger
-        .filter((vurdering) => vurdering.vilkårType === InngangsvilkårType.ALENEOMSORG)
-        .map((v) => v.resultat);
+    const inngangsvilkårAleneomsorg = vurderinger.filter(
+        (vurdering) => vurdering.vilkårType === InngangsvilkårType.ALENEOMSORG
+    );
+
+    const vilkårsresultatAleneomsorg = inngangsvilkårAleneomsorg.map((v) => v.resultat);
+
     const utleddResultat = vilkårStatusForBarn(vilkårsresultatAleneomsorg);
+
+    const oppfylteVilkår = inngangsvilkårAleneomsorg.filter(
+        (vurdering) => vurdering.resultat === Vilkårsresultat.OPPFYLT
+    );
+
+    const harFlereBarnAleneomsorg = inngangsvilkårAleneomsorg.length > 1;
+
+    const visAntallOppfylteVilkårHvisFlereBarn: string = harFlereBarnAleneomsorg
+        ? `(${oppfylteVilkår.length} av ${inngangsvilkårAleneomsorg.length} oppfylt)`
+        : '';
 
     return (
         <Vilkårpanel
@@ -55,6 +68,7 @@ export const Aleneomsorg: React.FC<VilkårPropsAleneomsorg> = ({
             tittel="Aleneomsorg"
             vilkårsresultat={utleddResultat}
             vilkår={InngangsvilkårType.ALENEOMSORG}
+            ekstraTekst={visAntallOppfylteVilkårHvisFlereBarn}
         >
             {grunnlag.barnMedSamvær.map((barn, indeks) => {
                 const vurdering = vurderinger.find(
