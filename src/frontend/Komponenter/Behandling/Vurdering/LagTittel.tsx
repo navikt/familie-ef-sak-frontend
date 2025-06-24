@@ -1,5 +1,5 @@
-import { XMarkOctagonIcon } from '@navikt/aksel-icons';
-import { ARed500 } from '@navikt/ds-tokens/dist/tokens';
+import { CheckmarkCircleIcon, XMarkOctagonIcon } from '@navikt/aksel-icons';
+import { AIconDanger, AIconSuccess } from '@navikt/ds-tokens/dist/tokens';
 import { Heading, HStack } from '@navikt/ds-react';
 import React, { FC } from 'react';
 import {
@@ -25,15 +25,17 @@ export const LagTittel: FC<{
         return tittel;
     };
 
-    const skalViseXIkon = erAleneomsorg && !erVurderingOppfylt;
+    const skalViseCheckmarkIkon = erAleneomsorg && erVurderingOppfylt;
 
     return (
         <HStack gap="1">
             <Heading size={'small'} level={'3'}>
                 {tittel()}
             </Heading>
-            {skalViseXIkon && (
-                <XMarkOctagonIcon title="a11y-title" fontSize="1.5rem" color={ARed500} />
+            {skalViseCheckmarkIkon ? (
+                <CheckmarkCircleIcon title="check-success" fontSize="1.5rem" color={AIconSuccess} />
+            ) : (
+                <XMarkOctagonIcon title="x-danger" fontSize="1.5rem" color={AIconDanger} />
             )}
         </HStack>
     );
