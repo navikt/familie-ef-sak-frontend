@@ -29,12 +29,6 @@
     overflow-y: auto;
     width: 1.5rem;
     min-width: 1.5rem;
-
-    button {
-        border: none;
-        padding: 0;
-        cursor: pointer;
-    }
 }
 
 .hoyreMenyWrapperAapen {
