@@ -20,6 +20,7 @@ const ValgteStønaderCheckbox: FC<{
     return (
         <HStack gap={'4'}>
             <CheckboxGroup
+                size="small"
                 legend=""
                 hideLegend
                 disabled={!harBehandling(stønaderMedBehandling, ValgtStønad.OVERGANGSSTØNAD)}
@@ -29,6 +30,7 @@ const ValgteStønaderCheckbox: FC<{
                 <Checkbox value="overgangsstønad">Overgangsstønad</Checkbox>
             </CheckboxGroup>
             <CheckboxGroup
+                size="small"
                 legend=""
                 hideLegend
                 disabled={!harBehandling(stønaderMedBehandling, ValgtStønad.BARNETILSYN)}
@@ -38,6 +40,7 @@ const ValgteStønaderCheckbox: FC<{
                 <Checkbox value="barnetilsyn">Barnetilsyn</Checkbox>
             </CheckboxGroup>
             <CheckboxGroup
+                size="small"
                 legend=""
                 hideLegend
                 disabled={!harBehandling(stønaderMedBehandling, ValgtStønad.SKOLEPENGER)}

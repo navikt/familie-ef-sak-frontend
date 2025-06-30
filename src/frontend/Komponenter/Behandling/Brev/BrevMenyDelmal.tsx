@@ -12,7 +12,7 @@ import { ValgfeltSelect } from './ValgfeltSelect';
 import { Flettefelt } from './Flettefelt';
 import styled from 'styled-components';
 import { Accordion, Button, Checkbox } from '@navikt/ds-react';
-import { ABorderRadiusMedium, ABorderStrong } from '@navikt/ds-tokens/dist/tokens';
+import { ABorderDefault, ABorderRadiusMedium } from '@navikt/ds-tokens/dist/tokens';
 import { HtmlEditor } from '../../../Felles/HtmlEditor/HtmlEditor';
 import { ArrowsSquarepathIcon } from '@navikt/aksel-icons';
 import { finnFlettefeltRefFraFlettefeltApiNavn } from './BrevUtils';
@@ -136,16 +136,12 @@ export const BrevMenyDelmal: React.FC<Props> = ({
                 size="small"
                 style={{
                     width: '100%',
-                    border: `1px solid ${ABorderStrong}`,
+                    border: `1px solid ${ABorderDefault}`,
                     borderRadius: `${ABorderRadiusMedium}`,
                 }}
             >
                 <Accordion.Item open={ekspanderbartPanelÅpen}>
                     <Accordion.Header
-                        style={{
-                            borderRadius: `${ABorderRadiusMedium}`,
-                            border: 'none',
-                        }}
                         onClick={() => settEkspanderbartPanelÅpen(!ekspanderbartPanelÅpen)}
                     >
                         {delmal?.delmalNavn}

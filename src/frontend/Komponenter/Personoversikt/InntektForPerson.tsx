@@ -8,12 +8,6 @@ import styled from 'styled-components';
 import { formaterTallMedTusenSkille } from '../../App/utils/formatter';
 import { BodyShortSmall } from '../../Felles/Visningskomponenter/Tekster';
 
-const Container = styled.div`
-    width: max-content;
-    text-align: end;
-    padding: 2rem 0 0 3rem;
-`;
-
 const HøyrestiltDataCell = styled(Table.DataCell)`
     text-align: end;
 `;
@@ -48,9 +42,9 @@ const PensjonsgivendeInntektTabell: React.FC<{
 }> = ({ pensjonsgivendeInntekter }) => {
     if (pensjonsgivendeInntekter.length < 1) {
         return (
-            <Container>
+            <div>
                 <BodyShortSmall>Ingen registrert inntekt…</BodyShortSmall>
-            </Container>
+            </div>
         );
     }
 
@@ -59,7 +53,7 @@ const PensjonsgivendeInntektTabell: React.FC<{
     );
 
     return (
-        <Container>
+        <div>
             <Table size="small">
                 <Table.Header>
                     <Table.Row>
@@ -117,6 +111,6 @@ const PensjonsgivendeInntektTabell: React.FC<{
                     })}
                 </Table.Body>
             </Table>
-        </Container>
+        </div>
     );
 };

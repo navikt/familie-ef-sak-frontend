@@ -3,13 +3,8 @@ import { useApp } from '../../App/context/AppContext';
 import { byggHenterRessurs, byggTomRessurs, Ressurs, RessursStatus } from '../../App/typer/ressurs';
 import { useToggles } from '../../App/context/TogglesContext';
 import { ToggleName } from '../../App/context/toggles';
-import styled from 'styled-components';
-import { Button } from '@navikt/ds-react';
+import { Button, Heading } from '@navikt/ds-react';
 import { visMigrertStatus } from './MigrerFagsak';
-
-const StyledKnapp = styled(Button)`
-    margin: 0.25rem;
-`;
 
 const MigrerBarnetilsyn: React.FC<{
     fagsakPersonId: string;
@@ -37,11 +32,11 @@ const MigrerBarnetilsyn: React.FC<{
     };
 
     return (
-        <div style={{ marginTop: '1rem' }}>
-            <h1>Migrering - Barnetilsyn</h1>
+        <>
+            <Heading size={'medium'}>Migrering - Barnetilsyn</Heading>
             <div>
                 {visMigrertStatus(migrertStatus, settIgnorerFeilISimulering)}
-                <StyledKnapp
+                <Button
                     onClick={migrerFagsak}
                     disabled={
                         migrertStatus.status === RessursStatus.HENTER ||
@@ -49,9 +44,9 @@ const MigrerBarnetilsyn: React.FC<{
                     }
                 >
                     Migrer Barnetilsyn
-                </StyledKnapp>
+                </Button>
             </div>
-        </div>
+        </>
     );
 };
 

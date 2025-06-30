@@ -13,7 +13,6 @@ import { useHentFagsakPerson } from '../../App/hooks/useHentFagsakPerson';
 import { Tabs } from '@navikt/ds-react';
 import { InntektForPerson } from './InntektForPerson';
 import { loggNavigereTabEvent } from '../../App/utils/amplitude/amplitudeLoggEvents';
-import { styled } from 'styled-components';
 import { PersonHeader } from '../../Felles/PersonHeader/PersonHeader';
 import { Personopplysninger } from './Personopplysninger';
 import { Vedtaksperioderoversikt } from './Vedtaksperioderoversikt';
@@ -21,10 +20,7 @@ import { Behandlingsoversikt } from './Behandlingsoversikt';
 import { FrittståendeBrevMedVisning } from '../Behandling/Brev/FrittståendeBrevMedVisning';
 import { Dokumenter } from './Dokumenter';
 import { OpprettFagsak } from '../Behandling/Førstegangsbehandling/OpprettFagsak';
-
-const StyledSide = styled.div`
-    padding: 0 1rem;
-`;
+import { Side } from './Side';
 
 interface FaneProps {
     label: string;
@@ -189,7 +185,7 @@ const PersonOversikt: React.FC<Props> = ({
                     ))}
                 </Tabs.List>
             </Tabs>
-            <StyledSide>
+            <Side>
                 <Routes>
                     {faner.map((fane) => (
                         <Route
@@ -213,7 +209,7 @@ const PersonOversikt: React.FC<Props> = ({
                         }
                     />
                 </Routes>
-            </StyledSide>
+            </Side>
         </>
     );
 };

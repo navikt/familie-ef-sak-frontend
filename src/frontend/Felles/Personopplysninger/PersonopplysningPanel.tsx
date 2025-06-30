@@ -1,12 +1,7 @@
 import { BodyShort, Heading, ReadMore } from '@navikt/ds-react';
-import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
 import React, { ReactNode } from 'react';
 import styled from 'styled-components';
-
-const Panel = styled.div`
-    background-color: ${AGray50};
-    padding: 1rem;
-`;
+import styles from './PersonopplysningPanel.module.css';
 
 const TittelMedIkon = styled.div`
     display: flex;
@@ -15,8 +10,6 @@ const TittelMedIkon = styled.div`
 `;
 
 const IkonWrapper = styled.div`
-    width: 24px;
-    height: 24px;
     display: flex;
     justify-content: center;
 `;
@@ -39,7 +32,7 @@ const PersonopplysningerPanel: React.FC<{
     children?: ReactNode;
 }> = ({ Ikon, tittel, children, tittelBeskrivelse }) => {
     return (
-        <Panel>
+        <div className={styles.panel}>
             <TittelMedIkon className="ikon">
                 <IkonWrapper>
                     <Ikon />
@@ -55,7 +48,7 @@ const PersonopplysningerPanel: React.FC<{
                 </ReadMoreMedMarginLeft>
             )}
             {children && <InnholdWrapper>{children}</InnholdWrapper>}
-        </Panel>
+        </div>
     );
 };
 

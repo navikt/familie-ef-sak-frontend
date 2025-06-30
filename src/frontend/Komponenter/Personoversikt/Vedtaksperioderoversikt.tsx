@@ -13,7 +13,7 @@ export const Vedtaksperioderoversikt: React.FC<{ fagsakPerson: FagsakPerson }> =
     const [valgteStønader, settValgteStønader] = useState<ValgtStønad[]>(defaultValgteStønader);
 
     return (
-        <HStack gap="8">
+        <HStack gap="space-4">
             <ValgteStønaderCheckbox
                 valgteStønader={valgteStønader}
                 settValgteStønader={settValgteStønader}

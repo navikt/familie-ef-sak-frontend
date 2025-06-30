@@ -17,7 +17,7 @@ export const Container = styled(VStack)`
     border: 1px solid #efefef;
     background-color: #f9f9f9;
     width: 100%;
-    padding: 0.5rem;
+    padding: 1rem;
 `;
 
 interface VedtaksperioderProps {

@@ -11,23 +11,8 @@ import SummertePerioder from '../Migrering/SummertePerioder';
 import InfotrygdPerioder from '../Migrering/InfotrygdPerioder';
 import MigrerBarnetilsyn from '../Migrering/MigrerBarnetilsyn';
 import { AlertInfo } from '../../Felles/Visningskomponenter/Alerts';
-import { BodyShort, Checkbox } from '@navikt/ds-react';
+import { BodyShort, Checkbox, Heading, HStack, VStack } from '@navikt/ds-react';
 import Historiskpensjon from './Historiskpensjon/Historiskpensjon';
-
-const FlexBox = styled.div`
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 1rem;
-    align-items: flex-start;
-`;
-const StyledAlertStripe = styled(AlertInfo)`
-    width: 40rem;
-`;
-
-const InfotrygdperioderoversiktContainer = styled.div`
-    padding: 0.25rem;
-`;
 
 const CheckboxContainer = styled.div`
     display: flex;
@@ -56,14 +41,14 @@ const InfotrygdEllerSummertePerioder: React.FC<{
 
     return (
         <>
-            <FlexBox>
-                <StyledAlertStripe>
+            <HStack gap="space-16">
+                <AlertInfo>
                     <BodyShort>
                         Denne siden viser vedtaksperioder fra og med desember 2008
                     </BodyShort>
-                </StyledAlertStripe>
+                </AlertInfo>
                 <Historiskpensjon fagsakPersonId={fagsakPersonId} />
-            </FlexBox>
+            </HStack>
             <CheckboxContainer>
                 {skalViseCheckbox && (
                     <Checkbox
@@ -76,14 +61,30 @@ const InfotrygdEllerSummertePerioder: React.FC<{
                     </Checkbox>
                 )}
             </CheckboxContainer>
-            <h2>Overgangsstønad</h2>
-            {visPerioder(Stønadstype.OVERGANGSSTØNAD, visSummert, perioder.overgangsstønad)}
 
-            <h2>Barnetilsyn</h2>
-            {visPerioder(Stønadstype.BARNETILSYN, visSummert, perioder.barnetilsyn)}
+            <TittelOgPerioder
+                tittel="Overgangsstønad"
+                visPerioder={visPerioder}
+                stønadstype={Stønadstype.OVERGANGSSTØNAD}
+                visSummert={visSummert}
+                perioder={perioder.overgangsstønad}
+            />
 
-            <h2>Skolepenger</h2>
-            {visPerioder(Stønadstype.SKOLEPENGER, visSummert, perioder.skolepenger)}
+            <TittelOgPerioder
+                tittel="Barnetilsyn"
+                visPerioder={visPerioder}
+                stønadstype={Stønadstype.BARNETILSYN}
+                visSummert={visSummert}
+                perioder={perioder.barnetilsyn}
+            />
+
+            <TittelOgPerioder
+                tittel="Skolepenger"
+                visPerioder={visPerioder}
+                stønadstype={Stønadstype.SKOLEPENGER}
+                visSummert={visSummert}
+                perioder={perioder.skolepenger}
+            />
         </>
     );
 };
@@ -109,16 +110,37 @@ export const Infotrygdperioderoversikt: React.FC<{
     return (
         <DataViewer response={{ infotrygdPerioder }}>
             {({ infotrygdPerioder }) => (
-                <InfotrygdperioderoversiktContainer>
-                    <InfotrygdEllerSummertePerioder
-                        perioder={infotrygdPerioder}
-                        fagsakPersonId={fagsakPersonId}
-                    />
-                    <InfotrygdSaker personIdent={personIdent} />
-                    <MigrerFagsak fagsakPersonId={fagsakPersonId} />
-                    <MigrerBarnetilsyn fagsakPersonId={fagsakPersonId} />
-                </InfotrygdperioderoversiktContainer>
+                <div>
+                    <VStack gap="space-16">
+                        <InfotrygdEllerSummertePerioder
+                            perioder={infotrygdPerioder}
+                            fagsakPersonId={fagsakPersonId}
+                        />
+                        <InfotrygdSaker personIdent={personIdent} />
+                        <MigrerFagsak fagsakPersonId={fagsakPersonId} />
+                        <MigrerBarnetilsyn fagsakPersonId={fagsakPersonId} />
+                    </VStack>
+                </div>
             )}
         </DataViewer>
+    );
+};
+
+const TittelOgPerioder: React.FC<{
+    tittel: string;
+    visPerioder: (
+        stønadstype: Stønadstype,
+        visSummert: boolean,
+        perioder: Perioder
+    ) => React.JSX.Element;
+    stønadstype: Stønadstype;
+    visSummert: boolean;
+    perioder: Perioder;
+}> = ({ tittel, visPerioder, stønadstype, visSummert, perioder }) => {
+    return (
+        <div>
+            <Heading size={'medium'}>{tittel}</Heading>
+            {visPerioder(stønadstype, visSummert, perioder)}
+        </div>
     );
 };

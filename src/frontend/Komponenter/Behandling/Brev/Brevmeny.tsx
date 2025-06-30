@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import BrevmenyVisning from './BrevmenyVisning';
-import styled from 'styled-components';
 import {
     IMellomlagretBrevResponse,
     useMellomlagringBrev,
@@ -17,6 +16,7 @@ import { useHentBrevmaler } from '../../../App/hooks/useHentBrevmaler';
 import { useVerdierForBrev } from '../../../App/hooks/useVerdierForBrev';
 import { utledHtmlFelterPåStønadstype } from './BrevUtils';
 import { useBehandling } from '../../../App/context/BehandlingContext';
+import { VStack } from '@navikt/ds-react';
 
 export interface Props {
     oppdaterBrevRessurs: (brevRessurs: Ressurs<string>) => void;
@@ -25,12 +25,6 @@ export interface Props {
     behandling: Behandling;
     vedtaksresultat?: EBehandlingResultat;
 }
-
-const StyledBrevMeny = styled.div`
-    display: flex;
-    flex-direction: column;
-    min-width: 450px;
-`;
 
 const Brevmeny: React.FC<Props> = ({
     oppdaterBrevRessurs,
@@ -63,7 +57,15 @@ const Brevmeny: React.FC<Props> = ({
     const brevverdier = useVerdierForBrev(beløpsperioder, behandling, vedtak);
 
     return (
-        <StyledBrevMeny>
+        <VStack
+            gap="4"
+            style={{
+                backgroundColor: 'white',
+                padding: '1rem',
+                borderRadius: '0.5rem',
+                boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
+            }}
+        >
             <BrevmalSelect
                 brevmal={brevMal}
                 settBrevmal={settBrevmal}
@@ -98,7 +100,7 @@ const Brevmeny: React.FC<Props> = ({
                     ) : null
                 }
             </DataViewer>
-        </StyledBrevMeny>
+        </VStack>
     );
 };
 
