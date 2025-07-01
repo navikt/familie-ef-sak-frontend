@@ -25,7 +25,7 @@ import { Knapp } from '../../../Felles/Knapper/HovedKnapp';
 import { Alert, VStack } from '@navikt/ds-react';
 import { finnDokumenttittelForBrevmal } from './BrevUtils';
 import { BrevmottakereFrittståendeBrev } from '../Brevmottakere/BrevmottakereFrittståendeBrev';
-import { BrevvelgerContainer } from './BrevVelgerContainer';
+import { BrevvelgerContainer } from './BrevvelgerContainer';
 
 type Props = {
     fagsakId: string;
