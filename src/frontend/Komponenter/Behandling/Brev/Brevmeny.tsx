@@ -16,7 +16,7 @@ import { useHentBrevmaler } from '../../../App/hooks/useHentBrevmaler';
 import { useVerdierForBrev } from '../../../App/hooks/useVerdierForBrev';
 import { utledHtmlFelterPåStønadstype } from './BrevUtils';
 import { useBehandling } from '../../../App/context/BehandlingContext';
-import { BrevvelgerContainer } from './BrevVelgerContainer';
+import { BrevvelgerContainer } from './BrevvelgerContainer';
 
 export interface Props {
     oppdaterBrevRessurs: (brevRessurs: Ressurs<string>) => void;
