@@ -26,14 +26,6 @@ const InfotrygdEllerSummertePerioder: React.FC<{
 }> = ({ perioder, fagsakPersonId }) => {
     const [visSummert, settVisSummert] = useState<boolean>(false);
 
-    const visPerioder = (stønadstype: Stønadstype, visSummert: boolean, perioder: Perioder) => {
-        return visSummert ? (
-            <SummertePerioder stønadstype={stønadstype} perioder={perioder.summert} />
-        ) : (
-            <InfotrygdPerioder stønadstype={stønadstype} perioder={perioder.perioder} />
-        );
-    };
-
     const skalViseCheckbox =
         perioder.overgangsstønad.perioder.length > 0 ||
         perioder.barnetilsyn.perioder.length > 0 ||
@@ -64,7 +56,6 @@ const InfotrygdEllerSummertePerioder: React.FC<{
 
             <TittelOgPerioder
                 tittel="Overgangsstønad"
-                visPerioder={visPerioder}
                 stønadstype={Stønadstype.OVERGANGSSTØNAD}
                 visSummert={visSummert}
                 perioder={perioder.overgangsstønad}
@@ -72,7 +63,6 @@ const InfotrygdEllerSummertePerioder: React.FC<{
 
             <TittelOgPerioder
                 tittel="Barnetilsyn"
-                visPerioder={visPerioder}
                 stønadstype={Stønadstype.BARNETILSYN}
                 visSummert={visSummert}
                 perioder={perioder.barnetilsyn}
@@ -80,7 +70,6 @@ const InfotrygdEllerSummertePerioder: React.FC<{
 
             <TittelOgPerioder
                 tittel="Skolepenger"
-                visPerioder={visPerioder}
                 stønadstype={Stønadstype.SKOLEPENGER}
                 visSummert={visSummert}
                 perioder={perioder.skolepenger}
@@ -128,15 +117,18 @@ export const Infotrygdperioderoversikt: React.FC<{
 
 const TittelOgPerioder: React.FC<{
     tittel: string;
-    visPerioder: (
-        stønadstype: Stønadstype,
-        visSummert: boolean,
-        perioder: Perioder
-    ) => React.JSX.Element;
     stønadstype: Stønadstype;
     visSummert: boolean;
     perioder: Perioder;
-}> = ({ tittel, visPerioder, stønadstype, visSummert, perioder }) => {
+}> = ({ tittel, stønadstype, visSummert, perioder }) => {
+    const visPerioder = (stønadstype: Stønadstype, visSummert: boolean, perioder: Perioder) => {
+        return visSummert ? (
+            <SummertePerioder stønadstype={stønadstype} perioder={perioder.summert} />
+        ) : (
+            <InfotrygdPerioder stønadstype={stønadstype} perioder={perioder.perioder} />
+        );
+    };
+
     return (
         <div>
             <Heading size={'medium'}>{tittel}</Heading>

@@ -164,6 +164,8 @@ const PersonOversikt: React.FC<Props> = ({
     const path = paths.length ? paths[paths.length - 1] : '';
     useSetPersonIdent(personopplysninger.personIdent);
 
+    const skalHaBakgrunnsfarge = path === 'frittstaaende-brev';
+
     return (
         <>
             <PersonHeader fagsakPerson={fagsakPerson} personopplysninger={personopplysninger} />
@@ -185,7 +187,7 @@ const PersonOversikt: React.FC<Props> = ({
                     ))}
                 </Tabs.List>
             </Tabs>
-            <Side>
+            <Side skalHaBakgrunnsfarge={skalHaBakgrunnsfarge}>
                 <Routes>
                     {faner.map((fane) => (
                         <Route
