@@ -1,18 +1,19 @@
 import React, { useMemo, useState } from 'react';
 import { AxiosRequestConfig } from 'axios';
 import styled from 'styled-components';
-import { useDataHenter } from '../../App/hooks/felles/useDataHenter';
-import DataViewer from '../../Felles/DataViewer/DataViewer';
-import { InfotrygdPerioderResponse, Perioder } from '../../App/typer/infotrygd';
-import MigrerFagsak from '../Migrering/MigrerFagsak';
-import InfotrygdSaker from '../Migrering/InfotrygdSaker';
-import { Stønadstype } from '../../App/typer/behandlingstema';
-import SummertePerioder from '../Migrering/SummertePerioder';
-import InfotrygdPerioder from '../Migrering/InfotrygdPerioder';
-import MigrerBarnetilsyn from '../Migrering/MigrerBarnetilsyn';
-import { AlertInfo } from '../../Felles/Visningskomponenter/Alerts';
+import { useDataHenter } from '../../../App/hooks/felles/useDataHenter';
+import DataViewer from '../../../Felles/DataViewer/DataViewer';
+import { InfotrygdPerioderResponse, Perioder } from '../../../App/typer/infotrygd';
+import MigrerFagsak from '../../Migrering/MigrerFagsak';
+import InfotrygdSaker from '../../Migrering/InfotrygdSaker';
+import { Stønadstype } from '../../../App/typer/behandlingstema';
+import SummertePerioder from '../../Migrering/SummertePerioder';
+import InfotrygdPerioder from '../../Migrering/InfotrygdPerioder';
+import MigrerBarnetilsyn from '../../Migrering/MigrerBarnetilsyn';
+import { AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
 import { BodyShort, Checkbox, Heading, HStack, VStack } from '@navikt/ds-react';
-import Historiskpensjon from './Historiskpensjon/Historiskpensjon';
+import Historiskpensjon from '../Historiskpensjon/Historiskpensjon';
+import { VedtaksperiodeContainer } from './Felles/VedtaksperiodeContainer';
 
 const CheckboxContainer = styled.div`
     display: flex;
@@ -99,7 +100,7 @@ export const Infotrygdperioderoversikt: React.FC<{
     return (
         <DataViewer response={{ infotrygdPerioder }}>
             {({ infotrygdPerioder }) => (
-                <div>
+                <VedtaksperiodeContainer>
                     <VStack gap="space-16">
                         <InfotrygdEllerSummertePerioder
                             perioder={infotrygdPerioder}
@@ -109,7 +110,7 @@ export const Infotrygdperioderoversikt: React.FC<{
                         <MigrerFagsak fagsakPersonId={fagsakPersonId} />
                         <MigrerBarnetilsyn fagsakPersonId={fagsakPersonId} />
                     </VStack>
-                </div>
+                </VedtaksperiodeContainer>
             )}
         </DataViewer>
     );

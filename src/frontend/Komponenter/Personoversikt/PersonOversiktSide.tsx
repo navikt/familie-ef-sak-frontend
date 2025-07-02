@@ -4,7 +4,6 @@ import { IPersonopplysninger } from '../../App/typer/personopplysninger';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { useDataHenter } from '../../App/hooks/felles/useDataHenter';
 import { AxiosRequestConfig } from 'axios';
-import { Infotrygdperioderoversikt } from './Infotrygdperioderoversikt';
 import { FagsakPerson } from '../../App/typer/fagsak';
 import { useApp } from '../../App/context/AppContext';
 import { useSetValgtFagsakPersonId } from '../../App/hooks/useSetValgtFagsakPersonId';
@@ -52,14 +51,9 @@ const faner: FaneProps[] = [
     {
         label: 'Vedtaksperioder',
         path: 'vedtak',
-        komponent: (fagsakPerson) => <Vedtaksperioderoversikt fagsakPerson={fagsakPerson} />,
-    },
-    {
-        label: 'Vedtaksperioder infotrygd',
-        path: 'infotrygd',
         komponent: (fagsakPerson, personopplysninger) => (
-            <Infotrygdperioderoversikt
-                fagsakPersonId={fagsakPerson.id}
+            <Vedtaksperioderoversikt
+                fagsakPerson={fagsakPerson}
                 personIdent={personopplysninger.personIdent}
             />
         ),

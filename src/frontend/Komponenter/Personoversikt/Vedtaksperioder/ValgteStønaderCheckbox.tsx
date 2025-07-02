@@ -6,7 +6,15 @@ const ValgteStønaderCheckbox: FC<{
     valgteStønader: ValgtStønad[];
     settValgteStønader: React.Dispatch<React.SetStateAction<ValgtStønad[]>>;
     stønaderMedBehandling: ValgtStønad[];
-}> = ({ valgteStønader, settValgteStønader, stønaderMedBehandling }) => {
+    skalViseInfotrygd: boolean;
+    settSkalViseInfotrygd: React.Dispatch<React.SetStateAction<boolean>>;
+}> = ({
+    valgteStønader,
+    settValgteStønader,
+    stønaderMedBehandling,
+    skalViseInfotrygd,
+    settSkalViseInfotrygd,
+}) => {
     const handleValgteStønader = (valg: ValgtStønad) => {
         settValgteStønader((prevState) => {
             if (prevState.includes(valg)) {
@@ -18,36 +26,47 @@ const ValgteStønaderCheckbox: FC<{
     };
 
     return (
-        <HStack gap={'4'}>
+        <HStack gap={'16'}>
+            <HStack gap={'4'}>
+                <CheckboxGroup
+                    size="small"
+                    legend=""
+                    hideLegend
+                    disabled={!harBehandling(stønaderMedBehandling, ValgtStønad.OVERGANGSSTØNAD)}
+                    value={valgteStønader}
+                    onChange={() => handleValgteStønader(ValgtStønad.OVERGANGSSTØNAD)}
+                >
+                    <Checkbox value="overgangsstønad">Overgangsstønad</Checkbox>
+                </CheckboxGroup>
+                <CheckboxGroup
+                    size="small"
+                    legend=""
+                    hideLegend
+                    disabled={!harBehandling(stønaderMedBehandling, ValgtStønad.BARNETILSYN)}
+                    value={valgteStønader}
+                    onChange={() => handleValgteStønader(ValgtStønad.BARNETILSYN)}
+                >
+                    <Checkbox value="barnetilsyn">Barnetilsyn</Checkbox>
+                </CheckboxGroup>
+                <CheckboxGroup
+                    size="small"
+                    legend=""
+                    hideLegend
+                    disabled={!harBehandling(stønaderMedBehandling, ValgtStønad.SKOLEPENGER)}
+                    value={valgteStønader}
+                    onChange={() => handleValgteStønader(ValgtStønad.SKOLEPENGER)}
+                >
+                    <Checkbox value="skolepenger">Skolepenger</Checkbox>
+                </CheckboxGroup>
+            </HStack>
             <CheckboxGroup
                 size="small"
                 legend=""
                 hideLegend
-                disabled={!harBehandling(stønaderMedBehandling, ValgtStønad.OVERGANGSSTØNAD)}
-                value={valgteStønader}
-                onChange={() => handleValgteStønader(ValgtStønad.OVERGANGSSTØNAD)}
+                value={skalViseInfotrygd ? ['infotrygd'] : []}
+                onChange={(values) => settSkalViseInfotrygd(values.includes('infotrygd'))}
             >
-                <Checkbox value="overgangsstønad">Overgangsstønad</Checkbox>
-            </CheckboxGroup>
-            <CheckboxGroup
-                size="small"
-                legend=""
-                hideLegend
-                disabled={!harBehandling(stønaderMedBehandling, ValgtStønad.BARNETILSYN)}
-                value={valgteStønader}
-                onChange={() => handleValgteStønader(ValgtStønad.BARNETILSYN)}
-            >
-                <Checkbox value="barnetilsyn">Barnetilsyn</Checkbox>
-            </CheckboxGroup>
-            <CheckboxGroup
-                size="small"
-                legend=""
-                hideLegend
-                disabled={!harBehandling(stønaderMedBehandling, ValgtStønad.SKOLEPENGER)}
-                value={valgteStønader}
-                onChange={() => handleValgteStønader(ValgtStønad.SKOLEPENGER)}
-            >
-                <Checkbox value="skolepenger">Skolepenger</Checkbox>
+                <Checkbox value="infotrygd">Infotrygd</Checkbox>
             </CheckboxGroup>
         </HStack>
     );
