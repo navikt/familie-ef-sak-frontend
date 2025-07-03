@@ -45,6 +45,9 @@ export const HeaderMedSøk: React.FunctionComponent<Props> = ({ innloggetSaksbeh
         ]
     );
 
+    const erDev =
+        window.location.href.includes('dev') || window.location.href.includes('localhost');
+
     return (
         <Sticky>
             <Header
@@ -55,6 +58,7 @@ export const HeaderMedSøk: React.FunctionComponent<Props> = ({ innloggetSaksbeh
                 }}
                 brukerPopoverItems={[{ name: 'Logg ut', href: `${window.origin}/auth/logout` }]}
                 eksterneLenker={headerLenker}
+                erDev={erDev}
             >
                 {innloggetSaksbehandler && <PersonSøk />}
                 {innloggetSaksbehandler?.navIdent && (
