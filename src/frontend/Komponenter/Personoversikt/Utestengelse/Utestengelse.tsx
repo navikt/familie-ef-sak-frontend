@@ -1,7 +1,6 @@
 import React, { FC, useState } from 'react';
 import { Button, Heading, Table } from '@navikt/ds-react';
 import { formaterIsoDato, formaterIsoSisteDagIMåneden } from '../../../App/utils/formatter';
-import styled from 'styled-components';
 import { useApp } from '../../../App/context/AppContext';
 import { UtestengelseModal } from './UtestengelseModal';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
@@ -9,19 +8,6 @@ import { IUtestengelse } from '../../../App/typer/utestengelse';
 import { Ressurs } from '../../../App/typer/ressurs';
 import { Hamburgermeny } from '../../../Felles/Hamburgermeny/Hamburgermeny';
 import { SlettUtestengelseModal } from './SlettUtestengelseModal';
-
-const StyledTable = styled(Table)`
-    width: 18rem;
-    margin-left: 1rem;
-`;
-
-const UtestengelseContainer = styled.div`
-    margin-top: 4rem;
-`;
-
-const Knapp = styled(Button)`
-    margin-top: 0.5rem;
-`;
 
 const UtestengelseTabell: FC<{
     utestengelser: Ressurs<IUtestengelse[]>;
@@ -35,7 +21,7 @@ const UtestengelseTabell: FC<{
                     return null;
                 }
                 return (
-                    <StyledTable size={'small'}>
+                    <Table size={'small'} style={{ width: 'fit-content' }}>
                         <Table.Header>
                             <Table.Row>
                                 <Table.ColumnHeader>Fra</Table.ColumnHeader>
@@ -74,7 +60,7 @@ const UtestengelseTabell: FC<{
                                 );
                             })}
                         </Table.Body>
-                    </StyledTable>
+                    </Table>
                 );
             }}
         </DataViewer>
@@ -91,8 +77,8 @@ const Utestengelse: FC<{
     const [utestengelseTilSletting, settUtestengelseTilSletting] = useState<IUtestengelse>();
 
     return (
-        <UtestengelseContainer>
-            <Heading level="3" size="medium">
+        <>
+            <Heading size={'small'} level="3">
                 Utestengelser
             </Heading>
             <UtestengelseTabell
@@ -102,13 +88,15 @@ const Utestengelse: FC<{
             />
 
             {erSaksbehandler && (
-                <Knapp
-                    variant={'secondary'}
-                    onClick={() => settVisUtestengModal(true)}
-                    type={'button'}
-                >
-                    Legg til utestengelse
-                </Knapp>
+                <div>
+                    <Button
+                        variant={'secondary'}
+                        onClick={() => settVisUtestengModal(true)}
+                        type={'button'}
+                    >
+                        Legg til utestengelse
+                    </Button>
+                </div>
             )}
             <UtestengelseModal
                 fagsakPersonId={fagsakPersonId}
@@ -120,7 +108,7 @@ const Utestengelse: FC<{
                 fjernUtestengelseTilSletting={() => settUtestengelseTilSletting(undefined)}
                 hentUtestengelser={hentUtestengelser}
             />
-        </UtestengelseContainer>
+        </>
     );
 };
 

@@ -7,7 +7,7 @@ import { useHentUtestengelser } from '../../App/hooks/useHentUtestengelser';
 import { InfostripeUtestengelse } from './InfostripeUtestengelse';
 import { ÅpneKlager } from './Klage/ÅpneKlager';
 import { FagsakPerson } from '../../App/typer/fagsak';
-import { Heading } from '@navikt/ds-react';
+import { Heading, VStack } from '@navikt/ds-react';
 import styled from 'styled-components';
 
 export enum BehandlingApplikasjon {
@@ -46,7 +46,7 @@ export const Behandlingsoversikt: React.FC<{
     return (
         <DataViewer response={{ klagebehandlinger }}>
             {({ klagebehandlinger }) => (
-                <>
+                <VStack gap={'space-16'}>
                     <InfostripeUtestengelse utestengelser={utestengelser} />
                     <ÅpneKlager fagsakPersonId={fagsakPerson.id} />
                     {fagsakPerson.overgangsstønad && (
@@ -82,7 +82,7 @@ export const Behandlingsoversikt: React.FC<{
                             hentUtestengelser={hentUtestengelser}
                         />
                     )}
-                </>
+                </VStack>
             )}
         </DataViewer>
     );

@@ -25,6 +25,7 @@ import { Knapp } from '../../../Felles/Knapper/HovedKnapp';
 import { Alert, VStack } from '@navikt/ds-react';
 import { finnDokumenttittelForBrevmal } from './BrevUtils';
 import { BrevmottakereFrittståendeBrev } from '../Brevmottakere/BrevmottakereFrittståendeBrev';
+import { BrevvelgerContainer } from './BrevvelgerContainer';
 
 type Props = {
     fagsakId: string;
@@ -107,43 +108,45 @@ export const FrittståendeSanitybrev: React.FC<Props> = ({
                 mottakere={brevmottakere}
                 settMottakere={settBrevmottakere}
             />
-            <BrevmalSelect
-                dokumentnavn={brevmaler}
-                settBrevmal={settBrevmal}
-                brevmal={brevMal}
-                frittstående={true}
-            />
-            {brevMal && (
-                <DataViewer response={{ brevStruktur, mellomlagretBrev }}>
-                    {({ brevStruktur, mellomlagretBrev }) => (
-                        <>
-                            <BrevmenyVisning
-                                fagsakId={fagsakId}
-                                brevMal={brevMal}
-                                oppdaterBrevRessurs={oppdaterBrevRessurs}
-                                brevStruktur={brevStruktur}
-                                mellomlagreSanityBrev={mellomlagreSanitybrev}
-                                mellomlagretBrevVerdier={
-                                    (mellomlagretBrev as IMellomlagretBrevResponse)?.brevverdier
-                                }
-                                personopplysninger={personopplysninger}
-                                settBrevOppdatert={(laster) => settLaster(!laster)}
-                                brevverdier={brevverdier}
-                            />
-                            <Knapp
-                                disabled={
-                                    brevRessurs.status !== RessursStatus.SUKSESS ||
-                                    !brevmottakereValgt(brevmottakere)
-                                }
-                                onClick={() => settVisModal(true)}
-                                type={'button'}
-                            >
-                                Send brev
-                            </Knapp>
-                        </>
-                    )}
-                </DataViewer>
-            )}
+            <BrevvelgerContainer>
+                <BrevmalSelect
+                    dokumentnavn={brevmaler}
+                    settBrevmal={settBrevmal}
+                    brevmal={brevMal}
+                    frittstående={true}
+                />
+                {brevMal && (
+                    <DataViewer response={{ brevStruktur, mellomlagretBrev }}>
+                        {({ brevStruktur, mellomlagretBrev }) => (
+                            <>
+                                <BrevmenyVisning
+                                    fagsakId={fagsakId}
+                                    brevMal={brevMal}
+                                    oppdaterBrevRessurs={oppdaterBrevRessurs}
+                                    brevStruktur={brevStruktur}
+                                    mellomlagreSanityBrev={mellomlagreSanitybrev}
+                                    mellomlagretBrevVerdier={
+                                        (mellomlagretBrev as IMellomlagretBrevResponse)?.brevverdier
+                                    }
+                                    personopplysninger={personopplysninger}
+                                    settBrevOppdatert={(laster) => settLaster(!laster)}
+                                    brevverdier={brevverdier}
+                                />
+                                <Knapp
+                                    disabled={
+                                        brevRessurs.status !== RessursStatus.SUKSESS ||
+                                        !brevmottakereValgt(brevmottakere)
+                                    }
+                                    onClick={() => settVisModal(true)}
+                                    type={'button'}
+                                >
+                                    Send brev
+                                </Knapp>
+                            </>
+                        )}
+                    </DataViewer>
+                )}
+            </BrevvelgerContainer>
             <ModalWrapper
                 tittel={'Bekreft utsending av brev'}
                 visModal={visModal}

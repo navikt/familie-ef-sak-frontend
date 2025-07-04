@@ -14,7 +14,6 @@ const AlertInfoPreWrap = styled(AlertInfo)`
 `;
 
 const Container = styled.div`
-    margin: 1rem;
     max-width: 45rem;
 
     display: flex;

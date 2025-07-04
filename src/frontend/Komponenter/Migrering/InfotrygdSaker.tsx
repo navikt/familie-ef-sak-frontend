@@ -12,7 +12,7 @@ import { useDataHenter } from '../../App/hooks/felles/useDataHenter';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { stønadstypeTilTekst } from '../../App/typer/behandlingstema';
 import { tekstMapping } from '../../App/utils/tekstmapping';
-import { Table } from '@navikt/ds-react';
+import { Heading, Table } from '@navikt/ds-react';
 import {
     TableDataCellSmall,
     TableHeaderCellSmall,
@@ -89,10 +89,10 @@ const InfotrygdSaker: FC<{ personIdent: string }> = ({ personIdent }) => {
     return (
         <DataViewer response={{ infotrygdSaker }}>
             {({ infotrygdSaker }) => (
-                <>
-                    <h2>Saker</h2>
+                <div>
+                    <Heading size={'medium'}>Saker</Heading>
                     <InfotrygdSakerTabell saker={infotrygdSaker.saker} />
-                </>
+                </div>
             )}
         </DataViewer>
     );

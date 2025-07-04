@@ -14,8 +14,6 @@ const StyledVStack = styled(VStack)`
 const Container = styled.div`
     display: flex;
     gap: 1rem;
-    padding: 1rem;
-    background-color: #f2f2f2;
 
     @media (max-width: 1400px) {
         flex-direction: column;

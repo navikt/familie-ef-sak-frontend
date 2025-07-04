@@ -18,12 +18,8 @@ import {
 } from '../../App/utils/formatter';
 import Utregningstabell from '../Behandling/VedtakOgBeregning/Overgangsstønad/InnvilgeVedtak/Utregningstabell';
 import styled from 'styled-components';
-import { Button, Checkbox, CheckboxGroup } from '@navikt/ds-react';
+import { Button, Checkbox, CheckboxGroup, Heading } from '@navikt/ds-react';
 import { AlertWarning } from '../../Felles/Visningskomponenter/Alerts';
-
-const StyledKnapp = styled(Button)`
-    margin: 0.25rem;
-`;
 
 const GodkjennSimuleringsfeil = styled(AlertWarning)`
     margin-top: 1rem;
@@ -133,11 +129,11 @@ const MigrerFagsak: React.FC<{
     };
 
     return (
-        <div style={{ marginTop: '1rem' }}>
-            <h1>Migrering - Overgangsstønad</h1>
-            <StyledKnapp variant={'secondary'} onClick={hentMigreringInfo}>
+        <div>
+            <Heading size={'medium'}>Migrering - Overgangsstønad</Heading>
+            <Button variant={'secondary'} onClick={hentMigreringInfo}>
                 Hent migreringinfo
-            </StyledKnapp>
+            </Button>
             <DataViewer response={{ migreringInfo }}>
                 {({ migreringInfo }) => {
                     return (
@@ -147,7 +143,7 @@ const MigrerFagsak: React.FC<{
 
                             {migreringInfo.kanMigreres && (
                                 <div>
-                                    <StyledKnapp
+                                    <Button
                                         onClick={migrerFagsak}
                                         disabled={
                                             migrertStatus.status === RessursStatus.HENTER ||
@@ -155,7 +151,7 @@ const MigrerFagsak: React.FC<{
                                         }
                                     >
                                         Migrer fagsak
-                                    </StyledKnapp>
+                                    </Button>
                                 </div>
                             )}
                         </>
