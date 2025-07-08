@@ -15,20 +15,19 @@ const StyledBodyLong = styled(BodyLong)`
 `;
 
 export const TabellFerdigstilleOppgaver: FC<{
-    fremleggsOppgaver: IOppgaverResponse;
+    oppgaverForAutomatiskFerdigstilling: IOppgaverResponse;
     oppgaverSomSkalAutomatiskFerdigstilles: number[];
     handleSettOppgaverSomSkalFerdigstilles: (oppgaveId: number) => void;
 }> = ({
-    fremleggsOppgaver,
+    oppgaverForAutomatiskFerdigstilling,
     oppgaverSomSkalAutomatiskFerdigstilles,
     handleSettOppgaverSomSkalFerdigstilles,
 }) => {
     return (
         <>
             <Heading size="xsmall">
-                Bruker har disse fremleggsoppgavene som gjelder overgangsstønad. Huk av hvis du
-                ønsker å ferdigstille noen av oppgavene. Oppgavene blir ferdigstilt når vedtaket er
-                godkjent.
+                Huk av hvis du ønsker å ferdigstille noen av disse oppgavene. Oppgavene blir
+                ferdigstilt når vedtaket er godkjent.
             </Heading>
             <Table>
                 <Table.Header>
@@ -42,7 +41,7 @@ export const TabellFerdigstilleOppgaver: FC<{
                     </Table.Row>
                 </Table.Header>
                 <Table.Body>
-                    {fremleggsOppgaver.oppgaver.map(
+                    {oppgaverForAutomatiskFerdigstilling.oppgaver.map(
                         (
                             {
                                 id,

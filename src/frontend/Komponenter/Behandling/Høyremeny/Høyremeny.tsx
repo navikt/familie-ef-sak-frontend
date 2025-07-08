@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';
-import Dokumentoversikt from './Dokumentoversikt';
+import { Dokumentoversikt } from './Dokumentoversikt/Dokumentoversikt';
 import Valgvisning from './Valgvisning';
 import styled from 'styled-components';
 import BehandlingHistorikk from './BehandlingHistorikk';
@@ -12,6 +12,7 @@ import { ABlue400 } from '@navikt/ds-tokens/dist/tokens';
 import { Behandling } from '../../../App/typer/fagsak';
 import TilegnetSaksbehandler from './TilegnetSaksbehandler';
 import TildelOppgave from './TildelOppgave';
+import styles from './Høyremeny.module.css';
 
 const StyledBack = styled(ChevronLeftIcon)`
     border-radius: 0;
@@ -78,6 +79,7 @@ const Høyremeny: React.FC<Props> = ({ behandling, åpenHøyremeny }) => {
                     <Totrinnskontroll />
                     <StyledHøyremeny>
                         <StyledButton
+                            className={styles.hoyreMenybutton}
                             onClick={() => {
                                 settÅpenHøyremeny(!åpenHøyremeny);
                             }}
@@ -98,6 +100,7 @@ const Høyremeny: React.FC<Props> = ({ behandling, åpenHøyremeny }) => {
                     onClick={() => {
                         settÅpenHøyremeny(!åpenHøyremeny);
                     }}
+                    className={styles.hoyreMenybutton}
                 >
                     <StyledBack />
                 </StyledButton>

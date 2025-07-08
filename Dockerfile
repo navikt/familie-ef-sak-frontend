@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY assets ./assets
 COPY node_modules ./node_modules
-COPY build_n_deploy ./build_n_deploy
+COPY .nais ./.nais
 COPY node_dist ./node_dist
 COPY frontend_production ./frontend_production
 COPY package.json .
@@ -12,4 +12,4 @@ COPY package.json .
 ENV NODE_ENV production
 
 EXPOSE 8001
-CMD ["--import=./node_dist/backend/register.js", "--es-module-specifier-resolution=node", "node_dist/backend/server.js"]
+CMD ["--es-module-specifier-resolution=node", "node_dist/backend/server.js"]

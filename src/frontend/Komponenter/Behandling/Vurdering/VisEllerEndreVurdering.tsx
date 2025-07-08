@@ -65,7 +65,6 @@ const VisEllerEndreVurdering: FC<Props> = ({
     feilmelding,
     venstreKnappetekst,
     høyreKnappetekst,
-    tittelTekstVisVurdering,
 }) => {
     const {
         behandlingErRedigerbar,
@@ -105,7 +104,11 @@ const VisEllerEndreVurdering: FC<Props> = ({
     };
 
     const gjenbrukVilkårsvurdering = () => {
-        gjenbrukEnkelVilkårsvurdering(vurdering.behandlingId, vurdering.id);
+        gjenbrukEnkelVilkårsvurdering(vurdering.behandlingId, vurdering.id).then((response) => {
+            if (response.status === RessursStatus.SUKSESS) {
+                hentBehandling.rerun();
+            }
+        });
     };
 
     const initiellRedigeringsmodus =
@@ -169,7 +172,6 @@ const VisEllerEndreVurdering: FC<Props> = ({
                     resetVurdering={resetVurdering}
                     feilmelding={feilmelding || resetFeilmelding}
                     behandlingErRedigerbar={behandlingErRedigerbar && erSaksbehandler}
-                    tittelTekst={tittelTekstVisVurdering}
                     gjenbrukVilkårsvurdering={gjenbrukVilkårsvurdering}
                     gjenbrukbareVilkårsvurderinger={gjenbrukbareVilkårsvurderinger}
                 />

@@ -2,13 +2,8 @@
     "extends": "../../tsconfig.base.json",
     "compilerOptions": {
         "rootDir": ".",
-        "typeRoots": [
-            "../../node_modules/@types",
-            "./@types"
-        ]
+        "typeRoots": ["../../node_modules/@types", "./@types"]
     },
-    "exclude": [
-        "../../node_modules",
-        "**/*.test.ts"
-    ]
+    "exclude": ["../../node_modules", "**/*.test.ts"],
+    "include": ["**/*.ts", "**/*.tsx", "global.d.ts"]
 }

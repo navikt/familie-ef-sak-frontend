@@ -18,7 +18,6 @@ class ErrorBoundary extends React.Component<IProps> {
         console.log(error, info);
         if (process.env.NODE_ENV !== 'development') {
             getCurrentScope().setUser({
-                // eslint-disable-next-line react/prop-types
                 username: this.props.innloggetSaksbehandler.displayName,
             });
 
@@ -33,7 +32,6 @@ class ErrorBoundary extends React.Component<IProps> {
     }
 
     render(): React.ReactNode {
-        // eslint-disable-next-line react/prop-types
         return this.props.children;
     }
 }

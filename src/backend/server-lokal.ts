@@ -6,7 +6,7 @@ import webpackHotMiddleware from 'webpack-hot-middleware';
 import { buildPath } from './config.js';
 import { logInfo } from '@navikt/familie-logging';
 // @ts-expect-error Spesial-import
-import config from '../../build_n_deploy/webpack/webpack.dev.js';
+import config from '../../webpack/webpack.dev.js';
 import { setupBackend } from './setupBackend';
 import express, { Router } from 'express';
 

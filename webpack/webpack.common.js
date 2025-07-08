@@ -9,7 +9,7 @@ const common = {
     },
     devtool: 'source-map',
     resolve: {
-        extensions: ['.ts', '.tsx', '.js', '.jsx', '.json', '.less', '.mjs'],
+        extensions: ['.ts', '.tsx', '.js', '.jsx', '.json', '.mjs'],
         fallback: { crypto: false },
     },
     module: {

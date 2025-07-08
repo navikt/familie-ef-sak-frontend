@@ -7,6 +7,7 @@ import TerserPlugin from 'terser-webpack-plugin';
 import CopyPlugin from 'copy-webpack-plugin';
 import CompressionPlugin from 'compression-webpack-plugin';
 import ESLintPlugin from 'eslint-webpack-plugin';
+import process from 'process';
 
 const config = mergeWithCustomize({
     'entry.familie-ef-sak': 'prepend',
@@ -27,15 +28,29 @@ const config = mergeWithCustomize({
                 loader: 'babel-loader',
             },
             {
-                test: /\.(css|less)$/,
+                test: /\.module\.css$/,
                 use: [
                     MiniCssExtractPlugin.loader,
                     {
                         loader: 'css-loader',
                         options: {
                             modules: {
-                                mode: 'icss',
+                                namedExport: false,
                             },
+                            importLoaders: 1,
+                        },
+                    },
+                ],
+            },
+            {
+                test: /\.css$/,
+                exclude: /\.module\.css$/,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            modules: false,
                             importLoaders: 2,
                         },
                     },
@@ -46,9 +61,6 @@ const config = mergeWithCustomize({
                                 plugins: [['autoprefixer']],
                             },
                         },
-                    },
-                    {
-                        loader: 'less-loader',
                     },
                 ],
             },

@@ -7,8 +7,8 @@ import VedtaksperioderSkolepenger from '../HistorikkVedtaksperioder/Vedtaksperio
 import { Fagsak } from '../../../App/typer/fagsak';
 import { filtrerOgSorterBehandlinger } from '../utils';
 import TittelOgValg from './TittelOgValg';
-import { Container } from './VedtaksperioderOSBT';
 import { finnesEnFerdigBehandling } from './utils';
+import { VedtaksperiodeContainer } from './Felles/VedtaksperiodeContainer';
 
 export const VedtaksperioderSP: FC<{
     fagsak: Fagsak;
@@ -38,7 +38,7 @@ export const VedtaksperioderSP: FC<{
     }
 
     return (
-        <Container gap={'4'}>
+        <VedtaksperiodeContainer>
             <TittelOgValg
                 fagsak={fagsak}
                 valgtFagsak={fagsak}
@@ -51,6 +51,6 @@ export const VedtaksperioderSP: FC<{
             <DataViewer response={{ vedtak }}>
                 {({ vedtak }) => <VedtaksperioderSkolepenger vedtak={vedtak} />}
             </DataViewer>
-        </Container>
+        </VedtaksperiodeContainer>
     );
 };

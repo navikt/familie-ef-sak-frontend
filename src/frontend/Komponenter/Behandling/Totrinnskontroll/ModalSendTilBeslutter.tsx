@@ -1,7 +1,7 @@
-import { Modal, Button, VStack } from '@navikt/ds-react';
+import { Button, Modal, VStack } from '@navikt/ds-react';
 import React, { FC, useEffect, useState } from 'react';
 import { Divider } from '../../../Felles/Divider/Divider';
-import { Ressurs } from '../../../App/typer/ressurs';
+import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { IOppgaverResponse } from '../../../App/hooks/useHentOppgaver';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { SendTilBeslutterRequest } from './SendTilBeslutter';
@@ -22,7 +22,7 @@ export const ModalSendTilBeslutter: FC<{
     open: boolean;
     setOpen: (open: boolean) => void;
     sendTilBeslutter: (data: SendTilBeslutterRequest) => void;
-    fremleggsOppgaver: Ressurs<IOppgaverResponse>;
+    oppgaverForAutomatiskFerdigstilling: Ressurs<IOppgaverResponse>;
     oppgavetyperSomKanOpprettes: OppgaveTypeForOpprettelse[] | undefined;
     oppgavetyperSomSkalOpprettes: OppgaveTypeForOpprettelse[];
     settOppgavetyperSomSkalOpprettes: React.Dispatch<
@@ -43,7 +43,7 @@ export const ModalSendTilBeslutter: FC<{
     open,
     setOpen,
     sendTilBeslutter,
-    fremleggsOppgaver,
+    oppgaverForAutomatiskFerdigstilling,
     oppgavetyperSomKanOpprettes,
     oppgavetyperSomSkalOpprettes,
     settOppgavetyperSomSkalOpprettes,
@@ -82,6 +82,10 @@ export const ModalSendTilBeslutter: FC<{
                 ? prevOppgaver.filter((id) => id !== oppgaveId)
                 : [...prevOppgaver, oppgaveId]
         );
+
+    const harOppgaver =
+        oppgaverForAutomatiskFerdigstilling.status === RessursStatus.SUKSESS &&
+        oppgaverForAutomatiskFerdigstilling.data.oppgaver.length > 0;
 
     const kanVelgeMellomFlereOppgavetyper = (oppgavetyperSomKanOpprettes ?? []).length > 1;
     const harValgtAnnetEnnInntektskontroll =
@@ -122,8 +126,8 @@ export const ModalSendTilBeslutter: FC<{
     }, [behandling, erInnvilgelseOvergangsstønad, oppfølgingsoppgave?.automatiskBrev, vilkår]);
 
     return (
-        <DataViewer response={{ fremleggsOppgaver }}>
-            {({ fremleggsOppgaver }) => {
+        <DataViewer response={{ oppgaverForAutomatiskFerdigstilling }}>
+            {({ oppgaverForAutomatiskFerdigstilling }) => {
                 return (
                     <Modal
                         open={open}
@@ -152,11 +156,13 @@ export const ModalSendTilBeslutter: FC<{
                                                 settÅrForInntektskontrollSelvstendigNæringsdrivende
                                             }
                                         />
-                                        {fremleggsOppgaver.oppgaver.length > 0 && (
+                                        {harOppgaver && (
                                             <>
                                                 <Divider />
                                                 <TabellFerdigstilleOppgaver
-                                                    fremleggsOppgaver={fremleggsOppgaver}
+                                                    oppgaverForAutomatiskFerdigstilling={
+                                                        oppgaverForAutomatiskFerdigstilling
+                                                    }
                                                     oppgaverSomSkalAutomatiskFerdigstilles={
                                                         oppgaverSomSkalAutomatiskFerdigstilles
                                                     }
@@ -206,7 +212,7 @@ export const ModalSendTilBeslutter: FC<{
                                                 : [],
                                         årForInntektskontrollSelvstendigNæringsdrivende:
                                             årForInntektskontrollSelvstendigNæringsdrivende,
-                                        fremleggsoppgaveIderSomSkalFerdigstilles:
+                                        oppgaverIderSomSkalFerdigstilles:
                                             oppgaverSomSkalAutomatiskFerdigstilles,
                                         beskrivelseMarkeringer: beskrivelseMarkeringer,
                                         automatiskBrev: automatiskBrev,
