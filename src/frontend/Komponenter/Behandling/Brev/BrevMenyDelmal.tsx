@@ -149,7 +149,7 @@ export const BrevMenyDelmal: React.FC<Props> = ({
                     </Button>
                 </HStack>
                 {ekspanderbartPanelÅpen && (
-                    <VStack gap={'2'} style={{ padding: '1rem' }}>
+                    <VStack gap={'4'} style={{ padding: '1rem' }}>
                         {erDelmalblokk &&
                             delmalValgfelt &&
                             delmalValgfelt.map((valgFelt, index) => (
@@ -203,7 +203,7 @@ export const BrevMenyDelmal: React.FC<Props> = ({
                                         oppdaterOverstyrtInnhold(delmal, nyttInnhold);
                                     }}
                                 />
-                                <div>
+                                <div style={{ marginTop: '2rem' }}>
                                     <Button
                                         onClick={() => overstyring.konverterTilDelmalblokk(delmal)}
                                         size={'small'}
