@@ -31,7 +31,7 @@ import styled from 'styled-components';
 import { apiLoggFeil } from '../../../App/api/axios';
 import { IBrevverdier, MellomlagreSanitybrev } from '../../../App/hooks/useMellomlagringBrev';
 import { useDebouncedCallback } from 'use-debounce';
-import { Alert, Heading, Panel } from '@navikt/ds-react';
+import { Alert, Box, Heading } from '@navikt/ds-react';
 import { Brevverdier } from '../../../App/hooks/useVerdierForBrev';
 import { Fritekstområde } from './Fritekstområde';
 import { IPersonopplysninger } from '../../../App/typer/personopplysninger';
@@ -40,7 +40,6 @@ const BrevFelter = styled.div`
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    padding: 1rem 0;
     min-width: 450px;
 `;
 
@@ -293,10 +292,10 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                 if (erDelmalGruppe(gruppe)) {
                     if (skalSkjuleAlleDelmaler(gruppe, delmalStore)) return null;
                     return (
-                        <Panel key={`${gruppe.gruppeVisningsnavn}_${indeks}`}>
+                        <Box key={`${gruppe.gruppeVisningsnavn}_${indeks}`}>
                             {gruppe.gruppeVisningsnavn !== 'undefined' && (
                                 <BrevMenyTittel>
-                                    <Heading size="small" level={'5'}>
+                                    <Heading size="xsmall" level={'5'}>
                                         {gruppe.gruppeVisningsnavn}
                                     </Heading>
                                 </BrevMenyTittel>
@@ -328,7 +327,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                                     />
                                 </BrevMenyDelmalWrapper>
                             ))}
-                        </Panel>
+                        </Box>
                     );
                 } else {
                     return (

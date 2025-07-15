@@ -7,18 +7,10 @@ import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { skalMarkeresSomFjernet } from '../HistorikkVedtaksperioder/vedtakshistorikkUtil';
 import VedtaksperioderBarnetilsyn from '../HistorikkVedtaksperioder/VedtaksperioderBarnetilsyn';
 import VedtaksperioderOvergangsstønad from '../HistorikkVedtaksperioder/VedtaksperioderOvergangsstønad';
-import { styled } from 'styled-components';
 import { filtrerOgSorterBehandlinger } from '../utils';
 import TittelOgValg from './TittelOgValg';
-import { VStack } from '@navikt/ds-react';
 import { finnesEnFerdigBehandling } from './utils';
-
-export const Container = styled(VStack)`
-    border: 1px solid #efefef;
-    background-color: #f9f9f9;
-    width: 100%;
-    padding: 0.5rem;
-`;
+import { VedtaksperiodeContainer } from './Felles/VedtaksperiodeContainer';
 
 interface VedtaksperioderProps {
     fagsak: Fagsak;
@@ -44,7 +36,7 @@ const VedtaksperioderOSBT: FC<VedtaksperioderProps> = ({ fagsak }) => {
     }
 
     return (
-        <Container gap={'4'}>
+        <VedtaksperiodeContainer>
             <TittelOgValg
                 fagsak={fagsak}
                 valgtFagsak={fagsak}
@@ -67,7 +59,7 @@ const VedtaksperioderOSBT: FC<VedtaksperioderProps> = ({ fagsak }) => {
                     }
                 }}
             </DataViewer>
-        </Container>
+        </VedtaksperiodeContainer>
     );
 };
 

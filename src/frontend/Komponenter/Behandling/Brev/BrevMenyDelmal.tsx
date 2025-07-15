@@ -11,10 +11,10 @@ import React, { Dispatch, SetStateAction, useState } from 'react';
 import { ValgfeltSelect } from './ValgfeltSelect';
 import { Flettefelt } from './Flettefelt';
 import styled from 'styled-components';
-import { Accordion, Button, Checkbox } from '@navikt/ds-react';
-import { ABorderRadiusMedium, ABorderStrong } from '@navikt/ds-tokens/dist/tokens';
+import { Button, Checkbox, HStack, VStack } from '@navikt/ds-react';
+import { ABorderDefault, ABorderRadiusMedium } from '@navikt/ds-tokens/dist/tokens';
 import { HtmlEditor } from '../../../Felles/HtmlEditor/HtmlEditor';
-import { ArrowsSquarepathIcon } from '@navikt/aksel-icons';
+import { ArrowsSquarepathIcon, ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons';
 import { finnFlettefeltRefFraFlettefeltApiNavn } from './BrevUtils';
 import { formaterTallMedTusenSkille } from '../../../App/utils/formatter';
 
@@ -23,14 +23,6 @@ const DelmalValg = styled.div`
     flex-direction: row;
     justify-content: flex-start;
     gap: 0.5rem;
-`;
-
-const AccordionInnhold = styled(Accordion.Content)`
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    border: none;
-    padding: 1rem;
 `;
 
 interface Props {
@@ -126,103 +118,106 @@ export const BrevMenyDelmal: React.FC<Props> = ({
 
     const erDelmalblokk = overstyring.overstyrtDelmal?.skalOverstyre !== true;
 
+    const ikon = !ekspanderbartPanelÅpen ? (
+        <ChevronDownIcon title="a11y-title" fontSize="1.5rem" />
+    ) : (
+        <ChevronUpIcon title="a11y-title" fontSize="1.5rem" />
+    );
+
     return (
         <DelmalValg>
             <Checkbox hideLabel onChange={håndterToggleDelmal} checked={valgt} size="small">
                 Velg delmal
             </Checkbox>
-            <Accordion
-                headingSize="xsmall"
-                size="small"
+            <VStack
+                justify={'start'}
                 style={{
                     width: '100%',
-                    border: `1px solid ${ABorderStrong}`,
+                    border: `1px solid ${ABorderDefault}`,
                     borderRadius: `${ABorderRadiusMedium}`,
                 }}
             >
-                <Accordion.Item open={ekspanderbartPanelÅpen}>
-                    <Accordion.Header
-                        style={{
-                            borderRadius: `${ABorderRadiusMedium}`,
-                            border: 'none',
-                        }}
+                <HStack>
+                    <Button
+                        variant="tertiary-neutral"
+                        size="xsmall"
+                        icon={ikon}
                         onClick={() => settEkspanderbartPanelÅpen(!ekspanderbartPanelÅpen)}
+                        style={{ width: '100%', justifyContent: 'flex-start' }}
                     >
                         {delmal?.delmalNavn}
-                    </Accordion.Header>
-                    {ekspanderbartPanelÅpen && (
-                        <AccordionInnhold>
-                            {erDelmalblokk &&
-                                delmalValgfelt &&
-                                delmalValgfelt.map((valgFelt, index) => (
-                                    <ValgfeltSelect
-                                        valgFelt={valgFelt}
+                    </Button>
+                </HStack>
+                {ekspanderbartPanelÅpen && (
+                    <VStack gap={'4'} style={{ padding: '1rem' }}>
+                        {erDelmalblokk &&
+                            delmalValgfelt &&
+                            delmalValgfelt.map((valgFelt, index) => (
+                                <ValgfeltSelect
+                                    valgFelt={valgFelt}
+                                    dokument={dokument}
+                                    valgteFelt={valgteFelt}
+                                    settValgteFelt={settValgteFelt}
+                                    flettefelter={flettefelter}
+                                    settFlettefelter={settFlettefelter}
+                                    handleFlettefeltInput={handleFlettefeltInput}
+                                    delmal={delmal}
+                                    key={`${valgteFelt.valgFeltKategori}${index}`}
+                                    settKanSendeTilBeslutter={settBrevOppdatert}
+                                />
+                            ))}
+                        {erDelmalblokk &&
+                            delmalFlettefelter
+                                .flatMap((f) => f.flettefelt)
+                                .filter(
+                                    (felt, index, self) =>
+                                        self.findIndex((t) => t._ref === felt._ref) === index
+                                )
+                                .map((flettefelt) => (
+                                    <Flettefelt
+                                        fetLabel={true}
+                                        flettefelt={flettefelt}
                                         dokument={dokument}
-                                        valgteFelt={valgteFelt}
-                                        settValgteFelt={settValgteFelt}
                                         flettefelter={flettefelter}
-                                        settFlettefelter={settFlettefelter}
                                         handleFlettefeltInput={handleFlettefeltInput}
-                                        delmal={delmal}
-                                        key={`${valgteFelt.valgFeltKategori}${index}`}
-                                        settKanSendeTilBeslutter={settBrevOppdatert}
+                                        key={flettefelt._ref}
                                     />
                                 ))}
-                            {erDelmalblokk &&
-                                delmalFlettefelter
-                                    .flatMap((f) => f.flettefelt)
-                                    .filter(
-                                        (felt, index, self) =>
-                                            self.findIndex((t) => t._ref === felt._ref) === index
-                                    )
-                                    .map((flettefelt) => (
-                                        <Flettefelt
-                                            fetLabel={true}
-                                            flettefelt={flettefelt}
-                                            dokument={dokument}
-                                            flettefelter={flettefelter}
-                                            handleFlettefeltInput={handleFlettefeltInput}
-                                            key={flettefelt._ref}
-                                        />
-                                    ))}
-                            {erDelmalblokk && (
-                                <div>
+                        {erDelmalblokk && (
+                            <div>
+                                <Button
+                                    onClick={() => overstyring.konverterTilHtml(delmal)}
+                                    size={'small'}
+                                    variant={'secondary'}
+                                    icon={<ArrowsSquarepathIcon />}
+                                >
+                                    Gjør om til tekstfelt
+                                </Button>
+                            </div>
+                        )}
+                        {overstyring.overstyrtDelmal?.skalOverstyre && (
+                            <>
+                                <HtmlEditor
+                                    defaultValue={overstyring.overstyrtDelmal.htmlInnhold}
+                                    onTextChange={(nyttInnhold) => {
+                                        oppdaterOverstyrtInnhold(delmal, nyttInnhold);
+                                    }}
+                                />
+                                <div style={{ marginTop: '2rem' }}>
                                     <Button
-                                        onClick={() => overstyring.konverterTilHtml(delmal)}
+                                        onClick={() => overstyring.konverterTilDelmalblokk(delmal)}
                                         size={'small'}
                                         variant={'secondary'}
                                         icon={<ArrowsSquarepathIcon />}
                                     >
-                                        Gjør om til tekstfelt
+                                        Gjør om til brevbygger
                                     </Button>
                                 </div>
-                            )}
-                            {overstyring.overstyrtDelmal?.skalOverstyre && (
-                                <>
-                                    <HtmlEditor
-                                        defaultValue={overstyring.overstyrtDelmal.htmlInnhold}
-                                        onTextChange={(nyttInnhold) => {
-                                            oppdaterOverstyrtInnhold(delmal, nyttInnhold);
-                                        }}
-                                    />
-                                    <div>
-                                        <Button
-                                            onClick={() =>
-                                                overstyring.konverterTilDelmalblokk(delmal)
-                                            }
-                                            size={'small'}
-                                            variant={'secondary'}
-                                            icon={<ArrowsSquarepathIcon />}
-                                        >
-                                            Gjør om til brevbygger
-                                        </Button>
-                                    </div>
-                                </>
-                            )}
-                        </AccordionInnhold>
-                    )}
-                </Accordion.Item>
-            </Accordion>
+                            </>
+                        )}
+                    </VStack>
+                )}
+            </VStack>
         </DelmalValg>
     );
 };

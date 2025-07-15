@@ -2,7 +2,7 @@ import path from 'path';
 import process from 'process';
 import webpack from 'webpack';
 import { mergeWithCustomize } from 'webpack-merge';
-import common from './webpack.common';
+import common from './webpack.common.js';
 import CopyPlugin from 'copy-webpack-plugin';
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin';
 import ESLintPlugin from 'eslint-webpack-plugin';
@@ -33,9 +33,25 @@ const config = mergeWithCustomize({
                 },
             },
             {
-                test: /\.(less|css)$/,
+                test: /\.module\.css$/,
                 use: [
-                    { loader: 'style-loader' },
+                    'style-loader',
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            modules: {
+                                namedExport: false,
+                            },
+                            importLoaders: 1,
+                        },
+                    },
+                ],
+            },
+            {
+                test: /\.css$/,
+                exclude: /\.module\.css$/,
+                use: [
+                    'style-loader',
                     {
                         loader: 'css-loader',
                         options: {
@@ -45,7 +61,14 @@ const config = mergeWithCustomize({
                             importLoaders: 2,
                         },
                     },
-                    { loader: 'less-loader' },
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            postcssOptions: {
+                                plugins: [['autoprefixer']],
+                            },
+                        },
+                    },
                 ],
             },
         ],
@@ -72,6 +95,8 @@ const config = mergeWithCustomize({
             cache: true,
             configType: 'flat',
             extensions: [`ts`, `tsx`],
+            emitWarning: true,
+            emitError: false,
         }),
     ],
 });

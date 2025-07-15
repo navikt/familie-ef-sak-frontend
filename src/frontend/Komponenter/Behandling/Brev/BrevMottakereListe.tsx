@@ -3,6 +3,7 @@ import { EBrevmottakerRolle, IBrevmottakere } from '../Brevmottakere/typer';
 import { Alert, BodyShort, Button, Label, Tooltip } from '@navikt/ds-react';
 import styled from 'styled-components';
 import { IOrganisasjon } from '../Brevmottakere/SøkOrganisasjon';
+import { visMottakerRolleVergeFullmektigHvisVerge } from '../Brevmottakere/brevmottakerUtils';
 
 const Grid = styled.div`
     display: flex;
@@ -43,7 +44,8 @@ const BrevMottakereListe: React.FC<{
     const utledNavnPåMottakere = (brevMottakere: IBrevmottakere) => {
         return [
             ...brevMottakere.personer.map(
-                (person) => `${person.navn} (${person.mottakerRolle.toLowerCase()})`
+                (person) =>
+                    `${person.navn} (${visMottakerRolleVergeFullmektigHvisVerge(person.mottakerRolle).toLowerCase()})`
             ),
             ...brevMottakere.organisasjoner.map(
                 (org) =>

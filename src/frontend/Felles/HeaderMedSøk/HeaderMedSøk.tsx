@@ -4,7 +4,6 @@ import PersonSøk from './PersonSøk';
 import { ISaksbehandler } from '../../App/typer/saksbehandler';
 import { PopoverItem } from '@navikt/familie-header/dist/header/Header';
 import { useApp } from '../../App/context/AppContext';
-import './headermedsøk.less';
 import { AppEnv } from '../../App/api/env';
 import { AxiosRequestCallback } from '../../App/typer/axiosRequest';
 import Endringslogg from '@navikt/familie-endringslogg';
@@ -46,6 +45,9 @@ export const HeaderMedSøk: React.FunctionComponent<Props> = ({ innloggetSaksbeh
         ]
     );
 
+    const erDev =
+        window.location.href.includes('dev') || window.location.href.includes('localhost');
+
     return (
         <Sticky>
             <Header
@@ -56,6 +58,7 @@ export const HeaderMedSøk: React.FunctionComponent<Props> = ({ innloggetSaksbeh
                 }}
                 brukerPopoverItems={[{ name: 'Logg ut', href: `${window.origin}/auth/logout` }]}
                 eksterneLenker={headerLenker}
+                erDev={erDev}
             >
                 {innloggetSaksbehandler && <PersonSøk />}
                 {innloggetSaksbehandler?.navIdent && (

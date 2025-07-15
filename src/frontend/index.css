@@ -1,0 +1,3 @@
+.modal__overlay {
+    z-index: 2000; /* Hack for at overlay skal legges over headerMedSøk og andre elementer */
+}

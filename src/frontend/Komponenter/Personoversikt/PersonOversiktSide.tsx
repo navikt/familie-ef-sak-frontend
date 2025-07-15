@@ -4,7 +4,6 @@ import { IPersonopplysninger } from '../../App/typer/personopplysninger';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { useDataHenter } from '../../App/hooks/felles/useDataHenter';
 import { AxiosRequestConfig } from 'axios';
-import { Infotrygdperioderoversikt } from './Infotrygdperioderoversikt';
 import { FagsakPerson } from '../../App/typer/fagsak';
 import { useApp } from '../../App/context/AppContext';
 import { useSetValgtFagsakPersonId } from '../../App/hooks/useSetValgtFagsakPersonId';
@@ -13,7 +12,6 @@ import { useHentFagsakPerson } from '../../App/hooks/useHentFagsakPerson';
 import { Tabs } from '@navikt/ds-react';
 import { InntektForPerson } from './InntektForPerson';
 import { loggNavigereTabEvent } from '../../App/utils/amplitude/amplitudeLoggEvents';
-import { styled } from 'styled-components';
 import { PersonHeader } from '../../Felles/PersonHeader/PersonHeader';
 import { Personopplysninger } from './Personopplysninger';
 import { Vedtaksperioderoversikt } from './Vedtaksperioderoversikt';
@@ -21,10 +19,7 @@ import { Behandlingsoversikt } from './Behandlingsoversikt';
 import { FrittståendeBrevMedVisning } from '../Behandling/Brev/FrittståendeBrevMedVisning';
 import { Dokumenter } from './Dokumenter';
 import { OpprettFagsak } from '../Behandling/Førstegangsbehandling/OpprettFagsak';
-
-const StyledSide = styled.div`
-    padding: 0 1rem;
-`;
+import { Side } from './Side';
 
 interface FaneProps {
     label: string;
@@ -56,14 +51,9 @@ const faner: FaneProps[] = [
     {
         label: 'Vedtaksperioder',
         path: 'vedtak',
-        komponent: (fagsakPerson) => <Vedtaksperioderoversikt fagsakPerson={fagsakPerson} />,
-    },
-    {
-        label: 'Vedtaksperioder infotrygd',
-        path: 'infotrygd',
         komponent: (fagsakPerson, personopplysninger) => (
-            <Infotrygdperioderoversikt
-                fagsakPersonId={fagsakPerson.id}
+            <Vedtaksperioderoversikt
+                fagsakPerson={fagsakPerson}
                 personIdent={personopplysninger.personIdent}
             />
         ),
@@ -168,6 +158,8 @@ const PersonOversikt: React.FC<Props> = ({
     const path = paths.length ? paths[paths.length - 1] : '';
     useSetPersonIdent(personopplysninger.personIdent);
 
+    const skalHaBakgrunnsfarge = path === 'frittstaaende-brev';
+
     return (
         <>
             <PersonHeader fagsakPerson={fagsakPerson} personopplysninger={personopplysninger} />
@@ -189,7 +181,7 @@ const PersonOversikt: React.FC<Props> = ({
                     ))}
                 </Tabs.List>
             </Tabs>
-            <StyledSide>
+            <Side skalHaBakgrunnsfarge={skalHaBakgrunnsfarge}>
                 <Routes>
                     {faner.map((fane) => (
                         <Route
@@ -213,7 +205,7 @@ const PersonOversikt: React.FC<Props> = ({
                         }
                     />
                 </Routes>
-            </StyledSide>
+            </Side>
         </>
     );
 };
