@@ -143,7 +143,7 @@ const SendTilBeslutter: React.FC<{
         ? 'Vedtaket er ferdigstilt'
         : 'Vedtaket er sendt til beslutter';
 
-    const skalViseKnappForModal = behandling.stønadstype == Stønadstype.OVERGANGSSTØNAD;
+    const skalViseKnappForModal = behandling.stønadstype != Stønadstype.SKOLEPENGER;
 
     useEffect(() => {
         hentOppgaverForAutomatiskFerdigstilling(behandling.id);
