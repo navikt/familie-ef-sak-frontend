@@ -19,4 +19,5 @@ export enum EBrevmottakerRolle {
     BRUKER = 'BRUKER',
     VERGE = 'VERGE',
     FULLMEKTIG = 'FULLMEKTIG',
+    FULLMAKT = 'FULLMAKT',
 }
