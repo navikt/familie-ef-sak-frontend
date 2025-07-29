@@ -5,14 +5,14 @@ import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
 
-import { buildPath, sessionConfig } from './config.js';
+import { buildPath } from './config.js';
 import { prometheusTellere } from './metrikker.js';
 import { logInfo } from '@navikt/familie-logging';
 // @ts-expect-error Spesial-import
 import config from '../../webpack/webpack.dev.js';
 import { setupServerFelles } from './server-felles';
 
-backend(sessionConfig, prometheusTellere).then((appConfig: IApp) => {
+backend(prometheusTellere).then((appConfig: IApp) => {
     let middleware;
 
     logInfo(`Starter opp med miljø: ${process.env.NODE_ENV}`);

@@ -1,9 +1,9 @@
 import './konfigurerApp.js';
 
-import backend, { IApp } from '@navikt/familie-backend';
+import backend from '@navikt/familie-backend';
 import path from 'path';
 
-import { buildPath, sessionConfig } from './config.js';
+import { buildPath, IApp } from './config.js';
 import { prometheusTellere } from './metrikker.js';
 import expressStaticGzip from 'express-static-gzip';
 import { logInfo } from '@navikt/familie-logging';

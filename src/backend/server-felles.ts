@@ -1,9 +1,9 @@
 import './konfigurerApp.js';
 
-import { IApp, ensureAuthenticated } from '@navikt/familie-backend';
+import { ensureAuthenticated } from './auth/token';
 import bodyParser from 'body-parser';
 
-import { brevProxyUrl, endringsloggProxyUrl, sakProxyUrl } from './config.js';
+import { brevProxyUrl, endringsloggProxyUrl, sakProxyUrl, IApp } from './config.js';
 import { addRequestInfo, attachToken, doProxy } from './proxy.js';
 import setupRouter from './router.js';
 import { logError, logInfo } from '@navikt/familie-logging';

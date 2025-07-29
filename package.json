@@ -21,7 +21,10 @@
         "tsc-alias": "tsc-alias -p tsconfig.json"
     },
     "lint-staged": {
-        "src/**/*.{js,jsx,ts,tsx,json}": ["prettier --write", "eslint --fix"]
+        "src/**/*.{js,jsx,ts,tsx,json}": [
+            "prettier --write",
+            "eslint --fix"
+        ]
     },
     "dependencyComments": {
         "color-string": "Overrider versjon som brukes av winston, som kommer fra familie-frontend-backend",
@@ -29,6 +32,7 @@
     },
     "dependencies": {
         "@amplitude/analytics-browser": "2.17.12",
+        "@azure/msal-node": "^3.6.3",
         "@navikt/aksel-icons": "^7.24.0",
         "@navikt/ds-css": "7.24.0",
         "@navikt/ds-react": "7.24.0",
@@ -40,6 +44,7 @@
         "@navikt/familie-logging": "^7.0.4",
         "@navikt/familie-visittkort": "^15.1.6",
         "@navikt/fnrvalidator": "^2.1.5",
+        "@navikt/oasis": "^3.8.0",
         "@sentry/browser": "^9.33.0",
         "@sentry/core": "^9.30.0",
         "@types/express": "^5.0.3",

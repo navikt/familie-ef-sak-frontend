@@ -1,11 +1,10 @@
-import { Client, getOnBehalfOfAccessToken } from '@navikt/familie-backend';
 import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { ClientRequest, IncomingMessage } from 'http';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import { v4 as uuidv4 } from 'uuid';
-import { oboConfig } from './config';
 import { logError, logInfo } from '@navikt/familie-logging';
 import winston from 'winston';
+import { getOnBehalfOfToken } from './auth/token';
 
 const restream = (proxyReq: ClientRequest, req: IncomingMessage) => {
     const requestBody = (req as Request).body;
@@ -49,9 +48,9 @@ export const addRequestInfo = (): RequestHandler => {
     };
 };
 
-export const attachToken = (authClient: Client): RequestHandler => {
+export const attachToken = (): RequestHandler => {
     return async (req: Request, _res: Response, next: NextFunction) => {
-        getOnBehalfOfAccessToken(authClient, req, oboConfig)
+        getOnBehalfOfToken(req, process.env.EF_SAK_SCOPE!)
             .then((accessToken: string) => {
                 req.headers.Authorization = `Bearer ${accessToken}`;
                 return next();

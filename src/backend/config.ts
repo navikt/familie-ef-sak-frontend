@@ -1,12 +1,22 @@
 // Konfigurer appen før backend prøver å sette opp konfigurasjon
-
-import { appConfig, IApi, ISessionKonfigurasjon } from '@navikt/familie-backend';
+// not relative to openid-client, so it's ok to keep it
+import { appConfig, IApi } from '@navikt/familie-backend';
+import { Registry } from 'prom-client';
+import { Express, Router } from 'express';
+import { ConfidentialClientApplication } from '@azure/msal-node';
 
 type Rolle = 'veileder' | 'saksbehandler' | 'beslutter' | 'kode6' | 'kode7' | 'egenAnsatt';
 
 type Roller = {
     [key in Rolle]: string;
 };
+
+export interface IApp {
+    app: Express;
+    azureAuthClient: ConfidentialClientApplication;
+    router: Router;
+    prometheusRegistry: Registry;
+}
 
 interface IEnvironment {
     buildPath: string;
@@ -116,20 +126,6 @@ const Environment = (): IEnvironment => {
     };
 };
 const env = Environment();
-
-export const sessionConfig: ISessionKonfigurasjon = {
-    cookieSecret: [`${process.env.COOKIE_KEY1}`, `${process.env.COOKIE_KEY2}`],
-    navn: 'familie-ef-sak-v2',
-    redisFullUrl: process.env.REDIS_URI_SESSIONS,
-    redisBrukernavn: process.env.REDIS_USERNAME_SESSIONS,
-    redisPassord: process.env.REDIS_PASSWORD_SESSIONS,
-    secureCookie: !(
-        process.env.ENV === 'local' ||
-        process.env.ENV === 'e2e' ||
-        process.env.ENV === 'lokalt-mot-preprod'
-    ),
-    sessionMaxAgeSekunder: 12 * 60 * 60,
-};
 
 if (!process.env.EF_SAK_SCOPE) {
     throw new Error('Scope mot familie-ef-sak er ikke konfigurert');

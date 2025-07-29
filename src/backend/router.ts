@@ -1,4 +1,4 @@
-import { Client, ensureAuthenticated, logRequest } from '@navikt/familie-backend';
+import { logRequest } from '@navikt/familie-backend';
 import { NextFunction, Request, Response, Router } from 'express';
 import path from 'path';
 import {
@@ -12,6 +12,8 @@ import {
 } from './config';
 import { prometheusTellere } from './metrikker';
 import { LOG_LEVEL } from '@navikt/familie-logging';
+import { ConfidentialClientApplication } from '@azure/msal-node';
+import { ensureAuthenticated } from './auth/token';
 
 export const redirectHvisInternUrlIPreprod = () => {
     return async (req: Request, res: Response, next: NextFunction) => {
@@ -26,7 +28,7 @@ export const redirectHvisInternUrlIPreprod = () => {
     };
 };
 
-export default (authClient: Client, router: Router): Router => {
+export default (authClient: ConfidentialClientApplication, router: Router): Router => {
     router.get('/version', (_req: Request, res: Response) => {
         res.status(200).send({ version: process.env.APP_VERSION }).end();
     });
@@ -56,6 +58,7 @@ export default (authClient: Client, router: Router): Router => {
     router.get(
         '*global',
         redirectHvisInternUrlIPreprod(),
+        // we need retry logic if fail
         ensureAuthenticated(authClient, false),
         (_req: Request, res: Response) => {
             prometheusTellere.appLoad.inc();
