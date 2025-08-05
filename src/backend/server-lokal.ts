@@ -21,6 +21,10 @@ backend(sessionConfig, prometheusTellere).then((appConfig: IApp) => {
     if (process.env.NODE_ENV === 'development') {
         const compiler = webpack(config);
 
+        if (!compiler) {
+            throw Error('Klarte ikke å kompilere webpack config');
+        }
+
         middleware = webpackDevMiddleware(compiler, {
             publicPath: config.output.publicPath,
             writeToDisk: true,
