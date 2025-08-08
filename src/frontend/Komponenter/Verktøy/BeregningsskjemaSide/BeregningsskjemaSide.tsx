@@ -3,8 +3,9 @@ import React, { useState } from 'react';
 import DatePickerMedTittel from './DatePickerMedTittel';
 import { ArrowRedoIcon, PlusIcon } from '@navikt/aksel-icons';
 import { formaterTallMedTusenSkille } from '../../../App/utils/formatter';
+import { finnTiProsentAvvik, oppdaterÅrslønn } from './utils';
 
-enum TiProsentAvvik {
+export enum TiProsentAvvik {
     INGEN_VERDI = '',
     OPP = '10% avvik opp',
     NED = '10% avvik ned',
@@ -12,7 +13,7 @@ enum TiProsentAvvik {
     UNDER_HALV_G = 'Under halv G',
 }
 
-type Beregning = {
+export type Beregning = {
     periode: {
         årstall: string;
         måned: string;
@@ -42,29 +43,6 @@ export const BeregningsskjemaSide: React.FC = () => {
             måned: '',
         },
     });
-
-    const finnTiProsentAvvik = (beregning: Beregning): TiProsentAvvik => {
-        const GRUNNBELØP = 130160; // Grunnbeløp for 2025
-        const { årslønn, redusertEtter } = beregning;
-
-        if (årslønn < redusertEtter && årslønn < redusertEtter * 0.9) {
-            return TiProsentAvvik.NED;
-        } else if (
-            årslønn > GRUNNBELØP / 2 &&
-            årslønn > redusertEtter &&
-            årslønn > redusertEtter * 1.1
-        ) {
-            return TiProsentAvvik.OPP;
-        } else if (
-            årslønn < GRUNNBELØP / 2 &&
-            årslønn > redusertEtter &&
-            årslønn > redusertEtter * 1.1
-        ) {
-            return TiProsentAvvik.UNDER_HALV_G;
-        } else {
-            return TiProsentAvvik.NEI;
-        }
-    };
 
     const tiProsentAvvikTilTag = (avvik: TiProsentAvvik) => {
         switch (avvik) {
@@ -157,18 +135,6 @@ export const BeregningsskjemaSide: React.FC = () => {
                     : beregning
             )
         );
-    };
-
-    const oppdaterÅrslønn = (beregning: Beregning, arbeidsgiverIndex: number, nyVerdi: number) => {
-        return rundTilNærmesteTusen(
-            beregning.arbeidsgivere
-                .map((ag, agIndex) => (agIndex === arbeidsgiverIndex ? nyVerdi : ag.verdi))
-                .reduce((sum, verdi) => sum + verdi, 0) * 12
-        );
-    };
-
-    const rundTilNærmesteTusen = (årslønn: number): number => {
-        return Math.round(årslønn / 1000) * 1000;
     };
 
     const oppdaterRedusertEtter = (beregningIndex: number, nyVerdi: number) => {
