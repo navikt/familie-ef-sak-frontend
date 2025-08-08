@@ -1,7 +1,7 @@
 import { Button, HStack, Table, Tag, TextField, VStack } from '@navikt/ds-react';
 import React, { useState } from 'react';
 import DatePickerMedTittel from './DatePickerMedTittel';
-import { PlusIcon } from '@navikt/aksel-icons';
+import { ArrowRedoIcon, PlusIcon } from '@navikt/aksel-icons';
 import { formaterTallMedTusenSkille } from '../../../App/utils/formatter';
 
 enum TiProsentAvvik {
@@ -208,6 +208,53 @@ export const BeregningsskjemaSide: React.FC = () => {
         );
     };
 
+    const kopierRedusertEtterTilBeregningerUnder = (beregningIndex: number) => {
+        settBeregninger((prev) => {
+            const redusertEtterSomSkalKopieres = prev[beregningIndex].redusertEtter;
+
+            return prev.map((beregning, index) => {
+                if (index > beregningIndex) {
+                    return {
+                        ...beregning,
+                        redusertEtter: redusertEtterSomSkalKopieres,
+                    };
+                }
+                return beregning;
+            });
+        });
+    };
+
+    const kopierArbeidsgiverTilBeregningerUnder = (
+        beregningIndex: number,
+        arbeidsgiverIndex: number
+    ) => {
+        settBeregninger((prev) => {
+            const arbeidsgiverSomSkalKopieres =
+                prev[beregningIndex].arbeidsgivere[arbeidsgiverIndex].verdi;
+
+            return prev.map((beregning, index) => {
+                const kopiArbeidsgivere = [...beregning.arbeidsgivere];
+                if (index > beregningIndex) {
+                    kopiArbeidsgivere[arbeidsgiverIndex] = {
+                        ...kopiArbeidsgivere[arbeidsgiverIndex],
+                        verdi: arbeidsgiverSomSkalKopieres,
+                    };
+
+                    return {
+                        ...beregning,
+                        arbeidsgivere: kopiArbeidsgivere,
+                        årslønn: oppdaterÅrslønn(
+                            beregning,
+                            arbeidsgiverIndex,
+                            arbeidsgiverSomSkalKopieres
+                        ),
+                    };
+                }
+                return beregning;
+            });
+        });
+    };
+
     return (
         <>
             <VStack gap="8">
@@ -230,7 +277,10 @@ export const BeregningsskjemaSide: React.FC = () => {
 
                                     <LagArbeidsgivereKolonner beregninger={beregninger} />
 
-                                    <Table.HeaderCell scope="col">
+                                    <Table.HeaderCell
+                                        scope="col"
+                                        style={{ width: '1px', whiteSpace: 'nowrap' }}
+                                    >
                                         <Button
                                             icon={<PlusIcon />}
                                             onClick={() => {
@@ -262,6 +312,9 @@ export const BeregningsskjemaSide: React.FC = () => {
                                             beregning={beregning}
                                             beregningIndex={beregningIndex}
                                             oppdaterArbeidsgiver={oppdaterArbeidsgiver}
+                                            kopierArbeidsgiverTilBeregningerUnder={
+                                                kopierArbeidsgiverTilBeregningerUnder
+                                            }
                                         />
 
                                         <Table.DataCell></Table.DataCell>
@@ -269,19 +322,41 @@ export const BeregningsskjemaSide: React.FC = () => {
                                             {formaterTallMedTusenSkille(beregning.årslønn)}
                                         </Table.DataCell>
                                         <Table.DataCell>
-                                            <TextField
-                                                label="Redusert etter"
-                                                hideLabel
-                                                value={beregning.redusertEtter}
-                                                onChange={(e) =>
-                                                    oppdaterRedusertEtter(
-                                                        beregningIndex,
-                                                        Number(e.target.value) || 0
-                                                    )
-                                                }
-                                                size="small"
-                                                placeholder="0"
-                                            />
+                                            <HStack gap="2">
+                                                <TextField
+                                                    label="Redusert etter"
+                                                    hideLabel
+                                                    value={beregning.redusertEtter}
+                                                    onChange={(e) =>
+                                                        oppdaterRedusertEtter(
+                                                            beregningIndex,
+                                                            Number(e.target.value) || 0
+                                                        )
+                                                    }
+                                                    size="small"
+                                                    placeholder="0"
+                                                />
+                                                {beregningIndex < beregninger.length - 1 && (
+                                                    <Button
+                                                        onClick={() =>
+                                                            kopierRedusertEtterTilBeregningerUnder(
+                                                                beregningIndex
+                                                            )
+                                                        }
+                                                        style={{
+                                                            transform: 'rotate(90deg)',
+                                                        }}
+                                                        size="small"
+                                                        icon={
+                                                            <ArrowRedoIcon
+                                                                title="kopier ned"
+                                                                fontSize="1.5rem"
+                                                            />
+                                                        }
+                                                        variant="tertiary-neutral"
+                                                    />
+                                                )}
+                                            </HStack>
                                         </Table.DataCell>
                                         <Table.DataCell>
                                             {tiProsentAvvikTilTag(finnTiProsentAvvik(beregning))}
@@ -325,7 +400,17 @@ const LagArbeidsgivereRader: React.FC<{
         arbeidsgiverIndex: number,
         nyVerdi: number
     ) => void;
-}> = ({ beregninger, beregning, beregningIndex, oppdaterArbeidsgiver }) => {
+    kopierArbeidsgiverTilBeregningerUnder: (
+        beregningIndex: number,
+        arbeidsgiverIndex: number
+    ) => void;
+}> = ({
+    beregninger,
+    beregning,
+    beregningIndex,
+    oppdaterArbeidsgiver,
+    kopierArbeidsgiverTilBeregningerUnder,
+}) => {
     return (
         <>
             {Array.from(
@@ -339,7 +424,7 @@ const LagArbeidsgivereRader: React.FC<{
 
                     return (
                         <Table.DataCell key={agIndex}>
-                            <VStack gap="1">
+                            <HStack gap="2">
                                 <TextField
                                     label={`Arbeidsgiver ${agIndex + 1}`}
                                     hideLabel
@@ -354,7 +439,25 @@ const LagArbeidsgivereRader: React.FC<{
                                     size="small"
                                     placeholder="0"
                                 />
-                            </VStack>
+                                {beregningIndex < beregninger.length - 1 && (
+                                    <Button
+                                        onClick={() =>
+                                            kopierArbeidsgiverTilBeregningerUnder(
+                                                beregningIndex,
+                                                agIndex
+                                            )
+                                        }
+                                        style={{
+                                            transform: 'rotate(90deg)',
+                                        }}
+                                        size="small"
+                                        icon={
+                                            <ArrowRedoIcon title="kopier ned" fontSize="1.5rem" />
+                                        }
+                                        variant="tertiary-neutral"
+                                    />
+                                )}
+                            </HStack>
                         </Table.DataCell>
                     );
                 }
