@@ -25,7 +25,7 @@ jobs:
           cache: yarn
           registry-url: 'https://npm.pkg.github.com'
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@ff0a06e83cb2de871e5a09832bc6a81e7276941f # ratchet:github/codeql-action/init@v2
+        uses: github/codeql-action/init@76621b61decf072c1cee8dd1ce2d2a82d33c17ed # ratchet:github/codeql-action/init@v2
         with:
           languages: ${{ matrix.language }}
       - name: Yarn install
@@ -35,6 +35,6 @@ jobs:
       - name: Yarn build
         run: yarn build
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@ff0a06e83cb2de871e5a09832bc6a81e7276941f # ratchet:github/codeql-action/analyze@v2
+        uses: github/codeql-action/analyze@76621b61decf072c1cee8dd1ce2d2a82d33c17ed # ratchet:github/codeql-action/analyze@v2
         with:
           category: '/language:${{matrix.language}}'
