@@ -132,6 +132,16 @@ export const lagInntektskalkulatorLenke = (): PopoverItem => {
     };
 };
 
+export const lagBeregningsskjemaLenke = (): PopoverItem => {
+    return {
+        name: 'Beregningsskjema',
+        type: LenkeType.ARBEIDSVERKTØY,
+        onSelect: () => {
+            window.open(`/verktoy/beregningsskjema`);
+        },
+    };
+};
+
 export const lagEksterneLenker = (
     axiosRequest: AxiosRequestCallback,
     appEnv: AppEnv,
@@ -159,4 +169,5 @@ export const lagInterneLenker = (
 export const lagArbeidsverktøyLenker = (fagsakPersonId: string | undefined): PopoverItem[] => [
     lagSamværskalkulatorLenke(fagsakPersonId),
     lagInntektskalkulatorLenke(),
+    lagBeregningsskjemaLenke(),
 ];
