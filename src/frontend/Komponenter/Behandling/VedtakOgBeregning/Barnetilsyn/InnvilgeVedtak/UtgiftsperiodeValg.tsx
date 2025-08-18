@@ -43,7 +43,7 @@ const Grid = styled.div<{ $lesevisning?: boolean }>`
     display: grid;
     grid-template-columns: ${(props) =>
         props.$lesevisning
-            ? 'repeat(7, max-content)'
+            ? 'repeat(8, max-content)'
             : '9rem 9rem repeat(2, max-content) 20rem 2rem 4rem repeat(2, max-content)'};
     grid-gap: 0.5rem 1rem;
     margin-bottom: 0.5rem;
