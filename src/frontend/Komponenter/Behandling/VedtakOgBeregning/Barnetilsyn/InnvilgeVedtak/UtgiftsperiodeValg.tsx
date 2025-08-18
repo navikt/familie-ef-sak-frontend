@@ -17,7 +17,7 @@ import { FamilieReactSelect, ISelectOption } from '@navikt/familie-form-elements
 import { harTallverdi, tilHeltall, tilTallverdi } from '../../../../../App/utils/utils';
 import InputMedTusenSkille from '../../../../../Felles/Visningskomponenter/InputMedTusenskille';
 import { IBarnMedSamvær } from '../../../Inngangsvilkår/Aleneomsorg/typer';
-import { datoTilAlder } from '../../../../../App/utils/dato';
+import { datoTilAlder, kalkulerAntallMåneder } from '../../../../../App/utils/dato';
 import { Heading, Label, Tooltip } from '@navikt/ds-react';
 import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 import { BodyShortSmall } from '../../../../../Felles/Visningskomponenter/Tekster';
@@ -212,6 +212,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                         const antallBarn = utgiftsperioderState.value[index].barn
                             ? utgiftsperioderState.value[index].barn?.length
                             : 0;
+                        const antallMåneder = kalkulerAntallMåneder(årMånedFra, årMånedTil);
                         return (
                             <React.Fragment key={utgiftsperiode.endretKey}>
                                 <PeriodetypeSelect
@@ -259,6 +260,11 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                     }
                                     disabledFra={index === 0 && låsFraDatoFørsteRad}
                                 />
+                                <Label
+                                    style={{ marginTop: behandlingErRedigerbar ? '0.65rem' : 0 }}
+                                >
+                                    {antallMåneder && `${antallMåneder} mnd`}
+                                </Label>
                                 {behandlingErRedigerbar && !opphørEllerSanksjon ? (
                                     <BarnVelger
                                         placeholder={'Velg barn'}
