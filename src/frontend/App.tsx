@@ -21,10 +21,7 @@ import {
     Outlet,
     Navigate,
     Route,
-    useLocation,
 } from 'react-router-dom';
-import { loggBesøkEvent } from './App/utils/amplitude/amplitudeLoggEvents';
-import { BesøkEvent } from './App/utils/amplitude/typer';
 import Innloggingsfeilmelding from './Felles/Varsel/Innloggingsfeilmelding';
 import { JournalføringSide } from './Komponenter/Journalføring/Standard/JournalføringSide';
 import { EksternIdRedirect } from './Komponenter/Redirect/EksternIdRedirect';
@@ -122,23 +119,6 @@ const AppRoutes: React.FC<{ innloggetSaksbehandler: ISaksbehandler }> = ({
 const AppInnhold: React.FC<{ innloggetSaksbehandler: ISaksbehandler }> = ({
     innloggetSaksbehandler,
 }) => {
-    const location = useLocation();
-
-    const utledBesøktSide = (path: string): BesøkEvent => {
-        const paths = path.split('/');
-        const side = paths[1];
-
-        if (side === 'person' || side === 'behandling') {
-            return { side: side, fane: paths.slice(3).join('/') };
-        }
-
-        return { side: path };
-    };
-
-    React.useEffect(() => {
-        loggBesøkEvent(utledBesøktSide(location.pathname));
-    }, [location]);
-
     return (
         <>
             <HeaderMedSøk innloggetSaksbehandler={innloggetSaksbehandler} />

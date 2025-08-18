@@ -1,19 +1,14 @@
 import {
     DokumentTitler,
-    IJournalpost,
     IJournalpostResponse,
     LogiskVedlegg,
 } from '../../../App/typer/journalføring';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { Behandling, BehandlingResultat } from '../../../App/typer/fagsak';
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
-import {
-    JournalføringRequestV2,
-    Journalføringsaksjon,
-} from '../../../App/hooks/useJournalføringState';
+import { Journalføringsaksjon } from '../../../App/hooks/useJournalføringState';
 import { ISelectOption, MultiValue, PropsValue, SingleValue } from '@navikt/familie-form-elements';
 import { Klagebehandlinger } from '../../../App/typer/klage';
-import { JournalføringEvent } from '../../../App/utils/amplitude/typer';
 import { dokumentTitler } from '../../utils';
 
 export const JOURNALPOST_QUERY_STRING = 'journalpostId';
@@ -122,32 +117,3 @@ export const skalViseBekreftelsesmodal = (
     journalføringsaksjon === Journalføringsaksjon.OPPRETT_BEHANDLING
         ? false
         : journalResponse.harStrukturertSøknad || erPapirSøknad || erKlage;
-
-export const utledJournalføringEvent = (
-    request: JournalføringRequestV2,
-    journalpost: IJournalpost,
-    stønadstype?: Stønadstype
-): JournalføringEvent => {
-    const erLogiskeVedleggUendret: boolean = journalpost.dokumenter?.every((dokument) => {
-        const logiskeVedleggForDokumentRequest = request.logiskeVedlegg
-            ? request.logiskeVedlegg[dokument.dokumentInfoId]
-            : [];
-
-        const harSammeAntallForDokument =
-            logiskeVedleggForDokumentRequest.length === dokument.logiskeVedlegg.length;
-        const harSammeTitlerPåLogiskeVedlegg = logiskeVedleggForDokumentRequest.every((l) =>
-            dokument.logiskeVedlegg.filter((ll) => ll.tittel === l.tittel)
-        );
-        return harSammeAntallForDokument && harSammeTitlerPåLogiskeVedlegg;
-    });
-    return {
-        harEndretAvsender: request.nyAvsender
-            ? journalpost.avsenderMottaker?.navn !== request.nyAvsender.navn
-            : false,
-        harEndretLogiskeVedlegg: !erLogiskeVedleggUendret,
-        aksjon: request.aksjon,
-        årsak: request.årsak,
-        stønadstype: stønadstype,
-        harBarnSomSkalFødes: request.barnSomSkalFødes.length > 0,
-    };
-};
