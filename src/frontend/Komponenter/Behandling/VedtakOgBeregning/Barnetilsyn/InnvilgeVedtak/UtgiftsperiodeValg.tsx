@@ -197,7 +197,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                     <Label>Aktivitet</Label>
                     <Label>Periode fra og med</Label>
                     <Label>Periode til og med</Label>
-                    <Label>Antall måneder </Label>
+                    <Label> </Label>
                     <Label>Velg barn</Label>
                     <Label>Ant.</Label>
                     <Label>Utgifter</Label>
