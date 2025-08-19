@@ -44,7 +44,7 @@ const Grid = styled.div<{ $lesevisning?: boolean }>`
     grid-template-columns: ${(props) =>
         props.$lesevisning
             ? 'repeat(8, max-content)'
-            : '9rem 9rem repeat(2, max-content) 20rem 2rem 4rem repeat(2, max-content)'};
+            : '9rem 9rem repeat(3, max-content) 20rem 2rem 4rem repeat(2, max-content)'};
     grid-gap: 0.5rem 1rem;
     margin-bottom: 0.5rem;
     align-items: start;
@@ -197,7 +197,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                     <Label>Aktivitet</Label>
                     <Label>Periode fra og med</Label>
                     <Label>Periode til og med</Label>
-                    <Label> </Label>
+                    <Label>Antall måneder </Label>
                     <Label>Velg barn</Label>
                     <Label>Ant.</Label>
                     <Label>Utgifter</Label>
