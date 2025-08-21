@@ -17,7 +17,7 @@ import { FamilieReactSelect, ISelectOption } from '@navikt/familie-form-elements
 import { harTallverdi, tilHeltall, tilTallverdi } from '../../../../../App/utils/utils';
 import InputMedTusenSkille from '../../../../../Felles/Visningskomponenter/InputMedTusenskille';
 import { IBarnMedSamvær } from '../../../Inngangsvilkår/Aleneomsorg/typer';
-import { datoTilAlder } from '../../../../../App/utils/dato';
+import { datoTilAlder, kalkulerAntallMåneder } from '../../../../../App/utils/dato';
 import { Heading, Label, Tooltip } from '@navikt/ds-react';
 import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 import { BodyShortSmall } from '../../../../../Felles/Visningskomponenter/Tekster';
@@ -43,8 +43,8 @@ const Grid = styled.div<{ $lesevisning?: boolean }>`
     display: grid;
     grid-template-columns: ${(props) =>
         props.$lesevisning
-            ? 'repeat(7, max-content)'
-            : '9rem 9rem repeat(2, max-content) 20rem 2rem 4rem repeat(2, max-content)'};
+            ? 'repeat(8, max-content)'
+            : '9rem 9rem repeat(3, max-content) 20rem 2rem 4rem repeat(2, max-content)'};
     grid-gap: 0.5rem 1rem;
     margin-bottom: 0.5rem;
     align-items: start;
@@ -54,11 +54,11 @@ const Grid = styled.div<{ $lesevisning?: boolean }>`
     }
 `;
 
-const SentrertBodySort = styled(BodyShortSmall)`
+const SentrertBodySort = styled(BodyShortSmall)<{ $lesevisning?: boolean }>`
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 0.75rem;
+    margin-top: ${(props) => (props.$lesevisning ? '' : '0.75rem')};
 `;
 
 const BarnVelger = styled(FamilieReactSelect)`
@@ -197,6 +197,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                     <Label>Aktivitet</Label>
                     <Label>Periode fra og med</Label>
                     <Label>Periode til og med</Label>
+                    <Label> </Label>
                     <Label>Velg barn</Label>
                     <Label>Ant.</Label>
                     <Label>Utgifter</Label>
@@ -212,6 +213,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                         const antallBarn = utgiftsperioderState.value[index].barn
                             ? utgiftsperioderState.value[index].barn?.length
                             : 0;
+                        const antallMåneder = kalkulerAntallMåneder(årMånedFra, årMånedTil);
                         return (
                             <React.Fragment key={utgiftsperiode.endretKey}>
                                 <PeriodetypeSelect
@@ -259,6 +261,11 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                     }
                                     disabledFra={index === 0 && låsFraDatoFørsteRad}
                                 />
+                                <Label
+                                    style={{ marginTop: behandlingErRedigerbar ? '0.65rem' : 0 }}
+                                >
+                                    {antallMåneder && `${antallMåneder} mnd`}
+                                </Label>
                                 {behandlingErRedigerbar && !opphørEllerSanksjon ? (
                                     <BarnVelger
                                         placeholder={'Velg barn'}
@@ -304,7 +311,9 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                 {opphørEllerSanksjon ? (
                                     <div />
                                 ) : (
-                                    <SentrertBodySort>{antallBarn}</SentrertBodySort>
+                                    <SentrertBodySort $lesevisning={!behandlingErRedigerbar}>
+                                        {antallBarn}
+                                    </SentrertBodySort>
                                 )}
                                 {opphørEllerSanksjon ? (
                                     <div />
