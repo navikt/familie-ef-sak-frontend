@@ -58,7 +58,6 @@ const SentrertBodySort = styled(BodyShortSmall)`
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 0.75rem;
 `;
 
 const BarnVelger = styled(FamilieReactSelect)`
