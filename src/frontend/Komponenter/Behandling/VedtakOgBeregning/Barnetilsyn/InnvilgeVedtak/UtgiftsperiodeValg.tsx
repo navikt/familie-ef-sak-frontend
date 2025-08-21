@@ -54,10 +54,11 @@ const Grid = styled.div<{ $lesevisning?: boolean }>`
     }
 `;
 
-const SentrertBodySort = styled(BodyShortSmall)`
+const SentrertBodySort = styled(BodyShortSmall)<{ $lesevisning?: boolean }>`
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: ${(props) => (props.$lesevisning ? '' : '0.75rem')};
 `;
 
 const BarnVelger = styled(FamilieReactSelect)`
@@ -310,7 +311,9 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                 {opphørEllerSanksjon ? (
                                     <div />
                                 ) : (
-                                    <SentrertBodySort>{antallBarn}</SentrertBodySort>
+                                    <SentrertBodySort $lesevisning={!behandlingErRedigerbar}>
+                                        {antallBarn}
+                                    </SentrertBodySort>
                                 )}
                                 {opphørEllerSanksjon ? (
                                     <div />
