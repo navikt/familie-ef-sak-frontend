@@ -45,3 +45,39 @@ export const oppdaterÅrslønn = (
 export const summerÅrslønn = (beregning: Beregning): number => {
     return beregning.arbeidsgivere.reduce((sum, ag) => sum + ag.verdi, 0) * 12;
 };
+
+export const oppdaterBeregnetFra = (
+    beregninger: Beregning[],
+    beregningSomSkalOppdateres: Beregning
+) => {
+    const startIndeks = beregninger.indexOf(beregningSomSkalOppdateres);
+
+    let indeks = startIndeks + 1;
+
+    while (indeks < beregninger.length && beregninger[indeks].avvik !== TiProsentAvvik.OPP) {
+        indeks++;
+    }
+
+    const nyeBeregninger = beregninger.map((b) => ({ ...b, beregnetfra: false }));
+
+    if (indeks < nyeBeregninger.length && nyeBeregninger[indeks].avvik === TiProsentAvvik.OPP) {
+        nyeBeregninger[indeks] = {
+            ...nyeBeregninger[indeks],
+            beregnetfra: true,
+        };
+    }
+
+    return nyeBeregninger;
+};
+
+export const settNestePeriodeEtterTiProsentAvvik = (beregninger: Beregning[]) => {
+    const indeksFørsteFeilPeriode = beregninger.findIndex(
+        (beregning) => beregning.avvik === TiProsentAvvik.OPP
+    );
+
+    const nestePeriode = beregninger[indeksFørsteFeilPeriode + 1];
+
+    const oppdatert = oppdaterBeregnetFra(beregninger, nestePeriode);
+
+    return oppdatert;
+};

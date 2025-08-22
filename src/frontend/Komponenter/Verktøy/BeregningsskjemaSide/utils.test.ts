@@ -1,5 +1,10 @@
 import { expect, test } from 'vitest';
-import { finnTiProsentAvvik, rundTilNærmesteTusen, summerÅrslønn } from './utils';
+import {
+    finnTiProsentAvvik,
+    rundTilNærmesteTusen,
+    settNestePeriodeEtterTiProsentAvvik,
+    summerÅrslønn,
+} from './utils';
 import { Beregning, TiProsentAvvik } from './BeregningsskjemaSide';
 
 const beregning: Beregning[] = [
@@ -12,6 +17,7 @@ const beregning: Beregning[] = [
         redusertEtter: 200_000,
         periode: { årstall: '2025', måned: '01' },
         avvik: TiProsentAvvik.INGEN_VERDI,
+        beregnetfra: false,
     },
     {
         arbeidsgivere: [
@@ -22,6 +28,7 @@ const beregning: Beregning[] = [
         redusertEtter: 420_000,
         periode: { årstall: '2025', måned: '02' },
         avvik: TiProsentAvvik.INGEN_VERDI,
+        beregnetfra: false,
     },
     {
         arbeidsgivere: [
@@ -32,6 +39,18 @@ const beregning: Beregning[] = [
         redusertEtter: 200_000,
         periode: { årstall: '2025', måned: '03' },
         avvik: TiProsentAvvik.INGEN_VERDI,
+        beregnetfra: false,
+    },
+    {
+        arbeidsgivere: [
+            { navn: 'Arbeidsgiver 1', verdi: 10_000 },
+            { navn: 'Arbeidsgiver 2', verdi: 2_000 },
+        ],
+        årslønn: 144_000,
+        redusertEtter: 100_000,
+        periode: { årstall: '2025', måned: '04' },
+        avvik: TiProsentAvvik.INGEN_VERDI,
+        beregnetfra: false,
     },
     {
         arbeidsgivere: [
@@ -40,8 +59,9 @@ const beregning: Beregning[] = [
         ],
         årslønn: 36_000,
         redusertEtter: 15_000,
-        periode: { årstall: '2025', måned: '04' },
+        periode: { årstall: '2025', måned: '05' },
         avvik: TiProsentAvvik.INGEN_VERDI,
+        beregnetfra: false,
     },
 ];
 
@@ -56,7 +76,10 @@ test('skal sjekke om summering av årslønn er korrekt', () => {
     expect(sumÅrslønnTredjeMåned).toBe(24_000);
 
     const sumÅrslønnFjerdeMåned = summerÅrslønn(beregning[3]);
-    expect(sumÅrslønnFjerdeMåned).toBe(36_000);
+    expect(sumÅrslønnFjerdeMåned).toBe(144_000);
+
+    const sumÅrslønnFemteMåned = summerÅrslønn(beregning[4]);
+    expect(sumÅrslønnFemteMåned).toBe(36_000);
 });
 
 test('skal sjekke om forventet enum for avvik er riktig', () => {
@@ -70,11 +93,33 @@ test('skal sjekke om forventet enum for avvik er riktig', () => {
     expect(avvik3).toBe(TiProsentAvvik.NED);
 
     const avvik4 = finnTiProsentAvvik(beregning[3]);
-    expect(avvik4).toBe(TiProsentAvvik.UNDER_HALV_G);
+    expect(avvik4).toBe(TiProsentAvvik.OPP);
+
+    const avvik5 = finnTiProsentAvvik(beregning[4]);
+    expect(avvik5).toBe(TiProsentAvvik.UNDER_HALV_G);
 });
 
 test('skal sjekke om avrunding til nærmeste tusen blir som forventet', () => {
     expect(rundTilNærmesteTusen(123_123)).toBe(123_000);
     expect(rundTilNærmesteTusen(567_891)).toBe(568_000);
     expect(rundTilNærmesteTusen(1_500)).toBe(2_000);
+});
+
+test('skal sette korrekt automatisk beregnet fra', () => {
+    const beregninger = [...beregning];
+    const oppdaterteBeregninger = beregninger.map((beregning) => {
+        beregning.avvik = finnTiProsentAvvik(beregning);
+        return beregning;
+    });
+
+    const nestePeriode = settNestePeriodeEtterTiProsentAvvik(oppdaterteBeregninger);
+    console.log('nestePeriode: ', nestePeriode);
+    const beregningBeregnetFra = nestePeriode.find((beregning) => beregning.beregnetfra === true);
+    const beregningBeregnetFraIndex = nestePeriode.findIndex(
+        (beregning) => beregning.beregnetfra === true
+    );
+
+    expect(nestePeriode).toBeDefined();
+    expect(beregningBeregnetFra?.beregnetfra).toBe(true);
+    expect(beregningBeregnetFraIndex).toBe(3);
 });

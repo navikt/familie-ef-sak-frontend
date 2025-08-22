@@ -2,8 +2,11 @@ import { Button, HStack, Table, Tag, TextField, VStack } from '@navikt/ds-react'
 import React, { useState } from 'react';
 import DatePickerMedTittel from './DatePickerMedTittel';
 import { ArrowRedoIcon, PlusIcon } from '@navikt/aksel-icons';
-import { formaterTallMedTusenSkille } from '../../../App/utils/formatter';
-import { finnTiProsentAvvik, oppdaterÅrslønn } from './utils';
+import {
+    formaterStrengMedStorForbokstav,
+    formaterTallMedTusenSkille,
+} from '../../../App/utils/formatter';
+import { finnTiProsentAvvik, oppdaterBeregnetFra, oppdaterÅrslønn } from './utils';
 
 export enum TiProsentAvvik {
     INGEN_VERDI = '',
@@ -22,6 +25,7 @@ export type Beregning = {
     årslønn: number;
     redusertEtter: number;
     avvik: TiProsentAvvik;
+    beregnetfra: boolean;
 };
 
 type Beregninger = Beregning[];
@@ -54,6 +58,8 @@ export const BeregningsskjemaSide: React.FC = () => {
                 return <Tag variant="alt2">{avvik}</Tag>;
             case TiProsentAvvik.NEI:
                 return <Tag variant="neutral">{avvik}</Tag>;
+            default:
+                return <Tag variant="neutral">UKJENT</Tag>;
         }
     };
 
@@ -111,6 +117,7 @@ export const BeregningsskjemaSide: React.FC = () => {
                 årslønn: 0,
                 redusertEtter: 0,
                 avvik: TiProsentAvvik.INGEN_VERDI,
+                beregnetfra: false,
             });
         }
 
@@ -118,45 +125,42 @@ export const BeregningsskjemaSide: React.FC = () => {
     };
 
     const oppdaterArbeidsgiver = (
-        beregningIndex: number,
-        arbeidsgiverIndex: number,
+        beregningIndeks: number,
+        arbeidsgiverIndeks: number,
         nyVerdi: number
     ) => {
         settBeregninger((prev) =>
-            prev.map((beregning, bIndex) =>
-                bIndex === beregningIndex
+            prev.map((beregning, bIndeks) =>
+                bIndeks === beregningIndeks
                     ? {
                           ...beregning,
-                          arbeidsgivere: beregning.arbeidsgivere.map((ag, agIndex) =>
-                              agIndex === arbeidsgiverIndex ? { ...ag, verdi: nyVerdi } : ag
+                          arbeidsgivere: beregning.arbeidsgivere.map((ag, agIndeks) =>
+                              agIndeks === arbeidsgiverIndeks ? { ...ag, verdi: nyVerdi } : ag
                           ),
-                          årslønn: oppdaterÅrslønn(beregning, arbeidsgiverIndex, nyVerdi),
+                          årslønn: oppdaterÅrslønn(beregning, arbeidsgiverIndeks, nyVerdi),
                       }
                     : beregning
             )
         );
     };
 
-    const oppdaterRedusertEtter = (beregningIndex: number, nyVerdi: number) => {
-        settBeregninger((prev) =>
-            prev.map((beregning, bIndex) =>
-                bIndex === beregningIndex ? { ...beregning, redusertEtter: nyVerdi } : beregning
-            )
-        );
-        oppdaterTiProsentAvvik(beregningIndex);
-    };
+    const oppdaterRedusertEtter = (beregningIndeks: number, nyVerdi: number) => {
+        settBeregninger((prev) => {
+            const oppdatertRedusertEtter = prev.map((beregning, bIndeks) =>
+                bIndeks === beregningIndeks ? { ...beregning, redusertEtter: nyVerdi } : beregning
+            );
 
-    const oppdaterTiProsentAvvik = (beregningIndex: number) => {
-        settBeregninger((prev) =>
-            prev.map((beregning, bIndex) =>
-                bIndex === beregningIndex
-                    ? {
-                          ...beregning,
-                          avvik: finnTiProsentAvvik(beregning),
-                      }
-                    : beregning
-            )
-        );
+            const oppdatertAvvik = oppdatertRedusertEtter.map((beregning) => ({
+                ...beregning,
+                avvik: finnTiProsentAvvik(beregning),
+            }));
+
+            const oppdatertBeregnetFra = oppdaterBeregnetFra(
+                oppdatertAvvik,
+                oppdatertAvvik[beregningIndeks]
+            );
+            return oppdatertBeregnetFra;
+        });
     };
 
     const handleLeggTilArbeidsgiver = () => {
@@ -174,12 +178,12 @@ export const BeregningsskjemaSide: React.FC = () => {
         );
     };
 
-    const kopierRedusertEtterTilBeregningerUnder = (beregningIndex: number) => {
+    const kopierRedusertEtterTilBeregningerUnder = (beregningIndeks: number) => {
         settBeregninger((prev) => {
-            const redusertEtterSomSkalKopieres = prev[beregningIndex].redusertEtter;
+            const redusertEtterSomSkalKopieres = prev[beregningIndeks].redusertEtter;
 
-            return prev.map((beregning, index) => {
-                if (index > beregningIndex) {
+            return prev.map((beregning, indeks) => {
+                if (indeks > beregningIndeks) {
                     return {
                         ...beregning,
                         redusertEtter: redusertEtterSomSkalKopieres,
@@ -191,18 +195,18 @@ export const BeregningsskjemaSide: React.FC = () => {
     };
 
     const kopierArbeidsgiverTilBeregningerUnder = (
-        beregningIndex: number,
-        arbeidsgiverIndex: number
+        beregningIndeks: number,
+        arbeidsgiverIndeks: number
     ) => {
         settBeregninger((prev) => {
             const arbeidsgiverSomSkalKopieres =
-                prev[beregningIndex].arbeidsgivere[arbeidsgiverIndex].verdi;
+                prev[beregningIndeks].arbeidsgivere[arbeidsgiverIndeks].verdi;
 
-            return prev.map((beregning, index) => {
+            return prev.map((beregning, indeks) => {
                 const kopiArbeidsgivere = [...beregning.arbeidsgivere];
-                if (index > beregningIndex) {
-                    kopiArbeidsgivere[arbeidsgiverIndex] = {
-                        ...kopiArbeidsgivere[arbeidsgiverIndex],
+                if (indeks > beregningIndeks) {
+                    kopiArbeidsgivere[arbeidsgiverIndeks] = {
+                        ...kopiArbeidsgivere[arbeidsgiverIndeks],
                         verdi: arbeidsgiverSomSkalKopieres,
                     };
 
@@ -211,7 +215,7 @@ export const BeregningsskjemaSide: React.FC = () => {
                         arbeidsgivere: kopiArbeidsgivere,
                         årslønn: oppdaterÅrslønn(
                             beregning,
-                            arbeidsgiverIndex,
+                            arbeidsgiverIndeks,
                             arbeidsgiverSomSkalKopieres
                         ),
                     };
@@ -238,8 +242,7 @@ export const BeregningsskjemaSide: React.FC = () => {
                         <Table size="small">
                             <Table.Header>
                                 <Table.Row>
-                                    <Table.HeaderCell scope="col">Årstall</Table.HeaderCell>
-                                    <Table.HeaderCell scope="col">Måned</Table.HeaderCell>
+                                    <Table.HeaderCell scope="col">Periode</Table.HeaderCell>
 
                                     <LagArbeidsgivereKolonner beregninger={beregninger} />
 
@@ -266,17 +269,26 @@ export const BeregningsskjemaSide: React.FC = () => {
                                 </Table.Row>
                             </Table.Header>
                             <Table.Body>
-                                {beregninger.map((beregning, beregningIndex) => (
+                                {beregninger.map((beregning, beregningIndeks) => (
                                     <Table.Row
                                         key={`${beregning.periode.årstall}-${beregning.periode.måned}`}
                                     >
-                                        <Table.DataCell>{beregning.periode.årstall}</Table.DataCell>
-                                        <Table.DataCell>{beregning.periode.måned}</Table.DataCell>
+                                        <Table.DataCell
+                                            style={{
+                                                backgroundColor: beregning.beregnetfra
+                                                    ? 'yellow'
+                                                    : '',
+                                            }}
+                                        >
+                                            {`${formaterStrengMedStorForbokstav(
+                                                beregning.periode.måned
+                                            )} ${beregning.periode.årstall}`}
+                                        </Table.DataCell>
 
                                         <LagArbeidsgivereRader
                                             beregninger={beregninger}
                                             beregning={beregning}
-                                            beregningIndex={beregningIndex}
+                                            beregningIndeks={beregningIndeks}
                                             oppdaterArbeidsgiver={oppdaterArbeidsgiver}
                                             kopierArbeidsgiverTilBeregningerUnder={
                                                 kopierArbeidsgiverTilBeregningerUnder
@@ -295,18 +307,18 @@ export const BeregningsskjemaSide: React.FC = () => {
                                                     value={beregning.redusertEtter}
                                                     onChange={(e) =>
                                                         oppdaterRedusertEtter(
-                                                            beregningIndex,
+                                                            beregningIndeks,
                                                             Number(e.target.value) || 0
                                                         )
                                                     }
                                                     size="small"
                                                     placeholder="0"
                                                 />
-                                                {beregningIndex < beregninger.length - 1 && (
+                                                {beregningIndeks < beregninger.length - 1 && (
                                                     <Button
                                                         onClick={() =>
                                                             kopierRedusertEtterTilBeregningerUnder(
-                                                                beregningIndex
+                                                                beregningIndeks
                                                             )
                                                         }
                                                         style={{
@@ -347,9 +359,9 @@ const LagArbeidsgivereKolonner: React.FC<{ beregninger: Beregning[] }> = ({ bere
                         ...beregninger.map((beregning) => beregning.arbeidsgivere.length)
                     ),
                 },
-                (_, index) => (
-                    <Table.HeaderCell key={index} scope="col">
-                        Arbeidsgiver {index + 1}
+                (_, indeks) => (
+                    <Table.HeaderCell key={indeks} scope="col">
+                        Arbeidsgiver {indeks + 1}
                     </Table.HeaderCell>
                 )
             )}
@@ -360,20 +372,20 @@ const LagArbeidsgivereKolonner: React.FC<{ beregninger: Beregning[] }> = ({ bere
 const LagArbeidsgivereRader: React.FC<{
     beregninger: Beregning[];
     beregning: Beregning;
-    beregningIndex: number;
+    beregningIndeks: number;
     oppdaterArbeidsgiver: (
-        beregningIndex: number,
-        arbeidsgiverIndex: number,
+        beregningIndeks: number,
+        arbeidsgiverIndeks: number,
         nyVerdi: number
     ) => void;
     kopierArbeidsgiverTilBeregningerUnder: (
-        beregningIndex: number,
-        arbeidsgiverIndex: number
+        beregningIndeks: number,
+        arbeidsgiverIndeks: number
     ) => void;
 }> = ({
     beregninger,
     beregning,
-    beregningIndex,
+    beregningIndeks,
     oppdaterArbeidsgiver,
     kopierArbeidsgiverTilBeregningerUnder,
 }) => {
@@ -385,32 +397,32 @@ const LagArbeidsgivereRader: React.FC<{
                         ...beregninger.map((beregning) => beregning.arbeidsgivere.length)
                     ),
                 },
-                (_, agIndex) => {
-                    const arbeidsgivere = beregning.arbeidsgivere[agIndex];
+                (_, agIndeks) => {
+                    const arbeidsgivere = beregning.arbeidsgivere[agIndeks];
 
                     return (
-                        <Table.DataCell key={agIndex}>
+                        <Table.DataCell key={agIndeks}>
                             <HStack gap="2">
                                 <TextField
-                                    label={`Arbeidsgiver ${agIndex + 1}`}
+                                    label={`Arbeidsgiver ${agIndeks + 1}`}
                                     hideLabel
                                     value={arbeidsgivere.verdi}
                                     onChange={(e) =>
                                         oppdaterArbeidsgiver(
-                                            beregningIndex,
-                                            agIndex,
+                                            beregningIndeks,
+                                            agIndeks,
                                             Number(e.target.value) || 0
                                         )
                                     }
                                     size="small"
                                     placeholder="0"
                                 />
-                                {beregningIndex < beregninger.length - 1 && (
+                                {beregningIndeks < beregninger.length - 1 && (
                                     <Button
                                         onClick={() =>
                                             kopierArbeidsgiverTilBeregningerUnder(
-                                                beregningIndex,
-                                                agIndex
+                                                beregningIndeks,
+                                                agIndeks
                                             )
                                         }
                                         style={{
