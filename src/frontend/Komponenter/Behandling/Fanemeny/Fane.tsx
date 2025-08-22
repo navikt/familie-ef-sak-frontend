@@ -1,10 +1,9 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { FaneProps, FaneNavn } from './faner';
 import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 import { ABlue400, ABlue500, AGray100, AGray300, ATextAction } from '@navikt/ds-tokens/dist/tokens';
-import { loggNavigereTabEvent } from '../../../App/utils/amplitude/amplitudeLoggEvents';
 import { Behandling } from '../../../App/typer/fagsak';
 import { Steg } from '../Høyremeny/Steg';
 import { useApp } from '../../../App/context/AppContext';
@@ -71,14 +70,11 @@ interface Props {
 export const Fane: React.FC<Props> = ({ fane, behandling, index }) => {
     const { erSaksbehandler } = useApp();
     const { behandlingErRedigerbar } = useBehandling();
-    const location = useLocation();
 
     const fanenavn =
         fane.navn === FaneNavn.IVERKSETTE_KA_VEDTAK || fane.navn === FaneNavn.KORRIGERING_UTEN_BREV
             ? FaneNavn.BREV
             : fane.navn;
-
-    const nåværendeFane = location.pathname.split('/')[3];
 
     const låsendeSteg = [Steg.VILKÅR, Steg.BEREGNE_YTELSE];
 
@@ -112,19 +108,7 @@ export const Fane: React.FC<Props> = ({ fane, behandling, index }) => {
     }
 
     return (
-        <StyledNavLink
-            key={fane.navn}
-            to={`/behandling/${behandling.id}/${fane.href}`}
-            onClick={() =>
-                loggNavigereTabEvent({
-                    side: 'behandling',
-                    forrigeFane: nåværendeFane,
-                    nesteFane: fane.href,
-                    behandlingStatus: behandling.status,
-                    behandlingSteg: behandling.steg,
-                })
-            }
-        >
+        <StyledNavLink key={fane.navn} to={`/behandling/${behandling.id}/${fane.href}`}>
             <StyledLenketekst>
                 {index + 1}. {fanenavn}
             </StyledLenketekst>
