@@ -8,15 +8,11 @@ import {
     IJournalpostResponse,
     LogiskeVedleggPåDokument,
 } from '../typer/journalføring';
-import {
-    Journalføringsårsak,
-    utledJournalføringEvent,
-} from '../../Komponenter/Journalføring/Felles/utils';
+import { Journalføringsårsak } from '../../Komponenter/Journalføring/Felles/utils';
 import { behandlingstemaTilStønadstype, Stønadstype } from '../typer/behandlingstema';
 import { HentDokumentResponse, useHentDokument } from './useHentDokument';
 import { useHentFagsak } from './useHentFagsak';
 import { Fagsak } from '../typer/fagsak';
-import { loggJournalføring } from '../utils/amplitude/amplitudeLoggEvents';
 
 export enum Journalføringsaksjon {
     OPPRETT_BEHANDLING = 'OPPRETT_BEHANDLING',
@@ -177,9 +173,6 @@ export const useJournalføringState = (
             data: request,
         }).then((res) => {
             settInnsending(res);
-            if (res.status === RessursStatus.SUKSESS) {
-                loggJournalføring(utledJournalføringEvent(request, journalpost, stønadstype));
-            }
         });
     };
 

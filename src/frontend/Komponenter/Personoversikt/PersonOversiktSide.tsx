@@ -11,7 +11,6 @@ import { useSetPersonIdent } from '../../App/hooks/useSetPersonIdent';
 import { useHentFagsakPerson } from '../../App/hooks/useHentFagsakPerson';
 import { Tabs } from '@navikt/ds-react';
 import { InntektForPerson } from './InntektForPerson';
-import { loggNavigereTabEvent } from '../../App/utils/amplitude/amplitudeLoggEvents';
 import { PersonHeader } from '../../Felles/PersonHeader/PersonHeader';
 import { Personopplysninger } from './Personopplysninger';
 import { Vedtaksperioderoversikt } from './Vedtaksperioderoversikt';
@@ -168,11 +167,6 @@ const PersonOversikt: React.FC<Props> = ({
                 value={path}
                 onChange={(fane) => {
                     navigate(`/person/${fagsakPersonId}/${fane}`);
-                    loggNavigereTabEvent({
-                        side: 'person',
-                        forrigeFane: path,
-                        nesteFane: fane,
-                    });
                 }}
             >
                 <Tabs.List>
