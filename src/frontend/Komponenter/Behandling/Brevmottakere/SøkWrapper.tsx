@@ -3,7 +3,7 @@ import { SøkPerson } from './SøkPerson';
 import { SøkOrganisasjon } from './SøkOrganisasjon';
 import { IBrevmottaker, IOrganisasjonMottaker } from './typer';
 import styled from 'styled-components';
-import { Ingress, Select } from '@navikt/ds-react';
+import { Ingress, Select, VStack } from '@navikt/ds-react';
 
 interface Props {
     valgtePersonMottakere: IBrevmottaker[];
@@ -17,13 +17,8 @@ enum ESøktype {
     PERSON = 'PERSON',
 }
 
-const Underoverskrift = styled(Ingress)`
-    margin-bottom: 1rem;
-`;
-
 const SøkTypeSelect = styled(Select)`
     width: 200px;
-    margin-bottom: 1rem;
 `;
 
 export const SøkWrapper: FC<Props> = ({
@@ -35,8 +30,8 @@ export const SøkWrapper: FC<Props> = ({
     const [søktype, settSøktype] = useState<ESøktype>();
 
     return (
-        <>
-            <Underoverskrift>Manuelt søk</Underoverskrift>
+        <VStack gap="4">
+            <Ingress>Manuelt søk</Ingress>
             <SøkTypeSelect
                 label={'Manuelt søk'}
                 hideLabel
@@ -59,6 +54,6 @@ export const SøkWrapper: FC<Props> = ({
                     settValgteMottakere={settValgtePersonMottakere}
                 />
             )}
-        </>
+        </VStack>
     );
 };

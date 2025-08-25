@@ -227,6 +227,8 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                 flettefelter: {
                     navn: [personopplysninger.navn.visningsnavn],
                     fodselsnummer: [personopplysninger.personIdent],
+                    fullmektige: [],
+                    verger: [],
                 },
                 fritekstområder: utledFritekstområderForBrev(),
             },

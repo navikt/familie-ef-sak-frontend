@@ -36,6 +36,7 @@ const Brevmottakere: React.FC<{
             });
         }
     }, [mottakere, axiosRequest, settOrganisasjoner]);
+
     return (
         <>
             <BrevMottakereListe
