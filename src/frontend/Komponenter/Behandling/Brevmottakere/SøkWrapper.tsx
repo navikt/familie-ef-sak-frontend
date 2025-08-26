@@ -12,7 +12,7 @@ interface Props {
     settValgteOrganisasjonMottakere: Dispatch<SetStateAction<IOrganisasjonMottaker[]>>;
 }
 
-enum ESøktype {
+enum Søktype {
     ORGANISASJON = 'ORGANISASJON',
     PERSON = 'PERSON',
 }
@@ -27,7 +27,7 @@ export const SøkWrapper: FC<Props> = ({
     valgteOrganisasjonMottakere,
     settValgteOrganisasjonMottakere,
 }) => {
-    const [søktype, settSøktype] = useState<ESøktype>();
+    const [søktype, settSøktype] = useState<Søktype>();
 
     return (
         <VStack gap="4">
@@ -36,19 +36,19 @@ export const SøkWrapper: FC<Props> = ({
                 label={'Manuelt søk'}
                 hideLabel
                 value={søktype}
-                onChange={(e) => settSøktype(e.target.value as ESøktype)}
+                onChange={(e) => settSøktype(e.target.value as Søktype)}
             >
                 <option>Velg</option>
-                <option value={ESøktype.ORGANISASJON}>Organisasjon</option>
-                <option value={ESøktype.PERSON}>Person</option>
+                <option value={Søktype.ORGANISASJON}>Organisasjon</option>
+                <option value={Søktype.PERSON}>Person</option>
             </SøkTypeSelect>
-            {søktype === ESøktype.ORGANISASJON && (
+            {søktype === Søktype.ORGANISASJON && (
                 <SøkOrganisasjon
                     valgteMottakere={valgteOrganisasjonMottakere}
                     settValgteMottakere={settValgteOrganisasjonMottakere}
                 />
             )}
-            {søktype === ESøktype.PERSON && (
+            {søktype === Søktype.PERSON && (
                 <SøkPerson
                     valgtePersonMottakere={valgtePersonMottakere}
                     settValgteMottakere={settValgtePersonMottakere}

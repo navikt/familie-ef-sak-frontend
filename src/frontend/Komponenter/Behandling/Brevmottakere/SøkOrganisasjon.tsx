@@ -48,7 +48,7 @@ export const SøkOrganisasjon: React.FC<Props> = ({ settValgteMottakere, valgteM
                 {
                     organisasjonsnummer,
                     navnHosOrganisasjon,
-                    mottakerRolle: EBrevmottakerRolle.VERGE,
+                    mottakerRolle: EBrevmottakerRolle.FULLMEKTIG,
                 },
             ]);
         } else {
