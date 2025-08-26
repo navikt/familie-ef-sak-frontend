@@ -1,6 +1,5 @@
-import { BodyShort, Heading, HStack, ReadMore, VStack } from '@navikt/ds-react';
+import { BodyShort, Heading, HStack, ReadMore, VStack, Box } from '@navikt/ds-react';
 import React, { ReactNode } from 'react';
-import styles from './PersonopplysningPanel.module.css';
 
 const PersonopplysningerPanel: React.FC<{
     Ikon: React.FC;
@@ -9,7 +8,12 @@ const PersonopplysningerPanel: React.FC<{
     children?: ReactNode;
 }> = ({ Ikon, tittel, children, tittelBeskrivelse }) => {
     return (
-        <div className={styles.panel}>
+        <Box
+            padding={'space-16'}
+            borderColor={'border-on-inverted'}
+            background={'bg-subtle'}
+            borderWidth={'1'}
+        >
             <HStack gap="4" align="center">
                 <Ikon />
                 <Heading size="small" className="tittel">
@@ -31,7 +35,7 @@ const PersonopplysningerPanel: React.FC<{
                     {children}
                 </VStack>
             )}
-        </div>
+        </Box>
     );
 };
 
