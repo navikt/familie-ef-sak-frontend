@@ -236,8 +236,9 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                     navn: [personopplysninger.navn.visningsnavn],
                     fodselsnummer: [personopplysninger.personIdent],
                 },
-                brevmottakere: formaterteBrevmottakere,
                 fritekstområder: utledFritekstområderForBrev(),
+                brevmottakere: formaterteBrevmottakere,
+                featureToggleBrukNyBrevHeader: true,
             },
         }).then((respons: Ressurs<string>) => {
             if (respons.status === RessursStatus.SUKSESS) {
