@@ -1,29 +1,6 @@
-import { BodyShort, Heading, ReadMore } from '@navikt/ds-react';
+import { BodyShort, Heading, HStack, ReadMore, VStack } from '@navikt/ds-react';
 import React, { ReactNode } from 'react';
-import styled from 'styled-components';
 import styles from './PersonopplysningPanel.module.css';
-
-const TittelMedIkon = styled.div`
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-`;
-
-const IkonWrapper = styled.div`
-    display: flex;
-    justify-content: center;
-`;
-
-const InnholdWrapper = styled.div`
-    padding-left: 1.75rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-`;
-
-const ReadMoreMedMarginLeft = styled(ReadMore)`
-    padding-left: 2.5rem;
-`;
 
 const PersonopplysningerPanel: React.FC<{
     Ikon: React.FC;
@@ -33,21 +10,27 @@ const PersonopplysningerPanel: React.FC<{
 }> = ({ Ikon, tittel, children, tittelBeskrivelse }) => {
     return (
         <div className={styles.panel}>
-            <TittelMedIkon className="ikon">
-                <IkonWrapper>
-                    <Ikon />
-                </IkonWrapper>
+            <HStack gap="4" align="center">
+                <Ikon />
                 <Heading size="small" className="tittel">
                     {tittel}
                 </Heading>
                 {!children && <BodyShort size="small">(Ingen data)</BodyShort>}
-            </TittelMedIkon>
+            </HStack>
             {tittelBeskrivelse && (
-                <ReadMoreMedMarginLeft size="small" header={tittelBeskrivelse.header}>
+                <ReadMore
+                    style={{ paddingLeft: '2.5rem' }}
+                    size="small"
+                    header={tittelBeskrivelse.header}
+                >
                     {tittelBeskrivelse.innhold}
-                </ReadMoreMedMarginLeft>
+                </ReadMore>
             )}
-            {children && <InnholdWrapper>{children}</InnholdWrapper>}
+            {children && (
+                <VStack style={{ paddingLeft: '1.75rem' }} gap="4">
+                    {children}
+                </VStack>
+            )}
         </div>
     );
 };
