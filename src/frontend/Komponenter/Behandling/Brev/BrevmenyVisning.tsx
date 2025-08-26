@@ -203,6 +203,11 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
         }, {});
     };
 
+    const formaterteBrevmottakere: IBrevmottakere = {
+        personer: brevmottakere?.personer ?? [],
+        organisasjoner: brevmottakere?.organisasjoner ?? [],
+    };
+
     const genererBrev = () => {
         if (harValgfeltFeil(valgteFelt, brevStruktur, settBrevmalFeil)) {
             return;
@@ -231,7 +236,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                     navn: [personopplysninger.navn.visningsnavn],
                     fodselsnummer: [personopplysninger.personIdent],
                 },
-                brevmottakere: brevmottakere,
+                brevmottakere: formaterteBrevmottakere,
                 fritekstområder: utledFritekstområderForBrev(),
             },
         }).then((respons: Ressurs<string>) => {
