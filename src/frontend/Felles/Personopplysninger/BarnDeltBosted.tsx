@@ -2,16 +2,12 @@ import { IDeltBostedPeriode } from '../../App/typer/personopplysninger';
 import { BodyShort, Popover, Table, Tag } from '@navikt/ds-react';
 import { formaterNullableIsoDato } from '../../App/utils/formatter';
 import React from 'react';
-import styled from 'styled-components';
 import { ATextSubtle } from '@navikt/ds-tokens/dist/tokens';
 
-export const StyledDiv = styled.div<{ $historisk?: boolean }>`
-    ${(props) => props.$historisk && `color : ${ATextSubtle}`};
-`;
-
-export const VenstreMargin = styled(StyledDiv)`
-    margin-left: 1rem;
-`;
+export const StyledDiv: React.FC<{ $historisk?: boolean; children?: React.ReactNode }> = ({
+    $historisk,
+    children,
+}) => <div style={$historisk ? { color: ATextSubtle } : undefined}>{children}</div>;
 
 const utledHistoriskTag = (historisk: boolean) =>
     historisk ? (
@@ -33,7 +29,7 @@ export const popoverContentDeltBosted = (deltBostedPerioder: IDeltBostedPeriode[
                 <Table.Row>
                     <Table.HeaderCell scope="col">Fra</Table.HeaderCell>
                     <Table.HeaderCell scope="col">
-                        <VenstreMargin>Til</VenstreMargin>
+                        <div style={{ marginLeft: '1rem;' }}>Til</div>
                     </Table.HeaderCell>
                     <Table.HeaderCell scope="col"></Table.HeaderCell>
                 </Table.Row>
@@ -50,16 +46,16 @@ export const popoverContentDeltBosted = (deltBostedPerioder: IDeltBostedPeriode[
                                 </StyledDiv>
                             </Table.DataCell>
                             <Table.DataCell>
-                                <VenstreMargin $historisk={deltBostedPeriode.historisk}>
+                                <StyledDiv $historisk={deltBostedPeriode.historisk}>
                                     {formaterNullableIsoDato(
                                         deltBostedPeriode.sluttdatoForKontrakt
                                     )}
-                                </VenstreMargin>
+                                </StyledDiv>
                             </Table.DataCell>
                             <Table.DataCell>
-                                <VenstreMargin $historisk={deltBostedPeriode.historisk}>
+                                <StyledDiv $historisk={deltBostedPeriode.historisk}>
                                     {utledHistoriskTag(deltBostedPeriode.historisk)}
-                                </VenstreMargin>
+                                </StyledDiv>
                             </Table.DataCell>
                         </Table.Row>
                     );

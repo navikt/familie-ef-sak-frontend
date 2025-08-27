@@ -21,7 +21,7 @@ const BarnBosted: React.FC<{ barn: IBarn }> = ({ barn }) => {
     return (
         <HStack gap="2" align="center">
             <BodyShort size="small">{bostedStatus(barn)}</BodyShort>
-            {barn.deltBosted.length > -1 && (
+            {barn.deltBosted.length > 0 && (
                 <Button
                     onClick={() => setOpenState(true)}
                     size="small"
