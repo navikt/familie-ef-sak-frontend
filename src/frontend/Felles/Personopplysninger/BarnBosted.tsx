@@ -1,21 +1,8 @@
 import React, { useRef, useState } from 'react';
 import { IBarn } from '../../App/typer/personopplysninger';
-import { BodyShort, Popover } from '@navikt/ds-react';
-import styled from 'styled-components';
+import { BodyShort, HStack, Popover, Button } from '@navikt/ds-react';
 import { InformationSquareIcon } from '@navikt/aksel-icons';
 import { popoverContentDeltBosted } from './BarnDeltBosted';
-
-const FlexBox = styled.div`
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-`;
-
-const InformationIcon = styled(InformationSquareIcon)`
-    &:hover {
-        cursor: pointer;
-    }
-`;
 
 const bostedStatus = (barn: IBarn) => {
     if (barn.harDeltBostedNå) {
@@ -32,12 +19,17 @@ const BarnBosted: React.FC<{ barn: IBarn }> = ({ barn }) => {
     const [openState, setOpenState] = useState(false);
 
     return (
-        <FlexBox>
+        <HStack gap="2" align="center">
             <BodyShort size="small">{bostedStatus(barn)}</BodyShort>
-            {barn.deltBosted.length > 0 && (
-                <InformationIcon ref={iconRef} onClick={() => setOpenState(true)}>
-                    Åpne popover
-                </InformationIcon>
+            {barn.deltBosted.length > -1 && (
+                <Button
+                    onClick={() => setOpenState(true)}
+                    size="small"
+                    variant="tertiary"
+                    iconPosition="right"
+                    aria-label="Vis dato-informasjon om delt bosted"
+                    icon={<InformationSquareIcon ref={iconRef} />}
+                />
             )}
             <Popover
                 placement={'right'}
@@ -47,7 +39,7 @@ const BarnBosted: React.FC<{ barn: IBarn }> = ({ barn }) => {
             >
                 {popoverContentDeltBosted(barn.deltBosted)}
             </Popover>
-        </FlexBox>
+        </HStack>
     );
 };
 
