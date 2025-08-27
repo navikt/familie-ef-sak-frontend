@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
     BrevStruktur,
     datasett,
@@ -203,10 +203,12 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
         }, {});
     };
 
-    const formaterteBrevmottakere: IBrevmottakere = {
-        personer: brevmottakere?.personer ?? [],
-        organisasjoner: brevmottakere?.organisasjoner ?? [],
-    };
+    const formaterteBrevmottakere: IBrevmottakere = useMemo(() => {
+        return {
+            personer: brevmottakere?.personer ?? [],
+            organisasjoner: brevmottakere?.organisasjoner ?? [],
+        };
+    }, [brevmottakere]);
 
     const genererBrev = () => {
         if (harValgfeltFeil(valgteFelt, brevStruktur, settBrevmalFeil)) {
@@ -259,6 +261,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
         brevMal,
         fritekstområder,
         overstyrteDelmaler,
+        formaterteBrevmottakere,
     ]);
 
     const brevmenyBlokkerGruppert = grupperBrevmenyBlokker(brevStruktur.dokument.brevmenyBlokker);
