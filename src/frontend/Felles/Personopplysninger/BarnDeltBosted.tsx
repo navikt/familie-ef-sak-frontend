@@ -28,9 +28,7 @@ export const popoverContentDeltBosted = (deltBostedPerioder: IDeltBostedPeriode[
             <Table.Header>
                 <Table.Row>
                     <Table.HeaderCell scope="col">Fra</Table.HeaderCell>
-                    <Table.HeaderCell scope="col">
-                        <div style={{ marginLeft: '1rem;' }}>Til</div>
-                    </Table.HeaderCell>
+                    <Table.HeaderCell scope="col">Til</Table.HeaderCell>
                     <Table.HeaderCell scope="col"></Table.HeaderCell>
                 </Table.Row>
             </Table.Header>
