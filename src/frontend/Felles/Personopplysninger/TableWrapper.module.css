@@ -1,0 +1,8 @@
+.stable {
+    max-width: max-content;
+
+    th,
+    td {
+        font-size: var(--a-font-size-medium);
+    }
+}
