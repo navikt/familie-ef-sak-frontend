@@ -6,12 +6,8 @@ import Beboere from './Beboere';
 import { formaterNullableIsoDato } from '../../App/utils/formatter';
 import { ModalWrapper } from '../Modal/ModalWrapper';
 import UtvidPanel from '../UtvidPanel/UtvidPanel';
-import { Button, HStack, Table, Tag, VStack } from '@navikt/ds-react';
+import { BodyShort, Button, HStack, Table, Tag, VStack } from '@navikt/ds-react';
 import PersonopplysningerPanel from './PersonopplysningPanel';
-
-const FetTekst: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-    <span style={{ fontWeight: 'bold' }}>{children}</span>
-);
 
 const MAX_LENGDE_ADRESSER = 5;
 
@@ -68,23 +64,40 @@ const AdressehistorikkMedLesMerKnapp: React.FC<{
 const TittelbeskrivelseBostedsadresser: React.ReactElement = (
     <VStack gap="4">
         <HStack>
-            <FetTekst>Gjeldende adresse:</FetTekst>
-            En person skal til enhver tid ha kun én folkeregistrert bostedsadresse. I EF Sak er
-            denne adressen markert med "(gjeldende)". Vær oppmerksom på at det i noen tilfeller ikke
-            vil være adressen med den nyeste fra-datoen som er gjeldende
+            <BodyShort weight={'semibold'} size={'small'}>
+                Gjeldende adresse:{' '}
+            </BodyShort>
+
+            <BodyShort size={'small'}>
+                En person skal til enhver tid ha kun én folkeregistrert bostedsadresse. I EF Sak er
+                denne adressen markert med "(gjeldende)". Vær oppmerksom på at det i noen tilfeller
+                ikke vil være adressen med den nyeste fra-datoen som er gjeldende
+            </BodyShort>
         </HStack>
         <HStack>
-            <FetTekst>Angitt flyttedato:</FetTekst>Datoen personen selv har oppgitt for flytting til
-            ny bolig
+            <BodyShort weight={'semibold'} size={'small'}>
+                Angitt flyttedato:{' '}
+            </BodyShort>
+            <BodyShort size={'small'}>
+                Datoen personen selv har oppgitt for flytting til ny bolig
+            </BodyShort>
         </HStack>
         <HStack>
-            <FetTekst>Fra og med:</FetTekst>
-            Folkeregisterets vedtaksdato for gyldighet på bostedsregistreringen
+            <BodyShort weight={'semibold'} size={'small'}>
+                Fra og med:{' '}
+            </BodyShort>
+            <BodyShort size={'small'}>
+                Folkeregisterets vedtaksdato for gyldighet på bostedsregistreringen
+            </BodyShort>
         </HStack>
         <HStack>
-            <FetTekst>Til og med:</FetTekst>
-            Folkeregisterets opphørsdato (dersom den er kjent). Personen er ikke registrert bosatt
-            på adressen iht Folkeregisteret
+            <BodyShort weight={'semibold'} size={'small'}>
+                Til og med:{' '}
+            </BodyShort>
+            <BodyShort size={'small'}>
+                Folkeregisterets opphørsdato (dersom den er kjent). Personen er ikke registrert
+                bosatt på adressen iht Folkeregisteret
+            </BodyShort>
         </HStack>
     </VStack>
 );

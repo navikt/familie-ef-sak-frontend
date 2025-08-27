@@ -5,7 +5,6 @@ import tseslint from 'typescript-eslint';
 import react from 'eslint-plugin-react';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
 
-
 export default tseslint.config(
     eslint.configs.recommended,
     ...tseslint.configs.recommended,
@@ -22,12 +21,12 @@ export default tseslint.config(
         rules: {
             ...reactHooks.configs.recommended.rules,
             'react/no-unescaped-entities': 'off',
-            '@typescript-eslint/no-unused-expressions': 'off'
+            '@typescript-eslint/no-unused-expressions': 'off',
         },
         settings: {
             react: {
-                version: "detect",
+                version: 'detect',
             },
         },
-    },
+    }
 );
