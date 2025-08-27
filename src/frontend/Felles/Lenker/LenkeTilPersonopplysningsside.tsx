@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { Link } from '@navikt/ds-react';
+import { Link, Tag } from '@navikt/ds-react';
 import { ExternalLinkIcon } from '@navikt/aksel-icons';
 import { Ressurs, RessursStatus } from '../../App/typer/ressurs';
 import { useApp } from '../../App/context/AppContext';
@@ -13,6 +13,13 @@ interface IProps {
 
 export const LenkeTilPersonopplysningsside: React.FC<IProps> = ({ personIdent, children }) => {
     const { axiosRequest, settToast } = useApp();
+
+    const isNPID = (ident: string) => {
+        if (ident.length !== 11) return false;
+        const month = parseInt(ident.substring(2, 4), 10);
+        if (month > 60 && month <= 72) return true;
+        return month > 20 && month <= 32;
+    };
 
     const redirectTilPersonopplysningsside = (personIdent: string) => {
         axiosRequest<string, { personIdent: string }>({
@@ -31,7 +38,11 @@ export const LenkeTilPersonopplysningsside: React.FC<IProps> = ({ personIdent, c
         });
     };
 
-    return personIdent ? (
+    if (!personIdent) {
+        return <>{children}</>;
+    }
+
+    return !isNPID(personIdent) ? (
         <BodyShortSmall>
             <Link
                 href="#"
@@ -44,6 +55,11 @@ export const LenkeTilPersonopplysningsside: React.FC<IProps> = ({ personIdent, c
             </Link>
         </BodyShortSmall>
     ) : (
-        <>{children}</>
+        <>
+            {children}{' '}
+            <Tag variant="success" size="small">
+                NPID
+            </Tag>
+        </>
     );
 };
