@@ -16,7 +16,7 @@ export const SøkOrganisasjon: React.FC<Props> = ({ settValgteMottakere, valgteM
     const { axiosRequest } = useApp();
 
     const [organisasjonsnummer, settOrganisasjonsnummer] = useState('');
-    const [navnHosOrganisasjon, settNavnHosOrganisasjon] = useState('');
+    const [kontaktpersonHosOrganisasjon, settKontaktpersonHosOrganisasjon] = useState('');
     const [organisasjonRessurs, settOrganisasjonRessurs] =
         useState(byggTomRessurs<IOrganisasjon>());
     const [feilmelding, settFeilmelding] = useState('');
@@ -32,8 +32,8 @@ export const SøkOrganisasjon: React.FC<Props> = ({ settValgteMottakere, valgteM
         }
     }, [axiosRequest, organisasjonsnummer]);
 
-    const leggTilOrganisasjon = (organisasjonsnummer: string) => () => {
-        if (!navnHosOrganisasjon) {
+    const leggTilOrganisasjon = (organisasjonsnummer: string, organisasjonsnavn: string) => () => {
+        if (!kontaktpersonHosOrganisasjon) {
             settFeilmelding('Oppgi kontaktperson hos organisasjonen');
             return;
         }
@@ -46,8 +46,8 @@ export const SøkOrganisasjon: React.FC<Props> = ({ settValgteMottakere, valgteM
             settValgteMottakere((forrigeMottakere) => [
                 ...forrigeMottakere,
                 {
-                    organisasjonsnummer,
-                    navnHosOrganisasjon,
+                    organisasjonsnummer: organisasjonsnummer,
+                    navnHosOrganisasjon: `${organisasjonsnavn} c/o ${kontaktpersonHosOrganisasjon}`,
                     mottakerRolle: EBrevmottakerRolle.FULLMEKTIG,
                 },
             ]);
@@ -79,7 +79,8 @@ export const SøkOrganisasjon: React.FC<Props> = ({ settValgteMottakere, valgteM
                                 </div>
                                 <LeggTilKnapp
                                     onClick={leggTilOrganisasjon(
-                                        organisasjonRessurs.organisasjonsnummer
+                                        organisasjonRessurs.organisasjonsnummer,
+                                        organisasjonRessurs.navn
                                     )}
                                     knappetekst={'Legg til'}
                                 />
@@ -87,8 +88,10 @@ export const SøkOrganisasjon: React.FC<Props> = ({ settValgteMottakere, valgteM
                                     htmlSize={25}
                                     label={'Ved'}
                                     placeholder={'Personen brevet skal til'}
-                                    value={navnHosOrganisasjon}
-                                    onChange={(e) => settNavnHosOrganisasjon(e.target.value)}
+                                    value={kontaktpersonHosOrganisasjon}
+                                    onChange={(e) =>
+                                        settKontaktpersonHosOrganisasjon(e.target.value)
+                                    }
                                     autoComplete="off"
                                 />
                             </Søkeresultat>
