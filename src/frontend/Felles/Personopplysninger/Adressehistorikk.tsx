@@ -64,39 +64,28 @@ const AdressehistorikkMedLesMerKnapp: React.FC<{
 const TittelbeskrivelseBostedsadresser: React.ReactElement = (
     <VStack gap="4">
         <HStack>
-            <BodyShort weight={'semibold'} size={'small'}>
-                Gjeldende adresse:{' '}
-            </BodyShort>
-
             <BodyShort size={'small'}>
-                En person skal til enhver tid ha kun én folkeregistrert bostedsadresse. I EF Sak er
-                denne adressen markert med "(gjeldende)". Vær oppmerksom på at det i noen tilfeller
-                ikke vil være adressen med den nyeste fra-datoen som er gjeldende
+                <b>Gjeldende adresse:</b> En person skal til enhver tid ha kun én folkeregistrert
+                bostedsadresse. I EF Sak er denne adressen markert med "(gjeldende)". Vær oppmerksom
+                på at det i noen tilfeller ikke vil være adressen med den nyeste fra-datoen som er
+                gjeldende
             </BodyShort>
         </HStack>
         <HStack>
-            <BodyShort weight={'semibold'} size={'small'}>
-                Angitt flyttedato:{' '}
-            </BodyShort>
             <BodyShort size={'small'}>
-                Datoen personen selv har oppgitt for flytting til ny bolig
+                <b>Angitt flyttedato:</b> Datoen personen selv har oppgitt for flytting til ny bolig
             </BodyShort>
         </HStack>
         <HStack>
-            <BodyShort weight={'semibold'} size={'small'}>
-                Fra og med:{' '}
-            </BodyShort>
             <BodyShort size={'small'}>
-                Folkeregisterets vedtaksdato for gyldighet på bostedsregistreringen
+                <b>Fra og med:</b> Folkeregisterets vedtaksdato for gyldighet på
+                bostedsregistreringen
             </BodyShort>
         </HStack>
         <HStack>
-            <BodyShort weight={'semibold'} size={'small'}>
-                Til og med:{' '}
-            </BodyShort>
             <BodyShort size={'small'}>
-                Folkeregisterets opphørsdato (dersom den er kjent). Personen er ikke registrert
-                bosatt på adressen iht Folkeregisteret
+                <b>Til og med:</b> Folkeregisterets opphørsdato (dersom den er kjent). Personen er
+                ikke registrert bosatt på adressen iht Folkeregisteret
             </BodyShort>
         </HStack>
     </VStack>
