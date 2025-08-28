@@ -2,12 +2,10 @@ import { IDeltBostedPeriode } from '../../App/typer/personopplysninger';
 import { BodyShort, Popover, Table, Tag } from '@navikt/ds-react';
 import { formaterNullableIsoDato } from '../../App/utils/formatter';
 import React from 'react';
-import { ATextSubtle } from '@navikt/ds-tokens/dist/tokens';
 
-export const StyledDiv: React.FC<{ $historisk?: boolean; children?: React.ReactNode }> = ({
-    $historisk,
-    children,
-}) => <div style={$historisk ? { color: ATextSubtle } : undefined}>{children}</div>;
+function utledHistoriskStyle(deltBostedPeriode: IDeltBostedPeriode) {
+    return deltBostedPeriode.historisk ? 'subtle' : 'default';
+}
 
 const utledHistoriskTag = (historisk: boolean) =>
     historisk ? (
@@ -34,26 +32,27 @@ export const popoverContentDeltBosted = (deltBostedPerioder: IDeltBostedPeriode[
             </Table.Header>
             <Table.Body>
                 {deltBostedPerioder.map((deltBostedPeriode) => {
+                    const histStyle = utledHistoriskStyle(deltBostedPeriode);
                     return (
                         <Table.Row key={deltBostedPeriodeKey(deltBostedPeriode)}>
                             <Table.DataCell>
-                                <StyledDiv $historisk={deltBostedPeriode.historisk}>
+                                <BodyShort textColor={histStyle}>
                                     {formaterNullableIsoDato(
                                         deltBostedPeriode.startdatoForKontrakt
                                     )}
-                                </StyledDiv>
+                                </BodyShort>
                             </Table.DataCell>
                             <Table.DataCell>
-                                <StyledDiv $historisk={deltBostedPeriode.historisk}>
+                                <BodyShort textColor={histStyle}>
                                     {formaterNullableIsoDato(
                                         deltBostedPeriode.sluttdatoForKontrakt
                                     )}
-                                </StyledDiv>
+                                </BodyShort>
                             </Table.DataCell>
                             <Table.DataCell>
-                                <StyledDiv $historisk={deltBostedPeriode.historisk}>
+                                <BodyShort textColor={histStyle}>
                                     {utledHistoriskTag(deltBostedPeriode.historisk)}
-                                </StyledDiv>
+                                </BodyShort>
                             </Table.DataCell>
                         </Table.Row>
                     );
