@@ -1,15 +1,12 @@
-import styled from 'styled-components';
 import React from 'react';
 import { Table } from '@navikt/ds-react';
-import { AFontSizeMedium } from '@navikt/ds-tokens/dist/tokens';
+import styles from './TableWrapper.module.css';
 
-export const SmallTable = styled(Table).attrs({ size: 'small' })`
-    max-width: max-content;
-    th,
-    td {
-        font-size: ${AFontSizeMedium};
-    }
-`;
+export const SmallTable: React.FC<React.ComponentProps<typeof Table>> = (props) => (
+    <Table size={'small'} className={styles.stable}>
+        {props.children}
+    </Table>
+);
 
 type Kolonnetittel = string | React.ReactNode;
 

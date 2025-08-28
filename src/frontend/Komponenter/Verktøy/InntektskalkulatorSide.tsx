@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { genererBeregnetInntektTekst } from '../../App/hooks/useVerdierForBrev';
-import { Textarea } from '@navikt/ds-react';
+import { CopyButton, HStack, Textarea } from '@navikt/ds-react';
 import useFieldState, { FieldState } from '../../App/hooks/felles/useFieldState';
 import Inntektskalkulator from '../../Felles/Kalkulator/Inntektskalkulator';
 import styled from 'styled-components';
@@ -8,7 +8,7 @@ import styled from 'styled-components';
 const TextAreaLiten = styled(Textarea)`
     white-space: pre-wrap;
     word-wrap: break-word;
-    max-width: 40rem;
+    width: 40rem;
 `;
 
 export const InntektskalkulatorSide: React.FC = () => {
@@ -32,13 +32,21 @@ export const InntektskalkulatorSide: React.FC = () => {
                 leggTilBeregnetInntektTekstIBegrunnelse={leggTilBeregnetInntektTekstIBegrunnelse}
                 nullstillBegrunnelse={nullstillBegrunnelse}
             />
-            <TextAreaLiten
-                value={inntektBegrunnelseState.value}
-                onChange={(event) => {
-                    inntektBegrunnelseState.onChange(event);
-                }}
-                label=""
-            />
+            <HStack gap="2">
+                <TextAreaLiten
+                    value={inntektBegrunnelseState.value}
+                    onChange={(event) => {
+                        inntektBegrunnelseState.onChange(event);
+                    }}
+                    label=""
+                />
+                <CopyButton
+                    size={'xsmall'}
+                    copyText={inntektBegrunnelseState.value}
+                    variant={'action'}
+                    activeText={'kopiert'}
+                />
+            </HStack>
         </>
     );
 };
