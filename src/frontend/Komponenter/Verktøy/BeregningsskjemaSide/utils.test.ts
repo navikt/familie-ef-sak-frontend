@@ -120,8 +120,6 @@ test('skal sette korrekt automatisk beregnet fra', () => {
         (beregning) => beregning.beregnetfra === true
     );
 
-    console.log(oppdatertBeregnetfra);
-
     expect(oppdatertBeregnetfra).toBeDefined();
     expect(oppdatertBeregnetfra[0].beregnetfra).toBe(false);
     expect(beregningBeregnetFraIndex).toBe(1);
