@@ -2,20 +2,13 @@ import React from 'react';
 import { IBarn } from '../../App/typer/personopplysninger';
 import LiteBarn from '../Ikoner/LiteBarn';
 import { KolonneTitler, SmallTable } from './TabellWrapper';
-import styled from 'styled-components';
 import { KopierbartNullableFødselsnummer } from '../Fødselsnummer/KopierbartNullableFødselsnummer';
 import EtikettDød from '../Etiketter/EtikettDød';
 import { nullableDatoTilAlder } from '../../App/utils/dato';
-import { Table, Tag } from '@navikt/ds-react';
+import { HStack, Table, Tag } from '@navikt/ds-react';
 import BarnBosted from './BarnBosted';
 import PersonopplysningerPanel from './PersonopplysningPanel';
 import { LenkeTilPersonopplysningsside } from '../Lenker/LenkeTilPersonopplysningsside';
-
-const FlexDiv = styled.div`
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-`;
 
 const titler = ['Navn', 'Fødselsnummer', 'Annen forelder', 'Fødselsnummer', 'Bor med bruker'];
 
@@ -90,7 +83,7 @@ const FødselsnummerBarn: React.FC<{
 
     return (
         <Table.DataCell>
-            <FlexDiv>
+            <HStack gap="2" align="center">
                 <KopierbartNullableFødselsnummer fødselsnummer={fødselsnummer} />
                 {!dødsdato &&
                     (alder !== undefined ? (
@@ -108,7 +101,7 @@ const FødselsnummerBarn: React.FC<{
                             Ukjent alder
                         </Tag>
                     ))}
-            </FlexDiv>
+            </HStack>
         </Table.DataCell>
     );
 };

@@ -2,36 +2,14 @@ import React, { useState } from 'react';
 import Bygning from '../Ikoner/Bygning';
 import { AdresseType, IAdresse } from '../../App/typer/personopplysninger';
 import { KolonneTitler, SmallTable } from './TabellWrapper';
-import styled from 'styled-components';
 import Beboere from './Beboere';
 import { formaterNullableIsoDato } from '../../App/utils/formatter';
 import { ModalWrapper } from '../Modal/ModalWrapper';
 import UtvidPanel from '../UtvidPanel/UtvidPanel';
-import { Button, Table, Tag } from '@navikt/ds-react';
-import { BodyLongSmall } from '../Visningskomponenter/Tekster';
+import { BodyShort, Button, HStack, Table, Tag, VStack } from '@navikt/ds-react';
 import PersonopplysningerPanel from './PersonopplysningPanel';
 
-const Knapp = styled(Button)`
-    margin: 0.5rem 0.75rem;
-`;
-
-const FetTekst = styled.span`
-    font-weight: bold;
-`;
-
 const MAX_LENGDE_ADRESSER = 5;
-
-const FlexBoxCenter = styled.div`
-    display: flex;
-    gap: 0.5rem;
-    align-items: center;
-`;
-
-const FlexBoxColumn = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-`;
 
 const Adressehistorikk: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string }> = ({
     adresser,
@@ -84,27 +62,33 @@ const AdressehistorikkMedLesMerKnapp: React.FC<{
 };
 
 const TittelbeskrivelseBostedsadresser: React.ReactElement = (
-    <FlexBoxColumn>
-        <BodyLongSmall>
-            <FetTekst>Gjeldende adresse:</FetTekst>
-            En person skal til enhver tid ha kun én folkeregistrert bostedsadresse. I EF Sak er
-            denne adressen markert med "(gjeldende)". Vær oppmerksom på at det i noen tilfeller ikke
-            vil være adressen med den nyeste fra-datoen som er gjeldende
-        </BodyLongSmall>
-        <BodyLongSmall>
-            <FetTekst>Angitt flyttedato:</FetTekst>Datoen personen selv har oppgitt for flytting til
-            ny bolig
-        </BodyLongSmall>
-        <BodyLongSmall>
-            <FetTekst>Fra og med:</FetTekst>
-            Folkeregisterets vedtaksdato for gyldighet på bostedsregistreringen
-        </BodyLongSmall>
-        <BodyLongSmall>
-            <FetTekst>Til og med:</FetTekst>
-            Folkeregisterets opphørsdato (dersom den er kjent). Personen er ikke registrert bosatt
-            på adressen iht Folkeregisteret
-        </BodyLongSmall>
-    </FlexBoxColumn>
+    <VStack gap="4">
+        <HStack>
+            <BodyShort size={'small'}>
+                <b>Gjeldende adresse:</b> En person skal til enhver tid ha kun én folkeregistrert
+                bostedsadresse. I EF Sak er denne adressen markert med "(gjeldende)". Vær oppmerksom
+                på at det i noen tilfeller ikke vil være adressen med den nyeste fra-datoen som er
+                gjeldende
+            </BodyShort>
+        </HStack>
+        <HStack>
+            <BodyShort size={'small'}>
+                <b>Angitt flyttedato:</b> Datoen personen selv har oppgitt for flytting til ny bolig
+            </BodyShort>
+        </HStack>
+        <HStack>
+            <BodyShort size={'small'}>
+                <b>Fra og med:</b> Folkeregisterets vedtaksdato for gyldighet på
+                bostedsregistreringen
+            </BodyShort>
+        </HStack>
+        <HStack>
+            <BodyShort size={'small'}>
+                <b>Til og med:</b> Folkeregisterets opphørsdato (dersom den er kjent). Personen er
+                ikke registrert bosatt på adressen iht Folkeregisteret
+            </BodyShort>
+        </HStack>
+    </VStack>
 );
 
 const Adresser: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string; type?: AdresseType }> = ({
@@ -154,14 +138,14 @@ const Innhold: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string }> = ({
                     return (
                         <Table.Row key={indeks}>
                             <Table.DataCell>
-                                <FlexBoxCenter>
+                                <HStack gap="2" align="center">
                                     {adresse.visningsadresse}
                                     {adresse.erGjeldende && (
                                         <Tag variant="success" size="small">
                                             Gjeldende
                                         </Tag>
                                     )}
-                                </FlexBoxCenter>
+                                </HStack>
                             </Table.DataCell>
                             <Table.DataCell>
                                 {adresse.type === AdresseType.BOSTEDADRESSE
@@ -177,7 +161,7 @@ const Innhold: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string }> = ({
                             <Table.DataCell>
                                 {adresse.type === AdresseType.BOSTEDADRESSE &&
                                     adresse.erGjeldende && (
-                                        <Knapp
+                                        <Button
                                             onClick={() => settBeboereAdresseIModal(adresse)}
                                             variant={'secondary'}
                                             size={'xsmall'}
@@ -185,7 +169,7 @@ const Innhold: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string }> = ({
                                             disabled={henterBeboere}
                                         >
                                             {henterBeboere ? 'Henter beboere...' : 'Se Beboere'}
-                                        </Knapp>
+                                        </Button>
                                     )}
                             </Table.DataCell>
                         </Table.Row>
