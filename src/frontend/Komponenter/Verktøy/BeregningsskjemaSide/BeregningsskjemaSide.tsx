@@ -1,52 +1,31 @@
 import { Button, HStack, Table, Tag, TextField, VStack } from '@navikt/ds-react';
 import React, { useState } from 'react';
 import DatePickerMedTittel from './DatePickerMedTittel';
-import { ArrowRedoIcon, PlusIcon } from '@navikt/aksel-icons';
+import { PlusIcon } from '@navikt/aksel-icons';
 import {
     formaterStrengMedStorForbokstav,
     formaterTallMedTusenSkille,
 } from '../../../App/utils/formatter';
-import { finnTiProsentAvvik, oppdaterBeregnetFra, oppdaterÅrslønn } from './utils';
+import { finnTiProsentAvvik, lagBeregninger, oppdaterBeregnetfra, oppdaterÅrslønn } from './utils';
+import { KopierNedKnapp } from './KopiernedKnapp';
+import { Periode, Beregninger, TiProsentAvvik, Beregning } from './typer';
 
-export enum TiProsentAvvik {
-    INGEN_VERDI = '',
-    OPP = '10% avvik opp',
-    NED = '10% avvik ned',
-    NEI = 'Ikke 10% avvik',
-    UNDER_HALV_G = 'Under halv G',
-}
-
-export type Beregning = {
-    periode: {
-        årstall: string;
-        måned: string;
-    };
-    arbeidsgivere: { navn: string; verdi: number }[];
-    årslønn: number;
-    redusertEtter: number;
-    avvik: TiProsentAvvik;
-    beregnetfra: boolean;
+const tomPeriode: Periode = {
+    fra: {
+        årstall: '',
+        måned: '',
+    },
+    til: {
+        årstall: '',
+        måned: '',
+    },
 };
-
-type Beregninger = Beregning[];
 
 const initialBeregninger: Beregninger = [];
 
 export const BeregningsskjemaSide: React.FC = () => {
     const [beregninger, settBeregninger] = useState<Beregninger>(initialBeregninger);
-    const [periode, settPeriode] = useState<{
-        fra: { årstall: string; måned: string };
-        til: { årstall: string; måned: string };
-    }>({
-        fra: {
-            årstall: '',
-            måned: '',
-        },
-        til: {
-            årstall: '',
-            måned: '',
-        },
-    });
+    const [periode, settPeriode] = useState<Periode>(tomPeriode);
 
     const tiProsentAvvikTilTag = (avvik: TiProsentAvvik) => {
         switch (avvik) {
@@ -63,64 +42,9 @@ export const BeregningsskjemaSide: React.FC = () => {
         }
     };
 
-    const lagBeregninger = (
-        fra: {
-            årstall: string;
-            måned: string;
-        },
-        til: {
-            årstall: string;
-            måned: string;
-        }
-    ) => {
-        if (!periode || !periode.fra.årstall || !periode.til.årstall) {
-            return;
-        }
-
+    const handleLagBeregninger = (periode: Periode) => {
         settBeregninger([]);
-
-        const mapMåned: { [key: string]: number } = {
-            januar: 1,
-            februar: 2,
-            mars: 3,
-            april: 4,
-            mai: 5,
-            juni: 6,
-            juli: 7,
-            august: 8,
-            september: 9,
-            oktober: 10,
-            november: 11,
-            desember: 12,
-        };
-
-        const fraMåned = mapMåned[fra.måned.toLowerCase()] || 1;
-        const tilMåned = mapMåned[til.måned.toLowerCase()] || 12;
-
-        const fraÅr = parseInt(fra.årstall);
-        const tilÅr = parseInt(til.årstall);
-
-        const antallPerioder = (tilÅr - fraÅr) * 12 + (tilMåned - fraMåned) + 1;
-
-        const nyeBeregninger: Beregninger = [];
-
-        for (let i = 0; i < antallPerioder; i++) {
-            const årstall = fraÅr + Math.floor((fraMåned - 1 + i) / 12);
-            const månedNummer = ((fraMåned - 1 + i) % 12) + 1;
-
-            const månedNavn =
-                Object.keys(mapMåned).find((key) => mapMåned[key] === månedNummer) || 'januar';
-
-            nyeBeregninger.push({
-                periode: { årstall: årstall.toString(), måned: månedNavn },
-                arbeidsgivere: [{ navn: `Arbeidsgiver ${i + 1}`, verdi: 0 }],
-                årslønn: 0,
-                redusertEtter: 0,
-                avvik: TiProsentAvvik.INGEN_VERDI,
-                beregnetfra: false,
-            });
-        }
-
+        const nyeBeregninger = lagBeregninger(periode);
         settBeregninger(nyeBeregninger);
     };
 
@@ -129,8 +53,8 @@ export const BeregningsskjemaSide: React.FC = () => {
         arbeidsgiverIndeks: number,
         nyVerdi: number
     ) => {
-        settBeregninger((prev) =>
-            prev.map((beregning, bIndeks) =>
+        settBeregninger((prev) => {
+            const oppdatert = prev.map((beregning, bIndeks) =>
                 bIndeks === beregningIndeks
                     ? {
                           ...beregning,
@@ -140,8 +64,17 @@ export const BeregningsskjemaSide: React.FC = () => {
                           årslønn: oppdaterÅrslønn(beregning, arbeidsgiverIndeks, nyVerdi),
                       }
                     : beregning
-            )
-        );
+            );
+
+            const oppdatertAvvik: Beregning[] = oppdatert.map((beregning) => ({
+                ...beregning,
+                avvik: finnTiProsentAvvik(beregning),
+            }));
+
+            const oppdatertBeregnetFra = oppdaterBeregnetfra(oppdatertAvvik);
+
+            return oppdatertBeregnetFra;
+        });
     };
 
     const oppdaterRedusertEtter = (beregningIndeks: number, nyVerdi: number) => {
@@ -150,15 +83,13 @@ export const BeregningsskjemaSide: React.FC = () => {
                 bIndeks === beregningIndeks ? { ...beregning, redusertEtter: nyVerdi } : beregning
             );
 
-            const oppdatertAvvik = oppdatertRedusertEtter.map((beregning) => ({
+            const oppdatertAvvik: Beregning[] = oppdatertRedusertEtter.map((beregning) => ({
                 ...beregning,
                 avvik: finnTiProsentAvvik(beregning),
             }));
 
-            const oppdatertBeregnetFra = oppdaterBeregnetFra(
-                oppdatertAvvik,
-                oppdatertAvvik[beregningIndeks]
-            );
+            const oppdatertBeregnetFra = oppdaterBeregnetfra(oppdatertAvvik);
+
             return oppdatertBeregnetFra;
         });
     };
@@ -179,174 +110,127 @@ export const BeregningsskjemaSide: React.FC = () => {
     };
 
     const kopierRedusertEtterTilBeregningerUnder = (beregningIndeks: number) => {
+        const redusertEtterSomSkalKopieres = beregninger[beregningIndeks].redusertEtter;
+
         settBeregninger((prev) => {
-            const redusertEtterSomSkalKopieres = prev[beregningIndeks].redusertEtter;
+            const oppdatertRedusertEtter = prev.map((beregning, idx) =>
+                idx > beregningIndeks
+                    ? { ...beregning, redusertEtter: redusertEtterSomSkalKopieres }
+                    : beregning
+            );
 
-            return prev.map((beregning, indeks) => {
-                if (indeks > beregningIndeks) {
-                    return {
-                        ...beregning,
-                        redusertEtter: redusertEtterSomSkalKopieres,
-                    };
-                }
-                return beregning;
-            });
-        });
-    };
+            const oppdatertAvvik: Beregning[] = oppdatertRedusertEtter.map((beregning) => ({
+                ...beregning,
+                avvik: finnTiProsentAvvik(beregning),
+            }));
 
-    const kopierArbeidsgiverTilBeregningerUnder = (
-        beregningIndeks: number,
-        arbeidsgiverIndeks: number
-    ) => {
-        settBeregninger((prev) => {
-            const arbeidsgiverSomSkalKopieres =
-                prev[beregningIndeks].arbeidsgivere[arbeidsgiverIndeks].verdi;
+            const oppdatertBeregnetFra: Beregning[] = oppdaterBeregnetfra(oppdatertAvvik);
 
-            return prev.map((beregning, indeks) => {
-                const kopiArbeidsgivere = [...beregning.arbeidsgivere];
-                if (indeks > beregningIndeks) {
-                    kopiArbeidsgivere[arbeidsgiverIndeks] = {
-                        ...kopiArbeidsgivere[arbeidsgiverIndeks],
-                        verdi: arbeidsgiverSomSkalKopieres,
-                    };
-
-                    return {
-                        ...beregning,
-                        arbeidsgivere: kopiArbeidsgivere,
-                        årslønn: oppdaterÅrslønn(
-                            beregning,
-                            arbeidsgiverIndeks,
-                            arbeidsgiverSomSkalKopieres
-                        ),
-                    };
-                }
-                return beregning;
-            });
+            return oppdatertBeregnetFra;
         });
     };
 
     return (
-        <>
-            <VStack gap="8">
-                <HStack gap={'8'}>
-                    <DatePickerMedTittel
-                        tittel="Periode"
-                        periode={periode}
-                        settPeriode={settPeriode}
-                        lagBeregninger={lagBeregninger}
-                    />
-                </HStack>
+        <VStack gap="8">
+            <HStack gap={'8'}>
+                <DatePickerMedTittel
+                    tittel="Periode"
+                    periode={periode}
+                    settPeriode={settPeriode}
+                    lagBeregninger={handleLagBeregninger}
+                />
+            </HStack>
 
-                {beregninger.length > 0 && (
-                    <div>
-                        <Table size="small">
-                            <Table.Header>
-                                <Table.Row>
-                                    <Table.HeaderCell scope="col">Periode</Table.HeaderCell>
+            {beregninger.length > 0 && (
+                <Table size="small">
+                    <Table.Header>
+                        <Table.Row>
+                            <Table.HeaderCell scope="col">Periode</Table.HeaderCell>
 
-                                    <LagArbeidsgivereKolonner beregninger={beregninger} />
+                            <LagArbeidsgivereKolonner beregninger={beregninger} />
 
-                                    <Table.HeaderCell
-                                        scope="col"
-                                        style={{ width: '1px', whiteSpace: 'nowrap' }}
-                                    >
-                                        <Button
-                                            icon={<PlusIcon />}
-                                            onClick={() => {
-                                                handleLeggTilArbeidsgiver();
-                                            }}
-                                            size="small"
-                                            title="Legg til arbeidsgiver for alle perioder"
-                                        >
-                                            Legg til
-                                        </Button>
-                                    </Table.HeaderCell>
-                                    <Table.HeaderCell scope="col">Årslønn</Table.HeaderCell>
-                                    <Table.HeaderCell scope="col">Redusert etter</Table.HeaderCell>
-                                    <Table.HeaderCell scope="col">
-                                        10% avvik i inntekt
-                                    </Table.HeaderCell>
-                                </Table.Row>
-                            </Table.Header>
-                            <Table.Body>
-                                {beregninger.map((beregning, beregningIndeks) => (
-                                    <Table.Row
-                                        key={`${beregning.periode.årstall}-${beregning.periode.måned}`}
-                                    >
-                                        <Table.DataCell
-                                            style={{
-                                                backgroundColor: beregning.beregnetfra
-                                                    ? 'yellow'
-                                                    : '',
-                                            }}
-                                        >
-                                            {`${formaterStrengMedStorForbokstav(
-                                                beregning.periode.måned
-                                            )} ${beregning.periode.årstall}`}
-                                        </Table.DataCell>
+                            <Table.HeaderCell
+                                scope="col"
+                                style={{ width: '1px', whiteSpace: 'nowrap' }}
+                            >
+                                <Button
+                                    icon={<PlusIcon />}
+                                    onClick={() => {
+                                        handleLeggTilArbeidsgiver();
+                                    }}
+                                    size="small"
+                                    title="Legg til arbeidsgiver for alle perioder"
+                                >
+                                    Legg til
+                                </Button>
+                            </Table.HeaderCell>
+                            <Table.HeaderCell scope="col">Årslønn</Table.HeaderCell>
+                            <Table.HeaderCell scope="col">Redusert etter</Table.HeaderCell>
+                            <Table.HeaderCell scope="col">10% avvik i inntekt</Table.HeaderCell>
+                        </Table.Row>
+                    </Table.Header>
+                    <Table.Body>
+                        {beregninger.map((beregning, beregningIndeks) => (
+                            <Table.Row
+                                key={`${beregning.periode.årstall}-${beregning.periode.måned}`}
+                                style={{
+                                    backgroundColor: beregning.beregnetfra
+                                        ? 'var(--a-gray-50)'
+                                        : 'inherit',
+                                }}
+                            >
+                                <Table.DataCell>
+                                    {`${formaterStrengMedStorForbokstav(
+                                        beregning.periode.måned
+                                    )} ${beregning.periode.årstall}`}
+                                    {beregning.beregnetfra && ' - Beregnet fra'}
+                                </Table.DataCell>
 
-                                        <LagArbeidsgivereRader
-                                            beregninger={beregninger}
-                                            beregning={beregning}
-                                            beregningIndeks={beregningIndeks}
-                                            oppdaterArbeidsgiver={oppdaterArbeidsgiver}
-                                            kopierArbeidsgiverTilBeregningerUnder={
-                                                kopierArbeidsgiverTilBeregningerUnder
+                                <LagArbeidsgivereRader
+                                    beregninger={beregninger}
+                                    beregning={beregning}
+                                    beregningIndeks={beregningIndeks}
+                                    oppdaterArbeidsgiver={oppdaterArbeidsgiver}
+                                />
+
+                                <Table.DataCell></Table.DataCell>
+                                <Table.DataCell>
+                                    {formaterTallMedTusenSkille(beregning.årslønn)}
+                                </Table.DataCell>
+                                <Table.DataCell>
+                                    <HStack gap="2">
+                                        <TextField
+                                            label="Redusert etter"
+                                            hideLabel
+                                            value={beregning.redusertEtter}
+                                            onChange={(e) =>
+                                                oppdaterRedusertEtter(
+                                                    beregningIndeks,
+                                                    Number(e.target.value) || 0
+                                                )
                                             }
+                                            size="small"
+                                            placeholder="0"
                                         />
-
-                                        <Table.DataCell></Table.DataCell>
-                                        <Table.DataCell>
-                                            {formaterTallMedTusenSkille(beregning.årslønn)}
-                                        </Table.DataCell>
-                                        <Table.DataCell>
-                                            <HStack gap="2">
-                                                <TextField
-                                                    label="Redusert etter"
-                                                    hideLabel
-                                                    value={beregning.redusertEtter}
-                                                    onChange={(e) =>
-                                                        oppdaterRedusertEtter(
-                                                            beregningIndeks,
-                                                            Number(e.target.value) || 0
-                                                        )
-                                                    }
-                                                    size="small"
-                                                    placeholder="0"
-                                                />
-                                                {beregningIndeks < beregninger.length - 1 && (
-                                                    <Button
-                                                        onClick={() =>
-                                                            kopierRedusertEtterTilBeregningerUnder(
-                                                                beregningIndeks
-                                                            )
-                                                        }
-                                                        style={{
-                                                            transform: 'rotate(90deg)',
-                                                        }}
-                                                        size="small"
-                                                        icon={
-                                                            <ArrowRedoIcon
-                                                                title="kopier ned"
-                                                                fontSize="1.5rem"
-                                                            />
-                                                        }
-                                                        variant="tertiary-neutral"
-                                                    />
-                                                )}
-                                            </HStack>
-                                        </Table.DataCell>
-                                        <Table.DataCell>
-                                            {tiProsentAvvikTilTag(finnTiProsentAvvik(beregning))}
-                                        </Table.DataCell>
-                                    </Table.Row>
-                                ))}
-                            </Table.Body>
-                        </Table>
-                    </div>
-                )}
-            </VStack>
-        </>
+                                        {beregningIndeks < beregninger.length - 1 && (
+                                            <KopierNedKnapp
+                                                beregningIndeks={beregningIndeks}
+                                                kopierRedusertEtterTilBeregningerUnder={
+                                                    kopierRedusertEtterTilBeregningerUnder
+                                                }
+                                            />
+                                        )}
+                                    </HStack>
+                                </Table.DataCell>
+                                <Table.DataCell>
+                                    {tiProsentAvvikTilTag(finnTiProsentAvvik(beregning))}
+                                </Table.DataCell>
+                            </Table.Row>
+                        ))}
+                    </Table.Body>
+                </Table>
+            )}
+        </VStack>
     );
 };
 
@@ -378,17 +262,7 @@ const LagArbeidsgivereRader: React.FC<{
         arbeidsgiverIndeks: number,
         nyVerdi: number
     ) => void;
-    kopierArbeidsgiverTilBeregningerUnder: (
-        beregningIndeks: number,
-        arbeidsgiverIndeks: number
-    ) => void;
-}> = ({
-    beregninger,
-    beregning,
-    beregningIndeks,
-    oppdaterArbeidsgiver,
-    kopierArbeidsgiverTilBeregningerUnder,
-}) => {
+}> = ({ beregninger, beregning, beregningIndeks, oppdaterArbeidsgiver }) => {
     return (
         <>
             {Array.from(
@@ -417,24 +291,6 @@ const LagArbeidsgivereRader: React.FC<{
                                     size="small"
                                     placeholder="0"
                                 />
-                                {beregningIndeks < beregninger.length - 1 && (
-                                    <Button
-                                        onClick={() =>
-                                            kopierArbeidsgiverTilBeregningerUnder(
-                                                beregningIndeks,
-                                                agIndeks
-                                            )
-                                        }
-                                        style={{
-                                            transform: 'rotate(90deg)',
-                                        }}
-                                        size="small"
-                                        icon={
-                                            <ArrowRedoIcon title="kopier ned" fontSize="1.5rem" />
-                                        }
-                                        variant="tertiary-neutral"
-                                    />
-                                )}
                             </HStack>
                         </Table.DataCell>
                     );

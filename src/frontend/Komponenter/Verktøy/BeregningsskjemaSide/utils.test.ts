@@ -2,10 +2,10 @@ import { expect, test } from 'vitest';
 import {
     finnTiProsentAvvik,
     rundTilNærmesteTusen,
-    settNestePeriodeEtterTiProsentAvvik,
+    oppdaterBeregnetfra,
     summerÅrslønn,
 } from './utils';
-import { Beregning, TiProsentAvvik } from './BeregningsskjemaSide';
+import { Beregning, TiProsentAvvik } from './typer';
 
 const beregning: Beregning[] = [
     {
@@ -112,14 +112,21 @@ test('skal sette korrekt automatisk beregnet fra', () => {
         return beregning;
     });
 
-    const nestePeriode = settNestePeriodeEtterTiProsentAvvik(oppdaterteBeregninger);
-    console.log('nestePeriode: ', nestePeriode);
-    const beregningBeregnetFra = nestePeriode.find((beregning) => beregning.beregnetfra === true);
-    const beregningBeregnetFraIndex = nestePeriode.findIndex(
+    const oppdatertBeregnetfra = oppdaterBeregnetfra(oppdaterteBeregninger);
+    const beregningBeregnetFra = oppdatertBeregnetfra.find(
+        (beregning) => beregning.beregnetfra === true
+    );
+    const beregningBeregnetFraIndex = oppdatertBeregnetfra.findIndex(
         (beregning) => beregning.beregnetfra === true
     );
 
-    expect(nestePeriode).toBeDefined();
+    console.log(oppdatertBeregnetfra);
+
+    expect(oppdatertBeregnetfra).toBeDefined();
+    expect(oppdatertBeregnetfra[0].beregnetfra).toBe(false);
+    expect(beregningBeregnetFraIndex).toBe(1);
     expect(beregningBeregnetFra?.beregnetfra).toBe(true);
-    expect(beregningBeregnetFraIndex).toBe(3);
+    expect(oppdatertBeregnetfra[2].beregnetfra).toBe(false);
+    expect(oppdatertBeregnetfra[3].beregnetfra).toBe(false);
+    expect(oppdatertBeregnetfra[4].beregnetfra).toBe(false);
 });

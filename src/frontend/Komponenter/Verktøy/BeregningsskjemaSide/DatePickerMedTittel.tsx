@@ -1,28 +1,12 @@
 import { useRangeDatepicker, Heading, DatePicker, HStack } from '@navikt/ds-react';
 import React from 'react';
+import type { Periode } from './typer';
 
 const DatePickerMedTittel: React.FC<{
     tittel?: string;
-    periode?: {
-        fra: { årstall: string; måned: string };
-        til: { årstall: string; måned: string };
-    };
-    settPeriode?: React.Dispatch<
-        React.SetStateAction<{
-            fra: { årstall: string; måned: string };
-            til: { årstall: string; måned: string };
-        }>
-    >;
-    lagBeregninger: (
-        fra: {
-            årstall: string;
-            måned: string;
-        },
-        til: {
-            årstall: string;
-            måned: string;
-        }
-    ) => void;
+    periode: Periode;
+    settPeriode?: React.Dispatch<React.SetStateAction<Periode>>;
+    lagBeregninger: (periode: Periode) => void;
 }> = ({ tittel, settPeriode, lagBeregninger }) => {
     const { datepickerProps, toInputProps, fromInputProps } = useRangeDatepicker({
         onRangeChange: (range) => {
@@ -31,6 +15,7 @@ const DatePickerMedTittel: React.FC<{
                     årstall: range.from.getFullYear().toString(),
                     måned: range.from.toLocaleDateString('no-NO', { month: 'long' }),
                 };
+
                 const til = {
                     årstall: range.to?.getFullYear().toString() || '',
                     måned: range.to?.toLocaleDateString('no-NO', { month: 'long' }) || '',
@@ -41,9 +26,7 @@ const DatePickerMedTittel: React.FC<{
                     til: til,
                 });
 
-                if (lagBeregninger) {
-                    lagBeregninger(fra, til);
-                }
+                lagBeregninger({ fra, til });
             }
         },
     });
