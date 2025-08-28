@@ -166,8 +166,15 @@ export const lagInterneLenker = (
         lagÅpneEldreBehandlingerLenke(),
     ].filter((lenke) => lenke !== null);
 
-export const lagArbeidsverktøyLenker = (fagsakPersonId: string | undefined): PopoverItem[] => [
-    lagSamværskalkulatorLenke(fagsakPersonId),
-    lagInntektskalkulatorLenke(),
-    lagBeregningsskjemaLenke(),
-];
+export const lagArbeidsverktøyLenker = (
+    fagsakPersonId: string | undefined,
+    skalViseBeregningsskjemaLenke: boolean
+): PopoverItem[] => {
+    const lenker = [lagSamværskalkulatorLenke(fagsakPersonId), lagInntektskalkulatorLenke()];
+
+    if (skalViseBeregningsskjemaLenke) {
+        lenker.push(lagBeregningsskjemaLenke());
+    }
+
+    return lenker;
+};

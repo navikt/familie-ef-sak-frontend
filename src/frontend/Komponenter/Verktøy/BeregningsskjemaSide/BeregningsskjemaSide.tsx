@@ -1,4 +1,4 @@
-import { Button, HStack, Table, Tag, TextField, VStack } from '@navikt/ds-react';
+import { Button, Heading, HStack, Table, Tag, TextField, VStack } from '@navikt/ds-react';
 import React, { useState } from 'react';
 import DatePickerMedTittel from './DatePickerMedTittel';
 import { PlusIcon } from '@navikt/aksel-icons';
@@ -9,6 +9,8 @@ import {
 import { finnTiProsentAvvik, lagBeregninger, oppdaterBeregnetfra, oppdaterÅrslønn } from './utils';
 import { KopierNedKnapp } from './KopierNedKnapp';
 import { Periode, Beregninger, TiProsentAvvik, Beregning } from './typer';
+import { useToggles } from '../../../App/context/TogglesContext';
+import { ToggleName } from '../../../App/context/toggles';
 
 const tomPeriode: Periode = {
     fra: {
@@ -26,6 +28,9 @@ const initialBeregninger: Beregninger = [];
 export const BeregningsskjemaSide: React.FC = () => {
     const [beregninger, settBeregninger] = useState<Beregninger>(initialBeregninger);
     const [periode, settPeriode] = useState<Periode>(tomPeriode);
+    const { toggles } = useToggles();
+
+    const erTogglet = toggles[ToggleName.visBeregningsskjema] || false;
 
     const tiProsentAvvikTilTag = (avvik: TiProsentAvvik) => {
         switch (avvik) {
@@ -129,6 +134,14 @@ export const BeregningsskjemaSide: React.FC = () => {
             return oppdatertBeregnetFra;
         });
     };
+
+    if (erTogglet === false) {
+        return (
+            <Heading as="h1" size="medium">
+                Ikke togglet på
+            </Heading>
+        );
+    }
 
     return (
         <VStack gap="8">

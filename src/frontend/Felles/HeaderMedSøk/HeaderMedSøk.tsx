@@ -22,6 +22,7 @@ export const HeaderMedSøk: React.FunctionComponent<Props> = ({ innloggetSaksbeh
     const erSaksbehandler = harTilgangTilRolle(appEnv, innloggetSaksbehandler, 'saksbehandler');
     const kanOppretteBehandlingForFerdigstiltJournalpost =
         toggles[ToggleName.opprettBehandlingForFerdigstiltJournalpost];
+    const skalViseBeregningsskjemaLenke = toggles[ToggleName.visBeregningsskjema];
 
     const headerLenker = useMemo(
         () =>
@@ -32,16 +33,18 @@ export const HeaderMedSøk: React.FunctionComponent<Props> = ({ innloggetSaksbeh
                 erSaksbehandler,
                 valgtFagsakId,
                 valgtFagsakPersonId,
-                personIdent
+                personIdent,
+                skalViseBeregningsskjemaLenke
             ),
         [
             axiosRequest,
             appEnv,
+            kanOppretteBehandlingForFerdigstiltJournalpost,
+            erSaksbehandler,
             valgtFagsakId,
             valgtFagsakPersonId,
             personIdent,
-            erSaksbehandler,
-            kanOppretteBehandlingForFerdigstiltJournalpost,
+            skalViseBeregningsskjemaLenke,
         ]
     );
 
@@ -86,7 +89,8 @@ const lagHeaderLenker = (
     erSaksbehandler: boolean,
     fagsakId: string | undefined,
     fagsakPersonId: string | undefined,
-    personIdent: string | undefined
+    personIdent: string | undefined,
+    skalViseBeregningsskjemaLenke: boolean
 ): PopoverItem[] => {
     const interneLenker = erSaksbehandler
         ? lagInterneLenker(kanOppretteBehandlingForFerdigstiltJournalpost)
@@ -100,7 +104,10 @@ const lagHeaderLenker = (
         personIdent
     );
 
-    const arbeidsverktøyLenker = lagArbeidsverktøyLenker(fagsakPersonId);
+    const arbeidsverktøyLenker = lagArbeidsverktøyLenker(
+        fagsakPersonId,
+        skalViseBeregningsskjemaLenke
+    );
 
     return eksterneLenker.concat(interneLenker).concat(arbeidsverktøyLenker);
 };
