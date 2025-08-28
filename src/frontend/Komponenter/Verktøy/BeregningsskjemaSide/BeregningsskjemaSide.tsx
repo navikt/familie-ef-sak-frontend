@@ -7,7 +7,7 @@ import {
     formaterTallMedTusenSkille,
 } from '../../../App/utils/formatter';
 import { finnTiProsentAvvik, lagBeregninger, oppdaterBeregnetfra, oppdaterÅrslønn } from './utils';
-import { KopierNedKnapp } from './KopiernedKnapp';
+import { KopierNedKnapp } from './KopierNedKnapp';
 import { Periode, Beregninger, TiProsentAvvik, Beregning } from './typer';
 
 const tomPeriode: Periode = {
