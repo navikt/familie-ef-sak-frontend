@@ -6,7 +6,7 @@ import { SkalBrukerHaBrev } from './SkalBrukerHaBrev';
 import { useApp } from '../../../App/context/AppContext';
 import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../App/typer/ressurs';
 import { BrevmottakereListe } from './BrevmottakereListe';
-import { IBrevmottaker, IBrevmottakere, IOrganisasjonMottaker } from './typer';
+import { EBrevmottakerRolle, IBrevmottaker, IBrevmottakere, IOrganisasjonMottaker } from './typer';
 import styled from 'styled-components';
 import { Button } from '@navikt/ds-react';
 import { EToast } from '../../../App/typer/toast';
@@ -71,6 +71,8 @@ export const BrevmottakereModal: FC<{
 
     const initiellePersonIdenter = mottakere.personer.map((mottaker) => mottaker.personIdent);
     const valgtePersonIdenter = valgtePersonMottakere.map((mottaker) => mottaker.personIdent);
+    const initielleMottakerRoller = mottakere.personer.map((mottaker) => mottaker.mottakerRolle);
+    const valgteMottakerRoller = valgtePersonMottakere.map((mottaker) => mottaker.mottakerRolle);
     const initielleOrgNumre = mottakere.organisasjoner;
 
     const settBrevmottakere = () => {
@@ -92,6 +94,15 @@ export const BrevmottakereModal: FC<{
     const harNyeMottakere = (initelleIdenter: string[], valgteIdenter: string[]) =>
         valgteIdenter.some((identNummer) => !initelleIdenter.includes(identNummer)) ||
         valgteIdenter.length !== initelleIdenter.length;
+
+    const harEndretMottakerRoller = (
+        initielleRoller: EBrevmottakerRolle[],
+        valgteRoller: EBrevmottakerRolle[]
+    ) =>
+        initielleRoller.filter((rolle) => rolle === EBrevmottakerRolle.BRUKER).length !==
+            valgteRoller.filter((rolle) => rolle === EBrevmottakerRolle.BRUKER).length ||
+        initielleRoller.filter((rolle) => rolle === EBrevmottakerRolle.FULLMEKTIG).length !==
+            valgteRoller.filter((rolle) => rolle === EBrevmottakerRolle.FULLMEKTIG).length;
 
     const harNyeOrganisasjoner = (
         initielleOrgNumre: IOrganisasjonMottaker[],
@@ -118,6 +129,7 @@ export const BrevmottakereModal: FC<{
 
     const mottakerListeHarEndringer =
         harNyeMottakere(initiellePersonIdenter, valgtePersonIdenter) ||
+        harEndretMottakerRoller(initielleMottakerRoller, valgteMottakerRoller) ||
         harNyeOrganisasjoner(initielleOrgNumre, valgteOrganisasjonMottakere);
 
     const deaktiverSettMottakere = !harBrevmottakere || !mottakerListeHarEndringer;

@@ -3,7 +3,7 @@ import { useApp } from '../../../App/context/AppContext';
 import { byggTomRessurs, Ressurs } from '../../../App/typer/ressurs';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { EBrevmottakerRolle, IBrevmottaker } from './typer';
-import { BodyShort, Button, HStack } from '@navikt/ds-react';
+import { BodyShort, Button, HStack, Radio, RadioGroup, Stack, VStack } from '@navikt/ds-react';
 import { Søkefelt, Søkeresultat } from './brevmottakereStyling';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 
@@ -30,6 +30,9 @@ export const SøkPerson: React.FC<Props> = ({
     oppdaterPerson,
 }) => {
     const { axiosRequest } = useApp();
+    const [mottakerRolle, settMottakerRolle] = useState<EBrevmottakerRolle>(
+        EBrevmottakerRolle.FULLMEKTIG
+    );
     const [søkIdent, settSøkIdent] = useState('');
     const [søkRessurs, settSøkRessurs] = useState(byggTomRessurs<PersonSøk>());
     const [feilmelding, settFeilmelding] = useState('');
@@ -56,7 +59,7 @@ export const SøkPerson: React.FC<Props> = ({
         if (!finnesAllerede && settValgteMottakere) {
             settValgteMottakere((prevState) => [
                 ...prevState,
-                { navn, personIdent, mottakerRolle: EBrevmottakerRolle.VERGE },
+                { navn, personIdent, mottakerRolle: mottakerRolle },
             ]);
             settFeilmelding('');
         } else {
@@ -86,7 +89,17 @@ export const SøkPerson: React.FC<Props> = ({
             <DataViewer response={{ søkRessurs }}>
                 {({ søkRessurs }) => {
                     return (
-                        <>
+                        <VStack>
+                            <RadioGroup
+                                legend="Velg mottakerrolle"
+                                onChange={(rolle: EBrevmottakerRolle) => settMottakerRolle(rolle)}
+                                value={mottakerRolle}
+                            >
+                                <Stack gap="space-0 space-24" direction={'row'} wrap={false}>
+                                    <Radio value={EBrevmottakerRolle.FULLMEKTIG}>Fullmektig</Radio>
+                                    <Radio value={EBrevmottakerRolle.VERGE}>Verge</Radio>
+                                </Stack>
+                            </RadioGroup>
                             <Søkeresultat>
                                 <div>
                                     <BodyShort>{søkRessurs.navn}</BodyShort>
@@ -108,7 +121,7 @@ export const SøkPerson: React.FC<Props> = ({
                                 </HStack>
                             </Søkeresultat>
                             {feilmelding && <AlertError size="small">{feilmelding}</AlertError>}
-                        </>
+                        </VStack>
                     );
                 }}
             </DataViewer>
