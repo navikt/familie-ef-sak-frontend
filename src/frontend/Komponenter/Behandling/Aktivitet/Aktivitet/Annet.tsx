@@ -1,27 +1,21 @@
 import React, { FC } from 'react';
 import { ISærligeTilsynsbehov } from '../../../../App/typer/aktivitetstyper';
-import styled from 'styled-components';
 import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { DinSituasjonTilTekst, EDinSituasjon } from './typer';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
-import { BodyLong, HelpText } from '@navikt/ds-react';
+import { BodyLong, HelpText, HStack } from '@navikt/ds-react';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 import { InfoSeksjonWrapper } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
 import { FlexColumnContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
-
-const StyledList = styled.ul`
-    list-style-type: square;
-    margin: 0;
-    padding-left: 1rem;
-`;
+import styles from './Aktivitet.module.css';
 
 const hjelpetekst = (
     <ul>
         <BodyLong>
             Mulig alternativer i søknadsdialog:
             <li>Jeg er syk</li>
-            <li>Barnet mitt er sykt </li>
+            <li>Barnet mitt er sykt</li>
             <li>Jeg har søkt om barnepass, men ikke fått plass enda</li>
             <li>
                 Jeg har barn som trenger særlig tilsyn på grunn av fysiske, psykiske eller store
@@ -31,11 +25,6 @@ const hjelpetekst = (
         </BodyLong>
     </ul>
 );
-
-const TittelHjelpetekstWrapper = styled.div`
-    display: flex;
-    gap: 1rem;
-`;
 
 interface Props {
     dinSituasjon: EDinSituasjon[];
@@ -48,17 +37,17 @@ const Annet: FC<Props> = ({ dinSituasjon, særligTilsynsbehov }) => {
             <InfoSeksjonWrapper
                 ikon={<Søknadsgrunnlag />}
                 undertittel={
-                    <TittelHjelpetekstWrapper className={'førsteDataKolonne'}>
+                    <HStack gap="4" className={'førsteDataKolonne'}>
                         Annet
                         <HelpText placement={'top-start'}>{hjelpetekst}</HelpText>
-                    </TittelHjelpetekstWrapper>
+                    </HStack>
                 }
             >
                 <Informasjonsrad
                     label="Mer om søkers situasjon"
                     verdiSomString={false}
                     verdi={
-                        <StyledList>
+                        <ul className={styles.annetListe}>
                             {dinSituasjon.map((svarsalternativ) => (
                                 <li key={svarsalternativ}>
                                     <BodyShortSmall>
@@ -66,7 +55,7 @@ const Annet: FC<Props> = ({ dinSituasjon, særligTilsynsbehov }) => {
                                     </BodyShortSmall>
                                 </li>
                             ))}
-                        </StyledList>
+                        </ul>
                     }
                 />
                 <FlexColumnContainer $gap={1}>
