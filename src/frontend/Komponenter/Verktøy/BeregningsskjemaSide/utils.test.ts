@@ -5,7 +5,7 @@ import {
     oppdaterBeregnetfra,
     summerÅrslønn,
 } from './utils';
-import { Beregning, TiProsentAvvik } from './typer';
+import { Beregning, AvvikEnum } from './typer';
 
 const beregning: Beregning[] = [
     {
@@ -16,7 +16,7 @@ const beregning: Beregning[] = [
         årslønn: 336_000,
         redusertEtter: 200_000,
         periode: { årstall: '2025', måned: '01' },
-        avvik: TiProsentAvvik.INGEN_VERDI,
+        avvik: AvvikEnum.INGEN_VERDI,
         beregnetfra: false,
     },
     {
@@ -27,7 +27,7 @@ const beregning: Beregning[] = [
         årslønn: 456_000,
         redusertEtter: 420_000,
         periode: { årstall: '2025', måned: '02' },
-        avvik: TiProsentAvvik.INGEN_VERDI,
+        avvik: AvvikEnum.INGEN_VERDI,
         beregnetfra: false,
     },
     {
@@ -38,7 +38,7 @@ const beregning: Beregning[] = [
         årslønn: 24_000,
         redusertEtter: 200_000,
         periode: { årstall: '2025', måned: '03' },
-        avvik: TiProsentAvvik.INGEN_VERDI,
+        avvik: AvvikEnum.INGEN_VERDI,
         beregnetfra: false,
     },
     {
@@ -49,7 +49,7 @@ const beregning: Beregning[] = [
         årslønn: 144_000,
         redusertEtter: 100_000,
         periode: { årstall: '2025', måned: '04' },
-        avvik: TiProsentAvvik.INGEN_VERDI,
+        avvik: AvvikEnum.INGEN_VERDI,
         beregnetfra: false,
     },
     {
@@ -60,7 +60,7 @@ const beregning: Beregning[] = [
         årslønn: 36_000,
         redusertEtter: 15_000,
         periode: { årstall: '2025', måned: '05' },
-        avvik: TiProsentAvvik.INGEN_VERDI,
+        avvik: AvvikEnum.INGEN_VERDI,
         beregnetfra: false,
     },
 ];
@@ -84,19 +84,19 @@ test('skal sjekke om summering av årslønn er korrekt', () => {
 
 test('skal sjekke om forventet enum for avvik er riktig', () => {
     const avvik = finnTiProsentAvvik(beregning[0]);
-    expect(avvik).toBe(TiProsentAvvik.OPP);
+    expect(avvik).toBe(AvvikEnum.OPP);
 
     const avvik2 = finnTiProsentAvvik(beregning[1]);
-    expect(avvik2).toBe(TiProsentAvvik.NEI);
+    expect(avvik2).toBe(AvvikEnum.NEI);
 
     const avvik3 = finnTiProsentAvvik(beregning[2]);
-    expect(avvik3).toBe(TiProsentAvvik.NED);
+    expect(avvik3).toBe(AvvikEnum.NED);
 
     const avvik4 = finnTiProsentAvvik(beregning[3]);
-    expect(avvik4).toBe(TiProsentAvvik.OPP);
+    expect(avvik4).toBe(AvvikEnum.OPP);
 
     const avvik5 = finnTiProsentAvvik(beregning[4]);
-    expect(avvik5).toBe(TiProsentAvvik.UNDER_HALV_G);
+    expect(avvik5).toBe(AvvikEnum.UNDER_HALV_G);
 });
 
 test('skal sjekke om avrunding til nærmeste tusen blir som forventet', () => {
