@@ -1,4 +1,4 @@
-export enum TiProsentAvvik {
+export enum AvvikEnum {
     INGEN_VERDI = '',
     OPP = '10% avvik opp',
     NED = '10% avvik ned',
@@ -14,7 +14,7 @@ export interface Beregning {
     arbeidsgivere: { navn: string; verdi: number }[];
     årslønn: number;
     redusertEtter: number;
-    avvik: TiProsentAvvik;
+    avvik: AvvikEnum;
     beregnetfra: boolean;
 }
 

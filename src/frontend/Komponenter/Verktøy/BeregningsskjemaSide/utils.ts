@@ -1,25 +1,25 @@
-import { TiProsentAvvik, Beregning, Periode, Beregninger } from './typer';
+import { AvvikEnum, Beregning, Periode, Beregninger } from './typer';
 
-export const finnTiProsentAvvik = (beregning: Beregning): TiProsentAvvik => {
+export const finnTiProsentAvvik = (beregning: Beregning): AvvikEnum => {
     const GRUNNBELØP = 130160; // Grunnbeløp for 2025
     const { årslønn, redusertEtter } = beregning;
 
     if (årslønn < redusertEtter && årslønn < redusertEtter * 0.9) {
-        return TiProsentAvvik.NED;
+        return AvvikEnum.NED;
     } else if (
         årslønn > GRUNNBELØP / 2 &&
         årslønn > redusertEtter &&
         årslønn > redusertEtter * 1.1
     ) {
-        return TiProsentAvvik.OPP;
+        return AvvikEnum.OPP;
     } else if (
         årslønn < GRUNNBELØP / 2 &&
         årslønn > redusertEtter &&
         årslønn > redusertEtter * 1.1
     ) {
-        return TiProsentAvvik.UNDER_HALV_G;
+        return AvvikEnum.UNDER_HALV_G;
     } else {
-        return TiProsentAvvik.NEI;
+        return AvvikEnum.NEI;
     }
 };
 
@@ -48,7 +48,7 @@ export const summerÅrslønn = (beregning: Beregning): number => {
 
 export const oppdaterBeregnetfra = (beregninger: Beregning[]): Beregning[] => {
     const resetBeregnetfra = beregninger.map((b) => ({ ...b, beregnetfra: false }));
-    const førsteMedAvvikOpp = beregninger.findIndex((b) => b.avvik === TiProsentAvvik.OPP);
+    const førsteMedAvvikOpp = beregninger.findIndex((b) => b.avvik === AvvikEnum.OPP);
 
     let beregnetfraIndeks = -1;
     if (førsteMedAvvikOpp !== -1 && førsteMedAvvikOpp + 1 < resetBeregnetfra.length) {
@@ -105,7 +105,7 @@ export const lagBeregninger = (periode: Periode) => {
             arbeidsgivere: [{ navn: `Arbeidsgiver ${i + 1}`, verdi: 0 }],
             årslønn: 0,
             redusertEtter: 0,
-            avvik: TiProsentAvvik.INGEN_VERDI,
+            avvik: AvvikEnum.INGEN_VERDI,
             beregnetfra: false,
         });
     }

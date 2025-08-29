@@ -32,19 +32,17 @@ const DatePickerMedTittel: React.FC<{
     });
 
     return (
-        <>
-            <div>
-                <Heading level="3" size="xsmall">
-                    {tittel}
-                </Heading>
-                <DatePicker {...datepickerProps}>
-                    <HStack wrap gap="4" justify="center">
-                        <DatePicker.Input {...fromInputProps} label="Fra" size="small" />
-                        <DatePicker.Input {...toInputProps} label="Til" size="small" />
-                    </HStack>
-                </DatePicker>
-            </div>
-        </>
+        <div>
+            <Heading level="3" size="xsmall">
+                {tittel}
+            </Heading>
+            <DatePicker {...datepickerProps}>
+                <HStack wrap gap="4" justify="center">
+                    <DatePicker.Input {...fromInputProps} label="Fra" size="small" />
+                    <DatePicker.Input {...toInputProps} label="Til" size="small" />
+                </HStack>
+            </DatePicker>
+        </div>
     );
 };
 

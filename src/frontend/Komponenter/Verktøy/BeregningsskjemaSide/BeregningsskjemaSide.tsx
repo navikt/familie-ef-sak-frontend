@@ -8,7 +8,7 @@ import {
 } from '../../../App/utils/formatter';
 import { finnTiProsentAvvik, lagBeregninger, oppdaterBeregnetfra, oppdaterÅrslønn } from './utils';
 import { KopierNedKnapp } from './KopierNedKnapp';
-import { Periode, Beregninger, TiProsentAvvik, Beregning } from './typer';
+import { Periode, Beregninger, AvvikEnum, Beregning } from './typer';
 import { useToggles } from '../../../App/context/TogglesContext';
 import { ToggleName } from '../../../App/context/toggles';
 
@@ -23,24 +23,22 @@ const tomPeriode: Periode = {
     },
 };
 
-const initialBeregninger: Beregninger = [];
-
 export const BeregningsskjemaSide: React.FC = () => {
-    const [beregninger, settBeregninger] = useState<Beregninger>(initialBeregninger);
+    const [beregninger, settBeregninger] = useState<Beregninger>([]);
     const [periode, settPeriode] = useState<Periode>(tomPeriode);
     const { toggles } = useToggles();
 
     const erTogglet = toggles[ToggleName.visBeregningsskjema] || false;
 
-    const tiProsentAvvikTilTag = (avvik: TiProsentAvvik) => {
+    const utledAvvikTag = (avvik: AvvikEnum) => {
         switch (avvik) {
-            case TiProsentAvvik.OPP:
+            case AvvikEnum.OPP:
                 return <Tag variant="error">{avvik}</Tag>;
-            case TiProsentAvvik.NED:
+            case AvvikEnum.NED:
                 return <Tag variant="info">{avvik}</Tag>;
-            case TiProsentAvvik.UNDER_HALV_G:
+            case AvvikEnum.UNDER_HALV_G:
                 return <Tag variant="alt2">{avvik}</Tag>;
-            case TiProsentAvvik.NEI:
+            case AvvikEnum.NEI:
                 return <Tag variant="neutral">{avvik}</Tag>;
             default:
                 return <Tag variant="neutral">UKJENT</Tag>;
@@ -99,7 +97,7 @@ export const BeregningsskjemaSide: React.FC = () => {
         });
     };
 
-    const handleLeggTilArbeidsgiver = () => {
+    const leggTilArbeidsgiver = () => {
         settBeregninger((prev) =>
             prev.map((beregning) => ({
                 ...beregning,
@@ -160,7 +158,7 @@ export const BeregningsskjemaSide: React.FC = () => {
                         <Table.Row>
                             <Table.HeaderCell scope="col">Periode</Table.HeaderCell>
 
-                            <LagArbeidsgivereKolonner beregninger={beregninger} />
+                            <ArbeidsgivereKolonner beregninger={beregninger} />
 
                             <Table.HeaderCell
                                 scope="col"
@@ -169,7 +167,7 @@ export const BeregningsskjemaSide: React.FC = () => {
                                 <Button
                                     icon={<PlusIcon />}
                                     onClick={() => {
-                                        handleLeggTilArbeidsgiver();
+                                        leggTilArbeidsgiver();
                                     }}
                                     size="small"
                                     title="Legg til arbeidsgiver for alle perioder"
@@ -199,7 +197,7 @@ export const BeregningsskjemaSide: React.FC = () => {
                                     {beregning.beregnetfra && ' - Beregnet fra'}
                                 </Table.DataCell>
 
-                                <LagArbeidsgivereRader
+                                <ArbeidsgivereRader
                                     beregninger={beregninger}
                                     beregning={beregning}
                                     beregningIndeks={beregningIndeks}
@@ -236,7 +234,7 @@ export const BeregningsskjemaSide: React.FC = () => {
                                     </HStack>
                                 </Table.DataCell>
                                 <Table.DataCell>
-                                    {tiProsentAvvikTilTag(finnTiProsentAvvik(beregning))}
+                                    {utledAvvikTag(finnTiProsentAvvik(beregning))}
                                 </Table.DataCell>
                             </Table.Row>
                         ))}
@@ -247,7 +245,7 @@ export const BeregningsskjemaSide: React.FC = () => {
     );
 };
 
-const LagArbeidsgivereKolonner: React.FC<{ beregninger: Beregning[] }> = ({ beregninger }) => {
+const ArbeidsgivereKolonner: React.FC<{ beregninger: Beregning[] }> = ({ beregninger }) => {
     return (
         <>
             {Array.from(
@@ -266,7 +264,7 @@ const LagArbeidsgivereKolonner: React.FC<{ beregninger: Beregning[] }> = ({ bere
     );
 };
 
-const LagArbeidsgivereRader: React.FC<{
+const ArbeidsgivereRader: React.FC<{
     beregninger: Beregning[];
     beregning: Beregning;
     beregningIndeks: number;
