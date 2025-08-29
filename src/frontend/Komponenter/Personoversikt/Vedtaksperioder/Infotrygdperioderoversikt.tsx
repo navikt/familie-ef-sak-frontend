@@ -10,8 +10,7 @@ import { Stønadstype } from '../../../App/typer/behandlingstema';
 import SummertePerioder from '../../Migrering/SummertePerioder';
 import InfotrygdPerioder from '../../Migrering/InfotrygdPerioder';
 import MigrerBarnetilsyn from '../../Migrering/MigrerBarnetilsyn';
-import { AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
-import { BodyShort, Checkbox, Heading, HStack, VStack } from '@navikt/ds-react';
+import { Checkbox, Heading, VStack } from '@navikt/ds-react';
 import Historiskpensjon from '../Historiskpensjon/Historiskpensjon';
 import { VedtaksperiodeContainer } from './Felles/VedtaksperiodeContainer';
 
@@ -34,14 +33,9 @@ const InfotrygdEllerSummertePerioder: React.FC<{
 
     return (
         <>
-            <HStack gap="space-16">
-                <AlertInfo>
-                    <BodyShort>
-                        Denne siden viser vedtaksperioder fra og med desember 2008
-                    </BodyShort>
-                </AlertInfo>
-                <Historiskpensjon fagsakPersonId={fagsakPersonId} />
-            </HStack>
+            <Heading size="medium">Vedtaksperioder fra og med desember 2008</Heading>
+            <Historiskpensjon fagsakPersonId={fagsakPersonId} />
+
             <CheckboxContainer>
                 {skalViseCheckbox && (
                     <Checkbox
