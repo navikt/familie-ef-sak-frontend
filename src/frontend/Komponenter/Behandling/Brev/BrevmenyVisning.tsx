@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
     BrevStruktur,
     datasett,
@@ -35,6 +35,7 @@ import { Alert, Box, Heading } from '@navikt/ds-react';
 import { Brevverdier } from '../../../App/hooks/useVerdierForBrev';
 import { Fritekstområde } from './Fritekstområde';
 import { IPersonopplysninger } from '../../../App/typer/personopplysninger';
+import { IBrevmottakere } from '../Brevmottakere/typer';
 
 const BrevFelter = styled.div`
     display: flex;
@@ -61,6 +62,7 @@ export type BrevmenyVisningProps = {
     oppdaterBrevRessurs: (brevRessurs: Ressurs<string>) => void;
     htmlFelter?: { [htmlfeltNavn: string]: string } | undefined | null;
     brevverdier: Brevverdier;
+    brevmottakere?: IBrevmottakere | undefined;
 } & ({ fagsakId: string; behandlingId?: never } | { behandlingId: string; fagsakId?: never });
 
 const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
@@ -75,6 +77,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     brevverdier,
     fagsakId,
     behandlingId,
+    brevmottakere,
 }) => {
     const { axiosRequest } = useApp();
     const [alleFlettefelter, settAlleFlettefelter] = useState<FlettefeltMedVerdi[]>([]);
@@ -200,6 +203,13 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
         }, {});
     };
 
+    const formaterteBrevmottakere: IBrevmottakere = useMemo(() => {
+        return {
+            personer: brevmottakere?.personer ?? [],
+            organisasjoner: brevmottakere?.organisasjoner ?? [],
+        };
+    }, [brevmottakere]);
+
     const genererBrev = () => {
         if (harValgfeltFeil(valgteFelt, brevStruktur, settBrevmalFeil)) {
             return;
@@ -229,6 +239,8 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                     fodselsnummer: [personopplysninger.personIdent],
                 },
                 fritekstområder: utledFritekstområderForBrev(),
+                brevmottakere: formaterteBrevmottakere,
+                featureToggleBrukNyBrevHeader: true,
             },
         }).then((respons: Ressurs<string>) => {
             if (respons.status === RessursStatus.SUKSESS) {
@@ -249,6 +261,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
         brevMal,
         fritekstområder,
         overstyrteDelmaler,
+        formaterteBrevmottakere,
     ]);
 
     const brevmenyBlokkerGruppert = grupperBrevmenyBlokker(brevStruktur.dokument.brevmenyBlokker);

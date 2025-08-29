@@ -38,13 +38,3 @@ export const brevmottakereMedBruker = (personopplysninger: IPersonopplysninger) 
         organisasjoner: [],
     };
 };
-
-export const visMottakerRolleVergeFullmektigHvisVerge = (
-    mottakerRolle: EBrevmottakerRolle
-): string => {
-    if (mottakerRolle === EBrevmottakerRolle.VERGE) {
-        return `${EBrevmottakerRolle.VERGE}/${EBrevmottakerRolle.FULLMEKTIG}`;
-    }
-
-    return mottakerRolle;
-};

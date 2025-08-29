@@ -3,8 +3,7 @@ import { IInnflyttingTilNorge, IUtflyttingFraNorge } from '../../App/typer/perso
 import { KolonneTitler, SmallTable } from './TabellWrapper';
 import FlyMedSky from '../Ikoner/FlyMedSky';
 import { formaterNullableIsoDato, formaterNullableIsoÅr } from '../../App/utils/formatter';
-import styled from 'styled-components';
-import { HelpText, Label, Table } from '@navikt/ds-react';
+import { HelpText, HStack, Label, Table } from '@navikt/ds-react';
 import PersonopplysningerPanel from './PersonopplysningPanel';
 
 interface Props {
@@ -12,14 +11,8 @@ interface Props {
     utflyttinger: IUtflyttingFraNorge[];
 }
 
-const FlexBoxCenter = styled.div`
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-`;
-
 export const headerForInnflyttingTabell: React.ReactNode = (
-    <FlexBoxCenter>
+    <HStack gap="4" align="center">
         <Label size="small">Innflyttet år</Label>
         <HelpText>
             Innflyttet år er basert på Folkeregisteret sitt gyldighetstidspunktet for innflytting.
@@ -27,7 +20,7 @@ export const headerForInnflyttingTabell: React.ReactNode = (
             virkeligheten. Dersom man skal finne ut når en innflytting gjelder fra må man se på
             andre opplysninger, f.eks. den norske bostedsadressens fra-dato.
         </HelpText>
-    </FlexBoxCenter>
+    </HStack>
 );
 
 const InnflyttingUtflytting: React.FC<Props> = ({ innflyttinger, utflyttinger }) => {
@@ -59,11 +52,14 @@ const InnflyttingUtflytting: React.FC<Props> = ({ innflyttinger, utflyttinger })
 const Innflytting: React.FC<{ innflyttinger: IInnflyttingTilNorge[] }> = ({ innflyttinger }) => {
     return (
         <SmallTable>
-            <KolonneTitler titler={['Innflyttet fra', headerForInnflyttingTabell, '', '']} />
+            <KolonneTitler
+                titler={['Innflyttet fra', headerForInnflyttingTabell]}
+                minimumbredde="12rem"
+            />
             <Table.Body>
                 {innflyttinger.map((innflytting, indeks) => {
                     return (
-                        <tr key={indeks}>
+                        <Table.Row key={indeks}>
                             <Table.DataCell>
                                 {innflytting.fraflyttingsland +
                                     (innflytting.fraflyttingssted
@@ -73,9 +69,7 @@ const Innflytting: React.FC<{ innflyttinger: IInnflyttingTilNorge[] }> = ({ innf
                             <Table.DataCell>
                                 {formaterNullableIsoÅr(innflytting.dato)}
                             </Table.DataCell>
-                            <Table.DataCell />
-                            <Table.DataCell />
-                        </tr>
+                        </Table.Row>
                     );
                 })}
             </Table.Body>
@@ -86,11 +80,11 @@ const Innflytting: React.FC<{ innflyttinger: IInnflyttingTilNorge[] }> = ({ innf
 const Utflytting: React.FC<{ utflyttinger: IUtflyttingFraNorge[] }> = ({ utflyttinger }) => {
     return (
         <SmallTable>
-            <KolonneTitler titler={['Utflyttet til', 'Utflyttingsdato', '', '']} />
+            <KolonneTitler titler={['Utflyttet til', 'Utflyttingsdato']} minimumbredde="12rem" />
             <Table.Body>
                 {utflyttinger.map((utflytting, indeks) => {
                     return (
-                        <tr key={indeks}>
+                        <Table.Row key={indeks}>
                             <Table.DataCell>
                                 {utflytting.tilflyttingsland +
                                     (utflytting.tilflyttingssted
@@ -100,9 +94,7 @@ const Utflytting: React.FC<{ utflyttinger: IUtflyttingFraNorge[] }> = ({ utflytt
                             <Table.DataCell>
                                 {formaterNullableIsoDato(utflytting.dato)}
                             </Table.DataCell>
-                            <Table.DataCell />
-                            <Table.DataCell />
-                        </tr>
+                        </Table.Row>
                     );
                 })}
             </Table.Body>

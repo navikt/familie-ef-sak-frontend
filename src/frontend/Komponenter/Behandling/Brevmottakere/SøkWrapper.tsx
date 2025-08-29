@@ -3,7 +3,7 @@ import { SøkPerson } from './SøkPerson';
 import { SøkOrganisasjon } from './SøkOrganisasjon';
 import { IBrevmottaker, IOrganisasjonMottaker } from './typer';
 import styled from 'styled-components';
-import { Ingress, Select } from '@navikt/ds-react';
+import { Ingress, Select, VStack } from '@navikt/ds-react';
 
 interface Props {
     valgtePersonMottakere: IBrevmottaker[];
@@ -12,18 +12,13 @@ interface Props {
     settValgteOrganisasjonMottakere: Dispatch<SetStateAction<IOrganisasjonMottaker[]>>;
 }
 
-enum ESøktype {
+enum Søktype {
     ORGANISASJON = 'ORGANISASJON',
     PERSON = 'PERSON',
 }
 
-const Underoverskrift = styled(Ingress)`
-    margin-bottom: 1rem;
-`;
-
 const SøkTypeSelect = styled(Select)`
     width: 200px;
-    margin-bottom: 1rem;
 `;
 
 export const SøkWrapper: FC<Props> = ({
@@ -32,33 +27,33 @@ export const SøkWrapper: FC<Props> = ({
     valgteOrganisasjonMottakere,
     settValgteOrganisasjonMottakere,
 }) => {
-    const [søktype, settSøktype] = useState<ESøktype>();
+    const [søktype, settSøktype] = useState<Søktype>();
 
     return (
-        <>
-            <Underoverskrift>Manuelt søk</Underoverskrift>
+        <VStack gap="4">
+            <Ingress>Manuelt søk</Ingress>
             <SøkTypeSelect
                 label={'Manuelt søk'}
                 hideLabel
                 value={søktype}
-                onChange={(e) => settSøktype(e.target.value as ESøktype)}
+                onChange={(e) => settSøktype(e.target.value as Søktype)}
             >
                 <option>Velg</option>
-                <option value={ESøktype.ORGANISASJON}>Organisasjon</option>
-                <option value={ESøktype.PERSON}>Person</option>
+                <option value={Søktype.ORGANISASJON}>Organisasjon</option>
+                <option value={Søktype.PERSON}>Person</option>
             </SøkTypeSelect>
-            {søktype === ESøktype.ORGANISASJON && (
+            {søktype === Søktype.ORGANISASJON && (
                 <SøkOrganisasjon
                     valgteMottakere={valgteOrganisasjonMottakere}
                     settValgteMottakere={settValgteOrganisasjonMottakere}
                 />
             )}
-            {søktype === ESøktype.PERSON && (
+            {søktype === Søktype.PERSON && (
                 <SøkPerson
                     valgtePersonMottakere={valgtePersonMottakere}
                     settValgteMottakere={settValgtePersonMottakere}
                 />
             )}
-        </>
+        </VStack>
     );
 };

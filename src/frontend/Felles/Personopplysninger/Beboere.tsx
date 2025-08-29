@@ -1,16 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { IPersonFraSøk, ISøkeresultatPerson } from '../../App/typer/personopplysninger';
+import { ISøkeresultatPerson } from '../../App/typer/personopplysninger';
 import { useApp } from '../../App/context/AppContext';
 import { byggTomRessurs, Ressurs, RessursFeilet, RessursStatus } from '../../App/typer/ressurs';
 import DataViewer from '../DataViewer/DataViewer';
 import SystemetLaster from '../SystemetLaster/SystemetLaster';
-import { Table } from '@navikt/ds-react';
-import { styled } from 'styled-components';
-import { nullableDatoTilAlder } from '../../App/utils/dato';
+import { BodyShort, Table } from '@navikt/ds-react';
 
-const StyledDataCell = styled(Table.DataCell)<{ person: IPersonFraSøk }>`
-    font-weight: ${(props) => (props.person.erSøker || props.person.erBarn ? 'bold' : 'normal')};
-`;
+import { nullableDatoTilAlder } from '../../App/utils/dato';
 
 const Beboere: React.FC<{
     fagsakPersonId: string;
@@ -57,11 +53,19 @@ const Beboere: React.FC<{
                             </Table.Header>
                             <Table.Body>
                                 {søkResultat.personer.map((beboer) => {
+                                    const vektHvisBarnEllerSøker =
+                                        beboer.erSøker || beboer.erBarn ? 'semibold' : 'regular';
+
                                     return (
                                         <Table.Row key={beboer.personIdent}>
-                                            <StyledDataCell person={beboer} textSize={'small'}>
-                                                {`${beboer.visningsnavn} ${beboer.fødselsdato ? `(${nullableDatoTilAlder(beboer.fødselsdato)})` : ''}`}
-                                            </StyledDataCell>
+                                            <Table.DataCell textSize={'small'}>
+                                                <BodyShort
+                                                    weight={vektHvisBarnEllerSøker}
+                                                    size={'small'}
+                                                >
+                                                    {`${beboer.visningsnavn} ${beboer.fødselsdato ? `(${nullableDatoTilAlder(beboer.fødselsdato)})` : ''}`}
+                                                </BodyShort>
+                                            </Table.DataCell>
                                             <Table.DataCell textSize={'small'}>
                                                 {beboer.personIdent}
                                             </Table.DataCell>

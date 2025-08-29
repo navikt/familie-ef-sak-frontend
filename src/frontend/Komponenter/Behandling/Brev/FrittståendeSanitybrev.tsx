@@ -131,6 +131,7 @@ export const FrittståendeSanitybrev: React.FC<Props> = ({
                                     personopplysninger={personopplysninger}
                                     settBrevOppdatert={(laster) => settLaster(!laster)}
                                     brevverdier={brevverdier}
+                                    brevmottakere={brevmottakere}
                                 />
                                 <Knapp
                                     disabled={

@@ -10,7 +10,7 @@ import {
 } from '../../../App/typer/ressurs';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { AxiosRequestConfig } from 'axios';
-import Brevmottakere from './Brevmottakere';
+import { Brevmottakere } from './Brevmottakere';
 import { mottakereEllerBruker } from './brevmottakerUtils';
 
 export const BrevmottakereFrittståendeBrev: FC<{
