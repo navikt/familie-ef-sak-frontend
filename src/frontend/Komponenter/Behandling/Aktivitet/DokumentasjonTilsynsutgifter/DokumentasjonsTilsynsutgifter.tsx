@@ -7,13 +7,7 @@ import DokumentasjonSendtInn from '../../Inngangsvilkår/DokumentasjonSendtInn';
 import { AlertError } from '../../../../Felles/Visningskomponenter/Alerts';
 import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';
 import { VilkårpanelInnhold } from '../../Vilkårpanel/VilkårpanelInnhold';
-import styled from 'styled-components';
-
-const VilkårWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-`;
+import { VStack } from '@navikt/ds-react';
 
 export const DokumentasjonsTilsynsutgifter: React.FC<VilkårProps> = ({
     vurderinger,
@@ -45,7 +39,7 @@ export const DokumentasjonsTilsynsutgifter: React.FC<VilkårProps> = ({
             <VilkårpanelInnhold>
                 {{
                     venstre: (
-                        <VilkårWrapper>
+                        <VStack gap="6">
                             {grunnlag.barnMedSamvær.map((barn, index) => {
                                 const erSisteBarn = index === grunnlag.barnMedSamvær.length - 1;
                                 return (
@@ -73,7 +67,7 @@ export const DokumentasjonsTilsynsutgifter: React.FC<VilkårProps> = ({
                                     </React.Fragment>
                                 );
                             })}
-                        </VilkårWrapper>
+                        </VStack>
                     ),
                     høyre: (
                         <VisEllerEndreVurdering

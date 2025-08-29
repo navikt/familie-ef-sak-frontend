@@ -6,20 +6,13 @@ import {
 import { formaterTilIsoDatoFraTilStreng } from '../../../../App/utils/formatter';
 import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
-import styled from 'styled-components';
-import { Label } from '@navikt/ds-react';
-
-const PassordningWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-`;
+import { Label, VStack } from '@navikt/ds-react';
 
 const Barnepassordning: FC<{
     barnepassordning: BarnepassordningDto;
 }> = ({ barnepassordning }) => {
     return (
-        <PassordningWrapper>
+        <VStack gap="2">
             <Informasjonsrad
                 ikon={VilkårInfoIkon.SØKNAD}
                 label="Barnepassordning"
@@ -45,7 +38,7 @@ const Barnepassordning: FC<{
                 verdi={barnepassordning.beløp + ',-'}
                 boldLabel={false}
             />
-        </PassordningWrapper>
+        </VStack>
     );
 };
 
