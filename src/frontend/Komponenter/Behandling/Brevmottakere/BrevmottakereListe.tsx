@@ -4,7 +4,6 @@ import { IBrevmottaker, IOrganisasjonMottaker } from './typer';
 import { KopierbartNullableFødselsnummer } from '../../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
 import { BodyShort, Ingress } from '@navikt/ds-react';
 import FjernKnapp from '../../../Felles/Knapper/FjernKnapp';
-import { visMottakerRolleVergeFullmektigHvisVerge } from './brevmottakerUtils';
 
 interface Props {
     valgtePersonMottakere: IBrevmottaker[];
@@ -54,7 +53,7 @@ export const BrevmottakereListe: FC<Props> = ({
                 <StyledMottakerBoks key={mottaker.navn + index}>
                     <Flexboks>
                         <BodyShort>
-                            {`${mottaker.navn} (${visMottakerRolleVergeFullmektigHvisVerge(mottaker.mottakerRolle).toLowerCase()})`}
+                            {`${mottaker.navn} (${mottaker.mottakerRolle.toLowerCase()})`}
                             <KopierbartNullableFødselsnummer fødselsnummer={mottaker.personIdent} />
                         </BodyShort>
                     </Flexboks>

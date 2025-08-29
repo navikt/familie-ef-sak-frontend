@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { AlertInfo, AlertWarning } from '../../../Felles/Visningskomponenter/Alerts';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
-import { BodyShort, Button, Link } from '@navikt/ds-react';
+import { Alert, BodyShort, Button, Link } from '@navikt/ds-react';
 import { ExternalLinkIcon } from '@navikt/aksel-icons';
 import { useHentHistoriskPensjon } from '../../../App/hooks/useHentHistoriskPensjon';
 import { HistoriskPensjonStatus } from '../../../App/typer/historiskpensjon';
@@ -36,10 +36,16 @@ const Historiskpensjon: React.FC<{ fagsakPersonId: string }> = ({ fagsakPersonId
                 switch (historiskPensjon.historiskPensjonStatus) {
                     case HistoriskPensjonStatus.UKJENT:
                         return (
-                            <StyledInfoStripe>
+                            <Alert
+                                variant="info"
+                                size="small"
+                                style={{
+                                    maxWidth: 'max-content',
+                                }}
+                            >
                                 Det er usikkert om bruker har fått stønad før desember 2008. Sjekk
                                 dette manuelt i Historisk Pensjon (egen lenke i menyen)
-                            </StyledInfoStripe>
+                            </Alert>
                         );
                     case HistoriskPensjonStatus.HAR_HISTORIKK:
                         return (

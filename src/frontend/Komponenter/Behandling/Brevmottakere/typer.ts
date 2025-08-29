@@ -12,7 +12,7 @@ export interface IBrevmottakere {
 export interface IOrganisasjonMottaker {
     organisasjonsnummer: string;
     navnHosOrganisasjon: string;
-    mottakerRolle: EBrevmottakerRolle.VERGE;
+    mottakerRolle: EBrevmottakerRolle.FULLMEKTIG;
 }
 
 export enum EBrevmottakerRolle {

@@ -13,7 +13,7 @@ import {
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { AxiosRequestConfig } from 'axios';
 import { useBehandling } from '../../../App/context/BehandlingContext';
-import Brevmottakere from './Brevmottakere';
+import { Brevmottakere } from './Brevmottakere';
 import { ModalState } from '../Modal/NyEierModal';
 
 export const BrevmottakereForBehandling: FC<{
