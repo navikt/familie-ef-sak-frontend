@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import styled from 'styled-components';
 import { SamværskalkulatorSide } from './SamværskalkulatorSide';
 import { InntektskalkulatorSide } from './InntektskalkulatorSide';
+import { BeregningsskjemaSide } from './BeregningsskjemaSide/BeregningsskjemaSide';
 
 const Container = styled.div`
     margin: 1rem;
@@ -14,6 +15,7 @@ export const VerktøySide: React.FC = () => {
             <Routes>
                 <Route path="samvaerskalkulator/*" element={<SamværskalkulatorSide />} />
                 <Route path="inntektskalkulator/*" element={<InntektskalkulatorSide />} />
+                <Route path="beregningsskjema/*" element={<BeregningsskjemaSide />} />
             </Routes>
         </Container>
     );
