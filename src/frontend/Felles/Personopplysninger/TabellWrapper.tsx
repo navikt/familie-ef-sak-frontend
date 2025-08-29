@@ -13,9 +13,14 @@ type Kolonnetittel = string | React.ReactNode;
 export const KolonneTitler: React.FC<{
     titler: Kolonnetittel[];
     skalHaMinimumBreddePåKolonne?: boolean;
-}> = ({ titler, skalHaMinimumBreddePåKolonne = false }) => {
+    minimumbredde?: string;
+}> = ({ titler, skalHaMinimumBreddePåKolonne = false, minimumbredde = undefined }) => {
     const minimumBreddePåDatoStyle = (tittel: Kolonnetittel) => {
-        return tittel === 'Dato' && skalHaMinimumBreddePåKolonne ? { minWidth: '10rem' } : {};
+        if (minimumbredde !== undefined) {
+            return { minWidth: minimumbredde };
+        } else {
+            return tittel === 'Dato' && skalHaMinimumBreddePåKolonne ? { minWidth: '10rem' } : {};
+        }
     };
 
     return (
