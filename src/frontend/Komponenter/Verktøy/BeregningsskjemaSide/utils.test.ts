@@ -158,3 +158,63 @@ test('skal returne gjennomsnittlig avvik', () => {
     expect(gjennomsnittligAvvik).toBe(AvvikEnum.NEI);
     expect(gjennomsnittligAvvik2).toBe(AvvikEnum.OPP);
 });
+
+test('skal returne korrekt ny beregning', () => {
+    const førsteBeregning = beregning[0];
+    const nyBeregning = regnUtNyBeregning(førsteBeregning);
+
+    const andreBeregning = beregning[1];
+    const nyBeregning2 = regnUtNyBeregning(andreBeregning);
+
+    expect(nyBeregning).toBe(14_245);
+    expect(nyBeregning2).toBe(9_745);
+});
+
+// Excel utrekning:
+// =IF(NOT(I20="");IF(NOT(R20="");
+// MAX(ROUND(IF(AND(H20<2017;$BP$2=2);
+// E20*$BO$3;IF(OR(H20>2016;$BP$2=3);
+// E20*$BO$4;0))/12;0)-IF(NOT(R20="");
+// IF(R20>E20/2;ROUND(((R20-(E20/2))/12)*(IF(AND(H20<2017;$BP$2=2);
+// $BN$3;IF(OR(H20>2016;$BP$2=3);$BN$4;0))/100);0);0);0);0);"");"")
+
+function regnUtNyBeregning(beregning: Beregning): number {
+    const { måned, årstall: år } = beregning.periode;
+    const årslønn = beregning.årslønn;
+    const årstall = parseInt(år);
+
+    const grunnbeløp: number = 130160 /* TODO: bruke api - Grunnbeløp for 2025 */,
+        BP2: number = 3,
+        BO3 = 3,
+        BO4 = 2.25,
+        BN3 = 40,
+        BN4 = 45;
+
+    if (måned === '') return 0;
+    if (årslønn === 0) return 0;
+
+    let basis = 0;
+    if (årstall < 2017 && BP2 === 2) {
+        basis = grunnbeløp * BO3;
+    } else if (årstall > 2016 && BP2 === 3) {
+        basis = grunnbeløp * BO4;
+    }
+
+    const baseMåntlig = Math.round(basis / 12);
+
+    let redusert = 0;
+    if (årslønn !== 0) {
+        if (årslønn > grunnbeløp / 2) {
+            let reduseringsrate = 0;
+            if (årstall < 2017 && BP2 === 2) {
+                reduseringsrate = BN3;
+            } else if (årstall > 2016 && BP2 === 3) {
+                reduseringsrate = BN4;
+            }
+
+            redusert = Math.round(((årslønn - grunnbeløp / 2) / 12) * (reduseringsrate / 100));
+        }
+    }
+
+    return Math.max(baseMåntlig - redusert);
+}
