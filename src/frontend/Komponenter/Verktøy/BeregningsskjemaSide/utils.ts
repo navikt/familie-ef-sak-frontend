@@ -1,8 +1,20 @@
+import { formaterStrengMedStorForbokstav } from '../../../App/utils/formatter';
 import { AvvikEnum, Beregning, Periode, Beregninger } from './typer';
 
-export const finnTiProsentAvvik = (beregning: Beregning): AvvikEnum => {
-    const GRUNNBELØP = 130160; // Grunnbeløp for 2025
+export const finnGjennomsnittligAvvik = (beregninger: Beregning[]): AvvikEnum => {
+    const årslønn = regnUtGjennomsnittÅrslønn(beregninger);
+    const redusertEtter = regnUtGjennomsnittligRedusertEtter(beregninger);
+
+    return utledAvvikEnum(årslønn, redusertEtter);
+};
+
+export const finnAvvik = (beregning: Beregning): AvvikEnum => {
     const { årslønn, redusertEtter } = beregning;
+    return utledAvvikEnum(årslønn, redusertEtter);
+};
+
+const utledAvvikEnum = (årslønn: number, redusertEtter: number): AvvikEnum => {
+    const GRUNNBELØP = 130160; // Grunnbeløp for 2025
 
     if (årslønn < redusertEtter && årslønn < redusertEtter * 0.9) {
         return AvvikEnum.NED;
@@ -68,23 +80,8 @@ export const lagBeregninger = (periode: Periode) => {
         return [];
     }
 
-    const mapMåned: { [key: string]: number } = {
-        januar: 1,
-        februar: 2,
-        mars: 3,
-        april: 4,
-        mai: 5,
-        juni: 6,
-        juli: 7,
-        august: 8,
-        september: 9,
-        oktober: 10,
-        november: 11,
-        desember: 12,
-    };
-
-    const fraMåned = mapMåned[periode.fra.måned.toLowerCase()] || 1;
-    const tilMåned = mapMåned[periode.til.måned.toLowerCase()] || 12;
+    const fraMåned = parseInt(periode.fra.måned);
+    const tilMåned = parseInt(periode.til.måned);
 
     const fraÅr = parseInt(periode.fra.årstall);
     const tilÅr = parseInt(periode.til.årstall);
@@ -97,11 +94,8 @@ export const lagBeregninger = (periode: Periode) => {
         const årstall = fraÅr + Math.floor((fraMåned - 1 + i) / 12);
         const månedNummer = ((fraMåned - 1 + i) % 12) + 1;
 
-        const månedNavn =
-            Object.keys(mapMåned).find((key) => mapMåned[key] === månedNummer) || 'MÅNED';
-
         nyeBeregninger.push({
-            periode: { årstall: årstall.toString(), måned: månedNavn },
+            periode: { årstall: årstall.toString(), måned: månedNummer.toString() },
             arbeidsgivere: [{ navn: `Arbeidsgiver ${i + 1}`, verdi: 0 }],
             årslønn: 0,
             redusertEtter: 0,
@@ -111,4 +105,33 @@ export const lagBeregninger = (periode: Periode) => {
     }
 
     return nyeBeregninger;
+};
+
+export const mapMånedTallTilNavn = (månedTall: number | string): string => {
+    const måned = typeof månedTall === 'string' ? parseInt(månedTall) : månedTall;
+
+    const date = new Date();
+    date.setMonth(måned - 1);
+
+    return formaterStrengMedStorForbokstav(
+        date.toLocaleString('no-NO', {
+            month: 'long',
+        })
+    );
+};
+
+export const regnUtGjennomsnittÅrslønn = (beregninger: Beregning[]) =>
+    regnUtGjennomsnitt(beregninger, (b) => b.årslønn);
+
+export const regnUtGjennomsnittligRedusertEtter = (beregninger: Beregning[]) =>
+    regnUtGjennomsnitt(beregninger, (b) => b.redusertEtter);
+
+const regnUtGjennomsnitt = <Beregning>(
+    beregninger: Beregning[],
+    selector: (property: Beregning) => number
+): number => {
+    if (beregninger.length === 0) return 0;
+
+    const sum = beregninger.reduce((acc, property) => acc + selector(property), 0);
+    return sum / beregninger.length;
 };

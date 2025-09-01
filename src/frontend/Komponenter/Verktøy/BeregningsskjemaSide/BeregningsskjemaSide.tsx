@@ -2,15 +2,19 @@ import { Button, Heading, HStack, Table, Tag, TextField, VStack } from '@navikt/
 import React, { useState } from 'react';
 import DatePickerMedTittel from './DatePickerMedTittel';
 import { PlusIcon } from '@navikt/aksel-icons';
+import { formaterTallMedTusenSkille } from '../../../App/utils/formatter';
 import {
-    formaterStrengMedStorForbokstav,
-    formaterTallMedTusenSkille,
-} from '../../../App/utils/formatter';
-import { finnTiProsentAvvik, lagBeregninger, oppdaterBeregnetfra, oppdaterÅrslønn } from './utils';
+    finnAvvik,
+    lagBeregninger,
+    mapMånedTallTilNavn,
+    oppdaterBeregnetfra,
+    oppdaterÅrslønn,
+} from './utils';
 import { KopierNedKnapp } from './KopierNedKnapp';
 import { Periode, Beregninger, AvvikEnum, Beregning } from './typer';
 import { useToggles } from '../../../App/context/TogglesContext';
 import { ToggleName } from '../../../App/context/toggles';
+import TabellGjennomsnitt from './TabellGjennomsnitt';
 
 const tomPeriode: Periode = {
     fra: {
@@ -71,7 +75,7 @@ export const BeregningsskjemaSide: React.FC = () => {
 
             const oppdatertAvvik: Beregning[] = oppdatert.map((beregning) => ({
                 ...beregning,
-                avvik: finnTiProsentAvvik(beregning),
+                avvik: finnAvvik(beregning),
             }));
 
             const oppdatertBeregnetFra = oppdaterBeregnetfra(oppdatertAvvik);
@@ -88,7 +92,7 @@ export const BeregningsskjemaSide: React.FC = () => {
 
             const oppdatertAvvik: Beregning[] = oppdatertRedusertEtter.map((beregning) => ({
                 ...beregning,
-                avvik: finnTiProsentAvvik(beregning),
+                avvik: finnAvvik(beregning),
             }));
 
             const oppdatertBeregnetFra = oppdaterBeregnetfra(oppdatertAvvik);
@@ -124,7 +128,7 @@ export const BeregningsskjemaSide: React.FC = () => {
 
             const oppdatertAvvik: Beregning[] = oppdatertRedusertEtter.map((beregning) => ({
                 ...beregning,
-                avvik: finnTiProsentAvvik(beregning),
+                avvik: finnAvvik(beregning),
             }));
 
             const oppdatertBeregnetFra: Beregning[] = oppdaterBeregnetfra(oppdatertAvvik);
@@ -143,13 +147,15 @@ export const BeregningsskjemaSide: React.FC = () => {
 
     return (
         <VStack gap="8">
-            <HStack gap={'8'}>
+            <HStack gap={'space-128'}>
                 <DatePickerMedTittel
                     tittel="Periode"
                     periode={periode}
                     settPeriode={settPeriode}
                     lagBeregninger={handleLagBeregninger}
                 />
+
+                <TabellGjennomsnitt periode={periode} beregninger={beregninger} />
             </HStack>
 
             {beregninger.length > 0 && (
@@ -191,7 +197,7 @@ export const BeregningsskjemaSide: React.FC = () => {
                                 }}
                             >
                                 <Table.DataCell>
-                                    {`${formaterStrengMedStorForbokstav(
+                                    {`${mapMånedTallTilNavn(
                                         beregning.periode.måned
                                     )} ${beregning.periode.årstall}`}
                                     {beregning.beregnetfra && ' - Beregnet fra'}
@@ -234,7 +240,7 @@ export const BeregningsskjemaSide: React.FC = () => {
                                     </HStack>
                                 </Table.DataCell>
                                 <Table.DataCell>
-                                    {utledAvvikTag(finnTiProsentAvvik(beregning))}
+                                    {utledAvvikTag(finnAvvik(beregning))}
                                 </Table.DataCell>
                             </Table.Row>
                         ))}

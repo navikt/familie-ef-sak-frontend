@@ -13,12 +13,12 @@ const DatePickerMedTittel: React.FC<{
             if (range?.from && settPeriode) {
                 const fra = {
                     årstall: range.from.getFullYear().toString(),
-                    måned: range.from.toLocaleDateString('no-NO', { month: 'long' }),
+                    måned: (range.from.getMonth() + 1).toString(),
                 };
 
                 const til = {
                     årstall: range.to?.getFullYear().toString() || '',
-                    måned: range.to?.toLocaleDateString('no-NO', { month: 'long' }) || '',
+                    måned: range.to ? (range.to.getMonth() + 1).toString() : '',
                 };
 
                 settPeriode({
