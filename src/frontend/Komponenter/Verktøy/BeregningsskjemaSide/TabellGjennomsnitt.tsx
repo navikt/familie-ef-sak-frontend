@@ -1,8 +1,8 @@
 import { Table } from '@navikt/ds-react';
 import React from 'react';
-import { formaterTallMedTusenSkille } from '../../../App/utils/formatter';
-import { regnUtGjennomsnittÅrslønn, finnGjennomsnittligAvvik } from './utils';
+import { regnUtGjennomsnittÅrslønn, finnGjennomsnittligAvvik, rundTilNærmesteTusen } from './utils';
 import { Periode, Beregning } from './typer';
+import { utledAvvikTag } from './BeregningsskjemaSide';
 
 const TabellGjennomsnitt: React.FC<{ periode: Periode; beregninger: Beregning[] }> = ({
     periode,
@@ -30,9 +30,11 @@ const TabellGjennomsnitt: React.FC<{ periode: Periode; beregninger: Beregning[] 
                             {`${prefixMedNull(periode.fra.måned)}.${periode.fra.årstall} - ${prefixMedNull(periode.til.måned)}.${periode.til.årstall}`}
                         </Table.DataCell>
                         <Table.DataCell>
-                            {formaterTallMedTusenSkille(regnUtGjennomsnittÅrslønn(beregninger))}
+                            {rundTilNærmesteTusen(regnUtGjennomsnittÅrslønn(beregninger))}
                         </Table.DataCell>
-                        <Table.DataCell>{finnGjennomsnittligAvvik(beregninger)}</Table.DataCell>
+                        <Table.DataCell>
+                            {utledAvvikTag(finnGjennomsnittligAvvik(beregninger))}
+                        </Table.DataCell>
                     </Table.Row>
                 </Table.Body>
             </Table>

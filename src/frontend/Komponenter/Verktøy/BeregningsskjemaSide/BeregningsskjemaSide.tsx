@@ -34,21 +34,6 @@ export const BeregningsskjemaSide: React.FC = () => {
 
     const erTogglet = toggles[ToggleName.visBeregningsskjema] || false;
 
-    const utledAvvikTag = (avvik: AvvikEnum) => {
-        switch (avvik) {
-            case AvvikEnum.OPP:
-                return <Tag variant="error">{avvik}</Tag>;
-            case AvvikEnum.NED:
-                return <Tag variant="info">{avvik}</Tag>;
-            case AvvikEnum.UNDER_HALV_G:
-                return <Tag variant="alt2">{avvik}</Tag>;
-            case AvvikEnum.NEI:
-                return <Tag variant="neutral">{avvik}</Tag>;
-            default:
-                return <Tag variant="neutral">UKJENT</Tag>;
-        }
-    };
-
     const handleLagBeregninger = (periode: Periode) => {
         settBeregninger([]);
         const nyeBeregninger = lagBeregninger(periode);
@@ -315,4 +300,19 @@ const ArbeidsgivereRader: React.FC<{
             )}
         </>
     );
+};
+
+export const utledAvvikTag = (avvik: AvvikEnum) => {
+    switch (avvik) {
+        case AvvikEnum.OPP:
+            return <Tag variant="error">{avvik}</Tag>;
+        case AvvikEnum.NED:
+            return <Tag variant="info">{avvik}</Tag>;
+        case AvvikEnum.UNDER_HALV_G:
+            return <Tag variant="alt2">{avvik}</Tag>;
+        case AvvikEnum.NEI:
+            return <Tag variant="neutral">{avvik}</Tag>;
+        default:
+            return <Tag variant="neutral">UKJENT</Tag>;
+    }
 };

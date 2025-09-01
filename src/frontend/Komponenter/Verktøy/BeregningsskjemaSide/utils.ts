@@ -14,7 +14,7 @@ export const finnAvvik = (beregning: Beregning): AvvikEnum => {
 };
 
 const utledAvvikEnum = (årslønn: number, redusertEtter: number): AvvikEnum => {
-    const GRUNNBELØP = 130160; // Grunnbeløp for 2025
+    const GRUNNBELØP = 130160; // TODO: bruke api - Grunnbeløp for 2025
 
     if (årslønn < redusertEtter && årslønn < redusertEtter * 0.9) {
         return AvvikEnum.NED;
