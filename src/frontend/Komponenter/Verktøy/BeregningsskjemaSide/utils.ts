@@ -171,21 +171,20 @@ export const regnUtNyBeregning = (beregning: Beregning): number => {
         basis = GRUNNBELØP * TO_OG_EN_FJERDEDEL;
     }
 
-    const baseMåntlig = Math.round(basis / 12);
+    const månedligUtbetaling = Math.round(basis / 12);
 
-    let redusert = 0;
-    if (årslønn !== 0) {
-        if (årslønn > GRUNNBELØP / 2) {
-            let reduseringsrate = 0;
-            if (årstall < 2017) {
-                reduseringsrate = GAMMEL_ORDNING;
-            } else if (årstall > 2016) {
-                reduseringsrate = NY_ORDNING;
-            }
+    let månedligReduksjon = 0;
 
-            redusert = Math.round(((årslønn - GRUNNBELØP / 2) / 12) * (reduseringsrate / 100));
+    if (årslønn > GRUNNBELØP / 2) {
+        let reduseringsrate = 0;
+        if (årstall < 2017) {
+            reduseringsrate = GAMMEL_ORDNING;
+        } else if (årstall > 2016) {
+            reduseringsrate = NY_ORDNING;
         }
+
+        månedligReduksjon = Math.round(((årslønn - GRUNNBELØP / 2) / 12) * (reduseringsrate / 100));
     }
 
-    return baseMåntlig - redusert;
+    return månedligUtbetaling - månedligReduksjon;
 };
