@@ -17,6 +17,7 @@ import { useVerdierForBrev } from '../../../App/hooks/useVerdierForBrev';
 import { utledHtmlFelterPåStønadstype } from './BrevUtils';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { BrevvelgerContainer } from './BrevvelgerContainer';
+import { IBrevmottakere } from '../Brevmottakere/typer';
 
 export interface Props {
     oppdaterBrevRessurs: (brevRessurs: Ressurs<string>) => void;
@@ -24,6 +25,7 @@ export interface Props {
     settKanSendesTilBeslutter: (kanSendesTilBeslutter: boolean) => void;
     behandling: Behandling;
     vedtaksresultat?: EBehandlingResultat;
+    brevmottakere: IBrevmottakere | undefined;
 }
 
 const Brevmeny: React.FC<Props> = ({
@@ -32,6 +34,7 @@ const Brevmeny: React.FC<Props> = ({
     vedtaksresultat,
     personopplysninger,
     settKanSendesTilBeslutter,
+    brevmottakere,
 }) => {
     const { hentBeløpsperioder, beløpsperioder } = useHentBeløpsperioder(
         behandling.id,
@@ -88,6 +91,7 @@ const Brevmeny: React.FC<Props> = ({
                             )}
                             brevverdier={brevverdier}
                             settBrevOppdatert={settKanSendesTilBeslutter}
+                            brevmottakere={brevmottakere}
                         />
                     ) : null
                 }

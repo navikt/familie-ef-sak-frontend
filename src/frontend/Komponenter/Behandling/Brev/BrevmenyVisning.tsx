@@ -62,7 +62,7 @@ export type BrevmenyVisningProps = {
     oppdaterBrevRessurs: (brevRessurs: Ressurs<string>) => void;
     htmlFelter?: { [htmlfeltNavn: string]: string } | undefined | null;
     brevverdier: Brevverdier;
-    brevmottakere?: IBrevmottakere | undefined;
+    brevmottakere: IBrevmottakere | undefined;
 } & ({ fagsakId: string; behandlingId?: never } | { behandlingId: string; fagsakId?: never });
 
 const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
