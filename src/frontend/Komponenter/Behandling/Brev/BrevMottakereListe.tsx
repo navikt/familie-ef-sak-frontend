@@ -1,26 +1,6 @@
 import React from 'react';
 import { EBrevmottakerRolle, IBrevmottakere } from '../Brevmottakere/typer';
-import { Alert, BodyShort, Button, Label, Tooltip } from '@navikt/ds-react';
-import styled from 'styled-components';
-
-const Grid = styled.div`
-    display: flex;
-    gap: 2rem;
-`;
-
-const InfoHeader = styled.div`
-    display: flex;
-    gap: 1rem;
-`;
-
-const KompaktButton = styled(Button)`
-    padding: 0;
-    justify-content: right;
-
-    .navds-button__inner {
-        margin: 0;
-    }
-`;
+import { Alert, BodyShort, Button, HStack, Label, Tooltip } from '@navikt/ds-react';
 
 const BrevMottakereListe: React.FC<{
     mottakere: IBrevmottakere;
@@ -46,19 +26,20 @@ const BrevMottakereListe: React.FC<{
 
     return flereBrevmottakereErValgt || !brukerErBrevmottaker ? (
         <Alert variant={'info'} size="small">
-            <InfoHeader>
-                <Label>Brevmottakere:</Label>
+            <HStack gap="4">
+                <Label>Brevmottakere: </Label>
                 {kanEndreBrevmottakere && (
                     <Tooltip content={'Legg til verge eller fullmektige brevmottakere'}>
-                        <KompaktButton
+                        <Button
                             variant={'tertiary'}
                             onClick={() => settVisBrevmottakereModal(true)}
+                            style={{ padding: 0 }}
                         >
                             Legg til/endre brevmottakere
-                        </KompaktButton>
+                        </Button>
                     </Tooltip>
                 )}
-            </InfoHeader>
+            </HStack>
             <ul>
                 {navn.map((navn, index) => (
                     <li key={navn + index}>
@@ -68,20 +49,21 @@ const BrevMottakereListe: React.FC<{
             </ul>
         </Alert>
     ) : (
-        <Grid>
-            <Label>Brevmottaker:</Label>
+        <HStack gap="4">
+            <Label>Brevmottaker: </Label>
             <BodyShort>{navn.map((navn) => navn)}</BodyShort>
             {kanEndreBrevmottakere && (
                 <Tooltip content={'Legg til verge eller fullmektige brevmottakere'}>
-                    <KompaktButton
+                    <Button
                         variant={'tertiary'}
                         onClick={() => settVisBrevmottakereModal(true)}
+                        style={{ padding: 0 }}
                     >
                         Legg til/endre brevmottakere
-                    </KompaktButton>
+                    </Button>
                 </Tooltip>
             )}
-        </Grid>
+        </HStack>
     );
 };
 
