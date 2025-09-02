@@ -47,6 +47,7 @@ const PersonSøk: React.FC = () => {
     const [fokuserSøkeresultat, settFokuserSøkeresultat] = useState<boolean>(false);
     const [personIdentUtenFagsak, settPersonIdentUtenFagsak] = useState<string>('');
     const [visModal, settVisModal] = useState<boolean>(false);
+    const [inputVerdi, settInputVerdi] = useState('');
 
     const nullstillResultat = (): void => {
         settResultat(byggTomRessurs());
@@ -62,6 +63,11 @@ const PersonSøk: React.FC = () => {
                     settFokuserSøkeresultat(false);
                 }
                 break;
+            case 'Enter':
+                if (isNPID(inputVerdi)) {
+                    return;
+                }
+                break;
             default:
                 break;
         }
@@ -73,6 +79,7 @@ const PersonSøk: React.FC = () => {
     };
 
     const opprettFagsakPersonOgNaviger = (personIdent: string) => {
+        alert('aaa');
         axiosRequest<string, { personIdent: string }>({
             method: 'POST',
             url: `/familie-ef-sak/api/fagsak-person`,
@@ -128,13 +135,24 @@ const PersonSøk: React.FC = () => {
     );
 
     const søk = (verdi: string): void => {
+        if (isNPID(verdi)) {
+            return;
+        }
         if (!verdi || resultat.status === RessursStatus.HENTER) return;
+        settInputVerdi(verdi);
         settResultat(byggHenterRessurs());
         if (erPositivtTall(verdi) && verdi.length !== 11) {
             søkPersonEksternFagsakId(verdi);
         } else {
             søkPerson(verdi);
         }
+    };
+
+    const isNPID = (pid: string) => {
+        if (pid.length !== 11) return false;
+        const month = parseInt(pid.substring(2, 4), 10);
+        if (month > 60 && month <= 72) return true;
+        return month > 20 && month <= 32;
     };
 
     return (
