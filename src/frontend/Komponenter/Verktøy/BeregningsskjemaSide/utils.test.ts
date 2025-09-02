@@ -7,6 +7,7 @@ import {
     regnUtGjennomsnittÅrslønn,
     finnGjennomsnittligAvvik,
     mapMånedTallTilNavn,
+    regnUtNyBeregning,
 } from './utils';
 import { Beregning, AvvikEnum } from './typer';
 
@@ -157,4 +158,19 @@ test('skal returne gjennomsnittlig avvik', () => {
 
     expect(gjennomsnittligAvvik).toBe(AvvikEnum.NEI);
     expect(gjennomsnittligAvvik2).toBe(AvvikEnum.OPP);
+});
+
+test('skal returne korrekt ny beregning', () => {
+    const førsteBeregning = beregning[0];
+    const nyBeregning = regnUtNyBeregning(førsteBeregning);
+
+    const andreBeregning = beregning[1];
+    const nyBeregning2 = regnUtNyBeregning(andreBeregning);
+
+    const tredjeBeregning = beregning[2];
+    const nyBeregning3 = regnUtNyBeregning(tredjeBeregning);
+
+    expect(nyBeregning).toBe(14_245);
+    expect(nyBeregning2).toBe(9_745);
+    expect(nyBeregning3).toBe(24_405);
 });
