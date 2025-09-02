@@ -1,22 +1,9 @@
 import { erFlettefeltFritektsfelt, finnFlettefeltNavnOgBeskrivelseFraRef } from './BrevUtils';
 import React from 'react';
 import { BrevStruktur, FlettefeltMedVerdi, Flettefeltreferanse } from './BrevTyper';
-import styled from 'styled-components';
-import { BodyShort, HelpText, Label, Textarea, TextField } from '@navikt/ds-react';
-
-const StyledInput = styled(({ ...props }) => (
-    <TextField label={props.label} autoComplete="off" {...props} />
-))`
-    padding-top: 0.5rem;
-`;
-
-const TekstMedHjelpetekstWrapper = styled.div`
-    display: flex;
-    gap: 1rem;
-`;
+import { BodyShort, HelpText, HStack, Label, Textarea, TextField } from '@navikt/ds-react';
 
 interface Props {
-    fetLabel: boolean;
     flettefelt: Flettefeltreferanse;
     dokument: BrevStruktur;
     flettefelter: FlettefeltMedVerdi[];
@@ -28,7 +15,6 @@ interface Props {
 }
 
 export const Flettefelt: React.FC<Props> = ({
-    fetLabel,
     flettefelt,
     dokument,
     flettefelter,
@@ -53,14 +39,13 @@ export const Flettefelt: React.FC<Props> = ({
         return flettefeltMedVerdi?.automatiskUtfylt ? (
             <div>
                 <Label>{flettefeltNavn}</Label>
-                <TekstMedHjelpetekstWrapper>
+                <HStack>
                     <BodyShort>{flettefeltMedVerdi.verdi}</BodyShort>
                     {flettefeltBeskrivelse && <HelpText>{flettefeltBeskrivelse}</HelpText>}
-                </TekstMedHjelpetekstWrapper>
+                </HStack>
             </div>
         ) : (
-            <StyledInput
-                fetLabel={fetLabel}
+            <TextField
                 description={flettefeltBeskrivelse}
                 label={flettefeltNavn}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {

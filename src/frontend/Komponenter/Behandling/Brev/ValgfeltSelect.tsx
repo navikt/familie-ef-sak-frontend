@@ -123,7 +123,6 @@ export const ValgfeltSelect: React.FC<Props> = ({
 
                                 return (
                                     <Flettefelt
-                                        fetLabel={false}
                                         flettefelt={flettefelt}
                                         dokument={dokument}
                                         flettefelter={flettefelter}
