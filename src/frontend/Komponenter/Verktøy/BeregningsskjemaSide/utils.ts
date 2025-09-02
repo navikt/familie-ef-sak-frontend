@@ -1,6 +1,8 @@
 import { formaterStrengMedStorForbokstav } from '../../../App/utils/formatter';
 import { AvvikEnum, Beregning, Periode, Beregninger } from './typer';
 
+const GRUNNBELØP: number = 130160; /* TODO: bruke api - Grunnbeløp for 2025 */
+
 export const finnGjennomsnittligAvvik = (beregninger: Beregning[]): AvvikEnum => {
     const årslønn = regnUtGjennomsnittÅrslønn(beregninger);
     const redusertEtter = regnUtGjennomsnittligRedusertEtter(beregninger);
@@ -136,46 +138,34 @@ const regnUtGjennomsnitt = <Beregning>(
     return sum / beregninger.length;
 };
 
-/**
- * Beregner ny månedlig beregning basert på årslønn, periode og grunnbeløp.
- *
- * Excel-utregning:
- * =IF(NOT(I20="");IF(NOT(R20="");
- * MAX(ROUND(IF(AND(H20<2017;$BP$2=2);
- * E20*$BO$3;IF(OR(H20>2016;$BP$2=3);
- * E20*$BO$4;0))/12;0)-IF(NOT(R20="");
- * IF(R20>E20/2;ROUND(((R20-(E20/2))/12)*(IF(AND(H20<2017;$BP$2=2);
- * $BN$3;IF(OR(H20>2016;$BP$2=3);$BN$4;0))/100);0);0);0);0);"");"")
- *
- * @param beregning - Beregning-objekt med periode og årslønn
- * @returns Ny månedlig beregning (number)
- */
 export const regnUtNyBeregning = (beregning: Beregning): number => {
     const { måned, årstall: år } = beregning.periode;
     const årstall = parseInt(år);
     const årslønn = beregning.årslønn;
 
-    const GRUNNBELØP: number = 130160 /* TODO: bruke api - Grunnbeløp for 2025 */,
-        TO = 2,
-        TO_OG_EN_FJERDEDEL = 2.25,
-        GAMMEL_ORDNING = 40,
-        NY_ORDNING = 45; // ny ordn. (etter 010414)
-
     if (måned === '') return 0;
     if (årslønn === 0) return 0;
 
-    let overgangsstønad = 0;
-    if (årstall < 2017) {
-        overgangsstønad = GRUNNBELØP * TO;
-    } else if (årstall > 2016) {
-        overgangsstønad = GRUNNBELØP * TO_OG_EN_FJERDEDEL;
-    }
+    const månedligUtbetaling = regnUtMånedligUtbetalingOvergangsstønad(årstall, GRUNNBELØP);
+    const månedligReduksjon = regnUtMånedligReduksjon(årstall, årslønn);
 
-    const månedligUtbetaling = Math.round(overgangsstønad / 12);
+    return månedligUtbetaling - månedligReduksjon;
+};
+
+/**
+ * Beregner månedlig reduksjon basert på årstall og verdi.
+ *
+ * @param årstall - Årstall for beregningen.
+ * @param verdi - Kan være enten årslønn eller redusertEtter, avhengig av sammenhengen.
+ * @returns Månedlig reduksjon (number).
+ */
+const regnUtMånedligReduksjon = (årstall: number, verdi: number): number => {
+    const GAMMEL_ORDNING = 40,
+        NY_ORDNING = 45; // ny ordn. (etter 010414)
 
     let månedligReduksjon = 0;
 
-    if (årslønn > GRUNNBELØP / 2) {
+    if (verdi > GRUNNBELØP / 2) {
         let reduseringsrate = 0;
         if (årstall < 2017) {
             reduseringsrate = GAMMEL_ORDNING;
@@ -183,8 +173,40 @@ export const regnUtNyBeregning = (beregning: Beregning): number => {
             reduseringsrate = NY_ORDNING;
         }
 
-        månedligReduksjon = Math.round(((årslønn - GRUNNBELØP / 2) / 12) * (reduseringsrate / 100));
+        månedligReduksjon = Math.round(((verdi - GRUNNBELØP / 2) / 12) * (reduseringsrate / 100));
     }
+
+    return månedligReduksjon;
+};
+
+export const regnUtMånedligUtbetalingOvergangsstønad = (
+    årstall: number,
+    grunnbeløp: number
+): number => {
+    const TO = 2,
+        TO_OG_EN_FJERDEDEL = 2.25;
+
+    let overgangsstønad = 0;
+    if (årstall < 2017) {
+        overgangsstønad = grunnbeløp * TO;
+    } else if (årstall > 2016) {
+        overgangsstønad = grunnbeløp * TO_OG_EN_FJERDEDEL;
+    }
+
+    const månedligUtbetaling = Math.round(overgangsstønad / 12);
+    return månedligUtbetaling;
+};
+
+export const regnUtHarMottatt = (beregning: Beregning): number => {
+    const { måned, årstall: år } = beregning.periode;
+    const årstall = parseInt(år);
+    const redusertEtter = beregning.redusertEtter;
+
+    if (måned === '') return 0;
+    if (redusertEtter === 0) return 0;
+
+    const månedligUtbetaling = regnUtMånedligUtbetalingOvergangsstønad(årstall, GRUNNBELØP);
+    const månedligReduksjon = regnUtMånedligReduksjon(årstall, redusertEtter);
 
     return månedligUtbetaling - månedligReduksjon;
 };
