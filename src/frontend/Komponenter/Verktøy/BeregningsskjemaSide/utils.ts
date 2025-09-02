@@ -164,14 +164,14 @@ export const regnUtNyBeregning = (beregning: Beregning): number => {
     if (måned === '') return 0;
     if (årslønn === 0) return 0;
 
-    let basis = 0;
+    let overgangsstønad = 0;
     if (årstall < 2017) {
-        basis = GRUNNBELØP * TO;
+        overgangsstønad = GRUNNBELØP * TO;
     } else if (årstall > 2016) {
-        basis = GRUNNBELØP * TO_OG_EN_FJERDEDEL;
+        overgangsstønad = GRUNNBELØP * TO_OG_EN_FJERDEDEL;
     }
 
-    const månedligUtbetaling = Math.round(basis / 12);
+    const månedligUtbetaling = Math.round(overgangsstønad / 12);
 
     let månedligReduksjon = 0;
 
