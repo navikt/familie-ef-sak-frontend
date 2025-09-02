@@ -166,8 +166,12 @@ test('skal returne korrekt ny beregning', () => {
     const andreBeregning = beregning[1];
     const nyBeregning2 = regnUtNyBeregning(andreBeregning);
 
+    const tredjeBeregning = beregning[2];
+    const nyBeregning3 = regnUtNyBeregning(tredjeBeregning);
+
     expect(nyBeregning).toBe(14_245);
     expect(nyBeregning2).toBe(9_745);
+    expect(nyBeregning3).toBe(24_405);
 });
 
 // Excel utrekning:
@@ -180,41 +184,40 @@ test('skal returne korrekt ny beregning', () => {
 
 function regnUtNyBeregning(beregning: Beregning): number {
     const { måned, årstall: år } = beregning.periode;
-    const årslønn = beregning.årslønn;
     const årstall = parseInt(år);
+    const årslønn = beregning.årslønn;
 
-    const grunnbeløp: number = 130160 /* TODO: bruke api - Grunnbeløp for 2025 */,
-        BP2: number = 3,
-        BO3 = 3,
-        BO4 = 2.25,
-        BN3 = 40,
-        BN4 = 45;
+    const GRUNNBELØP: number = 130160 /* TODO: bruke api - Grunnbeløp for 2025 */,
+        TO = 2,
+        TO_OG_EN_FJERDEDEL = 2.25,
+        gmlOrdn = 40,
+        nyOrdn = 45; // ny ordn. (etter 010414)
 
     if (måned === '') return 0;
     if (årslønn === 0) return 0;
 
     let basis = 0;
-    if (årstall < 2017 && BP2 === 2) {
-        basis = grunnbeløp * BO3;
-    } else if (årstall > 2016 && BP2 === 3) {
-        basis = grunnbeløp * BO4;
+    if (årstall < 2017) {
+        basis = GRUNNBELØP * TO;
+    } else if (årstall > 2016) {
+        basis = GRUNNBELØP * TO_OG_EN_FJERDEDEL;
     }
 
     const baseMåntlig = Math.round(basis / 12);
 
     let redusert = 0;
     if (årslønn !== 0) {
-        if (årslønn > grunnbeløp / 2) {
+        if (årslønn > GRUNNBELØP / 2) {
             let reduseringsrate = 0;
-            if (årstall < 2017 && BP2 === 2) {
-                reduseringsrate = BN3;
-            } else if (årstall > 2016 && BP2 === 3) {
-                reduseringsrate = BN4;
+            if (årstall < 2017) {
+                reduseringsrate = gmlOrdn;
+            } else if (årstall > 2016) {
+                reduseringsrate = nyOrdn;
             }
 
-            redusert = Math.round(((årslønn - grunnbeløp / 2) / 12) * (reduseringsrate / 100));
+            redusert = Math.round(((årslønn - GRUNNBELØP / 2) / 12) * (reduseringsrate / 100));
         }
     }
 
-    return Math.max(baseMåntlig - redusert);
+    return baseMåntlig - redusert;
 }
