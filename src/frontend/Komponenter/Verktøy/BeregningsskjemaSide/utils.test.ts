@@ -7,6 +7,7 @@ import {
     regnUtGjennomsnittÅrslønn,
     finnGjennomsnittligAvvik,
     mapMånedTallTilNavn,
+    regnUtNyBeregning,
 } from './utils';
 import { Beregning, AvvikEnum } from './typer';
 
@@ -173,51 +174,3 @@ test('skal returne korrekt ny beregning', () => {
     expect(nyBeregning2).toBe(9_745);
     expect(nyBeregning3).toBe(24_405);
 });
-
-// Excel utrekning:
-// =IF(NOT(I20="");IF(NOT(R20="");
-// MAX(ROUND(IF(AND(H20<2017;$BP$2=2);
-// E20*$BO$3;IF(OR(H20>2016;$BP$2=3);
-// E20*$BO$4;0))/12;0)-IF(NOT(R20="");
-// IF(R20>E20/2;ROUND(((R20-(E20/2))/12)*(IF(AND(H20<2017;$BP$2=2);
-// $BN$3;IF(OR(H20>2016;$BP$2=3);$BN$4;0))/100);0);0);0);0);"");"")
-
-function regnUtNyBeregning(beregning: Beregning): number {
-    const { måned, årstall: år } = beregning.periode;
-    const årstall = parseInt(år);
-    const årslønn = beregning.årslønn;
-
-    const GRUNNBELØP: number = 130160 /* TODO: bruke api - Grunnbeløp for 2025 */,
-        TO = 2,
-        TO_OG_EN_FJERDEDEL = 2.25,
-        gmlOrdn = 40,
-        nyOrdn = 45; // ny ordn. (etter 010414)
-
-    if (måned === '') return 0;
-    if (årslønn === 0) return 0;
-
-    let basis = 0;
-    if (årstall < 2017) {
-        basis = GRUNNBELØP * TO;
-    } else if (årstall > 2016) {
-        basis = GRUNNBELØP * TO_OG_EN_FJERDEDEL;
-    }
-
-    const baseMåntlig = Math.round(basis / 12);
-
-    let redusert = 0;
-    if (årslønn !== 0) {
-        if (årslønn > GRUNNBELØP / 2) {
-            let reduseringsrate = 0;
-            if (årstall < 2017) {
-                reduseringsrate = gmlOrdn;
-            } else if (årstall > 2016) {
-                reduseringsrate = nyOrdn;
-            }
-
-            redusert = Math.round(((årslønn - GRUNNBELØP / 2) / 12) * (reduseringsrate / 100));
-        }
-    }
-
-    return baseMåntlig - redusert;
-}
