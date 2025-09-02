@@ -9,6 +9,7 @@ import {
     mapMånedTallTilNavn,
     oppdaterBeregnetfra,
     oppdaterÅrslønn,
+    regnUtHarMottatt,
     regnUtNyBeregning,
 } from './utils';
 import { KopierNedKnapp } from './KopierNedKnapp';
@@ -171,6 +172,7 @@ export const BeregningsskjemaSide: React.FC = () => {
                             <Table.HeaderCell scope="col">Redusert etter</Table.HeaderCell>
                             <Table.HeaderCell scope="col">10% avvik i inntekt</Table.HeaderCell>
                             <Table.HeaderCell scope="col">Ny beregning</Table.HeaderCell>
+                            <Table.HeaderCell scope="col">Har mottatt</Table.HeaderCell>
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
@@ -231,6 +233,9 @@ export const BeregningsskjemaSide: React.FC = () => {
                                 </Table.DataCell>
                                 <Table.DataCell>
                                     {formaterTallMedTusenSkille(regnUtNyBeregning(beregning))}
+                                </Table.DataCell>
+                                <Table.DataCell>
+                                    {formaterTallMedTusenSkille(regnUtHarMottatt(beregning))}
                                 </Table.DataCell>
                             </Table.Row>
                         ))}

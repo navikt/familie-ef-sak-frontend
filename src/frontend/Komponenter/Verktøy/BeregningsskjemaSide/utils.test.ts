@@ -8,6 +8,8 @@ import {
     finnGjennomsnittligAvvik,
     mapMånedTallTilNavn,
     regnUtNyBeregning,
+    regnUtMånedligUtbetalingOvergangsstønad,
+    regnUtHarMottatt,
 } from './utils';
 import { Beregning, AvvikEnum } from './typer';
 
@@ -173,4 +175,21 @@ test('skal returne korrekt ny beregning', () => {
     expect(nyBeregning).toBe(14_245);
     expect(nyBeregning2).toBe(9_745);
     expect(nyBeregning3).toBe(24_405);
+});
+
+test('skal returne forventet månedlig overgangsstønad for 1. mai 2025', () => {
+    const grunnbeløp2025 = 130_160;
+    const månedligOvergangsstønad = regnUtMånedligUtbetalingOvergangsstønad(2025, grunnbeløp2025);
+    expect(månedligOvergangsstønad).toBe(24_405);
+});
+
+test('skal returnere forventet verdi av det som har blitt mottatt', () => {
+    const mottatt = regnUtHarMottatt(beregning[0]);
+    expect(mottatt).toBe(19_345);
+    const mottatt2 = regnUtHarMottatt(beregning[1]);
+    expect(mottatt2).toBe(11_095);
+    const mottatt3 = regnUtHarMottatt(beregning[2]);
+    expect(mottatt3).toBe(19_345);
+    const mottatt5 = regnUtHarMottatt(beregning[4]);
+    expect(mottatt5).toBe(24_405);
 });
