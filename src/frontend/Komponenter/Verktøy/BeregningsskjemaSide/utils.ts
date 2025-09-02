@@ -158,8 +158,8 @@ export const regnUtNyBeregning = (beregning: Beregning): number => {
     const GRUNNBELØP: number = 130160 /* TODO: bruke api - Grunnbeløp for 2025 */,
         TO = 2,
         TO_OG_EN_FJERDEDEL = 2.25,
-        gmlOrdn = 40,
-        nyOrdn = 45; // ny ordn. (etter 010414)
+        GAMMEL_ORDNING = 40,
+        NY_ORDNING = 45; // ny ordn. (etter 010414)
 
     if (måned === '') return 0;
     if (årslønn === 0) return 0;
@@ -178,9 +178,9 @@ export const regnUtNyBeregning = (beregning: Beregning): number => {
         if (årslønn > GRUNNBELØP / 2) {
             let reduseringsrate = 0;
             if (årstall < 2017) {
-                reduseringsrate = gmlOrdn;
+                reduseringsrate = GAMMEL_ORDNING;
             } else if (årstall > 2016) {
-                reduseringsrate = nyOrdn;
+                reduseringsrate = NY_ORDNING;
             }
 
             redusert = Math.round(((årslønn - GRUNNBELØP / 2) / 12) * (reduseringsrate / 100));
