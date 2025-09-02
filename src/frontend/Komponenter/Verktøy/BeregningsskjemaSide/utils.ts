@@ -152,13 +152,6 @@ export const regnUtNyBeregning = (beregning: Beregning): number => {
     return månedligUtbetaling - månedligReduksjon;
 };
 
-/**
- * Beregner månedlig reduksjon basert på årstall og verdi.
- *
- * @param årstall - Årstall for beregningen.
- * @param verdi - Kan være enten årslønn eller redusertEtter, avhengig av sammenhengen.
- * @returns Månedlig reduksjon (number).
- */
 const regnUtMånedligReduksjon = (årstall: number, verdi: number): number => {
     const GAMMEL_ORDNING = 40,
         NY_ORDNING = 45; // ny ordn. (etter 010414)
