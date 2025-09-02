@@ -229,7 +229,9 @@ export const BeregningsskjemaSide: React.FC = () => {
                                 <Table.DataCell>
                                     {utledAvvikTag(finnAvvik(beregning))}
                                 </Table.DataCell>
-                                <Table.DataCell>{regnUtNyBeregning(beregning)}</Table.DataCell>
+                                <Table.DataCell>
+                                    {formaterTallMedTusenSkille(regnUtNyBeregning(beregning))}
+                                </Table.DataCell>
                             </Table.Row>
                         ))}
                     </Table.Body>
