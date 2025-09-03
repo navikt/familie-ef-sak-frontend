@@ -132,6 +132,16 @@ export const lagInntektskalkulatorLenke = (): PopoverItem => {
     };
 };
 
+export const lagBeregningsskjemaLenke = (): PopoverItem => {
+    return {
+        name: 'Beregningsskjema',
+        type: LenkeType.ARBEIDSVERKTØY,
+        onSelect: () => {
+            window.open(`/verktoy/beregningsskjema`);
+        },
+    };
+};
+
 export const lagEksterneLenker = (
     axiosRequest: AxiosRequestCallback,
     appEnv: AppEnv,
@@ -156,7 +166,15 @@ export const lagInterneLenker = (
         lagÅpneEldreBehandlingerLenke(),
     ].filter((lenke) => lenke !== null);
 
-export const lagArbeidsverktøyLenker = (fagsakPersonId: string | undefined): PopoverItem[] => [
-    lagSamværskalkulatorLenke(fagsakPersonId),
-    lagInntektskalkulatorLenke(),
-];
+export const lagArbeidsverktøyLenker = (
+    fagsakPersonId: string | undefined,
+    skalViseBeregningsskjemaLenke: boolean
+): PopoverItem[] => {
+    const lenker = [lagSamværskalkulatorLenke(fagsakPersonId), lagInntektskalkulatorLenke()];
+
+    if (skalViseBeregningsskjemaLenke) {
+        lenker.push(lagBeregningsskjemaLenke());
+    }
+
+    return lenker;
+};

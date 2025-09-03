@@ -175,7 +175,6 @@ export const BrevMenyDelmal: React.FC<Props> = ({
                                 )
                                 .map((flettefelt) => (
                                     <Flettefelt
-                                        fetLabel={true}
                                         flettefelt={flettefelt}
                                         dokument={dokument}
                                         flettefelter={flettefelter}
@@ -196,14 +195,16 @@ export const BrevMenyDelmal: React.FC<Props> = ({
                             </div>
                         )}
                         {overstyring.overstyrtDelmal?.skalOverstyre && (
-                            <>
-                                <HtmlEditor
-                                    defaultValue={overstyring.overstyrtDelmal.htmlInnhold}
-                                    onTextChange={(nyttInnhold) => {
-                                        oppdaterOverstyrtInnhold(delmal, nyttInnhold);
-                                    }}
-                                />
-                                <div style={{ marginTop: '2rem' }}>
+                            <VStack gap={'2'}>
+                                <div>
+                                    <HtmlEditor
+                                        defaultValue={overstyring.overstyrtDelmal.htmlInnhold}
+                                        onTextChange={(nyttInnhold) => {
+                                            oppdaterOverstyrtInnhold(delmal, nyttInnhold);
+                                        }}
+                                    />
+                                </div>
+                                <div>
                                     <Button
                                         onClick={() => overstyring.konverterTilDelmalblokk(delmal)}
                                         size={'small'}
@@ -213,7 +214,7 @@ export const BrevMenyDelmal: React.FC<Props> = ({
                                         Gjør om til brevbygger
                                     </Button>
                                 </div>
-                            </>
+                            </VStack>
                         )}
                     </VStack>
                 )}

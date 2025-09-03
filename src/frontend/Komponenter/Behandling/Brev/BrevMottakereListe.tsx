@@ -1,58 +1,19 @@
 import React from 'react';
 import { EBrevmottakerRolle, IBrevmottakere } from '../Brevmottakere/typer';
-import { Alert, BodyShort, Button, Label, Tooltip } from '@navikt/ds-react';
-import styled from 'styled-components';
-import { IOrganisasjon } from '../Brevmottakere/SøkOrganisasjon';
-import { visMottakerRolleVergeFullmektigHvisVerge } from '../Brevmottakere/brevmottakerUtils';
-
-const Grid = styled.div`
-    display: flex;
-    gap: 2rem;
-`;
-
-const InfoHeader = styled.div`
-    display: flex;
-    gap: 1rem;
-`;
-
-const KompaktButton = styled(Button)`
-    padding: 0;
-    justify-content: right;
-
-    .navds-button__inner {
-        margin: 0;
-    }
-`;
-
-const finnOrganisasjonsnavn = (
-    organisasjoner: IOrganisasjon[],
-    organisasjonsnummer: string
-): string => {
-    return (
-        organisasjoner.find(
-            (organisasjon) => organisasjon.organisasjonsnummer === organisasjonsnummer
-        )?.navn ?? organisasjonsnummer
-    );
-};
+import { Alert, BodyShort, Button, HStack, Label, Tooltip } from '@navikt/ds-react';
 
 const BrevMottakereListe: React.FC<{
     mottakere: IBrevmottakere;
     kanEndreBrevmottakere: boolean;
-    organisasjoner: IOrganisasjon[];
     settVisBrevmottakereModal: (verdi: boolean) => void;
-}> = ({ mottakere, kanEndreBrevmottakere, settVisBrevmottakereModal, organisasjoner }) => {
+}> = ({ mottakere, kanEndreBrevmottakere, settVisBrevmottakereModal }) => {
     const utledNavnPåMottakere = (brevMottakere: IBrevmottakere) => {
         return [
             ...brevMottakere.personer.map(
-                (person) =>
-                    `${person.navn} (${visMottakerRolleVergeFullmektigHvisVerge(person.mottakerRolle).toLowerCase()})`
+                (person) => `${person.navn} (${person.mottakerRolle.toLowerCase()})`
             ),
             ...brevMottakere.organisasjoner.map(
-                (org) =>
-                    `${org.navnHosOrganisasjon} - ${finnOrganisasjonsnavn(
-                        organisasjoner,
-                        org.organisasjonsnummer
-                    )} (${org.organisasjonsnummer})`
+                (org) => `${org.navnHosOrganisasjon} (org.nr.: ${org.organisasjonsnummer})`
             ),
         ];
     };
@@ -65,19 +26,20 @@ const BrevMottakereListe: React.FC<{
 
     return flereBrevmottakereErValgt || !brukerErBrevmottaker ? (
         <Alert variant={'info'} size="small">
-            <InfoHeader>
-                <Label>Brevmottakere:</Label>
+            <HStack gap="4">
+                <Label>Brevmottakere: </Label>
                 {kanEndreBrevmottakere && (
                     <Tooltip content={'Legg til verge eller fullmektige brevmottakere'}>
-                        <KompaktButton
+                        <Button
                             variant={'tertiary'}
                             onClick={() => settVisBrevmottakereModal(true)}
+                            style={{ padding: 0 }}
                         >
                             Legg til/endre brevmottakere
-                        </KompaktButton>
+                        </Button>
                     </Tooltip>
                 )}
-            </InfoHeader>
+            </HStack>
             <ul>
                 {navn.map((navn, index) => (
                     <li key={navn + index}>
@@ -87,20 +49,21 @@ const BrevMottakereListe: React.FC<{
             </ul>
         </Alert>
     ) : (
-        <Grid>
-            <Label>Brevmottaker:</Label>
+        <HStack gap="4">
+            <Label>Brevmottaker: </Label>
             <BodyShort>{navn.map((navn) => navn)}</BodyShort>
             {kanEndreBrevmottakere && (
                 <Tooltip content={'Legg til verge eller fullmektige brevmottakere'}>
-                    <KompaktButton
+                    <Button
                         variant={'tertiary'}
                         onClick={() => settVisBrevmottakereModal(true)}
+                        style={{ padding: 0 }}
                     >
                         Legg til/endre brevmottakere
-                    </KompaktButton>
+                    </Button>
                 </Tooltip>
             )}
-        </Grid>
+        </HStack>
     );
 };
 

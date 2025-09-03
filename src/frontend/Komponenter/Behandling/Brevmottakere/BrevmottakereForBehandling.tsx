@@ -1,40 +1,37 @@
-import React, { FC, useCallback, useEffect, useState } from 'react';
+import React, { Dispatch, FC, SetStateAction, useCallback, useEffect } from 'react';
 import { IPersonopplysninger } from '../../../App/typer/personopplysninger';
 import { useApp } from '../../../App/context/AppContext';
 import { IBrevmottakere } from './typer';
 import {
     byggSuksessRessurs,
-    byggTomRessurs,
     Ressurs,
     RessursFeilet,
     RessursStatus,
     RessursSuksess,
 } from '../../../App/typer/ressurs';
-import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { AxiosRequestConfig } from 'axios';
 import { useBehandling } from '../../../App/context/BehandlingContext';
-import Brevmottakere from './Brevmottakere';
+import { Brevmottakere } from './Brevmottakere';
 import { ModalState } from '../Modal/NyEierModal';
 
 export const BrevmottakereForBehandling: FC<{
     behandlingId: string;
     personopplysninger: IPersonopplysninger;
-}> = ({ personopplysninger, behandlingId }) => {
+    brevmottakere: IBrevmottakere | undefined;
+    settBrevMottakere: Dispatch<SetStateAction<Ressurs<IBrevmottakere | undefined>>>;
+}> = ({ personopplysninger, behandlingId, brevmottakere, settBrevMottakere }) => {
     const { axiosRequest } = useApp();
     const { hentAnsvarligSaksbehandler, behandlingErRedigerbar, settNyEierModalState } =
         useBehandling();
 
-    const [mottakere, settMottakere] =
-        useState<Ressurs<IBrevmottakere | undefined>>(byggTomRessurs());
-
-    const settBrevmottakere = (brevmottakere: IBrevmottakere) =>
+    const oppdaterBrevmottakere = (brevmottakere: IBrevmottakere) =>
         axiosRequest<string, IBrevmottakere>({
             url: `familie-ef-sak/api/brevmottakere/${behandlingId}`,
             method: 'POST',
             data: brevmottakere,
         }).then((res: RessursSuksess<string> | RessursFeilet) => {
             if (res.status === RessursStatus.SUKSESS) {
-                settMottakere(byggSuksessRessurs(brevmottakere));
+                settBrevMottakere(byggSuksessRessurs(brevmottakere));
             } else {
                 settNyEierModalState(ModalState.LUKKET);
                 hentAnsvarligSaksbehandler.rerun();
@@ -49,26 +46,22 @@ export const BrevmottakereForBehandling: FC<{
         };
         return axiosRequest<IBrevmottakere | undefined, null>(behandlingConfig).then(
             (res: RessursSuksess<IBrevmottakere | undefined> | RessursFeilet) => {
-                settMottakere(res);
+                settBrevMottakere(res);
                 return res;
             }
         );
-    }, [axiosRequest, behandlingId]);
+    }, [axiosRequest, behandlingId, settBrevMottakere]);
 
     useEffect(() => {
         hentBrevmottakere();
     }, [hentBrevmottakere]);
 
     return (
-        <DataViewer response={{ mottakere }}>
-            {({ mottakere }) => (
-                <Brevmottakere
-                    personopplysninger={personopplysninger}
-                    mottakere={mottakere}
-                    kallSettBrevmottakere={settBrevmottakere}
-                    kanEndreBrevmottakere={behandlingErRedigerbar}
-                />
-            )}
-        </DataViewer>
+        <Brevmottakere
+            personopplysninger={personopplysninger}
+            mottakere={brevmottakere}
+            kallSettBrevmottakere={oppdaterBrevmottakere}
+            kanEndreBrevmottakere={behandlingErRedigerbar}
+        />
     );
 };

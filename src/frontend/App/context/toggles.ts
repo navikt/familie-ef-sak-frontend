@@ -19,4 +19,5 @@ export enum ToggleName {
     // Release-toggles
     brukErrorAlertMedKopierKnapp = 'familie.ef.sak.frontend-alert-error-med-copy-button',
     visAutomatiskInntektsendring = 'familie.ef.sak.frontend-vis-automatisk-inntektsendring',
+    visBeregningsskjema = 'familie.ef.sak.frontend-vis-beregningsskjema',
 }

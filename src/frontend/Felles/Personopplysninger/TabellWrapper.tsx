@@ -1,24 +1,26 @@
-import styled from 'styled-components';
 import React from 'react';
 import { Table } from '@navikt/ds-react';
-import { AFontSizeMedium } from '@navikt/ds-tokens/dist/tokens';
+import styles from './TableWrapper.module.css';
 
-export const SmallTable = styled(Table).attrs({ size: 'small' })`
-    max-width: max-content;
-    th,
-    td {
-        font-size: ${AFontSizeMedium};
-    }
-`;
+export const SmallTable: React.FC<React.ComponentProps<typeof Table>> = (props) => (
+    <Table size={'small'} className={styles.stable}>
+        {props.children}
+    </Table>
+);
 
 type Kolonnetittel = string | React.ReactNode;
 
 export const KolonneTitler: React.FC<{
     titler: Kolonnetittel[];
     skalHaMinimumBreddePåKolonne?: boolean;
-}> = ({ titler, skalHaMinimumBreddePåKolonne = false }) => {
+    minimumbredde?: string;
+}> = ({ titler, skalHaMinimumBreddePåKolonne = false, minimumbredde = undefined }) => {
     const minimumBreddePåDatoStyle = (tittel: Kolonnetittel) => {
-        return tittel === 'Dato' && skalHaMinimumBreddePåKolonne ? { minWidth: '10rem' } : {};
+        if (minimumbredde !== undefined) {
+            return { minWidth: minimumbredde };
+        } else {
+            return tittel === 'Dato' && skalHaMinimumBreddePåKolonne ? { minWidth: '10rem' } : {};
+        }
     };
 
     return (
