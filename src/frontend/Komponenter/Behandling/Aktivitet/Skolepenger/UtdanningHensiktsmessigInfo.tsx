@@ -1,28 +1,13 @@
 import React, { FC } from 'react';
 import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
-import styled from 'styled-components';
 import Dokumentasjonsvisning from './Dokumentasjonsvisning';
 import { TidligereUtdanninger } from '../Aktivitet/Utdanning';
 import { IAktivitet } from '../../../../App/typer/aktivitetstyper';
 import { BodyLongSmall } from '../../../../Felles/Visningskomponenter/Tekster';
-import { ABlue300 } from '@navikt/ds-tokens/dist/tokens';
 import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
 import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
-import { FlexColumnContainer, InformasjonContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
-
-const BlåStrek = styled.span`
-    border-left: 2px solid ${ABlue300};
-    margin-left: 0.33rem;
-`;
-
-const Flex = styled.div`
-    display: flex;
-`;
-
-const BegrunnelseTekst = styled(BodyLongSmall)`
-    margin-left: 1.32rem;
-    max-width: 30rem;
-`;
+import { InformasjonContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
+import { Box, VStack } from '@navikt/ds-react';
 
 interface Props {
     aktivitet: IAktivitet;
@@ -36,20 +21,26 @@ const UtdanningHensiktsmessigInfo: FC<Props> = ({ aktivitet, skalViseSøknadsdat
             {skalViseSøknadsdata ? (
                 <InformasjonContainer>
                     <Dokumentasjonsvisning aktivitet={aktivitet} />
-                    <FlexColumnContainer $gap={0.75}>
+                    <VStack gap="3">
                         <Informasjonsrad
                             ikon={VilkårInfoIkon.SØKNAD}
                             label="Målet med utdanningen"
                             verdi={undefined}
                         />
-                        <Flex>
-                            <BlåStrek />
-                            <BegrunnelseTekst>
+                        <Box
+                            borderColor="border-info"
+                            borderWidth="0 0 0 2"
+                            width="31rem"
+                            paddingBlock="0 0"
+                            paddingInline="5 0"
+                            marginInline="1 0"
+                        >
+                            <BodyLongSmall style={{ marginLeft: '0.33rem' }}>
                                 {underUtdanning?.hvaErMåletMedUtdanningen}
-                            </BegrunnelseTekst>
-                        </Flex>
-                    </FlexColumnContainer>
-                    <FlexColumnContainer $gap={1}>
+                            </BodyLongSmall>
+                        </Box>
+                    </VStack>
+                    <VStack gap="3">
                         <Informasjonsrad
                             ikon={VilkårInfoIkon.SØKNAD}
                             label="Har tatt utdanning etter grunnskolen?"
@@ -60,7 +51,7 @@ const UtdanningHensiktsmessigInfo: FC<Props> = ({ aktivitet, skalViseSøknadsdat
                                 <TidligereUtdanninger tidligereUtdanninger={tidligereUtdanninger} />
                             </GridTabell>
                         )}
-                    </FlexColumnContainer>
+                    </VStack>
                 </InformasjonContainer>
             ) : null}
         </>
