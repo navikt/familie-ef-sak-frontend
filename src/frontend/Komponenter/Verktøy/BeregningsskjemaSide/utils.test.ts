@@ -1,9 +1,15 @@
 import { expect, test } from 'vitest';
 import {
-    finnTiProsentAvvik,
+    finnAvvik,
     rundTilNærmesteTusen,
     oppdaterBeregnetfra,
     summerÅrslønn,
+    regnUtGjennomsnittÅrslønn,
+    finnGjennomsnittligAvvik,
+    mapMånedTallTilNavn,
+    regnUtNyBeregning,
+    regnUtMånedligUtbetalingOvergangsstønad,
+    regnUtHarMottatt,
 } from './utils';
 import { Beregning, AvvikEnum } from './typer';
 
@@ -83,19 +89,19 @@ test('skal sjekke om summering av årslønn er korrekt', () => {
 });
 
 test('skal sjekke om forventet enum for avvik er riktig', () => {
-    const avvik = finnTiProsentAvvik(beregning[0]);
+    const avvik = finnAvvik(beregning[0]);
     expect(avvik).toBe(AvvikEnum.OPP);
 
-    const avvik2 = finnTiProsentAvvik(beregning[1]);
+    const avvik2 = finnAvvik(beregning[1]);
     expect(avvik2).toBe(AvvikEnum.NEI);
 
-    const avvik3 = finnTiProsentAvvik(beregning[2]);
+    const avvik3 = finnAvvik(beregning[2]);
     expect(avvik3).toBe(AvvikEnum.NED);
 
-    const avvik4 = finnTiProsentAvvik(beregning[3]);
+    const avvik4 = finnAvvik(beregning[3]);
     expect(avvik4).toBe(AvvikEnum.OPP);
 
-    const avvik5 = finnTiProsentAvvik(beregning[4]);
+    const avvik5 = finnAvvik(beregning[4]);
     expect(avvik5).toBe(AvvikEnum.UNDER_HALV_G);
 });
 
@@ -108,7 +114,7 @@ test('skal sjekke om avrunding til nærmeste tusen blir som forventet', () => {
 test('skal sette korrekt automatisk beregnet fra', () => {
     const beregninger = [...beregning];
     const oppdaterteBeregninger = beregninger.map((beregning) => {
-        beregning.avvik = finnTiProsentAvvik(beregning);
+        beregning.avvik = finnAvvik(beregning);
         return beregning;
     });
 
@@ -127,4 +133,63 @@ test('skal sette korrekt automatisk beregnet fra', () => {
     expect(oppdatertBeregnetfra[2].beregnetfra).toBe(false);
     expect(oppdatertBeregnetfra[3].beregnetfra).toBe(false);
     expect(oppdatertBeregnetfra[4].beregnetfra).toBe(false);
+});
+
+test('skal mappe korrekt tall på måned til navn', () => {
+    expect(mapMånedTallTilNavn('01')).toBe('Januar');
+    expect(mapMånedTallTilNavn('1')).toBe('Januar');
+    expect(mapMånedTallTilNavn(1)).toBe('Januar');
+});
+
+test('skal returnere korrekt gjennomsnittlig årslønn', () => {
+    const gjennomsnittFørsteMåned = regnUtGjennomsnittÅrslønn([beregning[0]]);
+    expect(gjennomsnittFørsteMåned).toBe(336_000);
+
+    const gjennomsnitt = regnUtGjennomsnittÅrslønn(beregning);
+    expect(gjennomsnitt).toBe(199_200);
+});
+
+test('skal returne gjennomsnittlig avvik', () => {
+    const beregninger = [...beregning];
+
+    const gjennomsnittligAvvik = finnGjennomsnittligAvvik(beregninger);
+
+    const beregninger2 = [beregning[0]];
+
+    const gjennomsnittligAvvik2 = finnGjennomsnittligAvvik(beregninger2);
+
+    expect(gjennomsnittligAvvik).toBe(AvvikEnum.NEI);
+    expect(gjennomsnittligAvvik2).toBe(AvvikEnum.OPP);
+});
+
+test('skal returne korrekt ny beregning', () => {
+    const førsteBeregning = beregning[0];
+    const nyBeregning = regnUtNyBeregning(førsteBeregning);
+
+    const andreBeregning = beregning[1];
+    const nyBeregning2 = regnUtNyBeregning(andreBeregning);
+
+    const tredjeBeregning = beregning[2];
+    const nyBeregning3 = regnUtNyBeregning(tredjeBeregning);
+
+    expect(nyBeregning).toBe(14_245);
+    expect(nyBeregning2).toBe(9_745);
+    expect(nyBeregning3).toBe(24_405);
+});
+
+test('skal returne forventet månedlig overgangsstønad for 1. mai 2025', () => {
+    const grunnbeløp2025 = 130_160;
+    const månedligOvergangsstønad = regnUtMånedligUtbetalingOvergangsstønad(2025, grunnbeløp2025);
+    expect(månedligOvergangsstønad).toBe(24_405);
+});
+
+test('skal returnere forventet verdi av det som har blitt mottatt', () => {
+    const mottatt = regnUtHarMottatt(beregning[0]);
+    expect(mottatt).toBe(19_345);
+    const mottatt2 = regnUtHarMottatt(beregning[1]);
+    expect(mottatt2).toBe(11_095);
+    const mottatt3 = regnUtHarMottatt(beregning[2]);
+    expect(mottatt3).toBe(19_345);
+    const mottatt5 = regnUtHarMottatt(beregning[4]);
+    expect(mottatt5).toBe(24_405);
 });

@@ -1,8 +1,22 @@
+import { formaterStrengMedStorForbokstav } from '../../../App/utils/formatter';
 import { AvvikEnum, Beregning, Periode, Beregninger } from './typer';
 
-export const finnTiProsentAvvik = (beregning: Beregning): AvvikEnum => {
-    const GRUNNBELØP = 130160; // Grunnbeløp for 2025
+const GRUNNBELØP: number = 130160; /* TODO: bruke api - Grunnbeløp for 2025 */
+
+export const finnGjennomsnittligAvvik = (beregninger: Beregning[]): AvvikEnum => {
+    const årslønn = regnUtGjennomsnittÅrslønn(beregninger);
+    const redusertEtter = regnUtGjennomsnittligRedusertEtter(beregninger);
+
+    return utledAvvikEnum(årslønn, redusertEtter);
+};
+
+export const finnAvvik = (beregning: Beregning): AvvikEnum => {
     const { årslønn, redusertEtter } = beregning;
+    return utledAvvikEnum(årslønn, redusertEtter);
+};
+
+const utledAvvikEnum = (årslønn: number, redusertEtter: number): AvvikEnum => {
+    const GRUNNBELØP = 130160; // TODO: bruke api - Grunnbeløp for 2025
 
     if (årslønn < redusertEtter && årslønn < redusertEtter * 0.9) {
         return AvvikEnum.NED;
@@ -68,23 +82,8 @@ export const lagBeregninger = (periode: Periode) => {
         return [];
     }
 
-    const mapMåned: { [key: string]: number } = {
-        januar: 1,
-        februar: 2,
-        mars: 3,
-        april: 4,
-        mai: 5,
-        juni: 6,
-        juli: 7,
-        august: 8,
-        september: 9,
-        oktober: 10,
-        november: 11,
-        desember: 12,
-    };
-
-    const fraMåned = mapMåned[periode.fra.måned.toLowerCase()] || 1;
-    const tilMåned = mapMåned[periode.til.måned.toLowerCase()] || 12;
+    const fraMåned = parseInt(periode.fra.måned);
+    const tilMåned = parseInt(periode.til.måned);
 
     const fraÅr = parseInt(periode.fra.årstall);
     const tilÅr = parseInt(periode.til.årstall);
@@ -97,11 +96,8 @@ export const lagBeregninger = (periode: Periode) => {
         const årstall = fraÅr + Math.floor((fraMåned - 1 + i) / 12);
         const månedNummer = ((fraMåned - 1 + i) % 12) + 1;
 
-        const månedNavn =
-            Object.keys(mapMåned).find((key) => mapMåned[key] === månedNummer) || 'MÅNED';
-
         nyeBeregninger.push({
-            periode: { årstall: årstall.toString(), måned: månedNavn },
+            periode: { årstall: årstall.toString(), måned: månedNummer.toString() },
             arbeidsgivere: [{ navn: `Arbeidsgiver ${i + 1}`, verdi: 0 }],
             årslønn: 0,
             redusertEtter: 0,
@@ -111,4 +107,99 @@ export const lagBeregninger = (periode: Periode) => {
     }
 
     return nyeBeregninger;
+};
+
+export const mapMånedTallTilNavn = (månedTall: number | string): string => {
+    const måned = typeof månedTall === 'string' ? parseInt(månedTall) : månedTall;
+
+    const date = new Date();
+    date.setMonth(måned - 1);
+
+    return formaterStrengMedStorForbokstav(
+        date.toLocaleString('no-NO', {
+            month: 'long',
+        })
+    );
+};
+
+export const regnUtGjennomsnittÅrslønn = (beregninger: Beregning[]) =>
+    regnUtGjennomsnitt(beregninger, (b) => b.årslønn);
+
+export const regnUtGjennomsnittligRedusertEtter = (beregninger: Beregning[]) =>
+    regnUtGjennomsnitt(beregninger, (b) => b.redusertEtter);
+
+const regnUtGjennomsnitt = <Beregning>(
+    beregninger: Beregning[],
+    selector: (property: Beregning) => number
+): number => {
+    if (beregninger.length === 0) return 0;
+
+    const sum = beregninger.reduce((acc, property) => acc + selector(property), 0);
+    return sum / beregninger.length;
+};
+
+export const regnUtNyBeregning = (beregning: Beregning): number => {
+    const { måned, årstall: år } = beregning.periode;
+    const årstall = parseInt(år);
+    const årslønn = beregning.årslønn;
+
+    if (måned === '') return 0;
+    if (årslønn === 0) return 0;
+
+    const månedligUtbetaling = regnUtMånedligUtbetalingOvergangsstønad(årstall, GRUNNBELØP);
+    const månedligReduksjon = regnUtMånedligReduksjon(årstall, årslønn);
+
+    return månedligUtbetaling - månedligReduksjon;
+};
+
+const regnUtMånedligReduksjon = (årstall: number, verdi: number): number => {
+    const GAMMEL_ORDNING = 40,
+        NY_ORDNING = 45; // ny ordn. (etter 010414)
+
+    let månedligReduksjon = 0;
+
+    if (verdi > GRUNNBELØP / 2) {
+        let reduseringsrate = 0;
+        if (årstall < 2017) {
+            reduseringsrate = GAMMEL_ORDNING;
+        } else if (årstall > 2016) {
+            reduseringsrate = NY_ORDNING;
+        }
+
+        månedligReduksjon = Math.round(((verdi - GRUNNBELØP / 2) / 12) * (reduseringsrate / 100));
+    }
+
+    return månedligReduksjon;
+};
+
+export const regnUtMånedligUtbetalingOvergangsstønad = (
+    årstall: number,
+    grunnbeløp: number
+): number => {
+    const TO = 2,
+        TO_OG_EN_FJERDEDEL = 2.25;
+
+    let overgangsstønad = 0;
+    if (årstall < 2017) {
+        overgangsstønad = grunnbeløp * TO;
+    } else if (årstall > 2016) {
+        overgangsstønad = grunnbeløp * TO_OG_EN_FJERDEDEL;
+    }
+
+    const månedligUtbetaling = Math.round(overgangsstønad / 12);
+    return månedligUtbetaling;
+};
+
+export const regnUtHarMottatt = (beregning: Beregning): number => {
+    const { måned, årstall: år } = beregning.periode;
+    const årstall = parseInt(år);
+    const redusertEtter = beregning.redusertEtter;
+
+    if (måned === '') return 0;
+    if (redusertEtter === 0) return 0;
+
+    const månedligUtbetaling = regnUtMånedligUtbetalingOvergangsstønad(årstall, GRUNNBELØP);
+    const månedligReduksjon = regnUtMånedligReduksjon(årstall, redusertEtter);
+
+    return månedligUtbetaling - månedligReduksjon;
 };
