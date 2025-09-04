@@ -1,27 +1,12 @@
-import { Heading, Table, Checkbox, BodyLong } from '@navikt/ds-react';
+import { Heading, Table, Checkbox, BodyLong, Box } from '@navikt/ds-react';
 import React, { FC, useEffect } from 'react';
 import { behandlingstemaTilTekst } from '../../../App/typer/behandlingstema';
 import { formaterIsoDato } from '../../../App/utils/formatter';
 import { oppgaveTypeTilTekst } from '../../Oppgavebenk/typer/oppgavetype';
-import styled from 'styled-components';
-import { ALimegreen100 } from '@navikt/ds-tokens/dist/tokens';
 import { useHentOppgaverForFerdigstilling } from '../../../App/hooks/useHentOppgaverForFerdigstilling';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { Ressurs } from '../../../App/typer/ressurs';
 import { IOppgaverResponse } from '../../../App/hooks/useHentOppgaver';
-
-const StyledTableDataCell = styled(Table.DataCell)`
-    padding: 12px 8px 12px 0;
-`;
-
-const StyledBodyLong = styled(BodyLong)`
-    white-space: break-spaces;
-`;
-
-const TableContainer = styled.div`
-    padding: 0.5rem;
-    background-color: ${ALimegreen100};
-`;
 
 export const OppgaverForFerdigstilling: FC<{
     behandlingId: string;
@@ -33,7 +18,7 @@ export const OppgaverForFerdigstilling: FC<{
         hentOppgaverForFerdigstilling(behandlingId);
     }, [behandlingId, hentOppgaverForFerdigstilling]);
 
-    if (skalViseOppgaverForFerdigstilling(oppgaverForFerdigstilling)) {
+    if (skalIkkeViseOppgaverForFerdigstilling(oppgaverForFerdigstilling)) {
         return;
     }
 
@@ -45,7 +30,7 @@ export const OppgaverForFerdigstilling: FC<{
                         <Heading size="small">
                             Følgende oppgaver blir ferdigstilt når vedtaket er godkjent:
                         </Heading>
-                        <TableContainer>
+                        <Box background={'surface-alt-2-subtle'} padding="space-8">
                             <Table>
                                 <Table.Header>
                                     <Table.Row>
@@ -79,14 +64,18 @@ export const OppgaverForFerdigstilling: FC<{
                                                 <Table.ExpandableRow
                                                     key={i}
                                                     content={
-                                                        <StyledBodyLong>
+                                                        <BodyLong
+                                                            style={{ whiteSpace: 'break-spaces' }}
+                                                        >
                                                             {beskrivelse}
-                                                        </StyledBodyLong>
+                                                        </BodyLong>
                                                     }
                                                     togglePlacement="right"
                                                     expandOnRowClick
                                                 >
-                                                    <StyledTableDataCell>
+                                                    <Table.DataCell
+                                                        style={{ padding: '12px 8px 12px 0' }}
+                                                    >
                                                         <Checkbox
                                                             hideLabel
                                                             checked
@@ -95,7 +84,7 @@ export const OppgaverForFerdigstilling: FC<{
                                                         >
                                                             {' '}
                                                         </Checkbox>
-                                                    </StyledTableDataCell>
+                                                    </Table.DataCell>
                                                     <Table.DataCell scope="row">
                                                         {oppgavetype &&
                                                             oppgaveTypeTilTekst[oppgavetype]}
@@ -121,7 +110,7 @@ export const OppgaverForFerdigstilling: FC<{
                                     )}
                                 </Table.Body>
                             </Table>
-                        </TableContainer>
+                        </Box>
                     </>
                 );
             }}
@@ -129,7 +118,7 @@ export const OppgaverForFerdigstilling: FC<{
     );
 };
 
-const skalViseOppgaverForFerdigstilling = (
+const skalIkkeViseOppgaverForFerdigstilling = (
     oppgaverForFerdigstilling: Ressurs<IOppgaverResponse>
 ) => {
     return !(
