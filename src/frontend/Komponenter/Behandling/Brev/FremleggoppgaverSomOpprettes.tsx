@@ -1,16 +1,9 @@
-import { CheckboxGroup, Checkbox } from '@navikt/ds-react';
+import { CheckboxGroup, Checkbox, Box } from '@navikt/ds-react';
 import React, { FC } from 'react';
 import {
     oppgaveSomSkalOpprettesTilTekst,
     OppgaveTypeForOpprettelse,
 } from '../Totrinnskontroll/oppgaveForOpprettelseTyper';
-import { styled } from 'styled-components';
-import { ALimegreen100 } from '@navikt/ds-tokens/dist/tokens';
-
-const Container = styled.div`
-    background: ${ALimegreen100};
-    padding: 0.5rem;
-`;
 
 export const FremleggoppgaverSomOpprettes: FC<{
     oppgavetyperSomSkalOpprettes: OppgaveTypeForOpprettelse[];
@@ -20,7 +13,7 @@ export const FremleggoppgaverSomOpprettes: FC<{
     }
 
     return (
-        <Container>
+        <Box background={'surface-alt-2-subtle'} padding="space-8">
             <CheckboxGroup
                 legend="Følgende oppgave skal opprettes automatisk når vedtaket er godkjent:"
                 value={oppgavetyperSomSkalOpprettes}
@@ -32,6 +25,6 @@ export const FremleggoppgaverSomOpprettes: FC<{
                     </Checkbox>
                 ))}
             </CheckboxGroup>
-        </Container>
+        </Box>
     );
 };
