@@ -79,7 +79,6 @@ const PersonSøk: React.FC = () => {
     };
 
     const opprettFagsakPersonOgNaviger = (personIdent: string) => {
-        alert('aaa');
         axiosRequest<string, { personIdent: string }>({
             method: 'POST',
             url: `/familie-ef-sak/api/fagsak-person`,
