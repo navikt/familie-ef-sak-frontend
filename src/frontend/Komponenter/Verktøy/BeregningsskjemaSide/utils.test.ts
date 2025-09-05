@@ -10,8 +10,9 @@ import {
     regnUtNyBeregning,
     regnUtMånedligUtbetalingOvergangsstønad,
     regnUtHarMottatt,
+    regnUtFeilutbetaling,
 } from './utils';
-import { Beregning, AvvikEnum } from './typer';
+import { Beregning, AvvikEnum, FeilutbetalingType } from './typer';
 
 const beregning: Beregning[] = [
     {
@@ -193,3 +194,26 @@ test('skal returnere forventet verdi av det som har blitt mottatt', () => {
     const mottatt5 = regnUtHarMottatt(beregning[4]);
     expect(mottatt5).toBe(24_405);
 });
+
+test('skal returnere forventet feilutbetaling', () => {
+    const førsteBeregning = beregning[0];
+    const feilutbetaling = regnUtFeilutbetaling(førsteBeregning);
+
+    const andreBeregning = beregning[1];
+    const feilutbetaling2 = regnUtFeilutbetaling(andreBeregning);
+
+    expect(feilutbetaling).toBe(5_100);
+    expect(feilutbetaling2).toBe(1_350);
+});
+
+test('skal returnere korrekt type på feilutbetaling', () => {
+    expect(utledFeilutbetalingType(0)).toBe(FeilutbetalingType.Ingen);
+    expect(utledFeilutbetalingType(1)).toBe(FeilutbetalingType.Etterbetaling);
+    expect(utledFeilutbetalingType(-1)).toBe(FeilutbetalingType.Feilutbetaling);
+});
+
+const utledFeilutbetalingType = (feilutbetaling: number): FeilutbetalingType => {
+    if (feilutbetaling === 0) return FeilutbetalingType.Ingen;
+    if (feilutbetaling > 0) return FeilutbetalingType.Etterbetaling;
+    return FeilutbetalingType.Feilutbetaling;
+};

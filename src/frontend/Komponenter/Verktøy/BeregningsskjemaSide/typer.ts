@@ -30,3 +30,11 @@ export interface Periode {
 }
 
 export type Beregninger = Beregning[];
+
+export const FeilutbetalingType = {
+    Ingen: 'Ingen',
+    Feilutbetaling: 'Feilutbetaling',
+    Etterbetaling: 'Etterbetaling',
+} as const;
+
+export type FeilutbetalingType = (typeof FeilutbetalingType)[keyof typeof FeilutbetalingType];
