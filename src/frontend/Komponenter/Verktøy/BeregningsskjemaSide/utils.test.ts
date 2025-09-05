@@ -12,7 +12,7 @@ import {
     regnUtHarMottatt,
     regnUtFeilutbetaling,
 } from './utils';
-import { Beregning, AvvikEnum, FeilutbetalingType } from './typer';
+import { Beregning, AvvikEnum } from './typer';
 
 const beregning: Beregning[] = [
     {
@@ -205,15 +205,3 @@ test('skal returnere forventet feilutbetaling', () => {
     expect(feilutbetaling).toBe(5_100);
     expect(feilutbetaling2).toBe(1_350);
 });
-
-test('skal returnere korrekt type på feilutbetaling', () => {
-    expect(utledFeilutbetalingType(0)).toBe(FeilutbetalingType.Ingen);
-    expect(utledFeilutbetalingType(1)).toBe(FeilutbetalingType.Etterbetaling);
-    expect(utledFeilutbetalingType(-1)).toBe(FeilutbetalingType.Feilutbetaling);
-});
-
-const utledFeilutbetalingType = (feilutbetaling: number): FeilutbetalingType => {
-    if (feilutbetaling === 0) return FeilutbetalingType.Ingen;
-    if (feilutbetaling > 0) return FeilutbetalingType.Etterbetaling;
-    return FeilutbetalingType.Feilutbetaling;
-};
