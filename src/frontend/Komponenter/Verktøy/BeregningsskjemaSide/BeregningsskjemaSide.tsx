@@ -9,6 +9,7 @@ import {
     mapMånedTallTilNavn,
     oppdaterBeregnetfra,
     oppdaterÅrslønn,
+    regnUtFeilutbetaling,
     regnUtHarMottatt,
     regnUtNyBeregning,
 } from './utils';
@@ -173,6 +174,7 @@ export const BeregningsskjemaSide: React.FC = () => {
                             <Table.HeaderCell scope="col">10% avvik i inntekt</Table.HeaderCell>
                             <Table.HeaderCell scope="col">Ny beregning</Table.HeaderCell>
                             <Table.HeaderCell scope="col">Har mottatt</Table.HeaderCell>
+                            <Table.HeaderCell scope="col">Feilutbetaling</Table.HeaderCell>
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
@@ -236,6 +238,9 @@ export const BeregningsskjemaSide: React.FC = () => {
                                 </Table.DataCell>
                                 <Table.DataCell>
                                     {formaterTallMedTusenSkille(regnUtHarMottatt(beregning))}
+                                </Table.DataCell>
+                                <Table.DataCell>
+                                    {utledFeilutbetalingTag(regnUtFeilutbetaling(beregning))}
                                 </Table.DataCell>
                             </Table.Row>
                         ))}
@@ -324,5 +329,15 @@ export const utledAvvikTag = (avvik: AvvikEnum) => {
             return <Tag variant="neutral">{avvik}</Tag>;
         default:
             return <Tag variant="neutral">UKJENT</Tag>;
+    }
+};
+
+const utledFeilutbetalingTag = (feilutbetaling: number) => {
+    if (feilutbetaling > 0) {
+        return <Tag variant="error-moderate">{formaterTallMedTusenSkille(feilutbetaling)}</Tag>;
+    } else if (feilutbetaling < 0) {
+        return <Tag variant="info">{formaterTallMedTusenSkille(feilutbetaling)}</Tag>;
+    } else {
+        return <Tag variant="neutral">{formaterTallMedTusenSkille(feilutbetaling)}</Tag>;
     }
 };
