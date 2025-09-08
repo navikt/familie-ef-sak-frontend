@@ -2,7 +2,6 @@ import React, { FC } from 'react';
 import { IPersonopplysninger } from '../../App/typer/personopplysninger';
 import styled from 'styled-components';
 import { Behandling, Fagsak, FagsakPerson } from '../../App/typer/fagsak';
-import { Sticky } from '../Visningskomponenter/Sticky';
 import { nullableDatoTilAlder } from '../../App/utils/dato';
 import { useApp } from '../../App/context/AppContext';
 import { AksjonsknapperPersonHeader } from './AksjonsknapperPersonHeader';
@@ -10,23 +9,6 @@ import { ABorderStrong } from '@navikt/ds-tokens/dist/tokens';
 import Visittkort from './Visittkort';
 import PersonTags from './PersonTags';
 import BehandlingTags from './BehandlingTags';
-
-export const Container = styled(Sticky)`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-
-    padding: 0 1rem 0 1rem;
-
-    border-bottom: 1px solid ${ABorderStrong};
-    z-index: 23;
-    top: 48px; // Høyden på headeren
-
-    .visittkort {
-        border-bottom: none;
-    }
-`;
 
 const FlexContainer = styled.div`
     display: flex;
@@ -74,7 +56,12 @@ export const PersonHeader: FC<Props> = (props) => {
     const fagsakPersonId = harBehandling ? props.fagsak.fagsakPersonId : props.fagsakPerson.id;
 
     return (
-        <Container>
+        <div
+            style={{
+                padding: '0 1rem 0 1rem',
+                borderBottom: `1px solid ${ABorderStrong}`,
+            }}
+        >
             <FlexContainer>
                 <Visittkort
                     fagsakPersonId={fagsakPersonId}
@@ -103,6 +90,6 @@ export const PersonHeader: FC<Props> = (props) => {
                     />
                 </FlexContainer>
             )}
-        </Container>
+        </div>
     );
 };
