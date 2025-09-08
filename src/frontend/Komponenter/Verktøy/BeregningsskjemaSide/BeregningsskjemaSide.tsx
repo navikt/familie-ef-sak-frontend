@@ -130,7 +130,7 @@ export const BeregningsskjemaSide: React.FC = () => {
         settBeregninger((prev) => {
             const oppdatertBeregninger = prev.map((beregning) => {
                 if (beregning.arbeidsgivere.length <= arbeidsgiverIndeks) {
-                    return beregning; // Indeksen finnes ikke, returner uendret
+                    return beregning;
                 }
 
                 const nyeArbeidsgivere = beregning.arbeidsgivere.filter(
