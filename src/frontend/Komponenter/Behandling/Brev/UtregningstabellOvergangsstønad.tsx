@@ -21,12 +21,16 @@ const lagInntektsperioder = (beløpsperioder?: IBeløpsperiode[]): string => {
     const samordningskolonneTittel: string = samordningsfradragstype
         ? samordningsfradagTilTekst[samordningsfradragstype]
         : '';
+    const skalBrukeMånedsinntekt =
+        beløpsperioder && beløpsperioder[0]?.beregningsgrunnlag.månedsinntekt !== null;
+
+    const inntektstypeTekst: string = skalBrukeMånedsinntekt ? 'Månedsinntekt' : 'Beregnet inntekt';
 
     return `<table style="margin-left: 2px; margin-right: 2px; border-collapse: collapse; ${borderStylingCompact}">
                 <thead>
                     <tr>
                         <td style="width: 110px; ${borderStylingCompact}"><strong>Periode</strong></td>
-                        <td style="width: 55px; word-wrap: break-word; ${borderStylingCompact}"><strong>Beregnet inntekt</strong></td>
+                        <td style="width: 55px; word-wrap: break-word; ${borderStylingCompact}"><strong>${inntektstypeTekst}</strong></td>
                         ${
                             samordningskolonneTittel &&
                             `<td style="width: 90px; word-wrap: break-word; ${borderStylingCompact}"><strong>${samordningskolonneTittel}</strong></td>`
@@ -49,7 +53,10 @@ const lagRaderForVedtak = (
     }
     return beløpsperioder
         .map((beløpsperiode: IBeløpsperiode) => {
-            const inntekt = formaterTallMedTusenSkille(beløpsperiode.beregningsgrunnlag.inntekt);
+            const inntekt: string =
+                beløpsperiode.beregningsgrunnlag.månedsinntekt !== null
+                    ? formaterTallMedTusenSkille(beløpsperiode.beregningsgrunnlag.månedsinntekt)
+                    : formaterTallMedTusenSkille(beløpsperiode.beregningsgrunnlag.inntekt);
             const samordningsfradag = formaterTallMedTusenSkille(
                 beløpsperiode.beregningsgrunnlag.samordningsfradrag
             );
