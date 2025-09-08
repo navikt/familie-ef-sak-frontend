@@ -18,6 +18,7 @@ import { Periode, Beregninger, AvvikEnum, Beregning } from './typer';
 import { useToggles } from '../../../App/context/TogglesContext';
 import { ToggleName } from '../../../App/context/toggles';
 import TabellGjennomsnitt from './TabellGjennomsnitt';
+import { SlettKolonneKnapp } from './SlettKolonneKnapp';
 
 const tomPeriode: Periode = {
     fra: {
@@ -125,6 +126,37 @@ export const BeregningsskjemaSide: React.FC = () => {
         });
     };
 
+    const slettKolonne = (arbeidsgiverIndeks: number) => {
+        settBeregninger((prev) => {
+            const oppdatertBeregninger = prev.map((beregning) => {
+                if (beregning.arbeidsgivere.length <= arbeidsgiverIndeks) {
+                    return beregning; // Indeksen finnes ikke, returner uendret
+                }
+
+                const nyeArbeidsgivere = beregning.arbeidsgivere.filter(
+                    (_, idx) => idx !== arbeidsgiverIndeks
+                );
+
+                const nyÅrslønn = oppdaterÅrslønn(beregning, arbeidsgiverIndeks, 0);
+
+                return {
+                    ...beregning,
+                    arbeidsgivere: nyeArbeidsgivere,
+                    årslønn: nyÅrslønn,
+                };
+            });
+
+            const oppdatertAvvik: Beregning[] = oppdatertBeregninger.map((beregning) => ({
+                ...beregning,
+                avvik: finnAvvik(beregning),
+            }));
+
+            const oppdatertBeregnetFra = oppdaterBeregnetfra(oppdatertAvvik);
+
+            return oppdatertBeregnetFra;
+        });
+    };
+
     if (erTogglet === false) {
         return (
             <Heading as="h1" size="medium">
@@ -152,7 +184,10 @@ export const BeregningsskjemaSide: React.FC = () => {
                         <Table.Row>
                             <Table.HeaderCell scope="col">Periode</Table.HeaderCell>
 
-                            <ArbeidsgivereKolonner beregninger={beregninger} />
+                            <ArbeidsgivereKolonner
+                                beregninger={beregninger}
+                                slettKolonne={slettKolonne}
+                            />
 
                             <Table.HeaderCell
                                 scope="col"
@@ -251,7 +286,11 @@ export const BeregningsskjemaSide: React.FC = () => {
     );
 };
 
-const ArbeidsgivereKolonner: React.FC<{ beregninger: Beregning[] }> = ({ beregninger }) => {
+const ArbeidsgivereKolonner: React.FC<{
+    beregninger: Beregning[];
+    slettKolonne: (arbeidsgiverIndeks: number) => void;
+}> = ({ beregninger, slettKolonne }) => {
+    const erFørsteKolonne = (indeks: number) => indeks === 0;
     return (
         <>
             {Array.from(
@@ -262,7 +301,23 @@ const ArbeidsgivereKolonner: React.FC<{ beregninger: Beregning[] }> = ({ beregni
                 },
                 (_, indeks) => (
                     <Table.HeaderCell key={indeks} scope="col">
-                        Arbeidsgiver {indeks + 1}
+                        <HStack align={'center'} gap="2" style={{ margin: '0' }}>
+                            <TextField
+                                style={{
+                                    marginTop: '-0.5rem', // TextField er ikke sentrert
+                                }}
+                                size="small"
+                                label={undefined}
+                                placeholder={`Arbeidsgiver ${indeks + 1}`}
+                            />
+
+                            {!erFørsteKolonne(indeks) && (
+                                <SlettKolonneKnapp
+                                    arbeidsgiverIndeks={indeks}
+                                    slettKolonne={slettKolonne}
+                                />
+                            )}
+                        </HStack>
                     </Table.HeaderCell>
                 )
             )}
@@ -336,8 +391,8 @@ const utledFeilutbetalingTag = (feilutbetaling: number) => {
     if (feilutbetaling > 0) {
         return <Tag variant="error-moderate">{formaterTallMedTusenSkille(feilutbetaling)}</Tag>;
     } else if (feilutbetaling < 0) {
-        return <Tag variant="info">{formaterTallMedTusenSkille(feilutbetaling)}</Tag>;
+        return <Tag variant="info-moderate">{formaterTallMedTusenSkille(feilutbetaling)}</Tag>;
     } else {
-        return <Tag variant="neutral">{formaterTallMedTusenSkille(feilutbetaling)}</Tag>;
+        return <Tag variant="neutral-moderate">{formaterTallMedTusenSkille(feilutbetaling)}</Tag>;
     }
 };

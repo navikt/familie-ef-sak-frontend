@@ -205,6 +205,8 @@ export const regnUtHarMottatt = (beregning: Beregning): number => {
 };
 
 export const regnUtFeilutbetaling = (beregning: Beregning): number => {
+    if (beregning.redusertEtter === 0 || beregning.årslønn === 0) return 0;
+
     const harMottatt = regnUtHarMottatt(beregning);
     const nyBeregning = regnUtNyBeregning(beregning);
 
