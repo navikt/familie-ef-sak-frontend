@@ -9,6 +9,7 @@ import { ABorderStrong } from '@navikt/ds-tokens/dist/tokens';
 import Visittkort from './Visittkort';
 import PersonTags from './PersonTags';
 import BehandlingTags from './BehandlingTags';
+import { HStack } from '@navikt/ds-react';
 
 const FlexContainer = styled.div`
     display: flex;
@@ -62,34 +63,36 @@ export const PersonHeader: FC<Props> = (props) => {
                 borderBottom: `1px solid ${ABorderStrong}`,
             }}
         >
-            <FlexContainer>
-                <Visittkort
-                    fagsakPersonId={fagsakPersonId}
-                    kjønn={kjønn}
-                    ident={personIdent}
-                    visningsnavn={visningsnavn}
-                    borderBottom={false}
-                />
-                <PersonTags
-                    adressebeskyttelse={adressebeskyttelse}
-                    alder={alder}
-                    egenAnsatt={egenAnsatt}
-                    fullmakt={fullmakt}
-                    folkeregisterPersonStatus={folkeregisterpersonstatus}
-                    migrert={erFagsakMigrert}
-                    vergemål={vergemål}
-                />
-            </FlexContainer>
-
-            {harBehandling && (
+            <HStack justify={'space-between'}>
                 <FlexContainer>
-                    <BehandlingTags behandling={props.behandling} />
-                    <AksjonsknapperPersonHeader
-                        behandling={props.behandling}
-                        erSaksbehandler={erSaksbehandler}
+                    <Visittkort
+                        fagsakPersonId={fagsakPersonId}
+                        kjønn={kjønn}
+                        ident={personIdent}
+                        visningsnavn={visningsnavn}
+                        borderBottom={false}
+                    />
+                    <PersonTags
+                        adressebeskyttelse={adressebeskyttelse}
+                        alder={alder}
+                        egenAnsatt={egenAnsatt}
+                        fullmakt={fullmakt}
+                        folkeregisterPersonStatus={folkeregisterpersonstatus}
+                        migrert={erFagsakMigrert}
+                        vergemål={vergemål}
                     />
                 </FlexContainer>
-            )}
+
+                {harBehandling && (
+                    <FlexContainer>
+                        <BehandlingTags behandling={props.behandling} />
+                        <AksjonsknapperPersonHeader
+                            behandling={props.behandling}
+                            erSaksbehandler={erSaksbehandler}
+                        />
+                    </FlexContainer>
+                )}
+            </HStack>
         </div>
     );
 };
