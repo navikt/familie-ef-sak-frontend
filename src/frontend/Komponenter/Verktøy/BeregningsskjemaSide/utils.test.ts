@@ -10,6 +10,7 @@ import {
     regnUtNyBeregning,
     regnUtMånedligUtbetalingOvergangsstønad,
     regnUtHarMottatt,
+    regnUtFeilutbetaling,
 } from './utils';
 import { Beregning, AvvikEnum } from './typer';
 
@@ -192,4 +193,15 @@ test('skal returnere forventet verdi av det som har blitt mottatt', () => {
     expect(mottatt3).toBe(19_345);
     const mottatt5 = regnUtHarMottatt(beregning[4]);
     expect(mottatt5).toBe(24_405);
+});
+
+test('skal returnere forventet feilutbetaling', () => {
+    const førsteBeregning = beregning[0];
+    const feilutbetaling = regnUtFeilutbetaling(førsteBeregning);
+
+    const andreBeregning = beregning[1];
+    const feilutbetaling2 = regnUtFeilutbetaling(andreBeregning);
+
+    expect(feilutbetaling).toBe(5_100);
+    expect(feilutbetaling2).toBe(1_350);
 });
