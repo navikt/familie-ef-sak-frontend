@@ -203,3 +203,10 @@ export const regnUtHarMottatt = (beregning: Beregning): number => {
 
     return månedligUtbetaling - månedligReduksjon;
 };
+
+export const regnUtFeilutbetaling = (beregning: Beregning): number => {
+    const harMottatt = regnUtHarMottatt(beregning);
+    const nyBeregning = regnUtNyBeregning(beregning);
+
+    return harMottatt - nyBeregning;
+};
