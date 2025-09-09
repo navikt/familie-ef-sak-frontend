@@ -20,6 +20,7 @@ import { ToggleName } from '../../../App/context/toggles';
 import TabellGjennomsnitt from './TabellGjennomsnitt';
 import { SlettKolonneKnapp } from './SlettKolonneKnapp';
 import { SettBeregnetFraKnapp } from './SettBeregnetFraKnapp';
+import TabellFeilutbetalingMotregning from './TabellFeilutbetalingMotregning';
 
 const tomPeriode: Periode = {
     fra: {
@@ -177,6 +178,8 @@ export const BeregningsskjemaSide: React.FC = () => {
                 />
 
                 <TabellGjennomsnitt periode={periode} beregninger={beregninger} />
+
+                <TabellFeilutbetalingMotregning beregninger={beregninger} />
             </HStack>
 
             {beregninger.length > 0 && (
@@ -440,7 +443,7 @@ export const utledAvvikTag = (avvik: AvvikEnum) => {
     }
 };
 
-const utledFeilutbetalingTag = (feilutbetaling: number) => {
+export const utledFeilutbetalingTag = (feilutbetaling: number) => {
     if (feilutbetaling > 0) {
         return <Tag variant="error-moderate">{formaterTallMedTusenSkille(feilutbetaling)}</Tag>;
     } else if (feilutbetaling < 0) {

@@ -11,6 +11,9 @@ import {
     regnUtMånedligUtbetalingOvergangsstønad,
     regnUtHarMottatt,
     regnUtFeilutbetaling,
+    lagBeregningFraOgMedBeregnetFra,
+    regnUtMotregning,
+    regnUtSumFeilutbetaling,
 } from './utils';
 import { Beregning, AvvikEnum } from './typer';
 
@@ -211,6 +214,54 @@ test('skal returnere forventet feilutbetaling', () => {
     const andreBeregning = beregning[1];
     const feilutbetaling2 = regnUtFeilutbetaling(andreBeregning);
 
+    const tredjeBeregning = beregning[2];
+    const feilutbetaling3 = regnUtFeilutbetaling(tredjeBeregning);
+
+    const fjerdeBeregning = beregning[3];
+    const feilutbetaling4 = regnUtFeilutbetaling(fjerdeBeregning);
+
+    const femteBeregning = beregning[4];
+    const feilutbetaling5 = regnUtFeilutbetaling(femteBeregning);
+
     expect(feilutbetaling).toBe(5_100);
     expect(feilutbetaling2).toBe(1_350);
+    expect(feilutbetaling3).toBe(-5_060);
+    expect(feilutbetaling4).toBe(1_650);
+    expect(feilutbetaling5).toBe(0);
+});
+
+test('skal regne sum feilutbetaling og motregning for alle beregninger', () => {
+    const sumFeilutbetaling = regnUtSumFeilutbetaling(beregning);
+    const sumMotregning = regnUtMotregning(beregning);
+
+    expect(sumFeilutbetaling).toBe(8_100);
+    expect(sumMotregning).toBe(-5_060);
+
+    const totalFeilutbetaling = sumFeilutbetaling + sumMotregning;
+    expect(totalFeilutbetaling).toBe(3_040);
+});
+
+test('skal finne total sum feilutbetaling fra til og med beregning som beregnet fra', () => {
+    const beregningerBeregnetFraAndreElement = beregning.map((b, i) => ({
+        ...b,
+        beregnetfra: i === 1,
+    }));
+
+    const beregningerFraOgMedBeregnetFra = lagBeregningFraOgMedBeregnetFra(
+        beregningerBeregnetFraAndreElement
+    );
+
+    const sumFeilutbetaling = regnUtSumFeilutbetaling(beregningerFraOgMedBeregnetFra);
+    const sumMotregning = regnUtMotregning(beregningerFraOgMedBeregnetFra);
+
+    expect(beregningerFraOgMedBeregnetFra[0].beregnetfra).toBe(true);
+    expect(beregningerFraOgMedBeregnetFra[1].beregnetfra).toBe(false);
+
+    expect(sumFeilutbetaling).toBe(3_000);
+    expect(sumMotregning).toBe(-5_060);
+
+    const totalFeilutbetaling = sumFeilutbetaling + sumMotregning;
+    expect(totalFeilutbetaling).toBe(-2_060);
+
+    expect(beregningerFraOgMedBeregnetFra.length).toBe(4);
 });
