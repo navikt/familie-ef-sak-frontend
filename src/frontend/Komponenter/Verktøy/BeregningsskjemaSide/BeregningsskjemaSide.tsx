@@ -19,6 +19,7 @@ import { useToggles } from '../../../App/context/TogglesContext';
 import { ToggleName } from '../../../App/context/toggles';
 import TabellGjennomsnitt from './TabellGjennomsnitt';
 import { SlettKolonneKnapp } from './SlettKolonneKnapp';
+import { SettBeregnetFraKnapp } from './SettBeregnetFraKnapp';
 
 const tomPeriode: Periode = {
     fra: {
@@ -222,12 +223,11 @@ export const BeregningsskjemaSide: React.FC = () => {
                                         : 'inherit',
                                 }}
                             >
-                                <Table.DataCell>
-                                    {`${mapMånedTallTilNavn(
-                                        beregning.periode.måned
-                                    )} ${beregning.periode.årstall}`}
-                                    {beregning.beregnetfra && ' - Beregnet fra'}
-                                </Table.DataCell>
+                                <PeriodeRader
+                                    beregning={beregning}
+                                    beregningIndeks={beregningIndeks}
+                                    settBeregninger={settBeregninger}
+                                />
 
                                 <ArbeidsgivereRader
                                     beregninger={beregninger}
@@ -237,43 +237,33 @@ export const BeregningsskjemaSide: React.FC = () => {
                                 />
 
                                 <Table.DataCell></Table.DataCell>
+
                                 <Table.DataCell>
                                     {formaterTallMedTusenSkille(beregning.årslønn)}
                                 </Table.DataCell>
-                                <Table.DataCell>
-                                    <HStack gap="2">
-                                        <TextField
-                                            label="Redusert etter"
-                                            hideLabel
-                                            value={beregning.redusertEtter}
-                                            onChange={(e) =>
-                                                oppdaterRedusertEtter(
-                                                    beregningIndeks,
-                                                    Number(e.target.value) || 0
-                                                )
-                                            }
-                                            size="small"
-                                            placeholder="0"
-                                        />
-                                        {beregningIndeks < beregninger.length - 1 && (
-                                            <KopierNedKnapp
-                                                beregningIndeks={beregningIndeks}
-                                                kopierRedusertEtterTilBeregningerUnder={
-                                                    kopierRedusertEtterTilBeregningerUnder
-                                                }
-                                            />
-                                        )}
-                                    </HStack>
-                                </Table.DataCell>
+
+                                <RedusertEtterRader
+                                    beregning={beregning}
+                                    beregninger={beregninger}
+                                    beregningIndeks={beregningIndeks}
+                                    oppdaterRedusertEtter={oppdaterRedusertEtter}
+                                    kopierRedusertEtterTilBeregningerUnder={
+                                        kopierRedusertEtterTilBeregningerUnder
+                                    }
+                                />
+
                                 <Table.DataCell>
                                     {utledAvvikTag(finnAvvik(beregning))}
                                 </Table.DataCell>
+
                                 <Table.DataCell>
                                     {formaterTallMedTusenSkille(regnUtNyBeregning(beregning))}
                                 </Table.DataCell>
+
                                 <Table.DataCell>
                                     {formaterTallMedTusenSkille(regnUtHarMottatt(beregning))}
                                 </Table.DataCell>
+
                                 <Table.DataCell>
                                     {utledFeilutbetalingTag(regnUtFeilutbetaling(beregning))}
                                 </Table.DataCell>
@@ -325,6 +315,30 @@ const ArbeidsgivereKolonner: React.FC<{
     );
 };
 
+const PeriodeRader: React.FC<{
+    beregning: Beregning;
+    beregningIndeks: number;
+    settBeregninger: React.Dispatch<React.SetStateAction<Beregninger>>;
+}> = ({ beregning, beregningIndeks, settBeregninger }) => {
+    return (
+        <Table.DataCell>
+            <HStack align={'center'}>
+                {`${mapMånedTallTilNavn(beregning.periode.måned)} ${beregning.periode.årstall}`}
+
+                {beregning.beregnetfra && ' - Beregnet fra'}
+
+                {!beregning.beregnetfra && (
+                    <SettBeregnetFraKnapp
+                        beregningIndeks={beregningIndeks}
+                        oppdaterBeregnetfra={oppdaterBeregnetfra}
+                        settBeregninger={settBeregninger}
+                    />
+                )}
+            </HStack>
+        </Table.DataCell>
+    );
+};
+
 const ArbeidsgivereRader: React.FC<{
     beregninger: Beregning[];
     beregning: Beregning;
@@ -369,6 +383,45 @@ const ArbeidsgivereRader: React.FC<{
                 }
             )}
         </>
+    );
+};
+
+const RedusertEtterRader: React.FC<{
+    beregning: Beregning;
+    beregninger: Beregning[];
+    beregningIndeks: number;
+    oppdaterRedusertEtter: (beregningIndeks: number, nyVerdi: number) => void;
+    kopierRedusertEtterTilBeregningerUnder: (beregningIndeks: number) => void;
+}> = ({
+    beregning,
+    beregninger,
+    beregningIndeks,
+    oppdaterRedusertEtter,
+    kopierRedusertEtterTilBeregningerUnder,
+}) => {
+    return (
+        <Table.DataCell>
+            <HStack gap="2">
+                <TextField
+                    label="Redusert etter"
+                    hideLabel
+                    value={beregning.redusertEtter}
+                    onChange={(e) =>
+                        oppdaterRedusertEtter(beregningIndeks, Number(e.target.value) || 0)
+                    }
+                    size="small"
+                    placeholder="0"
+                />
+                {beregningIndeks < beregninger.length - 1 && (
+                    <KopierNedKnapp
+                        beregningIndeks={beregningIndeks}
+                        kopierRedusertEtterTilBeregningerUnder={
+                            kopierRedusertEtterTilBeregningerUnder
+                        }
+                    />
+                )}
+            </HStack>
+        </Table.DataCell>
     );
 };
 

@@ -60,8 +60,19 @@ export const summerÅrslønn = (beregning: Beregning): number => {
     return beregning.arbeidsgivere.reduce((sum, ag) => sum + ag.verdi, 0) * 12;
 };
 
-export const oppdaterBeregnetfra = (beregninger: Beregning[]): Beregning[] => {
+export const oppdaterBeregnetfra = (
+    beregninger: Beregning[],
+    indeksSkalGjeldeFra?: number
+): Beregning[] => {
     const resetBeregnetfra = beregninger.map((b) => ({ ...b, beregnetfra: false }));
+
+    if (indeksSkalGjeldeFra !== undefined && indeksSkalGjeldeFra < beregninger.length) {
+        return resetBeregnetfra.map((beregning, indeks) => ({
+            ...beregning,
+            beregnetfra: indeks === indeksSkalGjeldeFra,
+        }));
+    }
+
     const førsteMedAvvikOpp = beregninger.findIndex((b) => b.avvik === AvvikEnum.OPP);
 
     let beregnetfraIndeks = -1;

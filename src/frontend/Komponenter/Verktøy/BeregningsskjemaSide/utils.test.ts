@@ -136,6 +136,15 @@ test('skal sette korrekt automatisk beregnet fra', () => {
     expect(oppdatertBeregnetfra[4].beregnetfra).toBe(false);
 });
 
+test('skal kunne manuelt overstyre beregnet fra', () => {
+    const beregninger = [...beregning];
+    const indeksSkalGjeldeFra = 4;
+    const oppdaterteBeregninger = oppdaterBeregnetfra(beregninger, indeksSkalGjeldeFra);
+
+    expect(oppdaterteBeregninger[1].beregnetfra).toBe(false);
+    expect(oppdaterteBeregninger[indeksSkalGjeldeFra].beregnetfra).toBe(true);
+});
+
 test('skal mappe korrekt tall på måned til navn', () => {
     expect(mapMånedTallTilNavn('01')).toBe('Januar');
     expect(mapMånedTallTilNavn('1')).toBe('Januar');
