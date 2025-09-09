@@ -9,7 +9,7 @@ import { useApp } from '../../App/context/AppContext';
 import { useSetValgtFagsakPersonId } from '../../App/hooks/useSetValgtFagsakPersonId';
 import { useSetPersonIdent } from '../../App/hooks/useSetPersonIdent';
 import { useHentFagsakPerson } from '../../App/hooks/useHentFagsakPerson';
-import { Tabs } from '@navikt/ds-react';
+import { Tabs, VStack } from '@navikt/ds-react';
 import { InntektForPerson } from './InntektForPerson';
 import { PersonHeader } from '../../Felles/PersonHeader/PersonHeader';
 import { Personopplysninger } from './Personopplysninger';
@@ -19,6 +19,7 @@ import { FrittståendeBrevMedVisning } from '../Behandling/Brev/FrittståendeBre
 import { Dokumenter } from './Dokumenter';
 import { OpprettFagsak } from '../Behandling/Førstegangsbehandling/OpprettFagsak';
 import { Side } from './Side';
+import { Sticky } from '../../Felles/Visningskomponenter/Sticky';
 
 interface FaneProps {
     label: string;
@@ -161,20 +162,33 @@ const PersonOversikt: React.FC<Props> = ({
 
     return (
         <>
-            <PersonHeader fagsakPerson={fagsakPerson} personopplysninger={personopplysninger} />
-
-            <Tabs
-                value={path}
-                onChange={(fane) => {
-                    navigate(`/person/${fagsakPersonId}/${fane}`);
+            <Sticky
+                style={{
+                    zIndex: 23,
+                    top: '48px', // Høyden på headeren
                 }}
             >
-                <Tabs.List>
-                    {faner.map((fane) => (
-                        <Tabs.Tab key={fane.path} value={fane.path} label={fane.label} />
-                    ))}
-                </Tabs.List>
-            </Tabs>
+                <VStack>
+                    <PersonHeader
+                        fagsakPerson={fagsakPerson}
+                        personopplysninger={personopplysninger}
+                    />
+
+                    <Tabs
+                        value={path}
+                        onChange={(fane) => {
+                            navigate(`/person/${fagsakPersonId}/${fane}`);
+                        }}
+                    >
+                        <Tabs.List>
+                            {faner.map((fane) => (
+                                <Tabs.Tab key={fane.path} value={fane.path} label={fane.label} />
+                            ))}
+                        </Tabs.List>
+                    </Tabs>
+                </VStack>
+            </Sticky>
+
             <Side skalHaBakgrunnsfarge={skalHaBakgrunnsfarge}>
                 <Routes>
                     {faner.map((fane) => (
