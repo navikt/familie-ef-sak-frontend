@@ -2,7 +2,6 @@ import React, { FC } from 'react';
 import { IPersonopplysninger } from '../../App/typer/personopplysninger';
 import styled from 'styled-components';
 import { Behandling, Fagsak, FagsakPerson } from '../../App/typer/fagsak';
-import { Sticky } from '../Visningskomponenter/Sticky';
 import { nullableDatoTilAlder } from '../../App/utils/dato';
 import { useApp } from '../../App/context/AppContext';
 import { AksjonsknapperPersonHeader } from './AksjonsknapperPersonHeader';
@@ -10,23 +9,7 @@ import { ABorderStrong } from '@navikt/ds-tokens/dist/tokens';
 import Visittkort from './Visittkort';
 import PersonTags from './PersonTags';
 import BehandlingTags from './BehandlingTags';
-
-export const Container = styled(Sticky)`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-
-    padding: 0 1rem 0 1rem;
-
-    border-bottom: 1px solid ${ABorderStrong};
-    z-index: 23;
-    top: 48px; // Høyden på headeren
-
-    .visittkort {
-        border-bottom: none;
-    }
-`;
+import { HStack } from '@navikt/ds-react';
 
 const FlexContainer = styled.div`
     display: flex;
@@ -74,35 +57,42 @@ export const PersonHeader: FC<Props> = (props) => {
     const fagsakPersonId = harBehandling ? props.fagsak.fagsakPersonId : props.fagsakPerson.id;
 
     return (
-        <Container>
-            <FlexContainer>
-                <Visittkort
-                    fagsakPersonId={fagsakPersonId}
-                    kjønn={kjønn}
-                    ident={personIdent}
-                    visningsnavn={visningsnavn}
-                    borderBottom={false}
-                />
-                <PersonTags
-                    adressebeskyttelse={adressebeskyttelse}
-                    alder={alder}
-                    egenAnsatt={egenAnsatt}
-                    fullmakt={fullmakt}
-                    folkeregisterPersonStatus={folkeregisterpersonstatus}
-                    migrert={erFagsakMigrert}
-                    vergemål={vergemål}
-                />
-            </FlexContainer>
-
-            {harBehandling && (
+        <div
+            style={{
+                padding: '0 1rem 0 1rem',
+                borderBottom: `1px solid ${ABorderStrong}`,
+            }}
+        >
+            <HStack justify={'space-between'}>
                 <FlexContainer>
-                    <BehandlingTags behandling={props.behandling} />
-                    <AksjonsknapperPersonHeader
-                        behandling={props.behandling}
-                        erSaksbehandler={erSaksbehandler}
+                    <Visittkort
+                        fagsakPersonId={fagsakPersonId}
+                        kjønn={kjønn}
+                        ident={personIdent}
+                        visningsnavn={visningsnavn}
+                        borderBottom={false}
+                    />
+                    <PersonTags
+                        adressebeskyttelse={adressebeskyttelse}
+                        alder={alder}
+                        egenAnsatt={egenAnsatt}
+                        fullmakt={fullmakt}
+                        folkeregisterPersonStatus={folkeregisterpersonstatus}
+                        migrert={erFagsakMigrert}
+                        vergemål={vergemål}
                     />
                 </FlexContainer>
-            )}
-        </Container>
+
+                {harBehandling && (
+                    <FlexContainer>
+                        <BehandlingTags behandling={props.behandling} />
+                        <AksjonsknapperPersonHeader
+                            behandling={props.behandling}
+                            erSaksbehandler={erSaksbehandler}
+                        />
+                    </FlexContainer>
+                )}
+            </HStack>
+        </div>
     );
 };

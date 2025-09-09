@@ -1,9 +1,13 @@
-import styled from 'styled-components';
+import React from 'react';
+import styles from './Sticky.module.css';
 
-export const Sticky = styled.div`
-    position: sticky;
-    position: -webkit-sticky;
-    top: 0;
-    z-index: 24;
-    background-color: white;
-`;
+export const Sticky: React.FC<{ children: React.ReactNode; style?: React.CSSProperties }> = ({
+    children,
+    style,
+}) => {
+    return (
+        <div className={styles.sticky} style={style}>
+            {children}
+        </div>
+    );
+};
