@@ -230,7 +230,7 @@ test('skal returnere forventet feilutbetaling', () => {
     expect(feilutbetaling5).toBe(0);
 });
 
-test('skal regne sum feilutbetaling og motregning for alle beregninger', () => {
+test('skal regne ut sum feilutbetaling og motregning for alle beregninger', () => {
     const sumFeilutbetaling = regnUtSumFeilutbetaling(beregning);
     const sumMotregning = regnUtMotregning(beregning);
 
@@ -241,7 +241,7 @@ test('skal regne sum feilutbetaling og motregning for alle beregninger', () => {
     expect(totalFeilutbetaling).toBe(3_040);
 });
 
-test('skal finne total sum feilutbetaling fra til og med beregning som beregnet fra', () => {
+test('skal finne total sum feilutbetaling fra til og med beregning som er beregnet fra', () => {
     const beregningerBeregnetFraAndreElement = beregning.map((b, i) => ({
         ...b,
         beregnetfra: i === 1,
