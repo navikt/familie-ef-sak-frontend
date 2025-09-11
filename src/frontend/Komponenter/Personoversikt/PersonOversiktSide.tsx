@@ -18,7 +18,7 @@ import { Behandlingsoversikt } from './Behandlingsoversikt';
 import { FrittståendeBrevMedVisning } from '../Behandling/Brev/FrittståendeBrevMedVisning';
 import { Dokumenter } from './Dokumenter';
 import { OpprettFagsak } from '../Behandling/Førstegangsbehandling/OpprettFagsak';
-import { Side } from './Side';
+import { ABgSubtle, ABgDefault } from '@navikt/ds-tokens/dist/tokens';
 
 interface FaneProps {
     label: string;
@@ -157,7 +157,7 @@ const PersonOversikt: React.FC<Props> = ({
     const path = paths.length ? paths[paths.length - 1] : '';
     useSetPersonIdent(personopplysninger.personIdent);
 
-    const skalHaBakgrunnsfarge = path === 'frittstaaende-brev';
+    const bakgrunnsfarge = path === 'frittstaaende-brev' ? ABgSubtle : ABgDefault;
 
     return (
         <>
@@ -175,7 +175,7 @@ const PersonOversikt: React.FC<Props> = ({
                     ))}
                 </Tabs.List>
             </Tabs>
-            <Side skalHaBakgrunnsfarge={skalHaBakgrunnsfarge}>
+            <div style={{ padding: '1rem', backgroundColor: bakgrunnsfarge }}>
                 <Routes>
                     {faner.map((fane) => (
                         <Route
@@ -199,7 +199,7 @@ const PersonOversikt: React.FC<Props> = ({
                         }
                     />
                 </Routes>
-            </Side>
+            </div>
         </>
     );
 };
