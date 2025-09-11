@@ -22,7 +22,9 @@ const lagInntektsperioder = (beløpsperioder?: IBeløpsperiode[]): string => {
         ? samordningsfradagTilTekst[samordningsfradragstype]
         : '';
     const skalBrukeMånedsinntekt =
-        beløpsperioder && beløpsperioder[0]?.beregningsgrunnlag.månedsinntekt !== null;
+        beløpsperioder &&
+        beløpsperioder.length > 0 &&
+        beløpsperioder[0].beregningsgrunnlag.månedsinntekt !== null;
 
     const inntektstypeTekst: string = skalBrukeMånedsinntekt ? 'Månedsinntekt' : 'Beregnet inntekt';
 
@@ -30,7 +32,7 @@ const lagInntektsperioder = (beløpsperioder?: IBeløpsperiode[]): string => {
                 <thead>
                     <tr>
                         <td style="width: 110px; ${borderStylingCompact}"><strong>Periode</strong></td>
-                        <td style="width: 55px; word-wrap: break-word; ${borderStylingCompact}"><strong>${inntektstypeTekst}</strong></td>
+                        <td style="width: 60px; word-wrap: break-word; ${borderStylingCompact}"><strong>${inntektstypeTekst}</strong></td>
                         ${
                             samordningskolonneTittel &&
                             `<td style="width: 90px; word-wrap: break-word; ${borderStylingCompact}"><strong>${samordningskolonneTittel}</strong></td>`
