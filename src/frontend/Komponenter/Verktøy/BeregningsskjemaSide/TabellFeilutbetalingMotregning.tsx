@@ -46,5 +46,3 @@ export const TabellFeilutbetalingMotregning: React.FC<{
         </div>
     );
 };
-
-export default TabellFeilutbetalingMotregning;

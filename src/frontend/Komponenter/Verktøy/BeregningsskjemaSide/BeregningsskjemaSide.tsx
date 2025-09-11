@@ -17,10 +17,10 @@ import { KopierNedKnapp } from './KopierNedKnapp';
 import { Periode, Beregninger, AvvikEnum, Beregning } from './typer';
 import { useToggles } from '../../../App/context/TogglesContext';
 import { ToggleName } from '../../../App/context/toggles';
-import TabellGjennomsnitt from './TabellGjennomsnitt';
+import { TabellGjennomsnitt } from './TabellGjennomsnitt';
 import { SlettKolonneKnapp } from './SlettKolonneKnapp';
 import { SettBeregnetFraKnapp } from './SettBeregnetFraKnapp';
-import TabellFeilutbetalingMotregning from './TabellFeilutbetalingMotregning';
+import { TabellFeilutbetalingMotregning } from './TabellFeilutbetalingMotregning';
 
 const tomPeriode: Periode = {
     fra: {
@@ -211,9 +211,18 @@ export const BeregningsskjemaSide: React.FC = () => {
                             <Table.HeaderCell scope="col">Årslønn</Table.HeaderCell>
                             <Table.HeaderCell scope="col">Redusert etter</Table.HeaderCell>
                             <Table.HeaderCell scope="col">10% avvik i inntekt</Table.HeaderCell>
-                            <Table.HeaderCell scope="col">Ny beregning</Table.HeaderCell>
-                            <Table.HeaderCell scope="col">Har mottatt</Table.HeaderCell>
-                            <Table.HeaderCell scope="col">Feilutbetaling</Table.HeaderCell>
+
+                            <Table.HeaderCell scope="col" align="right">
+                                Ny beregning
+                            </Table.HeaderCell>
+
+                            <Table.HeaderCell scope="col" align="right">
+                                Har mottatt
+                            </Table.HeaderCell>
+
+                            <Table.HeaderCell scope="col" align="right">
+                                Feilutbetaling
+                            </Table.HeaderCell>
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
@@ -259,15 +268,15 @@ export const BeregningsskjemaSide: React.FC = () => {
                                     {utledAvvikTag(finnAvvik(beregning))}
                                 </Table.DataCell>
 
-                                <Table.DataCell>
+                                <Table.DataCell align="right">
                                     {formaterTallMedTusenSkille(regnUtNyBeregning(beregning))}
                                 </Table.DataCell>
 
-                                <Table.DataCell>
+                                <Table.DataCell align="right">
                                     {formaterTallMedTusenSkille(regnUtHarMottatt(beregning))}
                                 </Table.DataCell>
 
-                                <Table.DataCell>
+                                <Table.DataCell align="right">
                                     {utledFeilutbetalingTag(regnUtFeilutbetaling(beregning))}
                                 </Table.DataCell>
                             </Table.Row>

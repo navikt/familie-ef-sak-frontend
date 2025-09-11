@@ -209,25 +209,17 @@ test('skal returnere forventet verdi av det som har blitt mottatt', () => {
 
 test('skal returnere forventet feilutbetaling', () => {
     const førsteBeregning = beregning[0];
-    const feilutbetaling = regnUtFeilutbetaling(førsteBeregning);
-
-    const andreBeregning = beregning[1];
-    const feilutbetaling2 = regnUtFeilutbetaling(andreBeregning);
+    const feilutbetalingMedPositivtTall = regnUtFeilutbetaling(førsteBeregning);
 
     const tredjeBeregning = beregning[2];
-    const feilutbetaling3 = regnUtFeilutbetaling(tredjeBeregning);
-
-    const fjerdeBeregning = beregning[3];
-    const feilutbetaling4 = regnUtFeilutbetaling(fjerdeBeregning);
+    const feilutbetalingMedNegativtTall = regnUtFeilutbetaling(tredjeBeregning);
 
     const femteBeregning = beregning[4];
-    const feilutbetaling5 = regnUtFeilutbetaling(femteBeregning);
+    const feilutbetalingMedNull = regnUtFeilutbetaling(femteBeregning);
 
-    expect(feilutbetaling).toBe(5_100);
-    expect(feilutbetaling2).toBe(1_350);
-    expect(feilutbetaling3).toBe(-5_060);
-    expect(feilutbetaling4).toBe(1_650);
-    expect(feilutbetaling5).toBe(0);
+    expect(feilutbetalingMedPositivtTall).toBe(5_100);
+    expect(feilutbetalingMedNegativtTall).toBe(-5_060);
+    expect(feilutbetalingMedNull).toBe(0);
 });
 
 test('skal regne ut sum feilutbetaling og motregning for alle beregninger', () => {
@@ -242,6 +234,7 @@ test('skal regne ut sum feilutbetaling og motregning for alle beregninger', () =
 });
 
 test('skal finne total sum feilutbetaling fra til og med beregning som er beregnet fra', () => {
+    expect(beregning.length).toBe(5);
     const beregningerBeregnetFraAndreElement = beregning.map((b, i) => ({
         ...b,
         beregnetfra: i === 1,

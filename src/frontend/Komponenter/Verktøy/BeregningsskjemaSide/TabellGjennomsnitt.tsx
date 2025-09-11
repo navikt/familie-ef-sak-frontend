@@ -4,7 +4,7 @@ import { regnUtGjennomsnittÅrslønn, finnGjennomsnittligAvvik, rundTilNærmeste
 import { Periode, Beregning } from './typer';
 import { utledAvvikTag } from './BeregningsskjemaSide';
 
-const TabellGjennomsnitt: React.FC<{ periode: Periode; beregninger: Beregning[] }> = ({
+export const TabellGjennomsnitt: React.FC<{ periode: Periode; beregninger: Beregning[] }> = ({
     periode,
     beregninger,
 }) => {
@@ -41,5 +41,3 @@ const TabellGjennomsnitt: React.FC<{ periode: Periode; beregninger: Beregning[] 
         </div>
     );
 };
-
-export default TabellGjennomsnitt;
