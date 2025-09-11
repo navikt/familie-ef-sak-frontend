@@ -17,24 +17,17 @@ import { BrevmottakereForBehandling } from '../Brevmottakere/BrevmottakereForBeh
 import { Behandling } from '../../../App/typer/fagsak';
 import { OverstyrtBrevmalVarsel } from './OverstyrtBrevmalVarsel';
 import { FremleggoppgaverSomOpprettes } from './FremleggoppgaverSomOpprettes';
-import { VStack } from '@navikt/ds-react';
+import { HStack, VStack } from '@navikt/ds-react';
 import { OppgaverForFerdigstilling } from '../Totrinnskontroll/OppgaverForFerdigstilling';
 import { useHentOppfølgingsoppgave } from '../../../App/hooks/useHentOppfølgingsoppgave';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
-//import styled from 'styled-components';
 import { AutomatiskBrevSomSendes } from './AutomatiskBrevSomSendes';
 import { IBrevmottakere } from '../Brevmottakere/typer';
 import { AxiosRequestConfig } from 'axios';
-import styles from './BrevFane.module.css';
 
 interface Props {
     behandling: Behandling;
 }
-
-// const StyledVStack = styled(VStack)`
-//     position: sticky;
-//     top: 100px;
-// `;
 
 export const BrevFane: React.FC<Props> = ({ behandling }) => {
     const { axiosRequest } = useApp();
@@ -123,7 +116,11 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
         >
             {({ personopplysningerResponse, vedtak, vilkår, brevmottakere }) => {
                 return (
-                    <div className={styles.brevContainer}>
+                    <HStack
+                        gap="4"
+                        padding={'space-16'}
+                        style={{ backgroundColor: 'var(--a-gray-50)' }}
+                    >
                         <div style={{ flex: 1 }}>
                             {feilmelding && <AlertError size="small">{feilmelding}</AlertError>}
                             <VStack gap="4">
@@ -185,7 +182,8 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
                                 />
                             </VStack>
                         </div>
-                    </div>
+                    </HStack>
+                    /*</div>*/
                 );
             }}
         </DataViewer>
