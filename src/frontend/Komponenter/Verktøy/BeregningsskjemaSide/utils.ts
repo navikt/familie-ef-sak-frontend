@@ -223,3 +223,43 @@ export const regnUtFeilutbetaling = (beregning: Beregning): number => {
 
     return harMottatt - nyBeregning;
 };
+
+export const regnUtSumFeilutbetaling = (beregninger: Beregning[]): number => {
+    const feilutbetalinger = beregninger.map((b) => regnUtFeilutbetaling(b));
+
+    const sumFeilutbetaling = feilutbetalinger
+        .filter((feilutbetaling) => feilutbetaling > 0)
+        .reduce((sum, feilutbetaling) => sum + feilutbetaling, 0);
+
+    return sumFeilutbetaling;
+};
+
+export const regnUtMotregning = (beregninger: Beregning[]): number => {
+    const feilutbetalinger = beregninger.map((b) => regnUtFeilutbetaling(b));
+
+    const sumMotregning = feilutbetalinger
+        .filter((feilutbetaling) => feilutbetaling < 0)
+        .reduce((sum, feilutbetaling) => sum + feilutbetaling, 0);
+
+    return sumMotregning;
+};
+
+export const lagBeregningFraOgMedBeregnetFra = (beregninger: Beregning[]): Beregning[] => {
+    const oppdaterteBeregninger = beregninger.map((beregning) => ({
+        ...beregning,
+        avvik: finnAvvik(beregning),
+    }));
+
+    const beregningBeregnetFra = oppdaterteBeregninger.find(
+        (beregning) => beregning.beregnetfra === true
+    );
+
+    if (beregningBeregnetFra) {
+        const beregningBeregnetFraIndex = oppdaterteBeregninger.findIndex(
+            (beregning) => beregning.beregnetfra === true
+        );
+        return oppdaterteBeregninger.slice(beregningBeregnetFraIndex);
+    }
+
+    return oppdaterteBeregninger;
+};
