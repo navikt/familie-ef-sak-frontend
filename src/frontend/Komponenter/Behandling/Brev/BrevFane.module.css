@@ -1,0 +1,12 @@
+.brevContainer {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: var(--a-gray-50);
+    height: 100%;
+
+    @media (max-width: 1400px) {
+        flex-direction: column;
+        padding: 3rem;
+    }
+}

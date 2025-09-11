@@ -21,35 +21,20 @@ import { VStack } from '@navikt/ds-react';
 import { OppgaverForFerdigstilling } from '../Totrinnskontroll/OppgaverForFerdigstilling';
 import { useHentOppfølgingsoppgave } from '../../../App/hooks/useHentOppfølgingsoppgave';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
-import styled from 'styled-components';
+//import styled from 'styled-components';
 import { AutomatiskBrevSomSendes } from './AutomatiskBrevSomSendes';
 import { IBrevmottakere } from '../Brevmottakere/typer';
 import { AxiosRequestConfig } from 'axios';
-
-const StyledVStack = styled(VStack)`
-    position: sticky;
-    top: 100px;
-`;
-
-const Container = styled.div`
-    display: flex;
-    gap: 1rem;
-    padding: 1rem;
-    background-color: #f2f2f2;
-
-    @media (max-width: 1400px) {
-        flex-direction: column;
-        padding: 3rem;
-    }
-`;
-
-const LikDelContainer = styled.div`
-    flex: 1;
-`;
+import styles from './BrevFane.module.css';
 
 interface Props {
     behandling: Behandling;
 }
+
+// const StyledVStack = styled(VStack)`
+//     position: sticky;
+//     top: 100px;
+// `;
 
 export const BrevFane: React.FC<Props> = ({ behandling }) => {
     const { axiosRequest } = useApp();
@@ -138,8 +123,8 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
         >
             {({ personopplysningerResponse, vedtak, vilkår, brevmottakere }) => {
                 return (
-                    <Container>
-                        <LikDelContainer>
+                    <div className={styles.brevContainer}>
+                        <div style={{ flex: 1 }}>
                             {feilmelding && <AlertError size="small">{feilmelding}</AlertError>}
                             <VStack gap="4">
                                 <BrevmottakereForBehandling
@@ -179,10 +164,10 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
                                     />
                                 )}
                             </VStack>
-                        </LikDelContainer>
+                        </div>
 
-                        <LikDelContainer>
-                            <StyledVStack gap="8" align={'center'}>
+                        <div style={{ flex: 1 }}>
+                            <VStack gap="8" position="sticky" top={'space-24'} align={'center'}>
                                 <PdfVisning
                                     pdfFilInnhold={brevRessurs}
                                     erDokumentInnlastet={erDokumentInnlastet}
@@ -198,9 +183,9 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
                                     hentOppfølgingsoppgave={hentOppfølgingsoppgave}
                                     oppfølgingsoppgave={oppfølgingsoppgave}
                                 />
-                            </StyledVStack>
-                        </LikDelContainer>
-                    </Container>
+                            </VStack>
+                        </div>
+                    </div>
                 );
             }}
         </DataViewer>
