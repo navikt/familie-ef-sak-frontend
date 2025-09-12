@@ -10,6 +10,7 @@ export enum ToggleName {
     henleggBehandlingUtenÅHenleggeOppgave = 'familie.ef.sak.henlegg-behandling-uten-oppgave',
     visSatsendring = 'familie.ef.sak.frontend-vis-satsendring',
     velgÅrsakVedKlageOpprettelse = 'familie.ef.sak.klagebehandling-arsak',
+    visAndreYtelser = 'familie.ef.sak.vis-andre-ytelser',
 
     // Miljø-toggles - la stå
     visIkkePubliserteBrevmaler = 'familie.ef.sak.frontend-vis-ikke-publiserte-brevmaler',
