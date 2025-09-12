@@ -19,6 +19,7 @@ import { FrittståendeBrevMedVisning } from '../Behandling/Brev/FrittståendeBre
 import { Dokumenter } from './Dokumenter';
 import { OpprettFagsak } from '../Behandling/Førstegangsbehandling/OpprettFagsak';
 import { ABgSubtle, ABgDefault } from '@navikt/ds-tokens/dist/tokens';
+import { AndreYtelserFane } from './AndreYtelser/AndreYtelserFane';
 
 interface FaneProps {
     label: string;
@@ -97,6 +98,11 @@ const faner: FaneProps[] = [
         label: 'Inntekt',
         path: 'inntekt',
         komponent: (fagsakPerson) => <InntektForPerson fagsakPersonId={fagsakPerson.id} />,
+    },
+    {
+        label: 'Andre ytelser',
+        path: 'andre-ytelser',
+        komponent: (fagsakPerson) => <AndreYtelserFane fagsakPersonId={fagsakPerson.id} />,
     },
 ];
 
