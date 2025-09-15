@@ -36,6 +36,7 @@ export enum KlageinstansEventType {
 
 export enum KlageinstansUtfall {
     TRUKKET = 'TRUKKET',
+    HENLAGT = 'HENLAGT',
     RETUR = 'RETUR',
     OPPHEVET = 'OPPHEVET',
     MEDHOLD = 'MEDHOLD',
@@ -77,6 +78,7 @@ export enum KlageHenlagtÅrsak {
 
 export const klageinstansUtfallTilTekst: Record<KlageinstansUtfall, string> = {
     TRUKKET: 'Trukket KA',
+    HENLAGT: 'HENLAGT KA',
     RETUR: 'Retur KA',
     OPPHEVET: 'Opphevet KA',
     MEDHOLD: 'Medhold KA',
