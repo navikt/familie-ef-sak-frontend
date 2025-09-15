@@ -74,7 +74,7 @@
         "svg-inline-loader": "^0.8.2",
         "tsc-alias": "^1.8.16",
         "use-debounce": "^10.0.6",
-        "uuid": "^12.0.0",
+        "uuid": "^13.0.0",
         "webpack-dev-server": "^5.2.2",
         "winston": "^3.17.0"
     },
