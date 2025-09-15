@@ -9,7 +9,7 @@ import { useApp } from '../../App/context/AppContext';
 import { useSetValgtFagsakPersonId } from '../../App/hooks/useSetValgtFagsakPersonId';
 import { useSetPersonIdent } from '../../App/hooks/useSetPersonIdent';
 import { useHentFagsakPerson } from '../../App/hooks/useHentFagsakPerson';
-import { Tabs } from '@navikt/ds-react';
+import { Tabs, VStack } from '@navikt/ds-react';
 import { InntektForPerson } from './InntektForPerson';
 import { PersonHeader } from '../../Felles/PersonHeader/PersonHeader';
 import { Personopplysninger } from './Personopplysninger';
@@ -22,6 +22,7 @@ import { ABgSubtle, ABgDefault } from '@navikt/ds-tokens/dist/tokens';
 import { AndreYtelserFane } from './AndreYtelser/AndreYtelserFane';
 import { useToggles } from '../../App/context/TogglesContext';
 import { ToggleName } from '../../App/context/toggles';
+import { Sticky } from '../../Felles/Visningskomponenter/Sticky';
 
 interface FaneProps {
     label: string;
@@ -174,20 +175,33 @@ const PersonOversikt: React.FC<Props> = ({
 
     return (
         <>
-            <PersonHeader fagsakPerson={fagsakPerson} personopplysninger={personopplysninger} />
-
-            <Tabs
-                value={path}
-                onChange={(fane) => {
-                    navigate(`/person/${fagsakPersonId}/${fane}`);
+            <Sticky
+                style={{
+                    zIndex: 23,
+                    top: '48px', // Høyden på headeren
                 }}
             >
-                <Tabs.List>
-                    {fanerMedFeatureToggle.map((fane) => (
-                        <Tabs.Tab key={fane.path} value={fane.path} label={fane.label} />
-                    ))}
-                </Tabs.List>
-            </Tabs>
+                <VStack>
+                    <PersonHeader
+                        fagsakPerson={fagsakPerson}
+                        personopplysninger={personopplysninger}
+                    />
+
+                    <Tabs
+                        value={path}
+                        onChange={(fane) => {
+                            navigate(`/person/${fagsakPersonId}/${fane}`);
+                        }}
+                    >
+                        <Tabs.List>
+                            {fanerMedFeatureToggle.map((fane) => (
+                                <Tabs.Tab key={fane.path} value={fane.path} label={fane.label} />
+                            ))}
+                        </Tabs.List>
+                    </Tabs>
+                </VStack>
+            </Sticky>
+
             <div style={{ padding: '1rem', backgroundColor: bakgrunnsfarge }}>
                 <Routes>
                     {fanerMedFeatureToggle.map((fane) => (
