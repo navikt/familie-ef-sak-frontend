@@ -18,7 +18,10 @@ import { Behandlingsoversikt } from './Behandlingsoversikt';
 import { FrittståendeBrevMedVisning } from '../Behandling/Brev/FrittståendeBrevMedVisning';
 import { Dokumenter } from './Dokumenter';
 import { OpprettFagsak } from '../Behandling/Førstegangsbehandling/OpprettFagsak';
-import { Side } from './Side';
+import { ABgSubtle, ABgDefault } from '@navikt/ds-tokens/dist/tokens';
+import { AndreYtelserFane } from './AndreYtelser/AndreYtelserFane';
+import { useToggles } from '../../App/context/TogglesContext';
+import { ToggleName } from '../../App/context/toggles';
 import { Sticky } from '../../Felles/Visningskomponenter/Sticky';
 
 interface FaneProps {
@@ -99,6 +102,11 @@ const faner: FaneProps[] = [
         path: 'inntekt',
         komponent: (fagsakPerson) => <InntektForPerson fagsakPersonId={fagsakPerson.id} />,
     },
+    {
+        label: 'Andre ytelser',
+        path: 'andre-ytelser',
+        komponent: (fagsakPerson) => <AndreYtelserFane fagsakPersonId={fagsakPerson.id} />,
+    },
 ];
 
 export const PersonOversiktSide: React.FC = () => {
@@ -154,11 +162,16 @@ const PersonOversikt: React.FC<Props> = ({
 }) => {
     const navigate = useNavigate();
     const { erSaksbehandler } = useApp();
+    const { toggles } = useToggles();
     const paths = useLocation().pathname.split('/').slice(-1);
     const path = paths.length ? paths[paths.length - 1] : '';
     useSetPersonIdent(personopplysninger.personIdent);
 
-    const skalHaBakgrunnsfarge = path === 'frittstaaende-brev';
+    const bakgrunnsfarge = path === 'frittstaaende-brev' ? ABgSubtle : ABgDefault;
+
+    const fanerMedFeatureToggle = faner.filter((fane) =>
+        toggles[ToggleName.visAndreYtelser] ? true : fane.path !== 'andre-ytelser'
+    );
 
     return (
         <>
@@ -181,7 +194,7 @@ const PersonOversikt: React.FC<Props> = ({
                         }}
                     >
                         <Tabs.List>
-                            {faner.map((fane) => (
+                            {fanerMedFeatureToggle.map((fane) => (
                                 <Tabs.Tab key={fane.path} value={fane.path} label={fane.label} />
                             ))}
                         </Tabs.List>
@@ -189,9 +202,9 @@ const PersonOversikt: React.FC<Props> = ({
                 </VStack>
             </Sticky>
 
-            <Side skalHaBakgrunnsfarge={skalHaBakgrunnsfarge}>
+            <div style={{ padding: '1rem', backgroundColor: bakgrunnsfarge }}>
                 <Routes>
-                    {faner.map((fane) => (
+                    {fanerMedFeatureToggle.map((fane) => (
                         <Route
                             key={fane.path}
                             path={`/${fane.path}`}
@@ -213,7 +226,7 @@ const PersonOversikt: React.FC<Props> = ({
                         }
                     />
                 </Routes>
-            </Side>
+            </div>
         </>
     );
 };
