@@ -121,7 +121,7 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
                         padding={'space-16'}
                         style={{ backgroundColor: 'var(--a-gray-50)' }}
                     >
-                        <VStack flexGrow="1">
+                        <div style={{ flex: 1 }}>
                             {feilmelding && <AlertError size="small">{feilmelding}</AlertError>}
                             <VStack gap="4">
                                 <BrevmottakereForBehandling
@@ -161,9 +161,9 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
                                     />
                                 )}
                             </VStack>
-                        </VStack>
+                        </div>
 
-                        <VStack flexGrow="1">
+                        <div style={{ flex: 1 }}>
                             <VStack gap="8" position="sticky" top={'space-24'} align={'center'}>
                                 <PdfVisning
                                     pdfFilInnhold={brevRessurs}
@@ -181,7 +181,7 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
                                     oppfølgingsoppgave={oppfølgingsoppgave}
                                 />
                             </VStack>
-                        </VStack>
+                        </div>
                     </HStack>
                 );
             }}
