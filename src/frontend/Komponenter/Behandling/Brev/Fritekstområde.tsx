@@ -13,30 +13,19 @@ import { ArrowDownIcon, ArrowUpIcon, PlusIcon, TrashIcon } from '@navikt/aksel-i
 import { FritekstAvsnitt, Fritekstområder } from './BrevTyper';
 
 const FritekstAvsnittContainer: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-    <Box padding="4" borderWidth="1" borderRadius="small" borderColor="border-subtle" width={'90%'}>
-        <VStack gap="1">
-            <Heading size="xsmall">Avsnitt</Heading>
+    <Box padding="4" borderWidth="1" borderRadius="small" borderColor="border-default">
+        <VStack gap="2" width="100%">
             {children}
         </VStack>
     </Box>
 );
 
 const FritekstområdePanel: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-    <Box padding="4" width="90%">
-        <HStack gap="4">{children}</HStack>
+    <Box padding="4">
+        <VStack gap="4" width="100%">
+            {children}
+        </VStack>
     </Box>
-);
-
-const KnappeWrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-    <div
-        style={{
-            display: 'flex',
-            justifyContent: 'flex-end',
-            gap: '0.5rem',
-        }}
-    >
-        {children}
-    </div>
 );
 
 export const Fritekstområde: React.FC<{
@@ -126,7 +115,7 @@ export const Fritekstområde: React.FC<{
                                     })
                                 }
                             />
-                            <KnappeWrapper>
+                            <HStack gap="1" justify="end">
                                 <Tooltip content="Slett avsnitt">
                                     <Button
                                         icon={<TrashIcon />}
@@ -151,7 +140,7 @@ export const Fritekstområde: React.FC<{
                                         onClick={() => flyttAvsnittOpp(indeks)}
                                     />
                                 </Tooltip>
-                            </KnappeWrapper>
+                            </HStack>
                         </FritekstAvsnittContainer>
                     );
                 })}
