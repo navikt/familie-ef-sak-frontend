@@ -183,7 +183,6 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
                             </VStack>
                         </div>
                     </HStack>
-                    /*</div>*/
                 );
             }}
         </DataViewer>
