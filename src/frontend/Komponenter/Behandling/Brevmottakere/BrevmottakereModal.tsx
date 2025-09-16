@@ -71,9 +71,20 @@ export const BrevmottakereModal: FC<{
 
     const initiellePersonIdenter = mottakere.personer.map((mottaker) => mottaker.personIdent);
     const valgtePersonIdenter = valgtePersonMottakere.map((mottaker) => mottaker.personIdent);
-    const initielleMottakerRoller = mottakere.personer.map((mottaker) => mottaker.mottakerRolle);
-    const valgteMottakerRoller = valgtePersonMottakere.map((mottaker) => mottaker.mottakerRolle);
+    const initielleMottakerRollerPerson = mottakere.personer.map(
+        (mottaker) => mottaker.mottakerRolle
+    );
+    const valgteMottakerRollerPerson = valgtePersonMottakere.map(
+        (mottaker) => mottaker.mottakerRolle
+    );
+
     const initielleOrgNumre = mottakere.organisasjoner;
+    const initielleMottakerRollerOrganisasjon = mottakere.organisasjoner.map(
+        (organisasjon) => organisasjon.mottakerRolle
+    );
+    const valgteMottakerRollerOrganisasjon = valgteOrganisasjonMottakere.map(
+        (organisasjon) => organisasjon.mottakerRolle
+    );
 
     const settBrevmottakere = () => {
         settFeilmelding('');
@@ -129,7 +140,11 @@ export const BrevmottakereModal: FC<{
 
     const mottakerListeHarEndringer =
         harNyeMottakere(initiellePersonIdenter, valgtePersonIdenter) ||
-        harEndretMottakerRoller(initielleMottakerRoller, valgteMottakerRoller) ||
+        harEndretMottakerRoller(initielleMottakerRollerPerson, valgteMottakerRollerPerson) ||
+        harEndretMottakerRoller(
+            initielleMottakerRollerOrganisasjon,
+            valgteMottakerRollerOrganisasjon
+        ) ||
         harNyeOrganisasjoner(initielleOrgNumre, valgteOrganisasjonMottakere);
 
     const deaktiverSettMottakere = !harBrevmottakere || !mottakerListeHarEndringer;
