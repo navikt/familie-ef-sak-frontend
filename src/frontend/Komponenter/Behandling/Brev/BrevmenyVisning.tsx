@@ -27,30 +27,14 @@ import {
 } from './BrevUtils';
 import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { useApp } from '../../../App/context/AppContext';
-import styled from 'styled-components';
 import { apiLoggFeil } from '../../../App/api/axios';
 import { IBrevverdier, MellomlagreSanitybrev } from '../../../App/hooks/useMellomlagringBrev';
 import { useDebouncedCallback } from 'use-debounce';
-import { Alert, Box, Heading } from '@navikt/ds-react';
+import { Alert, Box, Heading, VStack } from '@navikt/ds-react';
 import { Brevverdier } from '../../../App/hooks/useVerdierForBrev';
 import { Fritekstområde } from './Fritekstområde';
 import { IPersonopplysninger } from '../../../App/typer/personopplysninger';
 import { IBrevmottakere } from '../Brevmottakere/typer';
-
-const BrevFelter = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    min-width: 450px;
-`;
-
-const BrevMenyTittel = styled.div`
-    margin-bottom: 1rem;
-`;
-
-const BrevMenyDelmalWrapper = styled.div<{ $førsteElement?: boolean }>`
-    margin-top: ${(props) => (props.$førsteElement ? '0' : '1rem')};
-`;
 
 export type BrevmenyVisningProps = {
     brevStruktur: BrevStruktur;
@@ -299,7 +283,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     };
 
     return (
-        <BrevFelter>
+        <VStack gap="4" minWidth="450px">
             {brevmalFeil && <Alert variant={'warning'}>{brevmalFeil}</Alert>}
             {brevmenyBlokkerGruppert.map((gruppe, indeks) => {
                 if (erDelmalGruppe(gruppe)) {
@@ -307,17 +291,12 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                     return (
                         <Box key={`${gruppe.gruppeVisningsnavn}_${indeks}`}>
                             {gruppe.gruppeVisningsnavn !== 'undefined' && (
-                                <BrevMenyTittel>
-                                    <Heading size="xsmall" level={'5'}>
-                                        {gruppe.gruppeVisningsnavn}
-                                    </Heading>
-                                </BrevMenyTittel>
+                                <Heading size="xsmall" level={'5'} spacing>
+                                    {gruppe.gruppeVisningsnavn}
+                                </Heading>
                             )}
-                            {gruppe.delmaler.map((delmal: Delmal, index: number) => (
-                                <BrevMenyDelmalWrapper
-                                    $førsteElement={index === 0}
-                                    key={`${delmal.delmalApiNavn}_wrapper`}
-                                >
+                            <VStack gap="4">
+                                {gruppe.delmaler.map((delmal: Delmal) => (
                                     <BrevMenyDelmal
                                         valgt={valgteDelmaler[delmal.delmalApiNavn]}
                                         delmal={delmal}
@@ -338,8 +317,8 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                                             konverterTilDelmalblokk: konverterHtmlTilDelmalblokk,
                                         }}
                                     />
-                                </BrevMenyDelmalWrapper>
-                            ))}
+                                ))}
+                            </VStack>
                         </Box>
                     );
                 } else {
@@ -353,7 +332,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                     );
                 }
             })}
-        </BrevFelter>
+        </VStack>
     );
 };
 
