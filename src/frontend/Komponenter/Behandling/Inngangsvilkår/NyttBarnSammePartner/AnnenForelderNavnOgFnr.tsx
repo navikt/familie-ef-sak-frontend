@@ -1,33 +1,34 @@
 import React from 'react';
-import { IAnnenForelder } from '../Aleneomsorg/typer';
+import { IAnnenForelder, IBarnMedSamværSøknadsgrunnlag } from '../Aleneomsorg/typer';
 import { KopierbartNullableFødselsnummer } from '../../../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
 import { harVerdi } from '../../../../App/utils/utils';
 import EtikettDød from '../../../../Felles/Etiketter/EtikettDød';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 import { LenkeTilPersonopplysningsside } from '../../../../Felles/Lenker/LenkeTilPersonopplysningsside';
-import styled from 'styled-components';
+import { HStack } from '@navikt/ds-react';
 
 interface Props {
     forelder: IAnnenForelder;
+    søknadsgrunnlag?: IBarnMedSamværSøknadsgrunnlag;
 }
 
-const AnnenForelderWrapper = styled.div`
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-`;
-
-export const AnnenForelderNavnOgFnr: React.FC<Props> = ({ forelder }) => {
+export const AnnenForelderNavnOgFnr: React.FC<Props> = ({ forelder, søknadsgrunnlag }) => {
     const { navn, fødselsnummer, fødselsdato, dødsfall } = forelder;
 
+    const { ikkeOppgittAnnenForelderBegrunnelse } = søknadsgrunnlag || {};
+    const { fødselsdato: fødselsdatoAnnenForelder } = søknadsgrunnlag?.forelder || {};
+
     return (
-        <AnnenForelderWrapper>
+        <HStack gap={'space-4'} align={'center'}>
             <LenkeTilPersonopplysningsside personIdent={fødselsnummer}>
                 {harVerdi(navn) && navn !== 'ikke oppgitt' ? `${navn}` : 'Ikke oppgitt navn'}
             </LenkeTilPersonopplysningsside>
+
             <BodyShortSmall>
+                {ikkeOppgittAnnenForelderBegrunnelse && ikkeOppgittAnnenForelderBegrunnelse}
+                {fødselsdatoAnnenForelder && formaterNullableIsoDato(fødselsdatoAnnenForelder)}
+
                 {fødselsnummer ? (
                     <KopierbartNullableFødselsnummer fødselsnummer={fødselsnummer} />
                 ) : fødselsdato ? (
@@ -36,7 +37,8 @@ export const AnnenForelderNavnOgFnr: React.FC<Props> = ({ forelder }) => {
                     '- '
                 )}
             </BodyShortSmall>
+
             {dødsfall && <EtikettDød dødsdato={dødsfall} />}
-        </AnnenForelderWrapper>
+        </HStack>
     );
 };
