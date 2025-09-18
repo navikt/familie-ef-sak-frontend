@@ -10,20 +10,12 @@ import {
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import { ValgfeltSelect } from './ValgfeltSelect';
 import { Flettefelt } from './Flettefelt';
-import styled from 'styled-components';
 import { Button, Checkbox, HStack, VStack } from '@navikt/ds-react';
 import { ABorderDefault, ABorderRadiusMedium } from '@navikt/ds-tokens/dist/tokens';
 import { HtmlEditor } from '../../../Felles/HtmlEditor/HtmlEditor';
 import { ArrowsSquarepathIcon, ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons';
 import { finnFlettefeltRefFraFlettefeltApiNavn } from './BrevUtils';
 import { formaterTallMedTusenSkille } from '../../../App/utils/formatter';
-
-const DelmalValg = styled.div`
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    gap: 0.5rem;
-`;
 
 interface Props {
     delmal: Delmal;
@@ -125,7 +117,7 @@ export const BrevMenyDelmal: React.FC<Props> = ({
     );
 
     return (
-        <DelmalValg>
+        <HStack gap="2" wrap={false}>
             <Checkbox hideLabel onChange={håndterToggleDelmal} checked={valgt} size="small">
                 Velg delmal
             </Checkbox>
@@ -219,6 +211,6 @@ export const BrevMenyDelmal: React.FC<Props> = ({
                     </VStack>
                 )}
             </VStack>
-        </DelmalValg>
+        </HStack>
     );
 };
