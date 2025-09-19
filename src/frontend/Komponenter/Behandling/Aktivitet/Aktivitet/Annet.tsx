@@ -8,7 +8,6 @@ import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 import { InfoSeksjonWrapper } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
 import { FlexColumnContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
-import styles from './Aktivitet.module.css';
 
 const hjelpetekst = (
     <ul>
@@ -47,7 +46,7 @@ const Annet: FC<Props> = ({ dinSituasjon, særligTilsynsbehov }) => {
                     label="Mer om søkers situasjon"
                     verdiSomString={false}
                     verdi={
-                        <ul className={styles.annetListe}>
+                        <ul style={{ margin: 0, paddingLeft: '1rem' }}>
                             {dinSituasjon.map((svarsalternativ) => (
                                 <li key={svarsalternativ}>
                                     <BodyShortSmall>
