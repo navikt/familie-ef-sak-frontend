@@ -1,14 +1,12 @@
 import React, { FC } from 'react';
 import { SøknadsgrunnlagNyttBarn } from './typer';
-import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
-import LiteBarn from '../../../../Felles/Ikoner/LiteBarn';
 import { mapBarnNavnTekst } from './utils';
-import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
 import { AnnenForelderNavnOgFnr } from './AnnenForelderNavnOgFnr';
 import { harVerdi } from '../../../../App/utils/utils';
-import { Label } from '@navikt/ds-react';
+import { Heading, HStack } from '@navikt/ds-react';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
+import { ChildHairEyesIcon, FileTextIcon } from '@navikt/aksel-icons';
 
 interface Props {
     barn: SøknadsgrunnlagNyttBarn;
@@ -20,37 +18,64 @@ const SøknadgrunnlagTerminbarn: FC<Props> = ({ barn }) => {
     const ikkeOppgittAnnenForelderBegrunnelse = barn.ikkeOppgittAnnenForelderBegrunnelse;
 
     return (
-        <GridTabell>
-            <>
-                <LiteBarn />
-                <Label as="h4" size={'small'}>
-                    {mapBarnNavnTekst(barn)}
-                </Label>
-            </>
-            <>
-                <Søknadsgrunnlag />
-                <BodyShortSmall>Termindato</BodyShortSmall>
+        <div>
+            <HStack gap={'space-12'} align={'center'}>
+                <ChildHairEyesIcon title="barn" fontSize="1.3rem" />
+
+                <Heading size="xsmall">{mapBarnNavnTekst(barn)}</Heading>
+            </HStack>
+
+            <HStack>
+                <HStack
+                    gap={'space-12'}
+                    align={'center'}
+                    style={{
+                        minWidth: '18rem',
+                    }}
+                >
+                    <FileTextIcon title="lagt til i søknad" fontSize="1.3rem" />
+                    <BodyShortSmall>Termindato</BodyShortSmall>
+                </HStack>
+
                 <BodyShortSmall>{formaterNullableIsoDato(barn.fødselTermindato)}</BodyShortSmall>
-            </>
+            </HStack>
+
             {annenForelder && (
-                <>
-                    <Søknadsgrunnlag />
-                    <BodyShortSmall>Annen forelder lagt til i søknad</BodyShortSmall>
+                <HStack>
+                    <HStack
+                        gap={'space-12'}
+                        align={'center'}
+                        style={{
+                            minWidth: '18rem',
+                        }}
+                    >
+                        <FileTextIcon title="lagt til i søknad" fontSize="1.3rem" />
+                        <BodyShortSmall>Annen forelder lagt til i søknad</BodyShortSmall>
+                    </HStack>
                     <AnnenForelderNavnOgFnr forelder={annenForelder} />
-                </>
+                </HStack>
             )}
+
             {harVerdi(ikkeOppgittAnnenForelderBegrunnelse) && (
-                <>
-                    <Søknadsgrunnlag />
-                    <BodyShortSmall>Annen forelder</BodyShortSmall>
+                <HStack>
+                    <HStack
+                        gap={'space-12'}
+                        align={'center'}
+                        style={{
+                            minWidth: '18rem',
+                        }}
+                    >
+                        <FileTextIcon title="lagt til i søknad" fontSize="1.3rem" />
+                        <BodyShortSmall>Annen forelder</BodyShortSmall>
+                    </HStack>
                     <BodyShortSmall>
                         {ikkeOppgittAnnenForelderBegrunnelse === 'donorbarn'
                             ? ikkeOppgittAnnenForelderBegrunnelse
                             : `Ikke oppgitt: ${ikkeOppgittAnnenForelderBegrunnelse}`}
                     </BodyShortSmall>
-                </>
+                </HStack>
             )}
-        </GridTabell>
+        </div>
     );
 };
 
