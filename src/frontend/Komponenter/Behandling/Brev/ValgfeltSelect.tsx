@@ -9,14 +9,7 @@ import {
 } from './BrevTyper';
 import React, { Dispatch, SetStateAction } from 'react';
 import { Flettefelt } from './Flettefelt';
-import styled from 'styled-components';
-import { Checkbox, Label, Select } from '@navikt/ds-react';
-
-const Container = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-`;
+import { Checkbox, Label, Select, VStack } from '@navikt/ds-react';
 
 interface Props {
     valgFelt: ValgFelt;
@@ -71,7 +64,7 @@ export const ValgfeltSelect: React.FC<Props> = ({
     };
 
     return (
-        <Container>
+        <VStack gap="2">
             {valgFelt.valgMuligheter.length > 1 ? (
                 <Select
                     size="small"
@@ -136,6 +129,6 @@ export const ValgfeltSelect: React.FC<Props> = ({
                         })
                     );
                 })}
-        </Container>
+        </VStack>
     );
 };
