@@ -3,27 +3,7 @@ import { byggTomRessurs, Ressurs } from '../../../App/typer/ressurs';
 import PdfVisning from '../../../Felles/Pdf/PdfVisning';
 import { IPersonopplysninger } from '../../../App/typer/personopplysninger';
 import { FrittståendeSanitybrev } from './FrittståendeSanitybrev';
-import { styled } from 'styled-components';
-import { VStack } from '@navikt/ds-react';
-
-const StyledVStack = styled(VStack)`
-    position: sticky;
-    top: 100px;
-`;
-
-const Container = styled.div`
-    display: flex;
-    gap: 1rem;
-
-    @media (max-width: 1400px) {
-        flex-direction: column;
-        padding: 3rem;
-    }
-`;
-
-const LikDelContainer = styled.div`
-    flex: 1;
-`;
+import { HStack, VStack } from '@navikt/ds-react';
 
 type Props = {
     fagsakId: string;
@@ -43,24 +23,24 @@ export const FrittståendeBrevMedVisning: React.FC<Props> = ({
     };
 
     return (
-        <Container>
-            <LikDelContainer>
+        <HStack gap="4">
+            <div style={{ flex: 1 }}>
                 <FrittståendeSanitybrev
                     fagsakId={fagsakId}
                     personopplysninger={personopplysninger}
                     brevRessurs={brevRessurs}
                     oppdaterBrevRessurs={oppdaterBrevRessurs}
                 />
-            </LikDelContainer>
-            <LikDelContainer>
-                <StyledVStack gap="2" align="center">
+            </div>
+            <div style={{ flex: 1 }}>
+                <VStack gap="2" align="center">
                     <PdfVisning
                         pdfFilInnhold={brevRessurs}
                         erDokumentInnlastet={erDokumentInnlastet}
                         settErDokumentInnlastet={settErDokumentInnlastet}
                     />
-                </StyledVStack>
-            </LikDelContainer>
-        </Container>
+                </VStack>
+            </div>
+        </HStack>
     );
 };
