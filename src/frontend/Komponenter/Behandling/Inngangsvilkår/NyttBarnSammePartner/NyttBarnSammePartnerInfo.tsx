@@ -64,34 +64,38 @@ const NyttBarnSammePartnerInfo: FC<Props> = ({
                                 </HStack>
                             </div>
 
-                            <HStack>
-                                <VStack
-                                    style={{
-                                        minWidth: '20rem',
-                                    }}
-                                >
-                                    <HStack gap={'space-12'}>
-                                        <DatabaseIcon title="finnes i register" fontSize="1.3rem" />
-                                        <BodyShortSmall>Fødsels eller D-Nummer</BodyShortSmall>
-                                    </HStack>
-                                </VStack>
+                            {barnRegistergrunnlag.fødselsnummer && (
+                                <HStack>
+                                    <VStack
+                                        style={{
+                                            minWidth: '18rem',
+                                        }}
+                                    >
+                                        <HStack gap={'space-12'}>
+                                            <DatabaseIcon
+                                                title="finnes i register"
+                                                fontSize="1.3rem"
+                                            />
+                                            <BodyShortSmall>Fødsels eller D-Nummer</BodyShortSmall>
+                                        </HStack>
+                                    </VStack>
 
-                                <VStack>
-                                    {barnRegistergrunnlag.fødselsnummer && (
-                                        <KopierbartNullableFødselsnummer
-                                            fødselsnummer={barnRegistergrunnlag.fødselsnummer}
-                                        />
-                                    )}
-                                </VStack>
-                            </HStack>
+                                    <VStack>
+                                        {barnRegistergrunnlag.fødselsnummer && (
+                                            <KopierbartNullableFødselsnummer
+                                                fødselsnummer={barnRegistergrunnlag.fødselsnummer}
+                                            />
+                                        )}
+                                    </VStack>
+                                </HStack>
+                            )}
 
-                            {/* Register */}
                             {!erFraSøknad && barn.registergrunnlag.forelder?.fødselsdato && (
                                 <>
                                     <HStack>
                                         <VStack
                                             style={{
-                                                minWidth: '20rem',
+                                                minWidth: '18rem',
                                             }}
                                         >
                                             <HStack gap={'space-12'} align={'center'}>
@@ -109,17 +113,17 @@ const NyttBarnSammePartnerInfo: FC<Props> = ({
                                             {barnRegistergrunnlag.forelder && (
                                                 <AnnenForelderNavnOgFnr
                                                     forelder={barnRegistergrunnlag.forelder}
+                                                    skalViseDato={false}
                                                 />
                                             )}
                                         </VStack>
                                     </HStack>
 
-                                    {/* Dødsdato */}
                                     {barnRegistergrunnlag.forelder?.dødsfall && (
                                         <HStack>
                                             <VStack
                                                 style={{
-                                                    minWidth: '20rem',
+                                                    minWidth: '18rem',
                                                 }}
                                             >
                                                 <HStack gap={'space-12'} align={'center'}>
@@ -145,12 +149,11 @@ const NyttBarnSammePartnerInfo: FC<Props> = ({
                                 </>
                             )}
 
-                            {/* Søknad */}
                             {erFraSøknad && (
                                 <HStack>
                                     <VStack
                                         style={{
-                                            minWidth: '20rem',
+                                            minWidth: '18rem',
                                         }}
                                     >
                                         <HStack gap={'space-12'} align={'center'}>
@@ -178,6 +181,7 @@ const NyttBarnSammePartnerInfo: FC<Props> = ({
                     );
                 })}
             </UnderseksjonWrapper>
+
             <UnderseksjonWrapper underoverskrift="Brukers fremtidige barn lagt til i søknad">
                 {søknadsgrunnlagNyttBarn.length ? (
                     søknadsgrunnlagNyttBarn.map((barn) => (

@@ -11,9 +11,14 @@ import { HStack } from '@navikt/ds-react';
 interface Props {
     forelder: IAnnenForelder;
     søknadsgrunnlag?: IBarnMedSamværSøknadsgrunnlag;
+    skalViseDato?: boolean;
 }
 
-export const AnnenForelderNavnOgFnr: React.FC<Props> = ({ forelder, søknadsgrunnlag }) => {
+export const AnnenForelderNavnOgFnr: React.FC<Props> = ({
+    forelder,
+    søknadsgrunnlag,
+    skalViseDato,
+}) => {
     const { navn, fødselsnummer, fødselsdato, dødsfall } = forelder;
 
     const { ikkeOppgittAnnenForelderBegrunnelse } = søknadsgrunnlag || {};
@@ -22,7 +27,9 @@ export const AnnenForelderNavnOgFnr: React.FC<Props> = ({ forelder, søknadsgrun
     return (
         <HStack gap={'space-4'} align={'center'}>
             <LenkeTilPersonopplysningsside personIdent={fødselsnummer}>
-                {harVerdi(navn) && navn !== 'ikke oppgitt' ? `${navn}` : 'Ikke oppgitt navn'}
+                {harVerdi(navn) && navn?.toLocaleLowerCase() !== 'ikke oppgitt'
+                    ? `${navn}`
+                    : 'Ikke oppgitt:'}
             </LenkeTilPersonopplysningsside>
 
             <BodyShortSmall>
@@ -34,11 +41,11 @@ export const AnnenForelderNavnOgFnr: React.FC<Props> = ({ forelder, søknadsgrun
                 ) : fødselsdato ? (
                     formaterNullableIsoDato(fødselsdato)
                 ) : (
-                    '- '
+                    ''
                 )}
             </BodyShortSmall>
 
-            {dødsfall && <EtikettDød dødsdato={dødsfall} />}
+            {dødsfall && <EtikettDød dødsdato={dødsfall} skalViseDato={skalViseDato} />}
         </HStack>
     );
 };
