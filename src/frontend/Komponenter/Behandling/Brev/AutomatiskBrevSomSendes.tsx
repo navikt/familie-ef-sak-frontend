@@ -1,13 +1,6 @@
-import { Checkbox, CheckboxGroup } from '@navikt/ds-react';
-import { ALimegreen100 } from '@navikt/ds-tokens/dist/tokens';
+import { Box, Checkbox, CheckboxGroup } from '@navikt/ds-react';
 import React, { FC } from 'react';
-import styled from 'styled-components';
 import { AutomatiskBrevValg, automatiskBrevValgTekst } from '../Totrinnskontroll/AutomatiskBrev';
-
-const Container = styled.div`
-    background: ${ALimegreen100};
-    padding: 0.5rem;
-`;
 
 export const AutomatiskBrevSomSendes: FC<{
     automatiskBrev?: AutomatiskBrevValg[];
@@ -17,7 +10,7 @@ export const AutomatiskBrevSomSendes: FC<{
     }
 
     return (
-        <Container>
+        <Box background={'surface-alt-2-subtle'} padding="space-8">
             <CheckboxGroup
                 legend="Send brev automatisk når vedtaket er godkjent:"
                 value={automatiskBrev}
@@ -30,6 +23,6 @@ export const AutomatiskBrevSomSendes: FC<{
                         </Checkbox>
                     ))}
             </CheckboxGroup>
-        </Container>
+        </Box>
     );
 };

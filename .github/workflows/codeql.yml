@@ -19,13 +19,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # ratchet:actions/checkout@v4
-      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # ratchet:actions/setup-node@v4
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # ratchet:actions/setup-node@v4
         with:
           node-version: '20'
           cache: yarn
           registry-url: 'https://npm.pkg.github.com'
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@3c3833e0f8c1c83d449a7478aa59c036a9165498 # ratchet:github/codeql-action/init@v2
+        uses: github/codeql-action/init@192325c86100d080feab897ff886c34abd4c83a3 # ratchet:github/codeql-action/init@v2
         with:
           languages: ${{ matrix.language }}
       - name: Yarn install
@@ -35,6 +35,6 @@ jobs:
       - name: Yarn build
         run: yarn build
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@3c3833e0f8c1c83d449a7478aa59c036a9165498 # ratchet:github/codeql-action/analyze@v2
+        uses: github/codeql-action/analyze@192325c86100d080feab897ff886c34abd4c83a3 # ratchet:github/codeql-action/analyze@v2
         with:
           category: '/language:${{matrix.language}}'

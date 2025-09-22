@@ -48,6 +48,7 @@ export interface IBeregningsgrunnlag {
     avkortningPerMåned: number;
     fullOvergangsStønadPerMåned: number | null;
     grunnbeløp: number | null;
+    månedsinntekt: number | null;
 }
 
 export interface IBeregningSkolepengerResponse {

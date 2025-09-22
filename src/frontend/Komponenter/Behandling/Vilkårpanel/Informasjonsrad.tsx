@@ -15,7 +15,10 @@ interface Props {
 
 const InformasjonsradContainer = styled.div<{ $harVerdi: boolean }>`
     display: grid;
-    grid-template-columns: 21px min(200px, 250px) auto;
+    grid-template-columns: 21px min(200px, 250px) 60%;
+    @media screen and (min-width: 2480px) {
+        grid-template-columns: 21px min(200px, 250px) 100%;
+    }
     grid-gap: 0.5rem;
 
     .label {

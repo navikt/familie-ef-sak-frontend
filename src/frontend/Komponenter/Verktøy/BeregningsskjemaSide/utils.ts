@@ -60,8 +60,19 @@ export const summerÅrslønn = (beregning: Beregning): number => {
     return beregning.arbeidsgivere.reduce((sum, ag) => sum + ag.verdi, 0) * 12;
 };
 
-export const oppdaterBeregnetfra = (beregninger: Beregning[]): Beregning[] => {
+export const oppdaterBeregnetfra = (
+    beregninger: Beregning[],
+    indeksSkalGjeldeFra?: number
+): Beregning[] => {
     const resetBeregnetfra = beregninger.map((b) => ({ ...b, beregnetfra: false }));
+
+    if (indeksSkalGjeldeFra !== undefined && indeksSkalGjeldeFra < beregninger.length) {
+        return resetBeregnetfra.map((beregning, indeks) => ({
+            ...beregning,
+            beregnetfra: indeks === indeksSkalGjeldeFra,
+        }));
+    }
+
     const førsteMedAvvikOpp = beregninger.findIndex((b) => b.avvik === AvvikEnum.OPP);
 
     let beregnetfraIndeks = -1;
@@ -202,4 +213,53 @@ export const regnUtHarMottatt = (beregning: Beregning): number => {
     const månedligReduksjon = regnUtMånedligReduksjon(årstall, redusertEtter);
 
     return månedligUtbetaling - månedligReduksjon;
+};
+
+export const regnUtFeilutbetaling = (beregning: Beregning): number => {
+    if (beregning.redusertEtter === 0 || beregning.årslønn === 0) return 0;
+
+    const harMottatt = regnUtHarMottatt(beregning);
+    const nyBeregning = regnUtNyBeregning(beregning);
+
+    return harMottatt - nyBeregning;
+};
+
+export const regnUtSumFeilutbetaling = (beregninger: Beregning[]): number => {
+    const feilutbetalinger = beregninger.map((b) => regnUtFeilutbetaling(b));
+
+    const sumFeilutbetaling = feilutbetalinger
+        .filter((feilutbetaling) => feilutbetaling > 0)
+        .reduce((sum, feilutbetaling) => sum + feilutbetaling, 0);
+
+    return sumFeilutbetaling;
+};
+
+export const regnUtMotregning = (beregninger: Beregning[]): number => {
+    const feilutbetalinger = beregninger.map((b) => regnUtFeilutbetaling(b));
+
+    const sumMotregning = feilutbetalinger
+        .filter((feilutbetaling) => feilutbetaling < 0)
+        .reduce((sum, feilutbetaling) => sum + feilutbetaling, 0);
+
+    return sumMotregning;
+};
+
+export const lagBeregningFraOgMedBeregnetFra = (beregninger: Beregning[]): Beregning[] => {
+    const oppdaterteBeregninger = beregninger.map((beregning) => ({
+        ...beregning,
+        avvik: finnAvvik(beregning),
+    }));
+
+    const beregningBeregnetFra = oppdaterteBeregninger.find(
+        (beregning) => beregning.beregnetfra === true
+    );
+
+    if (beregningBeregnetFra) {
+        const beregningBeregnetFraIndex = oppdaterteBeregninger.findIndex(
+            (beregning) => beregning.beregnetfra === true
+        );
+        return oppdaterteBeregninger.slice(beregningBeregnetFraIndex);
+    }
+
+    return oppdaterteBeregninger;
 };

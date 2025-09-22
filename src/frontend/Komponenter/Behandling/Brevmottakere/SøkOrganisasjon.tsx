@@ -2,9 +2,9 @@ import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useApp } from '../../../App/context/AppContext';
 import { byggTomRessurs, Ressurs } from '../../../App/typer/ressurs';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
-import { EBrevmottakerRolle, IOrganisasjonMottaker } from './typer';
+import { BrevmottakerRolleOrganisasjon, EBrevmottakerRolle, IOrganisasjonMottaker } from './typer';
 import { Søkefelt, Søkeresultat } from './brevmottakereStyling';
-import { BodyShort, TextField } from '@navikt/ds-react';
+import { BodyShort, Radio, RadioGroup, Stack, TextField, VStack } from '@navikt/ds-react';
 import LeggTilKnapp from '../../../Felles/Knapper/LeggTilKnapp';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 
@@ -15,6 +15,9 @@ interface Props {
 export const SøkOrganisasjon: React.FC<Props> = ({ settValgteMottakere, valgteMottakere }) => {
     const { axiosRequest } = useApp();
 
+    const [mottakerRolle, settMottakerRolle] = useState<BrevmottakerRolleOrganisasjon>(
+        EBrevmottakerRolle.FULLMEKTIG
+    );
     const [organisasjonsnummer, settOrganisasjonsnummer] = useState('');
     const [kontaktpersonHosOrganisasjon, settKontaktpersonHosOrganisasjon] = useState('');
     const [organisasjonRessurs, settOrganisasjonRessurs] =
@@ -48,7 +51,7 @@ export const SøkOrganisasjon: React.FC<Props> = ({ settValgteMottakere, valgteM
                 {
                     organisasjonsnummer: organisasjonsnummer,
                     navnHosOrganisasjon: `${organisasjonsnavn} c/o ${kontaktpersonHosOrganisasjon}`,
-                    mottakerRolle: EBrevmottakerRolle.FULLMEKTIG,
+                    mottakerRolle: mottakerRolle,
                 },
             ]);
         } else {
@@ -71,7 +74,21 @@ export const SøkOrganisasjon: React.FC<Props> = ({ settValgteMottakere, valgteM
             <DataViewer response={{ organisasjonRessurs }}>
                 {({ organisasjonRessurs }) => {
                     return (
-                        <>
+                        <VStack>
+                            <RadioGroup
+                                legend="Velg mottakerrolle"
+                                onChange={(rolle: BrevmottakerRolleOrganisasjon) =>
+                                    settMottakerRolle(rolle)
+                                }
+                                value={mottakerRolle}
+                            >
+                                <Stack gap="space-0 space-24" direction={'row'} wrap={false}>
+                                    <Radio value={EBrevmottakerRolle.FULLMEKTIG}>Fullmektig</Radio>
+                                    <Radio value={EBrevmottakerRolle.MOTTAKER}>
+                                        Annen mottaker
+                                    </Radio>
+                                </Stack>
+                            </RadioGroup>
                             <Søkeresultat>
                                 <div>
                                     <BodyShort>{organisasjonRessurs.navn}</BodyShort>
@@ -96,7 +113,7 @@ export const SøkOrganisasjon: React.FC<Props> = ({ settValgteMottakere, valgteM
                                 />
                             </Søkeresultat>
                             {feilmelding && <AlertError size="small">{feilmelding}</AlertError>}
-                        </>
+                        </VStack>
                     );
                 }}
             </DataViewer>

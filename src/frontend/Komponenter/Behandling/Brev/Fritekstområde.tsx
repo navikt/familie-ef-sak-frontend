@@ -1,27 +1,32 @@
 import React, { SetStateAction } from 'react';
-import { Button, Heading, Panel, Textarea, TextField, Tooltip } from '@navikt/ds-react';
+import {
+    Box,
+    Button,
+    Heading,
+    HStack,
+    Textarea,
+    TextField,
+    Tooltip,
+    VStack,
+} from '@navikt/ds-react';
 import { ArrowDownIcon, ArrowUpIcon, PlusIcon, TrashIcon } from '@navikt/aksel-icons';
-import styled from 'styled-components';
 import { FritekstAvsnitt, Fritekstområder } from './BrevTyper';
 
-const FritekstAvsnittContainer = styled(Panel).attrs({ border: true })`
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    width: 100%;
-`;
+const FritekstAvsnittContainer: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+    <Box padding="4" borderWidth="1" borderRadius="small" borderColor="border-default">
+        <VStack gap="2" width="100%">
+            {children}
+        </VStack>
+    </Box>
+);
 
-const FritekstområdePanel = styled(Panel)`
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-`;
-
-const KnappeWrapper = styled.div`
-    display: flex;
-    justify-content: flex-end;
-    gap: 0.5rem;
-`;
+const FritekstområdePanel: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+    <Box padding="4">
+        <VStack gap="4" width="100%">
+            {children}
+        </VStack>
+    </Box>
+);
 
 export const Fritekstområde: React.FC<{
     id: string;
@@ -110,7 +115,7 @@ export const Fritekstområde: React.FC<{
                                     })
                                 }
                             />
-                            <KnappeWrapper>
+                            <HStack gap="1" justify="end">
                                 <Tooltip content="Slett avsnitt">
                                     <Button
                                         icon={<TrashIcon />}
@@ -135,7 +140,7 @@ export const Fritekstområde: React.FC<{
                                         onClick={() => flyttAvsnittOpp(indeks)}
                                     />
                                 </Tooltip>
-                            </KnappeWrapper>
+                            </HStack>
                         </FritekstAvsnittContainer>
                     );
                 })}

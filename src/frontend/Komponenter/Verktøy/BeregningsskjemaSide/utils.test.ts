@@ -10,6 +10,10 @@ import {
     regnUtNyBeregning,
     regnUtMånedligUtbetalingOvergangsstønad,
     regnUtHarMottatt,
+    regnUtFeilutbetaling,
+    lagBeregningFraOgMedBeregnetFra,
+    regnUtMotregning,
+    regnUtSumFeilutbetaling,
 } from './utils';
 import { Beregning, AvvikEnum } from './typer';
 
@@ -135,6 +139,15 @@ test('skal sette korrekt automatisk beregnet fra', () => {
     expect(oppdatertBeregnetfra[4].beregnetfra).toBe(false);
 });
 
+test('skal kunne manuelt overstyre beregnet fra', () => {
+    const beregninger = [...beregning];
+    const indeksSkalGjeldeFra = 4;
+    const oppdaterteBeregninger = oppdaterBeregnetfra(beregninger, indeksSkalGjeldeFra);
+
+    expect(oppdaterteBeregninger[1].beregnetfra).toBe(false);
+    expect(oppdaterteBeregninger[indeksSkalGjeldeFra].beregnetfra).toBe(true);
+});
+
 test('skal mappe korrekt tall på måned til navn', () => {
     expect(mapMånedTallTilNavn('01')).toBe('Januar');
     expect(mapMånedTallTilNavn('1')).toBe('Januar');
@@ -192,4 +205,56 @@ test('skal returnere forventet verdi av det som har blitt mottatt', () => {
     expect(mottatt3).toBe(19_345);
     const mottatt5 = regnUtHarMottatt(beregning[4]);
     expect(mottatt5).toBe(24_405);
+});
+
+test('skal returnere forventet feilutbetaling', () => {
+    const førsteBeregning = beregning[0];
+    const feilutbetalingMedPositivtTall = regnUtFeilutbetaling(førsteBeregning);
+
+    const tredjeBeregning = beregning[2];
+    const feilutbetalingMedNegativtTall = regnUtFeilutbetaling(tredjeBeregning);
+
+    const femteBeregning = beregning[4];
+    const feilutbetalingMedNull = regnUtFeilutbetaling(femteBeregning);
+
+    expect(feilutbetalingMedPositivtTall).toBe(5_100);
+    expect(feilutbetalingMedNegativtTall).toBe(-5_060);
+    expect(feilutbetalingMedNull).toBe(0);
+});
+
+test('skal regne ut sum feilutbetaling og motregning for alle beregninger', () => {
+    const sumFeilutbetaling = regnUtSumFeilutbetaling(beregning);
+    const sumMotregning = regnUtMotregning(beregning);
+
+    expect(sumFeilutbetaling).toBe(8_100);
+    expect(sumMotregning).toBe(-5_060);
+
+    const totalFeilutbetaling = sumFeilutbetaling + sumMotregning;
+    expect(totalFeilutbetaling).toBe(3_040);
+});
+
+test('skal finne total sum feilutbetaling fra til og med beregning som er beregnet fra', () => {
+    expect(beregning.length).toBe(5);
+    const beregningerBeregnetFraAndreElement = beregning.map((b, i) => ({
+        ...b,
+        beregnetfra: i === 1,
+    }));
+
+    const beregningerFraOgMedBeregnetFra = lagBeregningFraOgMedBeregnetFra(
+        beregningerBeregnetFraAndreElement
+    );
+
+    const sumFeilutbetaling = regnUtSumFeilutbetaling(beregningerFraOgMedBeregnetFra);
+    const sumMotregning = regnUtMotregning(beregningerFraOgMedBeregnetFra);
+
+    expect(beregningerFraOgMedBeregnetFra[0].beregnetfra).toBe(true);
+    expect(beregningerFraOgMedBeregnetFra[1].beregnetfra).toBe(false);
+
+    expect(sumFeilutbetaling).toBe(3_000);
+    expect(sumMotregning).toBe(-5_060);
+
+    const totalFeilutbetaling = sumFeilutbetaling + sumMotregning;
+    expect(totalFeilutbetaling).toBe(-2_060);
+
+    expect(beregningerFraOgMedBeregnetFra.length).toBe(4);
 });
