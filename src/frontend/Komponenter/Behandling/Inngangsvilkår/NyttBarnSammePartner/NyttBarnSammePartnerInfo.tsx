@@ -29,6 +29,10 @@ const NyttBarnSammePartnerInfo: FC<Props> = ({
     const registergrunnlagNyttBarn = mapTilRegistergrunnlagNyttBarn(barnMedSamvær);
     const søknadsgrunnlagNyttBarn = mapTilSøknadsgrunnlagNyttBarn(barnMedSamvær);
 
+    const barnFraRegisterMedFødselsdato = barnMedSamvær.filter(
+        (b) => b.registergrunnlag.fødselsdato
+    );
+
     return (
         <InformasjonContainer>
             <TidligereVedtaksperioderSøkerOgAndreForeldre
@@ -37,10 +41,9 @@ const NyttBarnSammePartnerInfo: FC<Props> = ({
                 registergrunnlagNyttBarn={registergrunnlagNyttBarn}
             />
             <UnderseksjonWrapper underoverskrift="Brukers barn registrert i folkeregisteret">
-                {barnMedSamvær.map((barn, i) => {
+                {barnFraRegisterMedFødselsdato.map((barn, i) => {
                     const { registergrunnlag: barnRegistergrunnlag } = barn;
 
-                    // const { annenForelderRegister, fødselsdato, navn, dødsdato } =
                     const { fødselsdato, navn, dødsdato } = barnRegistergrunnlag;
 
                     const harAnnenForelderIRegister = !!barnRegistergrunnlag.forelder;
