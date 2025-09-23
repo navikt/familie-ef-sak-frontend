@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { IBarnMedSamvær } from '../Aleneomsorg/typer';
+import { IBarnMedSamvær, IBarnMedSamværRegistergrunnlag } from '../Aleneomsorg/typer';
 import { mapTilRegistergrunnlagNyttBarn, mapTilSøknadsgrunnlagNyttBarn } from './utils';
 import SøknadgrunnlagTerminbarn from './SøknadsgrunnlagTerminbarn';
 import TidligereVedtaksperioderSøkerOgAndreForeldre from './TidligereVedtaksperioderSøkerOgAndreForeldre';
@@ -21,7 +21,7 @@ interface Props {
     tidligereVedtaksperioder: ITidligereVedtaksperioder;
 }
 
-const NyttBarnSammePartnerInfo: FC<Props> = ({
+export const NyttBarnSammePartnerInfo: FC<Props> = ({
     personalia,
     barnMedSamvær,
     tidligereVedtaksperioder,
@@ -68,118 +68,16 @@ const NyttBarnSammePartnerInfo: FC<Props> = ({
                             </div>
 
                             {barnRegistergrunnlag.fødselsnummer && (
-                                <HStack>
-                                    <VStack
-                                        style={{
-                                            minWidth: '18rem',
-                                        }}
-                                    >
-                                        <HStack gap={'space-12'}>
-                                            <DatabaseIcon
-                                                title="finnes i register"
-                                                fontSize="1.3rem"
-                                            />
-                                            <BodyShortSmall>Fødsels eller D-Nummer</BodyShortSmall>
-                                        </HStack>
-                                    </VStack>
-
-                                    <VStack>
-                                        {barnRegistergrunnlag.fødselsnummer && (
-                                            <KopierbartNullableFødselsnummer
-                                                fødselsnummer={barnRegistergrunnlag.fødselsnummer}
-                                            />
-                                        )}
-                                    </VStack>
-                                </HStack>
+                                <BarnRegister barnRegistergrunnlag={barnRegistergrunnlag} />
                             )}
 
-                            {!erFraSøknad && barn.registergrunnlag.forelder?.fødselsdato && (
-                                <>
-                                    <HStack>
-                                        <VStack
-                                            style={{
-                                                minWidth: '18rem',
-                                            }}
-                                        >
-                                            <HStack gap={'space-12'} align={'center'}>
-                                                <DatabaseIcon
-                                                    title="finnes i register"
-                                                    fontSize="1.3rem"
-                                                />
-                                                <BodyShortSmall>
-                                                    Annen forelder fra folkeregister
-                                                </BodyShortSmall>
-                                            </HStack>
-                                        </VStack>
-
-                                        <VStack>
-                                            {barnRegistergrunnlag.forelder && (
-                                                <AnnenForelderNavnOgFnr
-                                                    forelder={barnRegistergrunnlag.forelder}
-                                                    skalViseDato={false}
-                                                />
-                                            )}
-                                        </VStack>
-                                    </HStack>
-
-                                    {barnRegistergrunnlag.forelder?.dødsfall && (
-                                        <HStack>
-                                            <VStack
-                                                style={{
-                                                    minWidth: '18rem',
-                                                }}
-                                            >
-                                                <HStack gap={'space-12'} align={'center'}>
-                                                    <DatabaseIcon
-                                                        title="finnes i register"
-                                                        fontSize="1.3rem"
-                                                    />
-                                                    <BodyShortSmall>
-                                                        Annen forelders dødsdato
-                                                    </BodyShortSmall>
-                                                </HStack>
-                                            </VStack>
-
-                                            <VStack>
-                                                {barnRegistergrunnlag.forelder?.dødsfall && (
-                                                    <BodyShortSmall>
-                                                        {barnRegistergrunnlag.forelder.dødsfall}
-                                                    </BodyShortSmall>
-                                                )}
-                                            </VStack>
-                                        </HStack>
-                                    )}
-                                </>
+                            {!erFraSøknad && barnRegistergrunnlag.forelder?.fødselsdato && (
+                                <AnnenForelderRegister
+                                    barnRegistergrunnlag={barnRegistergrunnlag}
+                                />
                             )}
 
-                            {erFraSøknad && (
-                                <HStack>
-                                    <VStack
-                                        style={{
-                                            minWidth: '18rem',
-                                        }}
-                                    >
-                                        <HStack gap={'space-12'} align={'center'}>
-                                            <FileTextIcon
-                                                title="lagt til i søknad"
-                                                fontSize="1.3rem"
-                                            />
-                                            <BodyShortSmall>
-                                                Annen forelder lagt til i søknad
-                                            </BodyShortSmall>
-                                        </HStack>
-                                    </VStack>
-
-                                    <VStack>
-                                        {barn.søknadsgrunnlag.forelder && (
-                                            <AnnenForelderNavnOgFnr
-                                                forelder={barn.søknadsgrunnlag.forelder}
-                                                søknadsgrunnlag={barn.søknadsgrunnlag}
-                                            />
-                                        )}
-                                    </VStack>
-                                </HStack>
-                            )}
+                            {erFraSøknad && <AnnenForelderSøknad barn={barn} />}
                         </div>
                     );
                 })}
@@ -199,4 +97,111 @@ const NyttBarnSammePartnerInfo: FC<Props> = ({
         </InformasjonContainer>
     );
 };
-export default NyttBarnSammePartnerInfo;
+
+const BarnRegister: FC<{ barnRegistergrunnlag: IBarnMedSamværRegistergrunnlag }> = ({
+    barnRegistergrunnlag,
+}) => {
+    return (
+        <HStack>
+            <VStack
+                style={{
+                    minWidth: '18rem',
+                }}
+            >
+                <HStack gap={'space-12'}>
+                    <DatabaseIcon title="finnes i register" fontSize="1.3rem" />
+                    <BodyShortSmall>Fødsels eller D-Nummer</BodyShortSmall>
+                </HStack>
+            </VStack>
+
+            <VStack>
+                {barnRegistergrunnlag.fødselsnummer && (
+                    <KopierbartNullableFødselsnummer
+                        fødselsnummer={barnRegistergrunnlag.fødselsnummer}
+                    />
+                )}
+            </VStack>
+        </HStack>
+    );
+};
+
+const AnnenForelderRegister: React.FC<{
+    barnRegistergrunnlag: IBarnMedSamværRegistergrunnlag;
+}> = ({ barnRegistergrunnlag }) => {
+    return (
+        <>
+            <HStack>
+                <VStack
+                    style={{
+                        minWidth: '18rem',
+                    }}
+                >
+                    <HStack gap={'space-12'} align={'center'}>
+                        <DatabaseIcon title="finnes i register" fontSize="1.3rem" />
+                        <BodyShortSmall>Annen forelder fra folkeregister</BodyShortSmall>
+                    </HStack>
+                </VStack>
+
+                <VStack>
+                    {barnRegistergrunnlag.forelder && (
+                        <AnnenForelderNavnOgFnr
+                            forelder={barnRegistergrunnlag.forelder}
+                            skalViseDato={false}
+                        />
+                    )}
+                </VStack>
+            </HStack>
+
+            {barnRegistergrunnlag.forelder?.dødsfall && (
+                <HStack>
+                    <VStack
+                        style={{
+                            minWidth: '18rem',
+                        }}
+                    >
+                        <HStack gap={'space-12'} align={'center'}>
+                            <DatabaseIcon title="finnes i register" fontSize="1.3rem" />
+                            <BodyShortSmall>Annen forelders dødsdato</BodyShortSmall>
+                        </HStack>
+                    </VStack>
+
+                    <VStack>
+                        {barnRegistergrunnlag.forelder?.dødsfall && (
+                            <BodyShortSmall>
+                                {barnRegistergrunnlag.forelder.dødsfall}
+                            </BodyShortSmall>
+                        )}
+                    </VStack>
+                </HStack>
+            )}
+        </>
+    );
+};
+
+const AnnenForelderSøknad: React.FC<{
+    barn: IBarnMedSamvær;
+}> = ({ barn }) => {
+    return (
+        <HStack>
+            <VStack
+                style={{
+                    minWidth: '18rem',
+                }}
+            >
+                <HStack gap={'space-12'} align={'center'}>
+                    <FileTextIcon title="lagt til i søknad" fontSize="1.3rem" />
+                    <BodyShortSmall>Annen forelder lagt til i søknad</BodyShortSmall>
+                </HStack>
+            </VStack>
+
+            <VStack>
+                {barn.søknadsgrunnlag.forelder && (
+                    <AnnenForelderNavnOgFnr
+                        forelder={barn.søknadsgrunnlag.forelder}
+                        søknadsgrunnlag={barn.søknadsgrunnlag}
+                    />
+                )}
+            </VStack>
+        </HStack>
+    );
+};
