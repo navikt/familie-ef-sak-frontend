@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { IBarnMedSamvær, IBarnMedSamværRegistergrunnlag } from '../Aleneomsorg/typer';
 import { mapTilRegistergrunnlagNyttBarn, mapTilSøknadsgrunnlagNyttBarn } from './utils';
-import SøknadgrunnlagTerminbarn from './SøknadsgrunnlagTerminbarn';
+import { SøknadgrunnlagTerminbarn } from './SøknadsgrunnlagTerminbarn';
 import TidligereVedtaksperioderSøkerOgAndreForeldre from './TidligereVedtaksperioderSøkerOgAndreForeldre';
 import { ITidligereVedtaksperioder } from '../../TidligereVedtaksperioder/typer';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';

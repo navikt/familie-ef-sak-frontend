@@ -12,7 +12,7 @@ interface Props {
     barn: SøknadsgrunnlagNyttBarn;
 }
 
-const SøknadgrunnlagTerminbarn: FC<Props> = ({ barn }) => {
+export const SøknadgrunnlagTerminbarn: FC<Props> = ({ barn }) => {
     const annenForelder = barn.annenForelderSoknad;
 
     const ikkeOppgittAnnenForelderBegrunnelse = barn.ikkeOppgittAnnenForelderBegrunnelse;
@@ -25,58 +25,56 @@ const SøknadgrunnlagTerminbarn: FC<Props> = ({ barn }) => {
                 <Heading size="xsmall">{mapBarnNavnTekst(barn)}</Heading>
             </HStack>
 
-            <HStack>
-                <HStack
-                    gap={'space-12'}
-                    align={'center'}
-                    style={{
-                        minWidth: '18rem',
-                    }}
-                >
-                    <FileTextIcon title="lagt til i søknad" fontSize="1.3rem" />
-                    <BodyShortSmall>Termindato</BodyShortSmall>
-                </HStack>
-
+            <InfoRad
+                ikon={<FileTextIcon title="lagt til i søknad" fontSize="1.3rem" />}
+                tekst={'Termindato'}
+            >
                 <BodyShortSmall>{formaterNullableIsoDato(barn.fødselTermindato)}</BodyShortSmall>
-            </HStack>
+            </InfoRad>
 
             {annenForelder && (
-                <HStack>
-                    <HStack
-                        gap={'space-12'}
-                        align={'center'}
-                        style={{
-                            minWidth: '18rem',
-                        }}
-                    >
-                        <FileTextIcon title="lagt til i søknad" fontSize="1.3rem" />
-                        <BodyShortSmall>Annen forelder lagt til i søknad</BodyShortSmall>
-                    </HStack>
+                <InfoRad
+                    ikon={<FileTextIcon title="lagt til i søknad" fontSize="1.3rem" />}
+                    tekst={'Annen forelder lagt til i søknad'}
+                >
                     <AnnenForelderNavnOgFnr forelder={annenForelder} />
-                </HStack>
+                </InfoRad>
             )}
 
             {harVerdi(ikkeOppgittAnnenForelderBegrunnelse) && (
-                <HStack>
-                    <HStack
-                        gap={'space-12'}
-                        align={'center'}
-                        style={{
-                            minWidth: '18rem',
-                        }}
-                    >
-                        <FileTextIcon title="lagt til i søknad" fontSize="1.3rem" />
-                        <BodyShortSmall>Annen forelder</BodyShortSmall>
-                    </HStack>
+                <InfoRad
+                    ikon={<FileTextIcon title="lagt til i søknad" fontSize="1.3rem" />}
+                    tekst={'Annen forelder'}
+                >
                     <BodyShortSmall>
                         {ikkeOppgittAnnenForelderBegrunnelse === 'donorbarn'
                             ? ikkeOppgittAnnenForelderBegrunnelse
                             : `Ikke oppgitt: ${ikkeOppgittAnnenForelderBegrunnelse}`}
                     </BodyShortSmall>
-                </HStack>
+                </InfoRad>
             )}
         </div>
     );
 };
 
-export default SøknadgrunnlagTerminbarn;
+const InfoRad: React.FC<{
+    ikon: React.ReactNode;
+    tekst: string;
+    children: React.ReactNode;
+}> = ({ ikon, tekst, children }) => {
+    return (
+        <HStack>
+            <HStack
+                gap={'space-12'}
+                align={'center'}
+                style={{
+                    minWidth: '18rem',
+                }}
+            >
+                {ikon}
+                <BodyShortSmall>{tekst}</BodyShortSmall>
+            </HStack>
+            {children}
+        </HStack>
+    );
+};
