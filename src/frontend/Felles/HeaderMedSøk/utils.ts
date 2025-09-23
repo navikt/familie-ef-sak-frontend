@@ -178,3 +178,13 @@ export const lagArbeidsverktøyLenker = (
 
     return lenker;
 };
+
+export const erNPID = (ident: string) => {
+    if (ident.length !== 11) return false;
+    const måned = parseInt(ident.substring(2, 4), 10);
+
+    const erSyntestiskNPID = måned > 60 && måned <= 72;
+    const erNPID = måned > 20 && måned <= 32;
+
+    return erSyntestiskNPID || erNPID;
+};

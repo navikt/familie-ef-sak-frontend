@@ -1,10 +1,11 @@
 import React, { ReactNode } from 'react';
-import { Link, Tag } from '@navikt/ds-react';
+import { HStack, Link, Tag } from '@navikt/ds-react';
 import { ExternalLinkIcon } from '@navikt/aksel-icons';
 import { Ressurs, RessursStatus } from '../../App/typer/ressurs';
 import { useApp } from '../../App/context/AppContext';
 import { BodyShortSmall } from '../Visningskomponenter/Tekster';
 import { EToast } from '../../App/typer/toast';
+import { erNPID } from '../HeaderMedSøk/utils';
 
 interface IProps {
     personIdent?: string;
@@ -13,13 +14,6 @@ interface IProps {
 
 export const LenkeTilPersonopplysningsside: React.FC<IProps> = ({ personIdent, children }) => {
     const { axiosRequest, settToast } = useApp();
-
-    const isNPID = (ident: string) => {
-        if (ident.length !== 11) return false;
-        const month = parseInt(ident.substring(2, 4), 10);
-        if (month > 60 && month <= 72) return true;
-        return month > 20 && month <= 32;
-    };
 
     const redirectTilPersonopplysningsside = (personIdent: string) => {
         axiosRequest<string, { personIdent: string }>({
@@ -42,7 +36,18 @@ export const LenkeTilPersonopplysningsside: React.FC<IProps> = ({ personIdent, c
         return <>{children}</>;
     }
 
-    return !isNPID(personIdent) ? (
+    if (erNPID(personIdent)) {
+        return (
+            <HStack gap="2" align={'center'}>
+                <BodyShortSmall>{children}</BodyShortSmall>{' '}
+                <Tag variant="info" size="small">
+                    NPID
+                </Tag>
+            </HStack>
+        );
+    }
+
+    return (
         <BodyShortSmall>
             <Link
                 href="#"
@@ -54,12 +59,5 @@ export const LenkeTilPersonopplysningsside: React.FC<IProps> = ({ personIdent, c
                 {children} <ExternalLinkIcon title="Gå til person" />
             </Link>
         </BodyShortSmall>
-    ) : (
-        <>
-            {children}{' '}
-            <Tag variant="success" size="small">
-                NPID
-            </Tag>
-        </>
     );
 };
