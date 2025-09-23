@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { HStack, Link, Tag } from '@navikt/ds-react';
+import { HStack, Link, Tag, Tooltip } from '@navikt/ds-react';
 import { ExternalLinkIcon } from '@navikt/aksel-icons';
 import { Ressurs, RessursStatus } from '../../App/typer/ressurs';
 import { useApp } from '../../App/context/AppContext';
@@ -40,9 +40,11 @@ export const LenkeTilPersonopplysningsside: React.FC<IProps> = ({ personIdent, c
         return (
             <HStack gap="2" align={'center'}>
                 <BodyShortSmall>{children}</BodyShortSmall>{' '}
-                <Tag variant="info" size="small">
-                    NPID
-                </Tag>
+                <Tooltip content="Navs personidentifikator" placement="right">
+                    <Tag variant="info" size="small">
+                        NPID
+                    </Tag>
+                </Tooltip>
             </HStack>
         );
     }
