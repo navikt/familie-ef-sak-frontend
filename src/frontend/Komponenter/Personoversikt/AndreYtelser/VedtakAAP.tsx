@@ -1,6 +1,6 @@
 import React from 'react';
 import { VedtakArbeidsavklaringspenger } from '../../../App/typer/andreYtelser';
-import { BodyShort, Box, ExpansionCard, Heading, HStack, VStack } from '@navikt/ds-react';
+import { BodyShort, ExpansionCard, HStack, VStack } from '@navikt/ds-react';
 import { formaterIsoDato } from '../../../App/utils/formatter';
 import { AAPIkon } from '../../../Felles/Ikoner/AAPIkon';
 
@@ -14,50 +14,49 @@ export const VedtakAAP: React.FC<Props> = ({ vedtak }) => {
     );
 
     return (
-        <div>
-            <Heading size="small" level="2" spacing>
-                Vedtak Arbeidsavklaringspenger
-            </Heading>
-            <VStack gap="4" style={{ marginLeft: '1rem' }}>
-                {vedtakNyesteFørst.map((arbeidsavklaringspenger, index) => {
-                    const vedtaksdato = formaterIsoDato(arbeidsavklaringspenger.vedtaksdato);
+        <VStack gap="4" style={{ marginLeft: '1rem' }}>
+            <ExpansionCard
+                aria-label="Vedtak om arbeidsavklaringspenger med vedtaksdato "
+                defaultOpen
+            >
+                <ExpansionCard.Header>
+                    <HStack wrap={false} gap="space-16" align="center">
+                        <AAPIkon />
+                        <VStack>
+                            <ExpansionCard.Title>
+                                Vedtak om arbeidsavklaringspenger
+                            </ExpansionCard.Title>
+                            <ExpansionCard.Description>
+                                Dagsats med barnetillegg
+                            </ExpansionCard.Description>
+                        </VStack>
+                    </HStack>
+                </ExpansionCard.Header>
+                <ExpansionCard.Content>
+                    <VStack gap="1">
+                        {vedtakNyesteFørst.map((arbeidsavklaringspenger, index) => {
+                            const fomDato = formaterIsoDato(
+                                arbeidsavklaringspenger.periode.fraOgMedDato
+                            );
+                            const tomDato = formaterIsoDato(
+                                arbeidsavklaringspenger.periode.tilOgMedDato
+                            );
+                            const fomTomDatoStreng = `${fomDato} - ${tomDato}`;
 
-                    const fomDato = formaterIsoDato(arbeidsavklaringspenger.periode.fraOgMedDato);
-                    const tomDato = formaterIsoDato(arbeidsavklaringspenger.periode.tilOgMedDato);
-                    const fomTomDatoStreng = `${fomDato} - ${tomDato}`;
+                            const dagsatsMedBarnetillegg =
+                                arbeidsavklaringspenger.dagsats +
+                                arbeidsavklaringspenger.barnetillegg;
 
-                    const dagsatsMedBarnetillegg =
-                        arbeidsavklaringspenger.dagsats + arbeidsavklaringspenger.barnetillegg;
-
-                    return (
-                        <ExpansionCard
-                            key={index}
-                            aria-label="Vedtak om arbeidsavklaringspenger med vedtaksdato "
-                            defaultOpen={index === 0}
-                        >
-                            <ExpansionCard.Header>
-                                <HStack wrap={false} gap="space-16" align="center">
-                                    <AAPIkon />
-                                    <VStack>
-                                        <ExpansionCard.Title>{vedtaksdato}</ExpansionCard.Title>
-                                        <ExpansionCard.Description>
-                                            {fomTomDatoStreng}
-                                        </ExpansionCard.Description>
-                                    </VStack>
+                            return (
+                                <HStack justify="space-around" key={index}>
+                                    <BodyShort>{fomTomDatoStreng}</BodyShort>
+                                    <BodyShort>{dagsatsMedBarnetillegg} kr</BodyShort>
                                 </HStack>
-                            </ExpansionCard.Header>
-                            <ExpansionCard.Content>
-                                <Box>
-                                    <BodyShort>Dagsats med barnetillegg</BodyShort>
-                                    <BodyShort weight="semibold">
-                                        {dagsatsMedBarnetillegg}
-                                    </BodyShort>
-                                </Box>
-                            </ExpansionCard.Content>
-                        </ExpansionCard>
-                    );
-                })}
-            </VStack>
-        </div>
+                            );
+                        })}
+                    </VStack>
+                </ExpansionCard.Content>
+            </ExpansionCard>
+        </VStack>
     );
 };
