@@ -3,12 +3,12 @@ import { Button } from '@navikt/ds-react';
 import React from 'react';
 
 export const KnappNullstillSkjema: React.FC<{
-    resetBeregninggskjema: () => void;
-}> = ({ resetBeregninggskjema }) => {
+    nullstillSkjema: () => void;
+}> = ({ nullstillSkjema: nullstillSkjema }) => {
     return (
         <div>
             <Button
-                onClick={resetBeregninggskjema}
+                onClick={nullstillSkjema}
                 icon={<TrashIcon title="Nullstill skjema" fontSize="1.5rem" />}
             />
         </div>

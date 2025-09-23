@@ -42,7 +42,7 @@ export const BeregningsskjemaSide: React.FC = () => {
 
     const erTogglet = toggles[ToggleName.visBeregningsskjema] || false;
 
-    const resetBeregninggskjema = () => {
+    const nullstillSkjema = () => {
         settBeregninger([]);
         settPeriode(tomPeriode);
         settNullstillKey((prev) => prev + 1);
@@ -190,7 +190,7 @@ export const BeregningsskjemaSide: React.FC = () => {
                 <TabellFeilutbetalingMotregning beregninger={beregninger} />
 
                 {beregninger.length > 0 && (
-                    <KnappNullstillSkjema resetBeregninggskjema={resetBeregninggskjema} />
+                    <KnappNullstillSkjema nullstillSkjema={nullstillSkjema} />
                 )}
             </HStack>
 
