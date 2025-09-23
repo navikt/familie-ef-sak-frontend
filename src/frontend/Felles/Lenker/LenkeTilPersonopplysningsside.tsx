@@ -1,10 +1,11 @@
 import React, { ReactNode } from 'react';
-import { Link } from '@navikt/ds-react';
+import { HStack, Link, Tag, Tooltip } from '@navikt/ds-react';
 import { ExternalLinkIcon } from '@navikt/aksel-icons';
 import { Ressurs, RessursStatus } from '../../App/typer/ressurs';
 import { useApp } from '../../App/context/AppContext';
 import { BodyShortSmall } from '../Visningskomponenter/Tekster';
 import { EToast } from '../../App/typer/toast';
+import { erNPID } from '../HeaderMedSøk/utils';
 
 interface IProps {
     personIdent?: string;
@@ -31,7 +32,24 @@ export const LenkeTilPersonopplysningsside: React.FC<IProps> = ({ personIdent, c
         });
     };
 
-    return personIdent ? (
+    if (!personIdent) {
+        return <>{children}</>;
+    }
+
+    if (erNPID(personIdent)) {
+        return (
+            <HStack gap="2" align={'center'}>
+                <BodyShortSmall>{children}</BodyShortSmall>{' '}
+                <Tooltip content="Navs personidentifikator" placement="right">
+                    <Tag variant="info" size="small">
+                        NPID
+                    </Tag>
+                </Tooltip>
+            </HStack>
+        );
+    }
+
+    return (
         <BodyShortSmall>
             <Link
                 href="#"
@@ -43,7 +61,5 @@ export const LenkeTilPersonopplysningsside: React.FC<IProps> = ({ personIdent, c
                 {children} <ExternalLinkIcon title="Gå til person" />
             </Link>
         </BodyShortSmall>
-    ) : (
-        <>{children}</>
     );
 };

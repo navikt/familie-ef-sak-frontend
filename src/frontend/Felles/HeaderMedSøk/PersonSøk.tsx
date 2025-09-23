@@ -129,6 +129,7 @@ const PersonSøk: React.FC = () => {
 
     const søk = (verdi: string): void => {
         if (!verdi || resultat.status === RessursStatus.HENTER) return;
+
         settResultat(byggHenterRessurs());
         if (erPositivtTall(verdi) && verdi.length !== 11) {
             søkPersonEksternFagsakId(verdi);
