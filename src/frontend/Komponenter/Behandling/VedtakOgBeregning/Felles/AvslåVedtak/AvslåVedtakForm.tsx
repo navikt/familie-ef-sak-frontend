@@ -57,8 +57,8 @@ export const AvslåVedtakForm: React.FC<Props> = ({
         !skalVelgeÅrsak && settAvslagÅrsak(EAvslagÅrsak.VILKÅR_IKKE_OPPFYLT);
     }, [skalVelgeÅrsak, settAvslagÅrsak]);
 
-    const leggTilBeregnetInntektTekstIBegrunnelse = (årsinntekt: number) => {
-        const beregnetInntektTekst = genererBeregnetInntektTekst(årsinntekt);
+    const leggTilBeregnetInntektTekstIBegrunnelse = (årsinntekt: number, fraOgMed?: Date) => {
+        const beregnetInntektTekst = genererBeregnetInntektTekst(årsinntekt, fraOgMed);
         settAvslagBegrunnelse((prev: string) => prev + beregnetInntektTekst);
     };
 
