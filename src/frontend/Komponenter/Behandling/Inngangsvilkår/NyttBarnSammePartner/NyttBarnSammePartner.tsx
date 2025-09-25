@@ -1,6 +1,6 @@
 import React from 'react';
 import { InngangsvilkårType } from '../vilkår';
-import NyttBarnSammePartnerInfo from './NyttBarnSammePartnerInfo';
+import { NyttBarnSammePartnerInfo } from './NyttBarnSammePartnerInfo';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import { VilkårProps } from '../vilkårprops';
 import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';

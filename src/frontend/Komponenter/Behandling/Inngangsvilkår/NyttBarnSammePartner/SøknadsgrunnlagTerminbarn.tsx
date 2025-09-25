@@ -1,57 +1,80 @@
 import React, { FC } from 'react';
 import { SøknadsgrunnlagNyttBarn } from './typer';
-import { GridTabell } from '../../../../Felles/Visningskomponenter/GridTabell';
-import LiteBarn from '../../../../Felles/Ikoner/LiteBarn';
 import { mapBarnNavnTekst } from './utils';
-import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
 import { AnnenForelderNavnOgFnr } from './AnnenForelderNavnOgFnr';
 import { harVerdi } from '../../../../App/utils/utils';
-import { Label } from '@navikt/ds-react';
+import { Heading, HStack } from '@navikt/ds-react';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
+import { ChildHairEyesIcon, FileTextIcon } from '@navikt/aksel-icons';
 
 interface Props {
     barn: SøknadsgrunnlagNyttBarn;
 }
 
-const SøknadgrunnlagTerminbarn: FC<Props> = ({ barn }) => {
+export const SøknadgrunnlagTerminbarn: FC<Props> = ({ barn }) => {
     const annenForelder = barn.annenForelderSoknad;
 
     const ikkeOppgittAnnenForelderBegrunnelse = barn.ikkeOppgittAnnenForelderBegrunnelse;
 
     return (
-        <GridTabell>
-            <>
-                <LiteBarn />
-                <Label as="h4" size={'small'}>
-                    {mapBarnNavnTekst(barn)}
-                </Label>
-            </>
-            <>
-                <Søknadsgrunnlag />
-                <BodyShortSmall>Termindato</BodyShortSmall>
+        <div>
+            <HStack gap={'space-12'} align={'center'}>
+                <ChildHairEyesIcon title="barn" fontSize="1.3rem" />
+
+                <Heading size="xsmall">{mapBarnNavnTekst(barn)}</Heading>
+            </HStack>
+
+            <InfoRad
+                ikon={<FileTextIcon title="lagt til i søknad" fontSize="1.3rem" />}
+                tekst={'Termindato'}
+            >
                 <BodyShortSmall>{formaterNullableIsoDato(barn.fødselTermindato)}</BodyShortSmall>
-            </>
+            </InfoRad>
+
             {annenForelder && (
-                <>
-                    <Søknadsgrunnlag />
-                    <BodyShortSmall>Annen forelder lagt til i søknad</BodyShortSmall>
+                <InfoRad
+                    ikon={<FileTextIcon title="lagt til i søknad" fontSize="1.3rem" />}
+                    tekst={'Annen forelder lagt til i søknad'}
+                >
                     <AnnenForelderNavnOgFnr forelder={annenForelder} />
-                </>
+                </InfoRad>
             )}
+
             {harVerdi(ikkeOppgittAnnenForelderBegrunnelse) && (
-                <>
-                    <Søknadsgrunnlag />
-                    <BodyShortSmall>Annen forelder</BodyShortSmall>
+                <InfoRad
+                    ikon={<FileTextIcon title="lagt til i søknad" fontSize="1.3rem" />}
+                    tekst={'Annen forelder'}
+                >
                     <BodyShortSmall>
                         {ikkeOppgittAnnenForelderBegrunnelse === 'donorbarn'
                             ? ikkeOppgittAnnenForelderBegrunnelse
                             : `Ikke oppgitt: ${ikkeOppgittAnnenForelderBegrunnelse}`}
                     </BodyShortSmall>
-                </>
+                </InfoRad>
             )}
-        </GridTabell>
+        </div>
     );
 };
 
-export default SøknadgrunnlagTerminbarn;
+const InfoRad: React.FC<{
+    ikon: React.ReactNode;
+    tekst: string;
+    children: React.ReactNode;
+}> = ({ ikon, tekst, children }) => {
+    return (
+        <HStack>
+            <HStack
+                gap={'space-12'}
+                align={'center'}
+                style={{
+                    minWidth: '18rem',
+                }}
+            >
+                {ikon}
+                <BodyShortSmall>{tekst}</BodyShortSmall>
+            </HStack>
+            {children}
+        </HStack>
+    );
+};
