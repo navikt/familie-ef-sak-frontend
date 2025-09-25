@@ -67,6 +67,7 @@ export interface IAnnenForelder {
     dødsfall?: string;
     tidligereVedtaksperioder?: ITidligereVedtaksperioder;
     avstandTilSøker: IAvstandTilSøker;
+    erKopiertFraAnnetBarn?: boolean;
 }
 
 export interface IAvstandTilSøker {
