@@ -168,11 +168,14 @@ export const beregnTiProsentØkningIMånedsinntekt = (årsinntekt: number) =>
 export const beregnTiProsentReduksjonIMånedsinntekt = (årsinntekt: number) =>
     formaterTallMedTusenSkille(Math.floor((årsinntekt / 12) * 0.9));
 
-export const genererBeregnetInntektTekst = (årsinntekt: number): string => {
+export const genererBeregnetInntektTekst = (årsinntekt: number, fraOgMed?: Date): string => {
     const minusTi = beregnTiProsentReduksjonIMånedsinntekt(årsinntekt);
     const plusTi = beregnTiProsentØkningIMånedsinntekt(årsinntekt);
+    const dato = fraOgMed
+        ? fraOgMed.toLocaleDateString('nb-NO', { year: 'numeric', month: 'long' })
+        : '[DATO]';
 
-    return `\nForventet årsinntekt fra [DATO]: ${formaterTallMedTusenSkille(årsinntekt)} kroner.
+    return `\nForventet årsinntekt fra ${dato}: ${formaterTallMedTusenSkille(årsinntekt)} kroner.
     - 10 % opp: ${plusTi} kroner per måned.
     - 10 % ned: ${minusTi} kroner per måned.`;
 };
