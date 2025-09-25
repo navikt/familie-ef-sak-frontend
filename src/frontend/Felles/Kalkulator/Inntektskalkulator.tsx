@@ -1,4 +1,4 @@
-import { Button, HStack, VStack } from '@navikt/ds-react';
+import { Button, HStack, MonthPicker, useMonthpicker, VStack } from '@navikt/ds-react';
 import React, { FC, useRef, useState } from 'react';
 import { BodyShortSmall } from '../Visningskomponenter/Tekster';
 import ForwardedTextField from '../../Komponenter/Behandling/VedtakOgBeregning/Overgangsstønad/InnvilgeVedtak/ForwardedTextField';
@@ -7,12 +7,19 @@ import { EnsligErrorMessage } from '../ErrorMessage/EnsligErrorMessage';
 const TASTATURTAST_ENTER = 'Enter';
 
 const Inntektskalkulator: FC<{
-    leggTilBeregnetInntektTekstIBegrunnelse: (årsinntekt: number) => void;
+    leggTilBeregnetInntektTekstIBegrunnelse: (årsinntekt: number, fraOgMed?: Date) => void;
     nullstillBegrunnelse?: () => void;
 }> = ({ leggTilBeregnetInntektTekstIBegrunnelse, nullstillBegrunnelse }) => {
     const [årsinntekt, settÅrsinntekt] = useState<string>('');
     const textFieldRef = useRef<HTMLInputElement>(null);
     const [feilmedling, settFeilmedling] = useState<string>('');
+    const [fraOgMed, settFraOgMed] = useState<Date | undefined>(undefined);
+
+    const { monthpickerProps, inputProps, reset } = useMonthpicker({
+        onMonthChange: (month) => {
+            settFraOgMed(month);
+        },
+    });
 
     const oppdaterÅrsinntekt = () => {
         settFeilmedling('');
@@ -23,8 +30,10 @@ const Inntektskalkulator: FC<{
             return;
         }
 
-        leggTilBeregnetInntektTekstIBegrunnelse(årsinntektTall);
+        leggTilBeregnetInntektTekstIBegrunnelse(årsinntektTall, fraOgMed);
         settÅrsinntekt('');
+        settFraOgMed(undefined);
+        reset();
     };
 
     const handleRegnUtOgLeggTilTekst = (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -51,39 +60,54 @@ const Inntektskalkulator: FC<{
     };
 
     return (
-        <VStack gap="3">
-            <BodyShortSmall>Legg inn årsinntekt for å regne ut +/- 10 prosent.</BodyShortSmall>
+        <VStack gap="space-16">
+            <BodyShortSmall>
+                Legg inn årsinntekt og fra-dato for å regne ut +/- prosent.
+            </BodyShortSmall>
+
             <HStack gap="4" justify={nullstillBegrunnelse ? 'start' : 'space-between'}>
                 <ForwardedTextField
                     ref={textFieldRef}
-                    placeholder="Årsinntekt"
+                    placeholder=""
                     type="number"
                     inputMode="numeric"
-                    label=""
+                    label="Årsinntekt"
                     size="small"
                     value={årsinntekt}
                     onChange={handleTextFieldOnChange}
                     onKeyDown={handleRegnUtOgLeggTilTekst}
                 />
 
-                <Button
-                    type="button"
-                    variant="secondary"
-                    size="xsmall"
-                    onClick={oppdaterÅrsinntekt}
-                >
-                    Beregn
-                </Button>
-                {nullstillBegrunnelse !== undefined && (
-                    <Button
-                        type="button"
-                        variant="tertiary"
-                        size="xsmall"
-                        onClick={nullstillKalkulator}
-                    >
-                        Nullstill
-                    </Button>
-                )}
+                <MonthPicker {...monthpickerProps}>
+                    <MonthPicker.Input {...inputProps} label="Fra og med" size="small" />
+                </MonthPicker>
+
+                <HStack gap="2" align={'end'}>
+                    <div>
+                        <Button
+                            type="button"
+                            variant="secondary"
+                            size="xsmall"
+                            onClick={oppdaterÅrsinntekt}
+                        >
+                            Beregn
+                        </Button>
+                    </div>
+
+                    <div>
+                        {nullstillBegrunnelse !== undefined && (
+                            <Button
+                                type="button"
+                                variant="tertiary"
+                                size="xsmall"
+                                onClick={nullstillKalkulator}
+                            >
+                                Nullstill
+                            </Button>
+                        )}
+                    </div>
+                </HStack>
+
                 <EnsligErrorMessage>{feilmedling}</EnsligErrorMessage>
             </HStack>
         </VStack>

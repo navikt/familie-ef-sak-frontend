@@ -13,8 +13,8 @@ const TextAreaLiten = styled(Textarea)`
 
 export const InntektskalkulatorSide: React.FC = () => {
     const inntektBegrunnelseState: FieldState = useFieldState('');
-    const leggTilBeregnetInntektTekstIBegrunnelse = (årsinntekt: number) => {
-        const beregnetInntektTekst = genererBeregnetInntektTekst(årsinntekt);
+    const leggTilBeregnetInntektTekstIBegrunnelse = (årsinntekt: number, fraOgMed?: Date) => {
+        const beregnetInntektTekst = genererBeregnetInntektTekst(årsinntekt, fraOgMed);
         inntektBegrunnelseState.setValue((prevState) => prevState + beregnetInntektTekst);
     };
 
