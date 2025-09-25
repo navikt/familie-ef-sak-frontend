@@ -50,8 +50,8 @@ export const InntektVurderingMedKalkulator: FC<InntektVurderingMedKalkualtor> = 
     const begrunnelsetype = vurdering.svar && regel.svarMapping[vurdering.svar].begrunnelseType;
     const visKalkulator = (begrunnelsetype ?? BegrunnelseRegel.UTEN) !== BegrunnelseRegel.UTEN;
 
-    const leggTilBeregnetInntektTekstIBegrunnelse = (årsinntekt: number) => {
-        const beregnetInntektTekst = genererBeregnetInntektTekst(årsinntekt);
+    const leggTilBeregnetInntektTekstIBegrunnelse = (årsinntekt: number, fraOgMed?: Date) => {
+        const beregnetInntektTekst = genererBeregnetInntektTekst(årsinntekt, fraOgMed);
         const eksisterendeTekst = vurdering.begrunnelse || '';
         onChange(eksisterendeTekst + beregnetInntektTekst);
     };
