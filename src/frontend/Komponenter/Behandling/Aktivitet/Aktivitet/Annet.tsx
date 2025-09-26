@@ -31,6 +31,8 @@ interface Props {
 }
 
 const Annet: FC<Props> = ({ dinSituasjon, særligTilsynsbehov }) => {
+    const visOmTilsynbehovFor = særligTilsynsbehov.length !== 0;
+
     return (
         <>
             <InfoSeksjonWrapper
@@ -57,22 +59,25 @@ const Annet: FC<Props> = ({ dinSituasjon, særligTilsynsbehov }) => {
                         </ul>
                     }
                 />
-                <FlexColumnContainer $gap={1}>
-                    <Informasjonsrad label="Om tilsynsbehov for: " />
-                    {særligTilsynsbehov.map((barnetsBehov) => (
-                        <Informasjonsrad
-                            key={barnetsBehov.id}
-                            label={
-                                barnetsBehov.navn
-                                    ? `${barnetsBehov.navn} `
-                                    : `Barn ${
-                                          barnetsBehov.erBarnetFødt ? 'født ' : 'termindato '
-                                      } ${formaterNullableIsoDato(barnetsBehov.fødselTermindato)}`
-                            }
-                            verdi={barnetsBehov.særligeTilsynsbehov}
-                        />
-                    ))}
-                </FlexColumnContainer>
+
+                {visOmTilsynbehovFor && (
+                    <FlexColumnContainer $gap={1}>
+                        <Informasjonsrad label="Om tilsynsbehov for: " />
+                        {særligTilsynsbehov.map((barnetsBehov) => (
+                            <Informasjonsrad
+                                key={barnetsBehov.id}
+                                label={
+                                    barnetsBehov.navn
+                                        ? `${barnetsBehov.navn} `
+                                        : `Barn ${
+                                              barnetsBehov.erBarnetFødt ? 'født ' : 'termindato '
+                                          } ${formaterNullableIsoDato(barnetsBehov.fødselTermindato)}`
+                                }
+                                verdi={barnetsBehov.særligeTilsynsbehov}
+                            />
+                        ))}
+                    </FlexColumnContainer>
+                )}
             </InfoSeksjonWrapper>
         </>
     );
