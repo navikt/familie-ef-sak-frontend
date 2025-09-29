@@ -34,3 +34,15 @@ updates:
       interval: weekly
       day: 'sunday'
       time: '04:00'
+    groups:
+      github-actions-minor-patches:
+        patterns:
+          - '*'
+        update-types:
+          - 'minor'
+          - 'patch'
+      github-actions-major:
+        patterns:
+          - '*'
+        update-types:
+          - 'major'
