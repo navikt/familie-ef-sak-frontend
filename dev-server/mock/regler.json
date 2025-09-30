@@ -167,6 +167,27 @@
           "SIVILSTAND_UNNTAK": {
             "regelId": "SIVILSTAND_UNNTAK",
             "svarMapping": {
+              "GJENLEVENDE_SEPARERT_FØR_DØDSFALL": {
+                "begrunnelseType": "PÅKREVD",
+                "regelId": "SLUTT_NODE"
+              },
+              "GJENLEVENDE_IKKE_RETT_TIL_YTELSER": {
+                "begrunnelseType": "PÅKREVD",
+                "regelId": "SLUTT_NODE"
+              },
+              "GJENLEVENDE_OVERTAR_OMSORG": {
+                "begrunnelseType": "PÅKREVD",
+                "regelId": "SLUTT_NODE"
+              },
+              "NEI": {
+                "begrunnelseType": "PÅKREVD",
+                "regelId": "SLUTT_NODE"
+              }
+            }
+          },
+          "SIVILSTAND_UNNTAK_GAMLE_VALG": {
+            "regelId": "SIVILSTAND_UNNTAK_GAMLE_VALG",
+            "svarMapping": {
               "GJENLEVENDE_IKKE_RETT_TIL_YTELSER": {
                 "begrunnelseType": "PÅKREVD",
                 "regelId": "SLUTT_NODE"
