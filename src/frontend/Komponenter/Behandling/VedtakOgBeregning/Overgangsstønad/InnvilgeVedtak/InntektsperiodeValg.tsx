@@ -192,8 +192,8 @@ const InntektsperiodeValg: React.FC<Props> = ({
         }
     };
 
-    const leggTilBeregnetInntektTekstIBegrunnelse = (årsinntekt: number) => {
-        const beregnetInntektTekst = genererBeregnetInntektTekst(årsinntekt);
+    const leggTilBeregnetInntektTekstIBegrunnelse = (årsinntekt: number, fraOgMed?: Date) => {
+        const beregnetInntektTekst = genererBeregnetInntektTekst(årsinntekt, fraOgMed);
         inntektBegrunnelseState.setValue((prevState) => prevState + beregnetInntektTekst);
     };
 
