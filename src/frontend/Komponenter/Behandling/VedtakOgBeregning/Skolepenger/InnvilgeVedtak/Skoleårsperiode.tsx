@@ -10,13 +10,13 @@ import { FormErrors, Valideringsfunksjon } from '../../../../../App/hooks/felles
 import { ABlue200, ABorderSubtle, AGray50 } from '@navikt/ds-tokens/dist/tokens';
 import { HorizontalScroll } from '../../Felles/HorizontalScroll';
 import Delårsperioder from './Delårsperioder';
-import { Knapp } from '../../../../../Felles/Knapper/HovedKnapp';
 import { InnvilgeVedtakForm } from '../Felles/typer';
 import { validerSkoleårsperioderUtenBegrunnelseOgUtgiftsperioder } from '../Felles/vedtaksvalidering';
 import Utgiftsperioder from './Utgiftsperioder';
 import Makssats from './Makssats';
 import SkoleårsperiodeHeader from './SkoleårsperiodeHeader';
 import { utledSkoleårOgMaksBeløp, utledSkoleårString } from '../Felles/skoleår';
+import { Button } from '@navikt/ds-react';
 
 const ContainerDashedBorder = styled.div`
     border: 4px dashed ${ABlue200};
@@ -170,16 +170,22 @@ const Skoleårsperiode: React.FC<Props> = ({
                             valideringsfeil={valideringsfeil && valideringsfeil.perioder}
                         />
                         <FlexEnd>
-                            <Knapp onClick={fjernSkoleårsperiode} type="button" variant="tertiary">
+                            <Button
+                                onClick={fjernSkoleårsperiode}
+                                type="button"
+                                variant="tertiary"
+                                style={{ width: 'fit-content' }}
+                            >
                                 Avbryt
-                            </Knapp>
-                            <Knapp
+                            </Button>
+                            <Button
                                 onClick={oppdaterVisningsmodus}
                                 type="button"
                                 variant="secondary"
+                                style={{ width: 'fit-content' }}
                             >
                                 Legg til skoleår
-                            </Knapp>
+                            </Button>
                         </FlexEnd>
                     </HorisontalScroll>
                 </ContainerDashedBorder>

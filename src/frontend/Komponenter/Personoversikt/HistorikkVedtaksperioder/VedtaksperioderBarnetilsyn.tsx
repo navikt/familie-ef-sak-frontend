@@ -20,7 +20,7 @@ import {
 import { utledHjelpetekstForBeløpFørFratrekkOgSatsjusteringForVedtaksside } from '../../Behandling/VedtakOgBeregning/Felles/utils';
 import { HelpText, HStack, Table, Tag } from '@navikt/ds-react';
 import styled from 'styled-components';
-import { AntallMånederTag, TableMedMarginBottom } from './VedtaksperioderOvergangsstønad';
+import { AntallMånederTag } from './VedtaksperioderOvergangsstønad';
 
 const Rad = styled.div`
     display: grid;
@@ -121,7 +121,7 @@ const historikkRad = (andel: AndelHistorikk, index: number) => {
 
 const VedtaksperioderBarnetilsyn: React.FC<{ andeler: AndelHistorikk[] }> = ({ andeler }) => {
     return (
-        <TableMedMarginBottom>
+        <Table size="small" style={{ marginBottom: '1rem' }}>
             <Table.Header>
                 <Table.Row>
                     <TableHeaderCellSmall>Periode (fom-tom)</TableHeaderCellSmall>
@@ -138,7 +138,7 @@ const VedtaksperioderBarnetilsyn: React.FC<{ andeler: AndelHistorikk[] }> = ({ a
                 </Table.Row>
             </Table.Header>
             <Table.Body>{andeler.map((periode, index) => historikkRad(periode, index))}</Table.Body>
-        </TableMedMarginBottom>
+        </Table>
     );
 };
 

@@ -8,14 +8,21 @@ import { Link } from 'react-router-dom';
 import { formaterIsoDatoTid, formaterNullableIsoDato } from '../../../App/utils/formatter';
 import { EPeriodetype, EUtgiftsperiodetype } from '../../../App/typer/vedtak';
 import React, { forwardRef } from 'react';
-import styled from 'styled-components';
 import { TagProps, Table, HeaderCellProps } from '@navikt/ds-react';
 import { OverlappMedOvergangsstønad } from '../../Behandling/TidligereVedtaksperioder/typer';
 import { DataCellProps } from '@navikt/ds-react';
 
-export const HistorikkRad = styled(Table.Row)<{ $type?: AndelEndringType }>`
-    opacity: ${(props) => (skalMarkeresSomFjernet(props.$type) ? '50%' : '100%')};
-`;
+export const HistorikkRad: React.FC<
+    React.ComponentProps<typeof Table.Row> & { $type?: AndelEndringType }
+> = ({ $type, style, ...rest }) => (
+    <Table.Row
+        style={{
+            opacity: skalMarkeresSomFjernet($type) ? '50%' : '100%',
+            ...style,
+        }}
+        {...rest}
+    />
+);
 
 export const skalMarkeresSomFjernet = (type?: AndelEndringType) =>
     type === AndelEndringType.FJERNET || type === AndelEndringType.ERSTATTET;

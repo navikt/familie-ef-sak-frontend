@@ -1,6 +1,6 @@
 import { TrashIcon } from '@navikt/aksel-icons';
+import { Button } from '@navikt/ds-react';
 import React from 'react';
-import { Knapp } from './HovedKnapp';
 
 const FjernKnapp: React.FC<{
     className?: string;
@@ -9,15 +9,16 @@ const FjernKnapp: React.FC<{
     onClick: () => void;
 }> = ({ className, ikontekst, knappetekst, onClick }) => {
     return (
-        <Knapp
+        <Button
             className={className}
             icon={<TrashIcon title={knappetekst ? knappetekst : ikontekst} />}
             onClick={onClick}
             type="button"
             variant={knappetekst ? 'secondary' : 'tertiary'}
+            style={{ width: 'fit-content' }}
         >
             {knappetekst && <span>{knappetekst}</span>}
-        </Knapp>
+        </Button>
     );
 };
 
