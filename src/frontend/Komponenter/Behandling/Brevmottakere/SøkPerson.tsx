@@ -3,8 +3,17 @@ import { useApp } from '../../../App/context/AppContext';
 import { byggTomRessurs, Ressurs } from '../../../App/typer/ressurs';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { EBrevmottakerRolle, IBrevmottaker } from './typer';
-import { BodyShort, Button, HStack, Radio, RadioGroup, Stack, VStack } from '@navikt/ds-react';
-import { Søkefelt, Søkeresultat } from './brevmottakereStyling';
+import {
+    BodyShort,
+    Button,
+    HStack,
+    Radio,
+    RadioGroup,
+    Stack,
+    TextField,
+    VStack,
+} from '@navikt/ds-react';
+import { Søkeresultat } from './brevmottakereStyling';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 
 type Props =
@@ -74,7 +83,7 @@ export const SøkPerson: React.FC<Props> = ({
 
     return (
         <>
-            <Søkefelt
+            <TextField
                 label={'Personident'}
                 htmlSize={26}
                 placeholder={
@@ -85,6 +94,10 @@ export const SøkPerson: React.FC<Props> = ({
                 value={søkIdent}
                 onChange={(e) => settSøkIdent(e.target.value)}
                 autoComplete="off"
+                style={{
+                    width: '50%',
+                    paddingRight: '1rem',
+                }}
             />
             <DataViewer response={{ søkRessurs }}>
                 {({ søkRessurs }) => {

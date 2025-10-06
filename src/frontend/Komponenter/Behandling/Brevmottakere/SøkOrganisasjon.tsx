@@ -3,7 +3,7 @@ import { useApp } from '../../../App/context/AppContext';
 import { byggTomRessurs, Ressurs } from '../../../App/typer/ressurs';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { BrevmottakerRolleOrganisasjon, EBrevmottakerRolle, IOrganisasjonMottaker } from './typer';
-import { Søkefelt, Søkeresultat } from './brevmottakereStyling';
+import { Søkeresultat } from './brevmottakereStyling';
 import { BodyShort, Radio, RadioGroup, Stack, TextField, VStack } from '@navikt/ds-react';
 import LeggTilKnapp from '../../../Felles/Knapper/LeggTilKnapp';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
@@ -63,13 +63,17 @@ export const SøkOrganisasjon: React.FC<Props> = ({ settValgteMottakere, valgteM
 
     return (
         <>
-            <Søkefelt
+            <TextField
                 label={'Organisasjonsnummer'}
                 htmlSize={26}
                 placeholder={'Søk'}
                 value={organisasjonsnummer}
                 onChange={(e) => settOrganisasjonsnummer(e.target.value)}
                 autoComplete="off"
+                style={{
+                    width: '50%',
+                    paddingRight: '1rem',
+                }}
             />
             <DataViewer response={{ organisasjonRessurs }}>
                 {({ organisasjonRessurs }) => {

@@ -13,7 +13,7 @@ import {
     lagreTilLocalStorage,
     oppgaveRequestKey,
 } from '../../../App/utils/localStorage';
-import { BodyShort, Heading, HStack } from '@navikt/ds-react';
+import { BodyShort, Button, Heading, HStack } from '@navikt/ds-react';
 import JournalføringWrapper, {
     Høyrekolonne,
     JournalføringSideProps,
@@ -26,7 +26,6 @@ import AvsenderPanel from './AvsenderPanel';
 import Dokumenter from './Dokumenter';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 import Behandlinger from './Behandlinger';
-import { Knapp } from '../../../Felles/Knapper/HovedKnapp';
 import {
     journalføringGjelderKlage,
     Journalføringsårsak,
@@ -217,22 +216,24 @@ const Journalføring: React.FC<JournalføringSideProps> = ({
                         </section>
                         {feilmelding && <AlertError>{feilmelding}</AlertError>}
                         <HStack gap="4" justify="end">
-                            <Knapp
+                            <Button
                                 size={'small'}
                                 variant={'tertiary'}
                                 onClick={() => navigate('/oppgavebenk')}
+                                style={{ width: 'fit-content' }}
                             >
                                 Avbryt
-                            </Knapp>
-                            <Knapp
+                            </Button>
+                            <Button
                                 size={'small'}
                                 variant={'primary'}
                                 onClick={validerOgJournalfør}
                                 loading={senderInn}
                                 disabled={senderInn}
+                                style={{ width: 'fit-content' }}
                             >
                                 Journalfør
-                            </Knapp>
+                            </Button>
                         </HStack>
                     </InnerContainer>
                 </Venstrekolonne>

@@ -1,7 +1,6 @@
 import { PlusCircleIcon } from '@navikt/aksel-icons';
 import React from 'react';
-import { Knapp } from './HovedKnapp';
-import { ButtonProps } from '@navikt/ds-react';
+import { Button, ButtonProps } from '@navikt/ds-react';
 
 const LeggTilKnapp: React.FC<{
     className?: string;
@@ -14,7 +13,7 @@ const LeggTilKnapp: React.FC<{
     disabled?: boolean;
 }> = ({ className, ikontekst, ikonPosisjon, knappetekst, onClick, variant, size, disabled }) => {
     return (
-        <Knapp
+        <Button
             className={className}
             icon={<PlusCircleIcon title={knappetekst ? knappetekst : ikontekst} />}
             iconPosition={ikonPosisjon}
@@ -23,9 +22,10 @@ const LeggTilKnapp: React.FC<{
             variant={variant || 'secondary'}
             size={size || 'medium'}
             disabled={disabled}
+            style={{ width: 'fit-content' }}
         >
             {knappetekst && <span>{knappetekst}</span>}
-        </Knapp>
+        </Button>
     );
 };
 

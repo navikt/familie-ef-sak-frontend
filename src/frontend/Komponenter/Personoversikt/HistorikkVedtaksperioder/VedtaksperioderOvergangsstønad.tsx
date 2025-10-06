@@ -15,11 +15,6 @@ import {
 } from './vedtakshistorikkUtil';
 import { Behandlingsårsak, behandlingsårsakTilTekst } from '../../../App/typer/behandlingsårsak';
 import { HStack, Table, Tag } from '@navikt/ds-react';
-import { styled } from 'styled-components';
-
-export const TableMedMarginBottom = styled(Table)`
-    margin-bottom: 1rem;
-`;
 
 const lenketekst = (andel: AndelHistorikk) => {
     if (
@@ -96,7 +91,7 @@ const historikkRad = (andel: AndelHistorikk, index: number) => {
 
 const VedtaksperioderOvergangsstønad: React.FC<{ andeler: AndelHistorikk[] }> = ({ andeler }) => {
     return (
-        <TableMedMarginBottom size="small">
+        <Table size="small" style={{ marginBottom: '1rem' }}>
             <Table.Header>
                 <Table.Row>
                     <TableHeaderCellSmall>Periode (fom-tom)</TableHeaderCellSmall>
@@ -112,7 +107,7 @@ const VedtaksperioderOvergangsstønad: React.FC<{ andeler: AndelHistorikk[] }> =
                 </Table.Row>
             </Table.Header>
             <Table.Body>{andeler.map((periode, index) => historikkRad(periode, index))}</Table.Body>
-        </TableMedMarginBottom>
+        </Table>
     );
 };
 

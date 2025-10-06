@@ -9,8 +9,8 @@ import { InnvilgeVedtakForm, tomSkoleårsperiodeSkolepenger } from '../Felles/ty
 import { oppdaterValideringsfeil } from '../Felles/utils';
 import LeggTilKnapp from '../../../../../Felles/Knapper/LeggTilKnapp';
 import Skoleårsperiode from './Skoleårsperiode';
-import { Knapp } from '../../../../../Felles/Knapper/HovedKnapp';
 import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons';
+import { Button } from '@navikt/ds-react';
 
 interface Props {
     customValidate: (fn: Valideringsfunksjon<InnvilgeVedtakForm>) => boolean;
@@ -109,7 +109,7 @@ const Skoleårsperioder: React.FC<Props> = ({
                 ) : null;
             })}
             {harMinstToLagredeSkoleårsperioder && (
-                <Knapp
+                <Button
                     icon={visTidligereSkoleår ? <ChevronUpIcon /> : <ChevronDownIcon />}
                     variant={'tertiary'}
                     size={'medium'}
@@ -118,9 +118,10 @@ const Skoleårsperioder: React.FC<Props> = ({
                     onClick={() => {
                         settVisTidligereSkoleår((prevState) => !prevState);
                     }}
+                    style={{ width: 'fit-content' }}
                 >
                     {visTidligereSkoleår ? 'Skjul tidligere skoleår' : 'Vis tidligere skoleår'}
-                </Knapp>
+                </Button>
             )}
         </>
     );

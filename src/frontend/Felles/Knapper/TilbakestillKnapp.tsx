@@ -1,6 +1,6 @@
 import { ArrowUndoIcon } from '@navikt/aksel-icons';
 import React from 'react';
-import { Knapp } from './HovedKnapp';
+import { Button } from '@navikt/ds-react';
 
 const TilbakestillKnapp: React.FC<{
     onClick: () => void;
@@ -8,14 +8,15 @@ const TilbakestillKnapp: React.FC<{
     ikontekst?: string;
 }> = ({ onClick, knappetekst, ikontekst }) => {
     return (
-        <Knapp
+        <Button
             onClick={onClick}
             type="button"
             variant={knappetekst ? 'secondary' : 'tertiary'}
             icon={<ArrowUndoIcon title={knappetekst ? knappetekst : ikontekst} />}
+            style={{ width: 'fit-content' }}
         >
             {knappetekst && <span>{knappetekst}</span>}
-        </Knapp>
+        </Button>
     );
 };
 

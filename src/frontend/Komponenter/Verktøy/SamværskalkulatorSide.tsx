@@ -13,8 +13,7 @@ import {
 } from '../../Felles/Kalkulator/utils';
 import { useApp } from '../../App/context/AppContext';
 import { Route, Routes, useNavigate, useParams } from 'react-router-dom';
-import { Heading, HStack, Textarea, VStack } from '@navikt/ds-react';
-import { Knapp } from '../../Felles/Knapper/HovedKnapp';
+import { Button, Heading, HStack, Textarea, VStack } from '@navikt/ds-react';
 import styled from 'styled-components';
 import { BrukerPanel } from '../../Felles/BrukerPanel/BrukerPanel';
 import { PanelHeaderType } from '../../Felles/BrukerPanel/PanelHeader';
@@ -189,14 +188,15 @@ const SamværskalkulatorSkjema: React.FC = () => {
                             maxLength={0}
                         />
                         <HStack gap="4">
-                            <Knapp
+                            <Button
                                 size={'small'}
                                 variant={'tertiary'}
                                 onClick={() => navigate('/oppgavebenk')}
+                                style={{ width: 'fit-content' }}
                             >
                                 Avbryt
-                            </Knapp>
-                            <Knapp
+                            </Button>
+                            <Button
                                 size={'small'}
                                 variant={'primary'}
                                 onClick={() =>
@@ -204,9 +204,10 @@ const SamværskalkulatorSkjema: React.FC = () => {
                                 }
                                 loading={senderInnJournalføring}
                                 disabled={senderInnJournalføring}
+                                style={{ width: 'fit-content' }}
                             >
                                 Journalfør
-                            </Knapp>
+                            </Button>
                         </HStack>
                         {feilmelding && <AlertError>{feilmelding}</AlertError>}
                         {visEndrePersonModal && (

@@ -27,11 +27,11 @@ import styled from 'styled-components';
 import { IVilkår } from '../../../Inngangsvilkår/vilkår';
 import { utledYngsteBarnFødselsdatoSomHarInngangsvilkåretAleneomsorgOppfylt } from '../Felles/fødselsdatoUtils';
 import { useRedirectEtterLagring } from '../../../../../App/hooks/felles/useRedirectEtterLagring';
-import HovedKnapp, { Knapp } from '../../../../../Felles/Knapper/HovedKnapp';
+import HovedKnapp from '../../../../../Felles/Knapper/HovedKnapp';
 import { CalculatorIcon } from '@navikt/aksel-icons';
 import { tomInntektsperiodeRad, tomVedtaksperiodeRad } from '../Felles/utils';
 import { ModalState } from '../../../Modal/NyEierModal';
-import { VStack } from '@navikt/ds-react';
+import { Button, VStack } from '@navikt/ds-react';
 
 export type InnvilgeVedtakForm = Omit<
     Omit<IInnvilgeVedtakForOvergangsstønad, 'resultatType'>,
@@ -249,15 +249,16 @@ export const InnvilgeOvergangsstønad: React.FC<{
             />
             {behandlingErRedigerbar && (
                 <VStack gap={'4'}>
-                    <Knapp
+                    <Button
                         onClick={beregnPerioder}
                         variant={'secondary'}
                         type={'button'}
                         icon={<CalculatorIcon title={'beregn'} />}
                         iconPosition={'right'}
+                        style={{ width: 'fit-content' }}
                     >
                         Beregn
-                    </Knapp>
+                    </Button>
                     {feilmelding && <AlertStripeFeilPreWrap>{feilmelding}</AlertStripeFeilPreWrap>}
                 </VStack>
             )}
