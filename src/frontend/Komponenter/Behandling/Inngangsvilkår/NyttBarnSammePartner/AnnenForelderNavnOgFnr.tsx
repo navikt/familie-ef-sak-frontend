@@ -24,6 +24,8 @@ export const AnnenForelderNavnOgFnr: React.FC<Props> = ({
     const { ikkeOppgittAnnenForelderBegrunnelse } = søknadsgrunnlag || {};
     const { fødselsdato: fødselsdatoAnnenForelder } = søknadsgrunnlag?.forelder || {};
 
+    const dato = fødselsdatoAnnenForelder ?? fødselsdato;
+
     return (
         <HStack gap={'space-4'} align={'center'}>
             <LenkeTilPersonopplysningsside personIdent={fødselsnummer}>
@@ -34,12 +36,11 @@ export const AnnenForelderNavnOgFnr: React.FC<Props> = ({
 
             <BodyShortSmall>
                 {ikkeOppgittAnnenForelderBegrunnelse && ikkeOppgittAnnenForelderBegrunnelse}
-                {fødselsdatoAnnenForelder && formaterNullableIsoDato(fødselsdatoAnnenForelder)}
 
                 {fødselsnummer ? (
                     <KopierbartNullableFødselsnummer fødselsnummer={fødselsnummer} />
-                ) : fødselsdato ? (
-                    formaterNullableIsoDato(fødselsdato)
+                ) : dato ? (
+                    formaterNullableIsoDato(dato)
                 ) : (
                     ''
                 )}
