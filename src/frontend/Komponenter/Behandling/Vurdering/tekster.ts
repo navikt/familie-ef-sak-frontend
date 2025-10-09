@@ -36,7 +36,6 @@ export const delvilkårTypeTilTekst: Record<string, string> = {
     FYLLER_BRUKER_AKTIVITETSPLIKT:
         'Fyller bruker aktivitetsplikt, unntak for aktivitetsplikt eller har barn under 1 år?',
     SIVILSTAND_UNNTAK: 'Er unntak fra krav om sivilstand oppfylt?',
-    SIVILSTAND_UNNTAK_GAMLE_VALG: 'Er unntak fra krav om sivilstand oppfylt?', // TODO: Denne trenger kanskje ikke å være der, men endrer senere.
     RIMELIG_GRUNN_SAGT_OPP:
         'Hadde søker rimelig grunn til å si opp jobben eller redusere arbeidstiden?',
     HAR_TIDLIGERE_MOTTATT_OVERGANSSTØNAD: 'Har søker tidligere mottatt overgangsstønad?',
@@ -65,12 +64,10 @@ export const svarTypeTilTekst: Record<string, string> = {
     ARBEID_NORSK_ARBEIDSGIVER: 'Arbeid for norsk arbeidsgiver',
     UTENLANDSOPPHOLD_MINDRE_ENN_6_UKER: 'Utenlandsopphold på mindre enn 6 uker',
     OPPHOLDER_SEG_I_ANNET_EØS_LAND: 'Oppholder seg i annet EØS-land',
-    GJENLEVENDE_SEPARERT_FØR_DØDSFALL:
-        'Ja, gjenlevende og den andre forelderen ble separert før dødsfallet',
     GJENLEVENDE_OVERTAR_OMSORG:
-        'Ja, gjenlevende har overtatt omsorgen for egne særkullsbarn etter dødsfallet',
+        'Ja, gjenlevende som etter dødsfallet overtar omsorgen for egne særkullsbarn',
     GJENLEVENDE_IKKE_RETT_TIL_YTELSER:
-        'Ja, gjenlevende har fått barn etter dødsfallet som avdøde ikke er mor/far til',
+        'Ja, gjenlevende som etter dødsfallet får barn som avdøde ikke er mor/far til, og som ikke har rett til ytelser etter kap.17',
     ANDRE_FORELDER_MEDLEM_MINST_5_ÅR_AVBRUDD_MINDRE_ENN_10_ÅR:
         'Ja, medlem og bosatt når stønadstilfellet oppstod, den andre forelderen har vært medlem i minst 5 år etter fylte 16 år når krav fremsettes, og avbruddet er mindre enn 10 år',
     ANDRE_FORELDER_MEDLEM_MINST_7_ÅR_AVBRUDD_MER_ENN_10_ÅR:
