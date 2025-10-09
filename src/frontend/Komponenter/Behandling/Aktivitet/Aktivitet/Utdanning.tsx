@@ -9,7 +9,7 @@ import {
 } from './typer';
 import {
     formaterIsoMånedÅr,
-    formaterTilIsoDatoFraTilStreng,
+    formaterFraIsoDatoTilStreng,
     mapTrueFalse,
 } from '../../../../App/utils/formatter';
 import { InfoSeksjonWrapper } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
@@ -38,7 +38,7 @@ export const UnderUtdanning: FC<{
                 />
                 <Informasjonsrad
                     label="Studiets tidsperiode"
-                    verdi={formaterTilIsoDatoFraTilStreng(underUtdanning.fra, underUtdanning.til)}
+                    verdi={formaterFraIsoDatoTilStreng(underUtdanning.fra, underUtdanning.til)}
                 />
                 <Informasjonsrad
                     label="Heltid eller deltid"

@@ -1,6 +1,6 @@
 import {
     formaterTallMedTusenSkille,
-    formaterTilIsoDatoFraTilStreng,
+    formaterFraIsoDatoTilStreng,
 } from '../../../App/utils/formatter';
 import {
     ESamordningsfradragtype,
@@ -63,7 +63,7 @@ const lagRaderForVedtak = (
                 beløpsperiode.beregningsgrunnlag.samordningsfradrag
             );
             const beløp = formaterTallMedTusenSkille(beløpsperiode.beløp);
-            const andelsperiode = formaterTilIsoDatoFraTilStreng(
+            const andelsperiode = formaterFraIsoDatoTilStreng(
                 beløpsperiode.periode.fradato,
                 beløpsperiode.periode.tildato
             );

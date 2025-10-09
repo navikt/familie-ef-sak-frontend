@@ -1,3 +1,4 @@
+import { Behandlingsårsak } from '../../../App/typer/behandlingsårsak';
 import { EAktivitet, EPeriodetype } from '../../../App/typer/vedtak';
 
 export interface ITidligereVedtaksperioder {
@@ -13,6 +14,7 @@ export interface ITidligereInnvilgetVedtak {
     periodeHistorikkOvergangsstønad: IGrunnlagsdataPeriodeHistorikkOvergangsstønad[];
     periodeHistorikkBarnetilsyn: IGrunnlagsdataPeriodeHistorikkBarnetilsyn[];
     sistePeriodeMedOvergangsstønad: IGrunnlagsdataSistePeriodeOvergangsstønad;
+    perioderMedOvergangsstønadOgInntekt: IGrunnlagsdataPerioderOvergangsstønadOgInntekt[];
 }
 
 export interface IGrunnlagsdataPeriodeHistorikkOvergangsstønad {
@@ -29,6 +31,14 @@ export interface IGrunnlagsdataSistePeriodeOvergangsstønad {
     aktivitet?: EAktivitet;
     inntekt: number;
     samordningsfradrag: number;
+}
+
+export interface IGrunnlagsdataPerioderOvergangsstønadOgInntekt {
+    fom: string;
+    tom: string;
+    inntekt: number;
+    samordningsfradrag: number;
+    behandlingsårsak: Behandlingsårsak;
 }
 
 export enum OverlappMedOvergangsstønad {

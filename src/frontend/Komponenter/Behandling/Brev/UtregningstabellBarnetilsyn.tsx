@@ -1,7 +1,7 @@
 import { IBeregningsperiodeBarnetilsyn } from '../../../App/typer/vedtak';
 import {
     formaterTallMedTusenSkille,
-    formaterTilIsoDatoFraTilStreng,
+    formaterFraIsoDatoTilStreng,
 } from '../../../App/utils/formatter';
 
 export const delmalTilUtregningstabellBT = (beløpsperioder?: IBeregningsperiodeBarnetilsyn[]) => {
@@ -52,7 +52,7 @@ const lagRaderForVedtak = (
 ): string => {
     return beløpsperioder
         .map((beløpsperiode) => {
-            const andelsperiode = formaterTilIsoDatoFraTilStreng(
+            const andelsperiode = formaterFraIsoDatoTilStreng(
                 beløpsperiode.periode.fradato,
                 beløpsperiode.periode.tildato
             );

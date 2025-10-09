@@ -4,7 +4,7 @@ import {
     formaterIsoDatoTid,
     formaterStrengMedStorForbokstav,
     formaterTallMedTusenSkille,
-    formaterTilIsoDatoFraTilStreng,
+    formaterFraIsoDatoTilStreng,
 } from '../../../../App/utils/formatter';
 import TabellVisning, { Kolonner } from '../../Tabell/TabellVisning';
 import { IGrunnlagsdataSistePeriodeOvergangsstønad } from '../../TidligereVedtaksperioder/typer';
@@ -29,7 +29,7 @@ const SistePeriodeMedOvergangsstønad: React.FC<Props> = ({ sistePeriodeMedOS, b
                       overskrift: 'Periode',
                       tekstVerdi: (d) =>
                           formaterStrengMedStorForbokstav(
-                              formaterTilIsoDatoFraTilStreng(d.fom, d.tom)
+                              formaterFraIsoDatoTilStreng(d.fom, d.tom)
                           ),
                   },
                   {
@@ -46,7 +46,7 @@ const SistePeriodeMedOvergangsstønad: React.FC<Props> = ({ sistePeriodeMedOS, b
                       overskrift: 'Periode',
                       tekstVerdi: (d) =>
                           formaterStrengMedStorForbokstav(
-                              formaterTilIsoDatoFraTilStreng(d.fom, d.tom)
+                              formaterFraIsoDatoTilStreng(d.fom, d.tom)
                           ),
                   },
                   {

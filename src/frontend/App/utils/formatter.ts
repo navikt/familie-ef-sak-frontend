@@ -172,6 +172,6 @@ export const datoÅrMånedFrem = (antallMåneder: number = 0) => {
     return formaterDateTilÅrMåned(dato);
 };
 
-export const formaterTilIsoDatoFraTilStreng = (fra: string, til: string) => {
+export const formaterFraIsoDatoTilStreng = (fra: string, til: string) => {
     return `${formaterNullableIsoDato(fra)} - ${formaterNullableIsoDato(til)}`;
 };
