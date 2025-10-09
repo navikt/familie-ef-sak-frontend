@@ -65,9 +65,11 @@ export const svarTypeTilTekst: Record<string, string> = {
     UTENLANDSOPPHOLD_MINDRE_ENN_6_UKER: 'Utenlandsopphold på mindre enn 6 uker',
     OPPHOLDER_SEG_I_ANNET_EØS_LAND: 'Oppholder seg i annet EØS-land',
     GJENLEVENDE_OVERTAR_OMSORG:
-        'Ja, gjenlevende som etter dødsfallet overtar omsorgen for egne særkullsbarn',
+        'Ja, gjenlevende har overtatt omsorgen for egne særkullsbarn etter dødsfallet',
     GJENLEVENDE_IKKE_RETT_TIL_YTELSER:
-        'Ja, gjenlevende som etter dødsfallet får barn som avdøde ikke er mor/far til, og som ikke har rett til ytelser etter kap.17',
+        'Ja, gjenlevende har fått barn etter dødsfallet som avdøde ikke er mor/far til',
+    GJENLEVENDE_SEPARERT_FØR_DØDSFALL:
+        'Ja, gjenlevende og den andre forelderen ble separert før dødsfallet',
     ANDRE_FORELDER_MEDLEM_MINST_5_ÅR_AVBRUDD_MINDRE_ENN_10_ÅR:
         'Ja, medlem og bosatt når stønadstilfellet oppstod, den andre forelderen har vært medlem i minst 5 år etter fylte 16 år når krav fremsettes, og avbruddet er mindre enn 10 år',
     ANDRE_FORELDER_MEDLEM_MINST_7_ÅR_AVBRUDD_MER_ENN_10_ÅR:
