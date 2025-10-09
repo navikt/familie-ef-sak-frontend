@@ -1,7 +1,6 @@
 import React from 'react';
 import { periodetypeTilTekst, aktivitetTilTekst } from '../../../../App/typer/vedtak';
 import {
-    formaterIsoDatoTid,
     formaterStrengMedStorForbokstav,
     formaterTallMedTusenSkille,
     formaterFraIsoDatoTilStreng,
@@ -73,7 +72,6 @@ const SistePeriodeMedOvergangsstønad: React.FC<Props> = ({ sistePeriodeMedOS, b
         <>
             <TabellVisning
                 tittel={`Siste periode med overgangsstønad`}
-                ekstraTekstTittel={`(sist oppdatert ${formaterIsoDatoTid(behandling.opprettet)})`}
                 verdier={[sistePeriodeMedOS]}
                 minimerKolonnebredde={true}
                 kolonner={kolonner}

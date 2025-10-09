@@ -5,9 +5,7 @@ import {
     formaterFraIsoDatoTilStreng,
     genererÅrOgMånedFraStreng,
 } from '../../../../App/utils/formatter';
-import TabellVisning from '../../Tabell/TabellVisning';
 import { useHentNyesteGrunnbeløpOgAntallGrunnbeløpsperioderTilbakeITid } from '../../../../App/hooks/felles/useHentGrunnbeløpsperioder';
-import { styled } from 'styled-components';
 import { IVilkårGrunnlag } from '../../Inngangsvilkår/vilkår';
 import {
     IGrunnlagsdataPerioderOvergangsstønadOgInntekt,
@@ -15,14 +13,8 @@ import {
 } from '../../TidligereVedtaksperioder/typer';
 import SistePeriodeMedOvergangsstønad from './SistePeriodeMedOvergangsstønad';
 import { Behandling } from '../../../../App/typer/fagsak';
-import { Heading, Table } from '@navikt/ds-react';
+import { Heading, Table, VStack } from '@navikt/ds-react';
 import { behandlingOgTilbakekrevingsårsakTilTekst } from '../../../../App/typer/behandlingsårsak';
-
-const Container = styled.div`
-    & > *:not(:last-child) {
-        margin-bottom: 2rem;
-    }
-`;
 
 interface Props {
     grunnlag: IVilkårGrunnlag;
@@ -40,7 +32,8 @@ export const GrunnbeløpInfoOgSistePeriodeOS: FC<Props> = ({ grunnlag, behandlin
     const toNyestePerioderMedOvergangsstønadOgInntekt =
         perioderMedOvergangsstønadOgInntekt && perioderMedOvergangsstønadOgInntekt.slice(0, 2);
 
-    const finnesPerioderMedOvergangsstønadOgInntektMedInnhold =
+    // Det er lagt til en ny verdi i grunnlagsdata - behandlingsårsak. Hvis denne ikke finnes (gamle behandlinger) skal vi vise tabell med en rad som før.
+    const visTabellMedToNyestePerioder =
         perioderMedOvergangsstønadOgInntekt?.some((periode) => periode.behandlingsårsak) ?? false;
 
     const { grunnbeløpsperioder, hentGrunnbeløpsperioderCallback } =
@@ -51,45 +44,90 @@ export const GrunnbeløpInfoOgSistePeriodeOS: FC<Props> = ({ grunnlag, behandlin
     }, [hentGrunnbeløpsperioderCallback]);
 
     return (
-        <Container>
-            <TabellVisning
-                tittel="6 ganger grunnbeløpet"
-                verdier={grunnbeløpsperioder}
-                minimerKolonnebredde={true}
-                kolonner={[
-                    {
-                        overskrift: 'Fra',
-                        tekstVerdi: (d) =>
-                            formaterStrengMedStorForbokstav(
-                                genererÅrOgMånedFraStreng(d.periode.fom)
-                            ),
-                    },
-                    {
-                        overskrift: '6G  (år)',
-                        tekstVerdi: (d) =>
-                            `${formaterTallMedTusenSkille(d.seksGangerGrunnbeløp)} kr`,
-                    },
-                    {
-                        overskrift: '6G (måned)',
-                        tekstVerdi: (d) =>
-                            `${formaterTallMedTusenSkille(d.seksGangerGrunnbeløpPerMåned)} kr`,
-                    },
-                ]}
-            />
+        <VStack gap="4">
+            <Heading level="1" size="xsmall">
+                6 ganger grunnbeløpet
+            </Heading>
+            <Table size="small">
+                <Table.Header>
+                    <Table.Row>
+                        <Table.ColumnHeader textSize="small" scope="col">
+                            Fra
+                        </Table.ColumnHeader>
+                        <Table.ColumnHeader textSize="small" scope="col">
+                            6G (år)
+                        </Table.ColumnHeader>
+                        <Table.ColumnHeader textSize="small" scope="col">
+                            6G (måned)
+                        </Table.ColumnHeader>
+                    </Table.Row>
+                </Table.Header>
 
-            {finnesPerioderMedOvergangsstønadOgInntektMedInnhold &&
-            perioderMedOvergangsstønadOgInntekt ? (
-                <>
-                    <Heading level="1" size="small">
+                <Table.Body>
+                    {grunnbeløpsperioder?.map(
+                        ({ periode, seksGangerGrunnbeløp, seksGangerGrunnbeløpPerMåned }, i) => {
+                            return (
+                                <Table.Row key={i}>
+                                    <Table.DataCell>
+                                        {formaterStrengMedStorForbokstav(
+                                            genererÅrOgMånedFraStreng(periode.fom)
+                                        )}
+                                    </Table.DataCell>
+                                    <Table.DataCell>
+                                        {formaterTallMedTusenSkille(seksGangerGrunnbeløp)}
+                                    </Table.DataCell>
+                                    <Table.DataCell>
+                                        {formaterTallMedTusenSkille(seksGangerGrunnbeløpPerMåned)}
+                                    </Table.DataCell>
+                                </Table.Row>
+                            );
+                        }
+                    )}
+                </Table.Body>
+            </Table>
+            {/*<TabellVisning*/}
+            {/*    tittel="6 ganger grunnbeløpet"*/}
+            {/*    verdier={grunnbeløpsperioder}*/}
+            {/*    minimerKolonnebredde={true}*/}
+            {/*    kolonner={[*/}
+            {/*        {*/}
+            {/*            overskrift: 'Fra',*/}
+            {/*            tekstVerdi: (d) =>*/}
+            {/*                formaterStrengMedStorForbokstav(*/}
+            {/*                    genererÅrOgMånedFraStreng(d.periode.fom)*/}
+            {/*                ),*/}
+            {/*        },*/}
+            {/*        {*/}
+            {/*            overskrift: '6G  (år)',*/}
+            {/*            tekstVerdi: (d) =>*/}
+            {/*                `${formaterTallMedTusenSkille(d.seksGangerGrunnbeløp)} kr`,*/}
+            {/*        },*/}
+            {/*        {*/}
+            {/*            overskrift: '6G (måned)',*/}
+            {/*            tekstVerdi: (d) =>*/}
+            {/*                `${formaterTallMedTusenSkille(d.seksGangerGrunnbeløpPerMåned)} kr`,*/}
+            {/*        },*/}
+            {/*    ]}*/}
+            {/*/>*/}
+
+            {visTabellMedToNyestePerioder && perioderMedOvergangsstønadOgInntekt ? (
+                <div>
+                    <Heading level="1" size="xsmall">
                         Perioder med overgangsstønad
                     </Heading>
 
                     <Table size="small">
                         <Table.Header>
                             <Table.Row>
-                                <Table.HeaderCell scope="col">Periode</Table.HeaderCell>
-                                <Table.HeaderCell scope="col">Inntekt</Table.HeaderCell>
-                                <Table.HeaderCell scope="col">Behandlingsårsak</Table.HeaderCell>
+                                <Table.HeaderCell textSize="small" scope="col">
+                                    Periode
+                                </Table.HeaderCell>
+                                <Table.HeaderCell textSize="small" scope="col">
+                                    Inntekt
+                                </Table.HeaderCell>
+                                <Table.HeaderCell textSize="small" scope="col">
+                                    Behandlingsårsak
+                                </Table.HeaderCell>
                             </Table.Row>
                         </Table.Header>
 
@@ -101,7 +139,9 @@ export const GrunnbeløpInfoOgSistePeriodeOS: FC<Props> = ({ grunnlag, behandlin
                                             <Table.DataCell>
                                                 {formaterFraIsoDatoTilStreng(fom, tom)}
                                             </Table.DataCell>
-                                            <Table.DataCell>{inntekt}</Table.DataCell>
+                                            <Table.DataCell>
+                                                {formaterTallMedTusenSkille(inntekt)}
+                                            </Table.DataCell>
                                             <Table.DataCell>
                                                 {
                                                     behandlingOgTilbakekrevingsårsakTilTekst[
@@ -115,13 +155,13 @@ export const GrunnbeløpInfoOgSistePeriodeOS: FC<Props> = ({ grunnlag, behandlin
                             )}
                         </Table.Body>
                     </Table>
-                </>
+                </div>
             ) : (
                 <SistePeriodeMedOvergangsstønad
                     sistePeriodeMedOS={sistePeriodeMedOS}
                     behandling={behandling}
                 />
             )}
-        </Container>
+        </VStack>
     );
 };
