@@ -16,14 +16,15 @@ export const finnAvvik = (beregning: Beregning): AvvikEnum => {
 };
 
 const utledAvvikEnum = (årslønn: number, redusertEtter: number): AvvikEnum => {
-    const GRUNNBELØP = 130160; // TODO: bruke api - Grunnbeløp for 2025
+    const TI_PROSENT_NED = 0.9;
+    const TI_PROSENT_OPP = 1.1;
 
-    if (årslønn < redusertEtter && årslønn < redusertEtter * 0.9) {
+    if (årslønn < redusertEtter && årslønn < redusertEtter * TI_PROSENT_NED) {
         return AvvikEnum.NED;
     } else if (
         årslønn > GRUNNBELØP / 2 &&
         årslønn > redusertEtter &&
-        årslønn > redusertEtter * 1.1
+        årslønn > redusertEtter * TI_PROSENT_OPP
     ) {
         return AvvikEnum.OPP;
     } else if (
@@ -187,14 +188,14 @@ export const regnUtMånedligUtbetalingOvergangsstønad = (
     årstall: number,
     grunnbeløp: number
 ): number => {
-    const TO = 2,
-        TO_OG_EN_FJERDEDEL = 2.25;
+    const GAMMEL_FULL_OVERGANGSSTØNAD = 2,
+        FULL_OVERGANGSSTØNAD = 2.25;
 
     let overgangsstønad = 0;
     if (årstall < 2017) {
-        overgangsstønad = grunnbeløp * TO;
+        overgangsstønad = grunnbeløp * GAMMEL_FULL_OVERGANGSSTØNAD;
     } else if (årstall > 2016) {
-        overgangsstønad = grunnbeløp * TO_OG_EN_FJERDEDEL;
+        overgangsstønad = grunnbeløp * FULL_OVERGANGSSTØNAD;
     }
 
     const månedligUtbetaling = Math.round(overgangsstønad / 12);

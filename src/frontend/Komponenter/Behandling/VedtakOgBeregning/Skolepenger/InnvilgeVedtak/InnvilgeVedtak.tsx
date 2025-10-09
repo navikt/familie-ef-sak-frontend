@@ -16,7 +16,7 @@ import useFormState, {
 import { ListState } from '../../../../../App/hooks/felles/useListState';
 import { useBehandling } from '../../../../../App/context/BehandlingContext';
 import styled from 'styled-components';
-import { Alert, Heading } from '@navikt/ds-react';
+import { Alert, Button, Heading } from '@navikt/ds-react';
 import { useApp } from '../../../../../App/context/AppContext';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../../../../App/typer/ressurs';
 import { UtregningstabellSkolepenger } from '../Felles/UtregnignstabellSkolepenger';
@@ -29,7 +29,7 @@ import { ARed500 } from '@navikt/ds-tokens/dist/tokens';
 import { useRedirectEtterLagring } from '../../../../../App/hooks/felles/useRedirectEtterLagring';
 import { v4 as uuidv4 } from 'uuid';
 import { AlertError } from '../../../../../Felles/Visningskomponenter/Alerts';
-import HovedKnapp, { Knapp } from '../../../../../Felles/Knapper/HovedKnapp';
+import HovedKnapp from '../../../../../Felles/Knapper/HovedKnapp';
 import VisEllerEndreSkoleårsperioder from './VisEllerEndreSkoleårsperioder';
 import { BegrunnelsesFelt } from '../Felles/BegrunnelsesFelt';
 import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
@@ -225,15 +225,16 @@ export const InnvilgeVedtak: React.FC<{
                         <hr />
                     </div>
                     <div>
-                        <Knapp
+                        <Button
                             variant={'secondary'}
                             onClick={beregnSkolepenger}
                             type={'button'}
                             icon={<CalculatorIcon title={'beregn'} />}
                             iconPosition={'right'}
+                            style={{ width: 'fit-content' }}
                         >
                             Beregn
-                        </Knapp>
+                        </Button>
                         {visFeilmelding && (
                             <AdvarselTekst>
                                 Kan ikke lagre vedtaket før beregning er utført

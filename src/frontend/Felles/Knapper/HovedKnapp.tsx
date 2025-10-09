@@ -1,27 +1,23 @@
 import React from 'react';
 import { Button } from '@navikt/ds-react';
-import styled from 'styled-components';
 
-export const Knapp = styled(Button)`
-    width: fit-content;
-`;
-
-const HovedKnapp: React.FC<{
+export const HovedKnapp: React.FC<{
     className?: string;
     disabled?: boolean;
     knappetekst?: string;
     onClick?: () => void;
 }> = ({ className, disabled, knappetekst, onClick }) => {
     return (
-        <Knapp
+        <Button
             className={className}
             disabled={disabled}
             onClick={onClick}
             type="submit"
             variant="primary"
+            style={{ width: 'fit-content' }}
         >
             {knappetekst && <span>{knappetekst}</span>}
-        </Knapp>
+        </Button>
     );
 };
 

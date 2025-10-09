@@ -21,8 +21,7 @@ import { EToast } from '../../../App/typer/toast';
 import { IBrevmottakere } from '../Brevmottakere/typer';
 import { useApp } from '../../../App/context/AppContext';
 import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
-import { Knapp } from '../../../Felles/Knapper/HovedKnapp';
-import { Alert, VStack } from '@navikt/ds-react';
+import { Alert, Button, VStack } from '@navikt/ds-react';
 import { finnDokumenttittelForBrevmal } from './BrevUtils';
 import { BrevmottakereFrittståendeBrev } from '../Brevmottakere/BrevmottakereFrittståendeBrev';
 import { BrevvelgerContainer } from './BrevvelgerContainer';
@@ -133,16 +132,17 @@ export const FrittståendeSanitybrev: React.FC<Props> = ({
                                     brevverdier={brevverdier}
                                     brevmottakere={brevmottakere}
                                 />
-                                <Knapp
+                                <Button
                                     disabled={
                                         brevRessurs.status !== RessursStatus.SUKSESS ||
                                         !brevmottakereValgt(brevmottakere)
                                     }
                                     onClick={() => settVisModal(true)}
                                     type={'button'}
+                                    style={{ width: 'fit-content' }}
                                 >
                                     Send brev
-                                </Knapp>
+                                </Button>
                             </>
                         )}
                     </DataViewer>

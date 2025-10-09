@@ -7,10 +7,11 @@ import { IMedlemskap } from './typer';
 import FolkeregisterPersonstatus from './FolkeregisterPersonstatus';
 import InnflyttingUtflytting from './InnflyttingUtflytting';
 import UnntakIMedl from './UnntakIMedl';
-import { InformasjonContainer, TagMedTilpassetBredde } from '../../Vilkårpanel/StyledVilkårInnhold';
+import { InformasjonContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
 import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
 import { mapTrueFalse } from '../../../../App/utils/formatter';
 import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
+import { Tag } from '@navikt/ds-react';
 
 interface Props {
     medlemskap: IMedlemskap;
@@ -39,9 +40,15 @@ const MedlemskapInfo: FC<Props> = ({ medlemskap, skalViseSøknadsdata }) => {
                     ikon={VilkårInfoIkon.REGISTER}
                     label="Medlemskapstatus i MEDL"
                     verdi={
-                        <TagMedTilpassetBredde variant={'warning'} size="small">
+                        <Tag
+                            variant={'warning'}
+                            size="small"
+                            style={{
+                                width: 'fit-content',
+                            }}
+                        >
                             Innslag funnet
-                        </TagMedTilpassetBredde>
+                        </Tag>
                     }
                     verdiSomString={false}
                 />

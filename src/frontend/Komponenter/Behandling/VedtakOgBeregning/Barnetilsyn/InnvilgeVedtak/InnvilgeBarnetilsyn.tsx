@@ -28,10 +28,11 @@ import { tomUtgiftsperiodeRad } from '../Felles/utils';
 import { useRedirectEtterLagring } from '../../../../../App/hooks/felles/useRedirectEtterLagring';
 import { v4 as uuidv4 } from 'uuid';
 import { AlertError } from '../../../../../Felles/Visningskomponenter/Alerts';
-import HovedKnapp, { Knapp } from '../../../../../Felles/Knapper/HovedKnapp';
+import HovedKnapp from '../../../../../Felles/Knapper/HovedKnapp';
 import { CalculatorIcon } from '@navikt/aksel-icons';
 import { ModalState } from '../../../Modal/NyEierModal';
 import { KontantstøttePeriode } from '../../../Inngangsvilkår/vilkår';
+import { Button } from '@navikt/ds-react';
 
 export type InnvilgeVedtakForm = {
     utgiftsperioder: IUtgiftsperiode[];
@@ -333,15 +334,16 @@ export const InnvilgeBarnetilsyn: React.FC<{
             />
             {behandlingErRedigerbar && (
                 <div>
-                    <Knapp
+                    <Button
                         variant={'secondary'}
                         onClick={beregnBarnetilsyn}
                         type={'button'}
                         icon={<CalculatorIcon title={'beregn'} />}
                         iconPosition={'right'}
+                        style={{ width: 'fit-content' }}
                     >
                         Beregn
-                    </Knapp>
+                    </Button>
                     {feilmelding && <AlertError>{feilmelding}</AlertError>}
                 </div>
             )}

@@ -1,6 +1,6 @@
 import { Button, Heading, HStack, Table, Tag, TextField, VStack } from '@navikt/ds-react';
 import React, { useState } from 'react';
-import DatePickerMedTittel from './DatePickerMedTittel';
+import { Periodevelger } from './Periodevelger';
 import { PlusIcon } from '@navikt/aksel-icons';
 import { formaterTallMedTusenSkille } from '../../../App/utils/formatter';
 import {
@@ -21,6 +21,7 @@ import { TabellGjennomsnitt } from './TabellGjennomsnitt';
 import { SlettKolonneKnapp } from './SlettKolonneKnapp';
 import { SettBeregnetFraKnapp } from './SettBeregnetFraKnapp';
 import { TabellFeilutbetalingMotregning } from './TabellFeilutbetalingMotregning';
+import { KnappNullstillSkjema } from './KnappNullstillSkjema';
 
 const tomPeriode: Periode = {
     fra: {
@@ -36,9 +37,16 @@ const tomPeriode: Periode = {
 export const BeregningsskjemaSide: React.FC = () => {
     const [beregninger, settBeregninger] = useState<Beregninger>([]);
     const [periode, settPeriode] = useState<Periode>(tomPeriode);
+    const [nullstillKey, settNullstillKey] = useState(0);
     const { toggles } = useToggles();
 
     const erTogglet = toggles[ToggleName.visBeregningsskjema] || false;
+
+    const nullstillSkjema = () => {
+        settBeregninger([]);
+        settPeriode(tomPeriode);
+        settNullstillKey((prev) => prev + 1);
+    };
 
     const handleLagBeregninger = (periode: Periode) => {
         settBeregninger([]);
@@ -169,17 +177,21 @@ export const BeregningsskjemaSide: React.FC = () => {
 
     return (
         <VStack gap="8">
-            <HStack gap={'space-128'}>
-                <DatePickerMedTittel
-                    tittel="Periode"
+            <HStack gap={'space-64'}>
+                <Periodevelger
                     periode={periode}
                     settPeriode={settPeriode}
                     lagBeregninger={handleLagBeregninger}
+                    key={nullstillKey}
                 />
 
                 <TabellGjennomsnitt periode={periode} beregninger={beregninger} />
 
                 <TabellFeilutbetalingMotregning beregninger={beregninger} />
+
+                {beregninger.length > 0 && (
+                    <KnappNullstillSkjema nullstillSkjema={nullstillSkjema} />
+                )}
             </HStack>
 
             {beregninger.length > 0 && (

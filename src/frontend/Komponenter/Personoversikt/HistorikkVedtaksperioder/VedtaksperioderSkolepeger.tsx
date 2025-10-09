@@ -13,7 +13,6 @@ import {
 } from '../../Behandling/VedtakOgBeregning/Skolepenger/Felles/skoleår';
 import { Table } from '@navikt/ds-react';
 import { TableDataCellSmall, TableHeaderCellSmall } from './vedtakshistorikkUtil';
-import { TableMedMarginBottom } from './VedtaksperioderOvergangsstønad';
 
 const lagSkoleår = (periode: ISkoleårsperiodeSkolepenger): string => {
     if (periode.perioder.length === 0) {
@@ -48,7 +47,7 @@ const Rad: FC<{
 
 const VedtaksperioderSkolepenger: FC<{ vedtak: IVedtakForSkolepenger }> = ({ vedtak }) => {
     return (
-        <TableMedMarginBottom size="small">
+        <Table size="small" style={{ marginBottom: '1rem' }}>
             <Table.Header>
                 <Table.Row>
                     <TableHeaderCellSmall scope="col">Skoleår</TableHeaderCellSmall>
@@ -71,7 +70,7 @@ const VedtaksperioderSkolepenger: FC<{ vedtak: IVedtakForSkolepenger }> = ({ ved
                     ));
                 })}
             </Table.Body>
-        </TableMedMarginBottom>
+        </Table>
     );
 };
 

@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Knapp } from '../../../../../Felles/Knapper/HovedKnapp';
-import { Heading } from '@navikt/ds-react';
+import { Button, Heading } from '@navikt/ds-react';
 import { PencilWritingIcon } from '@navikt/aksel-icons';
 import { Visningsmodus } from './Skoleårsperiode';
 
@@ -46,25 +45,36 @@ const SkoleårsperiodeHeader: React.FC<Props> = ({
             </Heading>
             <FlexRow>
                 {skalViseFjernKnapp && (
-                    <Knapp onClick={fjernSkoleårsperiode} type={'button'} variant={'tertiary'}>
+                    <Button
+                        onClick={fjernSkoleårsperiode}
+                        type={'button'}
+                        variant={'tertiary'}
+                        style={{ width: 'fit-content' }}
+                    >
                         Fjern skoleårsperiode
-                    </Knapp>
+                    </Button>
                 )}
                 {visningsmodus === Visningsmodus.REDIGER_UTGIFTSPERIODER && (
-                    <Knapp
+                    <Button
                         icon={<PencilWritingIcon title={'endre skoleår'} />}
                         iconPosition={'right'}
                         onClick={oppdaterVisningsmodus}
                         type={'button'}
                         variant={'tertiary'}
+                        style={{ width: 'fit-content' }}
                     >
                         Endre skoleår
-                    </Knapp>
+                    </Button>
                 )}
                 {visningsmodus === Visningsmodus.REDIGER_SKOLEÅRSPERIODER && (
-                    <Knapp onClick={oppdaterVisningsmodus} type={'button'} variant={'tertiary'}>
+                    <Button
+                        onClick={oppdaterVisningsmodus}
+                        type={'button'}
+                        variant={'tertiary'}
+                        style={{ width: 'fit-content' }}
+                    >
                         Lagre skoleår
-                    </Knapp>
+                    </Button>
                 )}
             </FlexRow>
         </FlexSpaceBetween>
