@@ -44,7 +44,12 @@ export const GrunnbeløpInfoOgSistePeriodeOS: FC<Props> = ({ grunnlag, behandlin
     }, [hentGrunnbeløpsperioderCallback]);
 
     return (
-        <VStack gap="4">
+        <VStack
+            gap="4"
+            style={{
+                maxWidth: 'fit-content',
+            }}
+        >
             <Heading level="1" size="xsmall">
                 6 ganger grunnbeløpet
             </Heading>
@@ -113,10 +118,15 @@ export const GrunnbeløpInfoOgSistePeriodeOS: FC<Props> = ({ grunnlag, behandlin
             {visTabellMedToNyestePerioder && perioderMedOvergangsstønadOgInntekt ? (
                 <div>
                     <Heading level="1" size="xsmall">
-                        Perioder med overgangsstønad
+                        De to nyeste periodene med overgangsstønad
                     </Heading>
 
-                    <Table size="small">
+                    <Table
+                        size="small"
+                        style={{
+                            maxWidth: 'fit-content',
+                        }}
+                    >
                         <Table.Header>
                             <Table.Row>
                                 <Table.HeaderCell textSize="small" scope="col">
