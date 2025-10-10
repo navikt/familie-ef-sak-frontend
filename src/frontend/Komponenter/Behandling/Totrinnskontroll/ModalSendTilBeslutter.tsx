@@ -136,10 +136,10 @@ export const ModalSendTilBeslutter: FC<{
                         open={open}
                         onClose={() => setOpen(false)}
                         header={{ heading: '', size: 'small', closeButton: false }}
-                        width={`${55}${'rem'}`}
+                        width={`${100}${'rem'}`}
                     >
                         <Modal.Body>
-                            <HStack>
+                            <HStack gap="4">
                                 <VStack gap="4">
                                     {skalViseFremleggsoppgaverForOpprettelseOgFerdigstilling && (
                                         <>
@@ -179,36 +179,26 @@ export const ModalSendTilBeslutter: FC<{
                                         </>
                                     )}
                                 </VStack>
-                                {skalViseHøyremeny && (
-                                    <>
-                                        <LoddrettDivider />
-                                        <VStack gap="4">
-                                            {erInnvilgelseOvergangsstønad &&
-                                                harBarnMellomSeksOgTolvMnder &&
-                                                erOvergangsstønad && (
-                                                    <AutomatiskBrev
-                                                        automatiskBrev={automatiskBrev}
-                                                        settAutomatiskBrev={settAutomatiskBrev}
-                                                    />
-                                                )}
-                                            {!ferdigstillUtenBeslutter && (
-                                                <>
-                                                    {skalViseFremleggsoppgaverForOpprettelseOgFerdigstilling && (
-                                                        <VannrettDivider />
-                                                    )}
-                                                    <BeskrivelseOppgave
-                                                        beskrivelseMarkeringer={
-                                                            beskrivelseMarkeringer
-                                                        }
-                                                        settBeskrivelseMarkeringer={
-                                                            settBeskrivelseMarkeringer
-                                                        }
-                                                    />
-                                                </>
-                                            )}
-                                        </VStack>{' '}
-                                    </>
-                                )}
+                                {skalViseHøyremeny && <LoddrettDivider />}
+                                <VStack gap="4">
+                                    {erInnvilgelseOvergangsstønad &&
+                                        harBarnMellomSeksOgTolvMnder &&
+                                        erOvergangsstønad && (
+                                            <>
+                                                <AutomatiskBrev
+                                                    automatiskBrev={automatiskBrev}
+                                                    settAutomatiskBrev={settAutomatiskBrev}
+                                                />
+                                                <VannrettDivider />
+                                            </>
+                                        )}
+                                    {!ferdigstillUtenBeslutter && (
+                                        <BeskrivelseOppgave
+                                            beskrivelseMarkeringer={beskrivelseMarkeringer}
+                                            settBeskrivelseMarkeringer={settBeskrivelseMarkeringer}
+                                        />
+                                    )}
+                                </VStack>
                             </HStack>
                         </Modal.Body>
                         <Modal.Footer>
