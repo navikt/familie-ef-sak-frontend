@@ -1,11 +1,15 @@
 import React, { FC } from 'react';
-import styled from 'styled-components';
 import { AGray900 } from '@navikt/ds-tokens/dist/tokens';
+import styles from './Divider.module.css';
 
-export const StyledDiv = styled.div<{ $farge: string }>`
-    border-bottom: 2px solid ${({ $farge }) => $farge};
-`;
+interface Props {
+    farge?: string;
+}
 
-export const Divider: FC<{ farge?: string }> = ({ farge = `${AGray900}` }) => {
-    return <StyledDiv $farge={farge} />;
+export const VannrettDivider: FC<Props> = ({ farge = `${AGray900}` }) => {
+    return <div className={styles.vannrettDivider} style={{ borderBottomColor: farge }} />;
+};
+
+export const LoddrettDivider: FC<Props> = ({ farge = `${AGray900}` }) => {
+    return <div className={styles.loddrettDivider} style={{ borderLeftColor: farge }} />;
 };
