@@ -13,7 +13,6 @@ interface IEnvironment {
     namespace: string;
     sakProxyUrl: string;
     brevProxyUrl: string;
-    endringsloggProxyUrl: string;
     aInntekt: string;
     gosys: string;
     modia: string;
@@ -51,7 +50,6 @@ const Environment = (): IEnvironment => {
             gosys: 'https://gosys-q1.dev.intern.nav.no/gosys',
             modia: 'https://app-q1.adeo.no/modiapersonoversikt',
             historiskPensjon: 'https://historisk-pensjon.intern.dev.nav.no',
-            endringsloggProxyUrl: 'https://familie-endringslogg.intern.dev.nav.no',
             drek: 'https://pdl-web.dev.intern.nav.no/rekvirerdnummer',
             roller: rollerDev,
         };
@@ -65,7 +63,6 @@ const Environment = (): IEnvironment => {
             gosys: 'https://gosys-q1.dev.intern.nav.no/gosys',
             modia: 'https://app-q1.adeo.no/modiapersonoversikt',
             historiskPensjon: 'https://historisk-pensjon.intern.dev.nav.no',
-            endringsloggProxyUrl: 'https://familie-endringslogg.intern.dev.nav.no',
             drek: 'https://pdl-web.dev.intern.nav.no/rekvirerdnummer',
             roller: rollerDev,
             //Har ikke satt opp redis
@@ -80,7 +77,6 @@ const Environment = (): IEnvironment => {
             gosys: 'https://gosys-q1.dev.intern.nav.no/gosys',
             modia: 'https://app-q1.adeo.no/modiapersonoversikt',
             historiskPensjon: 'https://historisk-pensjon.intern.dev.nav.no',
-            endringsloggProxyUrl: 'http://familie-endringslogg',
             drek: 'https://pdl-web.dev.intern.nav.no/rekvirerdnummer',
             roller: rollerDev,
         };
@@ -94,8 +90,6 @@ const Environment = (): IEnvironment => {
             gosys: 'https://gosys-q1.dev.intern.nav.no/gosys',
             modia: 'https://app-q1.adeo.no/modiapersonoversikt',
             historiskPensjon: 'https://historisk-pensjon.intern.dev.nav.no',
-            endringsloggProxyUrl: 'https://familie-endringslogg.intern.dev.nav.no',
-            // endringsloggProxyUrl: 'http://localhost:8080',
             drek: 'https://pdl-web.dev.intern.nav.no/rekvirerdnummer',
             roller: rollerDev,
         };
@@ -110,7 +104,6 @@ const Environment = (): IEnvironment => {
         gosys: 'https://gosys.intern.nav.no/gosys',
         modia: 'https://app.adeo.no/modiapersonoversikt',
         historiskPensjon: 'https://historisk-pensjon.intern.nav.no',
-        endringsloggProxyUrl: 'http://familie-endringslogg',
         drek: 'https://pdl-web.intern.nav.no/rekvirerdnummer',
         roller: rollerProd,
     };
@@ -143,7 +136,6 @@ export const oboConfig: IApi = {
 export const buildPath = env.buildPath;
 export const sakProxyUrl = env.sakProxyUrl;
 export const brevProxyUrl = env.brevProxyUrl;
-export const endringsloggProxyUrl = env.endringsloggProxyUrl;
 export const namespace = env.namespace;
 export const urlAInntekt = env.aInntekt;
 export const urlGosys = env.gosys;

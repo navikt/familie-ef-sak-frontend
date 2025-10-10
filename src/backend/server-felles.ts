@@ -3,7 +3,7 @@ import './konfigurerApp.js';
 import { IApp, ensureAuthenticated } from '@navikt/familie-backend';
 import bodyParser from 'body-parser';
 
-import { brevProxyUrl, endringsloggProxyUrl, sakProxyUrl } from './config.js';
+import { brevProxyUrl, sakProxyUrl } from './config.js';
 import { addRequestInfo, attachToken, doProxy } from './proxy.js';
 import setupRouter from './router.js';
 import { logError, logInfo } from '@navikt/familie-logging';
@@ -32,13 +32,6 @@ export const setupServerFelles = ({ app, azureAuthClient, router }: IApp) => {
         addRequestInfo(),
         ensureAuthenticated(azureAuthClient, true),
         doProxy(brevProxyUrl)
-    );
-
-    app.use(
-        '/familie-endringslogg',
-        addRequestInfo(),
-        ensureAuthenticated(azureAuthClient, true),
-        doProxy(endringsloggProxyUrl, '')
     );
 
     // Sett opp bodyParser og router etter proxy. Spesielt viktig med tanke på større payloads som blir parset av bodyParser
