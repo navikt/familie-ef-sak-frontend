@@ -1,0 +1,11 @@
+.vannrettDivider {
+    border-bottom-width: 2px;
+    border-left-style: solid;
+}
+
+.loddrettDivider {
+    border-left-width: 2px;
+    border-left-style: solid;
+    align-self: stretch;
+    height: 100%;
+}

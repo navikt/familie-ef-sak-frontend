@@ -1,6 +1,6 @@
 import { Button, HStack, Modal, VStack } from '@navikt/ds-react';
 import React, { FC, useEffect, useState } from 'react';
-import { Divider } from '../../../Felles/Divider/Divider';
+import { LoddrettDivider, VannrettDivider } from '../../../Felles/Divider/Divider';
 import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { IOppgaverResponse } from '../../../App/hooks/useHentOppgaver';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
@@ -15,7 +15,6 @@ import { IVilkår } from '../Inngangsvilkår/vilkår';
 import { harBarnMellomSeksOgTolvMåneder, utledAutomatiskBrev } from './utils';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { Oppfølgingsoppgave } from '../../../App/hooks/useHentOppfølgingsoppgave';
-import { VertikalStrek } from '../Vurdering/StyledVurdering';
 
 export const ModalSendTilBeslutter: FC<{
     behandling: Behandling;
@@ -115,6 +114,9 @@ export const ModalSendTilBeslutter: FC<{
 
     const harBarnMellomSeksOgTolvMnder = vilkår && harBarnMellomSeksOgTolvMåneder(vilkår);
     const erOvergangsstønad = behandling.stønadstype === Stønadstype.OVERGANGSSTØNAD;
+    const skalViseHøyremeny =
+        (erInnvilgelseOvergangsstønad && harBarnMellomSeksOgTolvMnder && erOvergangsstønad) ||
+        !ferdigstillUtenBeslutter;
 
     useEffect(() => {
         settAutomatiskBrev(
@@ -160,7 +162,7 @@ export const ModalSendTilBeslutter: FC<{
                                             />
                                             {harOppgaver && (
                                                 <>
-                                                    <Divider />
+                                                    <VannrettDivider />
                                                     <TabellFerdigstilleOppgaver
                                                         oppgaverForAutomatiskFerdigstilling={
                                                             oppgaverForAutomatiskFerdigstilling
@@ -177,30 +179,36 @@ export const ModalSendTilBeslutter: FC<{
                                         </>
                                     )}
                                 </VStack>
-                                <VertikalStrek />
-                                <VStack gap="4">
-                                    {erInnvilgelseOvergangsstønad &&
-                                        harBarnMellomSeksOgTolvMnder &&
-                                        erOvergangsstønad && (
-                                            <AutomatiskBrev
-                                                automatiskBrev={automatiskBrev}
-                                                settAutomatiskBrev={settAutomatiskBrev}
-                                            />
-                                        )}
-                                    {!ferdigstillUtenBeslutter && (
-                                        <>
-                                            {skalViseFremleggsoppgaverForOpprettelseOgFerdigstilling && (
-                                                <Divider />
+                                {skalViseHøyremeny && (
+                                    <>
+                                        <LoddrettDivider />
+                                        <VStack gap="4">
+                                            {erInnvilgelseOvergangsstønad &&
+                                                harBarnMellomSeksOgTolvMnder &&
+                                                erOvergangsstønad && (
+                                                    <AutomatiskBrev
+                                                        automatiskBrev={automatiskBrev}
+                                                        settAutomatiskBrev={settAutomatiskBrev}
+                                                    />
+                                                )}
+                                            {!ferdigstillUtenBeslutter && (
+                                                <>
+                                                    {skalViseFremleggsoppgaverForOpprettelseOgFerdigstilling && (
+                                                        <VannrettDivider />
+                                                    )}
+                                                    <BeskrivelseOppgave
+                                                        beskrivelseMarkeringer={
+                                                            beskrivelseMarkeringer
+                                                        }
+                                                        settBeskrivelseMarkeringer={
+                                                            settBeskrivelseMarkeringer
+                                                        }
+                                                    />
+                                                </>
                                             )}
-                                            <BeskrivelseOppgave
-                                                beskrivelseMarkeringer={beskrivelseMarkeringer}
-                                                settBeskrivelseMarkeringer={
-                                                    settBeskrivelseMarkeringer
-                                                }
-                                            />
-                                        </>
-                                    )}
-                                </VStack>
+                                        </VStack>{' '}
+                                    </>
+                                )}
                             </HStack>
                         </Modal.Body>
                         <Modal.Footer>
