@@ -13,6 +13,8 @@ import { v4 as uuidv4 } from 'uuid';
 import HovedKnapp from '../../../../../Felles/Knapper/HovedKnapp';
 import { ModalState } from '../../../Modal/NyEierModal';
 import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
+import { ToggleName } from '../../../../../App/context/toggles';
+import { useToggles } from '../../../../../App/context/TogglesContext';
 
 const Form = styled.form`
     padding: 1rem;
@@ -27,6 +29,7 @@ export const OpphøreVedtak: React.FC<{
     lagretVedtak?: IOpphørtVedtak;
 }> = ({ behandlingId, lagretVedtak }) => {
     const { utførRedirect } = useRedirectEtterLagring(`/behandling/${behandlingId}/simulering`);
+    const { toggles } = useToggles();
     const [laster, settLaster] = useState(false);
     const lagretOpphørtVedtak =
         lagretVedtak?._type === IVedtakType.Opphør ? (lagretVedtak as IOpphørtVedtak) : undefined;
@@ -83,6 +86,8 @@ export const OpphøreVedtak: React.FC<{
         }
     };
 
+    const årBakITid = toggles[ToggleName.visBeregningsskjema] ? 11 : 6;
+
     return (
         <Form onSubmit={lagreVedtak}>
             <MånedÅrVelger
@@ -91,7 +96,7 @@ export const OpphøreVedtak: React.FC<{
                     settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
                     årMåned && settOpphørtFra(årMåned);
                 }}
-                antallÅrTilbake={6}
+                antallÅrTilbake={årBakITid}
                 antallÅrFrem={3}
                 disabled={!behandlingErRedigerbar}
                 årMånedInitiell={opphørtFra}
