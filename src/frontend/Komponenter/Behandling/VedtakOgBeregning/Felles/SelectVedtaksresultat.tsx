@@ -11,8 +11,6 @@ import { Stønadstype } from '../../../../App/typer/behandlingstema';
 import { NullstillVedtakModalContext } from './NullstillVedtakModalContext';
 import { EnsligFamilieSelect } from '../../../../Felles/Input/EnsligFamilieSelect';
 import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
-import { ToggleName } from '../../../../App/context/toggles';
-import { useToggles } from '../../../../App/context/TogglesContext';
 
 interface Props {
     behandling: Behandling;
@@ -45,10 +43,8 @@ const SelectVedtaksresultat = (props: Props): ReactNode => {
     const { behandlingErRedigerbar } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
     const { resultatType, settResultatType, alleVilkårOppfylt, behandling } = props;
-    const { toggles } = useToggles();
-    const finnesForrigeBehandling =
-        behandling.type === Behandlingstype.REVURDERING && behandling.forrigeBehandlingId != null;
-    const opphørMulig = toggles[ToggleName.visBeregningsskjema] ? true : finnesForrigeBehandling;
+    const opphørMulig =
+        behandling.type === Behandlingstype.REVURDERING && behandling.forrigeBehandlingId;
     const nullUtbetalingPgaKontantstøtte =
         resultatType === EBehandlingResultat.INNVILGE_UTEN_UTBETALING;
 
