@@ -61,7 +61,7 @@ export const NyttBarnSammePartnerInfo: FC<Props> = ({
                                 <HStack gap={'space-12'} align={'center'}>
                                     <ChildHairEyesIcon title="barn" fontSize="1.3rem" />
                                     <Heading size="xsmall">
-                                        {utledNavnOgAlder(navn, fødselsdato)}
+                                        {utledNavnOgAlder(navn, fødselsdato, dødsdato)}
                                         {dødsdato && <EtikettDød dødsdato={dødsdato} />}
                                     </Heading>
                                 </HStack>
