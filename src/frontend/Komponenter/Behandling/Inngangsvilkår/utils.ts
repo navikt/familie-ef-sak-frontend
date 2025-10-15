@@ -4,7 +4,7 @@ import { IUnderUtdanning } from '../../../App/typer/aktivitetstyper';
 import { EStudieandel, StudieandelTilTekst } from '../Aktivitet/Aktivitet/typer';
 import { IVurdering, RegelIdDDokumentasjonUtdanning, VilkårType } from './vilkår';
 import { IBarnMedSamværRegistergrunnlag, IBarnMedSamværSøknadsgrunnlag } from './Aleneomsorg/typer';
-import { nullableDatoTilAlder, årMellomDatoer } from '../../../App/utils/dato';
+import { nullableDatoTilAlder } from '../../../App/utils/dato';
 import { harVerdi } from '../../../App/utils/utils';
 
 export const hentBooleanTekst = (value: boolean): string => (value ? 'Ja' : 'Nei');
@@ -43,11 +43,10 @@ export const utledNavnOgAlder = (
     registerDødsdato?: string,
     søknadNavn?: string
 ) => {
-    const alder =
-        registerDødsdato && registerFødselsdato
-            ? årMellomDatoer(registerFødselsdato, registerDødsdato)
-            : nullableDatoTilAlder(registerFødselsdato);
-    const formatertAlder = alder ? ' (' + alder + ')' : '';
+    const skalViseAlder = registerFødselsdato && !registerDødsdato;
+    const alderString = ` (${nullableDatoTilAlder(registerFødselsdato)})`;
+
+    const formatertAlder = skalViseAlder ? alderString : '';
 
     if (harVerdi(registerNavn)) return registerNavn + formatertAlder;
     if (harVerdi(søknadNavn)) return søknadNavn;
