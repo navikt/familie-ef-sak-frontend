@@ -8,8 +8,8 @@ metadata:
 spec:
   image: {{image}}
   replicas:
-    min: 2
-    max: 2
+    min: 0 # Skaleres opp til 2 etter oppgradering av db
+    max: 0 # Skaleres opp til 2 etter oppgradering av db
   port: 8000
   liveness:
     path: /isAlive
