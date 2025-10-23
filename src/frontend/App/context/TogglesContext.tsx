@@ -1,11 +1,16 @@
-import { useCallback, useEffect, useState } from 'react';
-
-import createUseContext from 'constate';
+import React, { createContext, useCallback, useEffect, useState } from 'react';
 import { Toggles } from './toggles';
 import axios, { AxiosResponse } from 'axios';
 
-const [TogglesProvider, useToggles] = createUseContext(() => {
+type TogglesContextType = { toggles: Toggles };
+
+const TogglesContext = createContext<TogglesContextType | undefined>(undefined);
+
+export const TogglesProvider: React.FC<{
+    children: React.ReactNode;
+}> = ({ children }) => {
     const [toggles, settToggles] = useState<Toggles>({});
+
     TogglesProvider.displayName = 'TOGGLES_PROVIDER';
 
     const fetchToggles = useCallback(() => {
@@ -26,7 +31,13 @@ const [TogglesProvider, useToggles] = createUseContext(() => {
         fetchToggles();
     }, [fetchToggles]);
 
-    return { toggles };
-});
+    return <TogglesContext.Provider value={{ toggles }}>{children}</TogglesContext.Provider>;
+};
 
-export { TogglesProvider, useToggles };
+export const useToggles = (): TogglesContextType => {
+    const context = React.useContext(TogglesContext);
+    if (context === undefined) {
+        throw new Error('useTogglesContext kan ikke brukes utenfor TogglesContextProvider');
+    }
+    return context;
+};
