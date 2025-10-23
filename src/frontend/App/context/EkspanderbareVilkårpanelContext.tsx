@@ -1,5 +1,4 @@
-import constate from 'constate';
-import { useState } from 'react';
+import React, { createContext, useContext, useState, type ReactNode } from 'react';
 import {
     AktivitetsvilkårType,
     InngangsvilkårType,
@@ -17,7 +16,25 @@ export enum EVilkårstyper {
     AKTIVITETSVILKÅR = 'AKTIVITETSVILKÅR',
 }
 
-const [EkspanderbareVilkårpanelProvider, useEkspanderbareVilkårpanelContext] = constate(() => {
+type EkspanderbareVilkårpanelContextType = {
+    åpneAlle: (vilkårstype: EVilkårstyper) => void;
+    lukkAlle: (vilkårstype: EVilkårstyper) => void;
+    toggleEkspandertTilstand: (key: VilkårType) => void;
+    settPanelITilstand: (key: VilkårType, tilstand: EkspandertTilstand) => void;
+    ekspanderteVilkår: Record<VilkårType, EkspandertTilstand>;
+};
+
+const EkspanderbareVilkårpanelContext = createContext<
+    EkspanderbareVilkårpanelContextType | undefined
+>(undefined);
+
+interface EkspanderbareVilkårpanelProviderProps {
+    children: ReactNode;
+}
+
+export function EkspanderbareVilkårpanelProvider({
+    children,
+}: EkspanderbareVilkårpanelProviderProps) {
     const vilkårtyper = { ...InngangsvilkårType, ...AktivitetsvilkårType };
 
     const settAlleTil = (tilstand: EkspandertTilstand, vilkårstype?: EVilkårstyper) => {
@@ -84,13 +101,27 @@ const [EkspanderbareVilkårpanelProvider, useEkspanderbareVilkårpanelContext] =
         }));
     };
 
-    return {
+    const value = {
         åpneAlle,
         lukkAlle,
         toggleEkspandertTilstand,
         settPanelITilstand,
         ekspanderteVilkår,
     };
-});
 
-export { EkspanderbareVilkårpanelProvider, useEkspanderbareVilkårpanelContext };
+    return (
+        <EkspanderbareVilkårpanelContext.Provider value={value}>
+            {children}
+        </EkspanderbareVilkårpanelContext.Provider>
+    );
+}
+
+export const useEkspanderbareVilkårpanelContext = () => {
+    const context = useContext(EkspanderbareVilkårpanelContext);
+    if (context === undefined) {
+        throw new Error(
+            'useEkspanderbareVilkårpanelContext kan ikke brukes utenfor EkspanderbareVilkårpanelProvider'
+        );
+    }
+    return context;
+};
