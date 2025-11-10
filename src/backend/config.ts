@@ -1,6 +1,6 @@
 // Konfigurer appen før backend prøver å sette opp konfigurasjon
 
-import { appConfig, IApi, ISessionKonfigurasjon } from '@navikt/familie-backend';
+import { IApi, ISessionKonfigurasjon } from '@navikt/familie-backend';
 
 type Rolle = 'veileder' | 'saksbehandler' | 'beslutter' | 'kode6' | 'kode7' | 'egenAnsatt';
 
@@ -128,8 +128,12 @@ if (!process.env.EF_SAK_SCOPE) {
     throw new Error('Scope mot familie-ef-sak er ikke konfigurert');
 }
 
+if (!process.env.CLIENT_ID) {
+    throw new Error('CLIENT_ID er ikke konfigurert');
+}
+
 export const oboConfig: IApi = {
-    clientId: appConfig.clientId,
+    clientId: process.env.CLIENT_ID,
     scopes: [process.env.EF_SAK_SCOPE],
 };
 
