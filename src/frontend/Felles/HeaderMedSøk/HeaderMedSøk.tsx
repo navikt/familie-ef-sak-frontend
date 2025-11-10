@@ -6,7 +6,6 @@ import { PopoverItem } from '@navikt/familie-header/dist/header/Header';
 import { useApp } from '../../App/context/AppContext';
 import { AppEnv } from '../../App/api/env';
 import { AxiosRequestCallback } from '../../App/typer/axiosRequest';
-import Endringslogg from '@navikt/familie-endringslogg';
 import { harTilgangTilRolle } from '../../App/utils/roller';
 import { useToggles } from '../../App/context/TogglesContext';
 import { ToggleName } from '../../App/context/toggles';
@@ -64,19 +63,6 @@ export const HeaderMedSøk: React.FunctionComponent<Props> = ({ innloggetSaksbeh
                 erDev={erDev}
             >
                 {innloggetSaksbehandler && <PersonSøk />}
-                {innloggetSaksbehandler?.navIdent && (
-                    <Endringslogg
-                        userId={innloggetSaksbehandler.navIdent}
-                        dataFetchingIntervalSeconds={60 * 15}
-                        appId={'EF'}
-                        backendUrl={'/familie-endringslogg'}
-                        dataset={'production'}
-                        maxEntries={50}
-                        appName={'Enslig forsørger'}
-                        alignLeft={true}
-                        stil={'lys'}
-                    />
-                )}
             </Header>
         </Sticky>
     );

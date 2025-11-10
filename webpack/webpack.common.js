@@ -24,10 +24,6 @@ const common = {
                     fullySpecified: false,
                 },
             },
-            {
-                test: /\.svg$/,
-                loader: 'svg-inline-loader',
-            },
         ],
     },
     optimization: {

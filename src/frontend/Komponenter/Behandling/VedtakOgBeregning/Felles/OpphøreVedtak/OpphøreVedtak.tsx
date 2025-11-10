@@ -83,6 +83,8 @@ export const OpphøreVedtak: React.FC<{
         }
     };
 
+    const årBakITid = 11; // alle skal kunne opphøre bakover i tid (11 år)
+
     return (
         <Form onSubmit={lagreVedtak}>
             <MånedÅrVelger
@@ -91,7 +93,7 @@ export const OpphøreVedtak: React.FC<{
                     settIkkePersistertKomponent(VEDTAK_OG_BEREGNING);
                     årMåned && settOpphørtFra(årMåned);
                 }}
-                antallÅrTilbake={6}
+                antallÅrTilbake={årBakITid}
                 antallÅrFrem={3}
                 disabled={!behandlingErRedigerbar}
                 årMånedInitiell={opphørtFra}
