@@ -23,6 +23,7 @@ export const BeskrivelseOppgave: FC<{
             legend="Godkjenne vedtak-oppgaven skal merkes med:"
             onChange={settBeskrivelseMarkeringer}
             value={beskrivelseMarkeringer}
+            size="small"
         >
             {beskrivelseMarkeringerValg.map((valg) => (
                 <Checkbox key={valg} value={valg}>
