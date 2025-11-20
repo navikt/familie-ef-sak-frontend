@@ -58,7 +58,7 @@ export const InnvilgeVedtak: React.FC<{
                 }
             });
         },
-        // eslint-disable-next-line
+
         [axiosRequest, behandling]
     );
 

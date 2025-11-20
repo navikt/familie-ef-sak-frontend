@@ -19,7 +19,6 @@ export const useHentBrevmaler = (): { brevmaler: Ressurs<DokumentNavn[]> } => {
         }).then((respons: Ressurs<DokumentNavn[]>) => {
             settBrevmaler(respons);
         });
-        // eslint-disable-next-line
     }, []);
 
     return {

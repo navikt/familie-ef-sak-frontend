@@ -61,7 +61,6 @@ export const useHentVedtak = (
                 }
             );
         }
-        // eslint-disable-next-line
     }, [behandlingId]);
 
     return {

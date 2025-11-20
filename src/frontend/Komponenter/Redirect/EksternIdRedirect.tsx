@@ -34,7 +34,6 @@ export const EksternIdRedirect: FC = () => {
 
     useEffect(() => {
         skalHenteFagsak ? hentFagsak() : hentBehandling();
-        // eslint-disable-next-line
     }, [axiosRequest]);
 
     useEffect(() => {
@@ -43,7 +42,6 @@ export const EksternIdRedirect: FC = () => {
         } else if (behandling.status === RessursStatus.SUKSESS) {
             navigate(`/behandling/${behandling.data.id}`);
         }
-        // eslint-disable-next-line
     }, [fagsak, behandling]);
 
     return (

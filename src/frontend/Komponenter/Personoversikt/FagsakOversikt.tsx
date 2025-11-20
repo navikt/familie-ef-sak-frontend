@@ -36,7 +36,6 @@ export const FagsakOversikt: React.FC<Props> = ({
 
     useEffect(() => {
         hentTilbakekrevingBehandlinger();
-        // eslint-disable-next-line
     }, [fagsak.id]);
 
     return (

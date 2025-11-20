@@ -75,7 +75,6 @@ const [BehandlingProvider, useBehandling] = constate(() => {
         hentPersonopplysninger(behandlingId);
         hentUtestengelserForBehandling(behandlingId);
         hentFagsak(behandlingId);
-        // eslint-disable-next-line
     }, [behandlingId]);
 
     useEffect(() => {
@@ -88,8 +87,6 @@ const [BehandlingProvider, useBehandling] = constate(() => {
             }
             settVisSettPåVent(behandling.data.status === BehandlingStatus.SATT_PÅ_VENT);
         }
-
-        // eslint-disable-next-line
     }, [behandling]);
 
     useEffect(() => {

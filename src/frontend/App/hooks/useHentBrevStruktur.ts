@@ -20,7 +20,6 @@ export const useHentBrevStruktur = (
                 settBrevStruktur(respons);
             });
         }
-        // eslint-disable-next-line
     }, [brevMal]);
 
     return {

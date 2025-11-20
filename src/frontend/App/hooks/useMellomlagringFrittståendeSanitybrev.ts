@@ -57,7 +57,7 @@ export const useMellomlagringFrittståendeSanitybrev = (
             }).then((res: RessursSuksess<MellomlagerRespons | undefined> | RessursFeilet) => {
                 settMellomlagretBrevRessurs(res);
             }),
-        // eslint-disable-next-line
+
         [fagsakId]
     );
 

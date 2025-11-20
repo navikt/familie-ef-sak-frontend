@@ -174,8 +174,6 @@ export const InnvilgeBarnetilsyn: React.FC<{
             tilleggsstønadsperioder: [],
             kontantstøtteperioder: [],
         }));
-
-        // eslint-disable-next-line
     }, [lagretInnvilgetVedtak]);
 
     useEffect(() => {
@@ -186,14 +184,12 @@ export const InnvilgeBarnetilsyn: React.FC<{
         ) {
             kontantstøtteState.setValue(ERadioValg.NEI);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [harKontantstøttePerioder]);
 
     useEffect(() => {
         if (!formState.isValid()) {
             formState.validateForm();
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
         utgiftsperiodeState.value,
         kontantstøtteState.value,
@@ -285,7 +281,6 @@ export const InnvilgeBarnetilsyn: React.FC<{
                 url: `/familie-ef-sak/api/beregning/barnetilsyn/${behandling.id}`,
             }).then((res: Ressurs<IBeregningsperiodeBarnetilsyn[]>) => settBeregningsresultat(res));
         }
-        // eslint-disable-next-line
     }, [behandlingErRedigerbar]);
 
     useEffect(() => {

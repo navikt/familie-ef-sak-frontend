@@ -115,14 +115,12 @@ export const InnvilgeOvergangsstønad: React.FC<{
                 0
             );
         }
-        // eslint-disable-next-line
     }, [vedtaksperioder, inntektsperioder]);
 
     useEffect(() => {
         if (!formState.isValid()) {
             formState.validateForm();
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
         vedtaksperioder,
         inntektsperioder,
@@ -141,7 +139,6 @@ export const InnvilgeOvergangsstønad: React.FC<{
         if (lagretVedtak?.perioder) {
             vedtaksperiodeState.setValue(lagretVedtak?.perioder);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [lagretVedtak]);
 
     const skalVelgeSamordningstype = inntektsperiodeState.value.some(

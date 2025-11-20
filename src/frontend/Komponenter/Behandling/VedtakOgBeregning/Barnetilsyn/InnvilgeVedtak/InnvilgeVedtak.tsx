@@ -67,7 +67,7 @@ export const InnvilgeVedtak: FC<{
                 }
             });
         },
-        // eslint-disable-next-line
+
         [axiosRequest, behandling]
     );
 

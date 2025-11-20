@@ -94,7 +94,6 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
                 hentBrev();
             }
         }
-        // eslint-disable-next-line
     }, [behandlingErRedigerbar, totrinnskontroll]);
 
     useEffect(() => {
