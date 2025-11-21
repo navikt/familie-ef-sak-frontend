@@ -15,6 +15,7 @@ import { IVilkår } from '../Inngangsvilkår/vilkår';
 import { harBarnMellomSeksOgTolvMåneder, utledAutomatiskBrev } from './utils';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { Oppfølgingsoppgave } from '../../../App/hooks/useHentOppfølgingsoppgave';
+import { Oppgaveprioritet } from './Oppgaveprioritet';
 
 export const ModalSendTilBeslutter: FC<{
     behandling: Behandling;
@@ -60,6 +61,7 @@ export const ModalSendTilBeslutter: FC<{
     const [beskrivelseMarkeringer, settBeskrivelseMarkeringer] = useState<BeskrivelseMarkeringer[]>(
         []
     );
+    const [prioritetHøy, settPrioritetHøy] = useState<boolean>(false);
 
     const {
         ferdigstillUtenBeslutter,
@@ -198,6 +200,10 @@ export const ModalSendTilBeslutter: FC<{
                                             settBeskrivelseMarkeringer={settBeskrivelseMarkeringer}
                                         />
                                     )}
+                                    <Oppgaveprioritet
+                                        prioritetHøy={prioritetHøy}
+                                        settPrioritetHøy={settPrioritetHøy}
+                                    />
                                 </VStack>
                             </HStack>
                         </Modal.Body>
