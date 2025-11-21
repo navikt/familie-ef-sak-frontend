@@ -42,6 +42,5 @@ export const useEffectDebugger = (
         console.log('[use-effect-debugger] ', changedDeps);
     }
 
-    // eslint-disable-next-line
     useEffect(effectHook, dependencies);
 };

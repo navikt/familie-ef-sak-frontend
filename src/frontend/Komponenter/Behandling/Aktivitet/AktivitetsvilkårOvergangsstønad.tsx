@@ -22,7 +22,6 @@ const AktivitetsVilkårOvergangsstønad: FC<{ behandling: Behandling }> = ({ beh
     const behandlingId = behandling.id;
     useEffect(() => {
         hentVilkår(behandlingId);
-        // eslint-disable-next-line
     }, [behandlingId]);
 
     return (

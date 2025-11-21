@@ -19,7 +19,6 @@ export const useHentPersonopplysninger = (
             method: 'GET',
             url: `/familie-ef-sak/api/personopplysninger/behandling/${behandlingId}`,
         }).then((res: Ressurs<IPersonopplysninger>) => settPersonopplysningerResponse(res));
-        // eslint-disable-next-line
     }, [behandlingId]);
 
     return {

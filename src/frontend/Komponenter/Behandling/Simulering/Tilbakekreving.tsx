@@ -88,7 +88,6 @@ export const Tilbakekreving: React.FC<TilbakekrevingProps> = ({
                 settFeilmelding(respons.frontendFeilmelding);
             }
         });
-        // eslint-disable-next-line
     }, [behandlingId]);
 
     useEffect(() => {
@@ -106,7 +105,6 @@ export const Tilbakekreving: React.FC<TilbakekrevingProps> = ({
                 settFeilmelding(respons.frontendFeilmelding);
             }
         });
-        // eslint-disable-next-line
     }, [behandlingId]);
 
     const endreTilbakekrevingsvalg = (nyttValg: ITilbakekrevingsvalg) => {

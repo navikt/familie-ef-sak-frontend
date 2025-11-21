@@ -140,8 +140,6 @@ const InntektsperiodeValg: React.FC<Props> = ({
 
     useEffect(() => {
         settValgteInntektstyper(initierValgteInntektstyper(inntektsperiodeListe.value));
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [inntektsperiodeListe.value[0].endretKey]);
 
     const oppdaterInntektslisteVerdier = (index: number, verdier: Partial<IInntektsperiode>) => {

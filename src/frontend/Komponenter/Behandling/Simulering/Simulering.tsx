@@ -63,7 +63,6 @@ const Simulering: React.FC<{
 
     useEffect(() => {
         hentFinnesFlereTilbakekrevingsvalgRegistrertSisteÅr();
-        // eslint-disable-next-line
     }, [behandlingId]);
     const { behandlingErRedigerbar } = useBehandling();
     const [år, settÅr] = useState(

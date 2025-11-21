@@ -67,7 +67,6 @@ export const useInntektsendringAvslagFlettefelt = (
                 }
             );
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [vedtak, axiosRequest]);
 
     return {
