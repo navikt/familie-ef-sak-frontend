@@ -33,7 +33,7 @@ export interface SendTilBeslutterRequest {
     oppgaverIderSomSkalFerdigstilles?: number[];
     beskrivelseMarkeringer?: BeskrivelseMarkeringer[];
     automatiskBrev?: AutomatiskBrevValg[];
-    prioritetHøy?: boolean;
+    erHøyPrioritet?: boolean;
 }
 
 const utledDefaultOppgavetyperSomSkalOpprettes = (

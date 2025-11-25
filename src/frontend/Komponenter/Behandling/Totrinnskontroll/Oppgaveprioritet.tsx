@@ -2,14 +2,14 @@ import { CheckboxGroup, Checkbox } from '@navikt/ds-react';
 import React from 'react';
 
 interface Props {
-    prioritetHøy: boolean;
-    settPrioritetHøy: (ervalgt: boolean) => void;
+    erHøyPrioritet: boolean;
+    settErHøyPrioritet: (ervalgt: boolean) => void;
 }
 
-export const Oppgaveprioritet = ({ prioritetHøy, settPrioritetHøy }: Props) => {
+export const Oppgaveprioritet = ({ erHøyPrioritet, settErHøyPrioritet }: Props) => {
     return (
         <CheckboxGroup legend="Godkjenne vedtak-oppgavens prioritet:">
-            <Checkbox value={prioritetHøy} onChange={() => settPrioritetHøy(!prioritetHøy)}>
+            <Checkbox value={erHøyPrioritet} onChange={() => settErHøyPrioritet(!erHøyPrioritet)}>
                 Høy
             </Checkbox>
         </CheckboxGroup>

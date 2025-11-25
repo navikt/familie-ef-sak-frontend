@@ -61,7 +61,7 @@ export const ModalSendTilBeslutter: FC<{
     const [beskrivelseMarkeringer, settBeskrivelseMarkeringer] = useState<BeskrivelseMarkeringer[]>(
         []
     );
-    const [prioritetHøy, settPrioritetHøy] = useState<boolean>(false);
+    const [erHøyPrioritet, settErHøyPrioritet] = useState<boolean>(false);
 
     const {
         ferdigstillUtenBeslutter,
@@ -201,8 +201,8 @@ export const ModalSendTilBeslutter: FC<{
                                         />
                                     )}
                                     <Oppgaveprioritet
-                                        prioritetHøy={prioritetHøy}
-                                        settPrioritetHøy={settPrioritetHøy}
+                                        erHøyPrioritet={erHøyPrioritet}
+                                        settErHøyPrioritet={settErHøyPrioritet}
                                     />
                                 </VStack>
                             </HStack>
@@ -223,7 +223,7 @@ export const ModalSendTilBeslutter: FC<{
                                             oppgaverSomSkalAutomatiskFerdigstilles,
                                         beskrivelseMarkeringer: beskrivelseMarkeringer,
                                         automatiskBrev: automatiskBrev,
-                                        prioritetHøy: prioritetHøy,
+                                        erHøyPrioritet: erHøyPrioritet,
                                     })
                                 }
                                 disabled={!erValgIRadioEllerChecboxGroupGyldig}
