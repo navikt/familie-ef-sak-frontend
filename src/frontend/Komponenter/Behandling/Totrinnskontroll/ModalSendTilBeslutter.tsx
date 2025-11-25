@@ -223,6 +223,7 @@ export const ModalSendTilBeslutter: FC<{
                                             oppgaverSomSkalAutomatiskFerdigstilles,
                                         beskrivelseMarkeringer: beskrivelseMarkeringer,
                                         automatiskBrev: automatiskBrev,
+                                        prioritetHøy: prioritetHøy,
                                     })
                                 }
                                 disabled={!erValgIRadioEllerChecboxGroupGyldig}
