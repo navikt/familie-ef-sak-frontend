@@ -85,7 +85,6 @@ export const useOppgave = (oppgave: IOppgave) => {
                     (fagsak.frontendFeilmelding || fagsak.errorMelding || 'Ukjent feil')
             );
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [fagsak]);
 
     const tilbakestillFordeling = () => {

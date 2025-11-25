@@ -123,7 +123,6 @@ export const InnvilgeVedtak: React.FC<{
         if (!formState.isValid()) {
             formState.validateForm();
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [skoleårsPerioderState.value, begrunnelseState.value]);
 
     const lagreVedtak = (vedtaksRequest: IVedtakForSkolepenger) => {

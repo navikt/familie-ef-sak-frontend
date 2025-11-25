@@ -23,7 +23,6 @@ export const useHentBehandlingHistorikk = (
         axiosRequest<Behandlingshistorikk[], null>(behandlingConfig).then(
             (res: Ressurs<Behandlingshistorikk[]>) => settBehandlingHistorikk(res)
         );
-        // eslint-disable-next-line
     }, [behandlingId]);
 
     return {

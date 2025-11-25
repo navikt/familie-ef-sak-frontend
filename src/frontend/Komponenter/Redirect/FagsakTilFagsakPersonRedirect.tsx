@@ -34,14 +34,12 @@ export const FagsakTilFagsakPersonRedirect: FC = () => {
 
     useEffect(() => {
         hentFagsak();
-        // eslint-disable-next-line
     }, [axiosRequest]);
 
     useEffect(() => {
         if (fagsak.status === RessursStatus.SUKSESS) {
             navigate(`/person/${fagsak.data.fagsakPersonId}`);
         }
-        // eslint-disable-next-line
     }, [fagsak]);
 
     return (

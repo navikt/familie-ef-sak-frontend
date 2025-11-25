@@ -29,7 +29,6 @@ export const UtledEllerVelgFagsak: React.FC<{
             if (stønadstype) {
                 hentFagsak(journalResponse.personIdent, stønadstype);
             }
-            // eslint-disable-next-line
         }, [stønadstype]);
 
         if (!stønadstypeFraJournalpost) {

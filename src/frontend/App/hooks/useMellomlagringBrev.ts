@@ -91,7 +91,7 @@ export const useMellomlagringBrev = (
             }).then((res: RessursSuksess<MellomlagerRespons | undefined> | RessursFeilet) => {
                 settMellomlagretBrevRessurs(res);
             }),
-        // eslint-disable-next-line
+
         [behandlingId]
     );
 

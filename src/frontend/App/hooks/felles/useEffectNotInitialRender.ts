@@ -6,6 +6,5 @@ export const useEffectNotInitialRender = (func: () => void, deps?: DependencyLis
     useEffect(() => {
         if (hasRendered.current) func();
         else hasRendered.current = true;
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, deps);
 };

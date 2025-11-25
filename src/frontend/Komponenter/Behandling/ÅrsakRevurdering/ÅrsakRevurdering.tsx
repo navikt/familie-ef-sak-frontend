@@ -27,7 +27,6 @@ export const AarsakRevurdering: React.FC<Props> = ({
 
     useEffect(() => {
         settErRedigeringsmodus(behandlingErRedigerbar && !revurderingsinformasjon.årsakRevurdering);
-        // eslint-disable-next-line
     }, [behandlingErRedigerbar]);
 
     useEffect(() => {
