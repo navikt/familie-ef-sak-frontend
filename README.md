@@ -67,7 +67,7 @@ For å installere @navikt-scopede pakker må du autentisere deg med et PAT.
    packages. Husk å enable SSO for navikt-orgen.
 2. Skriv `npm login --scope=@navikt --registry=https://npm.pkg.github.com` i terminalen (obs, windows-syntaksen er litt
    annerledes - mellomrom heller enn =)
-3. Skriv inn eposten din og brukernavnet ditt. Passordet er tokenet fra github
+3. Skriv inn github-brukernavnet ditt. Passordet er tokenet fra github
 
 ## Testing
 
