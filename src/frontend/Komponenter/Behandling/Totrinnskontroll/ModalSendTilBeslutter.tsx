@@ -1,6 +1,6 @@
-import { Button, Modal, VStack } from '@navikt/ds-react';
+import { Button, HStack, Modal, VStack } from '@navikt/ds-react';
 import React, { FC, useEffect, useState } from 'react';
-import { Divider } from '../../../Felles/Divider/Divider';
+import { LoddrettDivider, VannrettDivider } from '../../../Felles/Divider/Divider';
 import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { IOppgaverResponse } from '../../../App/hooks/useHentOppgaver';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
@@ -15,6 +15,7 @@ import { IVilkår } from '../Inngangsvilkår/vilkår';
 import { harBarnMellomSeksOgTolvMåneder, utledAutomatiskBrev } from './utils';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { Oppfølgingsoppgave } from '../../../App/hooks/useHentOppfølgingsoppgave';
+import { Oppgaveprioritet } from './Oppgaveprioritet';
 
 export const ModalSendTilBeslutter: FC<{
     behandling: Behandling;
@@ -60,6 +61,7 @@ export const ModalSendTilBeslutter: FC<{
     const [beskrivelseMarkeringer, settBeskrivelseMarkeringer] = useState<BeskrivelseMarkeringer[]>(
         []
     );
+    const [erHøyPrioritet, settErHøyPrioritet] = useState<boolean>(false);
 
     const {
         ferdigstillUtenBeslutter,
@@ -114,6 +116,9 @@ export const ModalSendTilBeslutter: FC<{
 
     const harBarnMellomSeksOgTolvMnder = vilkår && harBarnMellomSeksOgTolvMåneder(vilkår);
     const erOvergangsstønad = behandling.stønadstype === Stønadstype.OVERGANGSSTØNAD;
+    const skalViseHøyremeny =
+        (erInnvilgelseOvergangsstønad && harBarnMellomSeksOgTolvMnder && erOvergangsstønad) ||
+        !ferdigstillUtenBeslutter;
 
     useEffect(() => {
         settAutomatiskBrev(
@@ -133,72 +138,74 @@ export const ModalSendTilBeslutter: FC<{
                         open={open}
                         onClose={() => setOpen(false)}
                         header={{ heading: '', size: 'small', closeButton: false }}
-                        width={`${55}${'rem'}`}
+                        width={`${100}${'rem'}`}
                     >
                         <Modal.Body>
-                            <VStack gap="4">
-                                {skalViseFremleggsoppgaverForOpprettelseOgFerdigstilling && (
-                                    <>
-                                        <FremleggsoppgaverForOpprettelse
-                                            årForInntektskontrollSelvstendigNæringsdrivende={
-                                                årForInntektskontrollSelvstendigNæringsdrivende
-                                            }
-                                            oppgavetyperSomKanOpprettes={
-                                                oppgavetyperSomKanOpprettes
-                                            }
-                                            oppgavetyperSomSkalOpprettes={
-                                                oppgavetyperSomSkalOpprettes
-                                            }
-                                            settOppgavetyperSomSkalOpprettes={
-                                                settOppgavetyperSomSkalOpprettes
-                                            }
-                                            settÅrForInntektskontrollSelvstendigNæringsdrivende={
-                                                settÅrForInntektskontrollSelvstendigNæringsdrivende
-                                            }
-                                        />
-                                        {harOppgaver && (
+                            <HStack gap="4">
+                                <VStack gap="4">
+                                    {skalViseFremleggsoppgaverForOpprettelseOgFerdigstilling && (
+                                        <>
+                                            <FremleggsoppgaverForOpprettelse
+                                                årForInntektskontrollSelvstendigNæringsdrivende={
+                                                    årForInntektskontrollSelvstendigNæringsdrivende
+                                                }
+                                                oppgavetyperSomKanOpprettes={
+                                                    oppgavetyperSomKanOpprettes
+                                                }
+                                                oppgavetyperSomSkalOpprettes={
+                                                    oppgavetyperSomSkalOpprettes
+                                                }
+                                                settOppgavetyperSomSkalOpprettes={
+                                                    settOppgavetyperSomSkalOpprettes
+                                                }
+                                                settÅrForInntektskontrollSelvstendigNæringsdrivende={
+                                                    settÅrForInntektskontrollSelvstendigNæringsdrivende
+                                                }
+                                            />
+                                            {harOppgaver && (
+                                                <>
+                                                    <VannrettDivider />
+                                                    <TabellFerdigstilleOppgaver
+                                                        oppgaverForAutomatiskFerdigstilling={
+                                                            oppgaverForAutomatiskFerdigstilling
+                                                        }
+                                                        oppgaverSomSkalAutomatiskFerdigstilles={
+                                                            oppgaverSomSkalAutomatiskFerdigstilles
+                                                        }
+                                                        handleSettOppgaverSomSkalFerdigstilles={
+                                                            handleSettOppgaverSomSkalFerdigstilles
+                                                        }
+                                                    />
+                                                </>
+                                            )}
+                                        </>
+                                    )}
+                                </VStack>
+                                {skalViseHøyremeny && <LoddrettDivider />}
+                                <VStack gap="4">
+                                    {erInnvilgelseOvergangsstønad &&
+                                        harBarnMellomSeksOgTolvMnder &&
+                                        erOvergangsstønad && (
                                             <>
-                                                <Divider />
-                                                <TabellFerdigstilleOppgaver
-                                                    oppgaverForAutomatiskFerdigstilling={
-                                                        oppgaverForAutomatiskFerdigstilling
-                                                    }
-                                                    oppgaverSomSkalAutomatiskFerdigstilles={
-                                                        oppgaverSomSkalAutomatiskFerdigstilles
-                                                    }
-                                                    handleSettOppgaverSomSkalFerdigstilles={
-                                                        handleSettOppgaverSomSkalFerdigstilles
-                                                    }
+                                                <AutomatiskBrev
+                                                    automatiskBrev={automatiskBrev}
+                                                    settAutomatiskBrev={settAutomatiskBrev}
                                                 />
+                                                <VannrettDivider />
                                             </>
                                         )}
-                                    </>
-                                )}
-
-                                {!ferdigstillUtenBeslutter && (
-                                    <>
-                                        {skalViseFremleggsoppgaverForOpprettelseOgFerdigstilling && (
-                                            <Divider />
-                                        )}
+                                    {!ferdigstillUtenBeslutter && (
                                         <BeskrivelseOppgave
                                             beskrivelseMarkeringer={beskrivelseMarkeringer}
                                             settBeskrivelseMarkeringer={settBeskrivelseMarkeringer}
                                         />
-                                    </>
-                                )}
-
-                                {erInnvilgelseOvergangsstønad &&
-                                    harBarnMellomSeksOgTolvMnder &&
-                                    erOvergangsstønad && (
-                                        <>
-                                            <Divider />
-                                            <AutomatiskBrev
-                                                automatiskBrev={automatiskBrev}
-                                                settAutomatiskBrev={settAutomatiskBrev}
-                                            />
-                                        </>
                                     )}
-                            </VStack>
+                                    <Oppgaveprioritet
+                                        erHøyPrioritet={erHøyPrioritet}
+                                        settErHøyPrioritet={settErHøyPrioritet}
+                                    />
+                                </VStack>
+                            </HStack>
                         </Modal.Body>
                         <Modal.Footer>
                             <Button
@@ -216,6 +223,7 @@ export const ModalSendTilBeslutter: FC<{
                                             oppgaverSomSkalAutomatiskFerdigstilles,
                                         beskrivelseMarkeringer: beskrivelseMarkeringer,
                                         automatiskBrev: automatiskBrev,
+                                        erHøyPrioritet: erHøyPrioritet,
                                     })
                                 }
                                 disabled={!erValgIRadioEllerChecboxGroupGyldig}
