@@ -21,8 +21,9 @@ export interface SkolepengerProps<T> {
 }
 
 // prettier-ignore
-// eslint-disable-next-line
-export interface ValideringsPropsMedOppdatering<T extends Record<string, any>> extends SkolepengerProps<T> {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export interface ValideringsPropsMedOppdatering<T extends Record<string, any>>
+    extends SkolepengerProps<T> {
     valideringsfeil?: FormErrors<T>[];
     settValideringsFeil: (errors: FormErrors<T>[]) => void;
 }
