@@ -4,9 +4,9 @@ Frontend app for enslig forsørger saksbehandling (overgangsstønad)
 
 # Kom i gang med utvikling
 
-- Installere avhengigheter `yarn`
-- Starte dev-server `yarn start:dev`
-- Starte mock-server `yarn start:mock`
+- Installere avhengigheter `npm ci`
+- Starte dev-server `npm run start:dev`
+- Starte mock-server `npm run start:mock`
 - Åpne `http://localhost:8000` i nettleseren din
 
 For å kunne installere avhengigheter fra navikt registry må man være logget inn i github packages. Kjør kommando:
@@ -56,7 +56,7 @@ ENV=lokalt-mot-preprod
 EF_SAK_SCOPE=api://dev-gcp.teamfamilie.familie-ef-sak/.default
 ```
 
-For å bygge prodversjon kjør `yarn build`. Prodversjonen vil ikke kjøre lokalt med mindre det gjøres en del endringer i
+For å bygge prodversjon kjør `npm run build`. Prodversjonen vil ikke kjøre lokalt med mindre det gjøres en del endringer i
 forbindelse med uthenting av environment variabler og URLer for uthenting av informasjon.
 
 ## Installere @navikt-pakker lokalt
@@ -72,7 +72,7 @@ For å installere @navikt-scopede pakker må du autentisere deg med et PAT.
 ## Testing
 
 Appen benytter [vitest](https://vitest.dev/) til enhetstesting. Legg gjerne til nye tester etter oppdateringer av appen.
-For å kjøre opp tester lokalt kan man kjøre `yarn test`. For å kjøre opp testene i interaktiv modus kan man kjøre
+For å kjøre opp tester lokalt kan man kjøre `npm run test`. For å kjøre opp testene i interaktiv modus kan man kjøre
 `vitest`.
 
 # Mens du koder
