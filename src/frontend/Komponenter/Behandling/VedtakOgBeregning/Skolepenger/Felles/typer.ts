@@ -20,9 +20,8 @@ export interface SkolepengerProps<T> {
     erSkoleårOpphørt?: boolean;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export interface ValideringsPropsMedOppdatering<T extends Record<string, any>>
-    extends SkolepengerProps<T> {
+// prettier-ignore
+export interface ValideringsPropsMedOppdatering<T extends Record<string, unknown>> extends SkolepengerProps<T> {
     valideringsfeil?: FormErrors<T>[];
     settValideringsFeil: (errors: FormErrors<T>[]) => void;
 }
