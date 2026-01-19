@@ -20,6 +20,7 @@ export interface SkolepengerProps<T> {
     erSkoleårOpphørt?: boolean;
 }
 
+// prettier-ignore
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export interface ValideringsPropsMedOppdatering<T extends Record<string, any>>
     extends SkolepengerProps<T> {

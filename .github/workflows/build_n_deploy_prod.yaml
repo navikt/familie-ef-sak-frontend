@@ -18,22 +18,22 @@ jobs:
       - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # ratchet:actions/setup-node@v4
         with:
           node-version: '20'
-          cache: yarn
+          cache: npm
           registry-url: 'https://npm.pkg.github.com'
-      - name: Yarn install
-        run: yarn --prefer-offline --frozen-lockfile
+      - name: npm ci
+        run: npm ci
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
-      - name: Yarn test
-        run: yarn test
-      - name: Yarn build
-        run: yarn build
+      - name: npm test
+        run: npm test
+      - name: npm build
+        run: npm run build
       - name: Prune dev dependencies
-        run: yarn --prod --prefer-offline --frozen-lockfile
+        run: npm prune --omit=dev
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
       - name: Push docker image to GAR and sign image
-        uses: nais/docker-build-push@791ebb6f74b82849c742a9bc9c97abe44c6c111f # ratchet:nais/docker-build-push@v0
+        uses: nais/docker-build-push@87f920b0411b987d9a1fd4113aa384e1e3b54f2c # ratchet:nais/docker-build-push@v0
         id: docker-build-push
         with:
           team: teamfamilie
