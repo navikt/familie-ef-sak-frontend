@@ -32,7 +32,6 @@
         "@navikt/ds-tokens": "7.39.0",
         "@navikt/familie-backend": "10.1.19",
         "@navikt/familie-form-elements": "^21.0.8",
-        "@navikt/familie-header": "^16.1.4",
         "@navikt/familie-logging": "^7.0.5",
         "@navikt/familie-visittkort": "^15.1.8",
         "@navikt/fnrvalidator": "^2.1.5",

@@ -1,9 +1,8 @@
 import { Adressebeskyttelsegradering } from '@navikt/familie-typer/dist/person';
 import { AxiosRequestCallback } from '../../App/typer/axiosRequest';
 import { AppEnv } from '../../App/api/env';
-import { PopoverItem } from '@navikt/familie-header/dist/header/Header';
-import { LenkeType } from '@navikt/familie-header';
 import { lagAInntektLink } from '../Lenker/Lenker';
+import { LenkeType, PopoverItem } from './Header/src';
 
 export const adressebeskyttelsestyper: Record<Adressebeskyttelsegradering, string> = {
     STRENGT_FORTROLIG: 'strengt fortrolig',
@@ -80,9 +79,11 @@ export const lagDrekLenke = (appEnv: AppEnv): PopoverItem => {
 
 export const lagUttrekkArbeidssøkerLenke = (): PopoverItem => {
     return {
-        name: 'Uttrekk arbeidssøkere (P43)',
-        href: '/uttrekk/arbeidssoker',
+        name: 'Uttrekk arbeidssøkere',
         type: LenkeType.INTERN,
+        onSelect: () => {
+            window.open(`/uttrekk/arbeidssoker`);
+        },
     };
 };
 
