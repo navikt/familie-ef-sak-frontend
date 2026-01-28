@@ -38,7 +38,7 @@ export const FnrInputWrapper: React.FC<FnrInputWrapperProps> = ({
             autoComplete={'off'}
             aria-label={placeholder}
             placeholder={placeholder}
-            onChange={nyVerdi => {
+            onChange={(nyVerdi) => {
                 if (onEndre) {
                     onEndre(nyVerdi);
                 }
