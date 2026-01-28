@@ -97,6 +97,10 @@ export const UttrekkArbeidssøkerSide: React.FC = () => {
         settVisKontrollerte((prevState) => !prevState);
     }, [settVisKontrollerte]);
 
+    useEffect(() => {
+        document.title = 'Uttrekk arbeidssøkere (P43)';
+    }, []);
+
     return (
         <Container>
             <Heading size={'large'} level={'1'}>

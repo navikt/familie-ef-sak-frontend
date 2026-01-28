@@ -1,11 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
-import { ISøkeresultat } from '@navikt/familie-header';
 import { BodyShort, HStack } from '@navikt/ds-react';
-import { formaterPersonIdent } from '@navikt/familie-header/dist/søk/formatter';
 import { AlertWarning } from '../Visningskomponenter/Alerts';
 import { adressebeskyttelsestyper } from './utils';
 import { AFontSizeSmall, AGray100, AOrange300 } from '@navikt/ds-tokens/dist/tokens';
+import { ISøkeresultat } from './Header/src';
+import { formaterPersonIdent } from './Header/src/søk/formatter';
 
 const ResultatElement = styled.div<{ $fokus: boolean }>`
     list-style-type: none;

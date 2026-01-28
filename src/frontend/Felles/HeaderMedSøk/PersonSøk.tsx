@@ -1,4 +1,3 @@
-import { ISøkeresultat, Søk } from '@navikt/familie-header';
 import React, { useCallback, useState } from 'react';
 import {
     byggHenterRessurs,
@@ -22,6 +21,7 @@ import { EToast } from '../../App/typer/toast';
 import styled from 'styled-components';
 import { ModalWrapper } from '../Modal/ModalWrapper';
 import { BodyShort } from '@navikt/ds-react';
+import { ISøkeresultat, Søk } from './Header/src';
 
 const tilSøkeresultatListe = (resultat: ISøkPerson): ISøkeresultat[] => [
     {
