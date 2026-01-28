@@ -22,7 +22,6 @@ const useSøk = ({ nullstillSøkeresultater, søk, søkeresultatOnClick, søkere
         if (erGyldig) {
             utløserSøk();
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [erGyldig, ident]);
 
     useEffect(() => {
@@ -33,7 +32,6 @@ const useSøk = ({ nullstillSøkeresultater, søk, søkeresultatOnClick, søkere
             window.removeEventListener('keydown', handleGlobalKeydown);
             window.removeEventListener('click', handleGlobalClick);
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const nullstillInput = (lukkPopover = false) => {
