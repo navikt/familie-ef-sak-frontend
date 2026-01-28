@@ -79,7 +79,7 @@ export const lagDrekLenke = (appEnv: AppEnv): PopoverItem => {
 
 export const lagUttrekkArbeidssøkerLenke = (): PopoverItem => {
     return {
-        name: 'Uttrekk arbeidssøkere (P43',
+        name: 'Uttrekk arbeidssøkere (P43)',
         type: LenkeType.INTERN,
         onSelect: () => {
             window.open(`/uttrekk/arbeidssoker`);

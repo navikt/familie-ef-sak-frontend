@@ -98,13 +98,13 @@ export const UttrekkArbeidssøkerSide: React.FC = () => {
     }, [settVisKontrollerte]);
 
     useEffect(() => {
-        document.title = 'Uttrekk arbeidssøkere (P43)';
+        document.title = 'Uttrekk arbeidssøkere';
     }, []);
 
     return (
         <Container>
             <Heading size={'large'} level={'1'}>
-                Uttrekk arbeidssøkere (P43)
+                Uttrekk arbeidssøkere
             </Heading>
             {feilmelding && <div style={{ color: 'red' }}>Feilmelding: {feilmelding}</div>}
             <DataViewer response={{ arbeidssøkere }}>
