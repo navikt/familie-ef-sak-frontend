@@ -29,7 +29,7 @@
         "@navikt/aksel-icons": "^7.39.0",
         "@navikt/ds-css": "7.39.0",
         "@navikt/ds-react": "7.39.0",
-        "@navikt/ds-tokens": "7.39.0",
+        "@navikt/ds-tokens": "8.1.0",
         "@navikt/familie-backend": "10.1.19",
         "@navikt/familie-form-elements": "^21.0.8",
         "@navikt/familie-logging": "^7.0.5",
