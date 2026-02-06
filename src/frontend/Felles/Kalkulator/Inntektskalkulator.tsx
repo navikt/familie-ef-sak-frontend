@@ -1,19 +1,28 @@
 import { Button, HStack, MonthPicker, useMonthpicker, VStack } from '@navikt/ds-react';
-import React, { FC, useRef, useState } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import { BodyShortSmall } from '../Visningskomponenter/Tekster';
 import ForwardedTextField from '../../Komponenter/Behandling/VedtakOgBeregning/Overgangsstønad/InnvilgeVedtak/ForwardedTextField';
 import { EnsligErrorMessage } from '../ErrorMessage/EnsligErrorMessage';
 
 const TASTATURTAST_ENTER = 'Enter';
 
-const Inntektskalkulator: FC<{
-    leggTilBeregnetInntektTekstIBegrunnelse: (årsinntekt: number, fraOgMed?: Date) => void;
-    nullstillBegrunnelse?: () => void;
-}> = ({ leggTilBeregnetInntektTekstIBegrunnelse, nullstillBegrunnelse }) => {
+const Inntektskalkulator = forwardRef<
+    { focus: () => void },
+    {
+        leggTilBeregnetInntektTekstIBegrunnelse: (årsinntekt: number, fraOgMed?: Date) => void;
+        nullstillBegrunnelse?: () => void;
+    }
+>(({ leggTilBeregnetInntektTekstIBegrunnelse, nullstillBegrunnelse }, ref) => {
     const [årsinntekt, settÅrsinntekt] = useState<string>('');
     const textFieldRef = useRef<HTMLInputElement>(null);
     const [feilmedling, settFeilmedling] = useState<string>('');
     const [fraOgMed, settFraOgMed] = useState<Date | undefined>(undefined);
+
+    useImperativeHandle(ref, () => ({
+        focus: () => {
+            textFieldRef.current?.focus();
+        },
+    }));
 
     const { monthpickerProps, inputProps, reset } = useMonthpicker({
         onMonthChange: (month) => {
@@ -112,6 +121,8 @@ const Inntektskalkulator: FC<{
             </HStack>
         </VStack>
     );
-};
+});
+
+Inntektskalkulator.displayName = 'Inntektskalkulator';
 
 export default Inntektskalkulator;
