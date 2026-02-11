@@ -38,7 +38,7 @@
         "@sentry/browser": "^10.37.0",
         "@sentry/core": "^10.26.0",
         "autoprefixer": "^10.4.22",
-        "axios": "^1.13.4",
+        "axios": "^1.13.5",
         "babel-loader": "^10.0.0",
         "body-parser": "^2.2.2",
         "constate": "^3.3.3",
