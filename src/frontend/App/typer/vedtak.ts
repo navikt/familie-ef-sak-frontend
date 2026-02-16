@@ -199,6 +199,7 @@ export interface IInntektsperiode {
     månedsinntekt?: number | string;
     forventetInntekt?: number | string;
     samordningsfradrag?: number | string;
+    totalinntekt?: number;
     endretKey?: string; // intern for re-rendring
     harSaksbehandlerManueltTastetHundreBeløp?: boolean;
 }

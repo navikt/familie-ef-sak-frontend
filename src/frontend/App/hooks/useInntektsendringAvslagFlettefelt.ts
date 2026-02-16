@@ -44,19 +44,19 @@ export const useInntektsendringAvslagFlettefelt = (
                             IVedtakType.InnvilgelseOvergangsstønad
                     ) {
                         const vedtaksData = res.data as IInnvilgeVedtakForOvergangsstønad;
-                        const nåværendeInntekt =
-                            vedtaksData.inntekter[vedtaksData.inntekter.length - 1]
-                                .forventetInntekt;
+                        const nåværendetotalinntekt =
+                            vedtaksData.inntekter[vedtaksData.inntekter.length - 1].totalinntekt;
 
-                        if (nåværendeInntekt && typeof nåværendeInntekt === 'number') {
+                        if (nåværendetotalinntekt && typeof nåværendetotalinntekt === 'number') {
+                            const formatertInntekt =
+                                formaterTallMedTusenSkille(nåværendetotalinntekt);
                             const tiProsentØkning =
-                                beregnTiProsentØkningIMånedsinntekt(nåværendeInntekt);
+                                beregnTiProsentØkningIMånedsinntekt(nåværendetotalinntekt);
                             const tiProsentReduksjon =
-                                beregnTiProsentReduksjonIMånedsinntekt(nåværendeInntekt);
+                                beregnTiProsentReduksjonIMånedsinntekt(nåværendetotalinntekt);
 
                             leggTilNyeFlettefelt({
-                                [EBehandlingFlettefelt.navarendeArsinntekt]:
-                                    formaterTallMedTusenSkille(nåværendeInntekt),
+                                [EBehandlingFlettefelt.navarendeArsinntekt]: formatertInntekt,
                                 [EBehandlingFlettefelt.manedsinntektTiProsentOkning]:
                                     tiProsentØkning,
                                 [EBehandlingFlettefelt.manedsinntektTiProsentReduksjon]:
