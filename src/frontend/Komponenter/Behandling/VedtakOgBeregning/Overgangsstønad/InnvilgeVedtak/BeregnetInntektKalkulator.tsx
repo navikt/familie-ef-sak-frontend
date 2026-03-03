@@ -8,7 +8,7 @@ const TASTATURTAST_K = 'k';
 const BeregnetInntektKalkulator: FC<{
     leggTilBeregnetInntektTekstIBegrunnelse: (årsinntekt: number, fraOgMed?: Date) => void;
 }> = ({ leggTilBeregnetInntektTekstIBegrunnelse }) => {
-    const textFieldRef = useRef<HTMLInputElement>(null);
+    const kalkulatorRef = useRef<{ focus: () => void }>(null);
     const [erDropdownÅpen, settErDropdownÅpen] = useState<boolean>(false);
 
     const handleOnOpenChange = (erÅpen: boolean) => {
@@ -16,8 +16,10 @@ const BeregnetInntektKalkulator: FC<{
     };
 
     useEffect(() => {
-        if (textFieldRef.current) {
-            textFieldRef.current.focus();
+        if (erDropdownÅpen && kalkulatorRef.current) {
+            setTimeout(() => {
+                kalkulatorRef.current?.focus();
+            }, 0);
         }
     }, [erDropdownÅpen]);
 
@@ -57,6 +59,7 @@ const BeregnetInntektKalkulator: FC<{
                 }}
             >
                 <Inntektskalkulator
+                    ref={kalkulatorRef}
                     leggTilBeregnetInntektTekstIBegrunnelse={
                         leggTilBeregnetInntektTekstIBegrunnelse
                     }

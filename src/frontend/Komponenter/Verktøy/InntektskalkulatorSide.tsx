@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { genererBeregnetInntektTekst } from '../../App/hooks/useVerdierForBrev';
 import { CopyButton, HStack, Textarea } from '@navikt/ds-react';
 import useFieldState, { FieldState } from '../../App/hooks/felles/useFieldState';
@@ -12,6 +12,7 @@ const TextAreaLiten = styled(Textarea)`
 `;
 
 export const InntektskalkulatorSide: React.FC = () => {
+    const kalkulatorRef = useRef<{ focus: () => void }>(null);
     const inntektBegrunnelseState: FieldState = useFieldState('');
     const leggTilBeregnetInntektTekstIBegrunnelse = (årsinntekt: number, fraOgMed?: Date) => {
         const beregnetInntektTekst = genererBeregnetInntektTekst(årsinntekt, fraOgMed);
@@ -24,11 +25,13 @@ export const InntektskalkulatorSide: React.FC = () => {
 
     useEffect(() => {
         document.title = 'Inntektskalkulator';
+        kalkulatorRef.current?.focus();
     }, []);
 
     return (
         <>
             <Inntektskalkulator
+                ref={kalkulatorRef}
                 leggTilBeregnetInntektTekstIBegrunnelse={leggTilBeregnetInntektTekstIBegrunnelse}
                 nullstillBegrunnelse={nullstillBegrunnelse}
             />
