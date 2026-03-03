@@ -25,8 +25,8 @@ const rollerDev: Roller = {
     veileder: '19dcbfde-4cdb-4c64-a1ea-ac9802b03339',
     beslutter: '01166863-22f1-4e16-9785-d7a05a22df74',
     saksbehandler: 'ee5e0b5e-454c-4612-b931-1fe363df7c2c',
-    kode6: '5ef775f2-61f8-4283-bf3d-8d03f428aa14', // 0000-GA-Strengt_Fortrolig_Adresse
-    kode7: 'ea930b6b-9397-44d9-b9e6-f4cf527a632a', // 0000-GA-Fortrolig_Adresse
+    kode6: 'a1b518e2-3947-478d-8929-e5d685c47cac', // 0000-GA-Strengt_Fortrolig_Adresse
+    kode7: '2e1dc582-f762-4510-a660-88bf68fb7128', // 0000-GA-Fortrolig_Adresse
     egenAnsatt: 'dbe4ad45-320b-4e9a-aaa1-73cca4ee124d', // 0000-GA-Egne_ansatte
 };
 
