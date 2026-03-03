@@ -34,8 +34,8 @@ const rollerProd: Roller = {
     veileder: '31778fd8-3b71-4867-8db6-a81235fbe001',
     saksbehandler: '6406aba2-b930-41d3-a85b-dd13731bc974',
     beslutter: '5fcc0e1d-a4c2-49f0-93dc-27c9fea41e54',
-    kode6: 'ad7b87a6-9180-467c-affc-20a566b0fec0', // 0000-GA-Strengt_Fortrolig_Adresse
-    kode7: '9ec6487d-f37a-4aad-a027-cd221c1ac32b', // 0000-GA-Fortrolig_Adresse
+    kode6: '2931da41-8b8e-42cd-99c0-04a169ddae40', // 0000-GA-Strengt_Fortrolig_Adresse
+    kode7: 'e98efc34-12d1-401f-b059-f17e62834065', // 0000-GA-Fortrolig_Adresse
     egenAnsatt: 'e750ceb5-b70b-4d94-b4fa-9d22467b786b', // 0000-GA-Egne_ansatte
 };
 
