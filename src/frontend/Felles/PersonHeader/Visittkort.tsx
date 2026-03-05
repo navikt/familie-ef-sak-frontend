@@ -1,10 +1,9 @@
-import VisittKort from '@navikt/familie-visittkort';
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from '@navikt/ds-react';
 import { BodyShortSmall } from '../Visningskomponenter/Tekster';
 import { AFontWeightBold } from '@navikt/ds-tokens/dist/tokens';
-import { Kjønn } from '../../App/typer/personopplysninger';
+import VisittKortKomponent from './VisittkortKomponent';
 
 const ResponsivLenke = styled(Link)`
     text-overflow: ellipsis;
@@ -25,7 +24,6 @@ const Visningsnavn = styled(BodyShortSmall)`
 
 interface Props {
     fagsakPersonId: string;
-    kjønn: Kjønn;
     ident: string;
     visningsnavn: string;
     borderBottom?: boolean;
@@ -33,17 +31,15 @@ interface Props {
 
 const Visittkort: React.FC<Props> = ({
     fagsakPersonId,
-    kjønn,
     ident,
     visningsnavn,
     borderBottom = true,
 }) => {
     return (
         <VisittKortContainer>
-            <VisittKort
+            <VisittKortKomponent
                 alder={20}
                 ident={ident}
-                kjønn={kjønn}
                 navn={
                     <ResponsivLenke
                         role={'link'}

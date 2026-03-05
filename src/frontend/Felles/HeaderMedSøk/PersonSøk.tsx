@@ -21,7 +21,8 @@ import { EToast } from '../../App/typer/toast';
 import styled from 'styled-components';
 import { ModalWrapper } from '../Modal/ModalWrapper';
 import { BodyShort } from '@navikt/ds-react';
-import { ISøkeresultat, Søk } from './Header/src';
+import { Søk } from './Header/søk/Søk';
+import { ISøkeresultat } from './Header/søkeresultat';
 
 const tilSøkeresultatListe = (resultat: ISøkPerson): ISøkeresultat[] => [
     {

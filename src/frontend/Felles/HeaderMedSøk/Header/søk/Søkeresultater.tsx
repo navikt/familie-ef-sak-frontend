@@ -1,10 +1,10 @@
 import React, { ReactNode } from 'react';
 import styled from 'styled-components';
-import { Ressurs, RessursStatus } from '@navikt/familie-typer';
-import { inputId } from '.';
-import { ISøkeresultat } from '../types';
 import Søkeresultat from './Søkeresultat';
 import { Alert, BodyShort } from '@navikt/ds-react';
+import { Ressurs, RessursStatus } from '../../../../App/typer/ressurs';
+import { ISøkeresultat } from '../søkeresultat';
+import { inputId } from './Søk';
 
 interface Props {
     formaterResultat?: (

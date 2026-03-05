@@ -1,8 +1,8 @@
-import { Adressebeskyttelsegradering } from '@navikt/familie-typer/dist/person';
 import { AxiosRequestCallback } from '../../App/typer/axiosRequest';
 import { AppEnv } from '../../App/api/env';
 import { lagAInntektLink } from '../Lenker/Lenker';
-import { LenkeType, PopoverItem } from './Header/src';
+import { LenkeType, PopoverItem } from './Header/header/Header';
+import { Adressebeskyttelsegradering } from './Header/søkeresultat';
 
 export const adressebeskyttelsestyper: Record<Adressebeskyttelsegradering, string> = {
     STRENGT_FORTROLIG: 'strengt fortrolig',

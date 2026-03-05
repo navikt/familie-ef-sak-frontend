@@ -6,7 +6,7 @@ import { hentInnloggetBruker } from './App/api/saksbehandler';
 import { ISaksbehandler } from './App/typer/saksbehandler';
 import ErrorBoundary from './Felles/ErrorBoundary/ErrorBoundary';
 import { TogglesProvider } from './App/context/TogglesContext';
-import { HeaderMedSøk } from './Felles/HeaderMedSøk/HeaderMedSøk';
+import { HeaderMedSøk } from './Felles/HeaderMedSøk/Header/HeaderMedSøk';
 import { BehandlingSide } from './Komponenter/Behandling/BehandlingSide';
 import { OppgavebenkSide } from './Komponenter/Oppgavebenk/OppgavebenkSide';
 import { AppEnv, hentEnv } from './App/api/env';

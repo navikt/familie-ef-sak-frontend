@@ -38,7 +38,6 @@ export const PersonHeader: FC<Props> = (props) => {
 
     const {
         personIdent,
-        kjønn,
         navn,
         folkeregisterpersonstatus,
         adressebeskyttelse,
@@ -67,7 +66,6 @@ export const PersonHeader: FC<Props> = (props) => {
                 <FlexContainer>
                     <Visittkort
                         fagsakPersonId={fagsakPersonId}
-                        kjønn={kjønn}
                         ident={personIdent}
                         visningsnavn={visningsnavn}
                         borderBottom={false}

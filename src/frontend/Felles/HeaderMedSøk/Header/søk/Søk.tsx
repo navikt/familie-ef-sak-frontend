@@ -1,12 +1,12 @@
 import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 import '@navikt/ds-css';
-import { Ressurs, RessursStatus } from '@navikt/familie-typer/dist';
 import Søkeresultater from './Søkeresultater';
-import { ISøkeresultat } from '../types';
 import useSøk from './useSøk';
 import { FnrInputWrapper } from './FnrInputWrapper';
 import { Popover } from '@navikt/ds-react';
+import { Ressurs, RessursStatus } from '../../../../App/typer/ressurs';
+import { ISøkeresultat } from '../søkeresultat';
 
 export interface SøkProps {
     formaterResultat?: (

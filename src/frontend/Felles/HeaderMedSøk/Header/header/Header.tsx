@@ -1,8 +1,7 @@
 import React from 'react';
 import '@navikt/ds-css';
 import { ActionMenu, InternalHeader as NavHeader } from '@navikt/ds-react';
-import { MenuGridIcon, WrenchIcon } from '@navikt/aksel-icons';
-import { EksternLinkIkon } from '@navikt/familie-ikoner';
+import { ExternalLinkIcon, MenuGridIcon, WrenchIcon } from '@navikt/aksel-icons';
 import clsx from 'clsx';
 import './header.css';
 
@@ -157,7 +156,7 @@ const utledIkon = (lenkeType?: LenkeType) => {
         case LenkeType.INTERN:
             return <></>;
         case LenkeType.EKSTERN:
-            return <EksternLinkIkon width={16} height={16} />;
+            return <ExternalLinkIcon title="a11y-title" fontSize="1.5rem" />;
         case LenkeType.ARBEIDSVERKTØY:
             return <WrenchIcon width={16} height={16} />;
         default:
