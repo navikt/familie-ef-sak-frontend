@@ -4,8 +4,8 @@ import { BodyShort, HStack } from '@navikt/ds-react';
 import { AlertWarning } from '../Visningskomponenter/Alerts';
 import { adressebeskyttelsestyper } from './utils';
 import { AFontSizeSmall, AGray100, AOrange300 } from '@navikt/ds-tokens/dist/tokens';
-import { ISøkeresultat } from './Header/src';
-import { formaterPersonIdent } from './Header/src/søk/formatter';
+import { formaterPersonIdent } from './Header/søk/formatter';
+import { ISøkeresultat } from './Header/søkeresultat';
 
 const ResultatElement = styled.div<{ $fokus: boolean }>`
     list-style-type: none;

@@ -1,8 +1,7 @@
-import { Ressurs, RessursStatus } from '@navikt/familie-typer/dist';
+import { Ressurs, RessursStatus } from '../../../../App/typer/ressurs';
 import { useState, useRef, useEffect } from 'react';
-import { inputId } from '.';
-import { ISøkeresultat } from '..';
-import { søkKnappId, tømKnappId } from './Søk';
+import { inputId, søkKnappId, tømKnappId } from './Søk';
+import { ISøkeresultat } from '../søkeresultat';
 
 export interface Props {
     nullstillSøkeresultater: () => void;

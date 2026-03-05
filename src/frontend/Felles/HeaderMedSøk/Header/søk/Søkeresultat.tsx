@@ -1,13 +1,10 @@
 import React, { ReactNode } from 'react';
-
 import styled from 'styled-components';
-import { adressebeskyttelsestyper } from '@navikt/familie-typer';
-
-import { inputId } from '.';
-import { ISøkeresultat } from '..';
 import { formaterPersonIdent } from './formatter';
 import { StyledAlertStripe } from './Søkeresultater';
 import { BodyShort } from '@navikt/ds-react';
+import { ISøkeresultat, adressebeskyttelsestyper } from '../søkeresultat';
+import { inputId } from './Søk';
 
 interface Props {
     formaterResultat?: (

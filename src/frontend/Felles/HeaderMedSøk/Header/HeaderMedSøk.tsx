@@ -1,15 +1,15 @@
 import React, { useMemo } from 'react';
-import PersonSøk from './PersonSøk';
-import { ISaksbehandler } from '../../App/typer/saksbehandler';
-import { useApp } from '../../App/context/AppContext';
-import { AppEnv } from '../../App/api/env';
-import { AxiosRequestCallback } from '../../App/typer/axiosRequest';
-import { harTilgangTilRolle } from '../../App/utils/roller';
-import { useToggles } from '../../App/context/TogglesContext';
-import { ToggleName } from '../../App/context/toggles';
-import { Sticky } from '../Visningskomponenter/Sticky';
-import { lagArbeidsverktøyLenker, lagEksterneLenker, lagInterneLenker } from './utils';
-import { Header, PopoverItem } from './Header/src';
+import PersonSøk from '../PersonSøk';
+import { ISaksbehandler } from '../../../App/typer/saksbehandler';
+import { useApp } from '../../../App/context/AppContext';
+import { AppEnv } from '../../../App/api/env';
+import { AxiosRequestCallback } from '../../../App/typer/axiosRequest';
+import { harTilgangTilRolle } from '../../../App/utils/roller';
+import { useToggles } from '../../../App/context/TogglesContext';
+import { ToggleName } from '../../../App/context/toggles';
+import { Sticky } from '../../Visningskomponenter/Sticky';
+import { lagArbeidsverktøyLenker, lagEksterneLenker, lagInterneLenker } from '../utils';
+import { Header, PopoverItem } from './header/Header';
 
 export interface Props {
     innloggetSaksbehandler: ISaksbehandler;
