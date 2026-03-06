@@ -7,9 +7,10 @@ import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { Behandling, BehandlingResultat } from '../../../App/typer/fagsak';
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
 import { Journalføringsaksjon } from '../../../App/hooks/useJournalføringState';
-import { ISelectOption, MultiValue, PropsValue, SingleValue } from '@navikt/familie-form-elements';
+import { MultiValue, PropsValue, SingleValue } from 'react-select';
 import { Klagebehandlinger } from '../../../App/typer/klage';
 import { dokumentTitler } from '../../utils';
+import { ISelectOption } from '../../../App/typer/arkivtema';
 
 export const JOURNALPOST_QUERY_STRING = 'journalpostId';
 export const GJELDER_KLAGE_QUERY_STRING = 'gjelderKlage';

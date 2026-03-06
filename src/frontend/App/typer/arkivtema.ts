@@ -1,4 +1,12 @@
-import { ISelectOption } from '@navikt/familie-form-elements';
+export type OptionType = {
+    value: string;
+    label: string;
+};
+
+export interface ISelectOption extends OptionType {
+    value: string;
+    label: string;
+}
 
 export enum Arkivtema {
     AAP = 'AAP',
