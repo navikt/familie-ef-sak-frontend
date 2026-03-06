@@ -6,7 +6,7 @@ import bodyParser from 'body-parser';
 import { brevProxyUrl, sakProxyUrl } from './config.js';
 import { addRequestInfo, attachToken, doProxy } from './proxy.js';
 import setupRouter from './router.js';
-import { logError, logInfo } from '@navikt/familie-logging';
+import { logError, logInfo } from './logger';
 
 const port = 8000;
 
@@ -42,6 +42,6 @@ export const setupServerFelles = ({ app, azureAuthClient, router }: IApp) => {
     app.listen(port, '0.0.0.0', () => {
         logInfo(`server startet på port ${port}. Build version: ${process.env.APP_VERSION}.`);
     }).on('error', (err: Error) => {
-        logError(`server startup failed - ${err}`);
+        logError('server startup failed', err);
     });
 };

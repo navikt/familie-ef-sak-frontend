@@ -4,7 +4,7 @@ import { ClientRequest, IncomingMessage } from 'http';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import { v4 as uuidv4 } from 'uuid';
 import { oboConfig } from './config';
-import { logError, logInfo } from '@navikt/familie-logging';
+import { logError, logInfo } from './logger';
 import winston from 'winston';
 
 const restream = (proxyReq: ClientRequest, req: IncomingMessage) => {
@@ -65,7 +65,7 @@ export const attachToken = (authClient: Client): RequestHandler => {
                             'Uventet feil. Det er mulig at du ikke har tilgang til applikasjonen.',
                     });
                 } else {
-                    logError(`Uventet feil - getOnBehalfOfAccessToken  ${e}`);
+                    logError('Uventet feil - getOnBehalfOfAccessToken', e);
                     _res.status(500).json({
                         status: 'FEILET',
                         frontendFeilmelding: 'Uventet feil. Vennligst prøv på nytt.',

@@ -11,7 +11,7 @@ import {
     urlModia,
 } from './config';
 import { prometheusTellere } from './metrikker';
-import { LOG_LEVEL } from '@navikt/familie-logging';
+import { LOG_LEVEL } from './logger';
 
 export const redirectHvisInternUrlIPreprod = () => {
     return async (req: Request, res: Response, next: NextFunction) => {
