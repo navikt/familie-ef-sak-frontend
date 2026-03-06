@@ -36,9 +36,9 @@ export function utledKanOppretteRevurdering(fagsak: Fagsak) {
 export const oppdaterVedleggFilter = (
     object: VedleggRequest,
     key: keyof VedleggRequest,
-    val?: string | number
+    val?: string | number | unknown[]
 ): VedleggRequest => {
-    if (!val || val === '') {
+    if (val === undefined || val === '' || (Array.isArray(val) && val.length === 0)) {
         // eslint-disable-next-line
         const { [key]: dummy, ...remainder } = object;
         return remainder as VedleggRequest;

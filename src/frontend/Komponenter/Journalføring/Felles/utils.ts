@@ -7,9 +7,10 @@ import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { Behandling, BehandlingResultat } from '../../../App/typer/fagsak';
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
 import { Journalføringsaksjon } from '../../../App/hooks/useJournalføringState';
-import { ISelectOption, MultiValue, PropsValue, SingleValue } from '@navikt/familie-form-elements';
+import { MultiValue, PropsValue, SingleValue } from 'react-select';
 import { Klagebehandlinger } from '../../../App/typer/klage';
 import { dokumentTitler } from '../../utils';
+import { SelectOption } from '../../../App/typer/arkivtema';
 
 export const JOURNALPOST_QUERY_STRING = 'journalpostId';
 export const GJELDER_KLAGE_QUERY_STRING = 'gjelderKlage';
@@ -44,7 +45,7 @@ export const utledRiktigBehandlingstype = (
         : Behandlingstype.FØRSTEGANGSBEHANDLING;
 };
 
-export const dokumentTitlerMultiSelect: ISelectOption[] = dokumentTitler.map((tittel) => {
+export const dokumentTitlerMultiSelect: SelectOption[] = dokumentTitler.map((tittel) => {
     return { value: tittel, label: tittel };
 });
 

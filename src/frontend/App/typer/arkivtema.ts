@@ -1,4 +1,12 @@
-import { ISelectOption } from '@navikt/familie-form-elements';
+export type OptionType = {
+    value: string;
+    label: string;
+};
+
+export interface SelectOption extends OptionType {
+    value: string;
+    label: string;
+}
 
 export enum Arkivtema {
     AAP = 'AAP',
@@ -130,7 +138,7 @@ export const arkivtemaerTilTekst: Record<Arkivtema, string> = {
     YRK: 'Yrkesskade',
 };
 
-export const arkivtemaerAsISelectOptions = Object.entries(arkivtemaerTilTekst).map<ISelectOption>(
+export const arkivtemaerAsISelectOptions = Object.entries(arkivtemaerTilTekst).map<SelectOption>(
     ([verdi, label]) => {
         return {
             value: verdi,

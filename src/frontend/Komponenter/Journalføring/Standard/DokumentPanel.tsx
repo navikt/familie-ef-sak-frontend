@@ -1,15 +1,9 @@
-import React from 'react';
-import { Button, ExpansionCard } from '@navikt/ds-react';
+import React, { useState } from 'react';
+import { Button, ExpansionCard, UNSAFE_Combobox } from '@navikt/ds-react';
 import styled from 'styled-components';
 import { DokumentInfo, IJournalpost } from '../../../App/typer/journalføring';
 import { DokumentPanelHeader } from './DokumentPanelHeader';
-import { FamilieReactSelect, ISelectOption } from '@navikt/familie-form-elements';
-import {
-    dokumentTitlerMultiSelect,
-    mapLogiskeVedleggTilMultiselectValue,
-    mapDokumentTittelTilMultiselectValue,
-    mapMultiselectValueTilLogiskeVedlegg,
-} from '../Felles/utils';
+import { dokumentTitlerMultiSelect } from '../Felles/utils';
 import { ExternalLinkIcon } from '@navikt/aksel-icons';
 import { åpneFilIEgenTab } from '../../../App/utils/utils';
 import { JournalføringStateRequest } from '../../../App/hooks/useJournalføringState';
@@ -30,10 +24,6 @@ const EksternLenkeKnapp = styled(Button)`
     width: fit-content;
 `;
 
-const MultiSelect = styled(FamilieReactSelect)`
-    margin-bottom: -1rem;
-`;
-
 interface Props {
     journalpost: IJournalpost;
     journalpostState: JournalføringStateRequest;
@@ -51,6 +41,8 @@ const DokumentPanel: React.FC<Props> = ({ journalpost, journalpostState, dokumen
         settValgtDokumentPanel,
         valgtDokumentPanel,
     } = journalpostState;
+    const [tittelSøk, settTittelSøk] = useState('');
+    const [innholdSøk, settInnholdSøk] = useState('');
 
     const { hentDokument } = hentDokumentResponse;
 
@@ -73,19 +65,14 @@ const DokumentPanel: React.FC<Props> = ({ journalpost, journalpostState, dokumen
     const dokumentPanelErValgt = valgtDokumentPanel === dokument.dokumentInfoId;
     const dokumentTittel =
         (dokumentTitler && dokumentTitler[dokument.dokumentInfoId]) || dokument.tittel || 'Ukjent';
-    const defaultTittelValue = dokumentTittel
-        ? mapDokumentTittelTilMultiselectValue(dokumentTittel)
-        : undefined;
 
     const logiskeVedlegg = logiskeVedleggPåDokument
         ? logiskeVedleggPåDokument[dokument.dokumentInfoId]
         : undefined;
-    const defaultLogiskeVedleggValue = logiskeVedlegg
-        ? mapLogiskeVedleggTilMultiselectValue(logiskeVedlegg)
-        : undefined;
 
     const logiskeVedleggString: string[] =
         logiskeVedlegg !== undefined ? logiskeVedlegg.map((vedlegg) => vedlegg.tittel) : [];
+    const dokumentTittelOptions = dokumentTitlerMultiSelect.map((option) => option.value);
 
     return (
         <ExpansionCard
@@ -108,40 +95,37 @@ const DokumentPanel: React.FC<Props> = ({ journalpost, journalpostState, dokumen
             </ExpansionCardHeader>
             <ExpansionCard.Content>
                 <ExpansionCardContent>
-                    <MultiSelect
-                        placeholder={'Velg tittel'}
+                    <UNSAFE_Combobox
                         label={'Dokumenttittel'}
-                        options={dokumentTitlerMultiSelect}
-                        creatable={true}
-                        menuPortalTarget={document.querySelector('body')}
-                        isMulti={false}
-                        isDisabled={false}
-                        defaultValue={defaultTittelValue}
-                        feil={null}
-                        onChange={(value) => {
-                            endreDokumentNavn(
-                                dokument.dokumentInfoId,
-                                value ? (value as ISelectOption).value : ''
-                            );
+                        options={dokumentTittelOptions}
+                        allowNewValues
+                        selectedOptions={dokumentTittel ? [dokumentTittel] : []}
+                        onToggleSelected={(option, isSelected) => {
+                            endreDokumentNavn(dokument.dokumentInfoId, isSelected ? option : '');
+                            settTittelSøk('');
                         }}
+                        value={tittelSøk}
+                        onChange={settTittelSøk}
                     />
-                    <MultiSelect
-                        placeholder={'Velg innhold'}
+
+                    <UNSAFE_Combobox
                         label={'Annet innhold'}
-                        creatable={true}
-                        options={dokumentTitlerMultiSelect}
-                        menuPortalTarget={document.querySelector('body')}
-                        isMulti={true}
-                        isDisabled={false}
-                        defaultValue={defaultLogiskeVedleggValue}
-                        feil={null}
-                        onChange={(values) => {
-                            endreLogiskeVedlegg(
-                                dokument.dokumentInfoId,
-                                mapMultiselectValueTilLogiskeVedlegg(values)
-                            );
+                        options={dokumentTittelOptions}
+                        allowNewValues
+                        isMultiSelect
+                        selectedOptions={logiskeVedleggString}
+                        onToggleSelected={(option, isSelected) => {
+                            const oppdaterteVedlegg = isSelected
+                                ? Array.from(new Set([...logiskeVedleggString, option]))
+                                : logiskeVedleggString.filter((vedlegg) => vedlegg !== option);
+
+                            endreLogiskeVedlegg(dokument.dokumentInfoId, oppdaterteVedlegg);
+                            settInnholdSøk('');
                         }}
+                        value={innholdSøk}
+                        onChange={settInnholdSøk}
                     />
+
                     <EksternLenkeKnapp
                         type={'button'}
                         variant={'tertiary'}
