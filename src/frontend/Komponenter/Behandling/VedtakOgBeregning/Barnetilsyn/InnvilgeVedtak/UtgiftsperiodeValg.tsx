@@ -13,12 +13,11 @@ import { FormErrors } from '../../../../../App/hooks/felles/useFormState';
 import { InnvilgeVedtakForm } from './InnvilgeBarnetilsyn';
 import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import { useApp } from '../../../../../App/context/AppContext';
-import { FamilieReactSelect, ISelectOption } from '@navikt/familie-form-elements';
 import { harTallverdi, tilHeltall, tilTallverdi } from '../../../../../App/utils/utils';
 import InputMedTusenSkille from '../../../../../Felles/Visningskomponenter/InputMedTusenskille';
 import { IBarnMedSamvær } from '../../../Inngangsvilkår/Aleneomsorg/typer';
 import { datoTilAlder, kalkulerAntallMåneder } from '../../../../../App/utils/dato';
-import { Heading, Label, Tooltip } from '@navikt/ds-react';
+import { Heading, Label, Tooltip, UNSAFE_Combobox } from '@navikt/ds-react';
 import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 import { BodyShortSmall } from '../../../../../Felles/Visningskomponenter/Tekster';
 import { erOpphørEllerSanksjon, tomUtgiftsperiodeRad } from '../Felles/utils';
@@ -59,10 +58,6 @@ const SentrertBodySort = styled(BodyShortSmall)<{ $lesevisning?: boolean }>`
     justify-content: center;
     align-items: center;
     margin-top: ${(props) => (props.$lesevisning ? '' : '0.75rem')};
-`;
-
-const BarnVelger = styled(FamilieReactSelect)`
-    margin-bottom: -1rem;
 `;
 
 const MarginBottomDiv = styled.div`
@@ -206,9 +201,22 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                             utgiftsperiode;
                         const skalViseFjernKnapp = behandlingErRedigerbar && index !== 0;
                         const barnForPeriode = barnFormatertForBarnVelger(barn);
-                        const ikkeValgteBarn = barnForPeriode.filter((barn) =>
-                            utgiftsperiode.barn.includes(barn.value)
+                        const barnIdTilLabel = new Map(
+                            barnForPeriode.map((barnAlternativ) => [
+                                barnAlternativ.value,
+                                barnAlternativ.label,
+                            ])
                         );
+                        const labelTilBarnId = new Map(
+                            barnForPeriode.map((barnAlternativ) => [
+                                barnAlternativ.label,
+                                barnAlternativ.value,
+                            ])
+                        );
+                        const valgteBarnLabeler = (utgiftsperiode.barn ?? []).flatMap((barnId) => {
+                            const label = barnIdTilLabel.get(barnId);
+                            return label ? [label] : [];
+                        });
                         const opphørEllerSanksjon = erOpphørEllerSanksjon(periodetype);
                         const antallBarn = utgiftsperioderState.value[index].barn
                             ? utgiftsperioderState.value[index].barn?.length
@@ -267,31 +275,33 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                     {antallMåneder && `${antallMåneder} mnd`}
                                 </Label>
                                 {behandlingErRedigerbar && !opphørEllerSanksjon ? (
-                                    <BarnVelger
-                                        placeholder={'Velg barn'}
-                                        label={''}
-                                        options={barnForPeriode}
-                                        creatable={false}
-                                        menuPortalTarget={document.querySelector('body')}
-                                        isMulti={true}
-                                        isDisabled={opphørEllerSanksjon}
-                                        defaultValue={ikkeValgteBarn}
-                                        value={opphørEllerSanksjon ? [] : ikkeValgteBarn}
-                                        feil={
-                                            errorState.utgiftsperioder &&
-                                            errorState.utgiftsperioder[index]?.barn[0]
-                                        }
-                                        onChange={(valgtBarn) => {
+                                    <UNSAFE_Combobox
+                                        label=""
+                                        hideLabel
+                                        options={barnForPeriode.map(
+                                            (barnAlternativ) => barnAlternativ.label
+                                        )}
+                                        isMultiSelect
+                                        selectedOptions={valgteBarnLabeler}
+                                        onToggleSelected={(option, isSelected) => {
+                                            const valgtBarnId = labelTilBarnId.get(option);
+                                            if (!valgtBarnId) {
+                                                return;
+                                            }
+
+                                            const nåværendeValg = utgiftsperiode.barn ?? [];
+                                            const oppdaterteBarn = isSelected
+                                                ? Array.from(
+                                                      new Set([...nåværendeValg, valgtBarnId])
+                                                  )
+                                                : nåværendeValg.filter(
+                                                      (barnId) => barnId !== valgtBarnId
+                                                  );
+
                                             oppdaterUtgiftsperiode(
                                                 index,
                                                 EUtgiftsperiodeProperty.barn,
-                                                valgtBarn === null
-                                                    ? []
-                                                    : [
-                                                          ...mapValgtBarn(
-                                                              valgtBarn as ISelectOption[]
-                                                          ),
-                                                      ]
+                                                oppdaterteBarn
                                             );
                                         }}
                                     />
@@ -393,19 +403,18 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
 };
 
 const barnFormatertForBarnVelger = (barn: IBarnMedSamvær[]) =>
-    barn.map<ISelectOption>((barn) => {
+    barn.map((barn) => {
+        const navn = barn.registergrunnlag.navn?.trim() || 'Ukjent';
+        const fornavn = navn.split(' ')[0];
         const alder = barn.registergrunnlag.fødselsdato
             ? datoTilAlder(barn.registergrunnlag.fødselsdato)
             : '';
+        const alderTekst = alder === '' ? '' : ` (${alder} år)`;
 
         return {
             value: barn.barnId,
-            label: `${barn.registergrunnlag.navn} (${alder}år)`,
+            label: `${fornavn}${alderTekst}`,
         };
     });
-
-const mapValgtBarn = (valgtBarn: ISelectOption[]): string[] => {
-    return valgtBarn.map((barn) => barn.value);
-};
 
 export default UtgiftsperiodeValg;

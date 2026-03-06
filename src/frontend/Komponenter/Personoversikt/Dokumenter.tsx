@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
-import styled from 'styled-components';
 import { Dokumentinfo, erFeilregistrertEllerAvbrutt } from '../../App/typer/dokument';
 import { groupBy } from '../../App/utils/utils';
 import {
@@ -8,11 +7,10 @@ import {
     journalposttypeTilTekst,
 } from '../../App/typer/journalføring';
 import { VedleggRequest } from './vedleggRequest';
-import { Arkivtema, arkivtemaerMedENFFørst, arkivtemaerTilTekst } from '../../App/typer/arkivtema';
+import { Arkivtema, arkivtemaerMedENFFørst } from '../../App/typer/arkivtema';
 import CustomSelect from '../Oppgavebenk/CustomSelect';
-import { FamilieReactSelect, MultiValue, SingleValue } from '@navikt/familie-form-elements';
 import { oppdaterVedleggFilter } from './utils';
-import { Checkbox, Label, Table } from '@navikt/ds-react';
+import { Checkbox, HStack, Table, UNSAFE_Combobox, VStack } from '@navikt/ds-react';
 import { HovedTabellrad } from './Dokumentoversikt/Hovedtabellrad';
 import { Tabellrad } from './Dokumentoversikt/Tabellrad';
 import { KolonneTitler } from '../../Felles/Personopplysninger/TabellWrapper';
@@ -24,49 +22,6 @@ import {
     slettForeldedeInnslagFraLocalStorage,
 } from './Dokumentoversikt/utils';
 
-const FiltreringGrid = styled.div`
-    display: grid;
-    grid-template-columns: repeat(3, max-content) auto;
-    row-gap: 0.5rem;
-    column-gap: 3rem;
-    align-items: start;
-
-    .checkboks {
-        justify-self: end;
-    }
-
-    .ny-rad {
-        grid-column: 1;
-    }
-`;
-
-const ArkivtemaVelger = styled(FamilieReactSelect)`
-    width: 25rem;
-
-    .react-select__control {
-        min-height: 3rem;
-    }
-`;
-
-const Container = styled.div`
-    gap: 1rem;
-    display: flex;
-    flex-direction: column;
-
-    .tabell {
-        .columnHeader {
-            font-weight: bold;
-        }
-
-        th,
-        td {
-            padding: 0.35rem;
-        }
-
-        table-layout: fixed;
-    }
-`;
-
 export const Dokumenter: React.FC<{ fagsakPersonId: string }> = ({ fagsakPersonId }) => {
     const [vedleggRequest, settVedleggRequest] = useState<VedleggRequest>({
         fagsakPersonId: fagsakPersonId,
@@ -76,6 +31,7 @@ export const Dokumenter: React.FC<{ fagsakPersonId: string }> = ({ fagsakPersonI
     const [besøkteDokumentLenker, settbesøkteDokumentLenker] = useState<string[]>(
         hentBesøkteLenkerFraLocalStorage(fagsakPersonId)
     );
+    const [temaSøk, settTemaSøk] = useState<string>('');
 
     useEffect(() => {
         slettForeldedeInnslagFraLocalStorage();
@@ -95,10 +51,20 @@ export const Dokumenter: React.FC<{ fagsakPersonId: string }> = ({ fagsakPersonI
     };
 
     const settVedlegg = (key: keyof VedleggRequest) => {
-        return (val?: string | number) =>
+        return (val?: string | number | Arkivtema[]) =>
             settVedleggRequest((prevState: VedleggRequest) =>
                 oppdaterVedleggFilter(prevState, key, val)
             );
+    };
+
+    const håndterOppdaterTema = (option: string, isSelected: boolean) => {
+        const eksisterendeTema = vedleggRequest.tema ?? [];
+        const oppdaterteTema = isSelected
+            ? Array.from(new Set([...eksisterendeTema, option as Arkivtema]))
+            : eksisterendeTema.filter((tema) => tema !== option);
+
+        settVedlegg('tema')(oppdaterteTema);
+        settTemaSøk('');
     };
 
     const reHentDokumenter = () => {
@@ -139,57 +105,37 @@ export const Dokumenter: React.FC<{ fagsakPersonId: string }> = ({ fagsakPersonI
     ];
 
     return (
-        <Container>
-            <FiltreringGrid>
-                <Label>Velg tema(er)</Label>
-                <Label>Velg dokumenttype</Label>
-                <Label>Velg journalpoststatus</Label>
-                <div className={'ny-rad'}>
-                    <ArkivtemaVelger
-                        placeholder={'Alle'}
-                        label={''}
-                        options={arkivtemaerMedENFFørst}
-                        creatable={false}
-                        isMulti={true}
-                        classNamePrefix={'react-select'}
-                        value={
-                            vedleggRequest.tema?.map((tema) => ({
-                                value: tema,
-                                label: arkivtemaerTilTekst[tema],
-                            })) || []
-                        }
-                        onChange={(valgteTemaer) => {
-                            const erMultiValue = <T,>(
-                                verdi: MultiValue<T> | SingleValue<T> | null
-                            ): verdi is MultiValue<T> => Array.isArray(verdi);
+        <VStack gap="space-32">
+            <HStack justify="space-between" gap="space-8" style={{ width: '100%' }}>
+                <HStack gap="space-32">
+                    <div style={{ width: '25rem' }}>
+                        <UNSAFE_Combobox
+                            label="Velg tema(er)"
+                            options={arkivtemaerMedENFFørst}
+                            isMultiSelect
+                            selectedOptions={vedleggRequest.tema ?? []}
+                            onToggleSelected={håndterOppdaterTema}
+                            value={temaSøk}
+                            onChange={settTemaSøk}
+                        />
+                    </div>
 
-                            const temaer = erMultiValue(valgteTemaer)
-                                ? valgteTemaer.map((tema) => tema.value as Arkivtema)
-                                : [valgteTemaer?.value as Arkivtema];
-
-                            settVedleggRequest((prevState) => ({
-                                ...prevState,
-                                tema: temaer,
-                            }));
-                        }}
+                    <CustomSelect
+                        onChange={settVedlegg('dokumenttype')}
+                        options={journalposttypeTilTekst}
+                        label={'Velg dokumenttype'}
+                        value={vedleggRequest.dokumenttype}
+                        size={'medium'}
                     />
-                </div>
-                <CustomSelect
-                    onChange={settVedlegg('dokumenttype')}
-                    options={journalposttypeTilTekst}
-                    label={'Velg dokumenttyope'}
-                    hideLabel={true}
-                    value={vedleggRequest.dokumenttype}
-                    size={'medium'}
-                />
-                <CustomSelect
-                    onChange={håndterOppdaterJournalpoststatus}
-                    options={gyldigeJournalstatuserTilTekst}
-                    label={'Velg journalpoststatus'}
-                    hideLabel={true}
-                    value={vedleggRequest.journalpostStatus}
-                    size={'medium'}
-                />
+                    <CustomSelect
+                        onChange={håndterOppdaterJournalpoststatus}
+                        options={gyldigeJournalstatuserTilTekst}
+                        label={'Velg journalpoststatus'}
+                        value={vedleggRequest.journalpostStatus}
+                        size={'medium'}
+                    />
+                </HStack>
+
                 <Checkbox
                     className={'checkboks'}
                     onChange={toggleVisFeilregistrerteOgAvbrutt}
@@ -197,7 +143,7 @@ export const Dokumenter: React.FC<{ fagsakPersonId: string }> = ({ fagsakPersonI
                 >
                     Vis feilregistrerte/avbrutte
                 </Checkbox>
-            </FiltreringGrid>
+            </HStack>
 
             <DataViewer response={{ dokumenter }}>
                 {({ dokumenter }) => {
@@ -289,6 +235,6 @@ export const Dokumenter: React.FC<{ fagsakPersonId: string }> = ({ fagsakPersonI
                     );
                 }}
             </DataViewer>
-        </Container>
+        </VStack>
     );
 };
