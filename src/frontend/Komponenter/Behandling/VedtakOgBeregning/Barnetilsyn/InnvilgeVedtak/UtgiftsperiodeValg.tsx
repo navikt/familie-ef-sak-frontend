@@ -276,7 +276,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                 </Label>
                                 {behandlingErRedigerbar && !opphørEllerSanksjon ? (
                                     <UNSAFE_Combobox
-                                        label=""
+                                        label="Velg barn"
                                         hideLabel
                                         size="small"
                                         options={barnForPeriode.map(

@@ -3,7 +3,7 @@ export type OptionType = {
     label: string;
 };
 
-export interface ISelectOption extends OptionType {
+export interface SelectOption extends OptionType {
     value: string;
     label: string;
 }
@@ -138,7 +138,7 @@ export const arkivtemaerTilTekst: Record<Arkivtema, string> = {
     YRK: 'Yrkesskade',
 };
 
-export const arkivtemaerAsISelectOptions = Object.entries(arkivtemaerTilTekst).map<ISelectOption>(
+export const arkivtemaerAsISelectOptions = Object.entries(arkivtemaerTilTekst).map<SelectOption>(
     ([verdi, label]) => {
         return {
             value: verdi,

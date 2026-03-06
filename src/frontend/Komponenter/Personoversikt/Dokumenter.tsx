@@ -106,7 +106,7 @@ export const Dokumenter: React.FC<{ fagsakPersonId: string }> = ({ fagsakPersonI
 
     return (
         <VStack gap="space-32">
-            <HStack justify="space-between" gap="space-8" style={{ width: '100%' }}>
+            <HStack justify="space-between" style={{ width: '100%' }}>
                 <HStack gap="space-32">
                     <div style={{ width: '25rem' }}>
                         <UNSAFE_Combobox
