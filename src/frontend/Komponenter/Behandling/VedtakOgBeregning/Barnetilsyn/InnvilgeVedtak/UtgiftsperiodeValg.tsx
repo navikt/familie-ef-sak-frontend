@@ -278,6 +278,7 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
                                     <UNSAFE_Combobox
                                         label=""
                                         hideLabel
+                                        size="small"
                                         options={barnForPeriode.map(
                                             (barnAlternativ) => barnAlternativ.label
                                         )}
@@ -406,6 +407,7 @@ const barnFormatertForBarnVelger = (barn: IBarnMedSamvær[]) =>
     barn.map((barn) => {
         const navn = barn.registergrunnlag.navn?.trim() || 'Ukjent';
         const fornavn = navn.split(' ')[0];
+        const etternavn = navn.split(' ')[1] || '';
         const alder = barn.registergrunnlag.fødselsdato
             ? datoTilAlder(barn.registergrunnlag.fødselsdato)
             : '';
@@ -413,7 +415,7 @@ const barnFormatertForBarnVelger = (barn: IBarnMedSamvær[]) =>
 
         return {
             value: barn.barnId,
-            label: `${fornavn}${alderTekst}`,
+            label: `${fornavn} ${etternavn}${alderTekst}`,
         };
     });
 
