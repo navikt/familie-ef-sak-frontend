@@ -57,9 +57,6 @@ spec:
       value: '{{version}}'
     - name: ENV
       value: production
-  valkey:
-    - instance: lookup
-      access: read
   observability:
     autoInstrumentation:
       enabled: true

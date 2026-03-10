@@ -2,7 +2,7 @@ import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { ClientRequest, IncomingMessage } from 'http';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import { v4 as uuidv4 } from 'uuid';
-import { getToken, requestAzureOboToken } from '@navikt/oasis';
+import { getToken, requestAzureOboToken, parseAzureUserToken } from '@navikt/oasis';
 import { efSakScope, erLokalUtvikling } from './config';
 import { logError, logInfo } from './logger';
 import winston from 'winston';
@@ -56,6 +56,10 @@ export const attachToken = (): RequestHandler => {
             const sessionToken = getAccessTokenFromSession(req);
             if (sessionToken) {
                 req.headers.Authorization = `Bearer ${sessionToken}`;
+                const parsed = parseAzureUserToken(sessionToken);
+                if (parsed.ok && parsed.groups) {
+                    req.headers['Nav-Groups'] = JSON.stringify(parsed.groups);
+                }
                 return next();
             }
             logInfo('Mangler access token i session');
@@ -76,6 +80,11 @@ export const attachToken = (): RequestHandler => {
             return res
                 .status(401)
                 .json({ status: 'IKKE_TILGANG', frontendFeilmelding: 'Ikke innlogget' });
+        }
+
+        const parsed = parseAzureUserToken(token);
+        if (parsed.ok && parsed.groups) {
+            req.headers['Nav-Groups'] = JSON.stringify(parsed.groups);
         }
 
         const obo = await requestAzureOboToken(token, efSakScope);
