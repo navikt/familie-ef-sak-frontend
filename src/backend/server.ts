@@ -1,12 +1,12 @@
 import './konfigurerApp.js';
 
-import backend, { IApp } from '@navikt/familie-backend';
 import path from 'path';
 
 import { sessionConfig } from './config.js';
 import { prometheusTellere } from './metrikker.js';
 import expressStaticGzip from 'express-static-gzip';
 import { setupServerFelles } from './server-felles';
+import { backend, IApp } from './felles/index.js';
 
 backend(sessionConfig, prometheusTellere).then((appConfig: IApp) => {
     if (process.env.NODE_ENV === 'development') {

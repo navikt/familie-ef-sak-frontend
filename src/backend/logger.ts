@@ -19,6 +19,14 @@ export const logInfo = (message: string, meta: Meta = {}) => {
     stdoutLogger.info(message, meta);
 };
 
+export const logDebug = (message: string, meta: Meta = {}) => {
+    stdoutLogger.debug(message, meta);
+};
+
+export const logWarn = (message: string, meta: Meta = {}) => {
+    stdoutLogger.warn(message, meta);
+};
+
 export const logError = (message: string, err?: unknown, meta: Meta = {}) => {
     const errorMeta: Meta =
         err === undefined ? {} : { error: err instanceof Error ? err.message : String(err) };
