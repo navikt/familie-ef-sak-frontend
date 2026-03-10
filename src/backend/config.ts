@@ -1,6 +1,6 @@
 // Konfigurer appen før backend prøver å sette opp konfigurasjon
 
-import { IApi, ISessionKonfigurasjon } from '@navikt/familie-backend';
+import { IApi, ISessionKonfigurasjon } from './felles/typer';
 
 type Rolle = 'veileder' | 'saksbehandler' | 'beslutter' | 'kode6' | 'kode7' | 'egenAnsatt';
 

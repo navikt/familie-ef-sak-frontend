@@ -75,15 +75,6 @@ Appen benytter [vitest](https://vitest.dev/) til enhetstesting. Legg gjerne til 
 For å kjøre opp tester lokalt kan man kjøre `npm run test`. For å kjøre opp testene i interaktiv modus kan man kjøre
 `vitest`.
 
-# Mens du koder
-
-I Team Familie har vi et internt [felles frontend-bibliotek](https://github.com/navikt/familie-felles-frontend) for
-komponenter som kan brukes på tvers av appene våre. Lager man noe som kan senere gjenbrukes, er det fint om disse
-trekkes ut hit.
-
-Ta gjerne en titt på Team Familie sin [readme](https://github.com/navikt/familie) med best practices når det kommer til
-frontendutvikling, uu og bruken av styled-components!
-
 # Bygg og deploy
 
 Appen bygges på github actions, og deployes til gcp. Merge til main vil deploye app til produksjon og dev.

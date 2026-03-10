@@ -1,6 +1,4 @@
 import './konfigurerApp.js';
-
-import backend, { IApp } from '@navikt/familie-backend';
 import webpack from 'webpack';
 import webpackDevMiddleware from 'webpack-dev-middleware';
 import webpackHotMiddleware from 'webpack-hot-middleware';
@@ -10,6 +8,7 @@ import { prometheusTellere } from './metrikker.js';
 // @ts-expect-error Spesial-import
 import config from '../../webpack/webpack.dev.js';
 import { setupServerFelles } from './server-felles';
+import { backend, IApp } from './felles/index.js';
 
 backend(sessionConfig, prometheusTellere).then((appConfig: IApp) => {
     let middleware;

@@ -1,12 +1,11 @@
 import './konfigurerApp.js';
-
-import { IApp, ensureAuthenticated } from '@navikt/familie-backend';
 import bodyParser from 'body-parser';
-
 import { brevProxyUrl, sakProxyUrl } from './config.js';
 import { addRequestInfo, attachToken, doProxy } from './proxy.js';
 import setupRouter from './router.js';
 import { logError, logInfo } from './logger';
+import { ensureAuthenticated } from './felles/auth/authenticate.js';
+import { IApp } from './felles/index.js';
 
 const port = 8000;
 

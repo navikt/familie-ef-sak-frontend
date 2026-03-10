@@ -1,4 +1,3 @@
-import { Client, getOnBehalfOfAccessToken } from '@navikt/familie-backend';
 import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { ClientRequest, IncomingMessage } from 'http';
 import { createProxyMiddleware } from 'http-proxy-middleware';
@@ -6,6 +5,8 @@ import { v4 as uuidv4 } from 'uuid';
 import { oboConfig } from './config';
 import { logError, logInfo } from './logger';
 import winston from 'winston';
+import { getOnBehalfOfAccessToken } from './felles/auth/tokenUtils';
+import { Client } from 'openid-client';
 
 const restream = (proxyReq: ClientRequest, req: IncomingMessage) => {
     const requestBody = (req as Request).body;
