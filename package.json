@@ -25,7 +25,7 @@
         "@navikt/aksel-icons": "^7.39.0",
         "@navikt/ds-css": "7.39.0",
         "@navikt/ds-react": "7.39.0",
-        "@navikt/ds-tokens": "7.39.0",
+        "@navikt/ds-tokens": "8.6.0",
         "@navikt/fnrvalidator": "^2.1.5",
         "@sentry/browser": "^10.42.0",
         "@sentry/core": "^10.26.0",
