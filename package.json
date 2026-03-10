@@ -21,10 +21,6 @@
     "lint-staged": {
         "src/**/*.{js,jsx,ts,tsx,json}": ["prettier --write", "eslint --fix"]
     },
-    "dependencyComments": {
-        "color-string": "Overrider versjon som brukes av winston, som kommer fra familie-frontend-backend",
-        "body-parser": "Overrider versjon som  kommer fra familie-frontend backend"
-    },
     "dependencies": {
         "@navikt/aksel-icons": "^7.39.0",
         "@navikt/ds-css": "7.39.0",
@@ -115,8 +111,7 @@
         "webpack-cli": "^6.0.1",
         "webpack-dev-middleware": "^7.4.5",
         "webpack-hot-middleware": "^2.26.1",
-        "webpack-merge": "^6.0.1",
-        "winston": "^3.18.3"
+        "webpack-merge": "^6.0.1"
     },
     "resolutions": {
         "@types/react": "^19.x",
