@@ -21,18 +21,18 @@ const rollerDev: Roller = {
     veileder: '19dcbfde-4cdb-4c64-a1ea-ac9802b03339',
     beslutter: '01166863-22f1-4e16-9785-d7a05a22df74',
     saksbehandler: 'ee5e0b5e-454c-4612-b931-1fe363df7c2c',
-    kode6: 'a1b518e2-3947-478d-8929-e5d685c47cac',
-    kode7: '2e1dc582-f762-4510-a660-88bf68fb7128',
-    egenAnsatt: 'dbe4ad45-320b-4e9a-aaa1-73cca4ee124d',
+    kode6: 'a1b518e2-3947-478d-8929-e5d685c47cac', // 0000-GA-Strengt_Fortrolig_Adresse
+    kode7: '2e1dc582-f762-4510-a660-88bf68fb7128', // 0000-GA-Fortrolig_Adresse
+    egenAnsatt: 'dbe4ad45-320b-4e9a-aaa1-73cca4ee124d', // 0000-GA-Egne_ansatte
 };
 
 const rollerProd: Roller = {
     veileder: '31778fd8-3b71-4867-8db6-a81235fbe001',
     saksbehandler: '6406aba2-b930-41d3-a85b-dd13731bc974',
     beslutter: '5fcc0e1d-a4c2-49f0-93dc-27c9fea41e54',
-    kode6: '2931da41-8b8e-42cd-99c0-04a169ddae40',
-    kode7: 'e98efc34-12d1-401f-b059-f17e62834065',
-    egenAnsatt: 'e750ceb5-b70b-4d94-b4fa-9d22467b786b',
+    kode6: '2931da41-8b8e-42cd-99c0-04a169ddae40', // 0000-GA-Strengt_Fortrolig_Adresse
+    kode7: 'e98efc34-12d1-401f-b059-f17e62834065', // 0000-GA-Fortrolig_Adresse
+    egenAnsatt: 'e750ceb5-b70b-4d94-b4fa-9d22467b786b', // 0000-GA-Egne_ansatte
 };
 
 const Environment = (): IEnvironment => {
