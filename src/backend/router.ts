@@ -8,12 +8,12 @@ import {
     urlGosys,
     urlHistoriskPensjon,
     urlModia,
+    erLokalUtvikling,
 } from './config';
 import { prometheusTellere } from './metrikker';
-import { LOG_LEVEL } from './logger';
-import { Client } from 'openid-client';
-import { ensureAuthenticated } from './felles/auth/authenticate';
-import { logRequest } from './felles/utils';
+import { logInfo, logWarn } from './logger';
+import { getToken, validateAzureToken } from '@navikt/oasis';
+import { erLokaltMotPreprod } from './auth';
 
 export const redirectHvisInternUrlIPreprod = () => {
     return async (req: Request, res: Response, next: NextFunction) => {
@@ -28,10 +28,32 @@ export const redirectHvisInternUrlIPreprod = () => {
     };
 };
 
-export default (authClient: Client, router: Router): Router => {
+export const ensureAuthenticated = () => {
+    return async (req: Request, res: Response, next: NextFunction) => {
+        if (erLokaltMotPreprod() || erLokalUtvikling) {
+            return next();
+        }
+
+        const token = getToken(req);
+        if (!token) {
+            return res.redirect('/oauth2/login');
+        }
+
+        const validation = await validateAzureToken(token);
+        if (!validation.ok) {
+            logWarn(`Token validering feilet: ${validation.error.message}`);
+            return res.redirect('/oauth2/login');
+        }
+
+        return next();
+    };
+};
+
+export default (router: Router): Router => {
     router.get('/version', (_req: Request, res: Response) => {
         res.status(200).send({ version: process.env.APP_VERSION }).end();
     });
+
     router.get('/env', (_req: Request, res: Response) => {
         res.status(200)
             .send({
@@ -51,17 +73,21 @@ export default (authClient: Client, router: Router): Router => {
     });
 
     router.post('/logg-feil', (req: Request, res: Response) => {
-        logRequest(req, req.body.melding, req.body.isWarning ? LOG_LEVEL.WARNING : LOG_LEVEL.ERROR);
+        const melding = req.body.melding;
+        if (req.body.isWarning) {
+            logWarn(melding);
+        } else {
+            logInfo(melding);
+        }
         res.status(200).send();
     });
 
     router.get(
         '*global',
         redirectHvisInternUrlIPreprod(),
-        ensureAuthenticated(authClient, false),
+        ensureAuthenticated(),
         (_req: Request, res: Response) => {
             prometheusTellere.appLoad.inc();
-
             res.sendFile('index.html', { root: path.join(process.cwd(), buildPath) });
         }
     );

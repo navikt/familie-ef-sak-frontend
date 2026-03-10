@@ -2,11 +2,11 @@ import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { ClientRequest, IncomingMessage } from 'http';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import { v4 as uuidv4 } from 'uuid';
-import { oboConfig } from './config';
+import { getToken, requestAzureOboToken } from '@navikt/oasis';
+import { efSakScope, erLokalUtvikling } from './config';
 import { logError, logInfo } from './logger';
 import winston from 'winston';
-import { getOnBehalfOfAccessToken } from './felles/auth/tokenUtils';
-import { Client } from 'openid-client';
+import { getAccessTokenFromSession, erLokaltMotPreprod } from './auth';
 
 const restream = (proxyReq: ClientRequest, req: IncomingMessage) => {
     const requestBody = (req as Request).body;
@@ -50,28 +50,44 @@ export const addRequestInfo = (): RequestHandler => {
     };
 };
 
-export const attachToken = (authClient: Client): RequestHandler => {
-    return async (req: Request, _res: Response, next: NextFunction) => {
-        getOnBehalfOfAccessToken(authClient, req, oboConfig)
-            .then((accessToken: string) => {
-                req.headers.Authorization = `Bearer ${accessToken}`;
+export const attachToken = (): RequestHandler => {
+    return async (req: Request, res: Response, next: NextFunction) => {
+        if (erLokaltMotPreprod()) {
+            const sessionToken = getAccessTokenFromSession(req);
+            if (sessionToken) {
+                req.headers.Authorization = `Bearer ${sessionToken}`;
                 return next();
-            })
-            .catch((e) => {
-                if (e.error === 'invalid_grant') {
-                    logInfo(`invalid_grant`);
-                    _res.status(500).json({
-                        status: 'IKKE_TILGANG',
-                        frontendFeilmelding:
-                            'Uventet feil. Det er mulig at du ikke har tilgang til applikasjonen.',
-                    });
-                } else {
-                    logError('Uventet feil - getOnBehalfOfAccessToken', e);
-                    _res.status(500).json({
-                        status: 'FEILET',
-                        frontendFeilmelding: 'Uventet feil. Vennligst prøv på nytt.',
-                    });
-                }
+            }
+            logInfo('Mangler access token i session');
+            return res.status(401).json({
+                status: 'IKKE_TILGANG',
+                frontendFeilmelding: 'Ikke innlogget',
             });
+        }
+
+        if (erLokalUtvikling) {
+            req.headers.Authorization = 'Bearer mock-token';
+            return next();
+        }
+
+        const token = getToken(req);
+        if (!token) {
+            logInfo('Mangler token på request');
+            return res
+                .status(401)
+                .json({ status: 'IKKE_TILGANG', frontendFeilmelding: 'Ikke innlogget' });
+        }
+
+        const obo = await requestAzureOboToken(token, efSakScope);
+        if (!obo.ok) {
+            logError('Feil ved henting av OBO-token', new Error(obo.error.message));
+            return res.status(500).json({
+                status: 'FEILET',
+                frontendFeilmelding: 'Kunne ikke hente tilgangstoken. Vennligst prøv på nytt.',
+            });
+        }
+
+        req.headers.Authorization = `Bearer ${obo.token}`;
+        return next();
     };
 };

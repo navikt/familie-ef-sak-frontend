@@ -1,7 +1,3 @@
-// Konfigurer appen før backend prøver å sette opp konfigurasjon
-
-import { IApi, ISessionKonfigurasjon } from './felles/typer';
-
 type Rolle = 'veileder' | 'saksbehandler' | 'beslutter' | 'kode6' | 'kode7' | 'egenAnsatt';
 
 type Roller = {
@@ -25,18 +21,18 @@ const rollerDev: Roller = {
     veileder: '19dcbfde-4cdb-4c64-a1ea-ac9802b03339',
     beslutter: '01166863-22f1-4e16-9785-d7a05a22df74',
     saksbehandler: 'ee5e0b5e-454c-4612-b931-1fe363df7c2c',
-    kode6: 'a1b518e2-3947-478d-8929-e5d685c47cac', // 0000-GA-Strengt_Fortrolig_Adresse
-    kode7: '2e1dc582-f762-4510-a660-88bf68fb7128', // 0000-GA-Fortrolig_Adresse
-    egenAnsatt: 'dbe4ad45-320b-4e9a-aaa1-73cca4ee124d', // 0000-GA-Egne_ansatte
+    kode6: 'a1b518e2-3947-478d-8929-e5d685c47cac',
+    kode7: '2e1dc582-f762-4510-a660-88bf68fb7128',
+    egenAnsatt: 'dbe4ad45-320b-4e9a-aaa1-73cca4ee124d',
 };
 
 const rollerProd: Roller = {
     veileder: '31778fd8-3b71-4867-8db6-a81235fbe001',
     saksbehandler: '6406aba2-b930-41d3-a85b-dd13731bc974',
     beslutter: '5fcc0e1d-a4c2-49f0-93dc-27c9fea41e54',
-    kode6: '2931da41-8b8e-42cd-99c0-04a169ddae40', // 0000-GA-Strengt_Fortrolig_Adresse
-    kode7: 'e98efc34-12d1-401f-b059-f17e62834065', // 0000-GA-Fortrolig_Adresse
-    egenAnsatt: 'e750ceb5-b70b-4d94-b4fa-9d22467b786b', // 0000-GA-Egne_ansatte
+    kode6: '2931da41-8b8e-42cd-99c0-04a169ddae40',
+    kode7: 'e98efc34-12d1-401f-b059-f17e62834065',
+    egenAnsatt: 'e750ceb5-b70b-4d94-b4fa-9d22467b786b',
 };
 
 const Environment = (): IEnvironment => {
@@ -58,14 +54,13 @@ const Environment = (): IEnvironment => {
             buildPath: 'frontend_production',
             namespace: 'e2e',
             sakProxyUrl: 'http://familie-ef-sak:8093',
-            brevProxyUrl: '', // TODO
+            brevProxyUrl: '',
             aInntekt: 'https://arbeid-og-inntekt.dev.adeo.no',
             gosys: 'https://gosys-q1.dev.intern.nav.no/gosys',
             modia: 'https://app-q1.adeo.no/modiapersonoversikt',
             historiskPensjon: 'https://historisk-pensjon.intern.dev.nav.no',
             drek: 'https://pdl-web.dev.intern.nav.no/rekvirerdnummer',
             roller: rollerDev,
-            //Har ikke satt opp redis
         };
     } else if (process.env.ENV === 'preprod') {
         return {
@@ -108,34 +103,14 @@ const Environment = (): IEnvironment => {
         roller: rollerProd,
     };
 };
+
 const env = Environment();
 
-export const sessionConfig: ISessionKonfigurasjon = {
-    cookieSecret: [`${process.env.COOKIE_KEY1}`, `${process.env.COOKIE_KEY2}`],
-    navn: 'familie-ef-sak-v2',
-    redisFullUrl: process.env.REDIS_URI_SESSIONS,
-    redisBrukernavn: process.env.REDIS_USERNAME_SESSIONS,
-    redisPassord: process.env.REDIS_PASSWORD_SESSIONS,
-    secureCookie: !(
-        process.env.ENV === 'local' ||
-        process.env.ENV === 'e2e' ||
-        process.env.ENV === 'lokalt-mot-preprod'
-    ),
-    sessionMaxAgeSekunder: 12 * 60 * 60,
-};
-
-if (!process.env.EF_SAK_SCOPE) {
-    throw new Error('Scope mot familie-ef-sak er ikke konfigurert');
-}
-
-if (!process.env.CLIENT_ID) {
-    throw new Error('CLIENT_ID er ikke konfigurert');
-}
-
-export const oboConfig: IApi = {
-    clientId: process.env.CLIENT_ID,
-    scopes: [process.env.EF_SAK_SCOPE],
-};
+export const erLokalUtvikling =
+    process.env.ENV === 'local' || process.env.ENV === 'lokalt-mot-preprod';
+export const efSakScope = process.env.EF_SAK_SCOPE ?? '';
+export const graphApiScope = 'https://graph.microsoft.com/.default';
+export const graphApiUrl = process.env.GRAPH_API ?? 'https://graph.microsoft.com/v1.0/me';
 
 export const buildPath = env.buildPath;
 export const sakProxyUrl = env.sakProxyUrl;
