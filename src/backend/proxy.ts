@@ -57,8 +57,16 @@ export const attachToken = (): RequestHandler => {
             if (sessionToken) {
                 req.headers.Authorization = `Bearer ${sessionToken}`;
                 const parsed = parseAzureUserToken(sessionToken);
-                if (parsed.ok && parsed.groups) {
+                logInfo(`[DEBUG] lokalt-mot-preprod parseAzureUserToken ok=${parsed.ok}`);
+                if (parsed.ok) {
+                    logInfo(
+                        `[DEBUG] NAVident=${parsed.NAVident}, groups=${parsed.groups?.length ?? 0}`
+                    );
                     req.headers['Nav-Groups'] = JSON.stringify(parsed.groups);
+                    req.headers['Nav-Ident'] = parsed.NAVident;
+                    req.headers['Nav-User-Name'] = parsed.name;
+                } else {
+                    logError('[DEBUG] parseAzureUserToken feilet', parsed.error);
                 }
                 return next();
             }
@@ -83,8 +91,14 @@ export const attachToken = (): RequestHandler => {
         }
 
         const parsed = parseAzureUserToken(token);
-        if (parsed.ok && parsed.groups) {
+        logInfo(`[DEBUG] parseAzureUserToken ok=${parsed.ok}`);
+        if (parsed.ok) {
+            logInfo(`[DEBUG] NAVident=${parsed.NAVident}, groups=${parsed.groups?.length ?? 0}`);
             req.headers['Nav-Groups'] = JSON.stringify(parsed.groups);
+            req.headers['Nav-Ident'] = parsed.NAVident;
+            req.headers['Nav-User-Name'] = parsed.name;
+        } else {
+            logError('[DEBUG] parseAzureUserToken feilet', parsed.error);
         }
 
         const obo = await requestAzureOboToken(token, efSakScope);
