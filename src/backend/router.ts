@@ -36,13 +36,13 @@ export const ensureAuthenticated = () => {
 
         const token = getToken(req);
         if (!token) {
-            return res.redirect('/oauth2/login');
+            return res.status(401).json({ error: 'Ikke autentisert' });
         }
 
         const validation = await validateAzureToken(token);
         if (!validation.ok) {
             logWarn(`Token validering feilet: ${validation.error.message}`);
-            return res.redirect('/oauth2/login');
+            return res.status(401).json({ error: 'Ugyldig token' });
         }
 
         return next();
