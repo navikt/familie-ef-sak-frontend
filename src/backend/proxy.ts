@@ -9,7 +9,13 @@ import winston from 'winston';
 import { getAccessTokenFromSession, erLokaltMotPreprod } from './auth';
 
 const restream = (proxyReq: ClientRequest, req: IncomingMessage) => {
-    const requestBody = (req as Request).body;
+    const expressReq = req as Request;
+
+    logInfo(
+        `[DEBUG] Proxy headers: Nav-Ident=${expressReq.headers['nav-ident']}, Nav-Groups exists=${!!expressReq.headers['nav-groups']}, Auth exists=${!!expressReq.headers['authorization']}`
+    );
+
+    const requestBody = expressReq.body;
     if (requestBody) {
         const bodyData = JSON.stringify(requestBody);
         proxyReq.setHeader('Content-Type', 'application/json');
@@ -109,6 +115,17 @@ export const attachToken = (): RequestHandler => {
                 frontendFeilmelding: 'Kunne ikke hente tilgangstoken. Vennligst prøv på nytt.',
             });
         }
+
+        try {
+            const tokenParts = obo.token.split('.');
+            const payload = JSON.parse(Buffer.from(tokenParts[1], 'base64').toString());
+            logInfo(`[DEBUG] OBO token aud=${payload.aud}, iss=${payload.iss}`);
+        } catch (e) {
+            logInfo('[DEBUG] Kunne ikke decode OBO token');
+            console.log(e);
+        }
+
+        logInfo(`[DEBUG] OBO token hentet OK, scope=${efSakScope}`);
 
         req.headers.Authorization = `Bearer ${obo.token}`;
         return next();
