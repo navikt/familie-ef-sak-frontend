@@ -11,8 +11,23 @@ import { getAccessTokenFromSession, erLokaltMotPreprod } from './auth';
 const restream = (proxyReq: ClientRequest, req: IncomingMessage) => {
     const expressReq = req as Request;
 
+    const authHeader =
+        expressReq.headers['authorization'] || expressReq.headers['Authorization'];
+    if (authHeader) {
+        proxyReq.setHeader('Authorization', authHeader as string);
+    }
+    if (expressReq.headers['nav-ident']) {
+        proxyReq.setHeader('Nav-Ident', expressReq.headers['nav-ident'] as string);
+    }
+    if (expressReq.headers['nav-groups']) {
+        proxyReq.setHeader('Nav-Groups', expressReq.headers['nav-groups'] as string);
+    }
+    if (expressReq.headers['nav-user-name']) {
+        proxyReq.setHeader('Nav-User-Name', expressReq.headers['nav-user-name'] as string);
+    }
+
     logInfo(
-        `[DEBUG] Proxy headers: Nav-Ident=${expressReq.headers['nav-ident']}, Nav-Groups exists=${!!expressReq.headers['nav-groups']}, Auth exists=${!!expressReq.headers['authorization']}`
+        `[DEBUG] Proxy headers: Nav-Ident=${expressReq.headers['nav-ident']}, Nav-Groups exists=${!!expressReq.headers['nav-groups']}, Auth exists=${!!authHeader}`
     );
 
     const requestBody = expressReq.body;
@@ -61,16 +76,16 @@ export const attachToken = (): RequestHandler => {
         if (erLokaltMotPreprod()) {
             const sessionToken = getAccessTokenFromSession(req);
             if (sessionToken) {
-                req.headers.Authorization = `Bearer ${sessionToken}`;
+                req.headers['authorization'] = `Bearer ${sessionToken}`;
                 const parsed = parseAzureUserToken(sessionToken);
                 logInfo(`[DEBUG] lokalt-mot-preprod parseAzureUserToken ok=${parsed.ok}`);
                 if (parsed.ok) {
                     logInfo(
                         `[DEBUG] NAVident=${parsed.NAVident}, groups=${parsed.groups?.length ?? 0}`
                     );
-                    req.headers['Nav-Groups'] = JSON.stringify(parsed.groups);
-                    req.headers['Nav-Ident'] = parsed.NAVident;
-                    req.headers['Nav-User-Name'] = parsed.name;
+                    req.headers['nav-groups'] = JSON.stringify(parsed.groups);
+                    req.headers['nav-ident'] = parsed.NAVident;
+                    req.headers['nav-user-name'] = parsed.name;
                 } else {
                     logError('[DEBUG] parseAzureUserToken feilet', parsed.error);
                 }
@@ -84,7 +99,7 @@ export const attachToken = (): RequestHandler => {
         }
 
         if (erLokalUtvikling) {
-            req.headers.Authorization = 'Bearer mock-token';
+            req.headers['authorization'] = 'Bearer mock-token';
             return next();
         }
 
@@ -100,9 +115,9 @@ export const attachToken = (): RequestHandler => {
         logInfo(`[DEBUG] parseAzureUserToken ok=${parsed.ok}`);
         if (parsed.ok) {
             logInfo(`[DEBUG] NAVident=${parsed.NAVident}, groups=${parsed.groups?.length ?? 0}`);
-            req.headers['Nav-Groups'] = JSON.stringify(parsed.groups);
-            req.headers['Nav-Ident'] = parsed.NAVident;
-            req.headers['Nav-User-Name'] = parsed.name;
+            req.headers['nav-groups'] = JSON.stringify(parsed.groups);
+            req.headers['nav-ident'] = parsed.NAVident;
+            req.headers['nav-user-name'] = parsed.name;
         } else {
             logError('[DEBUG] parseAzureUserToken feilet', parsed.error);
         }
@@ -127,7 +142,7 @@ export const attachToken = (): RequestHandler => {
 
         logInfo(`[DEBUG] OBO token hentet OK, scope=${efSakScope}`);
 
-        req.headers.Authorization = `Bearer ${obo.token}`;
+        req.headers['authorization'] = `Bearer ${obo.token}`;
         return next();
     };
 };
