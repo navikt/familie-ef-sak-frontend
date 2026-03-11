@@ -11,8 +11,7 @@ import { getAccessTokenFromSession, erLokaltMotPreprod } from './auth';
 const restream = (proxyReq: ClientRequest, req: IncomingMessage) => {
     const expressReq = req as Request;
 
-    const authHeader =
-        expressReq.headers['authorization'] || expressReq.headers['Authorization'];
+    const authHeader = expressReq.headers['authorization'] || expressReq.headers['Authorization'];
     if (authHeader) {
         proxyReq.setHeader('Authorization', authHeader as string);
     }
