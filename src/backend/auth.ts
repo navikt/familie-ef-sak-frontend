@@ -26,6 +26,7 @@ declare module 'express-session' {
         state?: string;
         nonce?: string;
         codeVerifier?: string;
+        redirectUrl?: string;
     }
 }
 
@@ -171,12 +172,14 @@ export const handleCallback = async (req: Request, res: Response): Promise<void>
             accessToken: tokens.access_token,
         };
 
+        const redirectUrl = req.session.redirectUrl || '/';
         delete req.session.state;
         delete req.session.nonce;
         delete req.session.codeVerifier;
+        delete req.session.redirectUrl;
 
         logInfo(`Bruker ${idTokenPayload.NAVident} logget inn`);
-        res.redirect('/');
+        res.redirect(redirectUrl);
     } catch (error) {
         logError('Authentication callback error', error as Error);
         res.status(500).send('Autentisering feilet');
@@ -212,6 +215,7 @@ export const ensureAuthenticatedLocal = (): RequestHandler => {
         }
 
         if (!erPublicPath && !erAsset && !req.session.user) {
+            req.session.redirectUrl = req.originalUrl;
             return res.redirect('/oauth2/login');
         }
 
