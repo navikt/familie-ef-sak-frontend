@@ -6,7 +6,7 @@ import { getToken, requestAzureOboToken, parseAzureUserToken } from '@navikt/oas
 import { efSakScope, erLokalUtvikling } from './config';
 import { logError, logInfo } from './logger';
 import winston from 'winston';
-import { getAccessTokenFromSession, erLokaltMotPreprod } from './auth';
+import { hentAccessTokenFraSession, erLokaltMotPreprod } from './auth';
 
 const restream = (proxyReq: ClientRequest, req: IncomingMessage) => {
     const expressReq = req as Request;
@@ -73,28 +73,7 @@ export const addRequestInfo = (): RequestHandler => {
 export const attachToken = (): RequestHandler => {
     return async (req: Request, res: Response, next: NextFunction) => {
         if (erLokaltMotPreprod()) {
-            const sessionToken = getAccessTokenFromSession(req);
-            if (sessionToken) {
-                req.headers['authorization'] = `Bearer ${sessionToken}`;
-                const parsed = parseAzureUserToken(sessionToken);
-                logInfo(`[DEBUG] lokalt-mot-preprod parseAzureUserToken ok=${parsed.ok}`);
-                if (parsed.ok) {
-                    logInfo(
-                        `[DEBUG] NAVident=${parsed.NAVident}, groups=${parsed.groups?.length ?? 0}`
-                    );
-                    req.headers['nav-groups'] = JSON.stringify(parsed.groups);
-                    req.headers['nav-ident'] = parsed.NAVident;
-                    req.headers['nav-user-name'] = parsed.name;
-                } else {
-                    logError('[DEBUG] parseAzureUserToken feilet', parsed.error);
-                }
-                return next();
-            }
-            logInfo('Mangler access token i session');
-            return res.status(401).json({
-                status: 'IKKE_TILGANG',
-                frontendFeilmelding: 'Ikke innlogget',
-            });
+            leggTilTokenForLokaltMotPreprod(req, res, next);
         }
 
         if (erLokalUtvikling) {
@@ -110,8 +89,17 @@ export const attachToken = (): RequestHandler => {
                 .json({ status: 'IKKE_TILGANG', frontendFeilmelding: 'Ikke innlogget' });
         }
 
-        const parsed = parseAzureUserToken(token);
-        logInfo(`[DEBUG] parseAzureUserToken ok=${parsed.ok}`);
+        await leggTilToken(req, res, token);
+        return next();
+    };
+};
+
+const leggTilTokenForLokaltMotPreprod = (req: Request, res: Response, next: NextFunction) => {
+    const sessionToken = hentAccessTokenFraSession(req);
+    if (sessionToken) {
+        req.headers['authorization'] = `Bearer ${sessionToken}`;
+        const parsed = parseAzureUserToken(sessionToken);
+        logInfo(`[DEBUG] lokalt-mot-preprod parseAzureUserToken ok=${parsed.ok}`);
         if (parsed.ok) {
             logInfo(`[DEBUG] NAVident=${parsed.NAVident}, groups=${parsed.groups?.length ?? 0}`);
             req.headers['nav-groups'] = JSON.stringify(parsed.groups);
@@ -120,28 +108,47 @@ export const attachToken = (): RequestHandler => {
         } else {
             logError('[DEBUG] parseAzureUserToken feilet', parsed.error);
         }
-
-        const obo = await requestAzureOboToken(token, efSakScope);
-        if (!obo.ok) {
-            logError('Feil ved henting av OBO-token', new Error(obo.error.message));
-            return res.status(500).json({
-                status: 'FEILET',
-                frontendFeilmelding: 'Kunne ikke hente tilgangstoken. Vennligst prøv på nytt.',
-            });
-        }
-
-        try {
-            const tokenParts = obo.token.split('.');
-            const payload = JSON.parse(Buffer.from(tokenParts[1], 'base64').toString());
-            logInfo(`[DEBUG] OBO token aud=${payload.aud}, iss=${payload.iss}`);
-        } catch (e) {
-            logInfo('[DEBUG] Kunne ikke decode OBO token');
-            console.log(e);
-        }
-
-        logInfo(`[DEBUG] OBO token hentet OK, scope=${efSakScope}`);
-
-        req.headers['authorization'] = `Bearer ${obo.token}`;
         return next();
-    };
+    }
+
+    logInfo('Mangler access token i session');
+    return res.status(401).json({
+        status: 'IKKE_TILGANG',
+        frontendFeilmelding: 'Ikke innlogget',
+    });
+};
+
+const leggTilToken = async (req: Request, res: Response, token: string) => {
+    const parsed = parseAzureUserToken(token);
+    logInfo(`[DEBUG] parseAzureUserToken ok=${parsed.ok}`);
+    if (parsed.ok) {
+        logInfo(`[DEBUG] NAVident=${parsed.NAVident}, groups=${parsed.groups?.length ?? 0}`);
+        req.headers['nav-groups'] = JSON.stringify(parsed.groups);
+        req.headers['nav-ident'] = parsed.NAVident;
+        req.headers['nav-user-name'] = parsed.name;
+    } else {
+        logError('[DEBUG] parseAzureUserToken feilet', parsed.error);
+    }
+
+    const obo = await requestAzureOboToken(token, efSakScope);
+    if (!obo.ok) {
+        logError('Feil ved henting av OBO-token', new Error(obo.error.message));
+        return res.status(500).json({
+            status: 'FEILET',
+            frontendFeilmelding: 'Kunne ikke hente tilgangstoken. Vennligst prøv på nytt.',
+        });
+    }
+
+    try {
+        const tokenParts = obo.token.split('.');
+        const payload = JSON.parse(Buffer.from(tokenParts[1], 'base64').toString());
+        logInfo(`[DEBUG] OBO token aud=${payload.aud}, iss=${payload.iss}`);
+    } catch (e) {
+        logInfo('[DEBUG] Kunne ikke decode OBO token');
+        console.log(e);
+    }
+
+    logInfo(`[DEBUG] OBO token hentet OK, scope=${efSakScope}`);
+
+    req.headers['authorization'] = `Bearer ${obo.token}`;
 };

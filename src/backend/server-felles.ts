@@ -22,10 +22,10 @@ import { konfigurerMetrikker } from './felles/metrikker';
 import { prometheusTellere } from './metrikker';
 import headers from './felles/headers';
 import {
-    handleLogin,
-    handleCallback,
-    handleLogout,
-    ensureAuthenticatedLocal,
+    handleLoginLokalt,
+    handleCallbackLokalt,
+    handleLogoutLokalt,
+    sørgForAutentiseringLokalt,
     erLokaltMotPreprod,
     Saksbehandler,
 } from './auth';
@@ -121,10 +121,10 @@ export const createApp = (): ServerApp => {
     konfigurerMetrikker(app, prometheusTellere);
 
     if (erLokaltMotPreprod() || erLokalUtvikling) {
-        app.get('/oauth2/login', handleLogin);
-        app.get('/oauth2/callback', handleCallback);
-        app.get('/oauth2/logout', handleLogout);
-        app.use(ensureAuthenticatedLocal());
+        app.get('/oauth2/login', handleLoginLokalt);
+        app.get('/oauth2/callback', handleCallbackLokalt);
+        app.get('/oauth2/logout', handleLogoutLokalt);
+        app.use(sørgForAutentiseringLokalt());
     }
 
     app.use(

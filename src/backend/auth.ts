@@ -59,7 +59,7 @@ const generateCodeChallenge = async (verifier: string): Promise<string> => {
         .replace(/=/g, '');
 };
 
-const getAuthConfig = (): AuthConfig | null => {
+const hentLokalAuthConfig = (): AuthConfig | null => {
     const clientId = process.env.CLIENT_ID;
     const clientSecret = process.env.CLIENT_SECRET;
     const redirectUri = process.env.AAD_REDIRECT_URL;
@@ -71,14 +71,14 @@ const getAuthConfig = (): AuthConfig | null => {
     return { clientId, clientSecret, redirectUri };
 };
 
-export const handleLogin = async (req: Request, res: Response): Promise<void> => {
+export const handleLoginLokalt = async (req: Request, res: Response): Promise<void> => {
     if (process.env.ENV === 'local') {
         req.session.user = mockSaksbehandler;
         res.redirect('/');
         return;
     }
 
-    const authConfig = getAuthConfig();
+    const authConfig = hentLokalAuthConfig();
     if (!authConfig) {
         res.status(500).send('Auth ikke konfigurert');
         return;
@@ -116,8 +116,8 @@ export const handleLogin = async (req: Request, res: Response): Promise<void> =>
     res.redirect(authUrl);
 };
 
-export const handleCallback = async (req: Request, res: Response): Promise<void> => {
-    const authConfig = getAuthConfig();
+export const handleCallbackLokalt = async (req: Request, res: Response): Promise<void> => {
+    const authConfig = hentLokalAuthConfig();
     if (!authConfig) {
         res.status(500).send('Auth ikke konfigurert');
         return;
@@ -186,7 +186,7 @@ export const handleCallback = async (req: Request, res: Response): Promise<void>
     }
 };
 
-export const handleLogout = (req: Request, res: Response): void => {
+export const handleLogoutLokalt = (req: Request, res: Response): void => {
     const navIdent = req.session.user?.navIdent;
     req.session.destroy((err) => {
         if (err) {
@@ -198,7 +198,7 @@ export const handleLogout = (req: Request, res: Response): void => {
     });
 };
 
-export const ensureAuthenticatedLocal = (): RequestHandler => {
+export const sørgForAutentiseringLokalt = (): RequestHandler => {
     return (req: Request, res: Response, next: NextFunction) => {
         const publicPaths = [
             '/oauth2/login',
@@ -223,7 +223,7 @@ export const ensureAuthenticatedLocal = (): RequestHandler => {
     };
 };
 
-export const getAccessTokenFromSession = (req: Request): string | null => {
+export const hentAccessTokenFraSession = (req: Request): string | null => {
     return req.session.user?.accessToken ?? null;
 };
 
