@@ -73,7 +73,7 @@ export const addRequestInfo = (): RequestHandler => {
 export const attachToken = (): RequestHandler => {
     return async (req: Request, res: Response, next: NextFunction) => {
         if (erLokaltMotPreprod()) {
-            leggTilTokenForLokaltMotPreprod(req, res, next);
+            return leggTilTokenForLokaltMotPreprod(req, res, next);
         }
 
         if (erLokalUtvikling) {
