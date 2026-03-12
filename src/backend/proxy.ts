@@ -6,7 +6,7 @@ import { getToken, requestAzureOboToken, parseAzureUserToken } from '@navikt/oas
 import { efSakScope, erLokalUtvikling } from './config';
 import { logError, logInfo } from './logger';
 import winston from 'winston';
-import { hentAccessTokenFraSession, erLokaltMotPreprod } from './auth';
+import { hentAccessTokenFraSession, erLokaltMotPreprod } from './authLokalt';
 
 const restream = (proxyReq: ClientRequest, req: IncomingMessage) => {
     const expressReq = req as Request;

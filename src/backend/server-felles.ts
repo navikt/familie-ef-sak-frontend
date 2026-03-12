@@ -28,7 +28,7 @@ import {
     sørgForAutentiseringLokalt,
     erLokaltMotPreprod,
     Saksbehandler,
-} from './auth';
+} from './authLokalt.js';
 
 const port = 8000;
 

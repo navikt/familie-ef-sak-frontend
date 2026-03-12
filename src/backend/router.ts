@@ -13,7 +13,7 @@ import {
 import { prometheusTellere } from './metrikker';
 import { logInfo, logWarn } from './logger';
 import { getToken, validateAzureToken } from '@navikt/oasis';
-import { erLokaltMotPreprod } from './auth';
+import { erLokaltMotPreprod } from './authLokalt';
 
 export const redirectHvisInternUrlIPreprod = () => {
     return async (req: Request, res: Response, next: NextFunction) => {
