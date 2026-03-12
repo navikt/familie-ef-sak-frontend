@@ -2,7 +2,7 @@ import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { ClientRequest, IncomingMessage } from 'http';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import { v4 as uuidv4 } from 'uuid';
-import { getToken, requestAzureOboToken, parseAzureUserToken } from '@navikt/oasis';
+import { getToken, requestAzureOboToken } from '@navikt/oasis';
 import { efSakScope, erLokalUtvikling } from './config';
 import { logError, logInfo } from './logger';
 import winston from 'winston';
@@ -24,10 +24,6 @@ const restream = (proxyReq: ClientRequest, req: IncomingMessage) => {
     if (expressReq.headers['nav-user-name']) {
         proxyReq.setHeader('Nav-User-Name', expressReq.headers['nav-user-name'] as string);
     }
-
-    logInfo(
-        `[DEBUG] Proxy headers: Nav-Ident=${expressReq.headers['nav-ident']}, Nav-Groups exists=${!!expressReq.headers['nav-groups']}, Auth exists=${!!authHeader}`
-    );
 
     const requestBody = expressReq.body;
     if (requestBody) {
@@ -98,16 +94,6 @@ const leggTilTokenForLokaltMotPreprod = (req: Request, res: Response, next: Next
     const sessionToken = hentAccessTokenFraSession(req);
     if (sessionToken) {
         req.headers['authorization'] = `Bearer ${sessionToken}`;
-        const parsed = parseAzureUserToken(sessionToken);
-        logInfo(`[DEBUG] lokalt-mot-preprod parseAzureUserToken ok=${parsed.ok}`);
-        if (parsed.ok) {
-            logInfo(`[DEBUG] NAVident=${parsed.NAVident}, groups=${parsed.groups?.length ?? 0}`);
-            req.headers['nav-groups'] = JSON.stringify(parsed.groups);
-            req.headers['nav-ident'] = parsed.NAVident;
-            req.headers['nav-user-name'] = parsed.name;
-        } else {
-            logError('[DEBUG] parseAzureUserToken feilet', parsed.error);
-        }
         return next();
     }
 
@@ -119,17 +105,6 @@ const leggTilTokenForLokaltMotPreprod = (req: Request, res: Response, next: Next
 };
 
 const leggTilToken = async (req: Request, res: Response, token: string) => {
-    const parsed = parseAzureUserToken(token);
-    logInfo(`[DEBUG] parseAzureUserToken ok=${parsed.ok}`);
-    if (parsed.ok) {
-        logInfo(`[DEBUG] NAVident=${parsed.NAVident}, groups=${parsed.groups?.length ?? 0}`);
-        req.headers['nav-groups'] = JSON.stringify(parsed.groups);
-        req.headers['nav-ident'] = parsed.NAVident;
-        req.headers['nav-user-name'] = parsed.name;
-    } else {
-        logError('[DEBUG] parseAzureUserToken feilet', parsed.error);
-    }
-
     const obo = await requestAzureOboToken(token, efSakScope);
     if (!obo.ok) {
         logError('Feil ved henting av OBO-token', new Error(obo.error.message));
@@ -138,17 +113,6 @@ const leggTilToken = async (req: Request, res: Response, token: string) => {
             frontendFeilmelding: 'Kunne ikke hente tilgangstoken. Vennligst prøv på nytt.',
         });
     }
-
-    try {
-        const tokenParts = obo.token.split('.');
-        const payload = JSON.parse(Buffer.from(tokenParts[1], 'base64').toString());
-        logInfo(`[DEBUG] OBO token aud=${payload.aud}, iss=${payload.iss}`);
-    } catch (e) {
-        logInfo('[DEBUG] Kunne ikke decode OBO token');
-        console.log(e);
-    }
-
-    logInfo(`[DEBUG] OBO token hentet OK, scope=${efSakScope}`);
 
     req.headers['authorization'] = `Bearer ${obo.token}`;
 };
