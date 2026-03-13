@@ -2,14 +2,30 @@ import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { ClientRequest, IncomingMessage } from 'http';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import { v4 as uuidv4 } from 'uuid';
-import { oboConfig } from './config';
+import { getToken, requestAzureOboToken } from '@navikt/oasis';
+import { efSakScope, erLokalUtvikling } from './config';
 import { logError, logInfo } from './logger';
 import winston from 'winston';
-import { getOnBehalfOfAccessToken } from './felles/auth/tokenUtils';
-import { Client } from 'openid-client';
+import { hentAccessTokenFraSession, erLokaltMotPreprod } from './authLokalt';
 
 const restream = (proxyReq: ClientRequest, req: IncomingMessage) => {
-    const requestBody = (req as Request).body;
+    const expressReq = req as Request;
+
+    const authHeader = expressReq.headers['authorization'] || expressReq.headers['Authorization'];
+    if (authHeader) {
+        proxyReq.setHeader('Authorization', authHeader as string);
+    }
+    if (expressReq.headers['nav-ident']) {
+        proxyReq.setHeader('Nav-Ident', expressReq.headers['nav-ident'] as string);
+    }
+    if (expressReq.headers['nav-groups']) {
+        proxyReq.setHeader('Nav-Groups', expressReq.headers['nav-groups'] as string);
+    }
+    if (expressReq.headers['nav-user-name']) {
+        proxyReq.setHeader('Nav-User-Name', expressReq.headers['nav-user-name'] as string);
+    }
+
+    const requestBody = expressReq.body;
     if (requestBody) {
         const bodyData = JSON.stringify(requestBody);
         proxyReq.setHeader('Content-Type', 'application/json');
@@ -50,28 +66,53 @@ export const addRequestInfo = (): RequestHandler => {
     };
 };
 
-export const attachToken = (authClient: Client): RequestHandler => {
-    return async (req: Request, _res: Response, next: NextFunction) => {
-        getOnBehalfOfAccessToken(authClient, req, oboConfig)
-            .then((accessToken: string) => {
-                req.headers.Authorization = `Bearer ${accessToken}`;
-                return next();
-            })
-            .catch((e) => {
-                if (e.error === 'invalid_grant') {
-                    logInfo(`invalid_grant`);
-                    _res.status(500).json({
-                        status: 'IKKE_TILGANG',
-                        frontendFeilmelding:
-                            'Uventet feil. Det er mulig at du ikke har tilgang til applikasjonen.',
-                    });
-                } else {
-                    logError('Uventet feil - getOnBehalfOfAccessToken', e);
-                    _res.status(500).json({
-                        status: 'FEILET',
-                        frontendFeilmelding: 'Uventet feil. Vennligst prøv på nytt.',
-                    });
-                }
-            });
+export const attachToken = (): RequestHandler => {
+    return async (req: Request, res: Response, next: NextFunction) => {
+        if (erLokaltMotPreprod()) {
+            return leggTilTokenForLokaltMotPreprod(req, res, next);
+        }
+
+        if (erLokalUtvikling) {
+            req.headers['authorization'] = 'Bearer mock-token';
+            return next();
+        }
+
+        const token = getToken(req);
+        if (!token) {
+            logInfo('Mangler token på request');
+            return res
+                .status(401)
+                .json({ status: 'IKKE_TILGANG', frontendFeilmelding: 'Ikke innlogget' });
+        }
+
+        await leggTilToken(req, res, token);
+        return next();
     };
+};
+
+const leggTilTokenForLokaltMotPreprod = (req: Request, res: Response, next: NextFunction) => {
+    const sessionToken = hentAccessTokenFraSession(req);
+    if (sessionToken) {
+        req.headers['authorization'] = `Bearer ${sessionToken}`;
+        return next();
+    }
+
+    logInfo('Mangler access token i session');
+    return res.status(401).json({
+        status: 'IKKE_TILGANG',
+        frontendFeilmelding: 'Ikke innlogget',
+    });
+};
+
+const leggTilToken = async (req: Request, res: Response, token: string) => {
+    const obo = await requestAzureOboToken(token, efSakScope);
+    if (!obo.ok) {
+        logError('Feil ved henting av OBO-token', new Error(obo.error.message));
+        return res.status(500).json({
+            status: 'FEILET',
+            frontendFeilmelding: 'Kunne ikke hente tilgangstoken. Vennligst prøv på nytt.',
+        });
+    }
+
+    req.headers['authorization'] = `Bearer ${obo.token}`;
 };
