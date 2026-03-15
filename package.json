@@ -42,7 +42,7 @@
         "http-proxy-middleware": "^3.0.5",
         "https-proxy-agent": "^7.0.6",
         "node-fetch": "3.3.2",
-        "openid-client": "5.7.1",
+        "openid-client": "6.8.2",
         "passport": "^0.7.0",
         "prom-client": "^15.1.3",
         "quill": "^2.0.3",
