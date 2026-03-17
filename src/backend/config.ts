@@ -1,7 +1,3 @@
-// Konfigurer appen før backend prøver å sette opp konfigurasjon
-
-import { IApi, ISessionKonfigurasjon } from './felles/typer';
-
 type Rolle = 'veileder' | 'saksbehandler' | 'beslutter' | 'kode6' | 'kode7' | 'egenAnsatt';
 
 type Roller = {
@@ -58,14 +54,13 @@ const Environment = (): IEnvironment => {
             buildPath: 'frontend_production',
             namespace: 'e2e',
             sakProxyUrl: 'http://familie-ef-sak:8093',
-            brevProxyUrl: '', // TODO
+            brevProxyUrl: '',
             aInntekt: 'https://arbeid-og-inntekt.dev.adeo.no',
             gosys: 'https://gosys-q1.dev.intern.nav.no/gosys',
             modia: 'https://app-q1.adeo.no/modiapersonoversikt',
             historiskPensjon: 'https://historisk-pensjon.intern.dev.nav.no',
             drek: 'https://pdl-web.dev.intern.nav.no/rekvirerdnummer',
             roller: rollerDev,
-            //Har ikke satt opp redis
         };
     } else if (process.env.ENV === 'preprod') {
         return {
@@ -108,34 +103,14 @@ const Environment = (): IEnvironment => {
         roller: rollerProd,
     };
 };
+
 const env = Environment();
 
-export const sessionConfig: ISessionKonfigurasjon = {
-    cookieSecret: [`${process.env.COOKIE_KEY1}`, `${process.env.COOKIE_KEY2}`],
-    navn: 'familie-ef-sak-v2',
-    redisFullUrl: process.env.REDIS_URI_SESSIONS,
-    redisBrukernavn: process.env.REDIS_USERNAME_SESSIONS,
-    redisPassord: process.env.REDIS_PASSWORD_SESSIONS,
-    secureCookie: !(
-        process.env.ENV === 'local' ||
-        process.env.ENV === 'e2e' ||
-        process.env.ENV === 'lokalt-mot-preprod'
-    ),
-    sessionMaxAgeSekunder: 12 * 60 * 60,
-};
-
-if (!process.env.EF_SAK_SCOPE) {
-    throw new Error('Scope mot familie-ef-sak er ikke konfigurert');
-}
-
-if (!process.env.CLIENT_ID) {
-    throw new Error('CLIENT_ID er ikke konfigurert');
-}
-
-export const oboConfig: IApi = {
-    clientId: process.env.CLIENT_ID,
-    scopes: [process.env.EF_SAK_SCOPE],
-};
+export const erLokalUtvikling =
+    process.env.ENV === 'local' || process.env.ENV === 'lokalt-mot-preprod';
+export const efSakScope = process.env.EF_SAK_SCOPE ?? '';
+export const graphApiScope = 'https://graph.microsoft.com/.default';
+export const graphApiUrl = process.env.GRAPH_API ?? 'https://graph.microsoft.com/v1.0/me';
 
 export const buildPath = env.buildPath;
 export const sakProxyUrl = env.sakProxyUrl;

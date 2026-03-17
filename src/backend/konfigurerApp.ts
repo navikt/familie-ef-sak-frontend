@@ -14,7 +14,7 @@ const konfigurerAzure = () => {
         case 'lokalt-mot-preprod':
         case 'local':
             process.env.AAD_LOGOUT_REDIRECT_URL = `https://login.microsoftonline.com/navq.onmicrosoft.com/oauth2/logout?post_logout_redirect_uri=http:\\\\localhost:8000`;
-            process.env.AAD_REDIRECT_URL = 'http://localhost:8000/auth/openid/callback';
+            process.env.AAD_REDIRECT_URL = 'http://localhost:8000/oauth2/callback';
             process.env.AAD_DISCOVERY_URL =
                 process.env.AZURE_APP_WELL_KNOWN_URL ||
                 `https://login.microsoftonline.com/navq.onmicrosoft.com/v2.0/.well-known/openid-configuration`;
