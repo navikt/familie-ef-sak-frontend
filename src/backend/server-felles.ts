@@ -26,7 +26,6 @@ import {
     handleCallbackLokalt,
     handleLogoutLokalt,
     sørgForAutentiseringLokalt,
-    erLokaltMotPreprod,
     Saksbehandler,
 } from './authLokalt.js';
 
@@ -100,7 +99,7 @@ export const createApp = (): ServerApp => {
 
     headers.setup(app);
 
-    if (erLokaltMotPreprod() || erLokalUtvikling) {
+    if (erLokalUtvikling) {
         app.use(
             session({
                 secret: process.env.SESSION_SECRET || 'lokal-secret',
@@ -120,7 +119,7 @@ export const createApp = (): ServerApp => {
 
     konfigurerMetrikker(app, prometheusTellere);
 
-    if (erLokaltMotPreprod() || erLokalUtvikling) {
+    if (erLokalUtvikling) {
         app.get('/oauth2/login', handleLoginLokalt);
         app.get('/oauth2/callback', handleCallbackLokalt);
         app.get('/oauth2/logout', handleLogoutLokalt);
@@ -149,7 +148,7 @@ export const createApp = (): ServerApp => {
     app.use(bodyParser.urlencoded({ limit: '200mb', extended: true }));
 
     app.get('/user/profile', async (req: Request, res: Response) => {
-        if (erLokaltMotPreprod() || erLokalUtvikling) {
+        if (erLokalUtvikling) {
             if (req.session?.user) {
                 return res.status(200).json(mapSaksbehandlerTilBruker(req.session.user));
             }
@@ -175,7 +174,7 @@ export const createApp = (): ServerApp => {
     });
 
     app.get('/auth/logout', (_req: Request, res: Response) => {
-        if (erLokaltMotPreprod() || erLokalUtvikling) {
+        if (erLokalUtvikling) {
             return res.redirect('/oauth2/logout');
         }
         res.redirect('/oauth2/logout');

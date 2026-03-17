@@ -30,15 +30,6 @@ declare module 'express-session' {
     }
 }
 
-const mockSaksbehandler: Saksbehandler = {
-    displayName: 'Lokal Bruker',
-    email: 'lokal.bruker@nav.no',
-    navIdent: 'Z999999',
-    enhet: '4820',
-    groups: [],
-    accessToken: 'mock-token',
-};
-
 const generateRandomString = (length = 32): string => {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let result = '';
@@ -72,12 +63,6 @@ const hentLokalAuthConfig = (): AuthConfig | null => {
 };
 
 export const handleLoginLokalt = async (req: Request, res: Response): Promise<void> => {
-    if (process.env.ENV === 'local') {
-        req.session.user = mockSaksbehandler;
-        res.redirect('/');
-        return;
-    }
-
     const authConfig = hentLokalAuthConfig();
     if (!authConfig) {
         res.status(500).send('Auth ikke konfigurert');
@@ -210,10 +195,6 @@ export const sørgForAutentiseringLokalt = (): RequestHandler => {
         const erPublicPath = publicPaths.some((path) => req.path.startsWith(path));
         const erAsset = req.path.startsWith('/assets') || req.path.includes('.');
 
-        if (process.env.ENV === 'local' && !erPublicPath && !erAsset && !req.session.user) {
-            req.session.user = mockSaksbehandler;
-        }
-
         if (!erPublicPath && !erAsset && !req.session.user) {
             req.session.redirectUrl = req.originalUrl;
             return res.redirect('/oauth2/login');
@@ -225,8 +206,4 @@ export const sørgForAutentiseringLokalt = (): RequestHandler => {
 
 export const hentAccessTokenFraSession = (req: Request): string | null => {
     return req.session.user?.accessToken ?? null;
-};
-
-export const erLokaltMotPreprod = (): boolean => {
-    return process.env.ENV === 'lokalt-mot-preprod';
 };

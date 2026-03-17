@@ -6,7 +6,7 @@ import { getToken, requestAzureOboToken } from '@navikt/oasis';
 import { efSakScope, erLokalUtvikling } from './config';
 import { logError, logInfo } from './logger';
 import winston from 'winston';
-import { hentAccessTokenFraSession, erLokaltMotPreprod } from './authLokalt';
+import { hentAccessTokenFraSession } from './authLokalt';
 
 const restream = (proxyReq: ClientRequest, req: IncomingMessage) => {
     const expressReq = req as Request;
@@ -68,8 +68,8 @@ export const addRequestInfo = (): RequestHandler => {
 
 export const attachToken = (): RequestHandler => {
     return async (req: Request, res: Response, next: NextFunction) => {
-        if (erLokaltMotPreprod()) {
-            return leggTilTokenForLokaltMotPreprod(req, res, next);
+        if (erLokalUtvikling) {
+            return leggTilTokenForLokalUtvikling(req, res, next);
         }
 
         if (erLokalUtvikling) {
@@ -90,7 +90,7 @@ export const attachToken = (): RequestHandler => {
     };
 };
 
-const leggTilTokenForLokaltMotPreprod = (req: Request, res: Response, next: NextFunction) => {
+const leggTilTokenForLokalUtvikling = (req: Request, res: Response, next: NextFunction) => {
     const sessionToken = hentAccessTokenFraSession(req);
     if (sessionToken) {
         req.headers['authorization'] = `Bearer ${sessionToken}`;

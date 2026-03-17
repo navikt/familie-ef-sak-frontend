@@ -2,18 +2,17 @@ import { NextFunction, Request, Response, Router } from 'express';
 import path from 'path';
 import {
     buildPath,
+    erLokalUtvikling,
     roller,
     urlAInntekt,
     urlDrek,
     urlGosys,
     urlHistoriskPensjon,
     urlModia,
-    erLokalUtvikling,
 } from './config';
 import { prometheusTellere } from './metrikker';
 import { logInfo, logWarn } from './logger';
 import { getToken, validateAzureToken } from '@navikt/oasis';
-import { erLokaltMotPreprod } from './authLokalt';
 
 export const redirectHvisInternUrlIPreprod = () => {
     return async (req: Request, res: Response, next: NextFunction) => {
@@ -30,7 +29,7 @@ export const redirectHvisInternUrlIPreprod = () => {
 
 export const ensureAuthenticated = () => {
     return async (req: Request, res: Response, next: NextFunction) => {
-        if (erLokaltMotPreprod() || erLokalUtvikling) {
+        if (erLokalUtvikling) {
             return next();
         }
 
