@@ -72,11 +72,6 @@ export const attachToken = (): RequestHandler => {
             return leggTilTokenForLokalUtvikling(req, res, next);
         }
 
-        if (erLokalUtvikling) {
-            req.headers['authorization'] = 'Bearer mock-token';
-            return next();
-        }
-
         const token = getToken(req);
         if (!token) {
             logInfo('Mangler token på request');
