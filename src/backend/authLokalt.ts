@@ -15,7 +15,6 @@ export interface Saksbehandler {
     displayName: string;
     email: string;
     navIdent: string;
-    enhet: string;
     groups: string[];
     accessToken: string;
 }
@@ -152,7 +151,6 @@ export const handleCallbackLokalt = async (req: Request, res: Response): Promise
             displayName: idTokenPayload.name,
             email: idTokenPayload.email || idTokenPayload.upn,
             navIdent: idTokenPayload.NAVident,
-            enhet: '',
             groups: idTokenPayload.groups || [],
             accessToken: tokens.access_token,
         };

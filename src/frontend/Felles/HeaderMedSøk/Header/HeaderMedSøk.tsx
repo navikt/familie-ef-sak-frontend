@@ -10,6 +10,7 @@ import { ToggleName } from '../../../App/context/toggles';
 import { Sticky } from '../../Visningskomponenter/Sticky';
 import { lagArbeidsverktøyLenker, lagEksterneLenker, lagInterneLenker } from '../utils';
 import { Header, PopoverItem } from './header/Header';
+import { useHentSaksbehandlerInformasjon } from '../../../App/hooks/useHentSaksbehandlerInformasjon';
 
 export interface Props {
     innloggetSaksbehandler: ISaksbehandler;
@@ -49,6 +50,10 @@ export const HeaderMedSøk: React.FunctionComponent<Props> = ({ innloggetSaksbeh
     const erDev =
         window.location.href.includes('dev') || window.location.href.includes('localhost');
 
+    const { saksbehandlerInformasjon } = useHentSaksbehandlerInformasjon(
+        innloggetSaksbehandler.navIdent
+    );
+
     return (
         <Sticky>
             <Header
@@ -56,6 +61,7 @@ export const HeaderMedSøk: React.FunctionComponent<Props> = ({ innloggetSaksbeh
                 tittel="Nav Enslig mor eller far"
                 brukerinfo={{
                     navn: innloggetSaksbehandler?.displayName || 'Ukjent',
+                    enhet: saksbehandlerInformasjon?.enhet,
                 }}
                 brukerPopoverItems={[{ name: 'Logg ut', href: `${window.origin}/auth/logout` }]}
                 eksterneLenker={headerLenker}

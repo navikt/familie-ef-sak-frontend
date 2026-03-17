@@ -34,7 +34,6 @@ const port = 8000;
 interface Bruker {
     displayName: string;
     email: string;
-    enhet: string;
     identifier: string;
     navIdent: string;
     groups: string[];
@@ -72,7 +71,6 @@ const hentBrukerFraGraph = async (token: string): Promise<Bruker | null> => {
     return {
         displayName: data.displayName,
         email: data.userPrincipalName,
-        enhet: data.officeLocation?.slice(0, 4) ?? '',
         identifier: data.userPrincipalName,
         navIdent: data.onPremisesSamAccountName,
         groups,
@@ -82,7 +80,6 @@ const hentBrukerFraGraph = async (token: string): Promise<Bruker | null> => {
 const mapSaksbehandlerTilBruker = (saksbehandler: Saksbehandler): Bruker => ({
     displayName: saksbehandler.displayName,
     email: saksbehandler.email,
-    enhet: saksbehandler.enhet,
     identifier: saksbehandler.email,
     navIdent: saksbehandler.navIdent,
     groups: saksbehandler.groups,
