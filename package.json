@@ -19,7 +19,10 @@
         "tsc-alias": "tsc-alias -p tsconfig.json"
     },
     "lint-staged": {
-        "src/**/*.{js,jsx,ts,tsx,json}": ["prettier --write", "eslint --fix"]
+        "src/**/*.{js,jsx,ts,tsx,json}": [
+            "prettier --write",
+            "eslint --fix"
+        ]
     },
     "dependencies": {
         "@navikt/aksel-icons": "^7.39.0",
@@ -28,7 +31,7 @@
         "@navikt/ds-tokens": "7.39.0",
         "@navikt/fnrvalidator": "^2.1.5",
         "@navikt/oasis": "^4.1.4",
-        "@sentry/browser": "^10.42.0",
+        "@sentry/browser": "^10.44.0",
         "@sentry/core": "^10.26.0",
         "axios": "^1.13.6",
         "body-parser": "^2.2.2",
@@ -56,7 +59,7 @@
     "devDependencies": {
         "@axe-core/react": "4.11.1",
         "@babel/core": "^7.29.0",
-        "@babel/preset-env": "^7.29.0",
+        "@babel/preset-env": "^7.29.2",
         "@babel/preset-react": "^7.28.5",
         "@babel/preset-typescript": "^7.28.5",
         "@pmmmwh/react-refresh-webpack-plugin": "^0.6.2",
@@ -69,11 +72,12 @@
         "@types/webpack-dev-middleware": "^5.3.0",
         "@types/webpack-hot-middleware": "^2.25.12",
         "autoprefixer": "^10.4.27",
-        "babel-loader": "^10.0.0",
+        "babel-loader": "^10.1.1",
         "compression-webpack-plugin": "^11.1.0",
         "copy-webpack-plugin": "^13.0.1",
         "css-loader": "^7.1.4",
         "eslint": "^9.39.1",
+        "eslint-config-prettier": "^10.1.8",
         "eslint-plugin-jsx-a11y": "^6.10.2",
         "eslint-plugin-prettier": "^5.5.5",
         "eslint-plugin-react": "^7.37.5",
@@ -82,7 +86,7 @@
         "file-loader": "^6.2.0",
         "fork-ts-checker-webpack-plugin": "^9.1.0",
         "html-webpack-plugin": "^5.6.6",
-        "mini-css-extract-plugin": "^2.10.0",
+        "mini-css-extract-plugin": "^2.10.1",
         "postcss": "^8.5.8",
         "postcss-loader": "^8.2.1",
         "prettier": "^3.8.1",
@@ -90,8 +94,8 @@
         "style-loader": "^4.0.0",
         "tsc-alias": "^1.8.16",
         "typescript": "^5.9.3",
-        "typescript-eslint": "^8.56.1",
-        "vitest": "^4.0.18",
+        "typescript-eslint": "^8.57.1",
+        "vitest": "^4.1.0",
         "webpack": "^5.105.4",
         "webpack-cli": "^6.0.1",
         "webpack-dev-middleware": "^7.4.5",
