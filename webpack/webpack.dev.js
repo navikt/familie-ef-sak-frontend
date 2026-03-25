@@ -81,7 +81,7 @@ const config = mergeWithCustomize({
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify('development'),
         }),
-        new ReactRefreshWebpackPlugin({ overlay: 'whm' }),
+        new ReactRefreshWebpackPlugin({ overlay: { sockIntegration: 'whm' } }),
         new webpack.HotModuleReplacementPlugin(),
         new CopyPlugin({
             patterns: [
