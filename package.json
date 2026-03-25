@@ -9,7 +9,7 @@
     "scripts": {
         "start": "NODE_OPTIONS='--es-module-specifier-resolution=node' NODE_ENV=production node node_dist/backend/server.js",
         "start:mock": "NODE_OPTIONS='--es-module-specifier-resolution=node' NODE_ENV=development node dev-server/mock-server.js",
-        "start:dev": "tsc && npm run tsc-alias && NODE_OPTIONS='--es-module-specifier-resolution=node' NODE_ENV=development node --trace-deprecation node_dist/backend/server-lokal.js",
+        "dev": "tsc && npm run tsc-alias && NODE_OPTIONS='--es-module-specifier-resolution=node' NODE_ENV=development node --trace-deprecation node_dist/backend/server-lokal.js",
         "build": "npm run lint && npm run build:prod && npm run tsc-alias",
         "build:dev": "tsc & NODE_ENV=development webpack --config ./webpack/webpack.dev.js",
         "build:prod": "tsc & NODE_ENV=production webpack --config ./webpack/webpack.prod.js",
@@ -19,10 +19,7 @@
         "tsc-alias": "tsc-alias -p tsconfig.json"
     },
     "lint-staged": {
-        "src/**/*.{js,jsx,ts,tsx,json}": [
-            "prettier --write",
-            "eslint --fix"
-        ]
+        "src/**/*.{js,jsx,ts,tsx,json}": ["prettier --write", "eslint --fix"]
     },
     "dependencies": {
         "@navikt/aksel-icons": "^7.39.0",
