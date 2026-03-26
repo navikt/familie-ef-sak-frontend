@@ -10,6 +10,9 @@ if (process.env.NODE_ENV === 'development') {
 
 const serverApp = createApp();
 
-serverApp.app.use('/assets', expressStaticGzip(path.join(process.cwd(), 'dist/frontend'), {}));
+serverApp.app.use(
+    '/assets',
+    expressStaticGzip(path.join(process.cwd(), 'dist/frontend/assets'), {})
+);
 
 setupRouterAndListen(serverApp);
