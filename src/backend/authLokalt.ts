@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction, RequestHandler } from 'express';
-import { logInfo, logError } from './logger';
+import { logInfo, logError } from './logger.js';
 
 const TENANT = 'trygdeetaten.no';
 const AUTHORIZATION_ENDPOINT = `https://login.microsoftonline.com/${TENANT}/oauth2/v2.0/authorize`;
@@ -142,7 +142,10 @@ export const handleCallbackLokalt = async (req: Request, res: Response): Promise
             return;
         }
 
-        const tokens = await tokenResponse.json();
+        const tokens = (await tokenResponse.json()) as {
+            id_token: string;
+            access_token: string;
+        };
         const idTokenPayload = JSON.parse(
             Buffer.from(tokens.id_token.split('.')[1], 'base64').toString()
         );

@@ -114,7 +114,7 @@ export const loggFeil = (
     headers?: Headers,
     isWarning = false
 ): void => {
-    if (process.env.NODE_ENV === 'production') {
+    if (import.meta.env.PROD) {
         getCurrentScope().setUser({
             username: innloggetSaksbehandler ? innloggetSaksbehandler.displayName : 'Ukjent bruker',
         });

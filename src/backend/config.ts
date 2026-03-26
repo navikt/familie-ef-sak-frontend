@@ -38,7 +38,7 @@ const rollerProd: Roller = {
 const Environment = (): IEnvironment => {
     if (process.env.ENV === 'local') {
         return {
-            buildPath: 'frontend_development',
+            buildPath: 'dist/frontend',
             namespace: 'local',
             sakProxyUrl: 'http://localhost:8093',
             brevProxyUrl: 'http://127.0.0.1:8001',
@@ -51,7 +51,7 @@ const Environment = (): IEnvironment => {
         };
     } else if (process.env.ENV === 'e2e') {
         return {
-            buildPath: 'frontend_production',
+            buildPath: 'dist/frontend',
             namespace: 'e2e',
             sakProxyUrl: 'http://familie-ef-sak:8093',
             brevProxyUrl: '',
@@ -64,7 +64,7 @@ const Environment = (): IEnvironment => {
         };
     } else if (process.env.ENV === 'preprod') {
         return {
-            buildPath: 'frontend_production',
+            buildPath: 'dist/frontend',
             namespace: 'preprod',
             sakProxyUrl: 'http://familie-ef-sak',
             brevProxyUrl: 'http://familie-brev',
@@ -77,7 +77,7 @@ const Environment = (): IEnvironment => {
         };
     } else if (process.env.ENV === 'lokalt-mot-preprod') {
         return {
-            buildPath: 'frontend_development',
+            buildPath: 'dist/frontend',
             namespace: 'local',
             sakProxyUrl: 'https://familie-ef-sak.intern.dev.nav.no',
             brevProxyUrl: 'https://familie-brev.intern.dev.nav.no',
@@ -91,7 +91,7 @@ const Environment = (): IEnvironment => {
     }
 
     return {
-        buildPath: 'frontend_production',
+        buildPath: 'dist/frontend',
         namespace: 'production',
         sakProxyUrl: 'http://familie-ef-sak',
         brevProxyUrl: 'http://familie-brev',

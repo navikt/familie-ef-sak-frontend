@@ -6,7 +6,6 @@ Frontend app for enslig forsørger saksbehandling (overgangsstønad)
 
 - Installere avhengigheter `npm ci`
 - Starte dev-server `npm run dev`
-- Starte mock-server `npm run start:mock`
 - Åpne `http://localhost:8000` i nettleseren din
 
 For å kunne installere avhengigheter fra navikt registry må man være logget inn i github packages. Kjør kommando:

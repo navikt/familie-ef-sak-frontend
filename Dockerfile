@@ -5,11 +5,10 @@ WORKDIR /app
 COPY assets ./assets
 COPY node_modules ./node_modules
 COPY .nais ./.nais
-COPY node_dist ./node_dist
-COPY frontend_production ./frontend_production
+COPY dist ./dist
 COPY package.json .
 
 ENV NODE_ENV production
 
 EXPOSE 8000
-CMD ["--es-module-specifier-resolution=node", "node_dist/backend/server.js"]
+CMD ["--es-module-specifier-resolution=node", "dist/server/server.js"]
