@@ -8,7 +8,7 @@ COPY .nais ./.nais
 COPY dist ./dist
 COPY package.json .
 
-ENV NODE_ENV production
+ENV NODE_ENV=production
 
 EXPOSE 8000
 CMD ["--es-module-specifier-resolution=node", "dist/server/server.js"]
