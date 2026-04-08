@@ -37,6 +37,24 @@ export function EkspanderbareVilkårpanelProvider({
 }: EkspanderbareVilkårpanelProviderProps) {
     const vilkårtyper = { ...InngangsvilkårType, ...AktivitetsvilkårType };
 
+    const [ekspanderteVilkår, settEkspanderteVilkår] = useState<
+        Record<VilkårType, EkspandertTilstand>
+    >(() =>
+        Object.keys(vilkårtyper).reduce(
+            (acc, key) => ({ ...acc, [key]: EkspandertTilstand.EKSPANDERT }),
+            {} as Record<VilkårType, EkspandertTilstand>
+        )
+    );
+
+    const finnGyldigEkspanderbarTilstand = (
+        key: VilkårType,
+        tilstand: EkspandertTilstand
+    ): EkspandertTilstand => {
+        if (ekspanderteVilkår[key] === EkspandertTilstand.KAN_IKKE_LUKKES)
+            return EkspandertTilstand.KAN_IKKE_LUKKES;
+        return tilstand;
+    };
+
     const settAlleTil = (tilstand: EkspandertTilstand, vilkårstype?: EVilkårstyper) => {
         const vilkårSomSkalEndres = vilkårstype
             ? vilkårstype === EVilkårstyper.INNGANGSVILKÅR
@@ -52,19 +70,6 @@ export function EkspanderbareVilkårpanelProvider({
             {} as Record<VilkårType, EkspandertTilstand>
         );
     };
-
-    const finnGyldigEkspanderbarTilstand = (
-        key: VilkårType,
-        tilstand: EkspandertTilstand
-    ): EkspandertTilstand => {
-        if (ekspanderteVilkår && ekspanderteVilkår[key] === EkspandertTilstand.KAN_IKKE_LUKKES)
-            return EkspandertTilstand.KAN_IKKE_LUKKES;
-        else return tilstand;
-    };
-
-    const [ekspanderteVilkår, settEkspanderteVilkår] = useState<
-        Record<VilkårType, EkspandertTilstand>
-    >(settAlleTil(EkspandertTilstand.EKSPANDERT));
 
     const lukkAlle = (vilkårstype: EVilkårstyper) => {
         const oppdaterteVilkår = settAlleTil(EkspandertTilstand.KOLLAPSET, vilkårstype);
