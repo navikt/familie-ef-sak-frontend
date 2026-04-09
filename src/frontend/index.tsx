@@ -7,20 +7,16 @@ import '@navikt/ds-css';
 import { createRoot } from 'react-dom/client';
 import { App } from './App';
 
-// eslint-disable-next-line
-const packageConfig = require('../../package.json');
-
-if (process.env.NODE_ENV !== 'development') {
+if (import.meta.env.PROD) {
     const environment = window.location.hostname;
 
     init({
         dsn: 'https://9354098a42ad42ad883c9359f4c87e8d@sentry.gc.nav.no/21',
         environment,
-        release: packageConfig.version,
     });
 }
 
-if (process.env.NODE_ENV !== 'production') {
+if (import.meta.env.DEV) {
     axe(React, ReactDOM, 1000);
 }
 

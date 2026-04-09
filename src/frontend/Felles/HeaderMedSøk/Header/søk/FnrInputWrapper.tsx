@@ -1,7 +1,6 @@
 import React, { KeyboardEventHandler } from 'react';
 import { idnr } from '@navikt/fnrvalidator';
-import { Search } from '@navikt/ds-react';
-import { SearchClearEvent } from '@navikt/ds-react/esm/form/search/Search';
+import { Search, SearchClearEvent } from '@navikt/ds-react';
 import { søkKnappId } from './Søk';
 
 interface FnrInputWrapperProps {

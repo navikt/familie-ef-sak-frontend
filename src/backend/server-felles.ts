@@ -11,16 +11,16 @@ import {
 } from './config.js';
 import { addRequestInfo, attachToken, doProxy } from './proxy.js';
 import setupRouter, { ensureAuthenticated } from './router.js';
-import { logError, logInfo } from './logger';
+import { logError, logInfo } from './logger.js';
 import {
     getToken,
     requestAzureOboToken,
     parseAzureUserToken,
     validateAzureToken,
 } from '@navikt/oasis';
-import { konfigurerMetrikker } from './felles/metrikker';
-import { prometheusTellere } from './metrikker';
-import headers from './felles/headers';
+import { konfigurerMetrikker } from './felles/metrikker.js';
+import { prometheusTellere } from './metrikker.js';
+import headers from './felles/headers.js';
 import {
     handleLoginLokalt,
     handleCallbackLokalt,
@@ -64,7 +64,13 @@ const hentBrukerFraGraph = async (token: string): Promise<Bruker | null> => {
         return null;
     }
 
-    const data = await response.json();
+    const data = (await response.json()) as {
+        displayName: string;
+        userPrincipalName: string;
+        identifier: string;
+        onPremisesSamAccountName: string;
+    };
+
     const parsed = parseAzureUserToken(token);
     const groups = parsed.ok ? (parsed.groups ?? []) : [];
 

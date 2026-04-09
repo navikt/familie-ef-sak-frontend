@@ -1,28 +1,32 @@
 import './konfigurerApp.js';
-import webpack from 'webpack';
-import webpackDevMiddleware from 'webpack-dev-middleware';
-import webpackHotMiddleware from 'webpack-hot-middleware';
-// @ts-expect-error Spesial-import
-import config from '../../webpack/webpack.dev.js';
-import { createApp, setupRouterAndListen } from './server-felles';
+import { createServer as createViteServer } from 'vite';
+import path from 'path';
+import { createApp, setupRouterAndListen } from './server-felles.js';
 
 if (process.env.NODE_ENV !== 'development') {
     throw Error('Kan ikke starte lokal-server i produksjonsmiljø');
 }
 
-const serverApp = createApp();
+const startServer = async () => {
+    const serverApp = createApp();
 
-const compiler = webpack(config);
-if (!compiler) {
-    throw Error('Klarte ikke å kompilere webpack config');
-}
+    const vite = await createViteServer({
+        server: { middlewareMode: true },
+        root: path.resolve(process.cwd(), 'src/frontend'),
+        appType: 'custom',
+    });
 
-const middleware = webpackDevMiddleware(compiler, {
-    publicPath: config.output.publicPath,
-    writeToDisk: true,
-});
+    serverApp.app.locals.vite = vite;
+    serverApp.app.use((req, res, next) => {
+        if (req.url.startsWith('/.well-known')) {
+            res.status(404).end();
+            return;
+        }
+        next();
+    });
+    serverApp.app.use(vite.middlewares);
 
-serverApp.app.use(middleware);
-serverApp.app.use(webpackHotMiddleware(compiler));
+    setupRouterAndListen(serverApp);
+};
 
-setupRouterAndListen(serverApp);
+startServer();

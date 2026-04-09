@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response, Router } from 'express';
 import path from 'path';
+import fs from 'fs';
 import {
     buildPath,
     erLokalUtvikling,
@@ -9,9 +10,9 @@ import {
     urlGosys,
     urlHistoriskPensjon,
     urlModia,
-} from './config';
-import { prometheusTellere } from './metrikker';
-import { logInfo, logWarn } from './logger';
+} from './config.js';
+import { prometheusTellere } from './metrikker.js';
+import { logInfo, logWarn } from './logger.js';
 import { getToken, validateAzureToken } from '@navikt/oasis';
 
 export const redirectHvisInternUrlIPreprod = () => {
@@ -85,9 +86,18 @@ export default (router: Router): Router => {
         '*global',
         redirectHvisInternUrlIPreprod(),
         ensureAuthenticated(),
-        (_req: Request, res: Response) => {
+        async (_req: Request, res: Response) => {
             prometheusTellere.appLoad.inc();
-            res.sendFile('index.html', { root: path.join(process.cwd(), buildPath) });
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            const vite = _req.app.locals.vite as any;
+            if (vite) {
+                const htmlPath = path.join(vite.config.root, 'index.html');
+                let html = fs.readFileSync(htmlPath, 'utf-8');
+                html = await vite.transformIndexHtml(_req.originalUrl, html);
+                res.status(200).set({ 'Content-Type': 'text/html' }).end(html);
+            } else {
+                res.sendFile('index.html', { root: path.join(process.cwd(), buildPath) });
+            }
         }
     );
 

@@ -3,10 +3,10 @@ import { ClientRequest, IncomingMessage } from 'http';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import { v4 as uuidv4 } from 'uuid';
 import { getToken, requestAzureOboToken } from '@navikt/oasis';
-import { efSakScope, erLokalUtvikling } from './config';
-import { logError, logInfo } from './logger';
+import { efSakScope, erLokalUtvikling } from './config.js';
+import { logError, logInfo } from './logger.js';
 import winston from 'winston';
-import { hentAccessTokenFraSession } from './authLokalt';
+import { hentAccessTokenFraSession } from './authLokalt.js';
 
 const restream = (proxyReq: ClientRequest, req: IncomingMessage) => {
     const expressReq = req as Request;

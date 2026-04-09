@@ -16,7 +16,7 @@ class ErrorBoundary extends React.Component<IProps> {
     // eslint-disable-next-line
     public componentDidCatch(error: any, info: any): void {
         console.log(error, info);
-        if (process.env.NODE_ENV !== 'development') {
+        if (import.meta.env.PROD) {
             getCurrentScope().setUser({
                 username: this.props.innloggetSaksbehandler.displayName,
             });
