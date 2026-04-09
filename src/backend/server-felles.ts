@@ -105,7 +105,7 @@ export const createApp = (): ServerApp => {
     if (erLokalUtvikling) {
         app.use(
             session({
-                secret: process.env.SESSION_SECRET || 'lokal-secret',
+                secret: 'lokal-secret',
                 resave: false,
                 saveUninitialized: false,
                 cookie: {
