@@ -17,23 +17,6 @@ Dersom tokenet allerede er generert, finnes det typisk i m2-settings/gradle.prop
 
 Appen krever en del environment variabler og legges til i .env fila i root på prosjektet
 
-```
-    ENV=local
-    APP_VERSION=0.0.1
-    COOKIE_KEY1='<any string of length 32>'
-    COOKIE_KEY2='<any string of length 32>'
-    PASSPORTCOOKIE_KEY1='<any string of length 32>'
-    PASSPORTCOOKIE_KEY2='<any string of length 32>'
-    PASSPORTCOOKIE_KEY3='<any string of length 12>'
-    PASSPORTCOOKIE_KEY4='<any string of length 12>'
-    SESSION_SECRET='<any string of length 32>'
-
-    EF_SAK_SCOPE='api://<AZURE_APP_CLIENT_ID fra secret til azuread-familie-ef-sak-lokal>/.default'
-    CLIENT_ID='<AZURE_APP_CLIENT_ID fra secret>'
-    CLIENT_SECRET='<AZURE_APP_CLIENT_SECRET fra secret>'
-    AZURE_APP_WELL_KNOWN_URL='<AZURE_APP_WELL_KNOWN_URL fra secret>'
-```
-
 Secrets kan bli lagt inn automatisk dersom man kjører `sh hent-og-lagre-miljøvariabler.sh`. Scriptet krever at du har
 `jq`, er pålogget naisdevice og er logget inn på google `gcloud auth login`)
 
