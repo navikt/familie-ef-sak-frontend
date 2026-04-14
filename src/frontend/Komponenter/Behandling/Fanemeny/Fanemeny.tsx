@@ -5,7 +5,7 @@ import { filtrerFanerPåBehandlingstype } from './faner';
 import { Sticky } from '../../../Felles/Visningskomponenter/Sticky';
 import { Behandling } from '../../../App/typer/fagsak';
 import { Fane } from './Fane';
-import { BorderNeutral } from '@navikt/ds-tokens/dist/tokens';
+import { BorderNeutral } from '@navikt/ds-tokens/js';
 
 const StickyMedBoxShadow = styled(Sticky)`
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);

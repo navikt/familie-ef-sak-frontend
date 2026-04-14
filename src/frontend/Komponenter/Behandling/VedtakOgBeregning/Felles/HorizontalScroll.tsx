@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { BgNeutralModerateHoverA, Neutral400A } from '@navikt/ds-tokens/dist/tokens';
+import { BgNeutralModerateHoverA, Neutral400A } from '@navikt/ds-tokens/js';
 
 export const HorizontalScroll = styled.div<{
     $synligVedLukketMeny: string;
