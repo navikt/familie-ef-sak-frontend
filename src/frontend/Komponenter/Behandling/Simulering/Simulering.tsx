@@ -10,7 +10,7 @@ import {
     IVedtak,
     IVedtakType,
 } from '../../../App/typer/vedtak';
-import { Alert, ExpansionCard, List, VStack } from '@navikt/ds-react';
+import { Alert, ExpansionCard, HStack, List, VStack } from '@navikt/ds-react';
 import { mapSimuleringstabellRader } from './utils';
 import Sanksjonsperiode from './Sanksjonsperiode';
 import { useApp } from '../../../App/context/AppContext';
@@ -20,8 +20,7 @@ import { Behandling } from '../../../App/typer/fagsak';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { BodyLongSmall } from '../../../Felles/Visningskomponenter/Tekster';
 import { AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
-
-import { BgWarningSoft, BgWarningModerateHover } from "@navikt/ds-tokens/js";
+import { ExclamationmarkTriangleFillIcon } from '@navikt/aksel-icons';
 
 const Container = styled.div`
     padding: 2rem;
@@ -33,10 +32,6 @@ const Container = styled.div`
 
 const ExpansionCardWarning = styled(ExpansionCard)`
     max-width: 42.5rem;
-    --ac-expansioncard-bg: ${BgWarningSoft};
-    --ac-expansioncard-header-bg-hover: ${BgWarningModerateHover};
-    --ac-expansioncard-border-open-color: ${BgWarningModerateHover};
-    --ac-expansioncard-border-hover-color: ${BgWarningModerateHover};
 `;
 const AlertWarning = styled(Alert)`
     max-width: 60rem;
@@ -117,8 +112,14 @@ const Simulering: React.FC<{
                     <ExpansionCardWarning aria-label={'Kreditortrekk'} size={'small'}>
                         <ExpansionCard.Header>
                             <ExpansionCard.Title>
-                                Bruker har kreditortrekk (
-                                {formaterIsoDato(simuleringsresultat.tidSimuleringHentet)})
+                                <HStack wrap={false} gap="space-8" align="center">
+                                    <ExclamationmarkTriangleFillIcon
+                                        title="Advarsel om kreditortrekk"
+                                        fontSize="1.5rem"
+                                    />
+                                    Bruker har kreditortrekk (
+                                    {formaterIsoDato(simuleringsresultat.tidSimuleringHentet)})
+                                </HStack>
                             </ExpansionCard.Title>
                             <ExpansionCard.Description>
                                 Hvis bruker har feilutbetalt overgangsstønad, må du sjekke om totalt
