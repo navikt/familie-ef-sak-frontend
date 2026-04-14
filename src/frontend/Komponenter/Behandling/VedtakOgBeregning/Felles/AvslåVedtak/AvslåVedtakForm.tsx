@@ -5,15 +5,15 @@ import { VEDTAK_OG_BEREGNING } from '../konstanter';
 import { useApp } from '../../../../../App/context/AppContext';
 import SelectAvslagÅrsak from './SelectAvslagÅrsak';
 import { EAvslagÅrsak } from '../../../../../App/typer/vedtak';
-import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
 import HovedKnapp from '../../../../../Felles/Knapper/HovedKnapp';
 import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
 import BeregnetInntektKalkulator from '../../Overgangsstønad/InnvilgeVedtak/BeregnetInntektKalkulator';
 import { genererBeregnetInntektTekst } from '../../../../../App/hooks/useVerdierForBrev';
 import { HStack } from '@navikt/ds-react';
+import { Neutral100 } from "@navikt/ds-tokens/js";
 
 const Form = styled.form`
-    background-color: ${AGray50};
+    background-color: ${Neutral100};
     padding: 1rem;
     display: flex;
     flex-direction: column;

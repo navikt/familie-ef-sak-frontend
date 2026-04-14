@@ -22,12 +22,12 @@ import { v4 as uuidv4 } from 'uuid';
 import JaNeiRadioGruppe from '../../Felles/JaNeiRadioGruppe';
 import { HorizontalScroll } from '../../Felles/HorizontalScroll';
 import { useBehandling } from '../../../../../App/context/BehandlingContext';
-import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
 import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
+import { Neutral100 } from "@navikt/ds-tokens/js";
 
 const Container = styled.div`
     padding: 1rem;
-    background-color: ${AGray50};
+    background-color: ${Neutral100};
 `;
 
 const Grid = styled.div<{ $lesevisning: boolean }>`

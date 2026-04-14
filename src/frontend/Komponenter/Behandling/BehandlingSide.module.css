@@ -20,7 +20,7 @@
 }
 
 .hoyreMenyWrapper {
-    border-left: 2px solid var(--a-border-default);
+    border-left: 2px solid var(--ax-border-neutral);
     background-color: white;
     flex-shrink: 1;
     flex-grow: 0;

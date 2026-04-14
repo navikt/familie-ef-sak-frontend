@@ -3,12 +3,6 @@ import { BodyShort, Button, Dropdown, HStack, Label, Select } from '@navikt/ds-r
 import { CalculatorIcon, ChevronDownIcon } from '@navikt/aksel-icons';
 import styled from 'styled-components';
 import { Samværskalkulator } from '../../../../Felles/Kalkulator/Samværskalkulator';
-import {
-    AGray300,
-    AGray50,
-    ASurfaceDefault,
-    ASurfaceInfoSubtle,
-} from '@navikt/ds-tokens/dist/tokens';
 import { Samværsandel, Samværsavtale, Samværsuke } from '../../../../App/typer/samværsavtale';
 import { IBarnMedSamvær } from './typer';
 import { utledNavnOgAlderForAleneomsorg } from './utils';
@@ -22,25 +16,27 @@ import {
     utledVisningstekst,
 } from '../../../../Felles/Kalkulator/utils';
 
+import { Neutral400, Neutral100, BgInfoSoft, BgDefault } from "@navikt/ds-tokens/js";
+
 const Kalkulator = styled(Samværskalkulator)`
     padding: 1rem;
-    background-color: ${ASurfaceDefault};
-    border: 1rem solid ${AGray50};
+    background-color: ${BgDefault};
+    border: 1rem solid ${Neutral100};
 `;
 
 const StyledHStack = styled(HStack)<{ $borderBottom: boolean }>`
-    border-bottom: ${(props) => (props.$borderBottom ? `1px solid ${AGray300}` : 'none')};
+    border-bottom: ${(props) => (props.$borderBottom ? `1px solid ${Neutral400}` : 'none')};
 `;
 
 const Divider = styled.div`
     margin: 1rem;
-    border-bottom: 1px solid ${AGray300};
+    border-bottom: 1px solid ${Neutral400};
 `;
 
 const OppsummeringContainer = styled(HStack)`
     padding-left: 1rem;
-    background: ${ASurfaceInfoSubtle};
-    border: 1rem solid ${AGray50};
+    background: ${BgInfoSoft};
+    border: 1rem solid ${Neutral100};
 `;
 
 const DropdownMenu = styled(Dropdown.Menu)`

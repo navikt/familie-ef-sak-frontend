@@ -1,15 +1,15 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { Dokumentinfo } from '../../../../App/typer/dokument';
-import { AFontWeightRegular } from '@navikt/ds-tokens/dist/tokens';
 import { DokumentListeElement } from './DokumentListeElement';
+import { FontWeightRegular } from "@navikt/ds-tokens/js";
 
 const Container = styled.ul`
     padding: 0;
     margin: 0 1rem;
     list-style-type: none;
     span {
-        font-weight: ${AFontWeightRegular};
+        font-weight: ${FontWeightRegular};
     }
 `;
 

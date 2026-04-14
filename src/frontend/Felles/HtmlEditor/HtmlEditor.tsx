@@ -4,7 +4,7 @@ import 'quill/dist/quill.snow.css';
 import { BlockBlot } from 'parchment';
 import { AlertError } from '../Visningskomponenter/Alerts';
 import styled from 'styled-components';
-import { ASurfaceDefault, ATextSubtle } from '@navikt/ds-tokens/dist/tokens';
+import { TextNeutralSubtle, BgDefault } from "@navikt/ds-tokens/js";
 type Props = {
     defaultValue?: string;
     onTextChange: (html: string, renTekst: string) => void;
@@ -48,8 +48,8 @@ const HtmlEditorWrapper = styled.div`
         &:active::after,
         &:focus::after {
             font-size: 0.8rem;
-            background-color: ${ASurfaceDefault};
-            color: ${ATextSubtle} !important;
+            background-color: ${BgDefault};
+            color: ${TextNeutralSubtle} !important;
             white-space: nowrap;
             padding: 0.3rem;
         }

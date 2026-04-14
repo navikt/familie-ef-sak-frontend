@@ -3,18 +3,19 @@ import styled from 'styled-components';
 import { BodyShort, HStack } from '@navikt/ds-react';
 import { AlertWarning } from '../Visningskomponenter/Alerts';
 import { adressebeskyttelsestyper } from './utils';
-import { AFontSizeSmall, AGray100, AOrange300 } from '@navikt/ds-tokens/dist/tokens';
 import { formaterPersonIdent } from './Header/søk/formatter';
 import { ISøkeresultat } from './Header/søkeresultat';
+
+import { Warning400, Neutral200, FontSizeSmall } from "@navikt/ds-tokens/js";
 
 const ResultatElement = styled.div<{ $fokus: boolean }>`
     list-style-type: none;
     padding: 0.5rem;
-    outline: ${({ $fokus }) => ($fokus ? `3px solid ${AOrange300}` : '')};
+    outline: ${({ $fokus }) => ($fokus ? `3px solid ${Warning400}` : '')};
     border-radius: 8px;
 
     &:hover {
-        background-color: ${AGray100};
+        background-color: ${Neutral200};
         cursor: pointer;
     }
 `;
@@ -25,7 +26,7 @@ const ResultatIkonOgRolle = styled.div`
     padding-right: 1rem;
     align-items: center;
     min-width: 3.5rem;
-    font-size: ${AFontSizeSmall};
+    font-size: ${FontSizeSmall};
 
     svg {
         text-align: center;

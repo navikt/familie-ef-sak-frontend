@@ -3,12 +3,12 @@ import { IVilkår } from '../../Inngangsvilkår/vilkår';
 import { Heading } from '@navikt/ds-react';
 import { ResultatVisning } from './ResultatVisning';
 import styled from 'styled-components';
-import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
 import { sorterUtAktivitetsvilkår, sorterUtInngangsvilkår } from './utils';
+import { Neutral100 } from "@navikt/ds-tokens/js";
 
 const Container = styled.div`
     padding: 1rem;
-    background-color: ${AGray50};
+    background-color: ${Neutral100};
 `;
 
 export const Vilkårsvurdering: React.FC<{

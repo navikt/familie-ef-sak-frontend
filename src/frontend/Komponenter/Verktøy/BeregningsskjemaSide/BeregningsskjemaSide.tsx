@@ -243,7 +243,7 @@ export const BeregningsskjemaSide: React.FC = () => {
                                 key={`${beregning.periode.årstall}-${beregning.periode.måned}`}
                                 style={{
                                     backgroundColor: beregning.beregnetfra
-                                        ? 'var(--a-gray-50)'
+                                        ? 'var(--ax-neutral-100)'
                                         : 'inherit',
                                 }}
                             >

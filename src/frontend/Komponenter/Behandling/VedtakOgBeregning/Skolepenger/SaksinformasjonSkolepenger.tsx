@@ -18,15 +18,16 @@ import {
     BodyShortSmall,
     DetailSmall,
 } from '../../../../Felles/Visningskomponenter/Tekster';
-import { ABorderDivider, AGray50 } from '@navikt/ds-tokens/dist/tokens';
 import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
+
+import { Neutral100, BorderNeutralSubtle } from "@navikt/ds-tokens/js";
 
 const Container = styled.div`
     display: flex;
     flex-direction: column;
     gap: 1rem;
     padding: 1rem;
-    background-color: ${AGray50};
+    background-color: ${Neutral100};
     width: 26rem;
 
     .spacing {
@@ -35,7 +36,7 @@ const Container = styled.div`
 `;
 
 const Divider = styled.div`
-    border-bottom: 1px solid ${ABorderDivider};
+    border-bottom: 1px solid ${BorderNeutralSubtle};
 `;
 
 const Grid = styled.div`

@@ -10,7 +10,7 @@ import { Button, Heading, HelpText } from '@navikt/ds-react';
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
 import { NullstillVedtakModalContext } from './NullstillVedtakModalContext';
 import { EnsligFamilieSelect } from '../../../../Felles/Input/EnsligFamilieSelect';
-import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
+import { Neutral100 } from "@navikt/ds-tokens/js";
 
 interface Props {
     behandling: Behandling;
@@ -36,7 +36,7 @@ const FlexCenter = styled.div`
 
 const Container = styled.section`
     padding: 1rem;
-    background-color: ${AGray50};
+    background-color: ${Neutral100};
 `;
 
 const SelectVedtaksresultat = (props: Props): ReactNode => {

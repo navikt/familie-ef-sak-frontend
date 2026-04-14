@@ -1,5 +1,4 @@
 import { CheckmarkCircleIcon, XMarkOctagonIcon } from '@navikt/aksel-icons';
-import { AIconDanger, AIconSuccess } from '@navikt/ds-tokens/dist/tokens';
 import { Heading, HStack } from '@navikt/ds-react';
 import React, { FC } from 'react';
 import {
@@ -8,6 +7,8 @@ import {
     Vilkårsresultat,
     resultatTilTekst,
 } from '../Inngangsvilkår/vilkår';
+
+import { TextDangerDecoration, TextSuccessDecoration } from "@navikt/ds-tokens/js";
 
 export const LagTittel: FC<{
     vurdering: IVurdering;
@@ -35,11 +36,11 @@ export const LagTittel: FC<{
             </Heading>
 
             {skalViseCheckmarkIkon && (
-                <CheckmarkCircleIcon title="check-success" fontSize="1.5rem" color={AIconSuccess} />
+                <CheckmarkCircleIcon title="check-success" fontSize="1.5rem" color={TextSuccessDecoration} />
             )}
 
             {skalViseXMarkIkon && (
-                <XMarkOctagonIcon title="x-danger" fontSize="1.5rem" color={AIconDanger} />
+                <XMarkOctagonIcon title="x-danger" fontSize="1.5rem" color={TextDangerDecoration} />
             )}
         </HStack>
     );

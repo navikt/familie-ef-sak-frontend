@@ -7,10 +7,11 @@ import { base64toBlob, åpnePdfIEgenTab } from '../../../App/utils/utils';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 import { BodyLong, Button, Heading, Radio, RadioGroup, VStack } from '@navikt/ds-react';
 import { FileTextIcon } from '@navikt/aksel-icons';
-import { ABlue50, ARed500 } from '@navikt/ds-tokens/dist/tokens';
 import { HeaderBegrunnelse } from './HeaderBegrunnelse';
 import { EnsligTextArea } from '../../../Felles/Input/TekstInput/EnsligTextArea';
 import { FireGangerRettsgebyr } from './FireGangerRettsgebyr';
+
+import { Danger600, Accent100 } from "@navikt/ds-tokens/js";
 
 const Container = styled(VStack)`
     margin-top: 1.5rem;
@@ -27,7 +28,7 @@ const ErrorTekst = styled.div`
     font-size: 1rem;
     line-height: 1.375rem;
     font-weight: 600;
-    color: ${ARed500};
+    color: ${Danger600};
     margin-bottom: 1rem;
 `;
 
@@ -35,7 +36,7 @@ const RadioButton = styled(Radio)`
     padding: 1rem;
     margin-bottom: 1rem;
     width: 100%;
-    background-color: ${ABlue50};
+    background-color: ${Accent100};
 `;
 
 const BodyLongMarginBottom = styled(BodyLong)`

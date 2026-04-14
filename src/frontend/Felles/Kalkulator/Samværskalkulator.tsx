@@ -10,7 +10,6 @@ import {
     VStack,
 } from '@navikt/ds-react';
 import styled from 'styled-components';
-import { ABorderDivider, ASurfaceInfoSubtle } from '@navikt/ds-tokens/dist/tokens';
 import {
     Samværsandel,
     samværsandelTilTekst,
@@ -20,6 +19,8 @@ import {
 import { formaterStrengMedStorForbokstav } from '../../App/utils/formatter';
 import { CalculatorIcon, TrashIcon } from '@navikt/aksel-icons';
 import { utledVisningstekst } from './utils';
+
+import { BgInfoSoft, BorderNeutralSubtle } from "@navikt/ds-tokens/js";
 
 const Div = styled.div`
     height: 3.25rem;
@@ -31,12 +32,12 @@ const StyledSelect = styled(Select)`
 
 const SelectContainer = styled(HStack)`
     padding: 1rem 1.5rem 1.5rem 1.5rem;
-    background: ${ASurfaceInfoSubtle};
+    background: ${BgInfoSoft};
 `;
 
 const OppsummeringContainer = styled(HStack)`
     padding: 1rem 1.5rem 1rem 1.5rem;
-    background: ${ASurfaceInfoSubtle};
+    background: ${BgInfoSoft};
 `;
 
 const CheckboxGruppe = styled(CheckboxGroup)`
@@ -104,7 +105,7 @@ const Grid = styled.div`
     .gridItem::after {
         content: '';
         position: absolute;
-        background-color: ${ABorderDivider};
+        background-color: ${BorderNeutralSubtle};
         z-index: 1;
     }
 

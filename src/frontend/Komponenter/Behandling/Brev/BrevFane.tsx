@@ -118,7 +118,7 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
                     <HStack
                         gap="4"
                         padding={'space-16'}
-                        style={{ backgroundColor: 'var(--a-gray-50)' }}
+                        style={{ backgroundColor: 'var(--ax-neutral-100)' }}
                     >
                         <div style={{ flex: 1 }}>
                             {feilmelding && <AlertError size="small">{feilmelding}</AlertError>}

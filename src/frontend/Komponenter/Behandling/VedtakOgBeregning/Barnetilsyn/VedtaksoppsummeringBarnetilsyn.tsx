@@ -13,7 +13,7 @@ import { Søknadsinformasjon } from '../Felles/Søknadsinformasjon';
 import { OppsummeringAvBarn } from './OppsummeringAvBarn';
 import { BreakWordBodyLongSmall } from '../../../../Felles/Visningskomponenter/BreakWordBodyLongSmall';
 import { Vilkårsvurdering } from '../Felles/Vilkårsvurdering';
-import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
+import { Neutral100 } from "@navikt/ds-tokens/js";
 
 const OppsummeringContainer = styled.div`
     display: flex;
@@ -23,7 +23,7 @@ const OppsummeringContainer = styled.div`
 
 const VurderingTilsynsutgifter = styled.div`
     padding: 1rem;
-    background-color: ${AGray50};
+    background-color: ${Neutral100};
 `;
 
 const Container = styled.div`

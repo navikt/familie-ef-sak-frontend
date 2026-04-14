@@ -35,15 +35,16 @@ import { HorizontalScroll } from '../../Felles/HorizontalScroll';
 import { initierValgteInntektstyper, tomInntektsperiodeRad } from '../Felles/utils';
 import { AlertError, AlertWarning } from '../../../../../Felles/Visningskomponenter/Alerts';
 import { EInntektstype, inntektsTypeTilKey, inntektsTypeTilTekst } from '../Felles/typer';
-import { ABorderDivider, AGray50 } from '@navikt/ds-tokens/dist/tokens';
 import { IngenBegrunnelseOppgitt } from './IngenBegrunnelseOppgitt';
 import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
 import BeregnetInntektKalkulator from './BeregnetInntektKalkulator';
 import { genererBeregnetInntektTekst } from '../../../../../App/hooks/useVerdierForBrev';
 
+import { Neutral100, BorderNeutralSubtle } from "@navikt/ds-tokens/js";
+
 const Container = styled.div`
     padding: 1rem;
-    background-color: ${AGray50};
+    background-color: ${Neutral100};
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -98,7 +99,7 @@ const ReadMoreMedMarginBottom = styled(ReadMore)`
 
 const SamordningsfradragTypeContainer = styled.div`
     margin: 1.5rem 0;
-    border-top: 1px solid ${ABorderDivider};
+    border-top: 1px solid ${BorderNeutralSubtle};
     width: 100%;
 `;
 

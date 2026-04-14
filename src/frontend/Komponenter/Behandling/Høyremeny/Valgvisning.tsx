@@ -3,15 +3,16 @@ import styled from 'styled-components';
 import { Høyremenyvalg } from './Høyremeny';
 import { FolderIcon, ClockFillIcon } from '@navikt/aksel-icons';
 import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
-import { ABlue400, ABlue500, AGray100, ABorderDivider } from '@navikt/ds-tokens/dist/tokens';
+
+import { Accent600, Accent500, Neutral200, BorderNeutralSubtle } from "@navikt/ds-tokens/js";
 
 const StyledIkonWrapper = styled.div`
     width: 100%;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    border-top: ${ABorderDivider} solid 2px;
-    border-bottom: ${ABorderDivider} solid 2px;
+    border-top: ${BorderNeutralSubtle} solid 2px;
+    border-bottom: ${BorderNeutralSubtle} solid 2px;
     text-align: center;
 
     .navds-body-short {
@@ -28,19 +29,19 @@ const StyledIkon = styled.div<IkonProps>`
     padding-top: 0.75rem;
     padding-bottom: 0.25rem;
 
-    background-color: ${ABlue500};
-    color: ${ABlue500};
+    background-color: ${Accent600};
+    color: ${Accent600};
 
     &:hover {
         cursor: pointer;
         svg {
-            fill: ${ABlue400};
+            fill: ${Accent500};
         }
-        border-bottom: 5px solid ${ABlue400};
+        border-bottom: 5px solid ${Accent500};
     }
 
-    background-color: ${(props) => (props.$erAktiv ? AGray100 : 'white')};
-    border-bottom: 5px solid ${(props) => (props.$erAktiv ? ABlue500 : 'white')};
+    background-color: ${(props) => (props.$erAktiv ?Neutral200 : 'white')};
+    border-bottom: 5px solid ${(props) => (props.$erAktiv ?Accent600 : 'white')};
 `;
 
 interface ValgvisningProps {

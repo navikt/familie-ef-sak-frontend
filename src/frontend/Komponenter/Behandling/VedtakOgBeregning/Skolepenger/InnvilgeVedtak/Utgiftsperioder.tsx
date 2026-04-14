@@ -7,10 +7,10 @@ import { tomUtgift } from '../Felles/typer';
 import InputMedTusenSkille from '../../../../../Felles/Visningskomponenter/InputMedTusenskille';
 import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 import { SmallTextLabel } from '../../../../../Felles/Visningskomponenter/Tekster';
-import { ABlue300 } from '@navikt/ds-tokens/dist/tokens';
 import LeggTilKnapp from '../../../../../Felles/Knapper/LeggTilKnapp';
 import { Heading } from '@navikt/ds-react';
 import { FormErrors } from '../../../../../App/hooks/felles/useFormState';
+import { Accent400 } from "@navikt/ds-tokens/js";
 
 const Container = styled.div`
     display: flex;
@@ -42,7 +42,7 @@ const Grid = styled.div`
 `;
 
 const VertialDivider = styled.span`
-    border-left: 4px solid ${ABlue300};
+    border-left: 4px solid ${Accent400};
     margin-left: 0.25rem;
 `;
 

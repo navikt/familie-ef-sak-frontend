@@ -5,13 +5,13 @@ import { NotePencilIcon } from '@navikt/aksel-icons';
 import { LogiskeVedlegg } from './LogiskeVedlegg';
 import styled from 'styled-components';
 import { Dokumentinfo } from '../../../App/typer/dokument';
-import { ABlue500 } from '@navikt/ds-tokens/dist/tokens';
+import { Accent600 } from "@navikt/ds-tokens/js";
 
 const Div = styled.div<{ $erHovedDokument: boolean }>`
     margin-left: ${(props) => (props.$erHovedDokument ? '0rem' : '2rem')};
 `;
 
-const standardFargeIkkeBesøktLenke = ABlue500;
+const standardFargeIkkeBesøktLenke =Accent600;
 const standardFargeBesøktLenke = 'purple';
 
 const Tittel = styled.a<{ $harBlittBesøkt: boolean }>`

@@ -19,8 +19,9 @@ import { useBehandling } from '../../../App/context/BehandlingContext';
 import { Behandling } from '../../../App/typer/fagsak';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { BodyLongSmall } from '../../../Felles/Visningskomponenter/Tekster';
-import { ASurfaceWarningSubtle, ASurfaceWarningSubtleHover } from '@navikt/ds-tokens/dist/tokens';
 import { AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
+
+import { BgWarningSoft, BgWarningModerateHover } from "@navikt/ds-tokens/js";
 
 const Container = styled.div`
     padding: 2rem;
@@ -32,10 +33,10 @@ const Container = styled.div`
 
 const ExpansionCardWarning = styled(ExpansionCard)`
     max-width: 42.5rem;
-    --ac-expansioncard-bg: ${ASurfaceWarningSubtle};
-    --ac-expansioncard-header-bg-hover: ${ASurfaceWarningSubtleHover};
-    --ac-expansioncard-border-open-color: ${ASurfaceWarningSubtleHover};
-    --ac-expansioncard-border-hover-color: ${ASurfaceWarningSubtleHover};
+    --ac-expansioncard-bg: ${BgWarningSoft};
+    --ac-expansioncard-header-bg-hover: ${BgWarningModerateHover};
+    --ac-expansioncard-border-open-color: ${BgWarningModerateHover};
+    --ac-expansioncard-border-hover-color: ${BgWarningModerateHover};
 `;
 const AlertWarning = styled(Alert)`
     max-width: 60rem;

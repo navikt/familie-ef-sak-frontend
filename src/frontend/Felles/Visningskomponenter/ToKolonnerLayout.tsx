@@ -1,11 +1,11 @@
 import React, { ReactNode } from 'react';
 import styled from 'styled-components';
-import { ABorderSubtle } from '@navikt/ds-tokens/dist/tokens';
+import { BorderNeutralSubtle } from "@navikt/ds-tokens/js";
 
 const Container = styled.div<{ $skillelinje?: boolean }>`
     display: flex;
     margin: 2rem;
-    border-bottom: ${(props) => (props.$skillelinje ? `3px solid ${ABorderSubtle}` : 'none')};
+    border-bottom: ${(props) => (props.$skillelinje ? `3px solid ${BorderNeutralSubtle}` : 'none')};
 
     @media (max-width: 1600px) {
         flex-direction: column;

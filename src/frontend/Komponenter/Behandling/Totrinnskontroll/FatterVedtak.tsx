@@ -19,9 +19,9 @@ import { ÅrsakUnderkjent, årsakUnderkjentTilTekst } from '../../../App/typer/t
 import { useNavigate } from 'react-router-dom';
 import { RessursStatus } from '../../../App/typer/ressurs';
 import { Behandling } from '../../../App/typer/fagsak';
-import { ABorderSubtle } from '@navikt/ds-tokens/dist/tokens';
 import { harVedtaksresultatMedTilkjentYtelse } from '../../../App/hooks/useHentVedtak';
 import { Steg } from '../Høyremeny/Steg';
+import { BorderNeutralSubtle } from "@navikt/ds-tokens/js";
 
 const SubmitButtonWrapper = styled.div`
     display: flex;
@@ -29,7 +29,7 @@ const SubmitButtonWrapper = styled.div`
 `;
 
 const Container = styled.div`
-    border: 1px solid ${ABorderSubtle};
+    border: 1px solid ${BorderNeutralSubtle};
     margin: 1rem 0.5rem;
     padding: 1rem;
     border-radius: 0.125rem;

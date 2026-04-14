@@ -15,15 +15,15 @@ import { FormErrors } from '../../../../../App/hooks/felles/useFormState';
 import { InnvilgeVedtakForm } from '../Felles/typer';
 import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 import TilbakestillKnapp from '../../../../../Felles/Knapper/TilbakestillKnapp';
-import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
 import Utgiftsperioder from './Utgiftsperioder';
+import { Neutral100 } from "@navikt/ds-tokens/js";
 
 const Skoleårsperiode = styled.div`
     display: flex;
     flex-direction: column;
     row-gap: 0.75rem;
     padding: 1rem;
-    background-color: ${AGray50};
+    background-color: ${Neutral100};
 `;
 
 const TilbakestillButton = styled(TilbakestillKnapp)`

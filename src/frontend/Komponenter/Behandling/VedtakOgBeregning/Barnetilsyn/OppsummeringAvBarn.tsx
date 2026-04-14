@@ -11,14 +11,15 @@ import { datoTilAlder, tilDato } from '../../../../App/utils/dato';
 import { Vilkårsresultat } from '../../Inngangsvilkår/vilkår';
 import { formaterIsoDato } from '../../../../App/utils/formatter';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
-import { ABorderDivider, AGray50 } from '@navikt/ds-tokens/dist/tokens';
+
+import { Neutral100, BorderNeutralSubtle } from "@navikt/ds-tokens/js";
 
 const Container = styled.div`
     display: flex;
     flex-direction: column;
     gap: 1rem;
     padding: 1rem;
-    background-color: ${AGray50};
+    background-color: ${Neutral100};
     min-width: 26rem;
 `;
 
@@ -33,7 +34,7 @@ const Grid = styled.div`
 `;
 
 const Divider = styled.div`
-    border-bottom: 1px solid ${ABorderDivider};
+    border-bottom: 1px solid ${BorderNeutralSubtle};
 `;
 
 const IkonOgTekstWrapper = styled.div`

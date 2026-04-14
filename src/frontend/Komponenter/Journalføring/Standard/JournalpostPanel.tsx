@@ -10,7 +10,6 @@ import {
 } from '@navikt/ds-react';
 import styled from 'styled-components';
 import { FolderFileFillIcon, FolderFileIcon } from '@navikt/aksel-icons';
-import { ABlue500 } from '@navikt/ds-tokens/dist/tokens';
 import { Stønadstype, stønadstypeTilTekst } from '../../../App/typer/behandlingstema';
 import { IJournalpost } from '../../../App/typer/journalføring';
 import { formaterIsoDato } from '../../../App/utils/formatter';
@@ -24,9 +23,10 @@ import {
     JournalføringStateRequest,
 } from '../../../App/hooks/useJournalføringState';
 import { Arkivtema, arkivtemaerTilTekst } from '../../../App/typer/arkivtema';
+import { Accent600 } from "@navikt/ds-tokens/js";
 
 const IkonContainer = styled.div`
-    color: ${ABlue500};
+    color: ${Accent600};
 `;
 
 const ExpansionCardHeader = styled(ExpansionCard.Header)`

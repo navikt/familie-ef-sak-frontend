@@ -10,7 +10,6 @@ import {
 import { useApp } from '../../../App/context/AppContext';
 import { Alert, Button, Heading, Textarea } from '@navikt/ds-react';
 import styled from 'styled-components';
-import { ADeepblue50 } from '@navikt/ds-tokens/dist/tokens';
 import { IOppgave } from '../../Oppgavebenk/typer/oppgave';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { Prioritet } from '../../Oppgavebenk/typer/oppgavetype';
@@ -30,6 +29,7 @@ import { EksisterendeBeskrivelse } from './EksisterendeBeskrivelse';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { LokalkontorOppgavevalg, SendtOppgave } from './LokalkontorOppgavevalg';
 import { TaAvVentBekreftModal } from './TaAvVentBekreftModal';
+import { BrandBlue100 } from "@navikt/ds-tokens/js";
 
 const AlertStripe = styled(Alert)`
     margin-top: 1rem;
@@ -43,7 +43,7 @@ const OppgaveValg = styled.div`
 const SettPåVentWrapper = styled.div`
     display: grid;
     grid-template-rows: auto 1fr;
-    background-color: ${ADeepblue50};
+    background-color: ${BrandBlue100};
     padding: 2rem;
     gap: 1rem;
 `;

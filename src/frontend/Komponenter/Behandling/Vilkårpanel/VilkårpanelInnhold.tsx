@@ -1,11 +1,11 @@
 import React, { FC, ReactNode } from 'react';
 import styled from 'styled-components';
-import { AGray300 } from '@navikt/ds-tokens/dist/tokens';
 import { Box } from '@navikt/ds-react';
+import { Neutral400 } from "@navikt/ds-tokens/js";
 
 const Container = styled.div<{ $borderBottom: boolean }>`
     display: flex;
-    border-bottom: ${(props) => (props.$borderBottom ? `1px solid ${AGray300}` : 'none')};
+    border-bottom: ${(props) => (props.$borderBottom ? `1px solid ${Neutral400}` : 'none')};
 
     @media (max-width: 1600px) {
         flex-direction: column;

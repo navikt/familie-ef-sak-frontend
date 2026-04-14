@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { AGray800 } from '@navikt/ds-tokens/dist/tokens';
+import { Neutral900 } from "@navikt/ds-tokens/js";
 
 const breddeKolonner = (antallKolonner?: number) => {
     if (antallKolonner === 4) {
@@ -55,7 +55,7 @@ export const GridTabell = styled.div<{
             margin-right: 1rem;
         }
         .navds-tag {
-            color: ${AGray800};
+            color: ${Neutral900};
         }
     }
 
