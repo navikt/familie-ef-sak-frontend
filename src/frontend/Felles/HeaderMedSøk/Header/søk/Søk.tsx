@@ -82,19 +82,16 @@ export const Søk = ({
                     }}
                 />
             </SøkContainer>
-
             {ankerRef.current && (
                 <Popover
                     id={'søkeresultat'}
                     anchorEl={ankerRef.current}
-                    arrow={false}
                     placement="bottom"
                     tabIndex={-1}
                     open={true}
                     onClose={() => {
                         return;
-                    }}
-                >
+                    }}>
                     <Popover.Content
                         style={{
                             padding: '0px',
