@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { MetaPurple500 } from "@navikt/ds-tokens/js";
+import { MetaPurple500 } from '@navikt/ds-tokens/js';
 
 export const VurderingLesemodusGrid = styled.div`
     display: grid;

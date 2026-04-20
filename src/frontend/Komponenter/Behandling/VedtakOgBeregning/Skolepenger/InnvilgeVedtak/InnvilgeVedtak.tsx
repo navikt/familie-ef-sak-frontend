@@ -35,7 +35,7 @@ import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
 import { CalculatorIcon } from '@navikt/aksel-icons';
 import { InnvilgeVedtakForm } from '../Felles/typer';
 import { ModalState } from '../../../Modal/NyEierModal';
-import { Danger600 } from "@navikt/ds-tokens/js";
+import { Danger600 } from '@navikt/ds-tokens/js';
 
 export const Form = styled.form`
     display: flex;

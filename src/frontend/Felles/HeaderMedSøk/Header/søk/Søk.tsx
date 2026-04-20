@@ -91,7 +91,8 @@ export const Søk = ({
                     open={true}
                     onClose={() => {
                         return;
-                    }}>
+                    }}
+                >
                     <Popover.Content
                         style={{
                             padding: '0px',

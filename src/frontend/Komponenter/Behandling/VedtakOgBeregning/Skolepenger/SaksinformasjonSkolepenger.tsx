@@ -20,7 +20,7 @@ import {
 } from '../../../../Felles/Visningskomponenter/Tekster';
 import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 
-import { Neutral100, BorderNeutralSubtle } from "@navikt/ds-tokens/js";
+import { Neutral100, BorderNeutralSubtle } from '@navikt/ds-tokens/js';
 
 const Container = styled.div`
     display: flex;

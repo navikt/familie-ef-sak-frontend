@@ -1,7 +1,7 @@
 import React, { FC, ReactNode } from 'react';
 import styled from 'styled-components';
 import { Box } from '@navikt/ds-react';
-import { Neutral400 } from "@navikt/ds-tokens/js";
+import { Neutral400 } from '@navikt/ds-tokens/js';
 
 const Container = styled.div<{ $borderBottom: boolean }>`
     display: flex;

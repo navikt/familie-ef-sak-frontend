@@ -12,7 +12,7 @@ import { Behandling } from '../../../App/typer/fagsak';
 import TilegnetSaksbehandler from './TilegnetSaksbehandler';
 import TildelOppgave from './TildelOppgave';
 import styles from './Høyremeny.module.css';
-import { Accent500 } from "@navikt/ds-tokens/js";
+import { Accent500 } from '@navikt/ds-tokens/js';
 
 const StyledBack = styled(ChevronLeftIcon)`
     border-radius: 0;

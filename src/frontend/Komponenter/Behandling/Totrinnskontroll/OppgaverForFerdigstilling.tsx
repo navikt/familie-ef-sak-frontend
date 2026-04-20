@@ -30,7 +30,7 @@ export const OppgaverForFerdigstilling: FC<{
                         <Heading size="small">
                             Følgende oppgaver blir ferdigstilt når vedtaket er godkjent:
                         </Heading>
-                        <Box background={"meta-lime-soft"} padding="space-8">
+                        <Box background="meta-lime-soft" padding="space-8">
                             <Table>
                                 <Table.Header>
                                     <Table.Row>

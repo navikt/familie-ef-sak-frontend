@@ -12,7 +12,7 @@ import { v4 as uuidv4 } from 'uuid';
 import HovedKnapp from '../../../../../Felles/Knapper/HovedKnapp';
 import { ModalState } from '../../../Modal/NyEierModal';
 import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
-import { Neutral100 } from "@navikt/ds-tokens/js";
+import { Neutral100 } from '@navikt/ds-tokens/js';
 
 const Form = styled.form`
     padding: 1rem;

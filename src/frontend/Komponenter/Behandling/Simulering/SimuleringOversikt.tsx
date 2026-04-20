@@ -6,7 +6,7 @@ import { NestePeriode } from './NestePeriode';
 import { Heading } from '@navikt/ds-react';
 import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 
-import { Success600, Danger600 } from "@navikt/ds-tokens/js";
+import { Success600, Danger600 } from '@navikt/ds-tokens/js';
 
 interface ISimuleringOversikt {
     simulering: SimuleringResultat;
@@ -29,7 +29,7 @@ export const RadVerdi = styled.td`
 `;
 
 export const ResultatVerdi = styled(BodyShortSmall)<{ $verdi: number }>`
-    color: ${(props) => (props.$verdi > 0 ?Success600 :Danger600)};
+    color: ${(props) => (props.$verdi > 0 ? Success600 : Danger600)};
 `;
 
 export const SimuleringOversiktTabell = styled.table`

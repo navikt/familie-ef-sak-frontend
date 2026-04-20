@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { Dokumentinfo } from '../../../../App/typer/dokument';
 import { DokumentListeElement } from './DokumentListeElement';
-import { FontWeightRegular } from "@navikt/ds-tokens/js";
+import { FontWeightRegular } from '@navikt/ds-tokens/js';
 
 const Container = styled.ul`
     padding: 0;

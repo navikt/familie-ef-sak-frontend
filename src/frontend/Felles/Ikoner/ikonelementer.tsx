@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Neutral400 } from "@navikt/ds-tokens/js";
+import { Neutral400 } from '@navikt/ds-tokens/js';
 
 export const TidslinjeIkonbakgrunn = styled.div`
     display: inline-block;

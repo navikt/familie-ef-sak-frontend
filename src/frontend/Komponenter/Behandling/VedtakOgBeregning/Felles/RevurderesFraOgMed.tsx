@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { AlertWarning } from '../../../../Felles/Visningskomponenter/Alerts';
 import { EnsligErrorMessage } from '../../../../Felles/ErrorMessage/EnsligErrorMessage';
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
-import { Neutral100 } from "@navikt/ds-tokens/js";
+import { Neutral100 } from '@navikt/ds-tokens/js';
 
 const Container = styled.div`
     padding: 1rem;

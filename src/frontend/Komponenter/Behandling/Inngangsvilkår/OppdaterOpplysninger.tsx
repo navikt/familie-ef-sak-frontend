@@ -4,7 +4,7 @@ import { ArrowsCirclepathIcon } from '@navikt/aksel-icons';
 import { Button, HelpText } from '@navikt/ds-react';
 import { DetailSmall } from '../../../Felles/Visningskomponenter/Tekster';
 import { useBehandling } from '../../../App/context/BehandlingContext';
-import { TextNeutralSubtle } from "@navikt/ds-tokens/js";
+import { TextNeutralSubtle } from '@navikt/ds-tokens/js';
 
 const FlexWrapper = styled.div`
     display: flex;

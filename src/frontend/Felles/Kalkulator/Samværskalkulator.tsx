@@ -20,7 +20,7 @@ import { formaterStrengMedStorForbokstav } from '../../App/utils/formatter';
 import { CalculatorIcon, TrashIcon } from '@navikt/aksel-icons';
 import { utledVisningstekst } from './utils';
 
-import { BgInfoSoft, BorderNeutralSubtle } from "@navikt/ds-tokens/js";
+import { BgInfoSoft, BorderNeutralSubtle } from '@navikt/ds-tokens/js';
 
 const Div = styled.div`
     height: 3.25rem;

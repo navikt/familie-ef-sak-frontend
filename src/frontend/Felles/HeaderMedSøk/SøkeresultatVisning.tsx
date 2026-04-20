@@ -6,7 +6,7 @@ import { adressebeskyttelsestyper } from './utils';
 import { formaterPersonIdent } from './Header/søk/formatter';
 import { ISøkeresultat } from './Header/søkeresultat';
 
-import { Warning400, Neutral200, FontSizeSmall } from "@navikt/ds-tokens/js";
+import { Warning400, Neutral200, FontSizeSmall } from '@navikt/ds-tokens/js';
 
 const ResultatElement = styled.div<{ $fokus: boolean }>`
     list-style-type: none;

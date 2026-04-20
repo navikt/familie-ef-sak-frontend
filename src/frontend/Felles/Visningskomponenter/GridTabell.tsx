@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { Neutral900 } from "@navikt/ds-tokens/js";
+import { Neutral900 } from '@navikt/ds-tokens/js';
 
 const breddeKolonner = (antallKolonner?: number) => {
     if (antallKolonner === 4) {

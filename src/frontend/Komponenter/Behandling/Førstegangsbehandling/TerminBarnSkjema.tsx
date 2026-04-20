@@ -7,7 +7,7 @@ import { erGyldigDato } from '../../../App/utils/dato';
 import { Datovelger } from '../../../Felles/Datovelger/Datovelger';
 import LeggTilKnapp from '../../../Felles/Knapper/LeggTilKnapp';
 import FjernKnapp from '../../../Felles/Knapper/FjernKnapp';
-import { Accent400 } from "@navikt/ds-tokens/js";
+import { Accent400 } from '@navikt/ds-tokens/js';
 
 const Tittel = styled(Heading)`
     color: ${Accent400};

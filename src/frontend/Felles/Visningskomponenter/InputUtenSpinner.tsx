@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { BodyShort, TextField, TextFieldProps } from '@navikt/ds-react';
-import { Space48 } from "@navikt/ds-tokens/js";
+import { Space48 } from '@navikt/ds-tokens/js';
 
 export interface PropsInputUtenSpinner extends TextFieldProps {
     value: number | string | undefined;

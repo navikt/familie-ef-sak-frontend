@@ -1,7 +1,7 @@
 import React from 'react';
 import { BodyLong, Label } from '@navikt/ds-react';
 import styled from 'styled-components';
-import { TextNeutralSubtle } from "@navikt/ds-tokens/js";
+import { TextNeutralSubtle } from '@navikt/ds-tokens/js';
 
 const Liste = styled.ul`
     padding-left: 1rem;

@@ -13,7 +13,7 @@ import { Behandlingsårsak } from '../../../App/typer/behandlingsårsak';
 import { BreakWordUndertekst } from '../../../Felles/Visningskomponenter/BreakWordUndertekst';
 import { Button } from '@navikt/ds-react';
 import { DetailSmall, SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
-import { Neutral1000 } from "@navikt/ds-tokens/js";
+import { Neutral1000 } from '@navikt/ds-tokens/js';
 
 const IkonMedStipletLinje = styled.div`
     margin-right: 1rem;

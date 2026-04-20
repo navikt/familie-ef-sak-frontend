@@ -23,7 +23,7 @@ import {
     JournalføringStateRequest,
 } from '../../../App/hooks/useJournalføringState';
 import { Arkivtema, arkivtemaerTilTekst } from '../../../App/typer/arkivtema';
-import { Accent600 } from "@navikt/ds-tokens/js";
+import { Accent600 } from '@navikt/ds-tokens/js';
 
 const IkonContainer = styled.div`
     color: ${Accent600};

@@ -19,7 +19,7 @@ import {
     BgSuccessStrong,
     BgNeutralStrong,
     BorderNeutralSubtle,
-} from "@navikt/ds-tokens/js";
+} from '@navikt/ds-tokens/js';
 
 const Container = styled.div`
     padding: 1rem;
@@ -84,15 +84,15 @@ const TilegnetSaksbehandler: React.FC<Props> = ({ behandling }) => {
         switch (ansvarligSaksbehandlerRolle) {
             case AnsvarligSaksbehandlerRolle.IKKE_SATT:
             case AnsvarligSaksbehandlerRolle.UTVIKLER_MED_VEILEDERROLLE:
-                returnBgNeutralStrong;
+                return BgNeutralStrong;
             case AnsvarligSaksbehandlerRolle.INNLOGGET_SAKSBEHANDLER:
             case AnsvarligSaksbehandlerRolle.OPPGAVE_FINNES_IKKE_SANNSYNLIGVIS_INNLOGGET_SAKSBEHANDLER:
-                returnBgSuccessStrong;
+                return BgSuccessStrong;
             case AnsvarligSaksbehandlerRolle.ANNEN_SAKSBEHANDLER:
             case AnsvarligSaksbehandlerRolle.OPPGAVE_TILHØRER_IKKE_ENF:
-                returnBgWarningStrong;
+                return BgWarningStrong;
             default:
-                returnBgNeutralStrong;
+                return BgNeutralStrong;
         }
     };
 

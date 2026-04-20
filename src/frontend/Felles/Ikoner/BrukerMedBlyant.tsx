@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { MetaPurple500 } from "@navikt/ds-tokens/js";
+import { MetaPurple500 } from '@navikt/ds-tokens/js';
 
 interface IBrukerMedBlyant {
     className?: string;

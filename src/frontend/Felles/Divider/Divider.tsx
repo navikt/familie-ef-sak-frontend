@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import styles from './Divider.module.css';
-import { Neutral1000 } from "@navikt/ds-tokens/js";
+import { Neutral1000 } from '@navikt/ds-tokens/js';
 
 interface Props {
     farge?: string;

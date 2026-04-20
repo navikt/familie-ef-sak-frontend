@@ -29,7 +29,7 @@ import { EksisterendeBeskrivelse } from './EksisterendeBeskrivelse';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { LokalkontorOppgavevalg, SendtOppgave } from './LokalkontorOppgavevalg';
 import { TaAvVentBekreftModal } from './TaAvVentBekreftModal';
-import { BrandBlue100 } from "@navikt/ds-tokens/js";
+import { BrandBlue100 } from '@navikt/ds-tokens/js';
 
 const AlertStripe = styled(Alert)`
     margin-top: 1rem;

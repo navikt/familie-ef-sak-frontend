@@ -40,7 +40,7 @@ import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTex
 import BeregnetInntektKalkulator from './BeregnetInntektKalkulator';
 import { genererBeregnetInntektTekst } from '../../../../../App/hooks/useVerdierForBrev';
 
-import { Neutral100, BorderNeutralSubtle } from "@navikt/ds-tokens/js";
+import { Neutral100, BorderNeutralSubtle } from '@navikt/ds-tokens/js';
 
 const Container = styled.div`
     padding: 1rem;

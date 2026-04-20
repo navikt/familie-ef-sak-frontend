@@ -20,7 +20,7 @@ import { Alert, Button, Detail, Heading, Label } from '@navikt/ds-react';
 import { BodyShortSmall, SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
 import { XMarkIcon } from '@navikt/aksel-icons';
 import { useNavigate } from 'react-router-dom';
-import { BorderNeutralSubtle } from "@navikt/ds-tokens/js";
+import { BorderNeutralSubtle } from '@navikt/ds-tokens/js';
 
 const BorderBox = styled.div`
     border: 1px solid ${BorderNeutralSubtle};

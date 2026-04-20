@@ -21,7 +21,7 @@ import { RessursStatus } from '../../../App/typer/ressurs';
 import { Behandling } from '../../../App/typer/fagsak';
 import { harVedtaksresultatMedTilkjentYtelse } from '../../../App/hooks/useHentVedtak';
 import { Steg } from '../Høyremeny/Steg';
-import { BorderNeutralSubtle } from "@navikt/ds-tokens/js";
+import { BorderNeutralSubtle } from '@navikt/ds-tokens/js';
 
 const SubmitButtonWrapper = styled.div`
     display: flex;

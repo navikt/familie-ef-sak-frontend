@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
 import styled from 'styled-components';
-import { BorderNeutralSubtle } from "@navikt/ds-tokens/js";
+import { BorderNeutralSubtle } from '@navikt/ds-tokens/js';
 
 const Container = styled.div<{ $skillelinje?: boolean }>`
     display: flex;

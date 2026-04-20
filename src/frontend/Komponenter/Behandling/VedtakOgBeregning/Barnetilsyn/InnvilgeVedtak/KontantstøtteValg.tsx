@@ -24,7 +24,7 @@ import { KontantstøtteAlert } from './KontantstøtteAlert';
 import JaNeiRadioGruppe from '../../Felles/JaNeiRadioGruppe';
 import { KontantstøttePeriode } from '../../../Inngangsvilkår/vilkår';
 import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
-import { Neutral100 } from "@navikt/ds-tokens/js";
+import { Neutral100 } from '@navikt/ds-tokens/js';
 
 const Container = styled.div`
     padding: 1rem;

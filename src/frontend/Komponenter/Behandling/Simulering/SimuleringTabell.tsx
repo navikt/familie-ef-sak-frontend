@@ -5,7 +5,7 @@ import { formaterTallMedTusenSkilleEllerStrek } from '../../../App/utils/formatt
 import ÅrVelger from './ÅrVelger';
 import { BodyShortSmall, SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
 
-import { Success600, Danger600, BorderNeutralStrong, BorderNeutral } from "@navikt/ds-tokens/js";
+import { Success600, Danger600, BorderNeutralStrong, BorderNeutral } from '@navikt/ds-tokens/js';
 
 const Tabell = styled.table`
     border-collapse: collapse;
@@ -30,7 +30,7 @@ const MånedHeader = styled(VerdiKolonne)<{ $gjelderNestePeriode: boolean }>`
 `;
 
 const ResultatVerdi = styled(BodyShortSmall)<{ $verdi: number }>`
-    color: ${(props) => (props.$verdi > 0 ?Success600 :Danger600)};
+    color: ${(props) => (props.$verdi > 0 ? Success600 : Danger600)};
 `;
 
 const ÅrVelgerMargin = styled(ÅrVelger)`

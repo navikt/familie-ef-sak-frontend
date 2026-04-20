@@ -8,7 +8,7 @@ import { useApp } from '../../../../../App/context/AppContext';
 import { InnvilgeVedtakForm } from './typer';
 import { FormErrors } from '../../../../../App/hooks/felles/useFormState';
 import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
-import { Neutral100 } from "@navikt/ds-tokens/js";
+import { Neutral100 } from '@navikt/ds-tokens/js';
 
 interface Props {
     begrunnelseState: FieldState;

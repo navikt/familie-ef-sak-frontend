@@ -9,7 +9,7 @@ import Visittkort from './Visittkort';
 import PersonTags from './PersonTags';
 import BehandlingTags from './BehandlingTags';
 import { HStack } from '@navikt/ds-react';
-import { BorderNeutralStrong } from "@navikt/ds-tokens/js";
+import { BorderNeutralStrong } from '@navikt/ds-tokens/js';
 
 const FlexContainer = styled.div`
     display: flex;

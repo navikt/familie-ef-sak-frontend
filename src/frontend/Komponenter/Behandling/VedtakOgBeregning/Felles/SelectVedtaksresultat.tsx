@@ -10,7 +10,7 @@ import { Button, Heading, HelpText } from '@navikt/ds-react';
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
 import { NullstillVedtakModalContext } from './NullstillVedtakModalContext';
 import { EnsligFamilieSelect } from '../../../../Felles/Input/EnsligFamilieSelect';
-import { Neutral100 } from "@navikt/ds-tokens/js";
+import { Neutral100 } from '@navikt/ds-tokens/js';
 
 interface Props {
     behandling: Behandling;

@@ -31,7 +31,7 @@ import { HorizontalScroll } from '../../Felles/HorizontalScroll';
 import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
 import { IngenBegrunnelseOppgitt } from '../../Overgangsstønad/InnvilgeVedtak/IngenBegrunnelseOppgitt';
 import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
-import { Neutral100 } from "@navikt/ds-tokens/js";
+import { Neutral100 } from '@navikt/ds-tokens/js';
 
 const Container = styled.div`
     padding: 1rem;

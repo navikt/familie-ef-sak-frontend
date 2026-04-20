@@ -6,7 +6,7 @@ import {
 import styled from 'styled-components';
 import { RadTittel, RadVerdi, SimuleringOversiktTabell } from './SimuleringOversikt';
 import { BodyShortSmall, SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
-import { BorderNeutral } from "@navikt/ds-tokens/js";
+import { BorderNeutral } from '@navikt/ds-tokens/js';
 
 const Container = styled.div`
     border-bottom: 1px solid ${BorderNeutral};

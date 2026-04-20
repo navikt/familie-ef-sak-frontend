@@ -23,7 +23,7 @@ import JaNeiRadioGruppe from '../../Felles/JaNeiRadioGruppe';
 import { HorizontalScroll } from '../../Felles/HorizontalScroll';
 import { useBehandling } from '../../../../../App/context/BehandlingContext';
 import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
-import { Neutral100 } from "@navikt/ds-tokens/js";
+import { Neutral100 } from '@navikt/ds-tokens/js';
 
 const Container = styled.div`
     padding: 1rem;

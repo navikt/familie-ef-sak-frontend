@@ -4,7 +4,8 @@ import 'quill/dist/quill.snow.css';
 import { BlockBlot } from 'parchment';
 import { AlertError } from '../Visningskomponenter/Alerts';
 import styled from 'styled-components';
-import { TextNeutralSubtle, BgDefault } from "@navikt/ds-tokens/js";
+import { TextNeutralSubtle, BgDefault } from '@navikt/ds-tokens/js';
+
 type Props = {
     defaultValue?: string;
     onTextChange: (html: string, renTekst: string) => void;

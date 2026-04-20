@@ -19,7 +19,7 @@ import { VStack, Stack } from '@navikt/ds-react';
 import { IPersonopplysninger } from '../../../App/typer/personopplysninger';
 import { erEtterDagensDato } from '../../../App/utils/dato';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
-import { BorderNeutralSubtle } from "@navikt/ds-tokens/js";
+import { BorderNeutralSubtle } from '@navikt/ds-tokens/js';
 
 const AlertStripe = styled(Alert)`
     margin-top: 1rem;

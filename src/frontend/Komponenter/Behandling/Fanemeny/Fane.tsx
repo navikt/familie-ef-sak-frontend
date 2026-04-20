@@ -8,7 +8,13 @@ import { Steg } from '../Høyremeny/Steg';
 import { useApp } from '../../../App/context/AppContext';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 
-import { Accent600, Accent500, Neutral400, Neutral200, TextAccentSubtle } from "@navikt/ds-tokens/js";
+import {
+    Accent600,
+    Accent500,
+    Neutral400,
+    Neutral200,
+    TextAccentSubtle,
+} from '@navikt/ds-tokens/js';
 
 const StyledNavLink = styled(NavLink)`
     border-bottom: 5px solid white;

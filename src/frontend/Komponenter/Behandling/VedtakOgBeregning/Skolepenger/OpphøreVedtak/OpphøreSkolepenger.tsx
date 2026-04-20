@@ -16,7 +16,7 @@ import { InnvilgeVedtakForm } from '../Felles/typer';
 import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 import TilbakestillKnapp from '../../../../../Felles/Knapper/TilbakestillKnapp';
 import Utgiftsperioder from './Utgiftsperioder';
-import { Neutral100 } from "@navikt/ds-tokens/js";
+import { Neutral100 } from '@navikt/ds-tokens/js';
 
 const Skoleårsperiode = styled.div`
     display: flex;

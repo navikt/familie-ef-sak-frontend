@@ -9,7 +9,7 @@ import {
 import KortInnholdBarnetilsyn from './barnetilsyn/KortInnholdBarnetilsyn';
 import KortInnholdOvergangsstønad from './overgangsstønad/KortInnholdOvergangsstønad';
 
-import { Success100, Neutral500 } from "@navikt/ds-tokens/js";
+import { Success100, Neutral500 } from '@navikt/ds-tokens/js';
 
 const Container = styled.div`
     display: flex;

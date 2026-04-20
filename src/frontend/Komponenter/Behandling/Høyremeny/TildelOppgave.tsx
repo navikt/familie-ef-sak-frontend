@@ -10,7 +10,7 @@ import { ToggleName } from '../../../App/context/toggles';
 import { Behandling, BehandlingResultat } from '../../../App/typer/fagsak';
 import { useNavigate } from 'react-router-dom';
 import { useBehandling } from '../../../App/context/BehandlingContext';
-import { BorderNeutralSubtle } from "@navikt/ds-tokens/js";
+import { BorderNeutralSubtle } from '@navikt/ds-tokens/js';
 
 const Container = styled.div`
     border: 1px solid ${BorderNeutralSubtle};

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Vilkårsresultat } from './vilkår';
 import { Heading } from '@navikt/ds-react';
 import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
-import { TextNeutralSubtle } from "@navikt/ds-tokens/js";
+import { TextNeutralSubtle } from '@navikt/ds-tokens/js';
 
 type VilkårtittelProps = {
     tittel: string;

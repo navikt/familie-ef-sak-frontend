@@ -13,7 +13,7 @@ import { Søknadsinformasjon } from '../Felles/Søknadsinformasjon';
 import { OppsummeringAvBarn } from './OppsummeringAvBarn';
 import { BreakWordBodyLongSmall } from '../../../../Felles/Visningskomponenter/BreakWordBodyLongSmall';
 import { Vilkårsvurdering } from '../Felles/Vilkårsvurdering';
-import { Neutral100 } from "@navikt/ds-tokens/js";
+import { Neutral100 } from '@navikt/ds-tokens/js';
 
 const OppsummeringContainer = styled.div`
     display: flex;

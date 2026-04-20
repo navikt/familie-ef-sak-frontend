@@ -11,7 +11,7 @@ import { HeaderBegrunnelse } from './HeaderBegrunnelse';
 import { EnsligTextArea } from '../../../Felles/Input/TekstInput/EnsligTextArea';
 import { FireGangerRettsgebyr } from './FireGangerRettsgebyr';
 
-import { Danger600, Accent100 } from "@navikt/ds-tokens/js";
+import { Danger600, Accent100 } from '@navikt/ds-tokens/js';
 
 const Container = styled(VStack)`
     margin-top: 1.5rem;

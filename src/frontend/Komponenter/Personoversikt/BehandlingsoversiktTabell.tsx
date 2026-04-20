@@ -41,7 +41,7 @@ import {
     TableDataCellSmall,
     TableHeaderCellSmall,
 } from './HistorikkVedtaksperioder/vedtakshistorikkUtil';
-import { TextWarningDecoration } from "@navikt/ds-tokens/js";
+import { TextWarningDecoration } from '@navikt/ds-tokens/js';
 
 const StyledTable = styled(Table)`
     width: 60%;

@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons';
 import { BreakWordBodyLongSmall } from '../../../Felles/Visningskomponenter/BreakWordBodyLongSmall';
 import { BodyLongSmall } from '../../../Felles/Visningskomponenter/Tekster';
-import { Accent400 } from "@navikt/ds-tokens/js";
+import { Accent400 } from '@navikt/ds-tokens/js';
 
 const EkspanderbarContainer = styled(BreakWordBodyLongSmall)<{ $ekspandert: boolean }>`
     max-height: ${(props) => (props.$ekspandert ? 'none' : '15rem')};

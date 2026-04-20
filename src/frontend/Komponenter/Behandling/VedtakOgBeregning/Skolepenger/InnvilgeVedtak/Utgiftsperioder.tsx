@@ -10,7 +10,7 @@ import { SmallTextLabel } from '../../../../../Felles/Visningskomponenter/Tekste
 import LeggTilKnapp from '../../../../../Felles/Knapper/LeggTilKnapp';
 import { Heading } from '@navikt/ds-react';
 import { FormErrors } from '../../../../../App/hooks/felles/useFormState';
-import { Accent400 } from "@navikt/ds-tokens/js";
+import { Accent400 } from '@navikt/ds-tokens/js';
 
 const Container = styled.div`
     display: flex;

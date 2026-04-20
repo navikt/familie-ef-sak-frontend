@@ -9,7 +9,7 @@ import { locateIndexToRestorePreviousItemInCurrentItems } from '../Felles/utils'
 import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 import TilbakestillKnapp from '../../../../../Felles/Knapper/TilbakestillKnapp';
 import { SmallTextLabel } from '../../../../../Felles/Visningskomponenter/Tekster';
-import { BorderNeutralStrong } from "@navikt/ds-tokens/js";
+import { BorderNeutralStrong } from '@navikt/ds-tokens/js';
 
 const Utgiftsrad = styled.div<{
     $lesevisning?: boolean;

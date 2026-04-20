@@ -4,7 +4,7 @@ import { Høyremenyvalg } from './Høyremeny';
 import { FolderIcon, ClockFillIcon } from '@navikt/aksel-icons';
 import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 
-import { Accent600, Accent500, Neutral200, BorderNeutralSubtle } from "@navikt/ds-tokens/js";
+import { Accent600, Accent500, Neutral200, BorderNeutralSubtle } from '@navikt/ds-tokens/js';
 
 const StyledIkonWrapper = styled.div`
     width: 100%;
@@ -40,8 +40,8 @@ const StyledIkon = styled.div<IkonProps>`
         border-bottom: 5px solid ${Accent500};
     }
 
-    background-color: ${(props) => (props.$erAktiv ?Neutral200 : 'white')};
-    border-bottom: 5px solid ${(props) => (props.$erAktiv ?Accent600 : 'white')};
+    background-color: ${(props) => (props.$erAktiv ? Neutral200 : 'white')};
+    border-bottom: 5px solid ${(props) => (props.$erAktiv ? Accent600 : 'white')};
 `;
 
 interface ValgvisningProps {

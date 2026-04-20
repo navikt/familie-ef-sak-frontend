@@ -6,7 +6,7 @@ import { BodyShort, Label, VStack } from '@navikt/ds-react';
 import styled from 'styled-components';
 import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
-import { FontSizeMedium } from "@navikt/ds-tokens/js";
+import { FontSizeMedium } from '@navikt/ds-tokens/js';
 
 interface Props {
     utenlandsopphold: IUtenlandsopphold[];

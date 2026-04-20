@@ -16,7 +16,7 @@ import {
     utledVisningstekst,
 } from '../../../../Felles/Kalkulator/utils';
 
-import { Neutral400, Neutral100, BgInfoSoft, BgDefault } from "@navikt/ds-tokens/js";
+import { Neutral400, Neutral100, BgInfoSoft, BgDefault } from '@navikt/ds-tokens/js';
 
 const Kalkulator = styled(Samværskalkulator)`
     padding: 1rem;

@@ -8,7 +8,7 @@ import {
     resultatTilTekst,
 } from '../Inngangsvilkår/vilkår';
 
-import { TextDangerDecoration, TextSuccessDecoration } from "@navikt/ds-tokens/js";
+import { TextDangerDecoration, TextSuccessDecoration } from '@navikt/ds-tokens/js';
 
 export const LagTittel: FC<{
     vurdering: IVurdering;
@@ -35,7 +35,11 @@ export const LagTittel: FC<{
                 {tittel()}
             </Heading>
             {skalViseCheckmarkIkon && (
-                <CheckmarkCircleIcon title="check-success" fontSize="1.5rem" color={TextSuccessDecoration} />
+                <CheckmarkCircleIcon
+                    title="check-success"
+                    fontSize="1.5rem"
+                    color={TextSuccessDecoration}
+                />
             )}
             {skalViseXMarkIkon && (
                 <XMarkOctagonIcon title="x-danger" fontSize="1.5rem" color={TextDangerDecoration} />

@@ -23,7 +23,7 @@ import {
 import { utledSkalViseGjenbrukKnapp } from './utils';
 import { ModalGjenbrukVilkårsvurdering } from './ModalGjenbrukVilkårsvurdering';
 import { LagTittel } from './LagTittel';
-import { TextNeutralSubtle } from "@navikt/ds-tokens/js";
+import { TextNeutralSubtle } from '@navikt/ds-tokens/js';
 
 const StyledVilkår = styled.div`
     grid-column: 2/4;

@@ -16,7 +16,7 @@ import { ArrowsSquarepathIcon, ChevronDownIcon, ChevronUpIcon } from '@navikt/ak
 import { finnFlettefeltRefFraFlettefeltApiNavn } from './BrevUtils';
 import { formaterTallMedTusenSkille } from '../../../App/utils/formatter';
 
-import { BorderNeutral, Radius4 } from "@navikt/ds-tokens/js";
+import { BorderNeutral, Radius4 } from '@navikt/ds-tokens/js';
 
 interface Props {
     delmal: Delmal;
@@ -142,7 +142,7 @@ export const BrevMenyDelmal: React.FC<Props> = ({
                     </Button>
                 </HStack>
                 {ekspanderbartPanelÅpen && (
-                    <VStack gap={"space-16"} style={{ padding: '1rem' }}>
+                    <VStack gap={'space-16'} style={{ padding: '1rem' }}>
                         {erDelmalblokk &&
                             delmalValgfelt &&
                             delmalValgfelt.map((valgFelt, index) => (
@@ -188,7 +188,7 @@ export const BrevMenyDelmal: React.FC<Props> = ({
                             </div>
                         )}
                         {overstyring.overstyrtDelmal?.skalOverstyre && (
-                            <VStack gap={"space-8"}>
+                            <VStack gap={'space-8'}>
                                 <div>
                                     <HtmlEditor
                                         defaultValue={overstyring.overstyrtDelmal.htmlInnhold}

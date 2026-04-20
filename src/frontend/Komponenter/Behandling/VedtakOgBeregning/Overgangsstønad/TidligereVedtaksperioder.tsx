@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import { VilkårsresultatIkon } from '../../../../Felles/Ikoner/VilkårsresultatIkon';
 import { BodyLong, Heading, Label } from '@navikt/ds-react';
 import { harVerdi } from '../../../../App/utils/utils';
-import { Neutral100 } from "@navikt/ds-tokens/js";
+import { Neutral100 } from '@navikt/ds-tokens/js';
 
 interface Props {
     tidligereVedtaksvilkår: IVurdering[];

@@ -17,7 +17,7 @@ import SkoleårsperiodeHeader from './SkoleårsperiodeHeader';
 import { utledSkoleårOgMaksBeløp, utledSkoleårString } from '../Felles/skoleår';
 import { Button } from '@navikt/ds-react';
 
-import { Accent300, Neutral100, BorderNeutralSubtle } from "@navikt/ds-tokens/js";
+import { Accent300, Neutral100, BorderNeutralSubtle } from '@navikt/ds-tokens/js';
 
 const ContainerDashedBorder = styled.div`
     border: 4px dashed ${Accent300};

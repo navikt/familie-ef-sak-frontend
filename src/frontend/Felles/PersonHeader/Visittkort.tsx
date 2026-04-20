@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Link } from '@navikt/ds-react';
 import { BodyShortSmall } from '../Visningskomponenter/Tekster';
 import VisittKortKomponent from './VisittkortKomponent';
-import { FontWeightBold } from "@navikt/ds-tokens/js";
+import { FontWeightBold } from '@navikt/ds-tokens/js';
 
 const ResponsivLenke = styled(Link)`
     text-overflow: ellipsis;

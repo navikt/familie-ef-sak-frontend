@@ -12,7 +12,7 @@ import { Vilkårsresultat } from '../../Inngangsvilkår/vilkår';
 import { formaterIsoDato } from '../../../../App/utils/formatter';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 
-import { Neutral100, BorderNeutralSubtle } from "@navikt/ds-tokens/js";
+import { Neutral100, BorderNeutralSubtle } from '@navikt/ds-tokens/js';
 
 const Container = styled.div`
     display: flex;

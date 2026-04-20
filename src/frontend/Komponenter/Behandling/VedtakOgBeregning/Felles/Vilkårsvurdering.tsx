@@ -4,7 +4,7 @@ import { Heading } from '@navikt/ds-react';
 import { ResultatVisning } from './ResultatVisning';
 import styled from 'styled-components';
 import { sorterUtAktivitetsvilkår, sorterUtInngangsvilkår } from './utils';
-import { Neutral100 } from "@navikt/ds-tokens/js";
+import { Neutral100 } from '@navikt/ds-tokens/js';
 
 const Container = styled.div`
     padding: 1rem;
