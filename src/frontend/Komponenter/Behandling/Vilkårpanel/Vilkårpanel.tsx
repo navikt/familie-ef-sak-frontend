@@ -27,7 +27,7 @@ export const Vilkårpanel: FC<Props> = ({
     const { ekspanderteVilkår, toggleEkspandertTilstand } = useEkspanderbareVilkårpanelContext();
 
     return (
-        <Box background="surface-subtle" style={{ margin: '0 2rem 2rem 2rem' }}>
+        <Box background="neutral-soft" style={{ margin: '0 2rem 2rem 2rem' }}>
             <HStack justify="space-between">
                 <HStack gap="space-12" align={'center'} style={{ paddingLeft: '1rem' }}>
                     <VilkårsresultatIkon vilkårsresultat={vilkårsresultat} />

@@ -10,7 +10,7 @@ export const AutomatiskBrevSomSendes: FC<{
     }
 
     return (
-        <Box background={'surface-alt-2-subtle'} padding="space-8">
+        <Box background="meta-lime-soft" padding="space-8">
             <CheckboxGroup
                 legend="Send brev automatisk når vedtaket er godkjent:"
                 value={automatiskBrev}

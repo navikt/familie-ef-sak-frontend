@@ -13,7 +13,7 @@ import { ArrowDownIcon, ArrowUpIcon, PlusIcon, TrashIcon } from '@navikt/aksel-i
 import { FritekstAvsnitt, Fritekstområder } from './BrevTyper';
 
 const FritekstAvsnittContainer: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-    <Box padding="4" borderWidth="1" borderRadius="small" borderColor="border-default">
+    <Box padding="4" borderWidth="1" borderRadius="2" borderColor="neutral">
         <VStack gap="2" width="100%">
             {children}
         </VStack>

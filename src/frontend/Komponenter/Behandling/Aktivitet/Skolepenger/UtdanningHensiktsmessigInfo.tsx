@@ -28,7 +28,7 @@ const UtdanningHensiktsmessigInfo: FC<Props> = ({ aktivitet, skalViseSøknadsdat
                             verdi={undefined}
                         />
                         <Box
-                            borderColor="border-info"
+                            borderColor="info"
                             borderWidth="0 0 0 2"
                             width="31rem"
                             paddingBlock="0 0"

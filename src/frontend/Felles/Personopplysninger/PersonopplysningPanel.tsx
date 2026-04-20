@@ -8,12 +8,7 @@ const PersonopplysningerPanel: React.FC<{
     children?: ReactNode;
 }> = ({ Ikon, tittel, children, tittelBeskrivelse }) => {
     return (
-        <Box
-            padding={'space-16'}
-            borderColor={'border-on-inverted'}
-            background={'bg-subtle'}
-            borderWidth={'1'}
-        >
+        <Box padding="space-16" borderColor="neutral-300" background="neutral-soft" borderWidth="1">
             <HStack gap="4" align="center">
                 <Ikon />
                 <Heading size="small" className="tittel">
