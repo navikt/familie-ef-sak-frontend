@@ -31,7 +31,7 @@ const harPersonidentInformasjonForEøsLand = (opphold: IUtenlandsopphold): boole
 };
 const ikon = VilkårInfoIkon.SØKNAD;
 const Utenlandsopphold: FC<Props> = ({ utenlandsopphold }) => (
-    <VStack gap="4">
+    <VStack gap="space-16">
         <Informasjonsrad ikon={ikon} label={'Utenlandsopphold'} />
         {utenlandsopphold.map((opphold, index) => (
             <React.Fragment key={opphold.fraDato + index}>

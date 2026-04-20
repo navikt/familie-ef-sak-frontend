@@ -11,7 +11,7 @@ const ÅrVelger: React.FC<{ årsvelger: SimuleringÅrsvelger; className?: string
     const kanVelgeForrigeÅr = muligeÅr.some((muligÅr) => muligÅr < valgtÅr);
     const kanVelgeNesteÅr = muligeÅr.some((muligÅr) => muligÅr > valgtÅr);
     return (
-        <HStack align="center" gap="4" className={className}>
+        <HStack align="center" gap="space-16" className={className}>
             <Button
                 icon={<ArrowLeftIcon />}
                 disabled={!kanVelgeForrigeÅr}

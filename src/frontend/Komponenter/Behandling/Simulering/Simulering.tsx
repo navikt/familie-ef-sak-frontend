@@ -100,7 +100,7 @@ const Simulering: React.FC<{
 
     return (
         <Container>
-            <VStack gap="4">
+            <VStack gap="space-16">
                 <SimuleringOversikt simulering={simuleringsresultat} />
                 {harManuellePosteringer && (
                     <AlertWarning variant={'warning'}>
@@ -148,7 +148,7 @@ const Simulering: React.FC<{
                                     </List.Item>
                                 </List>
                             </Box>
-                            <VStack gap={'2'}>
+                            <VStack gap="space-8">
                                 <BodyLongSmall>
                                     Du kan kontakte NØS via Gosys-oppgave eller på telefon.
                                 </BodyLongSmall>

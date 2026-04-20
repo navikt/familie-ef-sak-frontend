@@ -10,7 +10,7 @@ import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTex
 import BeregnetInntektKalkulator from '../../Overgangsstønad/InnvilgeVedtak/BeregnetInntektKalkulator';
 import { genererBeregnetInntektTekst } from '../../../../../App/hooks/useVerdierForBrev';
 import { HStack } from '@navikt/ds-react';
-import { Neutral100 } from "@navikt/ds-tokens/js";
+import { Neutral100 } from '@navikt/ds-tokens/js';
 
 const Form = styled.form`
     background-color: ${Neutral100};
@@ -74,7 +74,7 @@ export const AvslåVedtakForm: React.FC<Props> = ({
                     feilmelding={feilmeldingÅrsak}
                 />
             )}
-            <HStack gap={'1'} justify={'space-between'}>
+            <HStack gap="space-4" justify="space-between">
                 <Container>
                     <EnsligTextArea
                         label="Begrunnelse"

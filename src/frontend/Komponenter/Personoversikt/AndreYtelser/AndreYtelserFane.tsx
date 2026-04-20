@@ -23,7 +23,7 @@ export const AndreYtelserFane: React.FC<Props> = ({ fagsakPersonId }) => {
                         <Heading size={'medium'} level="1">
                             Informasjon om andre ytelser
                         </Heading>
-                        <HStack gap="8" style={{ marginTop: '1rem', marginLeft: '1rem' }}>
+                        <HStack gap="space-32" style={{ marginTop: '1rem', marginLeft: '1rem' }}>
                             <VedtakAAP vedtak={andreYtelser.arbeidsavklaringspenger.vedtak} />
                         </HStack>
                     </>

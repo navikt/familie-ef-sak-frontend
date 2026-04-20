@@ -13,7 +13,7 @@ export const ModalAlerts: React.FC<Props> = ({
     harKunHenlagteBehandlinger,
 }) => {
     return (
-        <VStack gap="4">
+        <VStack gap="space-16">
             {!kanOppretteRevurdering && !harKunHenlagteBehandlinger && (
                 <Alert variant={'info'}>
                     Merk at det er ikke mulig å opprette en revurdering da det allerede finnes en

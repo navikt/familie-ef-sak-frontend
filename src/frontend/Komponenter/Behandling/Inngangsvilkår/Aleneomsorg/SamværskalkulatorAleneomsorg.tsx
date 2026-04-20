@@ -186,7 +186,7 @@ export const SamværskalkulatorAleneomsorg: React.FC<Props> = ({
                             <CalculatorIcon aria-hidden fontSize="1.5rem" />
                         </Button>
                         <DropdownMenu>
-                            <HStack gap="8" justify="space-between" align="end">
+                            <HStack gap="space-32" justify="space-between" align="end">
                                 <SamværsavtaleSelect
                                     samværsavtaler={alleAndreLagredeSamværsavtaler}
                                     behandlingBarn={alleBehandlingBarn}
@@ -222,14 +222,14 @@ export const SamværskalkulatorAleneomsorg: React.FC<Props> = ({
             return (
                 <>
                     <OppsummeringContainer justify="space-between" align="center">
-                        <HStack align="center" gap="4">
-                            <HStack gap="2" align="center">
+                        <HStack align="center" gap="space-16">
+                            <HStack gap="space-8" align="center">
                                 <CalculatorIcon aria-hidden />
                                 <Label>Samvær:</Label>
                             </HStack>
                             <BodyShort size="medium">{oppsummering}</BodyShort>
                         </HStack>
-                        <HStack gap="4">
+                        <HStack gap="space-16">
                             <Button
                                 size="medium"
                                 variant="tertiary"

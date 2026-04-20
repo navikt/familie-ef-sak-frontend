@@ -47,7 +47,7 @@ const historikkRad = (andel: AndelHistorikk, index: number) => {
     return (
         <HistorikkRad $type={andel.endring?.type} key={index}>
             <TableDataCellSmall>
-                <HStack gap={'2'}>
+                <HStack gap={"space-8"}>
                     {datoAndelHistorikk(andel)}
                     <AntallMånederTag andel={andel} />
                 </HStack>

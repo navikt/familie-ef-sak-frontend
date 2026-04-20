@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { CopyButton, HStack, Label, Button } from '@navikt/ds-react';
 import { EnvelopeClosedIcon, PersonCircleIcon } from '@navikt/aksel-icons';
 import { NotePencilIcon } from '@navikt/aksel-icons';
-import { Accent600 } from "@navikt/ds-tokens/js";
+import { Accent600 } from '@navikt/ds-tokens/js';
 
 const IkonContainer = styled.div`
     color: ${Accent600};
@@ -36,7 +36,7 @@ export const PanelHeader: React.FC<Props> = ({ navn, personIdent, type, onClick 
     return (
         <HStack>
             <IkonContainer>{panelIkon}</IkonContainer>
-            <HStack align="center" gap={'1'}>
+            <HStack align="center" gap="space-4">
                 <Label as={'p'}>{tittel}</Label>
                 {type === PanelHeaderType.Samværsavtale ? (
                     <Button

@@ -64,7 +64,7 @@ export const ValgfeltSelect: React.FC<Props> = ({
     };
 
     return (
-        <VStack gap="2">
+        <VStack gap="space-8">
             {valgFelt.valgMuligheter.length > 1 ? (
                 <Select
                     size="small"

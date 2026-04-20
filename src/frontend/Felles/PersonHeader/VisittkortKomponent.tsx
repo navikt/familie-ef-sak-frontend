@@ -18,8 +18,8 @@ export const VisittKortKomponent: React.FunctionComponent<IProps> = ({
     ikon,
 }) => {
     return (
-        <HStack align="center" justify="space-between" gap="4" padding="2">
-            <HStack align="center" gap="4">
+        <HStack align="center" justify="space-between" gap="space-16" padding="space-8">
+            <HStack align="center" gap="space-16">
                 {ikon ? ikon : <PersonIcon title="a11y-title" fontSize="1.5rem" />}
                 {typeof navn === 'string' ? (
                     <Label size={'small'}>
@@ -29,7 +29,7 @@ export const VisittKortKomponent: React.FunctionComponent<IProps> = ({
                     navn
                 )}
                 <div>|</div>
-                <HStack align="center" gap="1">
+                <HStack align="center" gap="space-4">
                     {ident}
                     <CopyButton copyText={ident.replace(' ', '')} size={'small'} />
                 </HStack>

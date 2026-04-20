@@ -30,7 +30,7 @@ export const SøkWrapper: FC<Props> = ({
     const [søktype, settSøktype] = useState<Søktype>();
 
     return (
-        <VStack gap="4">
+        <VStack gap="space-16">
             <Ingress>Manuelt søk</Ingress>
             <SøkTypeSelect
                 label={'Manuelt søk'}

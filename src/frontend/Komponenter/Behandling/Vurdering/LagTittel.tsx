@@ -30,15 +30,13 @@ export const LagTittel: FC<{
     };
 
     return (
-        <HStack gap="1">
+        <HStack gap="space-4">
             <Heading size={'small'} level={'3'}>
                 {tittel()}
             </Heading>
-
             {skalViseCheckmarkIkon && (
                 <CheckmarkCircleIcon title="check-success" fontSize="1.5rem" color={TextSuccessDecoration} />
             )}
-
             {skalViseXMarkIkon && (
                 <XMarkOctagonIcon title="x-danger" fontSize="1.5rem" color={TextDangerDecoration} />
             )}

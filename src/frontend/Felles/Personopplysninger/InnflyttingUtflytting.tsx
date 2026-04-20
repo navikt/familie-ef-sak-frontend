@@ -12,7 +12,7 @@ interface Props {
 }
 
 export const headerForInnflyttingTabell: React.ReactNode = (
-    <HStack gap="4" align="center">
+    <HStack gap="space-16" align="center">
         <Label size="small">Innflyttet år</Label>
         <HelpText>
             Innflyttet år er basert på Folkeregisteret sitt gyldighetstidspunktet for innflytting.

@@ -100,7 +100,7 @@ export const FrittståendeSanitybrev: React.FC<Props> = ({
     };
 
     return (
-        <VStack gap={'2'}>
+        <VStack gap="space-8">
             <BrevmottakereFrittståendeBrev
                 personopplysninger={personopplysninger}
                 fagsakId={fagsakId}

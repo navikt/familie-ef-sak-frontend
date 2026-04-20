@@ -155,7 +155,7 @@ export const HenleggModal: FC<{
                         }}
                         ariaLabel={'Velg årsak til henleggelse av behandlingen'}
                     >
-                        <VStack gap="4" align="start">
+                        <VStack gap="space-16" align="start">
                             <RadioGroup
                                 legend={''}
                                 onChange={(årsak: EHenlagtårsak) => settHenlagtårsak(årsak)}
@@ -171,7 +171,7 @@ export const HenleggModal: FC<{
                                         value={harHuketAvSendBrev}
                                     >
                                         <Stack
-                                            gap="0 6"
+                                            gap="space-0 space-24"
                                             direction={{ xs: 'column', sm: 'row' }}
                                             wrap={false}
                                         >

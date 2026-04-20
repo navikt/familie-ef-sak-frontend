@@ -118,7 +118,7 @@ export const BrevMenyDelmal: React.FC<Props> = ({
     );
 
     return (
-        <HStack gap="2" wrap={false}>
+        <HStack gap="space-8" wrap={false}>
             <Checkbox hideLabel onChange={håndterToggleDelmal} checked={valgt} size="small">
                 Velg delmal
             </Checkbox>
@@ -142,7 +142,7 @@ export const BrevMenyDelmal: React.FC<Props> = ({
                     </Button>
                 </HStack>
                 {ekspanderbartPanelÅpen && (
-                    <VStack gap={'4'} style={{ padding: '1rem' }}>
+                    <VStack gap={"space-16"} style={{ padding: '1rem' }}>
                         {erDelmalblokk &&
                             delmalValgfelt &&
                             delmalValgfelt.map((valgFelt, index) => (
@@ -188,7 +188,7 @@ export const BrevMenyDelmal: React.FC<Props> = ({
                             </div>
                         )}
                         {overstyring.overstyrtDelmal?.skalOverstyre && (
-                            <VStack gap={'2'}>
+                            <VStack gap={"space-8"}>
                                 <div>
                                     <HtmlEditor
                                         defaultValue={overstyring.overstyrtDelmal.htmlInnhold}

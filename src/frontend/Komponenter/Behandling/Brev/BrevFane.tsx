@@ -116,13 +116,13 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
             {({ personopplysningerResponse, vedtak, vilkår, brevmottakere }) => {
                 return (
                     <HStack
-                        gap="4"
-                        padding={'space-16'}
+                        gap="space-16"
+                        padding="space-16"
                         style={{ backgroundColor: 'var(--ax-neutral-100)' }}
                     >
                         <div style={{ flex: 1 }}>
                             {feilmelding && <AlertError size="small">{feilmelding}</AlertError>}
-                            <VStack gap="4">
+                            <VStack gap="space-16">
                                 <BrevmottakereForBehandling
                                     behandlingId={behandling.id}
                                     personopplysninger={personopplysningerResponse}
@@ -161,9 +161,8 @@ export const BrevFane: React.FC<Props> = ({ behandling }) => {
                                 )}
                             </VStack>
                         </div>
-
                         <div style={{ flex: 1 }}>
-                            <VStack gap="8" position="sticky" top={'space-24'} align={'center'}>
+                            <VStack gap="space-32" position="sticky" top="space-24" align="center">
                                 <PdfVisning
                                     pdfFilInnhold={brevRessurs}
                                     erDokumentInnlastet={erDokumentInnlastet}

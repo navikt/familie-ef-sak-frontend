@@ -38,9 +38,9 @@ const Annet: FC<Props> = ({ dinSituasjon, særligTilsynsbehov }) => {
             <InfoSeksjonWrapper
                 ikon={<Søknadsgrunnlag />}
                 undertittel={
-                    <HStack gap="4" className={'førsteDataKolonne'}>
+                    <HStack gap="space-16" className="førsteDataKolonne">
                         Annet
-                        <HelpText placement={'top-start'}>{hjelpetekst}</HelpText>
+                        <HelpText placement="top-start">{hjelpetekst}</HelpText>
                     </HStack>
                 }
             >

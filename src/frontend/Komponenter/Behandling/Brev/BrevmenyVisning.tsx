@@ -283,7 +283,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     };
 
     return (
-        <VStack gap="4" minWidth="450px">
+        <VStack gap="space-16" minWidth="450px">
             {brevmalFeil && <Alert variant={'warning'}>{brevmalFeil}</Alert>}
             {brevmenyBlokkerGruppert.map((gruppe, indeks) => {
                 if (erDelmalGruppe(gruppe)) {
@@ -295,7 +295,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                                     {gruppe.gruppeVisningsnavn}
                                 </Heading>
                             )}
-                            <VStack gap="4">
+                            <VStack gap="space-16">
                                 {gruppe.delmaler.map((delmal: Delmal) => (
                                     <BrevMenyDelmal
                                         valgt={valgteDelmaler[delmal.delmalApiNavn]}

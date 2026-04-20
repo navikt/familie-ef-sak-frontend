@@ -26,7 +26,7 @@ const BrevMottakereListe: React.FC<{
 
     return flereBrevmottakereErValgt || !brukerErBrevmottaker ? (
         <Alert variant={'info'} size="small">
-            <HStack gap="4">
+            <HStack gap="space-16">
                 <Label>Brevmottakere: </Label>
                 {kanEndreBrevmottakere && (
                     <Tooltip content={'Legg til verge eller fullmektige brevmottakere'}>
@@ -49,7 +49,7 @@ const BrevMottakereListe: React.FC<{
             </ul>
         </Alert>
     ) : (
-        <HStack gap="4">
+        <HStack gap="space-16">
             <Label>Brevmottaker: </Label>
             <BodyShort>{navn.map((navn) => navn)}</BodyShort>
             {kanEndreBrevmottakere && (

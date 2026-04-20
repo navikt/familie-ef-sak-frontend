@@ -73,8 +73,7 @@ const Inntektskalkulator = forwardRef<
             <BodyShortSmall>
                 Legg inn årsinntekt og fra-dato for å regne ut +/- prosent.
             </BodyShortSmall>
-
-            <HStack gap="4" justify={nullstillBegrunnelse ? 'start' : 'space-between'}>
+            <HStack gap="space-16" justify={nullstillBegrunnelse ? 'start' : 'space-between'}>
                 <ForwardedTextField
                     ref={textFieldRef}
                     placeholder=""
@@ -91,7 +90,7 @@ const Inntektskalkulator = forwardRef<
                     <MonthPicker.Input {...inputProps} label="Fra og med" size="small" />
                 </MonthPicker>
 
-                <HStack gap="2" align={'end'}>
+                <HStack gap="space-8" align="end">
                     <div>
                         <Button
                             type="button"

@@ -8,8 +8,13 @@ const PersonopplysningerPanel: React.FC<{
     children?: ReactNode;
 }> = ({ Ikon, tittel, children, tittelBeskrivelse }) => {
     return (
-        <Box padding="space-16" borderColor="neutral-300" background="neutral-soft" borderWidth="1">
-            <HStack gap="4" align="center">
+        <Box
+            padding="space-16"
+            borderColor="neutral-subtle"
+            background="neutral-soft"
+            borderWidth="1"
+        >
+            <HStack gap="space-16" align="center">
                 <Ikon />
                 <Heading size="small" className="tittel">
                     {tittel}
@@ -26,7 +31,7 @@ const PersonopplysningerPanel: React.FC<{
                 </ReadMore>
             )}
             {children && (
-                <VStack style={{ paddingLeft: '1.75rem' }} gap="4">
+                <VStack style={{ paddingLeft: '1.75rem' }} gap="space-16">
                     {children}
                 </VStack>
             )}

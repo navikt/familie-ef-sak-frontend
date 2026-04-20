@@ -38,7 +38,7 @@ export const LenkeTilPersonopplysningsside: React.FC<IProps> = ({ personIdent, c
 
     if (erNPID(personIdent)) {
         return (
-            <HStack gap="2" align={'center'}>
+            <HStack gap="space-8" align="center">
                 <BodyShortSmall>{children}</BodyShortSmall>{' '}
                 <Tooltip content="Navs personidentifikator" placement="right">
                     <Tag variant="info" size="small">

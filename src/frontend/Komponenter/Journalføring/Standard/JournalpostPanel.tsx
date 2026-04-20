@@ -104,7 +104,7 @@ const JournalpostPanel: React.FC<Props> = ({ journalpost, journalpostState }) =>
             onToggle={() => settErPanelEkspandert((prevState) => !prevState)}
         >
             <ExpansionCardHeader>
-                <HStack gap="4">
+                <HStack gap="space-16">
                     <IkonContainer>
                         {erPanelEkspandert ? (
                             <FolderFileFillIcon fontSize={'3.5rem'} />
