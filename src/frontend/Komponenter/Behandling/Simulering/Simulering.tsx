@@ -10,7 +10,7 @@ import {
     IVedtak,
     IVedtakType,
 } from '../../../App/typer/vedtak';
-import { Alert, ExpansionCard, HStack, List, VStack } from '@navikt/ds-react';
+import { Alert, ExpansionCard, HStack, List, VStack, Box } from '@navikt/ds-react';
 import { mapSimuleringstabellRader } from './utils';
 import Sanksjonsperiode from './Sanksjonsperiode';
 import { useApp } from '../../../App/context/AppContext';
@@ -127,24 +127,27 @@ const Simulering: React.FC<{
                             </ExpansionCard.Description>
                         </ExpansionCard.Header>
                         <ExpansionCard.Content>
-                            <List>
-                                <List.Item>
-                                    <BodyLongSmall>
-                                        Hvis ja, kan du behandle saken på vanlig måte (varsle eller
-                                        fatte vedtak)
-                                    </BodyLongSmall>
-                                </List.Item>
-                                <List.Item>
-                                    <BodyLongSmall>
-                                        Hvis nei, kontakt NØS og spør om bruker har kreditortrekk
-                                        som ikke er utbetalt til kreditor. Be om at kreditortrekket
-                                        ikke utbetales til kreditor. Slik kan vi gjøre
-                                        feilutbetalingssaken lavere for bruker. Behold saken på egen
-                                        benk. Når NØS har gitt tilbakemelding og kravgrunnlaget er
-                                        oppdatert, kan saken behandles på vanlig måte.
-                                    </BodyLongSmall>
-                                </List.Item>
-                            </List>
+                            <Box marginBlock="space-16" asChild>
+                                <List>
+                                    <List.Item>
+                                        <BodyLongSmall>
+                                            Hvis ja, kan du behandle saken på vanlig måte (varsle
+                                            eller fatte vedtak)
+                                        </BodyLongSmall>
+                                    </List.Item>
+                                    <List.Item>
+                                        <BodyLongSmall>
+                                            Hvis nei, kontakt NØS og spør om bruker har
+                                            kreditortrekk som ikke er utbetalt til kreditor. Be om
+                                            at kreditortrekket ikke utbetales til kreditor. Slik kan
+                                            vi gjøre feilutbetalingssaken lavere for bruker. Behold
+                                            saken på egen benk. Når NØS har gitt tilbakemelding og
+                                            kravgrunnlaget er oppdatert, kan saken behandles på
+                                            vanlig måte.
+                                        </BodyLongSmall>
+                                    </List.Item>
+                                </List>
+                            </Box>
                             <VStack gap={'2'}>
                                 <BodyLongSmall>
                                     Du kan kontakte NØS via Gosys-oppgave eller på telefon.
