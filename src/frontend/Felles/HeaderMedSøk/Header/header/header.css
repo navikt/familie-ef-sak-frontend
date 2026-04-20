@@ -3,7 +3,7 @@
         -45deg,
         #4d4d00,
         #4d4d00 20px,
-        var(--ax-neutral-1000) 20px,
-        var(--ax-neutral-1000) 40px
+        black 20px,
+        black 40px
     );
 }
