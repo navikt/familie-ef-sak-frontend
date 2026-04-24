@@ -1,9 +1,9 @@
 import styled from 'styled-components';
-import { AGray300 } from '@navikt/ds-tokens/dist/tokens';
+import { Neutral400 } from '@navikt/ds-tokens/js';
 
 export const TidslinjeIkonbakgrunn = styled.div`
     display: inline-block;
-    background-color: ${AGray300};
+    background-color: ${Neutral400};
     width: 26px;
     height: 26px;
     border-radius: 50%;

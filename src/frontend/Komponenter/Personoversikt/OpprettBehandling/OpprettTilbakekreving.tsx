@@ -13,7 +13,7 @@ interface Props {
 }
 
 export const OpprettTilbakekreving: React.FC<Props> = ({ settVisModal, opprettTilbakekreving }) => (
-    <HStack justify="end" gap="4">
+    <HStack justify="end" gap="space-16">
         <ModalKnapp
             variant="tertiary"
             onClick={() => {

@@ -62,7 +62,7 @@ const AdressehistorikkMedLesMerKnapp: React.FC<{
 };
 
 const TittelbeskrivelseBostedsadresser: React.ReactElement = (
-    <VStack gap="4">
+    <VStack gap="space-16">
         <HStack>
             <BodyShort size={'small'}>
                 <b>Gjeldende adresse:</b> En person skal til enhver tid ha kun én folkeregistrert
@@ -138,7 +138,7 @@ const Innhold: React.FC<{ adresser: IAdresse[]; fagsakPersonId: string }> = ({
                     return (
                         <Table.Row key={indeks}>
                             <Table.DataCell>
-                                <HStack gap="2" align="center">
+                                <HStack gap="space-8" align="center">
                                     {adresse.visningsadresse}
                                     {adresse.erGjeldende && (
                                         <Tag variant="success" size="small">

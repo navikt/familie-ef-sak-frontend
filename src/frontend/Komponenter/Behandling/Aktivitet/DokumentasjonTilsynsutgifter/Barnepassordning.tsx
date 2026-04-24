@@ -12,7 +12,7 @@ const Barnepassordning: FC<{
     barnepassordning: BarnepassordningDto;
 }> = ({ barnepassordning }) => {
     return (
-        <VStack gap="2">
+        <VStack gap="space-8">
             <Informasjonsrad
                 ikon={VilkårInfoIkon.SØKNAD}
                 label="Barnepassordning"

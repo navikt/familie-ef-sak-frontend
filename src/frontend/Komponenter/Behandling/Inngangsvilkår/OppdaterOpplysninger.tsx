@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import { ArrowsCirclepathIcon } from '@navikt/aksel-icons';
 import { Button, HelpText } from '@navikt/ds-react';
 import { DetailSmall } from '../../../Felles/Visningskomponenter/Tekster';
-import { ATextSubtle } from '@navikt/ds-tokens/dist/tokens';
 import { useBehandling } from '../../../App/context/BehandlingContext';
+import { TextNeutralSubtle } from '@navikt/ds-tokens/js';
 
 const FlexWrapper = styled.div`
     display: flex;
@@ -19,7 +19,7 @@ const Container = styled.div`
 `;
 
 const Oppdateringstekst = styled(DetailSmall)`
-    color: ${ATextSubtle};
+    color: ${TextNeutralSubtle};
     padding-right: 0.25rem;
 `;
 

@@ -23,7 +23,7 @@ export const FrittståendeBrevMedVisning: React.FC<Props> = ({
     };
 
     return (
-        <HStack gap="4">
+        <HStack gap="space-16">
             <div style={{ flex: 1 }}>
                 <FrittståendeSanitybrev
                     fagsakId={fagsakId}
@@ -33,7 +33,7 @@ export const FrittståendeBrevMedVisning: React.FC<Props> = ({
                 />
             </div>
             <div style={{ flex: 1 }}>
-                <VStack gap="2" align="center">
+                <VStack gap="space-8" align="center">
                     <PdfVisning
                         pdfFilInnhold={brevRessurs}
                         erDokumentInnlastet={erDokumentInnlastet}

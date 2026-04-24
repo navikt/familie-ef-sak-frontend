@@ -11,20 +11,21 @@ import {
     AnsvarligSaksbehandler,
     AnsvarligSaksbehandlerRolle,
 } from '../../../App/typer/saksbehandler';
-import {
-    ABorderSubtle,
-    ASurfaceNeutral,
-    ASurfaceSuccess,
-    ASurfaceWarning,
-    ATextSubtle,
-} from '@navikt/ds-tokens/dist/tokens';
 import { AlertWarning } from '../../../Felles/Visningskomponenter/Alerts';
+
+import {
+    TextNeutralSubtle,
+    BgWarningStrong,
+    BgSuccessStrong,
+    BgNeutralStrong,
+    BorderNeutralSubtle,
+} from '@navikt/ds-tokens/js';
 
 const Container = styled.div`
     padding: 1rem;
     display: flex;
     gap: 0.5rem;
-    border: 1px solid ${ABorderSubtle};
+    border: 1px solid ${BorderNeutralSubtle};
     border-radius: 0.125rem;
     margin: 1rem 0.5rem;
 `;
@@ -46,7 +47,7 @@ const FlexBoxColumnFullWidth = styled(FlexBoxColumn)`
 `;
 
 const GråBodyShort = styled(BodyShort)`
-    color: ${ATextSubtle};
+    color: ${TextNeutralSubtle};
 `;
 
 const FontStyledBodyShort = styled(BodyShort)<{ $fontStyle: string }>`
@@ -83,15 +84,15 @@ const TilegnetSaksbehandler: React.FC<Props> = ({ behandling }) => {
         switch (ansvarligSaksbehandlerRolle) {
             case AnsvarligSaksbehandlerRolle.IKKE_SATT:
             case AnsvarligSaksbehandlerRolle.UTVIKLER_MED_VEILEDERROLLE:
-                return ASurfaceNeutral;
+                return BgNeutralStrong;
             case AnsvarligSaksbehandlerRolle.INNLOGGET_SAKSBEHANDLER:
             case AnsvarligSaksbehandlerRolle.OPPGAVE_FINNES_IKKE_SANNSYNLIGVIS_INNLOGGET_SAKSBEHANDLER:
-                return ASurfaceSuccess;
+                return BgSuccessStrong;
             case AnsvarligSaksbehandlerRolle.ANNEN_SAKSBEHANDLER:
             case AnsvarligSaksbehandlerRolle.OPPGAVE_TILHØRER_IKKE_ENF:
-                return ASurfaceWarning;
+                return BgWarningStrong;
             default:
-                return ASurfaceNeutral;
+                return BgNeutralStrong;
         }
     };
 

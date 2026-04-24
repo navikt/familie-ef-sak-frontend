@@ -1,20 +1,14 @@
 import { ReadMore, Table } from '@navikt/ds-react';
 import React, { FC } from 'react';
-import styled from 'styled-components';
 import { IPersonalia } from '../vilkår';
 import { IBarnMedSamvær } from './typer';
-import { ATextDefault } from '@navikt/ds-tokens/dist/tokens';
-
-const StyledReadMore = styled(ReadMore)`
-    --ac-read-more-text: ${ATextDefault};
-`;
 
 const BostedMedReadMore: FC<{
     personalia: IPersonalia;
     gjeldendeBarn: IBarnMedSamvær;
 }> = ({ personalia, gjeldendeBarn }) => {
     return (
-        <StyledReadMore header="Ikke registrert på brukers adresse" size="small" defaultOpen>
+        <ReadMore header="Ikke registrert på brukers adresse" size="small" defaultOpen>
             {gjeldendeBarn.registergrunnlag.adresse ? (
                 <>
                     Bruker og barnets folkeregistrerte bostedsadresser:
@@ -52,7 +46,7 @@ const BostedMedReadMore: FC<{
             ) : (
                 'Vi har ikke registrert noen adresse å sammenlikne med.'
             )}
-        </StyledReadMore>
+        </ReadMore>
     );
 };
 

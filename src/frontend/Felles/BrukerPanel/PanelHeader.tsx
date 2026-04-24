@@ -2,11 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 import { CopyButton, HStack, Label, Button } from '@navikt/ds-react';
 import { EnvelopeClosedIcon, PersonCircleIcon } from '@navikt/aksel-icons';
-import { ABlue500 } from '@navikt/ds-tokens/dist/tokens';
 import { NotePencilIcon } from '@navikt/aksel-icons';
+import { Accent600 } from '@navikt/ds-tokens/js';
 
 const IkonContainer = styled.div`
-    color: ${ABlue500};
+    color: ${Accent600};
     padding-right: 1rem;
 `;
 
@@ -36,7 +36,7 @@ export const PanelHeader: React.FC<Props> = ({ navn, personIdent, type, onClick 
     return (
         <HStack>
             <IkonContainer>{panelIkon}</IkonContainer>
-            <HStack align="center" gap={'1'}>
+            <HStack align="center" gap="space-4">
                 <Label as={'p'}>{tittel}</Label>
                 {type === PanelHeaderType.Samværsavtale ? (
                     <Button

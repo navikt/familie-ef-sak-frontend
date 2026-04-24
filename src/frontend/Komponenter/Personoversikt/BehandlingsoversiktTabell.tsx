@@ -37,11 +37,11 @@ import {
 import { ExclamationmarkTriangleFillIcon } from '@navikt/aksel-icons';
 import { Table, Tag, Tooltip } from '@navikt/ds-react';
 import { sorterBehandlinger } from '../../App/utils/behandlingutil';
-import { AIconWarning } from '@navikt/ds-tokens/dist/tokens';
 import {
     TableDataCellSmall,
     TableHeaderCellSmall,
 } from './HistorikkVedtaksperioder/vedtakshistorikkUtil';
+import { TextWarningDecoration } from '@navikt/ds-tokens/js';
 
 const StyledTable = styled(Table)`
     width: 60%;
@@ -50,7 +50,7 @@ const StyledTable = styled(Table)`
 
 const AdvarselIkon = styled(ExclamationmarkTriangleFillIcon)`
     margin-left: 1rem;
-    background-color: ${AIconWarning};
+    background-color: ${TextWarningDecoration};
 `;
 
 const FlexBox = styled.div`

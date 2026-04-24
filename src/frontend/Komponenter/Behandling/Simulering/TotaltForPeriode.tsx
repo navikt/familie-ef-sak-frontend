@@ -6,10 +6,10 @@ import {
 import styled from 'styled-components';
 import { RadTittel, RadVerdi, SimuleringOversiktTabell } from './SimuleringOversikt';
 import { BodyShortSmall, SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
-import { ABorderDefault } from '@navikt/ds-tokens/dist/tokens';
+import { BorderNeutral } from '@navikt/ds-tokens/js';
 
 const Container = styled.div`
-    border-bottom: 1px solid ${ABorderDefault};
+    border-bottom: 1px solid ${BorderNeutral};
     padding-bottom: 0.5rem;
     margin-bottom: 0.5rem;
 `;

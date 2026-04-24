@@ -165,7 +165,7 @@ const SamværskalkulatorSkjema: React.FC = () => {
         <DataViewer response={{ søkRessurs }}>
             {({ søkRessurs }) => {
                 return (
-                    <VStack gap="4">
+                    <VStack gap="space-16">
                         <Heading size="large">Beregn samvær</Heading>
                         <StyledBrukerPanel
                             navn={søkRessurs.navn}
@@ -187,7 +187,7 @@ const SamværskalkulatorSkjema: React.FC = () => {
                             onChange={(e) => settNotat(e.target.value)}
                             maxLength={0}
                         />
-                        <HStack gap="4">
+                        <HStack gap="space-16">
                             <Button
                                 size={'small'}
                                 variant={'tertiary'}

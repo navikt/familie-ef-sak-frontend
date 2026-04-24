@@ -76,7 +76,7 @@ const Klagebehandlinger: React.FC<Props> = ({ journalpostState, settFeilmelding 
                     valgtStønadstypeKey && harÅpenKlage(klagebehandlinger[valgtStønadstypeKey]);
 
                 return (
-                    <VStack gap="4">
+                    <VStack gap="space-16">
                         <AlertInfo>
                             Merk at du ikke lenger trenger å knytte dokumenter til spesifikke
                             behandlinger da de automatisk knyttes til bruker. Du kan i listen under

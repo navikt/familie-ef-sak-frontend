@@ -18,7 +18,7 @@ const BehandlingVelger: FC<{
     settVisUaktuelle: React.Dispatch<React.SetStateAction<boolean>>;
 }> = ({ valgtFagsak, behandlinger, settValgtBehandlingId, visUaktuelle, settVisUaktuelle }) => {
     return (
-        <HStack gap="4">
+        <HStack gap="space-16">
             <Select
                 size="small"
                 label=""
@@ -35,7 +35,6 @@ const BehandlingVelger: FC<{
                     </option>
                 ))}
             </Select>
-
             {valgtFagsak && valgtFagsak.stønadstype !== Stønadstype.SKOLEPENGER && (
                 <StyledCheckbox
                     size="small"

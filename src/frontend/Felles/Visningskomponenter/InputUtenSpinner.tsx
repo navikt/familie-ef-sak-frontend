@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { ASpacing12 } from '@navikt/ds-tokens/dist/tokens';
 import { BodyShort, TextField, TextFieldProps } from '@navikt/ds-react';
+import { Space48 } from '@navikt/ds-tokens/js';
 
 export interface PropsInputUtenSpinner extends TextFieldProps {
     value: number | string | undefined;
@@ -12,7 +12,7 @@ const StyledInputUtenSpinner = styled(TextField)`
     text-align: right;
     input {
         text-align: right;
-        height: ${ASpacing12};
+        height: ${Space48};
     }
     input::-webkit-outer-spin-button,
     input::-webkit-inner-spin-button {

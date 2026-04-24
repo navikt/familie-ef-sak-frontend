@@ -4,32 +4,33 @@ import styled from 'styled-components';
 import { formaterTallMedTusenSkilleEllerStrek } from '../../../App/utils/formatter';
 import ÅrVelger from './ÅrVelger';
 import { BodyShortSmall, SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
-import { AGreen500, ARed500, ABorderStrong, ABorderDefault } from '@navikt/ds-tokens/dist/tokens';
+
+import { Success600, Danger600, BorderNeutralStrong, BorderNeutral } from '@navikt/ds-tokens/js';
 
 const Tabell = styled.table`
     border-collapse: collapse;
 `;
 
 const TabellHeader = styled.th`
-    border-bottom: 1px solid ${ABorderStrong};
+    border-bottom: 1px solid ${BorderNeutralStrong};
 `;
 
 const BasisKolonne = styled.td`
     padding: 0.75rem;
-    border-bottom: 1px solid ${ABorderDefault};
+    border-bottom: 1px solid ${BorderNeutral};
 `;
 
 const VerdiKolonne = styled(BasisKolonne)<{ $gjelderNestePeriode: boolean }>`
     text-align: right;
-    border-left: ${(props) => props.$gjelderNestePeriode && `1px dashed ${ABorderStrong}`};
+    border-left: ${(props) => props.$gjelderNestePeriode && `1px dashed ${BorderNeutralStrong}`};
 `;
 
 const MånedHeader = styled(VerdiKolonne)<{ $gjelderNestePeriode: boolean }>`
-    border-bottom: 1px solid ${ABorderStrong};
+    border-bottom: 1px solid ${BorderNeutralStrong};
 `;
 
 const ResultatVerdi = styled(BodyShortSmall)<{ $verdi: number }>`
-    color: ${(props) => (props.$verdi > 0 ? AGreen500 : ARed500)};
+    color: ${(props) => (props.$verdi > 0 ? Success600 : Danger600)};
 `;
 
 const ÅrVelgerMargin = styled(ÅrVelger)`

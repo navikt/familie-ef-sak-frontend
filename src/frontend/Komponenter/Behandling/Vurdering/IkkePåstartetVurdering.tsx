@@ -18,7 +18,7 @@ export const IkkePåstartetVurdering: React.FC<Props> = ({
     venstreKnappetekst,
     høyreKnappetekst,
 }) => (
-    <HStack gap="4">
+    <HStack gap="space-16">
         <Button onClick={startVilkårsredigering} variant={'secondary'} type={'button'}>
             {venstreKnappetekst ? venstreKnappetekst : 'Vurder vilkår'}
         </Button>

@@ -93,7 +93,7 @@ export const OpprettKlagebehandling: React.FunctionComponent<Props> = ({
                 settKlageGjelderTilbakekreving={settKlageGjelderTilbakekreving}
             />
             {feilmelding && <AlertStripe variant={'error'}>{feilmelding}</AlertStripe>}
-            <HStack justify="end" gap="4">
+            <HStack justify="end" gap="space-16">
                 <ModalKnapp
                     variant="tertiary"
                     onClick={() => {

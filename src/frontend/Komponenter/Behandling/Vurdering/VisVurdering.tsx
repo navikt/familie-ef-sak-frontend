@@ -20,10 +20,10 @@ import {
     DetailSmall,
     SmallTextLabel,
 } from '../../../Felles/Visningskomponenter/Tekster';
-import { ATextSubtle } from '@navikt/ds-tokens/dist/tokens';
 import { utledSkalViseGjenbrukKnapp } from './utils';
 import { ModalGjenbrukVilkårsvurdering } from './ModalGjenbrukVilkårsvurdering';
 import { LagTittel } from './LagTittel';
+import { TextNeutralSubtle } from '@navikt/ds-tokens/js';
 
 const StyledVilkår = styled.div`
     grid-column: 2/4;
@@ -46,7 +46,7 @@ const StyledFeilmelding = styled.div`
 `;
 
 const SistOppdatertTekst = styled(DetailSmall)`
-    color: ${ATextSubtle};
+    color: ${TextNeutralSubtle};
 `;
 
 interface Props {

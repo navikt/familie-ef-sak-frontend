@@ -9,7 +9,7 @@ import { AxiosRequestConfig } from 'axios';
 import styled from 'styled-components';
 import { BodyShort, Heading } from '@navikt/ds-react';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
-import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
+import { Neutral100 } from '@navikt/ds-tokens/js';
 
 const BodyShortLiten = styled(BodyShortSmall)`
     margin-left: 0.25rem;
@@ -17,7 +17,7 @@ const BodyShortLiten = styled(BodyShortSmall)`
 
 const Container = styled.div`
     padding: 1rem;
-    background-color: ${AGray50};
+    background-color: ${Neutral100};
 `;
 
 const BodyShortRight = styled(BodyShort)`

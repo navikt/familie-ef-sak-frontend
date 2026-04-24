@@ -11,11 +11,12 @@ import React, { Dispatch, SetStateAction, useState } from 'react';
 import { ValgfeltSelect } from './ValgfeltSelect';
 import { Flettefelt } from './Flettefelt';
 import { Button, Checkbox, HStack, VStack } from '@navikt/ds-react';
-import { ABorderDefault, ABorderRadiusMedium } from '@navikt/ds-tokens/dist/tokens';
 import { HtmlEditor } from '../../../Felles/HtmlEditor/HtmlEditor';
 import { ArrowsSquarepathIcon, ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons';
 import { finnFlettefeltRefFraFlettefeltApiNavn } from './BrevUtils';
 import { formaterTallMedTusenSkille } from '../../../App/utils/formatter';
+
+import { BorderNeutral, Radius4 } from '@navikt/ds-tokens/js';
 
 interface Props {
     delmal: Delmal;
@@ -117,7 +118,7 @@ export const BrevMenyDelmal: React.FC<Props> = ({
     );
 
     return (
-        <HStack gap="2" wrap={false}>
+        <HStack gap="space-8" wrap={false}>
             <Checkbox hideLabel onChange={håndterToggleDelmal} checked={valgt} size="small">
                 Velg delmal
             </Checkbox>
@@ -125,8 +126,8 @@ export const BrevMenyDelmal: React.FC<Props> = ({
                 justify={'start'}
                 style={{
                     width: '100%',
-                    border: `1px solid ${ABorderDefault}`,
-                    borderRadius: `${ABorderRadiusMedium}`,
+                    border: `1px solid ${BorderNeutral}`,
+                    borderRadius: `${Radius4}`,
                 }}
             >
                 <HStack>
@@ -141,7 +142,7 @@ export const BrevMenyDelmal: React.FC<Props> = ({
                     </Button>
                 </HStack>
                 {ekspanderbartPanelÅpen && (
-                    <VStack gap={'4'} style={{ padding: '1rem' }}>
+                    <VStack gap={'space-16'} style={{ padding: '1rem' }}>
                         {erDelmalblokk &&
                             delmalValgfelt &&
                             delmalValgfelt.map((valgFelt, index) => (
@@ -187,7 +188,7 @@ export const BrevMenyDelmal: React.FC<Props> = ({
                             </div>
                         )}
                         {overstyring.overstyrtDelmal?.skalOverstyre && (
-                            <VStack gap={'2'}>
+                            <VStack gap={'space-8'}>
                                 <div>
                                     <HtmlEditor
                                         defaultValue={overstyring.overstyrtDelmal.htmlInnhold}

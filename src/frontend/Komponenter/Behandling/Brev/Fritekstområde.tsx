@@ -13,16 +13,16 @@ import { ArrowDownIcon, ArrowUpIcon, PlusIcon, TrashIcon } from '@navikt/aksel-i
 import { FritekstAvsnitt, Fritekstområder } from './BrevTyper';
 
 const FritekstAvsnittContainer: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-    <Box padding="4" borderWidth="1" borderRadius="small" borderColor="border-default">
-        <VStack gap="2" width="100%">
+    <Box padding="space-16" borderWidth="1" borderRadius="2" borderColor="neutral">
+        <VStack gap="space-8" width="100%">
             {children}
         </VStack>
     </Box>
 );
 
 const FritekstområdePanel: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-    <Box padding="4">
-        <VStack gap="4" width="100%">
+    <Box padding="space-16">
+        <VStack gap="space-16" width="100%">
             {children}
         </VStack>
     </Box>
@@ -115,7 +115,7 @@ export const Fritekstområde: React.FC<{
                                     })
                                 }
                             />
-                            <HStack gap="1" justify="end">
+                            <HStack gap="space-4" justify="end">
                                 <Tooltip content="Slett avsnitt">
                                     <Button
                                         icon={<TrashIcon />}

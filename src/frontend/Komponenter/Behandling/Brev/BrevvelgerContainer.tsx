@@ -6,7 +6,7 @@ export const BrevvelgerContainer: FC<{
     children?: React.ReactNode;
 }> = ({ children }) => {
     return (
-        <VStack gap={'4'} className={styles.container}>
+        <VStack gap="space-16" className={styles.container}>
             {children}
         </VStack>
     );

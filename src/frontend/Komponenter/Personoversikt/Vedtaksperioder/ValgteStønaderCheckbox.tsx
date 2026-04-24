@@ -26,8 +26,8 @@ const ValgteStønaderCheckbox: FC<{
     };
 
     return (
-        <HStack gap={'16'}>
-            <HStack gap={'4'}>
+        <HStack gap="space-64">
+            <HStack gap="space-16">
                 <CheckboxGroup
                     size="small"
                     legend=""

@@ -3,11 +3,18 @@ import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
 import { FaneProps, FaneNavn } from './faner';
 import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
-import { ABlue400, ABlue500, AGray100, AGray300, ATextAction } from '@navikt/ds-tokens/dist/tokens';
 import { Behandling } from '../../../App/typer/fagsak';
 import { Steg } from '../Høyremeny/Steg';
 import { useApp } from '../../../App/context/AppContext';
 import { useBehandling } from '../../../App/context/BehandlingContext';
+
+import {
+    Accent600,
+    Accent500,
+    Neutral400,
+    Neutral200,
+    TextAccentSubtle,
+} from '@navikt/ds-tokens/js';
 
 const StyledNavLink = styled(NavLink)`
     border-bottom: 5px solid white;
@@ -26,16 +33,16 @@ const StyledNavLink = styled(NavLink)`
     padding-right: 5px;
 
     &:hover {
-        border-bottom: 5px solid ${ABlue400};
+        border-bottom: 5px solid ${Accent500};
 
         .navds-body-short {
-            color: ${ATextAction};
+            color: ${TextAccentSubtle};
         }
     }
 
     &.active {
-        background-color: ${AGray100};
-        border-bottom: 5px solid ${ABlue500};
+        background-color: ${Neutral200};
+        border-bottom: 5px solid ${Accent600};
     }
 `;
 
@@ -47,7 +54,7 @@ const StyledLenketekst = styled(BodyShortSmall)`
 
 const StyledTekst = styled(BodyShortSmall)`
     border-bottom: 5px solid white;
-    color: ${AGray300};
+    color: ${Neutral400};
     text-align: center;
     text-decoration: none;
     width: 100%;

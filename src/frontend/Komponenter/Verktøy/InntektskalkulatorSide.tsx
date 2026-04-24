@@ -35,7 +35,7 @@ export const InntektskalkulatorSide: React.FC = () => {
                 leggTilBeregnetInntektTekstIBegrunnelse={leggTilBeregnetInntektTekstIBegrunnelse}
                 nullstillBegrunnelse={nullstillBegrunnelse}
             />
-            <HStack gap="2">
+            <HStack gap="space-8">
                 <TextAreaLiten
                     value={inntektBegrunnelseState.value}
                     onChange={(event) => {

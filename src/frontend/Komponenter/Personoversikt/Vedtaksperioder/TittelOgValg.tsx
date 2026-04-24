@@ -21,7 +21,7 @@ const TittelOgValg: FC<{
     settVisUaktuelle,
 }) => {
     return (
-        <HStack gap="3" justify="space-between" align="center">
+        <HStack gap="space-12" justify="space-between" align="center">
             <Heading size="medium">
                 {utledTittel(fagsak).charAt(0).toUpperCase() + utledTittel(fagsak).slice(1)}
             </Heading>

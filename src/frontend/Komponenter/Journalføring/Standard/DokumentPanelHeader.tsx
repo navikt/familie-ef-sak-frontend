@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { BodyShort, Label, VStack } from '@navikt/ds-react';
 import { FileTextFillIcon, FileTextIcon } from '@navikt/aksel-icons';
-import { ABlue500 } from '@navikt/ds-tokens/dist/tokens';
+import { Accent600 } from '@navikt/ds-tokens/js';
 
 const Container = styled.div`
     display: flex;
@@ -17,7 +17,7 @@ const DokumentTitler = styled.div`
 `;
 
 const IkonContainer = styled.div`
-    color: ${ABlue500};
+    color: ${Accent600};
 `;
 
 interface Props {
@@ -45,7 +45,7 @@ export const DokumentPanelHeader: React.FC<Props> = ({
                 {logiskeVedlegg !== undefined &&
                     logiskeVedlegg !== null &&
                     logiskeVedlegg.length > 0 && (
-                        <VStack gap={'0'}>
+                        <VStack gap="space-0">
                             {logiskeVedlegg.map((it, index) => (
                                 <BodyShort key={index}>{it}</BodyShort>
                             ))}

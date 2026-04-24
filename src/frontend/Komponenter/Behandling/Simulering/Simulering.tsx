@@ -10,7 +10,7 @@ import {
     IVedtak,
     IVedtakType,
 } from '../../../App/typer/vedtak';
-import { Alert, ExpansionCard, List, VStack } from '@navikt/ds-react';
+import { Alert, ExpansionCard, HStack, List, VStack, Box } from '@navikt/ds-react';
 import { mapSimuleringstabellRader } from './utils';
 import Sanksjonsperiode from './Sanksjonsperiode';
 import { useApp } from '../../../App/context/AppContext';
@@ -19,8 +19,8 @@ import { useBehandling } from '../../../App/context/BehandlingContext';
 import { Behandling } from '../../../App/typer/fagsak';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { BodyLongSmall } from '../../../Felles/Visningskomponenter/Tekster';
-import { ASurfaceWarningSubtle, ASurfaceWarningSubtleHover } from '@navikt/ds-tokens/dist/tokens';
 import { AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
+import { ExclamationmarkTriangleFillIcon } from '@navikt/aksel-icons';
 
 const Container = styled.div`
     padding: 2rem;
@@ -32,10 +32,6 @@ const Container = styled.div`
 
 const ExpansionCardWarning = styled(ExpansionCard)`
     max-width: 42.5rem;
-    --ac-expansioncard-bg: ${ASurfaceWarningSubtle};
-    --ac-expansioncard-header-bg-hover: ${ASurfaceWarningSubtleHover};
-    --ac-expansioncard-border-open-color: ${ASurfaceWarningSubtleHover};
-    --ac-expansioncard-border-hover-color: ${ASurfaceWarningSubtleHover};
 `;
 const AlertWarning = styled(Alert)`
     max-width: 60rem;
@@ -104,7 +100,7 @@ const Simulering: React.FC<{
 
     return (
         <Container>
-            <VStack gap="4">
+            <VStack gap="space-16">
                 <SimuleringOversikt simulering={simuleringsresultat} />
                 {harManuellePosteringer && (
                     <AlertWarning variant={'warning'}>
@@ -116,8 +112,14 @@ const Simulering: React.FC<{
                     <ExpansionCardWarning aria-label={'Kreditortrekk'} size={'small'}>
                         <ExpansionCard.Header>
                             <ExpansionCard.Title>
-                                Bruker har kreditortrekk (
-                                {formaterIsoDato(simuleringsresultat.tidSimuleringHentet)})
+                                <HStack wrap={false} gap="space-8" align="center">
+                                    <ExclamationmarkTriangleFillIcon
+                                        title="Advarsel om kreditortrekk"
+                                        fontSize="1.5rem"
+                                    />
+                                    Bruker har kreditortrekk (
+                                    {formaterIsoDato(simuleringsresultat.tidSimuleringHentet)})
+                                </HStack>
                             </ExpansionCard.Title>
                             <ExpansionCard.Description>
                                 Hvis bruker har feilutbetalt overgangsstønad, må du sjekke om totalt
@@ -125,25 +127,28 @@ const Simulering: React.FC<{
                             </ExpansionCard.Description>
                         </ExpansionCard.Header>
                         <ExpansionCard.Content>
-                            <List>
-                                <List.Item>
-                                    <BodyLongSmall>
-                                        Hvis ja, kan du behandle saken på vanlig måte (varsle eller
-                                        fatte vedtak)
-                                    </BodyLongSmall>
-                                </List.Item>
-                                <List.Item>
-                                    <BodyLongSmall>
-                                        Hvis nei, kontakt NØS og spør om bruker har kreditortrekk
-                                        som ikke er utbetalt til kreditor. Be om at kreditortrekket
-                                        ikke utbetales til kreditor. Slik kan vi gjøre
-                                        feilutbetalingssaken lavere for bruker. Behold saken på egen
-                                        benk. Når NØS har gitt tilbakemelding og kravgrunnlaget er
-                                        oppdatert, kan saken behandles på vanlig måte.
-                                    </BodyLongSmall>
-                                </List.Item>
-                            </List>
-                            <VStack gap={'2'}>
+                            <Box marginBlock="space-16" asChild>
+                                <List>
+                                    <List.Item>
+                                        <BodyLongSmall>
+                                            Hvis ja, kan du behandle saken på vanlig måte (varsle
+                                            eller fatte vedtak)
+                                        </BodyLongSmall>
+                                    </List.Item>
+                                    <List.Item>
+                                        <BodyLongSmall>
+                                            Hvis nei, kontakt NØS og spør om bruker har
+                                            kreditortrekk som ikke er utbetalt til kreditor. Be om
+                                            at kreditortrekket ikke utbetales til kreditor. Slik kan
+                                            vi gjøre feilutbetalingssaken lavere for bruker. Behold
+                                            saken på egen benk. Når NØS har gitt tilbakemelding og
+                                            kravgrunnlaget er oppdatert, kan saken behandles på
+                                            vanlig måte.
+                                        </BodyLongSmall>
+                                    </List.Item>
+                                </List>
+                            </Box>
+                            <VStack gap="space-8">
                                 <BodyLongSmall>
                                     Du kan kontakte NØS via Gosys-oppgave eller på telefon.
                                 </BodyLongSmall>

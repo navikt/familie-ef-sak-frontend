@@ -13,7 +13,7 @@ export const FremleggoppgaverSomOpprettes: FC<{
     }
 
     return (
-        <Box background={'surface-alt-2-subtle'} padding="space-8">
+        <Box background="meta-lime-soft" padding="space-8">
             <CheckboxGroup
                 legend="Følgende oppgave skal opprettes automatisk når vedtaket er godkjent:"
                 value={oppgavetyperSomSkalOpprettes}

@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link } from '@navikt/ds-react';
 import { BodyShortSmall } from '../Visningskomponenter/Tekster';
-import { AFontWeightBold } from '@navikt/ds-tokens/dist/tokens';
 import VisittKortKomponent from './VisittkortKomponent';
+import { FontWeightBold } from '@navikt/ds-tokens/js';
 
 const ResponsivLenke = styled(Link)`
     text-overflow: ellipsis;
@@ -19,7 +19,7 @@ const Visningsnavn = styled(BodyShortSmall)`
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-    font-weight: ${AFontWeightBold};
+    font-weight: ${FontWeightBold};
 `;
 
 interface Props {

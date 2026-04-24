@@ -14,7 +14,7 @@ export const VedtakAAP: React.FC<Props> = ({ vedtak }) => {
     );
 
     return (
-        <VStack gap="4" style={{ marginLeft: '1rem' }}>
+        <VStack gap="space-16" style={{ marginLeft: '1rem' }}>
             <ExpansionCard
                 aria-label="Vedtak om arbeidsavklaringspenger med vedtaksdato "
                 defaultOpen
@@ -33,7 +33,7 @@ export const VedtakAAP: React.FC<Props> = ({ vedtak }) => {
                     </HStack>
                 </ExpansionCard.Header>
                 <ExpansionCard.Content>
-                    <VStack gap="1">
+                    <VStack gap="space-4">
                         {vedtakNyesteFørst.map((arbeidsavklaringspenger, index) => {
                             const fomDato = formaterIsoDato(
                                 arbeidsavklaringspenger.periode.fraOgMedDato

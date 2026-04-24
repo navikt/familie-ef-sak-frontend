@@ -3,12 +3,12 @@ import MånedÅrVelger from '../../../../Felles/Input/MånedÅr/MånedÅrVelger'
 import styled from 'styled-components';
 import { AlertWarning } from '../../../../Felles/Visningskomponenter/Alerts';
 import { EnsligErrorMessage } from '../../../../Felles/ErrorMessage/EnsligErrorMessage';
-import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
+import { Neutral100 } from '@navikt/ds-tokens/js';
 
 const Container = styled.div`
     padding: 1rem;
-    background-color: ${AGray50};
+    background-color: ${Neutral100};
 `;
 
 const Advarsel = styled(AlertWarning)`

@@ -3,9 +3,9 @@ import { FC } from 'react';
 import styled from 'styled-components';
 import { filtrerFanerPåBehandlingstype } from './faner';
 import { Sticky } from '../../../Felles/Visningskomponenter/Sticky';
-import { AWhite, ABorderDefault } from '@navikt/ds-tokens/dist/tokens';
 import { Behandling } from '../../../App/typer/fagsak';
 import { Fane } from './Fane';
+import { BorderNeutral } from '@navikt/ds-tokens/js';
 
 const StickyMedBoxShadow = styled(Sticky)`
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
@@ -17,8 +17,8 @@ const StyledFanemeny = styled.div`
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    border-bottom: ${ABorderDefault} solid 2px;
-    background-color: ${AWhite};
+    border-bottom: ${BorderNeutral} solid 2px;
+    background-color: white;
 `;
 
 interface Props {

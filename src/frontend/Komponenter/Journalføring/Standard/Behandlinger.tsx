@@ -67,7 +67,7 @@ const Behandlinger: React.FC<Props> = ({ journalpostState, settFeilmelding }) =>
                     behandlingstypeTilTekst[utledRiktigBehandlingstype(fagsak.behandlinger)];
 
                 return (
-                    <VStack gap="4">
+                    <VStack gap="space-16">
                         <AlertInfo>
                             Merk at du ikke lenger trenger å knytte dokumenter til spesifikke
                             behandlinger da de automatisk knyttes til bruker. Du kan i listen under

@@ -6,7 +6,7 @@ import { BodyShort, Label, VStack } from '@navikt/ds-react';
 import styled from 'styled-components';
 import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
-import { AFontSizeMedium } from '@navikt/ds-tokens/dist/tokens';
+import { FontSizeMedium } from '@navikt/ds-tokens/js';
 
 interface Props {
     utenlandsopphold: IUtenlandsopphold[];
@@ -19,7 +19,7 @@ const PeriodeStyling = styled(BodyShort)`
 `;
 
 const Grid = styled.div`
-    font-size: ${AFontSizeMedium};
+    font-size: ${FontSizeMedium};
     display: grid;
     grid-template-columns: auto 1fr;
     gap: 1rem;
@@ -31,7 +31,7 @@ const harPersonidentInformasjonForEøsLand = (opphold: IUtenlandsopphold): boole
 };
 const ikon = VilkårInfoIkon.SØKNAD;
 const Utenlandsopphold: FC<Props> = ({ utenlandsopphold }) => (
-    <VStack gap="4">
+    <VStack gap="space-16">
         <Informasjonsrad ikon={ikon} label={'Utenlandsopphold'} />
         {utenlandsopphold.map((opphold, index) => (
             <React.Fragment key={opphold.fraDato + index}>

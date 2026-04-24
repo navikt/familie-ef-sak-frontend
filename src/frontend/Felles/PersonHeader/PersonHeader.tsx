@@ -5,11 +5,11 @@ import { Behandling, Fagsak, FagsakPerson } from '../../App/typer/fagsak';
 import { nullableDatoTilAlder } from '../../App/utils/dato';
 import { useApp } from '../../App/context/AppContext';
 import { AksjonsknapperPersonHeader } from './AksjonsknapperPersonHeader';
-import { ABorderStrong } from '@navikt/ds-tokens/dist/tokens';
 import Visittkort from './Visittkort';
 import PersonTags from './PersonTags';
 import BehandlingTags from './BehandlingTags';
 import { HStack } from '@navikt/ds-react';
+import { BorderNeutralStrong } from '@navikt/ds-tokens/js';
 
 const FlexContainer = styled.div`
     display: flex;
@@ -59,7 +59,7 @@ export const PersonHeader: FC<Props> = (props) => {
         <div
             style={{
                 padding: '0 1rem 0 1rem',
-                borderBottom: `1px solid ${ABorderStrong}`,
+                borderBottom: `1px solid ${BorderNeutralStrong}`,
             }}
         >
             <HStack justify={'space-between'}>

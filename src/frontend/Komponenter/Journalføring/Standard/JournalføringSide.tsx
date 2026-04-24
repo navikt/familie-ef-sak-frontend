@@ -215,7 +215,7 @@ const Journalføring: React.FC<JournalføringSideProps> = ({
                             />
                         </section>
                         {feilmelding && <AlertError>{feilmelding}</AlertError>}
-                        <HStack gap="4" justify="end">
+                        <HStack gap="space-16" justify="end">
                             <Button
                                 size={'small'}
                                 variant={'tertiary'}

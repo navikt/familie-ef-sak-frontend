@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { AGrayalpha300, AGrayalpha600, AWhite } from '@navikt/ds-tokens/dist/tokens';
+import { BgNeutralModerateHoverA, Neutral400A } from '@navikt/ds-tokens/js';
 
 export const HorizontalScroll = styled.div<{
     $synligVedLukketMeny: string;
@@ -18,14 +18,14 @@ export const HorizontalScroll = styled.div<{
         }
         ::-webkit-scrollbar-thumb {
             border-radius: 8px;
-            border: 2px solid ${AWhite};
-            background-color: ${AGrayalpha300};
+            border: 2px solid white;
+            background-color: ${Neutral400A};
         }
         ::-webkit-scrollbar-thumb:hover {
-            background-color: ${AGrayalpha600};
+            background-color: ${BgNeutralModerateHoverA};
         }
         ::-webkit-scrollbar-track {
-            background-color: ${AWhite};
+            background-color: white;
         }
         overflow-x: scroll;
         overflow-y: hidden;

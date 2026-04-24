@@ -2,21 +2,21 @@ import React, { useEffect } from 'react';
 import { BarnSomSkalFødes } from '../../../App/hooks/useJournalføringState';
 import { BodyLong, BodyShort, Heading } from '@navikt/ds-react';
 import styled from 'styled-components';
-import { ABlue300 } from '@navikt/ds-tokens/dist/tokens';
 import { v4 as uuidv4 } from 'uuid';
 import { erGyldigDato } from '../../../App/utils/dato';
 import { Datovelger } from '../../../Felles/Datovelger/Datovelger';
 import LeggTilKnapp from '../../../Felles/Knapper/LeggTilKnapp';
 import FjernKnapp from '../../../Felles/Knapper/FjernKnapp';
+import { Accent400 } from '@navikt/ds-tokens/js';
 
 const Tittel = styled(Heading)`
-    color: ${ABlue300};
+    color: ${Accent400};
 `;
 
 const FlexColumn = styled.div`
     display: flex;
     flex-direction: column;
-    border-left: 2px solid ${ABlue300};
+    border-left: 2px solid ${Accent400};
     padding-left: 2rem;
     margin-left: 1rem;
     gap: 0.5rem;

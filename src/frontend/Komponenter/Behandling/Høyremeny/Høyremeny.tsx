@@ -8,11 +8,11 @@ import Totrinnskontroll from '../Totrinnskontroll/Totrinnskontroll';
 import { ChevronLeftIcon, ChevronRightIcon } from '@navikt/aksel-icons';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { erBehandlingUnderArbeid } from '../../../App/typer/behandlingstatus';
-import { ABlue400 } from '@navikt/ds-tokens/dist/tokens';
 import { Behandling } from '../../../App/typer/fagsak';
 import TilegnetSaksbehandler from './TilegnetSaksbehandler';
 import TildelOppgave from './TildelOppgave';
 import styles from './Høyremeny.module.css';
+import { Accent500 } from '@navikt/ds-tokens/js';
 
 const StyledBack = styled(ChevronLeftIcon)`
     border-radius: 0;
@@ -30,7 +30,7 @@ const StyledNext = styled(ChevronRightIcon)`
 const StyledButton = styled.button`
     position: absolute;
 
-    background-color: ${ABlue400};
+    background-color: ${Accent500};
 
     margin-left: -12px;
 

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { useHentOppgave } from '../../../App/hooks/useHentOppgave';
 import { Alert, Button } from '@navikt/ds-react';
 import { useOppgave } from '../../../App/hooks/useOppgave';
-import { ABorderSubtle } from '@navikt/ds-tokens/dist/tokens';
 import styled from 'styled-components';
 import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 import { useApp } from '../../../App/context/AppContext';
@@ -11,9 +10,10 @@ import { ToggleName } from '../../../App/context/toggles';
 import { Behandling, BehandlingResultat } from '../../../App/typer/fagsak';
 import { useNavigate } from 'react-router-dom';
 import { useBehandling } from '../../../App/context/BehandlingContext';
+import { BorderNeutralSubtle } from '@navikt/ds-tokens/js';
 
 const Container = styled.div`
-    border: 1px solid ${ABorderSubtle};
+    border: 1px solid ${BorderNeutralSubtle};
     padding: 0.5rem 1rem;
     margin: 1rem 0.5rem;
     border-radius: 0.125rem;

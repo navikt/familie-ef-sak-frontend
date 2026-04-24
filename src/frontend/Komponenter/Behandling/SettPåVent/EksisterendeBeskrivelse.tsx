@@ -3,8 +3,8 @@ import { Button, Label } from '@navikt/ds-react';
 import styled from 'styled-components';
 import { ChevronDownIcon, ChevronUpIcon } from '@navikt/aksel-icons';
 import { BreakWordBodyLongSmall } from '../../../Felles/Visningskomponenter/BreakWordBodyLongSmall';
-import { ABlue300 } from '@navikt/ds-tokens/dist/tokens';
 import { BodyLongSmall } from '../../../Felles/Visningskomponenter/Tekster';
+import { Accent400 } from '@navikt/ds-tokens/js';
 
 const EkspanderbarContainer = styled(BreakWordBodyLongSmall)<{ $ekspandert: boolean }>`
     max-height: ${(props) => (props.$ekspandert ? 'none' : '15rem')};
@@ -12,7 +12,7 @@ const EkspanderbarContainer = styled(BreakWordBodyLongSmall)<{ $ekspandert: bool
 `;
 
 const LeftBorder = styled.div`
-    border-left: 2px solid ${ABlue300};
+    border-left: 2px solid ${Accent400};
     padding-left: 1.5rem;
 `;
 

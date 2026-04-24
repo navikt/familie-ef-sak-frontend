@@ -11,9 +11,9 @@ import {
 import styled from 'styled-components';
 import { IJournalpostResponse } from '../../../App/typer/journalføring';
 import { EnvelopeClosedFillIcon, EnvelopeClosedIcon } from '@navikt/aksel-icons';
-import { ABlue500 } from '@navikt/ds-tokens/dist/tokens';
 import { JournalføringStateRequest } from '../../../App/hooks/useJournalføringState';
 import { PanelHeader, PanelHeaderType } from '../../../Felles/BrukerPanel/PanelHeader';
+import { Accent600 } from '@navikt/ds-tokens/js';
 
 const ExpansionCardHeader = styled(ExpansionCard.Header)`
     padding-bottom: 0.35rem;
@@ -27,7 +27,7 @@ const ExpansionCardContent = styled.div`
 `;
 
 const IkonContainer = styled.div`
-    color: ${ABlue500};
+    color: ${Accent600};
 `;
 
 const KopierPersonIdent = styled(CopyButton)`
@@ -68,7 +68,7 @@ const AvsenderPanel: React.FC<Props> = ({ journalpostResponse, journalpostState 
                     onToggle={() => settErPanelEkspandert((prevState) => !prevState)}
                 >
                     <ExpansionCardHeader>
-                        <HStack gap="4">
+                        <HStack gap="space-16">
                             <IkonContainer>
                                 {erPanelEkspandert ? (
                                     <EnvelopeClosedFillIcon fontSize={'3.5rem'} />

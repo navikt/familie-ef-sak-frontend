@@ -24,15 +24,15 @@ import {
     SlettSanksjonsperiodeModal,
 } from '../../Felles/SlettSanksjonsperiodeModal';
 import { HorizontalScroll } from '../../Felles/HorizontalScroll';
-import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
 import { IngenBegrunnelseOppgitt } from './IngenBegrunnelseOppgitt';
 import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
 import { tomVedtaksperiodeRad } from '../Felles/utils';
 import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
+import { Neutral100 } from '@navikt/ds-tokens/js';
 
 const Container = styled.div`
     padding: 1rem;
-    background-color: ${AGray50};
+    background-color: ${Neutral100};
     display: flex;
     flex-direction: column;
     gap: 1rem;

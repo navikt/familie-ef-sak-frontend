@@ -39,7 +39,7 @@ export const DokumentasjonsTilsynsutgifter: React.FC<VilkårProps> = ({
             <VilkårpanelInnhold>
                 {{
                     venstre: (
-                        <VStack gap="6">
+                        <VStack gap="space-24">
                             {grunnlag.barnMedSamvær.map((barn, index) => {
                                 const erSisteBarn = index === grunnlag.barnMedSamvær.length - 1;
                                 return (

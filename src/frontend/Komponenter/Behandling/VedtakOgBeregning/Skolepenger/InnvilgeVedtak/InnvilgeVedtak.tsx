@@ -25,7 +25,6 @@ import {
     validerSkoleårsperioderUtenBegrunnelse,
 } from '../Felles/vedtaksvalidering';
 import { BodyLongSmall, BodyShortSmall } from '../../../../../Felles/Visningskomponenter/Tekster';
-import { ARed500 } from '@navikt/ds-tokens/dist/tokens';
 import { useRedirectEtterLagring } from '../../../../../App/hooks/felles/useRedirectEtterLagring';
 import { v4 as uuidv4 } from 'uuid';
 import { AlertError } from '../../../../../Felles/Visningskomponenter/Alerts';
@@ -36,6 +35,7 @@ import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
 import { CalculatorIcon } from '@navikt/aksel-icons';
 import { InnvilgeVedtakForm } from '../Felles/typer';
 import { ModalState } from '../../../Modal/NyEierModal';
+import { Danger600 } from '@navikt/ds-tokens/js';
 
 export const Form = styled.form`
     display: flex;
@@ -44,7 +44,7 @@ export const Form = styled.form`
 `;
 
 const AdvarselTekst = styled(BodyShortSmall)`
-    color: ${ARed500};
+    color: ${Danger600};
 `;
 
 export const Utregningstabell = styled(UtregningstabellSkolepenger)`

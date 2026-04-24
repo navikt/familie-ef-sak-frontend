@@ -15,18 +15,18 @@ import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { AnsvarligSaksbehandlerRolle } from '../../../App/typer/saksbehandler';
 import { ToggleName } from '../../../App/context/toggles';
 import { base64toBlob, åpnePdfIEgenTab } from '../../../App/utils/utils';
-import { ABorderSubtle } from '@navikt/ds-tokens/dist/tokens';
 import { VStack, Stack } from '@navikt/ds-react';
 import { IPersonopplysninger } from '../../../App/typer/personopplysninger';
 import { erEtterDagensDato } from '../../../App/utils/dato';
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
+import { BorderNeutralSubtle } from '@navikt/ds-tokens/js';
 
 const AlertStripe = styled(Alert)`
     margin-top: 1rem;
 `;
 
 const HorizontalDivider = styled.div`
-    border-bottom: 2px solid ${ABorderSubtle};
+    border-bottom: 2px solid ${BorderNeutralSubtle};
 `;
 
 export const HenleggModal: FC<{
@@ -155,7 +155,7 @@ export const HenleggModal: FC<{
                         }}
                         ariaLabel={'Velg årsak til henleggelse av behandlingen'}
                     >
-                        <VStack gap="4" align="start">
+                        <VStack gap="space-16" align="start">
                             <RadioGroup
                                 legend={''}
                                 onChange={(årsak: EHenlagtårsak) => settHenlagtårsak(årsak)}
@@ -171,7 +171,7 @@ export const HenleggModal: FC<{
                                         value={harHuketAvSendBrev}
                                     >
                                         <Stack
-                                            gap="0 6"
+                                            gap="space-0 space-24"
                                             direction={{ xs: 'column', sm: 'row' }}
                                             wrap={false}
                                         >

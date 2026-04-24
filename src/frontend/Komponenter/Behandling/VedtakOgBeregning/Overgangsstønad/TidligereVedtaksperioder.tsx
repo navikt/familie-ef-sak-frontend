@@ -4,8 +4,8 @@ import { delvilkårTypeTilTekst, svarTypeTilTekst } from '../../Vurdering/tekste
 import styled from 'styled-components';
 import { VilkårsresultatIkon } from '../../../../Felles/Ikoner/VilkårsresultatIkon';
 import { BodyLong, Heading, Label } from '@navikt/ds-react';
-import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
 import { harVerdi } from '../../../../App/utils/utils';
+import { Neutral100 } from '@navikt/ds-tokens/js';
 
 interface Props {
     tidligereVedtaksvilkår: IVurdering[];
@@ -14,7 +14,7 @@ interface Props {
 const Container = styled.div`
     flex: 1 0 30rem;
     padding: 1rem;
-    background-color: ${AGray50};
+    background-color: ${Neutral100};
 `;
 
 const Div = styled.div`

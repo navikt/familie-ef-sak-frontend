@@ -18,11 +18,12 @@ import { Behandlingsoversikt } from './Behandlingsoversikt';
 import { FrittståendeBrevMedVisning } from '../Behandling/Brev/FrittståendeBrevMedVisning';
 import { Dokumenter } from './Dokumenter';
 import { OpprettFagsak } from '../Behandling/Førstegangsbehandling/OpprettFagsak';
-import { ABgSubtle, ABgDefault } from '@navikt/ds-tokens/dist/tokens';
 import { AndreYtelserFane } from './AndreYtelser/AndreYtelserFane';
 import { useToggles } from '../../App/context/TogglesContext';
 import { ToggleName } from '../../App/context/toggles';
 import { Sticky } from '../../Felles/Visningskomponenter/Sticky';
+
+import { BgNeutralSoft, BgDefault } from '@navikt/ds-tokens/js';
 
 interface FaneProps {
     label: string;
@@ -167,7 +168,7 @@ const PersonOversikt: React.FC<Props> = ({
     const path = paths.length ? paths[paths.length - 1] : '';
     useSetPersonIdent(personopplysninger.personIdent);
 
-    const bakgrunnsfarge = path === 'frittstaaende-brev' ? ABgSubtle : ABgDefault;
+    const bakgrunnsfarge = path === 'frittstaaende-brev' ? BgNeutralSoft : BgDefault;
 
     const fanerMedFeatureToggle = faner.filter((fane) =>
         toggles[ToggleName.visAndreYtelser] ? true : fane.path !== 'andre-ytelser'

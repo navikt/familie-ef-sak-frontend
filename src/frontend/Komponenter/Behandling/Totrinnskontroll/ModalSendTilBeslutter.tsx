@@ -141,8 +141,8 @@ export const ModalSendTilBeslutter: FC<{
                         width={`${100}${'rem'}`}
                     >
                         <Modal.Body>
-                            <HStack gap="4">
-                                <VStack gap="4">
+                            <HStack gap="space-16">
+                                <VStack gap="space-16">
                                     {skalViseFremleggsoppgaverForOpprettelseOgFerdigstilling && (
                                         <>
                                             <FremleggsoppgaverForOpprettelse
@@ -182,7 +182,7 @@ export const ModalSendTilBeslutter: FC<{
                                     )}
                                 </VStack>
                                 {skalViseHøyremeny && <LoddrettDivider />}
-                                <VStack gap="4">
+                                <VStack gap="space-16">
                                     {erInnvilgelseOvergangsstønad &&
                                         harBarnMellomSeksOgTolvMnder &&
                                         erOvergangsstønad && (

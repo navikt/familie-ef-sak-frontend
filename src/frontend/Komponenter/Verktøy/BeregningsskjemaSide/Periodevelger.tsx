@@ -60,7 +60,7 @@ export const Periodevelger: React.FC<{
 
     return (
         <div key={key}>
-            <HStack gap="4" justify="center">
+            <HStack gap="space-16" justify="center">
                 <MonthPicker {...fraMonthpicker.monthpickerProps}>
                     <MonthPicker.Input
                         {...fraMonthpicker.inputProps}

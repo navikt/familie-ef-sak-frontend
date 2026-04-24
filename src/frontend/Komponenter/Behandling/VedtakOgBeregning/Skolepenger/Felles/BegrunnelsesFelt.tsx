@@ -2,13 +2,13 @@ import React, { FC } from 'react';
 import { Heading } from '@navikt/ds-react';
 import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
 import styled from 'styled-components';
-import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
 import { useBehandling } from '../../../../../App/context/BehandlingContext';
 import { FieldState } from '../../../../../App/hooks/felles/useFieldState';
 import { useApp } from '../../../../../App/context/AppContext';
 import { InnvilgeVedtakForm } from './typer';
 import { FormErrors } from '../../../../../App/hooks/felles/useFormState';
 import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
+import { Neutral100 } from '@navikt/ds-tokens/js';
 
 interface Props {
     begrunnelseState: FieldState;
@@ -17,7 +17,7 @@ interface Props {
 
 const Container = styled.div`
     padding: 1rem;
-    background-color: ${AGray50};
+    background-color: ${Neutral100};
 `;
 
 export const BegrunnelsesFelt: FC<Props> = ({ begrunnelseState, errorState }) => {

@@ -15,37 +15,37 @@ export const AlertError = forwardRef<HTMLDivElement, Omit<AlertProps, 'variant'>
         toggles[ToggleName.brukErrorAlertMedKopierKnapp] || false;
     if (skalBrukeErrorAlertMedKopierKnapp) {
         return (
-            <AlertErrorStyled variant={'error'} ref={ref}>
-                <HStack gap={'1'} align={'center'}>
+            <AlertErrorStyled variant="error" ref={ref}>
+                <HStack gap="space-4" align="center">
                     <BodyShortSmall>{props.children}</BodyShortSmall>
                     {props.children && (
                         <CopyButton
-                            size={'xsmall'}
+                            size="xsmall"
                             copyText={props.children.toString()}
-                            variant={'action'}
-                            activeText={'kopiert'}
+                            variant="action"
+                            activeText="kopiert"
                         />
                     )}
                 </HStack>
             </AlertErrorStyled>
         );
     }
-    return <Alert variant={'error'} {...props} ref={ref} />;
+    return <Alert variant="error" {...props} ref={ref} />;
 });
 
 export const AlertSuccess = forwardRef<HTMLDivElement, Omit<AlertProps, 'variant'>>(
     (props, ref) => {
-        return <Alert variant={'success'} {...props} ref={ref} />;
+        return <Alert variant="success" {...props} ref={ref} />;
     }
 );
 
 export const AlertInfo = forwardRef<HTMLDivElement, Omit<AlertProps, 'variant'>>((props, ref) => {
-    return <Alert variant={'info'} {...props} ref={ref} />;
+    return <Alert variant="info" {...props} ref={ref} />;
 });
 
 export const AlertWarning = forwardRef<HTMLDivElement, Omit<AlertProps, 'variant'>>(
     (props, ref) => {
-        return <Alert variant={'warning'} {...props} ref={ref} />;
+        return <Alert variant="warning" {...props} ref={ref} />;
     }
 );
 

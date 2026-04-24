@@ -6,7 +6,7 @@ import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 import styled from 'styled-components';
 import { ChevronUpIcon, ChevronDownIcon } from '@navikt/aksel-icons';
 import { AlertStripeVariant } from '../../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
-import { Button, Table } from '@navikt/ds-react';
+import { Box, Button, Table } from '@navikt/ds-react';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
 import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
@@ -17,10 +17,6 @@ interface BostedsadresseProps {
     behandlingId: string;
     personalia: IPersonalia;
 }
-
-const BeboereContainer = styled.div`
-    background-color: #f9f9f9;
-`;
 
 const KnappMedMarginTop = styled(Button)`
     margin-top: 0.5rem;
@@ -97,7 +93,7 @@ export const Bostedsadresse = ({ behandlingId, personalia }: BostedsadresseProps
                 >
                     {({ beboere }) => {
                         return (
-                            <BeboereContainer>
+                            <Box background="neutral-soft">
                                 <Table size="small">
                                     <Table.Header>
                                         <Table.Row>
@@ -133,7 +129,7 @@ export const Bostedsadresse = ({ behandlingId, personalia }: BostedsadresseProps
                                         })}
                                     </Table.Body>
                                 </Table>
-                            </BeboereContainer>
+                            </Box>
                         );
                     }}
                 </DataViewer>

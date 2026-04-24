@@ -245,13 +245,13 @@ export const InnvilgeOvergangsstønad: React.FC<{
                 skalVelgeSamordningstype={skalVelgeSamordningstype}
             />
             {behandlingErRedigerbar && (
-                <VStack gap={'4'}>
+                <VStack gap="space-16">
                     <Button
                         onClick={beregnPerioder}
-                        variant={'secondary'}
-                        type={'button'}
+                        variant="secondary"
+                        type="button"
                         icon={<CalculatorIcon title={'beregn'} />}
-                        iconPosition={'right'}
+                        iconPosition="right"
                         style={{ width: 'fit-content' }}
                     >
                         Beregn

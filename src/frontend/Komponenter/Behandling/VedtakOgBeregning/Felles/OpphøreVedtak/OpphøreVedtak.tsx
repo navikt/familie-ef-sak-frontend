@@ -7,16 +7,16 @@ import { RessursFeilet, RessursStatus, RessursSuksess } from '../../../../../App
 import styled from 'styled-components';
 import { VEDTAK_OG_BEREGNING } from '../konstanter';
 import { AlertError } from '../../../../../Felles/Visningskomponenter/Alerts';
-import { AGray50 } from '@navikt/ds-tokens/dist/tokens';
 import { useRedirectEtterLagring } from '../../../../../App/hooks/felles/useRedirectEtterLagring';
 import { v4 as uuidv4 } from 'uuid';
 import HovedKnapp from '../../../../../Felles/Knapper/HovedKnapp';
 import { ModalState } from '../../../Modal/NyEierModal';
 import { EnsligTextArea } from '../../../../../Felles/Input/TekstInput/EnsligTextArea';
+import { Neutral100 } from '@navikt/ds-tokens/js';
 
 const Form = styled.form`
     padding: 1rem;
-    background-color: ${AGray50};
+    background-color: ${Neutral100};
     display: flex;
     flex-direction: column;
     gap: 1rem;

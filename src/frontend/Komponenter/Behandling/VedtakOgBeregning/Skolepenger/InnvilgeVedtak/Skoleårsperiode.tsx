@@ -7,7 +7,6 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useBehandling } from '../../../../../App/context/BehandlingContext';
 import { FormErrors, Valideringsfunksjon } from '../../../../../App/hooks/felles/useFormState';
-import { ABlue200, ABorderSubtle, AGray50 } from '@navikt/ds-tokens/dist/tokens';
 import { HorizontalScroll } from '../../Felles/HorizontalScroll';
 import Delårsperioder from './Delårsperioder';
 import { InnvilgeVedtakForm } from '../Felles/typer';
@@ -18,8 +17,10 @@ import SkoleårsperiodeHeader from './SkoleårsperiodeHeader';
 import { utledSkoleårOgMaksBeløp, utledSkoleårString } from '../Felles/skoleår';
 import { Button } from '@navikt/ds-react';
 
+import { Accent300, Neutral100, BorderNeutralSubtle } from '@navikt/ds-tokens/js';
+
 const ContainerDashedBorder = styled.div`
-    border: 4px dashed ${ABlue200};
+    border: 4px dashed ${Accent300};
     padding: 1rem;
     border-radius: 0.5rem;
 `;
@@ -27,7 +28,7 @@ const ContainerDashedBorder = styled.div`
 const Container = styled.div`
     padding: 1rem;
     border-radius: 0.25rem;
-    background-color: ${AGray50};
+    background-color: ${Neutral100};
 `;
 
 const HorisontalScroll = styled(HorizontalScroll)`
@@ -55,11 +56,11 @@ const Grid = styled.div<{ $skalSladdes: boolean; $erKlikkbar: boolean }>`
 `;
 
 const HorizontalDivider = styled.div`
-    border-bottom: 2px solid ${ABorderSubtle};
+    border-bottom: 2px solid ${BorderNeutralSubtle};
 `;
 
 const VerticalDivider = styled.span`
-    border-left: 2px solid ${ABorderSubtle};
+    border-left: 2px solid ${BorderNeutralSubtle};
 `;
 
 export enum Visningsmodus {

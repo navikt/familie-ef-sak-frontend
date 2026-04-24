@@ -83,7 +83,7 @@ const FødselsnummerBarn: React.FC<{
 
     return (
         <Table.DataCell>
-            <HStack gap="2" align="center">
+            <HStack gap="space-8" align="center">
                 <KopierbartNullableFødselsnummer fødselsnummer={fødselsnummer} />
                 {!dødsdato &&
                     (alder !== undefined ? (

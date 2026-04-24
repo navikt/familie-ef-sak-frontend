@@ -10,7 +10,6 @@ import {
     VStack,
 } from '@navikt/ds-react';
 import styled from 'styled-components';
-import { ABorderDivider, ASurfaceInfoSubtle } from '@navikt/ds-tokens/dist/tokens';
 import {
     Samværsandel,
     samværsandelTilTekst,
@@ -20,6 +19,8 @@ import {
 import { formaterStrengMedStorForbokstav } from '../../App/utils/formatter';
 import { CalculatorIcon, TrashIcon } from '@navikt/aksel-icons';
 import { utledVisningstekst } from './utils';
+
+import { BgInfoSoft, BorderNeutralSubtle } from '@navikt/ds-tokens/js';
 
 const Div = styled.div`
     height: 3.25rem;
@@ -31,12 +32,12 @@ const StyledSelect = styled(Select)`
 
 const SelectContainer = styled(HStack)`
     padding: 1rem 1.5rem 1.5rem 1.5rem;
-    background: ${ASurfaceInfoSubtle};
+    background: ${BgInfoSoft};
 `;
 
 const OppsummeringContainer = styled(HStack)`
     padding: 1rem 1.5rem 1rem 1.5rem;
-    background: ${ASurfaceInfoSubtle};
+    background: ${BgInfoSoft};
 `;
 
 const CheckboxGruppe = styled(CheckboxGroup)`
@@ -104,7 +105,7 @@ const Grid = styled.div`
     .gridItem::after {
         content: '';
         position: absolute;
-        background-color: ${ABorderDivider};
+        background-color: ${BorderNeutralSubtle};
         z-index: 1;
     }
 
@@ -149,7 +150,7 @@ export const Samværskalkulator: React.FC<Props> = ({
     const samværsandeler = Object.keys(Samværsandel);
 
     return (
-        <VStack className={className} gap="4">
+        <VStack className={className} gap="space-16">
             <VarighetSelect
                 oppdaterVarighet={oppdaterVarighet}
                 onDelete={onDelete}
@@ -160,7 +161,7 @@ export const Samværskalkulator: React.FC<Props> = ({
                 {samværsuker.map((samværsuke, index) => (
                     <React.Fragment key={index}>
                         <span className="gridItem">
-                            <VStack gap="6">
+                            <VStack gap="space-24">
                                 <Div />
                                 {samværsandeler.map((andel) => (
                                     <Label key={andel}>
@@ -197,9 +198,9 @@ const Uke: React.FC<{
     oppdaterSamværsdag: (dag: string, samværsandeler: Samværsandel[]) => void;
     erLesevisning: boolean;
 }> = ({ samværsuke, ukenummer, oppdaterSamværsdag, erLesevisning }) => (
-    <VStack gap="2" className="gridItem">
+    <VStack gap="space-8" className="gridItem">
         <UkeTittel>{`Uke ${ukenummer}`}</UkeTittel>
-        <HStack gap="1">
+        <HStack gap="space-4">
             {Object.entries(samværsuke).map(([ukedag, samvær]: [string, Samværsdag], index) => (
                 <Ukedag
                     key={ukedag + index}
@@ -308,14 +309,14 @@ const Oppsummering: React.FC<{
 
     return (
         <OppsummeringContainer justify="space-between" align="center">
-            <HStack align="center" gap="4">
-                <HStack gap="2" align="center">
+            <HStack align="center" gap="space-16">
+                <HStack gap="space-8" align="center">
                     <CalculatorIcon aria-hidden />
                     <Label>Samvær:</Label>
                 </HStack>
                 <BodyShort size="medium">{oppsummering}</BodyShort>
             </HStack>
-            <HStack gap="4">
+            <HStack gap="space-16">
                 {onClose && (
                     <Button size="small" variant="tertiary" onClick={onClose}>
                         {visningstekstAvbrytKnapp}

@@ -1,14 +1,14 @@
 import React from 'react';
 import { BodyLong, Label } from '@navikt/ds-react';
 import styled from 'styled-components';
-import { ATextSubtle } from '@navikt/ds-tokens/dist/tokens';
+import { TextNeutralSubtle } from '@navikt/ds-tokens/js';
 
 const Liste = styled.ul`
     padding-left: 1rem;
     margin: 0;
 
     li::marker {
-        color: ${ATextSubtle};
+        color: ${TextNeutralSubtle};
         font-size: 0.75rem;
     }
 `;

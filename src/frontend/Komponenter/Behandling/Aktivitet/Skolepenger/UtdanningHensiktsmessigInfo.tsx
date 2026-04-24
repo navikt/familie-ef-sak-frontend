@@ -21,26 +21,26 @@ const UtdanningHensiktsmessigInfo: FC<Props> = ({ aktivitet, skalViseSøknadsdat
             {skalViseSøknadsdata ? (
                 <InformasjonContainer>
                     <Dokumentasjonsvisning aktivitet={aktivitet} />
-                    <VStack gap="3">
+                    <VStack gap="space-12">
                         <Informasjonsrad
                             ikon={VilkårInfoIkon.SØKNAD}
                             label="Målet med utdanningen"
                             verdi={undefined}
                         />
                         <Box
-                            borderColor="border-info"
+                            borderColor="info"
                             borderWidth="0 0 0 2"
                             width="31rem"
-                            paddingBlock="0 0"
-                            paddingInline="5 0"
-                            marginInline="1 0"
+                            paddingBlock="space-0 space-0"
+                            paddingInline="space-20 space-0"
+                            marginInline="space-4 space-0"
                         >
                             <BodyLongSmall style={{ marginLeft: '0.33rem' }}>
                                 {underUtdanning?.hvaErMåletMedUtdanningen}
                             </BodyLongSmall>
                         </Box>
                     </VStack>
-                    <VStack gap="3">
+                    <VStack gap="space-12">
                         <Informasjonsrad
                             ikon={VilkårInfoIkon.SØKNAD}
                             label="Har tatt utdanning etter grunnskolen?"

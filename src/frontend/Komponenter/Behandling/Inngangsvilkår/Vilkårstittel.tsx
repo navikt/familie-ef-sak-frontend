@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { Vilkårsresultat } from './vilkår';
 import { Heading } from '@navikt/ds-react';
 import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
-import { ATextSubtle } from '@navikt/ds-tokens/dist/tokens';
+import { TextNeutralSubtle } from '@navikt/ds-tokens/js';
 
 type VilkårtittelProps = {
     tittel: string;
@@ -21,7 +21,7 @@ const Container = styled.div`
         margin: 0 1rem 0 0.5rem;
     }
     .paragrafTittel {
-        color: ${ATextSubtle};
+        color: ${TextNeutralSubtle};
     }
 `;
 

@@ -9,7 +9,7 @@ import { locateIndexToRestorePreviousItemInCurrentItems } from '../Felles/utils'
 import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 import TilbakestillKnapp from '../../../../../Felles/Knapper/TilbakestillKnapp';
 import { SmallTextLabel } from '../../../../../Felles/Visningskomponenter/Tekster';
-import { ABorderStrong } from '@navikt/ds-tokens/dist/tokens';
+import { BorderNeutralStrong } from '@navikt/ds-tokens/js';
 
 const Utgiftsrad = styled.div<{
     $lesevisning?: boolean;
@@ -39,7 +39,7 @@ const FlexColumn = styled.div`
 `;
 
 const VertikalStrek = styled.span`
-    border-left: 3px solid ${ABorderStrong};
+    border-left: 3px solid ${BorderNeutralStrong};
     margin-right: 0.5rem;
     margin-left: 0.5rem;
     margin-bottom: 0.75rem;

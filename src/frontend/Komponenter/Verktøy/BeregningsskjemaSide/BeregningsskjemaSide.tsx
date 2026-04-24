@@ -176,8 +176,8 @@ export const BeregningsskjemaSide: React.FC = () => {
     }
 
     return (
-        <VStack gap="8">
-            <HStack gap={'space-64'}>
+        <VStack gap="space-32">
+            <HStack gap="space-64">
                 <Periodevelger
                     periode={periode}
                     settPeriode={settPeriode}
@@ -193,7 +193,6 @@ export const BeregningsskjemaSide: React.FC = () => {
                     <KnappNullstillSkjema nullstillSkjema={nullstillSkjema} />
                 )}
             </HStack>
-
             {beregninger.length > 0 && (
                 <Table size="small">
                     <Table.Header>
@@ -243,7 +242,7 @@ export const BeregningsskjemaSide: React.FC = () => {
                                 key={`${beregning.periode.årstall}-${beregning.periode.måned}`}
                                 style={{
                                     backgroundColor: beregning.beregnetfra
-                                        ? 'var(--a-gray-50)'
+                                        ? 'var(--ax-neutral-100)'
                                         : 'inherit',
                                 }}
                             >
@@ -315,7 +314,7 @@ const ArbeidsgivereKolonner: React.FC<{
                 },
                 (_, indeks) => (
                     <Table.HeaderCell key={indeks} scope="col">
-                        <HStack align={'center'} gap="2" style={{ margin: '0' }}>
+                        <HStack align={'center'} gap="space-8" style={{ margin: '0' }}>
                             <TextField
                                 style={{
                                     marginTop: '-0.5rem', // TextField er ikke sentrert
@@ -386,7 +385,7 @@ const ArbeidsgivereRader: React.FC<{
 
                     return (
                         <Table.DataCell key={agIndeks}>
-                            <HStack gap="2">
+                            <HStack gap="space-8">
                                 <TextField
                                     label={`Arbeidsgiver ${agIndeks + 1}`}
                                     hideLabel
@@ -425,7 +424,7 @@ const RedusertEtterRader: React.FC<{
 }) => {
     return (
         <Table.DataCell>
-            <HStack gap="2">
+            <HStack gap="space-8">
                 <TextField
                     label="Redusert etter"
                     hideLabel
