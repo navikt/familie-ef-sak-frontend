@@ -27,7 +27,7 @@ const FeilmeldingTekst = styled(BodyShortSmall)`
     margin-top: 0;
     margin-bottom: 2rem;
     font-weight: 600;
-    color: #ba3a26;
+    color: var(--ax-text-warning-subtle);
 `;
 
 const SelectAvslagÅrsak = (props: Props): ReactNode => {

@@ -10,9 +10,9 @@ const Container = styled.div`
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    background: #f3fcf5;
+    background: var(--ax-bg-success-soft);
     padding: 1rem;
-    border: 1px solid rgba(0, 0, 0, 0.19);
+    border: 1px solid var(--ax-neutral-500);
     border-radius: 6px;
     text-align: left;
 `;

@@ -33,15 +33,13 @@ const SentrerKnapper = styled.div`
 
 const HorisontalLinje = styled.div`
     height: 0;
-
-    border: 2px solid #f3f3f3;
-
+    border: 2px solid var(--ax-border-neutral-subtle);
     margin-top: 2rem;
     margin-bottom: 1.5rem;
 `;
 
 const VertikalLinje = styled.div`
-    border-left: 2px solid #f3f3f3;
+    border-left: 2px solid var(--ax-border-neutral-subtle);
     width: 5px;
     margin-bottom: 1rem;
 `;

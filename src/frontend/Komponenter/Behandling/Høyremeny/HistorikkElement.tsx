@@ -21,7 +21,7 @@ const IkonMedStipletLinje = styled.div`
 
 const Linje = styled.div<LinjeProps>`
     margin-right: 13px;
-    border-right: 1px dashed #a0a0a0;
+    border-right: 1px dashed var(--ax-border-neutral);
 
     min-height: ${(props) => (props.$siste ? '30px' : props.$størreMellomrom ? '75px' : '60px')};
     height: ${(props) => (props.$siste ? '30px' : '100%')};
