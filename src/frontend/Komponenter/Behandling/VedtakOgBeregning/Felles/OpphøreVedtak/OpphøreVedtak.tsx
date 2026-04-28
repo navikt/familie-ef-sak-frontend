@@ -83,7 +83,7 @@ export const OpphøreVedtak: React.FC<{
         }
     };
 
-    const årBakITid = 12; // alle skal kunne opphøre bakover i tid (11 år)
+    const årBakITid = 12;
 
     return (
         <Form onSubmit={lagreVedtak}>
