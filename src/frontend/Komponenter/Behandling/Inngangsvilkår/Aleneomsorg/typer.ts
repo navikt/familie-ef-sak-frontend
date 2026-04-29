@@ -40,6 +40,7 @@ export const typeBarnepassordningTilTekst: Record<ETypeBarnepassOrdning, string>
 
 export interface IBarnMedSamværSøknadsgrunnlag {
     navn?: string;
+    fødselsnummer?: string;
     fødselTermindato?: string;
     harSammeAdresse?: boolean;
     skalBoBorHosSøker?: ESkalBarnetBoHosSøker;

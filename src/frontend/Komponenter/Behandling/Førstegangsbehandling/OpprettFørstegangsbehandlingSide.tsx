@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useApp } from '../../../App/context/AppContext';
 import { TerminBarnSkjema } from './TerminBarnSkjema';
-import { BarnSomSkalFødes } from '../../../App/hooks/useJournalføringState';
+import { ForeldreansvarBarnSkjema } from './ForeldreansvarBarnSkjema';
+import { BarnSomSkalFødes, ForeldreansvarBarn } from '../../../App/hooks/useJournalføringState';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Behandling, BehandlingResultat, Fagsak } from '../../../App/typer/fagsak';
 import {
@@ -14,13 +15,16 @@ import {
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { BodyLong, BodyShort, Button, Heading } from '@navikt/ds-react';
 import { TextLabel } from '../../../Felles/Visningskomponenter/Tekster';
-import { stønadstypeTilTekst } from '../../../App/typer/behandlingstema';
+import { Stønadstype, stønadstypeTilTekst } from '../../../App/typer/behandlingstema';
 import { erGyldigDato } from '../../../App/utils/dato';
+import { fnr } from '@navikt/fnrvalidator';
 import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import styled from 'styled-components';
 import { Behandlingsårsak, behandlingsårsakTilTekst } from '../../../App/typer/behandlingsårsak';
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
 import { Datovelger } from '../../../Felles/Datovelger/Datovelger';
+import { useToggles } from '../../../App/context/TogglesContext';
+import { ToggleName } from '../../../App/context/toggles';
 
 type IFagsakParam = {
     fagsakId: string;
@@ -39,6 +43,7 @@ interface Førstegangsbehandling {
     kravMottatt: string;
     behandlingsårsak: Behandlingsårsak;
     barn: BarnSomSkalFødes[];
+    foreldreansvarBarn: ForeldreansvarBarn[];
 }
 
 const inneholderBarnSomErUgyldige = (barnSomSkalFødes: BarnSomSkalFødes[]) =>
@@ -47,6 +52,11 @@ const inneholderBarnSomErUgyldige = (barnSomSkalFødes: BarnSomSkalFødes[]) =>
             !barn.fødselTerminDato ||
             barn.fødselTerminDato.trim() === '' ||
             !erGyldigDato(barn.fødselTerminDato)
+    );
+
+const inneholderForeldreansvarBarnMedUgyldigFnr = (foreldreansvarBarn: ForeldreansvarBarn[]) =>
+    foreldreansvarBarn.some(
+        (barn) => barn.fødselsnummer && fnr(barn.fødselsnummer).status === 'invalid'
     );
 
 const kanOppretteFørstegangsbehandling = (behandlinger: Behandling[]): boolean => {
@@ -62,12 +72,16 @@ export const OpprettFørstegangsbehandlingSide = () => {
     const { fagsakId } = useParams<IFagsakParam>();
     const [fagsak, settFagsak] = useState<Ressurs<Fagsak>>(byggTomRessurs());
     const [barnSomSkalFødes, settBarnSomSkalFødes] = useState<BarnSomSkalFødes[]>([]);
+    const [foreldreansvarBarn, settForeldreansvarBarn] = useState<ForeldreansvarBarn[]>([]);
     const [kravMottattDato, settKravMottattDato] = useState<string>();
     const årsak = Behandlingsårsak.MANUELT_OPPRETTET;
     const [feilmelding, settFeilmelding] = useState<string>();
     const [senderInn, settSenderInn] = useState<boolean>(false);
     const { axiosRequest } = useApp();
+    const { toggles } = useToggles();
     const navigate = useNavigate();
+
+    const visForeldreansvarBarnSkjema = toggles[ToggleName.leggTilForeldreansvarsBarnBarnetilsyn];
 
     useEffect(() => {
         axiosRequest<Fagsak, null>({
@@ -85,6 +99,8 @@ export const OpprettFørstegangsbehandlingSide = () => {
             return 'Ugyldig dato for krav mottatt';
         } else if (inneholderBarnSomErUgyldige(barnSomSkalFødes)) {
             return 'Et eller flere barn mangler gyldig dato';
+        } else if (inneholderForeldreansvarBarnMedUgyldigFnr(foreldreansvarBarn)) {
+            return 'Et eller flere foreldreansvar barn har ugyldig fødselsnummer';
         } else {
             return '';
         }
@@ -100,6 +116,7 @@ export const OpprettFørstegangsbehandlingSide = () => {
                 data: {
                     kravMottatt: kravMottattDato,
                     barn: barnSomSkalFødes,
+                    foreldreansvarBarn: foreldreansvarBarn,
                     behandlingsårsak: årsak,
                 },
             })
@@ -154,12 +171,21 @@ export const OpprettFørstegangsbehandlingSide = () => {
                             }
                             maksDato={new Date()}
                         />
-                        <TerminBarnSkjema
-                            barnSomSkalFødes={barnSomSkalFødes}
-                            oppdaterBarnSomSkalFødes={settBarnSomSkalFødes}
-                            tittel="Terminbarn"
-                            tekst="Hvis brukeren har oppgitt terminbarn i søknaden, må du legge til termindatoen her."
-                        />
+                        {fagsak.stønadstype === Stønadstype.OVERGANGSSTØNAD && (
+                            <TerminBarnSkjema
+                                barnSomSkalFødes={barnSomSkalFødes}
+                                oppdaterBarnSomSkalFødes={settBarnSomSkalFødes}
+                                tittel="Terminbarn"
+                                tekst="Hvis brukeren har oppgitt terminbarn i søknaden, må du legge til termindatoen her."
+                            />
+                        )}
+                        {visForeldreansvarBarnSkjema &&
+                            fagsak.stønadstype === Stønadstype.BARNETILSYN && (
+                                <ForeldreansvarBarnSkjema
+                                    foreldreansvarBarn={foreldreansvarBarn}
+                                    oppdaterForeldreansvarBarn={settForeldreansvarBarn}
+                                />
+                            )}
                         <div>
                             <Button
                                 type={'button'}

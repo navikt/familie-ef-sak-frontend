@@ -41,7 +41,11 @@ const AleneomsorgInfo: FC<{
         );
     };
 
-    const navnOgAlderPåBarn = utledNavnOgAlderForAleneomsorg(registergrunnlag, søknadsgrunnlag);
+    const navnOgAlderPåBarn = utledNavnOgAlderForAleneomsorg(
+        registergrunnlag,
+        søknadsgrunnlag,
+        stønadstype
+    );
 
     return (
         <BarneInfoWrapper
@@ -59,13 +63,24 @@ const AleneomsorgInfo: FC<{
                         />
                     }
                 />
-            ) : (
+            ) : stønadstype === Stønadstype.OVERGANGSSTØNAD ? (
                 <Informasjonsrad
                     ikon={VilkårInfoIkon.SØKNAD}
                     label="Termindato"
                     verdi={formaterNullableIsoDato(søknadsgrunnlag.fødselTermindato)}
                 />
-            )}
+            ) : stønadstype === Stønadstype.BARNETILSYN && søknadsgrunnlag.fødselsnummer ? (
+                <Informasjonsrad
+                    ikon={VilkårInfoIkon.SØKNAD}
+                    label="Fødsels eller D-nummer"
+                    verdiSomString={false}
+                    verdi={
+                        <KopierbartNullableFødselsnummer
+                            fødselsnummer={søknadsgrunnlag.fødselsnummer}
+                        />
+                    }
+                />
+            ) : null}
             <Bosted
                 harSammeAdresseRegister={registergrunnlag.harSammeAdresse}
                 harSammeAdresseSøknad={søknadsgrunnlag.harSammeAdresse}

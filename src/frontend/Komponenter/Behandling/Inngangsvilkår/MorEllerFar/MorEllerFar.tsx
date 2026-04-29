@@ -2,11 +2,11 @@ import React from 'react';
 import { InngangsvilkårType } from '../vilkår';
 import MorEllerFarInfo from './MorEllerFarInfo';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
-import { VilkårProps } from '../vilkårprops';
+import { VilkårPropsMedBehandling } from '../vilkårprops';
 import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';
 import { VilkårpanelInnhold } from '../../Vilkårpanel/VilkårpanelInnhold';
 
-export const MorEllerFar: React.FC<VilkårProps> = ({
+export const MorEllerFar: React.FC<VilkårPropsMedBehandling> = ({
     vurderinger,
     lagreVurdering,
     nullstillVurdering,
@@ -14,6 +14,7 @@ export const MorEllerFar: React.FC<VilkårProps> = ({
     grunnlag,
     ikkeVurderVilkår,
     skalViseSøknadsdata,
+    behandling,
 }) => {
     const vurdering = vurderinger.find((v) => v.vilkårType === InngangsvilkårType.MOR_ELLER_FAR);
     if (!vurdering) {
@@ -33,6 +34,7 @@ export const MorEllerFar: React.FC<VilkårProps> = ({
                             barnMedSamvær={grunnlag.barnMedSamvær}
                             dokumentasjon={grunnlag.dokumentasjon}
                             skalViseSøknadsdata={skalViseSøknadsdata}
+                            stønadstype={behandling.stønadstype}
                         />
                     ),
                     høyre: (
