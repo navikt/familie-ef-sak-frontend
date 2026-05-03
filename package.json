@@ -20,15 +20,15 @@
         "src/**/*.{js,jsx,ts,tsx,json}": ["prettier --write", "eslint --fix"]
     },
     "dependencies": {
-        "@navikt/aksel-icons": "^8.10.1",
-        "@navikt/ds-css": "^8.10.1",
-        "@navikt/ds-react": "^8.10.1",
+        "@navikt/aksel-icons": "^8.10.3",
+        "@navikt/ds-css": "^8.10.3",
+        "@navikt/ds-react": "^8.10.3",
         "@navikt/ds-tokens": "^8.9.0",
         "@navikt/fnrvalidator": "^2.1.5",
         "@navikt/oasis": "^4.1.4",
-        "@sentry/browser": "^10.49.0",
+        "@sentry/browser": "^10.50.0",
         "@sentry/core": "^10.26.0",
-        "axios": "^1.15.1",
+        "axios": "^1.15.2",
         "body-parser": "^2.2.2",
         "constate": "^3.3.3",
         "date-fns": "^4.1.0",
@@ -44,9 +44,9 @@
         "react": "^19.2.5",
         "react-dom": "^19.2.5",
         "react-pdf": "10.4.1",
-        "react-router-dom": "7.14.1",
+        "react-router-dom": "7.14.2",
         "react-select": "^5.10.2",
-        "styled-components": "^6.4.0",
+        "styled-components": "^6.4.1",
         "use-debounce": "^10.1.1",
         "uuid": "^13.0.0",
         "winston": "^3.18.3"
@@ -69,12 +69,12 @@
         "eslint-plugin-react-hooks": "6.1.1",
         "eslint-plugin-react-refresh": "^0.5.2",
         "globals": "^17.5.0",
-        "postcss": "^8.5.10",
+        "postcss": "^8.5.12",
         "prettier": "^3.8.3",
         "tsc-alias": "^1.8.16",
         "typescript": "^5.9.3",
-        "typescript-eslint": "^8.58.2",
-        "vite": "^8.0.9",
-        "vitest": "^4.1.4"
+        "typescript-eslint": "^8.59.1",
+        "vite": "^8.0.10",
+        "vitest": "^4.1.5"
     }
 }
