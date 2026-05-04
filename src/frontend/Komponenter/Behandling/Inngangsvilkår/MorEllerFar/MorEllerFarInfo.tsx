@@ -8,7 +8,11 @@ import DokumentasjonSendtInn from '../DokumentasjonSendtInn';
 import { utledNavnOgAlderPåGrunnlag } from '../utils';
 import { InformasjonContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
 import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
-import { BarneInfoWrapper, VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
+import {
+    BarneInfoWrapper,
+    UnderseksjonWrapper,
+    VilkårInfoIkon,
+} from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 
 interface Props {
     barnMedSamvær: IBarnMedSamvær[];
@@ -59,7 +63,7 @@ const MorEllerFarInfo: FC<Props> = ({
                         ) : (
                             stønadstype === Stønadstype.BARNETILSYN &&
                             søknadsgrunnlag.fødselsnummer && (
-                                <div>
+                                <UnderseksjonWrapper underoverskrift="Overtatt foreldreansvar etter barneloven § 38">
                                     <Informasjonsrad
                                         label="Fødsels- eller D-nummer"
                                         verdi={
@@ -70,12 +74,7 @@ const MorEllerFarInfo: FC<Props> = ({
                                         verdiSomString={false}
                                         ikon={VilkårInfoIkon.SØKNAD}
                                     />
-                                    <Informasjonsrad
-                                        label="Overtatt foreldreansvar etter barneloven § 38"
-                                        verdiSomString={false}
-                                        ikon={VilkårInfoIkon.SØKNAD}
-                                    />
-                                </div>
+                                </UnderseksjonWrapper>
                             )
                         )}
                     </BarneInfoWrapper>
