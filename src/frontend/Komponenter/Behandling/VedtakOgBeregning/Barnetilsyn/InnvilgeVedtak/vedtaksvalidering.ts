@@ -16,6 +16,7 @@ import {
     fraPeriodeErEtterTilPeriode,
     ugyldigEtterfølgendePeriodeFeilmelding,
     validerGyldigTallverdi,
+    validerGyldigTallverdiOgIkkeUndefined,
 } from '../../Felles/utils';
 
 export const validerInnvilgetVedtakForm = ({
@@ -81,7 +82,7 @@ export const validerUtgiftsperioder = ({
             årMånedFra: undefined,
             årMånedTil: undefined,
             barn: [],
-            utgifter: validerGyldigTallverdi(utgifter),
+            utgifter: validerGyldigTallverdiOgIkkeUndefined(utgifter),
         };
         const erSistePeriode = index === utgiftsperioder.length - 1;
 
