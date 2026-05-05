@@ -69,12 +69,12 @@ const PersonTags: React.FC<Props> = ({
             )}
             {egenAnsatt && (
                 <>
-                    <TagLitenSkjerm variant={'warning'} size={'small'}>
-                        Egen ansatt
-                    </TagLitenSkjerm>
                     <TagStorSkjerm variant={'warning'} size={'small'}>
-                        E..
+                        Egen ansatt
                     </TagStorSkjerm>
+                    <TagLitenSkjerm variant={'warning'} size={'small'}>
+                        E..
+                    </TagLitenSkjerm>
                 </>
             )}
             {fullmakt.some(
