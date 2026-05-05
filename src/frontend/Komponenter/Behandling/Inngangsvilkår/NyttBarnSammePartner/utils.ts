@@ -20,6 +20,7 @@ export const mapTilSøknadsgrunnlagNyttBarn = (
             annenForelderRegister: barn.registergrunnlag.forelder,
             ikkeOppgittAnnenForelderBegrunnelse:
                 barn.søknadsgrunnlag.ikkeOppgittAnnenForelderBegrunnelse,
+            fødselsnummer: barn.søknadsgrunnlag.fødselsnummer,
         }));
 };
 

@@ -2,17 +2,18 @@ import React from 'react';
 import { InngangsvilkårType } from '../vilkår';
 import { NyttBarnSammePartnerInfo } from './NyttBarnSammePartnerInfo';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
-import { VilkårProps } from '../vilkårprops';
+import { VilkårPropsMedBehandling } from '../vilkårprops';
 import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';
 import { VilkårpanelInnhold } from '../../Vilkårpanel/VilkårpanelInnhold';
 
-export const NyttBarnSammePartner: React.FC<VilkårProps> = ({
+export const NyttBarnSammePartner: React.FC<VilkårPropsMedBehandling> = ({
     vurderinger,
     grunnlag,
     lagreVurdering,
     nullstillVurdering,
     feilmeldinger,
     ikkeVurderVilkår,
+    behandling,
 }) => {
     const vurdering = vurderinger.find(
         (v) => v.vilkårType === InngangsvilkårType.NYTT_BARN_SAMME_PARTNER
@@ -35,6 +36,7 @@ export const NyttBarnSammePartner: React.FC<VilkårProps> = ({
                             personalia={grunnlag.personalia}
                             barnMedSamvær={barnMedSamvær}
                             tidligereVedtaksperioder={grunnlag.tidligereVedtaksperioder}
+                            stønadstype={behandling.stønadstype}
                         />
                     ),
                     høyre: (
