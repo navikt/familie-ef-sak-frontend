@@ -10,7 +10,11 @@ import { Ressurs } from '../../../../App/typer/ressurs';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
 import { Tag } from '@navikt/ds-react';
-import { BarneInfoWrapper, VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
+import {
+    BarneInfoWrapper,
+    UnderseksjonWrapper,
+    VilkårInfoIkon,
+} from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
 import { IPersonalia } from '../vilkår';
 import { utledNavnOgAlderForAleneomsorg } from './utils';
@@ -70,16 +74,18 @@ const AleneomsorgInfo: FC<{
                     verdi={formaterNullableIsoDato(søknadsgrunnlag.fødselTermindato)}
                 />
             ) : stønadstype === Stønadstype.BARNETILSYN && søknadsgrunnlag.fødselsnummer ? (
-                <Informasjonsrad
-                    ikon={VilkårInfoIkon.SØKNAD}
-                    label="Fødsels eller D-nummer"
-                    verdiSomString={false}
-                    verdi={
-                        <KopierbartNullableFødselsnummer
-                            fødselsnummer={søknadsgrunnlag.fødselsnummer}
-                        />
-                    }
-                />
+                <UnderseksjonWrapper underoverskrift="Overtatt foreldreansvar etter barneloven § 38">
+                    <Informasjonsrad
+                        ikon={VilkårInfoIkon.SØKNAD}
+                        label="Fødsels eller D-nummer"
+                        verdiSomString={false}
+                        verdi={
+                            <KopierbartNullableFødselsnummer
+                                fødselsnummer={søknadsgrunnlag.fødselsnummer}
+                            />
+                        }
+                    />
+                </UnderseksjonWrapper>
             ) : null}
             <Bosted
                 harSammeAdresseRegister={registergrunnlag.harSammeAdresse}

@@ -3,7 +3,11 @@ import { IBarnMedSamvær } from '../../Inngangsvilkår/Aleneomsorg/typer';
 import { KopierbartNullableFødselsnummer } from '../../../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
 import { ÅrsakBarnepassTilTekst } from './AlderPåBarnTyper';
 import { utledNavnOgAlderPåGrunnlag } from '../../Inngangsvilkår/utils';
-import { BarneInfoWrapper, VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
+import {
+    BarneInfoWrapper,
+    UnderseksjonWrapper,
+    VilkårInfoIkon,
+} from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
 
 const AlderPåBarnInfo: FC<{ gjeldendeBarn: IBarnMedSamvær; skalViseSøknadsdata?: boolean }> = ({
@@ -28,16 +32,18 @@ const AlderPåBarnInfo: FC<{ gjeldendeBarn: IBarnMedSamvær; skalViseSøknadsdat
                     }
                 />
             ) : søknadsgrunnlag.fødselsnummer ? (
-                <Informasjonsrad
-                    ikon={VilkårInfoIkon.REGISTER}
-                    label="Fødsels eller D-nummer"
-                    verdiSomString={false}
-                    verdi={
-                        <KopierbartNullableFødselsnummer
-                            fødselsnummer={søknadsgrunnlag.fødselsnummer}
-                        />
-                    }
-                />
+                <UnderseksjonWrapper underoverskrift="Overtatt foreldreansvar etter barneloven § 38">
+                    <Informasjonsrad
+                        ikon={VilkårInfoIkon.SØKNAD}
+                        label="Fødsels eller D-nummer"
+                        verdiSomString={false}
+                        verdi={
+                            <KopierbartNullableFødselsnummer
+                                fødselsnummer={søknadsgrunnlag.fødselsnummer}
+                            />
+                        }
+                    />
+                </UnderseksjonWrapper>
             ) : null}
             {barnepass && barnepass.årsakBarnepass && (
                 <Informasjonsrad
