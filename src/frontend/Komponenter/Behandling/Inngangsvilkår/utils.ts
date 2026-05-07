@@ -45,11 +45,12 @@ export const utledNavnOgAlder = (
     søknadFødselsdato?: string
 ) => {
     const skalViseAlderRegister = registerFødselsdato && !registerDødsdato;
-    const alderRegisterString = ` (${nullableDatoTilAlder(registerFødselsdato)})`;
-    const alderSøknadString = ` (${nullableDatoTilAlder(søknadFødselsdato)})`;
-
-    const formatertAlderRegister = skalViseAlderRegister ? alderRegisterString : '';
-    const formatertAlderSøknad = alderSøknadString ? alderSøknadString : '';
+    const formatertAlderRegister = skalViseAlderRegister
+        ? ` (${nullableDatoTilAlder(registerFødselsdato)})`
+        : '';
+    const formatertAlderSøknad = søknadFødselsdato
+        ? ` (${nullableDatoTilAlder(søknadFødselsdato)})`
+        : '';
 
     if (harVerdi(registerNavn)) return registerNavn + formatertAlderRegister;
     if (harVerdi(søknadNavn)) return søknadNavn + formatertAlderSøknad;

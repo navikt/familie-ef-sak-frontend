@@ -103,36 +103,30 @@ export const NyttBarnSammePartnerInfo: FC<Props> = ({
                     )}
                 </UnderseksjonWrapper>
             )}
-            {stønadstype === Stønadstype.BARNETILSYN && (
+            {stønadstype === Stønadstype.BARNETILSYN && søknadsgrunnlagNyttBarn.length > 0 && (
                 <UnderseksjonWrapper underoverskrift="Overtatt foreldreansvar etter barneloven § 38">
-                    {søknadsgrunnlagNyttBarn.length ? (
-                        søknadsgrunnlagNyttBarn.map((barn) => (
-                            <div key={barn.barnId}>
-                                <HStack gap={'space-12'}>
-                                    <ChildHairEyesIcon title="barn" fontSize="1.3rem" />
-                                    <Heading size="xsmall">
-                                        {utledNavnOgAlder(barn.navn, barn.fødselTermindato)}
-                                    </Heading>
-                                </HStack>
-                                {barn.fødselsnummer && (
-                                    <Informasjonsrad
-                                        ikon={VilkårInfoIkon.SØKNAD}
-                                        label="Fødsels eller D-nummer"
-                                        verdiSomString={false}
-                                        verdi={
-                                            <KopierbartNullableFødselsnummer
-                                                fødselsnummer={barn.fødselsnummer}
-                                            />
-                                        }
-                                    />
-                                )}
-                            </div>
-                        ))
-                    ) : (
-                        <BodyShortSmall>
-                            <i>Bruker har ingen barn lagt til i søknad</i>
-                        </BodyShortSmall>
-                    )}
+                    {søknadsgrunnlagNyttBarn.map((barn) => (
+                        <div key={barn.barnId}>
+                            <HStack gap={'space-12'}>
+                                <ChildHairEyesIcon title="barn" fontSize="1.3rem" />
+                                <Heading size="xsmall">
+                                    {utledNavnOgAlder(barn.navn, barn.fødselTermindato)}
+                                </Heading>
+                            </HStack>
+                            {barn.fødselsnummer && (
+                                <Informasjonsrad
+                                    ikon={VilkårInfoIkon.SØKNAD}
+                                    label="Fødsels eller D-nummer"
+                                    verdiSomString={false}
+                                    verdi={
+                                        <KopierbartNullableFødselsnummer
+                                            fødselsnummer={barn.fødselsnummer}
+                                        />
+                                    }
+                                />
+                            )}
+                        </div>
+                    ))}
                 </UnderseksjonWrapper>
             )}
         </InformasjonContainer>
