@@ -36,6 +36,10 @@ export const NyttBarnSammePartnerInfo: FC<Props> = ({
     const registergrunnlagNyttBarn = mapTilRegistergrunnlagNyttBarn(barnMedSamvær);
     const søknadsgrunnlagNyttBarn = mapTilSøknadsgrunnlagNyttBarn(barnMedSamvær);
 
+    const erOvergangsstønadEllerSkolepenger =
+        stønadstype === Stønadstype.OVERGANGSSTØNAD || stønadstype === Stønadstype.SKOLEPENGER;
+    const erBarnetilsyn = stønadstype === Stønadstype.BARNETILSYN;
+
     const barnFraRegisterMedFødselsdato = barnMedSamvær.filter(
         (b) => b.registergrunnlag.fødselsdato
     );
@@ -90,7 +94,7 @@ export const NyttBarnSammePartnerInfo: FC<Props> = ({
                 })}
             </UnderseksjonWrapper>
 
-            {stønadstype === Stønadstype.OVERGANGSSTØNAD && (
+            {erOvergangsstønadEllerSkolepenger && (
                 <UnderseksjonWrapper underoverskrift="Brukers fremtidige barn lagt til i søknad">
                     {søknadsgrunnlagNyttBarn.length ? (
                         søknadsgrunnlagNyttBarn.map((barn) => (
@@ -103,7 +107,7 @@ export const NyttBarnSammePartnerInfo: FC<Props> = ({
                     )}
                 </UnderseksjonWrapper>
             )}
-            {stønadstype === Stønadstype.BARNETILSYN && søknadsgrunnlagNyttBarn.length > 0 && (
+            {erBarnetilsyn && søknadsgrunnlagNyttBarn.length > 0 && (
                 <UnderseksjonWrapper underoverskrift="Overtatt foreldreansvar etter barneloven § 38">
                     {søknadsgrunnlagNyttBarn.map((barn) => (
                         <div key={barn.barnId}>

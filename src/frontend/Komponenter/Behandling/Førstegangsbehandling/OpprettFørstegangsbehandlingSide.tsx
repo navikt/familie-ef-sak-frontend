@@ -145,66 +145,74 @@ export const OpprettFørstegangsbehandlingSide = () => {
                 <BodyLong>Velg evt. terminbarn og sett krav mottatt dato</BodyLong>
             </div>
             <DataViewer response={{ fagsak }}>
-                {({ fagsak }) => (
-                    <>
-                        <div>
-                            <TextLabel>Stønadstype: </TextLabel>
-                            <BodyShort>{stønadstypeTilTekst[fagsak.stønadstype]}</BodyShort>
-                            <TextLabel>Fødselsnummer: </TextLabel>
-                            <BodyShort>{fagsak.personIdent}</BodyShort>
-                            <TextLabel>Årsak:</TextLabel>
-                            <BodyShort>
-                                {behandlingsårsakTilTekst[Behandlingsårsak.MANUELT_OPPRETTET]}
-                            </BodyShort>
-                        </div>
-                        <Datovelger
-                            id={'krav-mottatt'}
-                            label={'Krav mottatt'}
-                            settVerdi={(dato) => {
-                                settKravMottattDato(dato as string);
-                            }}
-                            verdi={kravMottattDato}
-                            feil={
-                                kravMottattDato && !erGyldigDato(kravMottattDato)
-                                    ? 'Ugyldig dato'
-                                    : undefined
-                            }
-                            maksDato={new Date()}
-                        />
-                        {fagsak.stønadstype === Stønadstype.OVERGANGSSTØNAD && (
-                            <TerminBarnSkjema
-                                barnSomSkalFødes={barnSomSkalFødes}
-                                oppdaterBarnSomSkalFødes={settBarnSomSkalFødes}
-                                tittel="Terminbarn"
-                                tekst="Hvis brukeren har oppgitt terminbarn i søknaden, må du legge til termindatoen her."
+                {({ fagsak }) => {
+                    const erOvergangsstønadEllerSkolepenger =
+                        fagsak.stønadstype === Stønadstype.OVERGANGSSTØNAD ||
+                        fagsak.stønadstype === Stønadstype.SKOLEPENGER;
+                    const erBarnetilsyn = fagsak.stønadstype === Stønadstype.BARNETILSYN;
+
+                    return (
+                        <>
+                            <div>
+                                <TextLabel>Stønadstype: </TextLabel>
+                                <BodyShort>{stønadstypeTilTekst[fagsak.stønadstype]}</BodyShort>
+                                <TextLabel>Fødselsnummer: </TextLabel>
+                                <BodyShort>{fagsak.personIdent}</BodyShort>
+                                <TextLabel>Årsak:</TextLabel>
+                                <BodyShort>
+                                    {behandlingsårsakTilTekst[Behandlingsårsak.MANUELT_OPPRETTET]}
+                                </BodyShort>
+                            </div>
+                            <Datovelger
+                                id={'krav-mottatt'}
+                                label={'Krav mottatt'}
+                                settVerdi={(dato) => {
+                                    settKravMottattDato(dato as string);
+                                }}
+                                verdi={kravMottattDato}
+                                feil={
+                                    kravMottattDato && !erGyldigDato(kravMottattDato)
+                                        ? 'Ugyldig dato'
+                                        : undefined
+                                }
+                                maksDato={new Date()}
                             />
-                        )}
-                        {visForeldreansvarBarnSkjema &&
-                            fagsak.stønadstype === Stønadstype.BARNETILSYN && (
+                            {erOvergangsstønadEllerSkolepenger && (
+                                <TerminBarnSkjema
+                                    barnSomSkalFødes={barnSomSkalFødes}
+                                    oppdaterBarnSomSkalFødes={settBarnSomSkalFødes}
+                                    tittel="Terminbarn"
+                                    tekst="Hvis brukeren har oppgitt terminbarn i søknaden, må du legge til termindatoen her."
+                                />
+                            )}
+                            {visForeldreansvarBarnSkjema && erBarnetilsyn && (
                                 <ForeldreansvarBarnSkjema
                                     foreldreansvarBarn={foreldreansvarBarn}
                                     oppdaterForeldreansvarBarn={settForeldreansvarBarn}
                                 />
                             )}
-                        <div>
-                            <Button
-                                type={'button'}
-                                onClick={() => opprettBehandling(fagsak)}
-                                disabled={!kanOppretteFørstegangsbehandling(fagsak.behandlinger)}
-                            >
-                                Opprett førstegangsbehandling
-                            </Button>
-                        </div>
-                        {feilmelding && (
-                            <AlertStripeFeilPreWrap>{feilmelding}</AlertStripeFeilPreWrap>
-                        )}
-                        {!kanOppretteFørstegangsbehandling(fagsak.behandlinger) && (
-                            <AlertStripeFeilPreWrap>
-                                Det finnes allerede en behandling på denne brukeren
-                            </AlertStripeFeilPreWrap>
-                        )}
-                    </>
-                )}
+                            <div>
+                                <Button
+                                    type={'button'}
+                                    onClick={() => opprettBehandling(fagsak)}
+                                    disabled={
+                                        !kanOppretteFørstegangsbehandling(fagsak.behandlinger)
+                                    }
+                                >
+                                    Opprett førstegangsbehandling
+                                </Button>
+                            </div>
+                            {feilmelding && (
+                                <AlertStripeFeilPreWrap>{feilmelding}</AlertStripeFeilPreWrap>
+                            )}
+                            {!kanOppretteFørstegangsbehandling(fagsak.behandlinger) && (
+                                <AlertStripeFeilPreWrap>
+                                    Det finnes allerede en behandling på denne brukeren
+                                </AlertStripeFeilPreWrap>
+                            )}
+                        </>
+                    );
+                }}
             </DataViewer>
         </Container>
     );

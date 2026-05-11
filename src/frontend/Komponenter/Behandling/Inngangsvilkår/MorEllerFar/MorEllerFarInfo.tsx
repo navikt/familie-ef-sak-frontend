@@ -27,6 +27,10 @@ const MorEllerFarInfo: FC<Props> = ({
     dokumentasjon,
     stønadstype,
 }) => {
+    const erOvergangsstønadEllerSkolepenger =
+        stønadstype === Stønadstype.OVERGANGSSTØNAD || stønadstype === Stønadstype.SKOLEPENGER;
+    const erBarnetilsyn = stønadstype === Stønadstype.BARNETILSYN;
+
     return (
         <InformasjonContainer>
             {barnMedSamvær.map((barn: IBarnMedSamvær) => {
@@ -52,7 +56,7 @@ const MorEllerFarInfo: FC<Props> = ({
                                 verdiSomString={false}
                                 ikon={VilkårInfoIkon.REGISTER}
                             />
-                        ) : stønadstype === Stønadstype.OVERGANGSSTØNAD ? (
+                        ) : erOvergangsstønadEllerSkolepenger ? (
                             <Informasjonsrad
                                 label="Termindato"
                                 verdi={
@@ -61,7 +65,7 @@ const MorEllerFarInfo: FC<Props> = ({
                                 ikon={VilkårInfoIkon.SØKNAD}
                             />
                         ) : (
-                            stønadstype === Stønadstype.BARNETILSYN &&
+                            erBarnetilsyn &&
                             søknadsgrunnlag.fødselsnummer && (
                                 <UnderseksjonWrapper underoverskrift="Overtatt foreldreansvar etter barneloven § 38">
                                     <Informasjonsrad

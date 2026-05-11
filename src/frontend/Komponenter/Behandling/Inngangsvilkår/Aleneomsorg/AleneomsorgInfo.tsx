@@ -45,6 +45,10 @@ const AleneomsorgInfo: FC<{
         );
     };
 
+    const erOvergangsstønadEllerSkolepenger =
+        stønadstype === Stønadstype.OVERGANGSSTØNAD || stønadstype === Stønadstype.SKOLEPENGER;
+    const erBarnetilsyn = stønadstype === Stønadstype.BARNETILSYN;
+
     const navnOgAlderPåBarn = utledNavnOgAlderForAleneomsorg(
         registergrunnlag,
         søknadsgrunnlag,
@@ -67,13 +71,13 @@ const AleneomsorgInfo: FC<{
                         />
                     }
                 />
-            ) : stønadstype === Stønadstype.OVERGANGSSTØNAD ? (
+            ) : erOvergangsstønadEllerSkolepenger ? (
                 <Informasjonsrad
                     ikon={VilkårInfoIkon.SØKNAD}
                     label="Termindato"
                     verdi={formaterNullableIsoDato(søknadsgrunnlag.fødselTermindato)}
                 />
-            ) : stønadstype === Stønadstype.BARNETILSYN && søknadsgrunnlag.fødselsnummer ? (
+            ) : erBarnetilsyn && søknadsgrunnlag.fødselsnummer ? (
                 <UnderseksjonWrapper underoverskrift="Overtatt foreldreansvar etter barneloven § 38">
                     <Informasjonsrad
                         ikon={VilkårInfoIkon.SØKNAD}
@@ -117,7 +121,7 @@ const AleneomsorgInfo: FC<{
                     }
                 />
             )}
-            {skalViseSøknadsdata && stønadstype === Stønadstype.BARNETILSYN && (
+            {skalViseSøknadsdata && erBarnetilsyn && (
                 <Informasjonsrad
                     ikon={VilkårInfoIkon.SØKNAD}
                     label="Søkes det om stønad til barnetilsyn for barnet"
