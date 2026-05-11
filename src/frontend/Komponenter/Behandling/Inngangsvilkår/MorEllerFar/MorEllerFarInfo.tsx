@@ -84,7 +84,7 @@ const MorEllerFarInfo: FC<Props> = ({
                     </BarneInfoWrapper>
                 );
             })}
-            {skalViseSøknadsdata && stønadstype === Stønadstype.OVERGANGSSTØNAD && (
+            {skalViseSøknadsdata && (
                 <DokumentasjonSendtInn
                     dokumentasjon={dokumentasjon?.terminbekreftelse}
                     tittel={'Terminbekreftelse'}
