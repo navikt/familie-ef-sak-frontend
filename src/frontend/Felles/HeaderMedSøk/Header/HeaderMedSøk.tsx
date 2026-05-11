@@ -55,7 +55,7 @@ export const HeaderMedSøk: React.FunctionComponent<Props> = ({ innloggetSaksbeh
     );
 
     return (
-        <Sticky>
+        <Sticky style={{ zIndex: 25 }}>
             <Header
                 tittelHref={'/'}
                 tittel="Nav Enslig mor eller far"
