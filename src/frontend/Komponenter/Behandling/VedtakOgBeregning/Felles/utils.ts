@@ -225,6 +225,22 @@ export const validerGyldigTallverdi = (verdi: string | number | undefined | null
     }
 };
 
+export const validerGyldigTallverdiOgIkkeUndefined = (
+    verdi: string | number | undefined | null
+) => {
+    const ugyldigVerdiFeilmelding = `Ugyldig verdi - kun heltall tillatt`;
+    const ugyldigVerdiUndefinedFeilmelding = `Mangler verdi`;
+    if (typeof verdi === 'number') {
+        return isNaN(verdi) || erDesimaltall(verdi) ? ugyldigVerdiFeilmelding : undefined;
+    }
+    if (typeof verdi === 'string') {
+        return !/^[0-9]+$/.test(verdi) ? ugyldigVerdiFeilmelding : undefined;
+    }
+    if (typeof verdi === 'undefined') {
+        return ugyldigVerdiUndefinedFeilmelding;
+    }
+};
+
 export const ugyldigEtterfølgendePeriodeFeilmelding = () => {
     return `Ugyldig periode`;
 };
