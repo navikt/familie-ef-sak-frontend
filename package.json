@@ -37,7 +37,6 @@
         "express-session": "^1.19.0",
         "express-static-gzip": "^3.0.0",
         "http-proxy-middleware": "^3.0.5",
-        "https-proxy-agent": "^7.0.6",
         "node-fetch": "3.3.2",
         "prom-client": "^15.1.3",
         "quill": "^2.0.3",
@@ -45,9 +44,7 @@
         "react-dom": "^19.2.5",
         "react-pdf": "10.4.1",
         "react-router-dom": "7.15.0",
-        "react-select": "^5.10.2",
         "styled-components": "^6.4.1",
-        "use-debounce": "^10.1.1",
         "uuid": "^14.0.0",
         "winston": "^3.18.3"
     },
