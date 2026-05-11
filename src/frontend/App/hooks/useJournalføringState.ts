@@ -44,6 +44,11 @@ export interface BarnSomSkalFødes {
     fødselTerminDato?: string;
 }
 
+export interface ForeldreansvarBarn {
+    _id: string; // brukes kun i frontend for å oppdatere og rendere barn
+    fødselsnummer?: string;
+}
+
 export interface JournalføringStateRequest {
     fagsak: Ressurs<Fagsak>;
     fagsakId: string;

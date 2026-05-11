@@ -8,7 +8,7 @@ import Barnepassordning from './Barnepassordning';
 const TilsynsutgifterBarnInfo: FC<{
     gjeldendeBarn: IBarnMedSamvær;
 }> = ({ gjeldendeBarn }) => {
-    const { registergrunnlag, barnepass } = gjeldendeBarn;
+    const { registergrunnlag, barnepass, søknadsgrunnlag } = gjeldendeBarn;
     const harPassordning = barnepass && barnepass.barnepassordninger;
 
     return (
@@ -16,7 +16,9 @@ const TilsynsutgifterBarnInfo: FC<{
             navnOgAlderPåBarn={utledNavnOgAlder(
                 registergrunnlag.navn,
                 registergrunnlag.fødselsdato,
-                registergrunnlag.dødsdato
+                registergrunnlag.dødsdato,
+                søknadsgrunnlag.navn,
+                søknadsgrunnlag.fødselTermindato
             )}
             dødsdato={registergrunnlag.dødsdato}
         >

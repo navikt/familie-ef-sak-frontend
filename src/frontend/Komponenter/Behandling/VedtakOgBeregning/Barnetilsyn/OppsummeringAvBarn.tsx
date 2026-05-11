@@ -61,7 +61,11 @@ export const OppsummeringAvBarn: React.FC<{
     vilkårsresultatAleneomsorg: Vilkårsresultat;
     vilkårsresultatAlderPåBarn: Vilkårsresultat;
 }> = ({ barn, vilkårsresultatAleneomsorg, vilkårsresultatAlderPåBarn }) => {
-    const fødselsdatostring = barn.registergrunnlag.fødselsdato;
+    const fødselsdatostring = barn.registergrunnlag.fødselsdato
+        ? barn.registergrunnlag.fødselsdato
+        : barn.søknadsgrunnlag.fødselTermindato
+          ? barn.søknadsgrunnlag.fødselTermindato
+          : null;
     if (!fødselsdatostring) {
         return (
             <>
@@ -70,7 +74,12 @@ export const OppsummeringAvBarn: React.FC<{
         );
     }
     const alder = datoTilAlder(tilDato(fødselsdatostring));
-    const navnOgAlder = `${barn.registergrunnlag.navn} (${alder})`;
+    const navn = barn.registergrunnlag.navn
+        ? barn.registergrunnlag.navn
+        : barn.søknadsgrunnlag.navn
+          ? barn.søknadsgrunnlag.navn
+          : null;
+    const navnOgAlder = `${navn} (${alder})`;
     const barnepassordninger = barn.barnepass?.barnepassordninger || [];
     const søkesOmBarnetilsynForBarn = barn.barnepass?.skalHaBarnepass;
 

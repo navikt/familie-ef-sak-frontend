@@ -10,7 +10,11 @@ import { Ressurs } from '../../../../App/typer/ressurs';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
 import { Tag } from '@navikt/ds-react';
-import { BarneInfoWrapper, VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
+import {
+    BarneInfoWrapper,
+    UnderseksjonWrapper,
+    VilkårInfoIkon,
+} from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
 import { IPersonalia } from '../vilkår';
 import { utledNavnOgAlderForAleneomsorg } from './utils';
@@ -41,7 +45,15 @@ const AleneomsorgInfo: FC<{
         );
     };
 
-    const navnOgAlderPåBarn = utledNavnOgAlderForAleneomsorg(registergrunnlag, søknadsgrunnlag);
+    const erOvergangsstønadEllerSkolepenger =
+        stønadstype === Stønadstype.OVERGANGSSTØNAD || stønadstype === Stønadstype.SKOLEPENGER;
+    const erBarnetilsyn = stønadstype === Stønadstype.BARNETILSYN;
+
+    const navnOgAlderPåBarn = utledNavnOgAlderForAleneomsorg(
+        registergrunnlag,
+        søknadsgrunnlag,
+        stønadstype
+    );
 
     return (
         <BarneInfoWrapper
@@ -59,13 +71,26 @@ const AleneomsorgInfo: FC<{
                         />
                     }
                 />
-            ) : (
+            ) : erOvergangsstønadEllerSkolepenger ? (
                 <Informasjonsrad
                     ikon={VilkårInfoIkon.SØKNAD}
                     label="Termindato"
                     verdi={formaterNullableIsoDato(søknadsgrunnlag.fødselTermindato)}
                 />
-            )}
+            ) : erBarnetilsyn && søknadsgrunnlag.fødselsnummer ? (
+                <UnderseksjonWrapper underoverskrift="Overtatt foreldreansvar etter barneloven § 38">
+                    <Informasjonsrad
+                        ikon={VilkårInfoIkon.SØKNAD}
+                        label="Fødsels eller D-nummer"
+                        verdiSomString={false}
+                        verdi={
+                            <KopierbartNullableFødselsnummer
+                                fødselsnummer={søknadsgrunnlag.fødselsnummer}
+                            />
+                        }
+                    />
+                </UnderseksjonWrapper>
+            ) : null}
             <Bosted
                 harSammeAdresseRegister={registergrunnlag.harSammeAdresse}
                 harSammeAdresseSøknad={søknadsgrunnlag.harSammeAdresse}
@@ -96,7 +121,7 @@ const AleneomsorgInfo: FC<{
                     }
                 />
             )}
-            {skalViseSøknadsdata && stønadstype === Stønadstype.BARNETILSYN && (
+            {skalViseSøknadsdata && erBarnetilsyn && (
                 <Informasjonsrad
                     ikon={VilkårInfoIkon.SØKNAD}
                     label="Søkes det om stønad til barnetilsyn for barnet"

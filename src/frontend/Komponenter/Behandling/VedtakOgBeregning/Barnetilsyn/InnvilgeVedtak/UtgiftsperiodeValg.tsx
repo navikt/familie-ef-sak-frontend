@@ -405,12 +405,15 @@ const UtgiftsperiodeValg: React.FC<Props> = ({
 
 const barnFormatertForBarnVelger = (barn: IBarnMedSamvær[]) =>
     barn.map((barn) => {
-        const navn = barn.registergrunnlag.navn?.trim() || 'Ukjent';
+        const navn =
+            barn.registergrunnlag.navn?.trim() || barn.søknadsgrunnlag.navn?.trim() || 'Ukjent';
         const fornavn = navn.split(' ')[0];
         const etternavn = navn.split(' ')[1] || '';
         const alder = barn.registergrunnlag.fødselsdato
             ? datoTilAlder(barn.registergrunnlag.fødselsdato)
-            : '';
+            : barn.søknadsgrunnlag.fødselTermindato
+              ? datoTilAlder(barn.søknadsgrunnlag.fødselTermindato)
+              : '';
         const alderTekst = alder === '' ? '' : ` (${alder} år)`;
 
         return {
