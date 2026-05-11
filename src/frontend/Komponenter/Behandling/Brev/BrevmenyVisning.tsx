@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
     BrevStruktur,
     datasett,
@@ -29,7 +29,6 @@ import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { useApp } from '../../../App/context/AppContext';
 import { apiLoggFeil } from '../../../App/api/axios';
 import { IBrevverdier, MellomlagreSanitybrev } from '../../../App/hooks/useMellomlagringBrev';
-import { useDebouncedCallback } from 'use-debounce';
 import { Alert, Box, Heading, VStack } from '@navikt/ds-react';
 import { Brevverdier } from '../../../App/hooks/useVerdierForBrev';
 import { Fritekstområde } from './Fritekstområde';
@@ -234,10 +233,13 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
         });
     };
 
-    const utsattGenererBrev = useDebouncedCallback(genererBrev, 1000);
+    const genererBrevRef = useRef(genererBrev);
+    genererBrevRef.current = genererBrev;
 
-    useEffect(utsattGenererBrev, [
-        utsattGenererBrev,
+    useEffect(() => {
+        const timer = setTimeout(() => genererBrevRef.current(), 1000);
+        return () => clearTimeout(timer);
+    }, [
         alleFlettefelter,
         valgteFelt,
         valgteDelmaler,
