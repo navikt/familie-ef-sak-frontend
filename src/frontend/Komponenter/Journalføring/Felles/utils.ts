@@ -7,10 +7,13 @@ import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { Behandling, BehandlingResultat } from '../../../App/typer/fagsak';
 import { Behandlingstype } from '../../../App/typer/behandlingstype';
 import { Journalføringsaksjon } from '../../../App/hooks/useJournalføringState';
-import { MultiValue, PropsValue, SingleValue } from 'react-select';
 import { Klagebehandlinger } from '../../../App/typer/klage';
 import { dokumentTitler } from '../../utils';
 import { SelectOption } from '../../../App/typer/arkivtema';
+
+type MultiValue<T> = T[];
+type SingleValue<T> = T | null;
+type PropsValue<T> = MultiValue<T> | SingleValue<T>;
 
 export const JOURNALPOST_QUERY_STRING = 'journalpostId';
 export const GJELDER_KLAGE_QUERY_STRING = 'gjelderKlage';
