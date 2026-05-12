@@ -18,4 +18,5 @@ export interface SøknadsgrunnlagNyttBarn {
     annenForelderSoknad?: IAnnenForelder;
     annenForelderRegister?: IAnnenForelder;
     ikkeOppgittAnnenForelderBegrunnelse?: string;
+    fødselsnummer?: string;
 }

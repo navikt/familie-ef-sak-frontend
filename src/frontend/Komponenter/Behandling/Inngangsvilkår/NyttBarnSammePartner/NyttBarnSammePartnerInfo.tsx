@@ -6,7 +6,10 @@ import TidligereVedtaksperioderSøkerOgAndreForeldre from './TidligereVedtaksper
 import { ITidligereVedtaksperioder } from '../../TidligereVedtaksperioder/typer';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 import { InformasjonContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
-import { UnderseksjonWrapper } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
+import {
+    UnderseksjonWrapper,
+    VilkårInfoIkon,
+} from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 import { IPersonalia } from '../vilkår';
 import { Heading, HStack, VStack } from '@navikt/ds-react';
 import { ChildHairEyesIcon, DatabaseIcon, FileTextIcon } from '@navikt/aksel-icons';
@@ -14,20 +17,28 @@ import { AnnenForelderNavnOgFnr } from './AnnenForelderNavnOgFnr';
 import { utledNavnOgAlder } from '../utils';
 import { KopierbartNullableFødselsnummer } from '../../../../Felles/Fødselsnummer/KopierbartNullableFødselsnummer';
 import EtikettDød from '../../../../Felles/Etiketter/EtikettDød';
+import { Stønadstype } from '../../../../App/typer/behandlingstema.ts';
+import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad.tsx';
 
 interface Props {
     personalia: IPersonalia;
     barnMedSamvær: IBarnMedSamvær[];
     tidligereVedtaksperioder: ITidligereVedtaksperioder;
+    stønadstype: Stønadstype;
 }
 
 export const NyttBarnSammePartnerInfo: FC<Props> = ({
     personalia,
     barnMedSamvær,
     tidligereVedtaksperioder,
+    stønadstype,
 }) => {
     const registergrunnlagNyttBarn = mapTilRegistergrunnlagNyttBarn(barnMedSamvær);
     const søknadsgrunnlagNyttBarn = mapTilSøknadsgrunnlagNyttBarn(barnMedSamvær);
+
+    const erOvergangsstønadEllerSkolepenger =
+        stønadstype === Stønadstype.OVERGANGSSTØNAD || stønadstype === Stønadstype.SKOLEPENGER;
+    const erBarnetilsyn = stønadstype === Stønadstype.BARNETILSYN;
 
     const barnFraRegisterMedFødselsdato = barnMedSamvær.filter(
         (b) => b.registergrunnlag.fødselsdato
@@ -83,17 +94,45 @@ export const NyttBarnSammePartnerInfo: FC<Props> = ({
                 })}
             </UnderseksjonWrapper>
 
-            <UnderseksjonWrapper underoverskrift="Brukers fremtidige barn lagt til i søknad">
-                {søknadsgrunnlagNyttBarn.length ? (
-                    søknadsgrunnlagNyttBarn.map((barn) => (
-                        <SøknadgrunnlagTerminbarn key={barn.barnId} barn={barn} />
-                    ))
-                ) : (
-                    <BodyShortSmall>
-                        <i>Bruker har ingen barn lagt til i søknad</i>
-                    </BodyShortSmall>
-                )}
-            </UnderseksjonWrapper>
+            {erOvergangsstønadEllerSkolepenger && (
+                <UnderseksjonWrapper underoverskrift="Brukers fremtidige barn lagt til i søknad">
+                    {søknadsgrunnlagNyttBarn.length ? (
+                        søknadsgrunnlagNyttBarn.map((barn) => (
+                            <SøknadgrunnlagTerminbarn key={barn.barnId} barn={barn} />
+                        ))
+                    ) : (
+                        <BodyShortSmall>
+                            <i>Bruker har ingen barn lagt til i søknad</i>
+                        </BodyShortSmall>
+                    )}
+                </UnderseksjonWrapper>
+            )}
+            {erBarnetilsyn && søknadsgrunnlagNyttBarn.length > 0 && (
+                <UnderseksjonWrapper underoverskrift="Overtatt foreldreansvar etter barneloven § 38">
+                    {søknadsgrunnlagNyttBarn.map((barn) => (
+                        <div key={barn.barnId}>
+                            <HStack gap={'space-12'}>
+                                <ChildHairEyesIcon title="barn" fontSize="1.3rem" />
+                                <Heading size="xsmall">
+                                    {utledNavnOgAlder(barn.navn, barn.fødselTermindato)}
+                                </Heading>
+                            </HStack>
+                            {barn.fødselsnummer && (
+                                <Informasjonsrad
+                                    ikon={VilkårInfoIkon.SØKNAD}
+                                    label="Fødsels eller D-nummer"
+                                    verdiSomString={false}
+                                    verdi={
+                                        <KopierbartNullableFødselsnummer
+                                            fødselsnummer={barn.fødselsnummer}
+                                        />
+                                    }
+                                />
+                            )}
+                        </div>
+                    ))}
+                </UnderseksjonWrapper>
+            )}
         </InformasjonContainer>
     );
 };

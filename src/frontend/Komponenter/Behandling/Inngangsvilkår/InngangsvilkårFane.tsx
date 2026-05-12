@@ -93,6 +93,7 @@ export const InngangsvilkårFane: FC<Props> = ({ behandling }) => {
                             vurderinger={vilkår.vurderinger}
                             ikkeVurderVilkår={ikkeVurderVilkår}
                             skalViseSøknadsdata={skalViseSøknadsdata}
+                            behandling={behandling}
                         />
                         <NyttBarnSammePartner
                             nullstillVurdering={nullstillVurdering}
@@ -102,6 +103,7 @@ export const InngangsvilkårFane: FC<Props> = ({ behandling }) => {
                             vurderinger={vilkår.vurderinger}
                             ikkeVurderVilkår={ikkeVurderVilkår}
                             skalViseSøknadsdata={skalViseSøknadsdata}
+                            behandling={behandling}
                         />
                         <Sivilstand
                             nullstillVurdering={nullstillVurdering}
