@@ -24,7 +24,7 @@ const Register: React.FunctionComponent<IRegister> = ({ className, heigth, width
         >
             <title id={'register'}>Register ikon</title>
             <g
-                stroke="#000"
+                stroke="currentColor"
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeMiterlimit="10"

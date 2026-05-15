@@ -18,7 +18,7 @@ const StyledFanemeny = styled.div`
     justify-content: space-evenly;
     align-items: center;
     border-bottom: ${BorderNeutral} solid 2px;
-    background-color: white;
+    background-color: var(--ax-bg-default);
 `;
 
 interface Props {

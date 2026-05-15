@@ -17,7 +17,7 @@ import {
 } from '@navikt/ds-tokens/js';
 
 const StyledNavLink = styled(NavLink)`
-    border-bottom: 5px solid white;
+    border-bottom: 5px solid transparent;
     color: inherit;
     text-align: center;
     text-decoration: none;
@@ -53,7 +53,7 @@ const StyledLenketekst = styled(BodyShortSmall)`
 `;
 
 const StyledTekst = styled(BodyShortSmall)`
-    border-bottom: 5px solid white;
+    border-bottom: 5px solid transparent;
     color: ${Neutral400};
     text-align: center;
     text-decoration: none;
