@@ -1,5 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
-import constate from 'constate';
+import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 
 type Tema = 'light' | 'dark';
 
@@ -16,7 +15,14 @@ const hentLagretTema = (): Tema | null => {
     return null;
 };
 
-const [ThemeProvider, useTema] = constate(() => {
+interface TemaContextType {
+    tema: Tema;
+    byttTema: () => void;
+}
+
+const TemaContext = createContext<TemaContextType | undefined>(undefined);
+
+const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
     const [tema, settTema] = useState<Tema>(hentLagretTema() ?? hentSystemTema());
 
     useEffect(() => {
@@ -27,7 +33,15 @@ const [ThemeProvider, useTema] = constate(() => {
         settTema((gjeldende) => (gjeldende === 'light' ? 'dark' : 'light'));
     }, []);
 
-    return { tema, byttTema };
-});
+    return <TemaContext.Provider value={{ tema, byttTema }}>{children}</TemaContext.Provider>;
+};
+
+const useTema = (): TemaContextType => {
+    const context = useContext(TemaContext);
+    if (!context) {
+        throw new Error('useTema må brukes innenfor ThemeProvider');
+    }
+    return context;
+};
 
 export { ThemeProvider, useTema };
