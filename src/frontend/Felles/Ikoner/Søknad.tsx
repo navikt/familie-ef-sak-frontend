@@ -19,7 +19,7 @@ const Søknad: React.FunctionComponent<ISøknad> = ({ className, height, width }
         >
             <title id={'søknad'}>Søknad ikon</title>
             <g
-                stroke="#000"
+                stroke="currentColor"
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeMiterlimit="10"

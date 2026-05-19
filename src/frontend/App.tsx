@@ -1,7 +1,8 @@
-import { BodyLong } from '@navikt/ds-react';
+import { BodyLong, Theme } from '@navikt/ds-react';
 import * as React from 'react';
 import { useState } from 'react';
 import { AppProvider, useApp } from './App/context/AppContext';
+import { ThemeProvider, useTema } from './App/context/ThemeContext';
 import { hentInnloggetBruker } from './App/api/saksbehandler';
 import { ISaksbehandler } from './App/typer/saksbehandler';
 import ErrorBoundary from './Felles/ErrorBoundary/ErrorBoundary';
@@ -53,13 +54,28 @@ export const App: React.FC = () => {
         return null;
     }
     return (
-        <ErrorBoundary innloggetSaksbehandler={innloggetSaksbehandler}>
-            <AppProvider autentisertSaksbehandler={innloggetSaksbehandler} appEnv={appEnv}>
-                <TogglesProvider>
-                    <AppRoutes innloggetSaksbehandler={innloggetSaksbehandler} />
-                </TogglesProvider>
-            </AppProvider>
-        </ErrorBoundary>
+        <ThemeProvider>
+            <AppMedTema innloggetSaksbehandler={innloggetSaksbehandler} appEnv={appEnv} />
+        </ThemeProvider>
+    );
+};
+
+const AppMedTema: React.FC<{
+    innloggetSaksbehandler: ISaksbehandler;
+    appEnv: AppEnv;
+}> = ({ innloggetSaksbehandler, appEnv }) => {
+    const { tema } = useTema();
+
+    return (
+        <Theme theme={tema}>
+            <ErrorBoundary innloggetSaksbehandler={innloggetSaksbehandler}>
+                <AppProvider autentisertSaksbehandler={innloggetSaksbehandler} appEnv={appEnv}>
+                    <TogglesProvider>
+                        <AppRoutes innloggetSaksbehandler={innloggetSaksbehandler} />
+                    </TogglesProvider>
+                </AppProvider>
+            </ErrorBoundary>
+        </Theme>
     );
 };
 

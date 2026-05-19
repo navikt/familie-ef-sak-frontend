@@ -18,7 +18,7 @@ const Bygning: React.FC<IBygning> = ({ className, heigth, width }) => {
         >
             <title id={'bygning'}>Bygning</title>
             <g
-                stroke="#000"
+                stroke="currentColor"
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeMiterlimit="10"

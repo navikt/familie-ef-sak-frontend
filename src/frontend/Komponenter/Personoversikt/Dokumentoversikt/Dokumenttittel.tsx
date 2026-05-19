@@ -12,7 +12,7 @@ const Div = styled.div<{ $erHovedDokument: boolean }>`
 `;
 
 const standardFargeIkkeBesøktLenke = Accent600;
-const standardFargeBesøktLenke = 'purple';
+const standardFargeBesøktLenke = 'var(--ax-text-meta-purple)';
 
 const Tittel = styled.a<{ $harBlittBesøkt: boolean }>`
     color: ${(props) =>

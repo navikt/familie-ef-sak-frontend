@@ -40,8 +40,8 @@ const StyledIkon = styled.div<IkonProps>`
         border-bottom: 5px solid ${Accent500};
     }
 
-    background-color: ${(props) => (props.$erAktiv ? Neutral200 : 'white')};
-    border-bottom: 5px solid ${(props) => (props.$erAktiv ? Accent600 : 'white')};
+    background-color: ${(props) => (props.$erAktiv ? Neutral200 : 'var(--ax-bg-default)')};
+    border-bottom: 5px solid ${(props) => (props.$erAktiv ? Accent600 : 'transparent')};
 `;
 
 interface ValgvisningProps {

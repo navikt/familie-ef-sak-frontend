@@ -1,3 +1,24 @@
 .modal__overlay {
     z-index: 2000; /* Hack for at overlay skal legges over headerMedSøk og andre elementer */
 }
+
+html {
+    height: 100%;
+}
+
+body {
+    min-height: 100%;
+    margin: 0;
+}
+
+#app {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+#app > .aksel-theme {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}

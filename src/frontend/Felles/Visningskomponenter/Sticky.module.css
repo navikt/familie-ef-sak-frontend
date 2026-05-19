@@ -3,5 +3,5 @@
     position: -webkit-sticky;
     top: 0;
     z-index: 24;
-    background-color: white;
+    background-color: var(--ax-bg-default);
 }

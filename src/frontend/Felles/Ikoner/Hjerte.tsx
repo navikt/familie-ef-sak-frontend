@@ -18,7 +18,7 @@ const Hjerte: React.FC<IHjerte> = ({ className, heigth, width }) => {
         >
             <title id={'hjerte'}>Hjerte</title>
             <g
-                stroke="#000"
+                stroke="currentColor"
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeMiterlimit="10"

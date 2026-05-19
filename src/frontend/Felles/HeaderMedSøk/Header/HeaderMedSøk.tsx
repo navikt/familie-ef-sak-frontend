@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import PersonSøk from '../PersonSøk';
 import { ISaksbehandler } from '../../../App/typer/saksbehandler';
 import { useApp } from '../../../App/context/AppContext';
+import { useTema } from '../../../App/context/ThemeContext';
 import { AppEnv } from '../../../App/api/env';
 import { AxiosRequestCallback } from '../../../App/typer/axiosRequest';
 import { harTilgangTilRolle } from '../../../App/utils/roller';
@@ -11,6 +12,8 @@ import { Sticky } from '../../Visningskomponenter/Sticky';
 import { lagArbeidsverktøyLenker, lagEksterneLenker, lagInterneLenker } from '../utils';
 import { Header, PopoverItem } from './header/Header';
 import { useHentSaksbehandlerInformasjon } from '../../../App/hooks/useHentSaksbehandlerInformasjon';
+import { SunIcon, MoonIcon } from '@navikt/aksel-icons';
+import { InternalHeader as NavHeader } from '@navikt/ds-react';
 
 export interface Props {
     innloggetSaksbehandler: ISaksbehandler;
@@ -54,6 +57,8 @@ export const HeaderMedSøk: React.FunctionComponent<Props> = ({ innloggetSaksbeh
         innloggetSaksbehandler.navIdent
     );
 
+    const { tema, byttTema } = useTema();
+
     return (
         <Sticky style={{ zIndex: 25 }}>
             <Header
@@ -68,6 +73,16 @@ export const HeaderMedSøk: React.FunctionComponent<Props> = ({ innloggetSaksbeh
                 erDev={erDev}
             >
                 {innloggetSaksbehandler && <PersonSøk />}
+                <NavHeader.Button
+                    onClick={byttTema}
+                    aria-label={tema === 'light' ? 'Bytt til mørkt tema' : 'Bytt til lyst tema'}
+                >
+                    {tema === 'light' ? (
+                        <MoonIcon fontSize="1.5rem" title="Mørkt tema" />
+                    ) : (
+                        <SunIcon fontSize="1.5rem" title="Lyst tema" />
+                    )}
+                </NavHeader.Button>
             </Header>
         </Sticky>
     );

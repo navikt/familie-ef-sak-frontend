@@ -33,12 +33,12 @@ const HamburgerMenyInnhold = styled.div<HamburgerMenyInnholdProps>`
 
     position: absolute;
 
-    background-color: white;
+    background-color: var(--ax-bg-default);
 
     ${(props) =>
         props.$plassering === 'bottom-center' ? 'right: 1rem;' : 'left: 3rem; bottom: 0.25rem;'}
 
-    border: 1px solid grey;
+    border: 1px solid var(--ax-border-neutral);
 
     box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
     -webkit-box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);

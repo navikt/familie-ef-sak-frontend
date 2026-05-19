@@ -18,14 +18,14 @@ export const HorizontalScroll = styled.div<{
         }
         ::-webkit-scrollbar-thumb {
             border-radius: 8px;
-            border: 2px solid white;
+            border: 2px solid var(--ax-bg-default);
             background-color: ${Neutral400A};
         }
         ::-webkit-scrollbar-thumb:hover {
             background-color: ${BgNeutralModerateHoverA};
         }
         ::-webkit-scrollbar-track {
-            background-color: white;
+            background-color: var(--ax-bg-default);
         }
         overflow-x: scroll;
         overflow-y: hidden;
