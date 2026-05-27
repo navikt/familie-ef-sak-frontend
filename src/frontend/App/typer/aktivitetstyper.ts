@@ -22,6 +22,7 @@ export interface IAktivitet {
     tidligereUtdanninger: ITidligereUtdanning[];
     datoOppstartJobb?: string;
     erIArbeid?: string;
+    inntekter?: Inntekter[];
 }
 
 export interface ISagtOppEllerRedusertStilling {
@@ -30,6 +31,7 @@ export interface ISagtOppEllerRedusertStilling {
     dato?: string;
     dokumentasjon?: IDokumentasjon;
     harAvsluttetArbeidsforholdIRegister: boolean;
+    erRegelendring2026?: boolean;
 }
 
 export interface IArbeidsforhold {
@@ -95,4 +97,11 @@ export interface ISærligeTilsynsbehov {
     erBarnetFødt: boolean;
     fødselTermindato?: string;
     særligeTilsynsbehov?: string;
+}
+
+export interface Inntekter {
+    arbeidstaker?: string;
+    selvstendigNæringsdrivende?: string;
+    annenStønadNav?: string;
+    nei?: string;
 }

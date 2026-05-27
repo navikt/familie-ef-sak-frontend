@@ -8,6 +8,10 @@ export enum EArbeidssituasjon {
     tarUtdanning = 'tarUtdanning',
     harFåttJobbTilbud = 'harFåttJobbTilbud',
     erHverkenIArbeidUtdanningEllerArbeidssøker = 'erHverkenIArbeidUtdanningEllerArbeidssøker',
+    arbeidstaker = 'arbeidstaker',
+    selvstendigNæringsdrivende = 'selvstendigNæringsdrivende',
+    annenStønadNav = 'annenStønadNav',
+    ingenInntekt = 'ingenInntekt',
 }
 export const ArbeidssituasjonTilTekst: Record<EArbeidssituasjon, string> = {
     erHjemmeMedBarnUnderEttÅr: 'Hjemme med barn under 1 år',
@@ -20,6 +24,10 @@ export const ArbeidssituasjonTilTekst: Record<EArbeidssituasjon, string> = {
     tarUtdanning: 'Tar eller skal ta utdanning',
     harFåttJobbTilbud: 'Har fått jobbtilbud',
     erHverkenIArbeidUtdanningEllerArbeidssøker: 'Ikke i arbeid, utdanning eller arbeidssøker',
+    arbeidstaker: 'Arbeidstaker',
+    selvstendigNæringsdrivende: 'Selvstendig næringsdrivende',
+    annenStønadNav: 'Annen stønad fra NAV',
+    ingenInntekt: 'Ingen inntekt',
 };
 
 export enum EErIArbeid {
@@ -32,15 +40,37 @@ export enum EDinSituasjon {
     harSyktBarn = 'harSyktBarn',
     harSøktBarnepassOgVenterEnnå = 'harSøktBarnepassOgVenterEnnå',
     harBarnMedSærligeBehov = 'harBarnMedSærligeBehov',
+    barnSærligTilsyn = 'barnSærligTilsyn',
+    barnUnder14Måneder = 'barnUnder14Måneder',
+    barnSykdomIkkeVarig = 'barnSykdomIkkeVarig',
     nei = 'nei',
 }
+
+const tekstSærligTilsyn =
+    'Jeg har barn som trenger særlig tilsyn på grunn av fysiske, psykiske eller store sosiale problemer';
 
 export const DinSituasjonTilTekst: Record<EDinSituasjon, string> = {
     erSyk: 'Jeg er syk',
     harSyktBarn: 'Barnet mitt er sykt',
+    barnSykdomIkkeVarig: 'Barnet mitt har en sykdom som ikke er varig',
     harSøktBarnepassOgVenterEnnå: 'Jeg har søkt om barnepass, men ikke fått plass enda',
-    harBarnMedSærligeBehov:
-        'Jeg har barn som trenger særlig tilsyn på grunn av fysiske, psykiske eller store sosiale problemer',
+    barnSærligTilsyn: tekstSærligTilsyn,
+    harBarnMedSærligeBehov: tekstSærligTilsyn,
+    barnUnder14Måneder: 'Jeg har barn under 14 måneder',
+    nei: 'Nei',
+};
+
+export enum EInntekter {
+    arbeidstaker = 'arbeidstaker',
+    selvstendigNæringsdrivende = 'selvstendigNæringsdrivende',
+    annenStønadNav = 'annenStønadNav',
+    nei = 'nei',
+}
+
+export const InntekterTilTekst: Record<EInntekter, string> = {
+    arbeidstaker: 'Ja, jeg har inntekt som arbeidstaker',
+    selvstendigNæringsdrivende: 'Ja, jeg har inntekt som selvstendig næringsdrivende',
+    annenStønadNav: 'Ja, jeg får annen stønad fra Nav',
     nei: 'Nei',
 };
 
