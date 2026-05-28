@@ -5,6 +5,7 @@ import {
     periodetypeTilTekst,
 } from '../../../../../App/typer/vedtak';
 import { EnsligFamilieSelect } from '../../../../../Felles/Input/EnsligFamilieSelect';
+import { useBehandling } from '../../../../../App/context/BehandlingContext.tsx';
 
 interface VedtakperiodeSelectProps {
     oppdaterVedtakslisteElement: (
@@ -27,6 +28,13 @@ const valgbarePeriodetyper = [
     EPeriodetype.MIDLERTIDIG_OPPHØR,
 ];
 
+const valgbarePeriodetyper2026Regelendring = [
+    EPeriodetype.PERIODE_FØR_FØDSEL,
+    EPeriodetype.BARN_UNDER_14_MÅNEDER,
+    EPeriodetype.SÆRLIG_TILSYNSKREVENDE_BARN,
+    EPeriodetype.FORBIGÅENDE_SYKDOM_HOS_BARNET,
+];
+
 const VedtakperiodeSelect: FC<VedtakperiodeSelectProps> = ({
     className,
     oppdaterVedtakslisteElement,
@@ -34,6 +42,11 @@ const VedtakperiodeSelect: FC<VedtakperiodeSelectProps> = ({
     periodeType,
     feil,
 }) => {
+    const { erRegelendring2026 } = useBehandling();
+    const relevantePeriodeTyper = erRegelendring2026
+        ? valgbarePeriodetyper2026Regelendring
+        : valgbarePeriodetyper;
+
     return (
         <EnsligFamilieSelect
             className={className}
@@ -48,7 +61,7 @@ const VedtakperiodeSelect: FC<VedtakperiodeSelectProps> = ({
             lesevisningVerdi={periodeType && periodetypeTilTekst[periodeType]}
         >
             <option value="">Velg</option>
-            {valgbarePeriodetyper.map((type) => (
+            {relevantePeriodeTyper.map((type) => (
                 <option key={type} value={type}>
                     {periodetypeTilTekst[type]}
                 </option>

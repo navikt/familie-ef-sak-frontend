@@ -257,6 +257,9 @@ export enum EPeriodetype {
     UTVIDELSE = 'UTVIDELSE',
     MIGRERING = 'MIGRERING',
     NY_PERIODE_FOR_NYTT_BARN = 'NY_PERIODE_FOR_NYTT_BARN',
+    BARN_UNDER_14_MÅNEDER = 'BARN_UNDER_14_MÅNEDER',
+    SÆRLIG_TILSYNSKREVENDE_BARN = 'SÆRLIG_TILSYNSKREVENDE_BARN',
+    FORBIGÅENDE_SYKDOM_HOS_BARNET = 'FORBIGÅENDE_SYKDOM_HOS_BARNET',
 }
 
 export enum EVedtaksperiodeProperty {
@@ -401,6 +404,9 @@ export const periodetypeTilTekst: Record<EPeriodetype | '', string> = {
     UTVIDELSE: 'Utvidelse',
     MIGRERING: 'Migrering',
     NY_PERIODE_FOR_NYTT_BARN: 'Ny periode for nytt barn',
+    BARN_UNDER_14_MÅNEDER: 'Barn under 14 måneder',
+    SÆRLIG_TILSYNSKREVENDE_BARN: 'Særlig tilsynskrevende barn',
+    FORBIGÅENDE_SYKDOM_HOS_BARNET: 'Forbigående sykdom hos barnet',
     '': '',
 };
 
