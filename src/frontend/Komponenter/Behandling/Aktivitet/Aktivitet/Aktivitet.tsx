@@ -3,6 +3,7 @@ import { VilkårProps } from '../../Inngangsvilkår/vilkårprops';
 import { AktivitetsvilkårType } from '../../Inngangsvilkår/vilkår';
 import VisEllerEndreVurdering from '../../Vurdering/VisEllerEndreVurdering';
 import AktivitetInfo from './AktivitetInfo';
+import AktivitetInfoRegelendring2026 from './AktivitetInfoRegelendring2026';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 import { Behandlingsårsak } from '../../../../App/typer/behandlingsårsak';
@@ -41,13 +42,21 @@ export const Aktivitet: React.FC<VilkårProps> = ({
                     >
                         <VilkårpanelInnhold>
                             {{
-                                venstre: grunnlag.aktivitet && skalViseSøknadsdata && (
-                                    <AktivitetInfo
-                                        aktivitet={grunnlag.aktivitet}
-                                        stønadstype={behandling.stønadstype}
-                                        dokumentasjon={grunnlag.dokumentasjon}
-                                    />
-                                ),
+                                venstre:
+                                    grunnlag.aktivitet &&
+                                    skalViseSøknadsdata &&
+                                    (behandling.erRegelendring2026 ? (
+                                        <AktivitetInfoRegelendring2026
+                                            aktivitet={grunnlag.aktivitet}
+                                            stønadstype={behandling.stønadstype}
+                                        />
+                                    ) : (
+                                        <AktivitetInfo
+                                            aktivitet={grunnlag.aktivitet}
+                                            stønadstype={behandling.stønadstype}
+                                            dokumentasjon={grunnlag.dokumentasjon}
+                                        />
+                                    )),
                                 høyre: (
                                     <VisEllerEndreVurdering
                                         ikkeVurderVilkår={ikkeVurderVilkår}

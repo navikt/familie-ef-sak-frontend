@@ -4,6 +4,7 @@ import { IDokumentasjon } from './felles';
 import { ESagtOppEllerRedusert } from '../../Komponenter/Behandling/Inngangsvilkår/Samliv/typer';
 import {
     EDinSituasjon,
+    Inntekter,
     EStilling,
     EStudieandel,
     EUtdanningsform,
@@ -22,6 +23,7 @@ export interface IAktivitet {
     tidligereUtdanninger: ITidligereUtdanning[];
     datoOppstartJobb?: string;
     erIArbeid?: string;
+    inntekter?: Inntekter[];
 }
 
 export interface ISagtOppEllerRedusertStilling {
@@ -30,6 +32,7 @@ export interface ISagtOppEllerRedusertStilling {
     dato?: string;
     dokumentasjon?: IDokumentasjon;
     harAvsluttetArbeidsforholdIRegister: boolean;
+    erRegelendring2026?: boolean;
 }
 
 export interface IArbeidsforhold {

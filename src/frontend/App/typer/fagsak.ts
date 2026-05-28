@@ -26,6 +26,7 @@ export interface Fagsak {
 
 export interface Behandling {
     id: string;
+    erRegelendring2026: boolean;
     forrigeBehandlingId?: string;
     fagsakId: string;
     type: Behandlingstype;

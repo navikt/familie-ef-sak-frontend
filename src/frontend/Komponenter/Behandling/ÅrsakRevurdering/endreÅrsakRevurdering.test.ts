@@ -94,5 +94,6 @@ const opprettBehandling = (
         steg: Steg.VILKÅR,
         sistEndret: '',
         status: BehandlingStatus.UTREDES,
+        erRegelendring2026: false,
     };
 };
