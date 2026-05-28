@@ -43,6 +43,7 @@ export enum EDinSituasjon {
     barnSærligTilsyn = 'barnSærligTilsyn',
     barnUnder14Måneder = 'barnUnder14Måneder',
     barnSykdomIkkeVarig = 'barnSykdomIkkeVarig',
+    ingenAvDisseGjelderMeg = 'ingenAvDisseGjelderMeg',
     nei = 'nei',
 }
 
@@ -57,6 +58,7 @@ export const DinSituasjonTilTekst: Record<EDinSituasjon, string> = {
     barnSærligTilsyn: tekstSærligTilsyn,
     harBarnMedSærligeBehov: tekstSærligTilsyn,
     barnUnder14Måneder: 'Jeg har barn under 14 måneder',
+    ingenAvDisseGjelderMeg: 'Ingen av disse gjelder meg',
     nei: 'Nei',
 };
 
