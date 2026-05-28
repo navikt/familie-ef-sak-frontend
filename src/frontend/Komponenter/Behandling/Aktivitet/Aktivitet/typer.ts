@@ -62,14 +62,14 @@ export const DinSituasjonTilTekst: Record<EDinSituasjon, string> = {
     nei: 'Nei',
 };
 
-export enum EInntekter {
+export enum Inntekter {
     arbeidstaker = 'arbeidstaker',
     selvstendigNæringsdrivende = 'selvstendigNæringsdrivende',
     annenStønadNav = 'annenStønadNav',
     nei = 'nei',
 }
 
-export const InntekterTilTekst: Record<EInntekter, string> = {
+export const InntekterTilTekst: Record<Inntekter, string> = {
     arbeidstaker: 'Ja, jeg har inntekt som arbeidstaker',
     selvstendigNæringsdrivende: 'Ja, jeg har inntekt som selvstendig næringsdrivende',
     annenStønadNav: 'Ja, jeg får annen stønad fra Nav',

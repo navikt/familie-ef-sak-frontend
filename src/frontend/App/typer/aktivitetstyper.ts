@@ -4,6 +4,7 @@ import { IDokumentasjon } from './felles';
 import { ESagtOppEllerRedusert } from '../../Komponenter/Behandling/Inngangsvilkår/Samliv/typer';
 import {
     EDinSituasjon,
+    Inntekter,
     EStilling,
     EStudieandel,
     EUtdanningsform,
@@ -97,11 +98,4 @@ export interface ISærligeTilsynsbehov {
     erBarnetFødt: boolean;
     fødselTermindato?: string;
     særligeTilsynsbehov?: string;
-}
-
-export interface Inntekter {
-    arbeidstaker?: string;
-    selvstendigNæringsdrivende?: string;
-    annenStønadNav?: string;
-    nei?: string;
 }

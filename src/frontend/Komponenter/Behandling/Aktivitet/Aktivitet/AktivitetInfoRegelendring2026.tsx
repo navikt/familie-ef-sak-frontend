@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
-import { IAktivitet, Inntekter } from '../../../../App/typer/aktivitetstyper';
+import { IAktivitet } from '../../../../App/typer/aktivitetstyper';
 import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
-import { DinSituasjonTilTekst, InntekterTilTekst, EInntekter } from './typer';
+import { DinSituasjonTilTekst, InntekterTilTekst, Inntekter } from './typer';
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
 import { InformasjonContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
 import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
@@ -17,7 +17,7 @@ interface Props {
 }
 
 const hentInntektVerdier = (inntekter: Inntekter[]): string[] =>
-    inntekter.map((nøkkel) => InntekterTilTekst[nøkkel as unknown as EInntekter] ?? nøkkel);
+    inntekter.map((nøkkel) => InntekterTilTekst[nøkkel] ?? nøkkel);
 
 const AktivitetInfoRegelendring2026: FC<Props> = ({ aktivitet, stønadstype }) => {
     const { gjelderDeg, særligeTilsynsbehov, selvstendig } = aktivitet;
