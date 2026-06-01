@@ -30,6 +30,7 @@ const [BehandlingProvider, useBehandling] = constate(() => {
     const behandlingId = useParams<{ behandlingId: string }>().behandlingId as string;
 
     const [behandlingErRedigerbar, settBehandlingErRedigerbar] = useState<boolean>(true);
+    const [erRegelendring2026, settErRegelendring2026] = useState<boolean>(false);
     const { hentPersonopplysninger, personopplysningerResponse } =
         useHentPersonopplysninger(behandlingId);
     const { hentBehandlingCallback, behandling } = useHentBehandling(behandlingId);
@@ -86,6 +87,7 @@ const [BehandlingProvider, useBehandling] = constate(() => {
                 hentEndringerForPersonopplysninger(behandling.data.id);
             }
             settVisSettPåVent(behandling.data.status === BehandlingStatus.SATT_PÅ_VENT);
+            settErRegelendring2026(behandling.data.erRegelendring2026);
         }
     }, [behandling]);
 
@@ -124,6 +126,8 @@ const [BehandlingProvider, useBehandling] = constate(() => {
         behandlingErRedigerbar,
         behandlingHistorikk,
         endringerPersonopplysninger,
+        erRegelendring2026,
+        settErRegelendring2026,
         hentAnsvarligSaksbehandler,
         hentBehandling,
         hentBehandlingshistorikk,
