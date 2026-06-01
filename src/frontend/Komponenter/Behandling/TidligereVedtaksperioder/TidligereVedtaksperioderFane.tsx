@@ -11,12 +11,15 @@ import VilkårIkkeOpprettetAlert from '../Vurdering/VilkårIkkeOpprettet';
 import { Behandling } from '../../../App/typer/fagsak';
 import { Box } from '@navikt/ds-react';
 import { BehandleSom2026Regelendring } from '../Vurdering/BehandleSom2026Regelendring.tsx';
+import { useToggles } from '../../../App/context/TogglesContext';
+import { ToggleName } from '../../../App/context/toggles';
 
 interface Props {
     behandling: Behandling;
 }
 
 export const TidligereVedtaksperioderFane: React.FC<Props> = ({ behandling }) => {
+    const { toggles } = useToggles();
     const { vilkårState } = useBehandling();
     const {
         hentVilkår,
@@ -75,9 +78,11 @@ export const TidligereVedtaksperioderFane: React.FC<Props> = ({ behandling }) =>
                                 ),
                             }}
                         </ToKolonnerLayout>
-                        <Box paddingInline={'space-32'}>
-                            <BehandleSom2026Regelendring></BehandleSom2026Regelendring>
-                        </Box>
+                        {toggles[ToggleName.regelendringer2026] && (
+                            <Box paddingInline={'space-32'}>
+                                <BehandleSom2026Regelendring></BehandleSom2026Regelendring>
+                            </Box>
+                        )}
                     </>
                 );
             }}
