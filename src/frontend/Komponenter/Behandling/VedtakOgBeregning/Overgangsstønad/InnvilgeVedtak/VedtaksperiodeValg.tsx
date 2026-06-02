@@ -78,6 +78,21 @@ const VedtaksperiodeValg: React.FC<Props> = ({
         visModal: false,
     });
 
+    const utledAktivitetFraPeriodetype = (periodeType: EPeriodetype) => {
+        switch (periodeType) {
+            case EPeriodetype.PERIODE_FØR_FØDSEL:
+            case EPeriodetype.MIDLERTIDIG_OPPHØR:
+            case EPeriodetype.BARN_UNDER_14_MÅNEDER:
+                return EAktivitet.IKKE_AKTIVITETSPLIKT;
+            case EPeriodetype.SÆRLIG_TILSYNSKREVENDE_BARN:
+                return EAktivitet.BARNET_SÆRLIG_TILSYNSKREVENDE;
+            case EPeriodetype.FORBIGÅENDE_SYKDOM_HOS_BARNET:
+                return EAktivitet.FORLENGELSE_MIDLERTIDIG_SYKDOM;
+            default:
+                return undefined;
+        }
+    };
+
     const oppdaterVedtakslisteElement = (
         index: number,
         property: EVedtaksperiodeProperty,
@@ -88,11 +103,9 @@ const VedtaksperiodeValg: React.FC<Props> = ({
                 ...vedtaksperiodeListe.value[index],
                 [property]: value,
                 ...(property === EVedtaksperiodeProperty.periodeType && {
-                    [EVedtaksperiodeProperty.aktivitet]:
-                        value === EPeriodetype.PERIODE_FØR_FØDSEL ||
-                        value === EPeriodetype.MIDLERTIDIG_OPPHØR
-                            ? EAktivitet.IKKE_AKTIVITETSPLIKT
-                            : undefined,
+                    [EVedtaksperiodeProperty.aktivitet]: utledAktivitetFraPeriodetype(
+                        value as EPeriodetype
+                    ),
                 }),
             },
             index

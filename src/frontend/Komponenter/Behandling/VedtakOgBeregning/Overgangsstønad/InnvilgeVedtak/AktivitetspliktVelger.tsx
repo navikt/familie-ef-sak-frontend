@@ -147,6 +147,24 @@ const AktivitetspliktVelger: React.FC<Props> = (props: Props) => {
                     <BodyShort>Ikke aktivitetsplikt</BodyShort>
                 </AktivitetKolonne>
             );
+        case EPeriodetype.BARN_UNDER_14_MÅNEDER:
+            return (
+                <AktivitetKolonne $medPadding={!erLesevisning}>
+                    <BodyShort>Ikke aktivitetsplikt</BodyShort>
+                </AktivitetKolonne>
+            );
+        case EPeriodetype.SÆRLIG_TILSYNSKREVENDE_BARN:
+            return (
+                <AktivitetKolonne $medPadding={!erLesevisning}>
+                    <BodyShort>Barnet er særlig tilsynskrevende</BodyShort>
+                </AktivitetKolonne>
+            );
+        case EPeriodetype.FORBIGÅENDE_SYKDOM_HOS_BARNET:
+            return (
+                <AktivitetKolonne $medPadding={!erLesevisning}>
+                    <BodyShort>Barnet har en forbigående sykdom</BodyShort>
+                </AktivitetKolonne>
+            );
         default:
             return (
                 <AktivitetKolonne $medPadding={!erLesevisning}>
