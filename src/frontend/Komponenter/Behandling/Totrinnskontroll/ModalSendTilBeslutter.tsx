@@ -16,6 +16,8 @@ import { harBarnMellomSeksOgTolvMåneder, utledAutomatiskBrev } from './utils';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { Oppfølgingsoppgave } from '../../../App/hooks/useHentOppfølgingsoppgave';
 import { Oppgaveprioritet } from './Oppgaveprioritet';
+import { useToggles } from '../../../App/context/TogglesContext';
+import { ToggleName } from '../../../App/context/toggles';
 
 export const ModalSendTilBeslutter: FC<{
     behandling: Behandling;
@@ -53,6 +55,9 @@ export const ModalSendTilBeslutter: FC<{
     avslagValg,
     oppfølgingsoppgave,
 }) => {
+    const { toggles } = useToggles();
+    const erOvergangsregel = toggles[ToggleName.overgangsregel] || false;
+
     const [
         årForInntektskontrollSelvstendigNæringsdrivende,
         settÅrForInntektskontrollSelvstendigNæringsdrivende,
@@ -74,7 +79,8 @@ export const ModalSendTilBeslutter: FC<{
         utledAutomatiskBrev(
             oppfølgingsoppgave?.automatiskBrev,
             erInnvilgelseOvergangsstønad,
-            vilkår
+            vilkår,
+            erOvergangsregel
         )
     );
 
@@ -125,10 +131,17 @@ export const ModalSendTilBeslutter: FC<{
             utledAutomatiskBrev(
                 oppfølgingsoppgave?.automatiskBrev,
                 erInnvilgelseOvergangsstønad,
-                vilkår
+                vilkår,
+                erOvergangsregel
             )
         );
-    }, [behandling, erInnvilgelseOvergangsstønad, oppfølgingsoppgave?.automatiskBrev, vilkår]);
+    }, [
+        behandling,
+        erInnvilgelseOvergangsstønad,
+        erOvergangsregel,
+        oppfølgingsoppgave?.automatiskBrev,
+        vilkår,
+    ]);
 
     return (
         <DataViewer response={{ oppgaverForAutomatiskFerdigstilling }}>
@@ -190,6 +203,7 @@ export const ModalSendTilBeslutter: FC<{
                                                 <AutomatiskBrev
                                                     automatiskBrev={automatiskBrev}
                                                     settAutomatiskBrev={settAutomatiskBrev}
+                                                    erOvergangsregel={erOvergangsregel}
                                                 />
                                                 <VannrettDivider />
                                             </>
