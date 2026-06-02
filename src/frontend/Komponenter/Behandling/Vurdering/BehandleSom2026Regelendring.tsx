@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useBehandling } from '../../../App/context/BehandlingContext.tsx';
 import { useApp } from '../../../App/context/AppContext.tsx';
-import { VStack, InlineMessage, Radio, RadioGroup } from '@navikt/ds-react';
+import { VStack, InlineMessage, Radio, RadioGroup, BodyShort } from '@navikt/ds-react';
 import { RessursStatus } from '../../../App/typer/ressurs.ts';
 import { useParams } from 'react-router-dom';
 
@@ -29,7 +29,7 @@ export const BehandleSom2026Regelendring: React.FC = () => {
                     Mottatt søknad etter gammelt regelverk
                 </InlineMessage>
             )}
-            <p>Ønsker du å behandle denne saken etter nytt regelverk? (2026)</p>
+            <BodyShort>Ønsker du å behandle denne saken etter nytt regelverk? (2026)</BodyShort>
             <RadioGroup
                 legend="Behandle etter nytt regelverk (2026)"
                 hideLegend
