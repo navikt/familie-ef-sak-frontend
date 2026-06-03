@@ -101,7 +101,14 @@ export interface DokumentNavn {
     overgangsstonad?: boolean;
     barnetilsyn?: boolean;
     skolepenger?: boolean;
+    regelverkVersjon?: RegelverkVersjon;
     frittstaendeBrev?: { tittelDokumentoversikt: string; valgtSomFrittstaendeBrev?: boolean };
+}
+
+export enum RegelverkVersjon {
+    NYTT_REGELVERK = 'nytt_regelverk',
+    GAMMELT_REGELVERK = 'gammelt_regelverk',
+    BEGGE_REGELVERK = 'begge_regelverk',
 }
 
 export type FrittståendeSanitybrevDto = {

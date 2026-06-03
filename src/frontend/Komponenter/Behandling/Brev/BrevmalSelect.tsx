@@ -1,10 +1,11 @@
 import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
-import { DokumentNavn } from './BrevTyper';
+import { DokumentNavn, RegelverkVersjon } from './BrevTyper';
 import React, { Dispatch, SetStateAction } from 'react';
 import DataViewer from '../../../Felles/DataViewer/DataViewer';
 import { Select } from '@navikt/ds-react';
 import { visBrevmal } from './BrevUtils';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
+import { useBehandling } from '../../../App/context/BehandlingContext.tsx';
 
 type BrevmalSelectProps = {
     dokumentnavn: Ressurs<DokumentNavn[]>;
@@ -20,8 +21,20 @@ export const BrevmalSelect: React.FC<BrevmalSelectProps> = ({
     stønanadstype,
     frittstående,
 }) => {
+    const { erRegelendring2026 } = useBehandling();
     const filtrerBrevmaler = (dokumentnanvn: DokumentNavn[]) => {
-        return dokumentnanvn?.filter((mal) => visBrevmal(mal, stønanadstype, frittstående));
+        const stønadsFiltrert = dokumentnanvn?.filter((mal) =>
+            visBrevmal(mal, stønanadstype, frittstående)
+        );
+        if (frittstående || erRegelendring2026 == null) return stønadsFiltrert;
+        return stønadsFiltrert.filter((mal) => {
+            if (mal.regelverkVersjon == null) return true;
+            return erRegelendring2026
+                ? mal.regelverkVersjon === RegelverkVersjon.NYTT_REGELVERK ||
+                      mal.regelverkVersjon === RegelverkVersjon.BEGGE_REGELVERK
+                : mal.regelverkVersjon === RegelverkVersjon.GAMMELT_REGELVERK ||
+                      mal.regelverkVersjon === RegelverkVersjon.BEGGE_REGELVERK;
+        });
     };
 
     const sorterPåPrioriteringsnummerDeretterAlfabetisk = (dokumentnanvn: DokumentNavn[]) => {
