@@ -5,9 +5,8 @@ export const useSetValgtFagsakPersonId = (fagsakPersonId: string | undefined) =>
     const { settValgtFagsakPersonId } = useApp();
 
     useEffect(() => {
-        if (fagsakPersonId) {
-            settValgtFagsakPersonId(fagsakPersonId);
-        }
+        settValgtFagsakPersonId(fagsakPersonId);
+        return () => settValgtFagsakPersonId(undefined);
     }, [settValgtFagsakPersonId, fagsakPersonId]);
 
     return {};
