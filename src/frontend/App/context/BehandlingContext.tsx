@@ -87,7 +87,7 @@ const [BehandlingProvider, useBehandling] = constate(() => {
                 hentEndringerForPersonopplysninger(behandling.data.id);
             }
             settVisSettPåVent(behandling.data.status === BehandlingStatus.SATT_PÅ_VENT);
-            settErRegelendring2026(behandling.data.erRegelendring2026);
+            settErRegelendring2026(behandling.data.erRegelendring2026 ?? false);
         }
     }, [behandling]);
 

@@ -39,7 +39,8 @@ export const harBarnMellomSeksOgTolvMåneder = (vilkår: IVilkår) => {
 export const utledAutomatiskBrev = (
     lagretAutomatiskBrev: AutomatiskBrevValg[] | undefined,
     erInnvilgelseOvergangsstønad: boolean,
-    vilkår?: IVilkår
+    vilkår?: IVilkår,
+    erOvergangsregel?: boolean
 ) => {
     if (!erInnvilgelseOvergangsstønad) {
         return [];
@@ -55,7 +56,7 @@ export const utledAutomatiskBrev = (
         });
     }
 
-    if (harBarnMellomSeksOgTolvMnder) {
+    if (harBarnMellomSeksOgTolvMnder && !erOvergangsregel) {
         automatiskBrev.add(AutomatiskBrevValg.VARSEL_OM_AKTIVITETSPLIKT);
     } else {
         automatiskBrev.delete(AutomatiskBrevValg.VARSEL_OM_AKTIVITETSPLIKT);
