@@ -26,6 +26,10 @@ interface Props {
 }
 
 const AktivitetKolonne = styled.div<{ $medPadding?: boolean }>`
+    min-width: 0;
+    white-space: normal;
+    overflow-wrap: break-word;
+
     .navds-body-short {
         padding: ${(props) => (props.$medPadding ? '0.5rem 0 1rem 0' : '0rem')};
     }
