@@ -24,11 +24,6 @@ export const BehandleSom2026Regelendring: React.FC = () => {
 
     return (
         <VStack>
-            {erRegelendring2026 && (
-                <InlineMessage status={'info'}>
-                    Mottatt søknad etter gammelt regelverk
-                </InlineMessage>
-            )}
             <BodyShort>
                 Ønsker du å behandle denne saken etter nytt eller gammelt regelverk?
             </BodyShort>
