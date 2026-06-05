@@ -127,6 +127,7 @@ const [BehandlingProvider, useBehandling] = constate(() => {
         behandlingHistorikk,
         endringerPersonopplysninger,
         erRegelendring2026,
+        settErRegelendring2026,
         hentAnsvarligSaksbehandler,
         hentBehandling,
         hentBehandlingshistorikk,

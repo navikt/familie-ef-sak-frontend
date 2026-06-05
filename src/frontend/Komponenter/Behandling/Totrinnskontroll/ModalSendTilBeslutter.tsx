@@ -56,7 +56,7 @@ export const ModalSendTilBeslutter: FC<{
     oppfølgingsoppgave,
 }) => {
     const { toggles } = useToggles();
-    const erOvergangsregel = toggles[ToggleName.overgangsregel] || false;
+    const erOvergangsregel = toggles[ToggleName.regelendringer2026] || false;
 
     const [
         årForInntektskontrollSelvstendigNæringsdrivende,
