@@ -33,6 +33,7 @@ const valgbarePeriodetyper2026Regelendring = [
     EPeriodetype.BARN_UNDER_14_MÅNEDER,
     EPeriodetype.SÆRLIG_TILSYNSKREVENDE_BARN,
     EPeriodetype.FORBIGÅENDE_SYKDOM_HOS_BARNET,
+    EPeriodetype.MIDLERTIDIG_OPPHØR,
 ];
 
 const VedtakperiodeSelect: FC<VedtakperiodeSelectProps> = ({
