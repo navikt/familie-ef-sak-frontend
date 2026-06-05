@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom';
 
 export const BehandleSom2026Regelendring: React.FC = () => {
     const { behandlingId } = useParams<{ behandlingId: string }>();
-    const { erRegelendring2026, settErRegelendring2026 } = useBehandling();
+    const { erRegelendring2026, settErRegelendring2026, behandlingErRedigerbar } = useBehandling();
     const { axiosRequest } = useApp();
 
     const oppdaterRegelendring = (nyVerdi: boolean) => {
@@ -29,15 +29,18 @@ export const BehandleSom2026Regelendring: React.FC = () => {
                     Mottatt søknad etter gammelt regelverk
                 </InlineMessage>
             )}
-            <BodyShort>Ønsker du å behandle denne saken etter nytt regelverk? (2026)</BodyShort>
+            <BodyShort>
+                Ønsker du å behandle denne saken etter nytt eller gammelt regelverk?
+            </BodyShort>
             <RadioGroup
                 legend="Behandle etter nytt regelverk (2026)"
                 hideLegend
                 value={erRegelendring2026}
                 onChange={oppdaterRegelendring}
+                readOnly={!behandlingErRedigerbar}
             >
-                <Radio value={true}>Ja</Radio>
-                <Radio value={false}>Nei</Radio>
+                <Radio value={true}>Nytt regelverk (fra 01.07.2026)</Radio>
+                <Radio value={false}>Gammelt regelverk</Radio>
             </RadioGroup>
         </VStack>
     );
