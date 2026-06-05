@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useBehandling } from '../../../App/context/BehandlingContext.tsx';
 import { useApp } from '../../../App/context/AppContext.tsx';
-import { VStack, InlineMessage, Radio, RadioGroup, BodyShort } from '@navikt/ds-react';
+import { VStack, Radio, RadioGroup, BodyShort } from '@navikt/ds-react';
 import { RessursStatus } from '../../../App/typer/ressurs.ts';
 import { useParams } from 'react-router-dom';
 
