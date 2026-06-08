@@ -11,8 +11,8 @@ jobs:
     name: Build and push Docker container
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # ratchet:actions/checkout@v4
-      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # ratchet:actions/setup-node@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # ratchet:actions/checkout@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # ratchet:actions/setup-node@v4
         with:
           node-version: '20'
           cache: npm
@@ -30,7 +30,7 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READER_TOKEN }}
       - name: Push docker image to GAR and sign image
-        uses: nais/docker-build-push@ae613eff6f44f0323476eda1c3994a7c518761c3 # ratchet:nais/docker-build-push@v0
+        uses: nais/docker-build-push@05dbb6091b30bd84279c6d64a45ef8782fd410a5 # ratchet:nais/docker-build-push@v0
         id: docker-build-push
         with:
           team: teamfamilie
@@ -41,8 +41,8 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # ratchet:actions/checkout@v4
-      - uses: nais/deploy/actions/deploy@823ec9b7e305ce7cf911d0f9a25f7da9d7486cf2 # ratchet:nais/deploy/actions/deploy@v2
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # ratchet:actions/checkout@v4
+      - uses: nais/deploy/actions/deploy@ab841e4d99cbb00edd996d3ae39bd4cea6b8e2c2 # ratchet:nais/deploy/actions/deploy@v2
         env:
           CLUSTER: dev-gcp
           RESOURCE: .nais/app-dev.yaml
