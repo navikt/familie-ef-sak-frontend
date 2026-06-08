@@ -36,6 +36,7 @@ const skolepengerMaksBeløpForHøgskoleUniversitet: Record<number, number> = {
     2023: 74366,
     2024: 77192,
     2025: 79432,
+    2026: 81102,
 };
 
 const skolepengerMaksBeløpForVideregående: Record<number, number> = {
@@ -46,6 +47,7 @@ const skolepengerMaksBeløpForVideregående: Record<number, number> = {
     2023: 31033,
     2024: 32211,
     2025: 33145,
+    2026: 33841,
 };
 
 /**
