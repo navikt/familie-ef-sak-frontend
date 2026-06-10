@@ -7,7 +7,7 @@ import { RessursStatus } from '../../../App/typer/ressurs.ts';
 import { useParams } from 'react-router-dom';
 import { BekreftRegelendringModal } from './BekreftRegelendringModal.tsx';
 
-export const BehandleSom2026Regelendring: React.FC = () => {
+export const BehandleSom2026Regelendring: FC = () => {
     const { behandlingId } = useParams<{ behandlingId: string }>();
     const { erRegelendring2026, settErRegelendring2026, behandlingErRedigerbar, hentBehandling } =
         useBehandling();

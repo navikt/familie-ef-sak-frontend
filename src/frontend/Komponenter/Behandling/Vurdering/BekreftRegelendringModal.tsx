@@ -8,12 +8,7 @@ interface Props {
     onAvbryt: () => void;
 }
 
-export const BekreftRegelendringModal: React.FC<Props> = ({
-    open,
-    nyVerdi,
-    onBekreft,
-    onAvbryt,
-}) => {
+export const BekreftRegelendringModal: FC<Props> = ({ open, nyVerdi, onBekreft, onAvbryt }) => {
     const regelverkLabel = nyVerdi ? 'nytt regelverk (fra 01.07.2026)' : 'gammelt regelverk';
 
     return (
