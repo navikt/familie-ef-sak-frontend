@@ -1,4 +1,4 @@
-import * as React from 'react';
+import type { FC } from 'react';
 import { BodyLong, Button, Modal } from '@navikt/ds-react';
 
 interface Props {
