@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { useState } from 'react';
 import { useBehandling } from '../../../App/context/BehandlingContext.tsx';
 import { useApp } from '../../../App/context/AppContext.tsx';
