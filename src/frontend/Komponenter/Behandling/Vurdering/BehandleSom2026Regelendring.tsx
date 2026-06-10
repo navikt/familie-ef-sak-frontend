@@ -9,8 +9,13 @@ import { BekreftRegelendringModal } from './BekreftRegelendringModal.tsx';
 
 export const BehandleSom2026Regelendring: FC = () => {
     const { behandlingId } = useParams<{ behandlingId: string }>();
-    const { erRegelendring2026, settErRegelendring2026, behandlingErRedigerbar, hentBehandling } =
-        useBehandling();
+    const {
+        erRegelendring2026,
+        settErRegelendring2026,
+        behandlingErRedigerbar,
+        hentVedtak,
+        hentBehandling,
+    } = useBehandling();
     const { axiosRequest } = useApp();
 
     const [visBekreftelsesmodal, settVisBekreftelsesmodal] = useState(false);
@@ -31,6 +36,7 @@ export const BehandleSom2026Regelendring: FC = () => {
             if (res.status === RessursStatus.SUKSESS) {
                 settErRegelendring2026(pendingVerdi);
                 hentBehandling.rerun();
+                hentVedtak.rerun();
             }
         });
         settVisBekreftelsesmodal(false);
