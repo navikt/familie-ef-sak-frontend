@@ -8,6 +8,7 @@ import { AxiosRequestCallback } from '../../../App/typer/axiosRequest';
 import { harTilgangTilRolle } from '../../../App/utils/roller';
 import { useToggles } from '../../../App/context/TogglesContext';
 import { ToggleName } from '../../../App/context/toggles';
+import { EToast } from '../../../App/typer/toast';
 import { Sticky } from '../../Visningskomponenter/Sticky';
 import { lagArbeidsverktøyLenker, lagEksterneLenker, lagInterneLenker } from '../utils';
 import { Header, PopoverItem } from './header/Header';
@@ -19,7 +20,9 @@ export interface Props {
     innloggetSaksbehandler: ISaksbehandler;
 }
 export const HeaderMedSøk: React.FunctionComponent<Props> = ({ innloggetSaksbehandler }) => {
-    const { axiosRequest, appEnv, valgtFagsakId, valgtFagsakPersonId, personIdent } = useApp();
+    const { axiosRequest, appEnv, valgtFagsakId, valgtFagsakPersonId, personIdent, settToast } =
+        useApp();
+
     const { toggles } = useToggles();
     const erSaksbehandler = harTilgangTilRolle(appEnv, innloggetSaksbehandler, 'saksbehandler');
     const kanOppretteBehandlingForFerdigstiltJournalpost =
@@ -36,7 +39,8 @@ export const HeaderMedSøk: React.FunctionComponent<Props> = ({ innloggetSaksbeh
                 valgtFagsakId,
                 valgtFagsakPersonId,
                 personIdent,
-                skalViseBeregningsskjemaLenke
+                skalViseBeregningsskjemaLenke,
+                settToast
             ),
         [
             axiosRequest,
@@ -47,6 +51,7 @@ export const HeaderMedSøk: React.FunctionComponent<Props> = ({ innloggetSaksbeh
             valgtFagsakPersonId,
             personIdent,
             skalViseBeregningsskjemaLenke,
+            settToast,
         ]
     );
 
@@ -96,7 +101,8 @@ const lagHeaderLenker = (
     fagsakId: string | undefined,
     fagsakPersonId: string | undefined,
     personIdent: string | undefined,
-    skalViseBeregningsskjemaLenke: boolean
+    skalViseBeregningsskjemaLenke: boolean,
+    settToast: (toast: EToast) => void
 ): PopoverItem[] => {
     const interneLenker = erSaksbehandler
         ? lagInterneLenker(kanOppretteBehandlingForFerdigstiltJournalpost)
@@ -107,7 +113,8 @@ const lagHeaderLenker = (
         appEnv,
         fagsakId,
         fagsakPersonId,
-        personIdent
+        personIdent,
+        settToast
     );
 
     const arbeidsverktøyLenker = lagArbeidsverktøyLenker(

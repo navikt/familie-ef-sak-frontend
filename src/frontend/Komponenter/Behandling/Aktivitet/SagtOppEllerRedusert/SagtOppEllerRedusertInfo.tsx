@@ -15,6 +15,7 @@ import { InformasjonContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
 import { lagArbeidsforholdLink } from '../../../../Felles/Lenker/Lenker';
 import { useApp } from '../../../../App/context/AppContext';
 import { Link } from '@navikt/ds-react';
+import { EToast } from '../../../../App/typer/toast';
 
 interface Props {
     sagtOppEllerRedusert: ISagtOppEllerRedusertStilling;
@@ -68,7 +69,7 @@ const HarSagtOppEllerRedusertStilling: React.FC<ISagtOppEllerRedusertStilling> =
     const harSagtOpp = sagtOppEllerRedusertStilling === ESagtOppEllerRedusert.sagtOpp;
     const harRedusertStilling =
         sagtOppEllerRedusertStilling === ESagtOppEllerRedusert.redusertStilling;
-    const { axiosRequest, appEnv, valgtFagsakId } = useApp();
+    const { axiosRequest, valgtFagsakId, settToast } = useApp();
     return (
         <>
             <Informasjonsrad
@@ -118,9 +119,15 @@ const HarSagtOppEllerRedusertStilling: React.FC<ISagtOppEllerRedusertStilling> =
                             href="#"
                             onClick={async (e: React.SyntheticEvent) => {
                                 e.preventDefault();
-                                window.open(
-                                    await lagArbeidsforholdLink(axiosRequest, appEnv, valgtFagsakId)
+                                const arbeidsforholdLink = await lagArbeidsforholdLink(
+                                    axiosRequest,
+                                    valgtFagsakId
                                 );
+                                if (arbeidsforholdLink) {
+                                    window.open(arbeidsforholdLink);
+                                } else {
+                                    settToast(EToast.AINNTEKT_FEILET);
+                                }
                             }}
                         >
                             Se arbeidsforhold i arbeidsregisteret

@@ -1,14 +1,12 @@
 import { AxiosError } from 'axios';
-import { AppEnv } from '../../App/api/env';
 import { Ressurs, RessursStatus } from '../../App/typer/ressurs';
 import { AxiosRequestCallback } from '../../App/typer/axiosRequest';
 
 export const lagAInntektLink = async (
     axiosRequest: AxiosRequestCallback,
-    appEnv: AppEnv,
     fagsakId: string | undefined,
     fagsakPersonId: string | undefined
-): Promise<string> => {
+): Promise<string | null> => {
     const url = fagsakPersonId
         ? `/familie-ef-sak/api/inntekt/fagsak-person/${fagsakPersonId}/generer-url`
         : `/familie-ef-sak/api/inntekt/fagsak/${fagsakId}/generer-url`;
@@ -17,29 +15,36 @@ export const lagAInntektLink = async (
         url: url,
     })
         .then((response: Ressurs<string>) => {
-            return response.status === RessursStatus.SUKSESS ? response.data : appEnv.aInntekt;
+            if (response.status === RessursStatus.SUKSESS) {
+                return response.data;
+            }
+            console.error('Klarte ikke generere A-inntekt-lenke', url, response);
+            return null;
         })
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        .catch((_: AxiosError<string>) => {
-            return appEnv.aInntekt;
+        .catch((error: AxiosError<string>) => {
+            console.error('Klarte ikke generere A-inntekt-lenke', url, error);
+            return null;
         });
 };
 
 export const lagArbeidsforholdLink = async (
     axiosRequest: AxiosRequestCallback,
-    appEnv: AppEnv,
     fagsakId: string | undefined
-): Promise<string> => {
+): Promise<string | null> => {
     const url = `/familie-ef-sak/api/inntekt/fagsak/${fagsakId}/generer-url-arbeidsforhold`;
     return await axiosRequest<string, null>({
         method: 'GET',
         url: url,
     })
         .then((response: Ressurs<string>) => {
-            return response.status === RessursStatus.SUKSESS ? response.data : appEnv.aInntekt;
+            if (response.status === RessursStatus.SUKSESS) {
+                return response.data;
+            }
+            console.error('Klarte ikke generere arbeidsforhold lenke', url, response);
+            return null;
         })
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        .catch((_: AxiosError<string>) => {
-            return appEnv.aInntekt;
+        .catch((error: AxiosError<string>) => {
+            console.error('Klarte ikke generere arbeidsforhold lenke', url, error);
+            return null;
         });
 };

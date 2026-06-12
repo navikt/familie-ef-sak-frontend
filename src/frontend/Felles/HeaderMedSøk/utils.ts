@@ -3,6 +3,7 @@ import { AppEnv } from '../../App/api/env';
 import { lagAInntektLink } from '../Lenker/Lenker';
 import { LenkeType, PopoverItem } from './Header/header/Header';
 import { Adressebeskyttelsegradering } from './Header/søkeresultat';
+import { EToast } from '../../App/typer/toast';
 
 export const adressebeskyttelsestyper: Record<Adressebeskyttelsegradering, string> = {
     STRENGT_FORTROLIG: 'strengt fortrolig',
@@ -15,7 +16,8 @@ export const lagAInntektLenke = (
     axiosRequest: AxiosRequestCallback,
     appEnv: AppEnv,
     fagsakId: string | undefined,
-    fagsakPersonId: string | undefined
+    fagsakPersonId: string | undefined,
+    settToast: (toast: EToast) => void
 ): PopoverItem => {
     if (!fagsakPersonId && !fagsakId) {
         return {
@@ -30,7 +32,12 @@ export const lagAInntektLenke = (
         name: 'A-inntekt',
         type: LenkeType.EKSTERN,
         onSelect: async () => {
-            window.open(await lagAInntektLink(axiosRequest, appEnv, fagsakId, fagsakPersonId));
+            const aInntektLink = await lagAInntektLink(axiosRequest, fagsakId, fagsakPersonId);
+            if (aInntektLink) {
+                window.open(aInntektLink);
+            } else {
+                settToast(EToast.AINNTEKT_FEILET);
+            }
         },
     };
 };
@@ -148,9 +155,10 @@ export const lagEksterneLenker = (
     appEnv: AppEnv,
     fagsakId: string | undefined,
     fagsakPersonId: string | undefined,
-    personIdent: string | undefined
+    personIdent: string | undefined,
+    settToast: (toast: EToast) => void
 ) => [
-    lagAInntektLenke(axiosRequest, appEnv, fagsakId, fagsakPersonId),
+    lagAInntektLenke(axiosRequest, appEnv, fagsakId, fagsakPersonId, settToast),
     lagGosysLenke(appEnv, personIdent),
     lagModiaLenke(appEnv, personIdent),
     lagHistoriskPensjonLenke(appEnv),
