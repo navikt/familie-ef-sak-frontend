@@ -2,6 +2,7 @@ import NæreBoforholdHjelpetekst from '../Inngangsvilkår/Aleneomsorg/NæreBofor
 import React from 'react';
 import { RimeligGrunnHjelpetekst } from '../Aktivitet/SagtOppEllerRedusert/RimeligGrunnHjelpetekst';
 import { HelpTextProps } from '@navikt/ds-react';
+import { AktivitetVurderingHjelpetekst } from '../Aktivitet/Aktivitet/AktivitetVurderingHjelpetekst';
 
 export const hjelpeTekstConfig: Record<
     string,
@@ -13,6 +14,10 @@ export const hjelpeTekstConfig: Record<
     },
     SAGT_OPP_ELLER_REDUSERT: {
         komponent: RimeligGrunnHjelpetekst,
+        plassering: 'top-end',
+    },
+    FYLLER_BRUKER_AKTIVITETSPLIKT: {
+        komponent: AktivitetVurderingHjelpetekst,
         plassering: 'top-end',
     },
 };
