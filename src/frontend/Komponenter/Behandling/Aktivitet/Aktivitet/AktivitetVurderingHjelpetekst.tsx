@@ -28,16 +28,19 @@ const HJELPETEKSTER_AKTIVITET: {
 
 export const AktivitetVurderingHjelpetekst = () => {
     return (
-        <VStack gap="space-24">
+        <VStack gap="space-32">
             {HJELPETEKSTER_AKTIVITET.map((seksjon) => (
-                <div key={seksjon.id}>
+                <VStack key={seksjon.id} gap="space-8">
                     <BodyShort weight="semibold">{seksjon.ingress}</BodyShort>
-                    <List as="ul">
-                        {seksjon.punkter.map((punkt, indeks) => (
-                            <List.Item key={`${seksjon.id}-${indeks}`}>{punkt}</List.Item>
-                        ))}
-                    </List>
-                </div>
+
+                    <div>
+                        <List as="ul">
+                            {seksjon.punkter.map((punkt, indeks) => (
+                                <List.Item key={`${seksjon.id}-${indeks}`}>{punkt}</List.Item>
+                            ))}
+                        </List>
+                    </div>
+                </VStack>
             ))}
         </VStack>
     );
