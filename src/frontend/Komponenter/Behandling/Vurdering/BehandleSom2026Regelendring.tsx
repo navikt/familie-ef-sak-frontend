@@ -52,7 +52,7 @@ export const BehandleSom2026Regelendring: FC = () => {
     return (
         <VStack>
             <BodyShort>
-                Ønsker du å behandle denne saken etter nytt eller gammelt regelverk?
+                Ønsker du å behandle denne saken etter nytt eller tidligere regelverk?
             </BodyShort>
             <RadioGroup
                 legend="Behandle etter nytt regelverk (2026)"
@@ -62,7 +62,7 @@ export const BehandleSom2026Regelendring: FC = () => {
                 readOnly={!behandlingErRedigerbar}
             >
                 <Radio value={true}> {regelverkLabel.NYTT_REGELVERK.tekst}</Radio>
-                <Radio value={false}>{regelverkLabel.GAMMELT_REGELVERK.tekst}</Radio>
+                <Radio value={false}>{regelverkLabel.TIDLIGERE_REGELVERK.tekst}</Radio>
             </RadioGroup>
 
             <BekreftRegelendringModal

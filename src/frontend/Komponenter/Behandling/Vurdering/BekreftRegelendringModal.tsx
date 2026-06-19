@@ -11,7 +11,7 @@ interface Props {
 
 export const BekreftRegelendringModal: FC<Props> = ({ open, nyVerdi, onBekreft, onAvbryt }) => {
     const valgtRegelverkLabel = (
-        nyVerdi ? regelverkLabel.NYTT_REGELVERK.tekst : regelverkLabel.GAMMELT_REGELVERK.tekst
+        nyVerdi ? regelverkLabel.NYTT_REGELVERK.tekst : regelverkLabel.TIDLIGERE_REGELVERK.tekst
     ).toLowerCase();
 
     return (

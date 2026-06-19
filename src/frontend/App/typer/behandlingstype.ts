@@ -19,15 +19,15 @@ export const behandlingstypeTilTekstKort: Record<Behandlingstype, string> = {
     KLAGE: 'K',
 };
 
-export type RegelverkType = 'NYTT_REGELVERK' | 'GAMMELT_REGELVERK';
+export type RegelverkType = 'NYTT_REGELVERK' | 'TIDLIGERE_REGELVERK';
 
 export const regelverkLabel = {
     NYTT_REGELVERK: {
-        tekst: 'Nytt regelverk (fra 01.07.2026)',
+        tekst: 'Nytt regelverk fra 01.07.2026',
         kortTekst: 'Regelverk 2026',
     },
-    GAMMELT_REGELVERK: {
-        tekst: 'Gammelt regelverk',
-        kortTekst: 'Gamle regler',
+    TIDLIGERE_REGELVERK: {
+        tekst: 'Tidligere regelverk før 01.07.2026',
+        kortTekst: 'Tidligere regelverk',
     },
 } satisfies Record<RegelverkType, { tekst: string; kortTekst: string }>;

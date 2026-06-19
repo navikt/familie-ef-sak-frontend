@@ -58,7 +58,7 @@ const BehandlingTags: React.FC<Props> = ({ behandling }) => {
 
     const regelverkNøkkel: RegelverkType = erRegelendring2026
         ? 'NYTT_REGELVERK'
-        : 'GAMMELT_REGELVERK';
+        : 'TIDLIGERE_REGELVERK';
 
     const valgtRegelverkLabel = regelverkLabel[regelverkNøkkel];
 
