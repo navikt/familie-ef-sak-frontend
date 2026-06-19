@@ -6,6 +6,7 @@ import { BodyShort, Radio, RadioGroup, VStack } from '@navikt/ds-react';
 import { RessursStatus } from '../../../App/typer/ressurs.ts';
 import { useParams } from 'react-router-dom';
 import { BekreftRegelendringModal } from './BekreftRegelendringModal.tsx';
+import { regelverkLabel } from '../../../App/typer/behandlingstype.ts';
 
 export const BehandleSom2026Regelendring: FC = () => {
     const { behandlingId } = useParams<{ behandlingId: string }>();
@@ -51,7 +52,7 @@ export const BehandleSom2026Regelendring: FC = () => {
     return (
         <VStack>
             <BodyShort>
-                Ønsker du å behandle denne saken etter nytt eller gammelt regelverk?
+                Ønsker du å behandle denne saken etter nytt eller tidligere regelverk?
             </BodyShort>
             <RadioGroup
                 legend="Behandle etter nytt regelverk (2026)"
@@ -60,8 +61,8 @@ export const BehandleSom2026Regelendring: FC = () => {
                 onChange={håndterRegelendring}
                 readOnly={!behandlingErRedigerbar}
             >
-                <Radio value={true}>Nytt regelverk (fra 01.07.2026)</Radio>
-                <Radio value={false}>Gammelt regelverk</Radio>
+                <Radio value={true}> {regelverkLabel.NYTT_REGELVERK.tekst}</Radio>
+                <Radio value={false}>{regelverkLabel.TIDLIGERE_REGELVERK.tekst}</Radio>
             </RadioGroup>
 
             <BekreftRegelendringModal

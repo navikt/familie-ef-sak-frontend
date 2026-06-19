@@ -26,7 +26,7 @@ export const AutomatiskBrev: FC<{
                 <Checkbox key={valg} value={valg}>
                     {automatiskBrevValgTekst[valg]}
                     {erOvergangsregel &&
-                        ' – Kun saker etter gammelt regelverk skal ha dette brevet.'}
+                        ' – Kun saker etter tidligere regelverk skal ha dette brevet.'}
                 </Checkbox>
             ))}
         </CheckboxGroup>
