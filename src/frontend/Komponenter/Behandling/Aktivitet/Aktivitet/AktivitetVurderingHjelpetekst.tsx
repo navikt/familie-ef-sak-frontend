@@ -15,11 +15,11 @@ const HJELPETEKSTER_AKTIVITET: {
         ],
     },
     {
-        id: 'gamle-regler',
+        id: 'tidligere-regler',
         ingress:
-            'Når du skal behandle saken etter gamle regler(overgangsregler), skal du vurdere om',
+            'Når du skal behandle saken etter tidligere regler(overgangsregler), skal du vurdere om',
         punkter: [
-            'bruker etter 1. juli 2026 har hatt et opphold i stønadsperioden på mer enn 12 måneder',
+            'bruker etter 1. juli 2026 har hatt et avbrudd i stønadsperioden på mer enn 12 måneder',
             'bruker har barn under 1 år, eller om aktivitetsplikten eller unntak fra aktivitetsplikten er oppfylt, dersom bruker søker om stønad i hovedperioden',
             'vilkårene for utvidet eller forlenget stønad er oppfylt, og eventuelt på hvilket grunnlag, dersom bruker søker om stønad utover hovedperioden',
         ],
