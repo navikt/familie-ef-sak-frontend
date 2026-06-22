@@ -3,26 +3,26 @@ import { ISærligeTilsynsbehov } from '../../../../App/typer/aktivitetstyper';
 import { Søknadsgrunnlag } from '../../../../Felles/Ikoner/DataGrunnlagIkoner';
 import { DinSituasjonTilTekst, EDinSituasjon } from './typer';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
-import { BodyLong, HelpText, HStack } from '@navikt/ds-react';
+import { BodyLong, HelpText, HStack, List } from '@navikt/ds-react';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 import { InfoSeksjonWrapper } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
 import { FlexColumnContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
 
 const hjelpetekst = (
-    <ul>
-        <BodyLong>
-            Mulig alternativer i søknadsdialog:
-            <li>Jeg er syk</li>
-            <li>Barnet mitt er sykt</li>
-            <li>Jeg har søkt om barnepass, men ikke fått plass enda</li>
-            <li>
+    <>
+        <BodyLong weight="semibold">Mulig alternativer i søknadsdialog:</BodyLong>
+        <List size="small">
+            <List.Item>Jeg er syk</List.Item>
+            <List.Item>Barnet mitt er sykt</List.Item>
+            <List.Item>Jeg har søkt om barnepass, men ikke fått plass enda</List.Item>
+            <List.Item>
                 Jeg har barn som trenger særlig tilsyn på grunn av fysiske, psykiske eller store
                 sosiale problemer
-            </li>
-            <li>Nei</li>
-        </BodyLong>
-    </ul>
+            </List.Item>
+            <List.Item>Nei</List.Item>
+        </List>
+    </>
 );
 
 interface Props {
