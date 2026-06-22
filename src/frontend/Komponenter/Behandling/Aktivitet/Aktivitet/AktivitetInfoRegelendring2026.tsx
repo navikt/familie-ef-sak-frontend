@@ -5,7 +5,10 @@ import { DinSituasjonTilTekst, InntekterTilTekst, Inntekter } from './typer';
 import { Stønadstype } from '../../../../App/typer/behandlingstema';
 import { InformasjonContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
 import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
-import { InfoSeksjonWrapper } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
+import {
+    InfoSeksjonWrapper,
+    UnderseksjonWrapper,
+} from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 import { FlexColumnContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
@@ -52,27 +55,30 @@ const AktivitetInfoRegelendring2026: FC<Props> = ({ aktivitet, stønadstype }) =
                         </ul>
                     }
                 />
+                {harTilsynsbehov && (
+                    <div style={{ paddingLeft: '2rem' }}>
+                        <UnderseksjonWrapper underoverskrift="Om tilsynsbehovet">
+                            <FlexColumnContainer $gap={1}>
+                                {særligeTilsynsbehov.map((barnetsBehov) => (
+                                    <Informasjonsrad
+                                        key={barnetsBehov.id}
+                                        label={
+                                            barnetsBehov.navn
+                                                ? `${barnetsBehov.navn}`
+                                                : `Barn ${
+                                                      barnetsBehov.erBarnetFødt
+                                                          ? 'født '
+                                                          : 'termindato '
+                                                  }${formaterNullableIsoDato(barnetsBehov.fødselTermindato)}`
+                                        }
+                                        verdi={barnetsBehov.særligeTilsynsbehov}
+                                    />
+                                ))}
+                            </FlexColumnContainer>
+                        </UnderseksjonWrapper>
+                    </div>
+                )}
             </InfoSeksjonWrapper>
-
-            {harTilsynsbehov && (
-                <InfoSeksjonWrapper ikon={<Søknadsgrunnlag />} undertittel="Om tilsynsbehovet">
-                    <FlexColumnContainer $gap={1}>
-                        {særligeTilsynsbehov.map((barnetsBehov) => (
-                            <Informasjonsrad
-                                key={barnetsBehov.id}
-                                label={
-                                    barnetsBehov.navn
-                                        ? `${barnetsBehov.navn}`
-                                        : `Barn ${
-                                              barnetsBehov.erBarnetFødt ? 'født ' : 'termindato '
-                                          }${formaterNullableIsoDato(barnetsBehov.fødselTermindato)}`
-                                }
-                                verdi={barnetsBehov.særligeTilsynsbehov}
-                            />
-                        ))}
-                    </FlexColumnContainer>
-                </InfoSeksjonWrapper>
-            )}
 
             {inntektVerdier.length > 0 && (
                 <InfoSeksjonWrapper ikon={<Søknadsgrunnlag />} undertittel="Har du inntekt?">
