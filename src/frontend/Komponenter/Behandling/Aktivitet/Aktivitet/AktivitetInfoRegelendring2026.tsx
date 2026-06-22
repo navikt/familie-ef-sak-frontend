@@ -10,6 +10,7 @@ import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 import { FlexColumnContainer } from '../../Vilkårpanel/StyledVilkårInnhold';
 import { formaterNullableIsoDato } from '../../../../App/utils/formatter';
 import SelvstendigNæringsdrivendeEllerFrilanser from './SelvstendigNæringsdrivendeEllerFrilanser';
+import { BodyLong, HelpText, HStack, List } from '@navikt/ds-react';
 
 interface Props {
     aktivitet: IAktivitet;
@@ -27,7 +28,17 @@ const AktivitetInfoRegelendring2026: FC<Props> = ({ aktivitet, stønadstype }) =
 
     return (
         <InformasjonContainer>
-            <InfoSeksjonWrapper ikon={<Søknadsgrunnlag />} undertittel="Hva er situasjonen din?">
+            <InfoSeksjonWrapper
+                ikon={<Søknadsgrunnlag />}
+                undertittel={
+                    <HStack gap="space-16" className="førsteDataKolonne">
+                        Hva er situasjonen din?
+                        <HelpText placement="top-start">
+                            {HjelpetekstAlternativerHvaErSituasjonen}
+                        </HelpText>
+                    </HStack>
+                }
+            >
                 <Informasjonsrad
                     label="Valgte svar"
                     verdiSomString={false}
@@ -94,3 +105,18 @@ const AktivitetInfoRegelendring2026: FC<Props> = ({ aktivitet, stønadstype }) =
 };
 
 export default AktivitetInfoRegelendring2026;
+
+const HjelpetekstAlternativerHvaErSituasjonen = (
+    <>
+        <BodyLong weight="semibold">Mulig alternativer i søknadsdialog:</BodyLong>
+        <List size="small">
+            <List.Item>Jeg har barn under 14 måneder</List.Item>
+            <List.Item>
+                Jeg har barn som trenger særlig tilsyn på grunn av fysiske, psykiske eller store
+                sosiale problemer
+            </List.Item>
+            <List.Item>Barnet mitt har en sykdom som ikke er varig</List.Item>
+            <List.Item>Ingen av disse gjelder meg</List.Item>
+        </List>
+    </>
+);
