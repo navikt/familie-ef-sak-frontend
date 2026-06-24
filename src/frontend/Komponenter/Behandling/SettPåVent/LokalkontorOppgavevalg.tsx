@@ -12,7 +12,8 @@ const FlexBox = styled.div`
 `;
 
 const vurderHenvendelseOppgaveTilTekst: Record<VurderHenvendelseOppgavetype, string> = {
-    INFORMERE_OM_SØKT_OVERGANGSSTØNAD: 'Beskjed om at vi har fått søknad',
+    INFORMERE_OM_SØKT_OVERGANGSSTØNAD:
+        'Beskjed om at vi har fått søknad (gjelder kun tidligere regelverk før 1. juli 2026)',
     INNSTILLING_VEDRØRENDE_UTDANNING: 'Forespørsel om innstilling - utdanning',
 };
 
