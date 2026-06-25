@@ -15,6 +15,11 @@ import { Behandling } from '../../../App/typer/fagsak';
 import { useApp } from '../../../App/context/AppContext';
 import { InngangsvilkårHeader } from './InngangsvilkårHeader';
 import { formaterIsoDatoTidMedSekunder } from '../../../App/utils/formatter';
+import { Stønadstype } from '../../../App/typer/behandlingstema';
+import { useToggles } from '../../../App/context/TogglesContext';
+import { ToggleName } from '../../../App/context/toggles';
+import { BehandleSom2026Regelendring } from '../Vurdering/BehandleSom2026Regelendring';
+import { Box } from '@navikt/ds-react';
 
 interface Props {
     behandling: Behandling;
@@ -23,6 +28,7 @@ interface Props {
 export const InngangsvilkårFane: FC<Props> = ({ behandling }) => {
     const { behandlingErRedigerbar, vilkårState, samværsavtaleState } = useBehandling();
     const { erSaksbehandler } = useApp();
+    const { toggles } = useToggles();
     const {
         vilkår,
         hentVilkår,
@@ -34,6 +40,10 @@ export const InngangsvilkårFane: FC<Props> = ({ behandling }) => {
     } = vilkårState;
     const { samværsavtaler, hentSamværsavtaler, lagreSamværsavtale, slettSamværsavtale } =
         samværsavtaleState;
+
+    const visRegelendringSwitch =
+        behandling.stønadstype === Stønadstype.BARNETILSYN &&
+        toggles[ToggleName.regelendringer2026];
 
     React.useEffect(() => {
         hentVilkår(behandling.id);
@@ -67,6 +77,17 @@ export const InngangsvilkårFane: FC<Props> = ({ behandling }) => {
                                 behandlingId={behandling.id}
                             />
                         )}
+
+                        {visRegelendringSwitch && (
+                            <Box
+                                background="neutral-soft"
+                                padding="space-16"
+                                style={{ margin: '0 2rem 2rem 2rem' }}
+                            >
+                                <BehandleSom2026Regelendring />
+                            </Box>
+                        )}
+
                         <Medlemskap
                             nullstillVurdering={nullstillVurdering}
                             feilmeldinger={feilmeldinger}
