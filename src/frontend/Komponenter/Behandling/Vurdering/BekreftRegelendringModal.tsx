@@ -19,7 +19,8 @@ export const BekreftRegelendringModal: FC<Props> = ({ open, nyVerdi, onBekreft, 
             <Modal.Body>
                 <BodyLong>Er du sikker på at du vil bytte til {valgtRegelverkLabel}?</BodyLong>
                 <BodyLong>
-                    Dette vil fjerne data du allerede har fylt inn i senere behandlingssteg.
+                    Dette vil fjerne data du har lagt inn på vedtak- og beregningssiden og i
+                    brevbyggeren.
                 </BodyLong>
             </Modal.Body>
             <Modal.Footer>
