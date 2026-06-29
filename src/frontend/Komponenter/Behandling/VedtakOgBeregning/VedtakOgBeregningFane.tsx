@@ -18,6 +18,7 @@ import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 import { SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
 import { EBehandlingResultat } from '../../../App/typer/vedtak';
 import { RessursStatus } from '../../../App/typer/ressurs';
+import { stønadstyperMedRegelendring2026Begrunnelse } from '../../../App/hooks/useRegelendring2026';
 
 const Fane = styled.main`
     display: flex;
@@ -52,8 +53,7 @@ export const VedtakOgBeregningFane: FC<Props> = ({ behandling }) => {
 
     const manglerRegelendring2026Begrunnelse =
         erRegelendring2026 &&
-        (behandling.stønadstype === Stønadstype.OVERGANGSSTØNAD ||
-            behandling.stønadstype === Stønadstype.BARNETILSYN) &&
+        stønadstyperMedRegelendring2026Begrunnelse.includes(behandling.stønadstype) &&
         (regelendring2026Begrunnelse.status !== RessursStatus.SUKSESS ||
             !regelendring2026Begrunnelse.data?.begrunnelse);
 
