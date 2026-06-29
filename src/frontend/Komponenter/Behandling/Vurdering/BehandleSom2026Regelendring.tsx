@@ -81,57 +81,61 @@ export const BehandleSom2026Regelendring: FC = () => {
         }
     };
 
+    const radioGroup = (
+        <RadioGroup
+            legend="Ønsker du å behandle denne saken etter nytt eller tidligere regelverk?"
+            value={erRegelendring2026}
+            onChange={håndterRegelendring}
+            readOnly={!behandlingErRedigerbar}
+        >
+            <Radio value={true}>{regelverkLabel.NYTT_REGELVERK.tekst}</Radio>
+            <Radio value={false}>{regelverkLabel.TIDLIGERE_REGELVERK.tekst}</Radio>
+        </RadioGroup>
+    );
+
     return (
         <>
-            <VilkårpanelInnhold>
-                {{
-                    venstre: (
-                        <RadioGroup
-                            legend="Ønsker du å behandle denne saken etter nytt eller tidligere regelverk?"
-                            value={erRegelendring2026}
-                            onChange={håndterRegelendring}
-                            readOnly={!behandlingErRedigerbar}
-                        >
-                            <Radio value={true}>{regelverkLabel.NYTT_REGELVERK.tekst}</Radio>
-                            <Radio value={false}>{regelverkLabel.TIDLIGERE_REGELVERK.tekst}</Radio>
-                        </RadioGroup>
-                    ),
-                    høyre: skalViseBegrunnelse ? (
-                        <VurderingLesemodusGrid>
-                            <VertikalStrek />
-                            <VStack gap="space-16">
-                                <Textarea
-                                    label="Begrunnelse for valg av regelverk"
-                                    value={begrunnelseTekst}
-                                    onChange={(e) => {
-                                        settBegrunnelseTekst(e.target.value);
-                                        settBegrunnelseLagret(false);
-                                    }}
-                                    readOnly={!behandlingErRedigerbar}
-                                />
-                                {behandlingErRedigerbar && (
-                                    <div>
-                                        <Button
-                                            type="button"
-                                            size="small"
-                                            variant="secondary"
-                                            onClick={håndterLagreBegrunnelse}
-                                            disabled={
-                                                begrunnelseTekst.trim().length === 0 ||
-                                                begrunnelseLagret
-                                            }
-                                        >
-                                            {begrunnelseLagret ? 'Lagret' : 'Lagre begrunnelse'}
-                                        </Button>
-                                    </div>
-                                )}
-                            </VStack>
-                        </VurderingLesemodusGrid>
-                    ) : (
-                        <></>
-                    ),
-                }}
-            </VilkårpanelInnhold>
+            {skalViseBegrunnelse ? (
+                <VilkårpanelInnhold>
+                    {{
+                        venstre: radioGroup,
+                        høyre: (
+                            <VurderingLesemodusGrid>
+                                <VertikalStrek />
+                                <VStack gap="space-16">
+                                    <Textarea
+                                        label="Begrunnelse for valg av regelverk"
+                                        value={begrunnelseTekst}
+                                        onChange={(e) => {
+                                            settBegrunnelseTekst(e.target.value);
+                                            settBegrunnelseLagret(false);
+                                        }}
+                                        readOnly={!behandlingErRedigerbar}
+                                    />
+                                    {behandlingErRedigerbar && (
+                                        <div>
+                                            <Button
+                                                type="button"
+                                                size="small"
+                                                variant="secondary"
+                                                onClick={håndterLagreBegrunnelse}
+                                                disabled={
+                                                    begrunnelseTekst.trim().length === 0 ||
+                                                    begrunnelseLagret
+                                                }
+                                            >
+                                                {begrunnelseLagret ? 'Lagret' : 'Lagre begrunnelse'}
+                                            </Button>
+                                        </div>
+                                    )}
+                                </VStack>
+                            </VurderingLesemodusGrid>
+                        ),
+                    }}
+                </VilkårpanelInnhold>
+            ) : (
+                <Box padding="space-16">{radioGroup}</Box>
+            )}
             <BekreftRegelendringModal
                 open={visBekreftelsesmodal}
                 nyVerdi={pendingVerdi}
