@@ -25,15 +25,19 @@ export enum EBehandlingFlettefelt {
 
 enum EBehandlingValgfelt {
     avslutningHjemmel = 'avslutningHjemmel',
+    inneholderVedtaketSamordningNyeRegler = 'inneholderVedtaketSamordningNyeRegler',
 }
 
 enum EValg {
     hjemlerMedSamordning = 'hjemmelM1513',
     hjemlerUtenSamordning = 'hjemmelInnvilgetTilbakeITidM1513',
+    samordningNyeRegler = 'samordningNyeRegler',
+    ikkeSamordningNyeRegler = 'ikkesamordningNyeRegler',
 }
 
 enum EDelmaler {
     avslutningHjemler = 'avslutning',
+    kombinasjonHjemlerNyeRegler = 'kombinasjonHjemlerNyeRegler',
 }
 
 export type FlettefeltStore = { [navn: string]: string };
@@ -110,18 +114,22 @@ export const useVerdierForBrev = (
                     [EBehandlingFlettefelt.belopInntektMinusTiProsentv2]: tiProsentReduksjon,
                 });
 
+                const samordning = harSamordningsfradrag(beløpsperioder.data as IBeløpsperiode[]);
+
                 settValgfeltStore((prevState) => ({
                     ...prevState,
-                    [EBehandlingValgfelt.avslutningHjemmel]: harSamordningsfradrag(
-                        beløpsperioder.data as IBeløpsperiode[]
-                    )
+                    [EBehandlingValgfelt.avslutningHjemmel]: samordning
                         ? EValg.hjemlerMedSamordning
                         : EValg.hjemlerUtenSamordning,
+                    [EBehandlingValgfelt.inneholderVedtaketSamordningNyeRegler]: samordning
+                        ? EValg.samordningNyeRegler
+                        : EValg.ikkeSamordningNyeRegler,
                 }));
 
                 settDelmalStore((prevState) => [
                     ...prevState,
                     { delmal: EDelmaler.avslutningHjemler, skjulIBrevmeny: true },
+                    { delmal: EDelmaler.kombinasjonHjemlerNyeRegler, skjulIBrevmeny: true },
                 ]);
             }
 
