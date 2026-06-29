@@ -12,7 +12,7 @@ interface Regelendring2026Begrunnelse {
     begrunnelse: string;
 }
 
-export const useRegelendring2026Begrunnelse = (
+export const useRegelendring2026 = (
     behandlingId: string
 ): {
     hentRegelendring2026Begrunnelse: () => void;
