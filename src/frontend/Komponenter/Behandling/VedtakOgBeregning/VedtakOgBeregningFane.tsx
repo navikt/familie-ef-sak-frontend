@@ -36,7 +36,7 @@ interface Props {
 }
 
 export const VedtakOgBeregningFane: FC<Props> = ({ behandling }) => {
-    const { vilkårState, regelendring2026Begrunnelse } = useBehandling();
+    const { vilkårState, regelendring2026Begrunnelse, erRegelendring2026 } = useBehandling();
 
     const [visNullstillVedtakModal, settVisNullstillVedtakModal] = useState(false);
     const { vilkår, hentVilkår } = vilkårState;
@@ -51,6 +51,7 @@ export const VedtakOgBeregningFane: FC<Props> = ({ behandling }) => {
     }, [hentVilkår, behandling.id]);
 
     const manglerRegelendring2026Begrunnelse =
+        erRegelendring2026 &&
         (behandling.stønadstype === Stønadstype.OVERGANGSSTØNAD ||
             behandling.stønadstype === Stønadstype.BARNETILSYN) &&
         (regelendring2026Begrunnelse.status !== RessursStatus.SUKSESS ||

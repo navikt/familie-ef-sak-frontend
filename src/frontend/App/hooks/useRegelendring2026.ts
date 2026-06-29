@@ -7,23 +7,29 @@ import {
     RessursStatus,
     RessursSuksess,
 } from '../typer/ressurs';
+import { Stønadstype } from '../typer/behandlingstema';
 
 interface Regelendring2026Begrunnelse {
     begrunnelse: string;
 }
 
+export const stønadstyperMedRegelendring2026Begrunnelse: Stønadstype[] = [
+    Stønadstype.OVERGANGSSTØNAD,
+    Stønadstype.BARNETILSYN,
+];
+
 export const useRegelendring2026 = (
     behandlingId: string
 ): {
-    hentRegelendring2026Begrunnelse: () => void;
+    hentBegrunnelse: () => void;
     regelendring2026Begrunnelse: Ressurs<Regelendring2026Begrunnelse | undefined>;
-    lagreRegelendring2026Begrunnelse: (begrunnelse: string) => Promise<boolean>;
+    lagreBegrunnelse: (begrunnelse: string) => Promise<boolean>;
 } => {
     const { axiosRequest } = useApp();
     const [regelendring2026Begrunnelse, settRegelendring2026Begrunnelse] =
         useState<Ressurs<Regelendring2026Begrunnelse | undefined>>(byggTomRessurs());
 
-    const hentRegelendring2026Begrunnelse = useCallback(() => {
+    const hentBegrunnelse = useCallback(() => {
         axiosRequest<Regelendring2026Begrunnelse | null, null>({
             method: 'GET',
             url: `/familie-ef-sak/api/behandling/${behandlingId}/regelendring-2026/begrunnelse`,
@@ -45,7 +51,7 @@ export const useRegelendring2026 = (
         });
     }, [behandlingId]);
 
-    const lagreRegelendring2026Begrunnelse = useCallback(
+    const lagreBegrunnelse = useCallback(
         async (begrunnelse: string): Promise<boolean> => {
             const res = await axiosRequest<string, { begrunnelse: string }>({
                 method: 'POST',
@@ -65,8 +71,8 @@ export const useRegelendring2026 = (
     );
 
     return {
-        hentRegelendring2026Begrunnelse,
+        hentBegrunnelse,
         regelendring2026Begrunnelse,
-        lagreRegelendring2026Begrunnelse,
+        lagreBegrunnelse,
     };
 };

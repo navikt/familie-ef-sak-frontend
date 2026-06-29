@@ -7,7 +7,7 @@ import { sorterUtAktivitetsvilkår, sorterUtInngangsvilkår } from './utils';
 import { Neutral100 } from '@navikt/ds-tokens/js';
 import { useBehandling } from '../../../../App/context/BehandlingContext';
 import { RessursStatus } from '../../../../App/typer/ressurs';
-import { Stønadstype } from '../../../../App/typer/behandlingstema';
+import { stønadstyperMedRegelendring2026Begrunnelse } from '../../../../App/hooks/useRegelendring2026';
 import { VilkårsresultatIkon } from '../../../../Felles/Ikoner/VilkårsresultatIkon';
 import { Vilkårsresultat } from '../../Inngangsvilkår/vilkår';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
@@ -16,11 +16,6 @@ const Container = styled.div`
     padding: 1rem;
     background-color: ${Neutral100};
 `;
-
-const stønadstyperMedBegrunnelseskrav: Stønadstype[] = [
-    Stønadstype.OVERGANGSSTØNAD,
-    Stønadstype.BARNETILSYN,
-];
 
 export const Vilkårsvurdering: React.FC<{
     vilkår: IVilkår;
@@ -35,7 +30,7 @@ export const Vilkårsvurdering: React.FC<{
     const skalViseRegelverkBegrunnelse =
         erRegelendring2026 &&
         stønadstype !== undefined &&
-        stønadstyperMedBegrunnelseskrav.includes(stønadstype);
+        stønadstyperMedRegelendring2026Begrunnelse.includes(stønadstype);
 
     const harBegrunnelse =
         regelendring2026Begrunnelse.status === RessursStatus.SUKSESS &&

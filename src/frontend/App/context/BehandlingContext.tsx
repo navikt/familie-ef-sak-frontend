@@ -43,11 +43,8 @@ const [BehandlingProvider, useBehandling] = constate(() => {
     const { hentAnsvarligSaksbehandlerCallback, ansvarligSaksbehandler } =
         useHentAnsvarligSaksbehandler(behandlingId);
     const { hentVedtak: hentVedtakCallback, vedtak, vedtaksresultat } = useHentVedtak(behandlingId);
-    const {
-        hentRegelendring2026Begrunnelse,
-        regelendring2026Begrunnelse,
-        lagreRegelendring2026Begrunnelse,
-    } = useRegelendring2026(behandlingId);
+    const { hentBegrunnelse, regelendring2026Begrunnelse, lagreBegrunnelse } =
+        useRegelendring2026(behandlingId);
 
     const hentBehandling = useRerunnableEffect(hentBehandlingCallback, [behandlingId]);
     const hentAnsvarligSaksbehandler = useRerunnableEffect(hentAnsvarligSaksbehandlerCallback, [
@@ -82,7 +79,7 @@ const [BehandlingProvider, useBehandling] = constate(() => {
         hentPersonopplysninger(behandlingId);
         hentUtestengelserForBehandling(behandlingId);
         hentFagsak(behandlingId);
-        hentRegelendring2026Begrunnelse();
+        hentBegrunnelse();
     }, [behandlingId]);
 
     useEffect(() => {
@@ -159,7 +156,7 @@ const [BehandlingProvider, useBehandling] = constate(() => {
         vedtaksresultat,
         fagsak,
         regelendring2026Begrunnelse,
-        lagreRegelendring2026Begrunnelse,
+        lagreBegrunnelse,
     };
 });
 

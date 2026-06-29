@@ -7,14 +7,9 @@ import { RessursStatus } from '../../../App/typer/ressurs.ts';
 import { useParams } from 'react-router-dom';
 import { BekreftRegelendringModal } from './BekreftRegelendringModal.tsx';
 import { regelverkLabel } from '../../../App/typer/behandlingstype.ts';
-import { Stønadstype } from '../../../App/typer/behandlingstema.ts';
 import { VilkårpanelInnhold } from '../Vilkårpanel/VilkårpanelInnhold.tsx';
 import { VertikalStrek, VurderingLesemodusGrid } from './StyledVurdering.tsx';
-
-const stønadstyperMedBegrunnelse: Stønadstype[] = [
-    Stønadstype.OVERGANGSSTØNAD,
-    Stønadstype.BARNETILSYN,
-];
+import { stønadstyperMedRegelendring2026Begrunnelse } from '../../../App/hooks/useRegelendring2026.ts';
 
 export const BehandleSom2026Regelendring: FC = () => {
     const { behandlingId } = useParams<{ behandlingId: string }>();
@@ -26,7 +21,7 @@ export const BehandleSom2026Regelendring: FC = () => {
         hentBehandling,
         behandling,
         regelendring2026Begrunnelse,
-        lagreRegelendring2026Begrunnelse,
+        lagreBegrunnelse,
     } = useBehandling();
     const { axiosRequest } = useApp();
 
@@ -39,7 +34,8 @@ export const BehandleSom2026Regelendring: FC = () => {
         behandling.status === RessursStatus.SUKSESS ? behandling.data.stønadstype : undefined;
 
     const skalViseBegrunnelse =
-        stønadstype !== undefined && stønadstyperMedBegrunnelse.includes(stønadstype);
+        stønadstype !== undefined &&
+        stønadstyperMedRegelendring2026Begrunnelse.includes(stønadstype);
 
     useEffect(() => {
         if (
@@ -79,7 +75,7 @@ export const BehandleSom2026Regelendring: FC = () => {
     };
 
     const håndterLagreBegrunnelse = async () => {
-        const lagret = await lagreRegelendring2026Begrunnelse(begrunnelseTekst);
+        const lagret = await lagreBegrunnelse(begrunnelseTekst);
         if (lagret) {
             settBegrunnelseLagret(true);
         }
