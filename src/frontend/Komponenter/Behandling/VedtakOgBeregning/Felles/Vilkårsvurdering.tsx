@@ -1,7 +1,7 @@
 import React from 'react';
 import { IVilkår } from '../../Inngangsvilkår/vilkår';
 import { Heading, Label } from '@navikt/ds-react';
-import { ResultatVisning } from './ResultatVisning';
+import { ResultatVisning, ResultatGrid, FlexBox } from './ResultatVisning';
 import styled from 'styled-components';
 import { sorterUtAktivitetsvilkår, sorterUtInngangsvilkår } from './utils';
 import { Neutral100 } from '@navikt/ds-tokens/js';
@@ -15,18 +15,6 @@ import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 const Container = styled.div`
     padding: 1rem;
     background-color: ${Neutral100};
-`;
-
-const ResultatGrid = styled.div`
-    display: grid;
-    grid-template-columns: 8.5rem 7.25rem;
-    grid-gap: 1rem;
-    margin-bottom: 0.5rem;
-`;
-
-const FlexBox = styled.div`
-    display: flex;
-    gap: 0.25rem;
 `;
 
 const stønadstyperMedBegrunnelseskrav: Stønadstype[] = [
