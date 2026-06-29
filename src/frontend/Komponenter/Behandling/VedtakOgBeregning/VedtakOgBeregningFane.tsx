@@ -19,6 +19,8 @@ import { SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
 import { EBehandlingResultat } from '../../../App/typer/vedtak';
 import { RessursStatus } from '../../../App/typer/ressurs';
 import { stønadstyperMedRegelendring2026Begrunnelse } from '../../../App/hooks/useRegelendring2026';
+import { useToggles } from '../../../App/context/TogglesContext';
+import { ToggleName } from '../../../App/context/toggles';
 
 const Fane = styled.main`
     display: flex;
@@ -38,6 +40,7 @@ interface Props {
 
 export const VedtakOgBeregningFane: FC<Props> = ({ behandling }) => {
     const { vilkårState, regelendring2026Begrunnelse, erRegelendring2026 } = useBehandling();
+    const { toggles } = useToggles();
 
     const [visNullstillVedtakModal, settVisNullstillVedtakModal] = useState(false);
     const { vilkår, hentVilkår } = vilkårState;
@@ -52,6 +55,7 @@ export const VedtakOgBeregningFane: FC<Props> = ({ behandling }) => {
     }, [hentVilkår, behandling.id]);
 
     const manglerRegelendring2026Begrunnelse =
+        toggles[ToggleName.regelendringer2026] &&
         erRegelendring2026 &&
         stønadstyperMedRegelendring2026Begrunnelse.includes(behandling.stønadstype) &&
         (regelendring2026Begrunnelse.status !== RessursStatus.SUKSESS ||
