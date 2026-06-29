@@ -11,6 +11,8 @@ import { Stønadstype } from '../../../../App/typer/behandlingstema';
 import { NullstillVedtakModalContext } from './NullstillVedtakModalContext';
 import { EnsligFamilieSelect } from '../../../../Felles/Input/EnsligFamilieSelect';
 import { Neutral100 } from '@navikt/ds-tokens/js';
+import { RessursStatus } from '../../../../App/typer/ressurs';
+import { stønadstyperMedRegelendring2026Begrunnelse } from '../../../../App/hooks/useRegelendring2026';
 
 interface Props {
     behandling: Behandling;
@@ -40,13 +42,20 @@ const Container = styled.section`
 `;
 
 const SelectVedtaksresultat = (props: Props): ReactNode => {
-    const { behandlingErRedigerbar } = useBehandling();
+    const { behandlingErRedigerbar, erRegelendring2026, regelendring2026Begrunnelse } =
+        useBehandling();
     const { settIkkePersistertKomponent } = useApp();
     const { resultatType, settResultatType, alleVilkårOppfylt, behandling } = props;
     const opphørMulig =
         behandling.type === Behandlingstype.REVURDERING && behandling.forrigeBehandlingId;
     const nullUtbetalingPgaKontantstøtte =
         resultatType === EBehandlingResultat.INNVILGE_UTEN_UTBETALING;
+
+    const manglerRegelverkBegrunnelse =
+        erRegelendring2026 &&
+        stønadstyperMedRegelendring2026Begrunnelse.includes(behandling.stønadstype) &&
+        (regelendring2026Begrunnelse.status !== RessursStatus.SUKSESS ||
+            !regelendring2026Begrunnelse.data?.begrunnelse);
 
     const { settVisNullstillVedtakModal } = useContext(NullstillVedtakModalContext);
 
@@ -61,6 +70,7 @@ const SelectVedtaksresultat = (props: Props): ReactNode => {
                     hideLabel
                     value={resultatType || ''}
                     erLesevisning={!behandlingErRedigerbar}
+                    disabled={manglerRegelverkBegrunnelse}
                     onChange={(e) => {
                         const vedtaksresultat =
                             e.target.value === ''

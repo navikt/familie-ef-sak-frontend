@@ -196,8 +196,6 @@ const AlertStripe = () => (
 
 const AlertBegrunnelseMangler = () => (
     <AlertErrorLeft inline>
-        <SmallTextLabel>
-            Begrunnelse for valg av regelverk må fylles ut på vilkårsfanen.
-        </SmallTextLabel>
+        <SmallTextLabel>Begrunnelse for valg av regelverk må fylles ut.</SmallTextLabel>
     </AlertErrorLeft>
 );
