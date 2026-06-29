@@ -23,6 +23,7 @@ import { ModalState, utledModalState } from '../../Komponenter/Behandling/Modal/
 import { useHentVedtak } from '../hooks/useHentVedtak';
 import { useHentFagsak } from '../hooks/useHentFagsak';
 import { useSamværsavtale } from '../hooks/useSamværsavtale';
+import { useRegelendring2026Begrunnelse } from '../hooks/useRegelendring2026Begrunnelse';
 
 const [BehandlingProvider, useBehandling] = constate(() => {
     const { innloggetSaksbehandler } = useApp();
@@ -42,6 +43,11 @@ const [BehandlingProvider, useBehandling] = constate(() => {
     const { hentAnsvarligSaksbehandlerCallback, ansvarligSaksbehandler } =
         useHentAnsvarligSaksbehandler(behandlingId);
     const { hentVedtak: hentVedtakCallback, vedtak, vedtaksresultat } = useHentVedtak(behandlingId);
+    const {
+        hentRegelendring2026Begrunnelse,
+        regelendring2026Begrunnelse,
+        lagreRegelendring2026Begrunnelse,
+    } = useRegelendring2026Begrunnelse(behandlingId);
 
     const hentBehandling = useRerunnableEffect(hentBehandlingCallback, [behandlingId]);
     const hentAnsvarligSaksbehandler = useRerunnableEffect(hentAnsvarligSaksbehandlerCallback, [
@@ -76,6 +82,7 @@ const [BehandlingProvider, useBehandling] = constate(() => {
         hentPersonopplysninger(behandlingId);
         hentUtestengelserForBehandling(behandlingId);
         hentFagsak(behandlingId);
+        hentRegelendring2026Begrunnelse();
     }, [behandlingId]);
 
     useEffect(() => {
@@ -151,6 +158,8 @@ const [BehandlingProvider, useBehandling] = constate(() => {
         vedtak,
         vedtaksresultat,
         fagsak,
+        regelendring2026Begrunnelse,
+        lagreRegelendring2026Begrunnelse,
     };
 });
 

@@ -1,12 +1,20 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useState } from 'react';
 import { useBehandling } from '../../../App/context/BehandlingContext.tsx';
 import { useApp } from '../../../App/context/AppContext.tsx';
-import { BodyShort, Radio, RadioGroup, VStack } from '@navikt/ds-react';
+import { Button, Radio, RadioGroup, Textarea, VStack } from '@navikt/ds-react';
 import { RessursStatus } from '../../../App/typer/ressurs.ts';
 import { useParams } from 'react-router-dom';
 import { BekreftRegelendringModal } from './BekreftRegelendringModal.tsx';
 import { regelverkLabel } from '../../../App/typer/behandlingstype.ts';
+import { Stønadstype } from '../../../App/typer/behandlingstema.ts';
+import { VilkårpanelInnhold } from '../Vilkårpanel/VilkårpanelInnhold.tsx';
+import { VertikalStrek, VurderingLesemodusGrid } from './StyledVurdering.tsx';
+
+const stønadstyperMedBegrunnelse: Stønadstype[] = [
+    Stønadstype.OVERGANGSSTØNAD,
+    Stønadstype.BARNETILSYN,
+];
 
 export const BehandleSom2026Regelendring: FC = () => {
     const { behandlingId } = useParams<{ behandlingId: string }>();
@@ -16,11 +24,32 @@ export const BehandleSom2026Regelendring: FC = () => {
         behandlingErRedigerbar,
         hentVedtak,
         hentBehandling,
+        behandling,
+        regelendring2026Begrunnelse,
+        lagreRegelendring2026Begrunnelse,
     } = useBehandling();
     const { axiosRequest } = useApp();
 
     const [visBekreftelsesmodal, settVisBekreftelsesmodal] = useState(false);
     const [pendingVerdi, settNyVerdi] = useState<boolean | null>(null);
+    const [begrunnelseTekst, settBegrunnelseTekst] = useState<string>('');
+    const [begrunnelseLagret, settBegrunnelseLagret] = useState(false);
+
+    const stønadstype =
+        behandling.status === RessursStatus.SUKSESS ? behandling.data.stønadstype : undefined;
+
+    const skalViseBegrunnelse =
+        stønadstype !== undefined && stønadstyperMedBegrunnelse.includes(stønadstype);
+
+    useEffect(() => {
+        if (
+            regelendring2026Begrunnelse.status === RessursStatus.SUKSESS &&
+            regelendring2026Begrunnelse.data
+        ) {
+            settBegrunnelseTekst(regelendring2026Begrunnelse.data.begrunnelse);
+            settBegrunnelseLagret(true);
+        }
+    }, [regelendring2026Begrunnelse]);
 
     const håndterRegelendring = (nyVerdi: boolean) => {
         settNyVerdi(nyVerdi);
@@ -49,28 +78,70 @@ export const BehandleSom2026Regelendring: FC = () => {
         settNyVerdi(null);
     };
 
-    return (
-        <VStack>
-            <BodyShort>
-                Ønsker du å behandle denne saken etter nytt eller tidligere regelverk?
-            </BodyShort>
-            <RadioGroup
-                legend="Behandle etter nytt regelverk (2026)"
-                hideLegend
-                value={erRegelendring2026}
-                onChange={håndterRegelendring}
-                readOnly={!behandlingErRedigerbar}
-            >
-                <Radio value={true}> {regelverkLabel.NYTT_REGELVERK.tekst}</Radio>
-                <Radio value={false}>{regelverkLabel.TIDLIGERE_REGELVERK.tekst}</Radio>
-            </RadioGroup>
+    const håndterLagreBegrunnelse = async () => {
+        const lagret = await lagreRegelendring2026Begrunnelse(begrunnelseTekst);
+        if (lagret) {
+            settBegrunnelseLagret(true);
+        }
+    };
 
+    return (
+        <>
+            <VilkårpanelInnhold>
+                {{
+                    venstre: (
+                        <RadioGroup
+                            legend="Ønsker du å behandle denne saken etter nytt eller tidligere regelverk?"
+                            value={erRegelendring2026}
+                            onChange={håndterRegelendring}
+                            readOnly={!behandlingErRedigerbar}
+                        >
+                            <Radio value={true}>{regelverkLabel.NYTT_REGELVERK.tekst}</Radio>
+                            <Radio value={false}>{regelverkLabel.TIDLIGERE_REGELVERK.tekst}</Radio>
+                        </RadioGroup>
+                    ),
+                    høyre: skalViseBegrunnelse ? (
+                        <VurderingLesemodusGrid>
+                            <VertikalStrek />
+                            <VStack gap="space-16">
+                                <Textarea
+                                    label="Begrunnelse for valg av regelverk"
+                                    value={begrunnelseTekst}
+                                    onChange={(e) => {
+                                        settBegrunnelseTekst(e.target.value);
+                                        settBegrunnelseLagret(false);
+                                    }}
+                                    readOnly={!behandlingErRedigerbar}
+                                />
+                                {behandlingErRedigerbar && (
+                                    <div>
+                                        <Button
+                                            type="button"
+                                            size="small"
+                                            variant="secondary"
+                                            onClick={håndterLagreBegrunnelse}
+                                            disabled={
+                                                begrunnelseTekst.trim().length === 0 ||
+                                                begrunnelseLagret
+                                            }
+                                        >
+                                            {begrunnelseLagret ? 'Lagret' : 'Lagre begrunnelse'}
+                                        </Button>
+                                    </div>
+                                )}
+                            </VStack>
+                        </VurderingLesemodusGrid>
+                    ) : (
+                        <></>
+                    ),
+                }}
+            </VilkårpanelInnhold>
             <BekreftRegelendringModal
                 open={visBekreftelsesmodal}
                 nyVerdi={pendingVerdi}
                 onBekreft={bekreftEndring}
                 onAvbryt={avbrytEndring}
             />
-        </VStack>
+        </>
     );
 };
