@@ -2,7 +2,7 @@ import React, { FC, useEffect } from 'react';
 import { useState } from 'react';
 import { useBehandling } from '../../../App/context/BehandlingContext.tsx';
 import { useApp } from '../../../App/context/AppContext.tsx';
-import { Button, Radio, RadioGroup, Textarea, VStack } from '@navikt/ds-react';
+import { Box, Button, Radio, RadioGroup, Textarea, VStack } from '@navikt/ds-react';
 import { RessursStatus } from '../../../App/typer/ressurs.ts';
 import { useParams } from 'react-router-dom';
 import { BekreftRegelendringModal } from './BekreftRegelendringModal.tsx';
