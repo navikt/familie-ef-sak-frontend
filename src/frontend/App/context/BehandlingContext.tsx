@@ -82,10 +82,13 @@ const [BehandlingProvider, useBehandling] = constate(() => {
         hentPersonopplysninger(behandlingId);
         hentUtestengelserForBehandling(behandlingId);
         hentFagsak(behandlingId);
+    }, [behandlingId]);
+
+    useEffect(() => {
         if (toggles[ToggleName.regelendringer2026]) {
             hentBegrunnelse();
         }
-    }, [behandlingId]);
+    }, [toggles[ToggleName.regelendringer2026], behandlingId]);
 
     useEffect(() => {
         if (behandling.status === RessursStatus.SUKSESS) {
