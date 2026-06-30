@@ -24,9 +24,12 @@ import { useHentVedtak } from '../hooks/useHentVedtak';
 import { useHentFagsak } from '../hooks/useHentFagsak';
 import { useSamværsavtale } from '../hooks/useSamværsavtale';
 import { useRegelendring2026 } from '../hooks/useRegelendring2026';
+import { useToggles } from './TogglesContext';
+import { ToggleName } from './toggles';
 
 const [BehandlingProvider, useBehandling] = constate(() => {
     const { innloggetSaksbehandler } = useApp();
+    const { toggles } = useToggles();
 
     const behandlingId = useParams<{ behandlingId: string }>().behandlingId as string;
 
@@ -79,7 +82,9 @@ const [BehandlingProvider, useBehandling] = constate(() => {
         hentPersonopplysninger(behandlingId);
         hentUtestengelserForBehandling(behandlingId);
         hentFagsak(behandlingId);
-        hentBegrunnelse();
+        if (toggles[ToggleName.regelendringer2026]) {
+            hentBegrunnelse();
+        }
     }, [behandlingId]);
 
     useEffect(() => {
