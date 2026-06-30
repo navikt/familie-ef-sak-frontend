@@ -11,7 +11,7 @@ import { VilkårsresultatIkon } from '../../../../Felles/Ikoner/Vilkårsresultat
 import { Label } from '@navikt/ds-react';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 
-const FlexBox = styled.div`
+export const FlexBox = styled.div`
     display: flex;
     gap: 0.25rem;
 `;
@@ -21,7 +21,7 @@ const ResultatIkon = styled(VilkårsresultatIkon)`
     min-height: 23px;
 `;
 
-const ResultatGrid = styled.div`
+export const ResultatGrid = styled.div`
     display: grid;
     grid-template-columns: 8.5rem 7.25rem;
     grid-gap: 1rem;

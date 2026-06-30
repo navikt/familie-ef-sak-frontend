@@ -79,11 +79,7 @@ export const InngangsvilkårFane: FC<Props> = ({ behandling }) => {
                         )}
 
                         {visRegelendringSwitch && (
-                            <Box
-                                background="neutral-soft"
-                                padding="space-16"
-                                style={{ margin: '0 2rem 2rem 2rem' }}
-                            >
+                            <Box background="neutral-soft" style={{ margin: '0 2rem 2rem 2rem' }}>
                                 <BehandleSom2026Regelendring />
                             </Box>
                         )}
