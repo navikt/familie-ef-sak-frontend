@@ -24,7 +24,7 @@ export const Vilkårsvurdering: React.FC<{
 }> = ({ vilkår }) => {
     const inngangsvilkår = sorterUtInngangsvilkår(vilkår);
     const aktivitetsvilkår = sorterUtAktivitetsvilkår(vilkår);
-    const { erRegelendring2026, regelendring2026Begrunnelse, behandling } = useBehandling();
+    const { regelendring2026Begrunnelse, behandling } = useBehandling();
     const { toggles } = useToggles();
 
     const stønadstype =
@@ -32,13 +32,12 @@ export const Vilkårsvurdering: React.FC<{
 
     const skalViseRegelverkBegrunnelse =
         toggles[ToggleName.regelendringer2026] &&
-        erRegelendring2026 &&
         stønadstype !== undefined &&
         stønadstyperMedRegelendring2026Begrunnelse.includes(stønadstype);
 
     const harBegrunnelse =
         regelendring2026Begrunnelse.status === RessursStatus.SUKSESS &&
-        !!regelendring2026Begrunnelse.data?.begrunnelse;
+        !!regelendring2026Begrunnelse.data?.begrunnelse.trim();
 
     return (
         <Container>

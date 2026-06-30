@@ -39,7 +39,7 @@ interface Props {
 }
 
 export const VedtakOgBeregningFane: FC<Props> = ({ behandling }) => {
-    const { vilkårState, regelendring2026Begrunnelse, erRegelendring2026 } = useBehandling();
+    const { vilkårState, regelendring2026Begrunnelse } = useBehandling();
     const { toggles } = useToggles();
 
     const [visNullstillVedtakModal, settVisNullstillVedtakModal] = useState(false);
@@ -56,10 +56,9 @@ export const VedtakOgBeregningFane: FC<Props> = ({ behandling }) => {
 
     const manglerRegelendring2026Begrunnelse =
         toggles[ToggleName.regelendringer2026] &&
-        erRegelendring2026 &&
         stønadstyperMedRegelendring2026Begrunnelse.includes(behandling.stønadstype) &&
         (regelendring2026Begrunnelse.status !== RessursStatus.SUKSESS ||
-            !regelendring2026Begrunnelse.data?.begrunnelse);
+            !regelendring2026Begrunnelse.data?.begrunnelse.trim());
 
     return (
         <NullstillVedtakModalContext.Provider

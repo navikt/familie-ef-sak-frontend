@@ -44,8 +44,7 @@ const Container = styled.section`
 `;
 
 const SelectVedtaksresultat = (props: Props): ReactNode => {
-    const { behandlingErRedigerbar, erRegelendring2026, regelendring2026Begrunnelse } =
-        useBehandling();
+    const { behandlingErRedigerbar, regelendring2026Begrunnelse } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
     const { toggles } = useToggles();
     const { resultatType, settResultatType, alleVilkårOppfylt, behandling } = props;
@@ -56,10 +55,9 @@ const SelectVedtaksresultat = (props: Props): ReactNode => {
 
     const manglerRegelverkBegrunnelse =
         toggles[ToggleName.regelendringer2026] &&
-        erRegelendring2026 &&
         stønadstyperMedRegelendring2026Begrunnelse.includes(behandling.stønadstype) &&
         (regelendring2026Begrunnelse.status !== RessursStatus.SUKSESS ||
-            !regelendring2026Begrunnelse.data?.begrunnelse);
+            !regelendring2026Begrunnelse.data?.begrunnelse.trim());
 
     const { settVisNullstillVedtakModal } = useContext(NullstillVedtakModalContext);
 
