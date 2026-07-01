@@ -108,9 +108,9 @@ export const svarTypeTilTekst: Record<string, string> = {
         'Ja, det er dokumentert at brukeren etablerer egen virksomhet (gjelder kun tidligere regelverk)',
     HAR_FORBIGÅENDE_SYKDOM: 'Ja, det er dokumentert at brukeren har forbigående sykdom',
     TRENGER_MER_TILSYN_ENN_JEVNALDRENDE:
-        'Ja, barnet har fullført fjerde skoleår og det er dokumentert at barnet trenger vesentlig mer tilsyn enn jevnaldrende',
+        'Ja, det er dokumentert at barnet trenger vesentlig mer tilsyn enn jevnaldrende',
     FORSØRGER_HAR_LANGVARIG_ELLER_UREGELMESSIG_ARBEIDSTID:
-        'Ja, barnet har fullført fjerde skoleår og det er dokumentert at forsørgeren har langvarig og/eller uregelmessig arbeidstid',
+        'Ja, det er dokumentert at bruker har langvarig og/eller uregelmessig arbeidstid',
     NOEN_MÅNEDER_OVERSTIGER_6G: 'Ja, men noen måneder overstiger 6G',
     BRUKER_MOTTAR_IKKE_OVERGANGSSTØNAD: 'Bruker mottar ikke overgangsstønad',
 };
