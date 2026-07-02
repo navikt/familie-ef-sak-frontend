@@ -10,6 +10,13 @@ import { Behandlingsårsak } from '../../../../App/typer/behandlingsårsak';
 import { AlertError } from '../../../../Felles/Visningskomponenter/Alerts';
 import { Vilkårpanel } from '../../Vilkårpanel/Vilkårpanel';
 import { VilkårpanelInnhold } from '../../Vilkårpanel/VilkårpanelInnhold';
+import { Tag } from '@navikt/ds-react';
+
+const søknadsversjonTag = (erSøknadRegelendring2026: boolean) => (
+    <Tag variant={erSøknadRegelendring2026 ? 'alt1' : 'neutral'} size="xsmall">
+        {erSøknadRegelendring2026 ? 'Søknad: Nytt regelverk' : 'Søknad: Tidligere regelverk'}
+    </Tag>
+);
 
 export const Aktivitet: React.FC<VilkårProps> = ({
     vurderinger,
@@ -33,19 +40,25 @@ export const Aktivitet: React.FC<VilkårProps> = ({
         <DataViewer response={{ behandling }}>
             {({ behandling }) => {
                 const skalViseSøknadsdata = behandling.behandlingsårsak === Behandlingsårsak.SØKNAD;
+                const erSøknadRegelendring2026 = grunnlag.erSøknadRegelendring2026;
 
                 return (
                     <Vilkårpanel
                         tittel="Aktivitet"
                         vilkårsresultat={vurdering.resultat}
                         vilkår={vurdering.vilkårType}
+                        ekstraTittelInnhold={
+                            skalViseSøknadsdata
+                                ? søknadsversjonTag(erSøknadRegelendring2026)
+                                : undefined
+                        }
                     >
                         <VilkårpanelInnhold>
                             {{
                                 venstre:
                                     grunnlag.aktivitet &&
                                     skalViseSøknadsdata &&
-                                    (behandling.erRegelendring2026 ? (
+                                    (erSøknadRegelendring2026 ? (
                                         <AktivitetInfoRegelendring2026
                                             aktivitet={grunnlag.aktivitet}
                                             stønadstype={behandling.stønadstype}
