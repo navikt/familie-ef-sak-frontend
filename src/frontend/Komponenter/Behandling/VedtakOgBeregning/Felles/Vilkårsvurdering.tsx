@@ -11,8 +11,6 @@ import { stønadstyperMedRegelendring2026Begrunnelse } from '../../../../App/hoo
 import { VilkårsresultatIkon } from '../../../../Felles/Ikoner/VilkårsresultatIkon';
 import { Vilkårsresultat } from '../../Inngangsvilkår/vilkår';
 import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
-import { useToggles } from '../../../../App/context/TogglesContext';
-import { ToggleName } from '../../../../App/context/toggles';
 
 const Container = styled.div`
     padding: 1rem;
@@ -25,13 +23,11 @@ export const Vilkårsvurdering: React.FC<{
     const inngangsvilkår = sorterUtInngangsvilkår(vilkår);
     const aktivitetsvilkår = sorterUtAktivitetsvilkår(vilkår);
     const { regelendring2026Begrunnelse, behandling } = useBehandling();
-    const { toggles } = useToggles();
 
     const stønadstype =
         behandling.status === RessursStatus.SUKSESS ? behandling.data.stønadstype : undefined;
 
     const skalViseRegelverkBegrunnelse =
-        toggles[ToggleName.regelendringer2026] &&
         stønadstype !== undefined &&
         stønadstyperMedRegelendring2026Begrunnelse.includes(stønadstype);
 
