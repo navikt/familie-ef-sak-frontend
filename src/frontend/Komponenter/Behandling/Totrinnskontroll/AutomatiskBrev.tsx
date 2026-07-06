@@ -14,8 +14,7 @@ const automatiskBrevAlternativer: AutomatiskBrevValg[] = Object.values(Automatis
 export const AutomatiskBrev: FC<{
     automatiskBrev: AutomatiskBrevValg[];
     settAutomatiskBrev: React.Dispatch<React.SetStateAction<AutomatiskBrevValg[]>>;
-    erOvergangsregel?: boolean;
-}> = ({ automatiskBrev, settAutomatiskBrev, erOvergangsregel }) => {
+}> = ({ automatiskBrev, settAutomatiskBrev }) => {
     return (
         <CheckboxGroup
             legend="Send brev automatisk når vedtaket er godkjent:"
@@ -24,9 +23,7 @@ export const AutomatiskBrev: FC<{
         >
             {automatiskBrevAlternativer.map((valg) => (
                 <Checkbox key={valg} value={valg}>
-                    {automatiskBrevValgTekst[valg]}
-                    {erOvergangsregel &&
-                        ' – Kun saker etter tidligere regelverk skal ha dette brevet.'}
+                    {`${automatiskBrevValgTekst[valg]} – Kun saker etter tidligere regelverk skal ha dette brevet.`}
                 </Checkbox>
             ))}
         </CheckboxGroup>

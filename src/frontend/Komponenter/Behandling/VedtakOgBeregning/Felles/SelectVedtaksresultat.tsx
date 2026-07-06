@@ -13,8 +13,6 @@ import { EnsligFamilieSelect } from '../../../../Felles/Input/EnsligFamilieSelec
 import { Neutral100 } from '@navikt/ds-tokens/js';
 import { RessursStatus } from '../../../../App/typer/ressurs';
 import { stønadstyperMedRegelendring2026Begrunnelse } from '../../../../App/hooks/useRegelendring2026';
-import { useToggles } from '../../../../App/context/TogglesContext';
-import { ToggleName } from '../../../../App/context/toggles';
 
 interface Props {
     behandling: Behandling;
@@ -46,7 +44,6 @@ const Container = styled.section`
 const SelectVedtaksresultat = (props: Props): ReactNode => {
     const { behandlingErRedigerbar, regelendring2026Begrunnelse } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
-    const { toggles } = useToggles();
     const { resultatType, settResultatType, alleVilkårOppfylt, behandling } = props;
     const opphørMulig =
         behandling.type === Behandlingstype.REVURDERING && behandling.forrigeBehandlingId;
@@ -54,7 +51,6 @@ const SelectVedtaksresultat = (props: Props): ReactNode => {
         resultatType === EBehandlingResultat.INNVILGE_UTEN_UTBETALING;
 
     const manglerRegelverkBegrunnelse =
-        toggles[ToggleName.regelendringer2026] &&
         stønadstyperMedRegelendring2026Begrunnelse.includes(behandling.stønadstype) &&
         (regelendring2026Begrunnelse.status !== RessursStatus.SUKSESS ||
             !regelendring2026Begrunnelse.data?.begrunnelse.trim());

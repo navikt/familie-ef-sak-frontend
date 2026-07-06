@@ -9,8 +9,6 @@ import VilkårIkkeOpprettetAlert from '../Vurdering/VilkårIkkeOpprettet';
 import { Behandling } from '../../../App/typer/fagsak';
 import { Box } from '@navikt/ds-react';
 import { BehandleSom2026Regelendring } from '../Vurdering/BehandleSom2026Regelendring.tsx';
-import { useToggles } from '../../../App/context/TogglesContext';
-import { ToggleName } from '../../../App/context/toggles';
 import { Vilkårpanel } from '../Vilkårpanel/Vilkårpanel';
 import { VilkårpanelInnhold } from '../Vilkårpanel/VilkårpanelInnhold';
 
@@ -19,7 +17,6 @@ interface Props {
 }
 
 export const TidligereVedtaksperioderFane: React.FC<Props> = ({ behandling }) => {
-    const { toggles } = useToggles();
     const { vilkårState } = useBehandling();
     const {
         hentVilkår,
@@ -78,11 +75,10 @@ export const TidligereVedtaksperioderFane: React.FC<Props> = ({ behandling }) =>
                                 }}
                             </VilkårpanelInnhold>
                         </Vilkårpanel>
-                        {toggles[ToggleName.regelendringer2026] && (
-                            <Box background="neutral-soft" style={{ margin: '0 2rem 2rem 2rem' }}>
-                                <BehandleSom2026Regelendring />
-                            </Box>
-                        )}
+
+                        <Box background="neutral-soft" style={{ margin: '0 2rem 2rem 2rem' }}>
+                            <BehandleSom2026Regelendring />
+                        </Box>
                     </Box>
                 );
             }}
