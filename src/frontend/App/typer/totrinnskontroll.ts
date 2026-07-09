@@ -52,5 +52,5 @@ export const årsakUnderkjentTilTekst: Record<ÅrsakUnderkjent, string> = {
     VEDTAKSBREV: 'Vedtaksbrev',
     RETUR_ETTER_ØNSKE_FRA_SAKSBEHANDLER: 'Retur etter ønske fra saksbehandler',
     SIMULERING_ENDRET: 'Simulering endret',
-    REGELVERK: 'Kontroller regelverksvalg',
+    REGELVERK: 'Regelverksvalg',
 };
