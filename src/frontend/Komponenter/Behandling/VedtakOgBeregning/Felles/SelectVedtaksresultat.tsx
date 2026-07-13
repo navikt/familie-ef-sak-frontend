@@ -11,8 +11,7 @@ import { Stønadstype } from '../../../../App/typer/behandlingstema';
 import { NullstillVedtakModalContext } from './NullstillVedtakModalContext';
 import { EnsligFamilieSelect } from '../../../../Felles/Input/EnsligFamilieSelect';
 import { Neutral100 } from '@navikt/ds-tokens/js';
-import { RessursStatus } from '../../../../App/typer/ressurs';
-import { stønadstyperMedRegelendring2026Begrunnelse } from '../../../../App/hooks/useRegelendring2026';
+import { manglerRegelendring2026Begrunnelse } from '../../../../App/hooks/useRegelendring2026';
 
 interface Props {
     behandling: Behandling;
@@ -50,10 +49,10 @@ const SelectVedtaksresultat = (props: Props): ReactNode => {
     const nullUtbetalingPgaKontantstøtte =
         resultatType === EBehandlingResultat.INNVILGE_UTEN_UTBETALING;
 
-    const manglerRegelverkBegrunnelse =
-        stønadstyperMedRegelendring2026Begrunnelse.includes(behandling.stønadstype) &&
-        (regelendring2026Begrunnelse.status !== RessursStatus.SUKSESS ||
-            !regelendring2026Begrunnelse.data?.begrunnelse.trim());
+    const manglerRegelverkBegrunnelse = manglerRegelendring2026Begrunnelse(
+        behandling,
+        regelendring2026Begrunnelse
+    );
 
     const { settVisNullstillVedtakModal } = useContext(NullstillVedtakModalContext);
 

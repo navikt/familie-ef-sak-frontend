@@ -8,6 +8,8 @@ import {
     RessursSuksess,
 } from '../typer/ressurs';
 import { Stønadstype } from '../typer/behandlingstema';
+import { Behandling } from '../typer/fagsak';
+import { Behandlingsårsak } from '../typer/behandlingsårsak';
 
 interface Regelendring2026Begrunnelse {
     begrunnelse: string;
@@ -17,6 +19,17 @@ export const stønadstyperMedRegelendring2026Begrunnelse: Stønadstype[] = [
     Stønadstype.OVERGANGSSTØNAD,
     Stønadstype.BARNETILSYN,
 ];
+
+// Speiler valideringen i backend (SendTilBeslutterSteg.validerBegrunnelseForRegelveksvalgErSatt).
+// G-omregning er unntatt fordi den normalt kjøres automatisk uten denne vurderingen.
+export const manglerRegelendring2026Begrunnelse = (
+    behandling: Pick<Behandling, 'stønadstype' | 'behandlingsårsak'>,
+    regelendring2026Begrunnelse: Ressurs<Regelendring2026Begrunnelse | undefined>
+): boolean =>
+    stønadstyperMedRegelendring2026Begrunnelse.includes(behandling.stønadstype) &&
+    behandling.behandlingsårsak !== Behandlingsårsak.G_OMREGNING &&
+    (regelendring2026Begrunnelse.status !== RessursStatus.SUKSESS ||
+        !regelendring2026Begrunnelse.data?.begrunnelse.trim());
 
 export const useRegelendring2026 = (
     behandlingId: string

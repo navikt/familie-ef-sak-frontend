@@ -17,8 +17,7 @@ import { NullstillVedtakModalContext } from './Felles/NullstillVedtakModalContex
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 import { SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
 import { EBehandlingResultat } from '../../../App/typer/vedtak';
-import { RessursStatus } from '../../../App/typer/ressurs';
-import { stønadstyperMedRegelendring2026Begrunnelse } from '../../../App/hooks/useRegelendring2026';
+import { manglerRegelendring2026Begrunnelse } from '../../../App/hooks/useRegelendring2026';
 
 const Fane = styled.main`
     display: flex;
@@ -51,10 +50,10 @@ export const VedtakOgBeregningFane: FC<Props> = ({ behandling }) => {
         hentVilkår(behandling.id);
     }, [hentVilkår, behandling.id]);
 
-    const manglerRegelendring2026Begrunnelse =
-        stønadstyperMedRegelendring2026Begrunnelse.includes(behandling.stønadstype) &&
-        (regelendring2026Begrunnelse.status !== RessursStatus.SUKSESS ||
-            !regelendring2026Begrunnelse.data?.begrunnelse.trim());
+    const manglerRegelendring2026BegrunnelseVerdi = manglerRegelendring2026Begrunnelse(
+        behandling,
+        regelendring2026Begrunnelse
+    );
 
     return (
         <NullstillVedtakModalContext.Provider
@@ -71,7 +70,7 @@ export const VedtakOgBeregningFane: FC<Props> = ({ behandling }) => {
                                     resultatType={resultatType}
                                     settResultatType={settResultatType}
                                     manglerRegelendring2026Begrunnelse={
-                                        manglerRegelendring2026Begrunnelse
+                                        manglerRegelendring2026BegrunnelseVerdi
                                     }
                                 />
                             );
@@ -83,7 +82,7 @@ export const VedtakOgBeregningFane: FC<Props> = ({ behandling }) => {
                                     resultatType={resultatType}
                                     settResultatType={settResultatType}
                                     manglerRegelendring2026Begrunnelse={
-                                        manglerRegelendring2026Begrunnelse
+                                        manglerRegelendring2026BegrunnelseVerdi
                                     }
                                 />
                             );
