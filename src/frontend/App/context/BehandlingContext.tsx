@@ -155,6 +155,7 @@ const [BehandlingProvider, useBehandling] = constate(() => {
         vedtak,
         vedtaksresultat,
         fagsak,
+        hentBegrunnelse,
         regelendring2026Begrunnelse,
         lagreBegrunnelse,
     };
