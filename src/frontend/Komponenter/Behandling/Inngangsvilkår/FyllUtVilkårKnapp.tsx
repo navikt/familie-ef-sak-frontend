@@ -29,7 +29,7 @@ export const FyllUtVilkårKnapp: React.FC<Props> = ({
     const { axiosRequest } = useApp();
     const behandlingId = behandling.id;
     const [feilmelding, settFeilmelding] = useState<string>('');
-    const { hentBehandling } = useBehandling();
+    const { hentBehandling, hentBegrunnelse } = useBehandling();
 
     const automatiskFyllUtVilkår = useCallback(() => {
         settFeilmelding('');
@@ -41,11 +41,12 @@ export const FyllUtVilkårKnapp: React.FC<Props> = ({
             if (res.status === RessursStatus.SUKSESS) {
                 hentVilkår(behandlingId);
                 hentBehandling.rerun();
+                hentBegrunnelse();
             } else {
                 settFeilmelding(res.frontendFeilmelding);
             }
         });
-    }, [axiosRequest, behandlingId, hentVilkår, settFeilmelding, hentBehandling]);
+    }, [axiosRequest, behandlingId, hentVilkår, settFeilmelding, hentBehandling, hentBegrunnelse]);
 
     if (!toggles[ToggleName.visAutomatiskUtfylleVilkår] || !behandlingErRedigerbar) {
         return <></>;
