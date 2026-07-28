@@ -2,10 +2,7 @@ import { CheckboxGroup, Checkbox } from '@navikt/ds-react';
 import React, { FC } from 'react';
 
 export type BeskrivelseMarkeringer =
-    | 'Særlig tilsynskrevende barn'
-    | 'Selvstendig næringsdrivende'
-    | 'EØS'
-    | 'Kontrollsak';
+    'Særlig tilsynskrevende barn' | 'Selvstendig næringsdrivende' | 'EØS' | 'Kontrollsak';
 
 const beskrivelseMarkeringerValg: BeskrivelseMarkeringer[] = [
     'Særlig tilsynskrevende barn',

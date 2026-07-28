@@ -3,8 +3,7 @@ import { ModalWrapper } from '../../../../Felles/Modal/ModalWrapper';
 import { formaterIsoMånedÅrFull } from '../../../../App/utils/formatter';
 
 export type Sanksjonsmodal =
-    | { visModal: false }
-    | { visModal: true; index: number; årMånedFra: string };
+    { visModal: false } | { visModal: true; index: number; årMånedFra: string };
 
 export const SlettSanksjonsperiodeModal: React.FC<{
     sanksjonsmodal: Sanksjonsmodal;
