@@ -24,5 +24,4 @@ export enum EBrevmottakerRolle {
 }
 
 export type BrevmottakerRolleOrganisasjon =
-    | EBrevmottakerRolle.FULLMEKTIG
-    | EBrevmottakerRolle.MOTTAKER;
+    EBrevmottakerRolle.FULLMEKTIG | EBrevmottakerRolle.MOTTAKER;

@@ -140,9 +140,7 @@ interface BehandlingsoversiktTabellBehandling {
     kategori?: BehandlingKategori;
     vedtaksdato?: string;
     resultat?:
-        | BehandlingResultat
-        | TilbakekrevingBehandlingsresultatstype
-        | KlagebehandlingResultat;
+        BehandlingResultat | TilbakekrevingBehandlingsresultatstype | KlagebehandlingResultat;
     opprettet: string;
     applikasjon: BehandlingApplikasjon;
     klageinstansResultat?: KlageinstansResultat[];

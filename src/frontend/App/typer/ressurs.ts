@@ -28,10 +28,7 @@ export type RessursFeilet =
     | (FeilMelding & { status: RessursStatus.FUNKSJONELL_FEIL });
 
 export type Ressurs<T> =
-    | { status: RessursStatus.IKKE_HENTET }
-    | RessursLaster
-    | RessursSuksess<T>
-    | RessursFeilet;
+    { status: RessursStatus.IKKE_HENTET } | RessursLaster | RessursSuksess<T> | RessursFeilet;
 
 export const byggTomRessurs = <T>(): Ressurs<T> => {
     return {
