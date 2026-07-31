@@ -5,21 +5,21 @@ import { IOppgaverResponse } from './useHentOppgaver';
 
 export const useHentOppgaverForAutomatiskFerdigstilling = () => {
     const { axiosRequest } = useApp();
-    const [oppgaverForAutomatiskFerdigstilling, settOppgaverForAutomatiskFerdigstilling] =
+    const [oppgaverSomKanAutomatiskFerdigstilles, settOppgaverSomKanAutomatiskFerdigstilles] =
         useState<Ressurs<IOppgaverResponse>>(byggTomRessurs());
 
-    const hentOppgaverForAutomatiskFerdigstilling = useCallback(
+    const hentOppgaverSomKanAutomatiskFerdigstilles = useCallback(
         (behandlingId: string) => {
-            settOppgaverForAutomatiskFerdigstilling(byggHenterRessurs());
+            settOppgaverSomKanAutomatiskFerdigstilles(byggHenterRessurs());
             axiosRequest<IOppgaverResponse, { behandlingId: string }>({
                 method: 'GET',
                 url: `/familie-ef-sak/api/oppgave/oppgaver-for-automatisk-ferdigstilling/${behandlingId}`,
             }).then((res: Ressurs<IOppgaverResponse>) => {
-                settOppgaverForAutomatiskFerdigstilling(res);
+                settOppgaverSomKanAutomatiskFerdigstilles(res);
             });
         },
         [axiosRequest]
     );
 
-    return { hentOppgaverForAutomatiskFerdigstilling, oppgaverForAutomatiskFerdigstilling };
+    return { hentOppgaverSomKanAutomatiskFerdigstilles, oppgaverSomKanAutomatiskFerdigstilles };
 };

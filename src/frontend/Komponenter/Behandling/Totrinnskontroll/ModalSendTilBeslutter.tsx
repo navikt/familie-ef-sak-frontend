@@ -23,7 +23,7 @@ export const ModalSendTilBeslutter: FC<{
     open: boolean;
     setOpen: (open: boolean) => void;
     sendTilBeslutter: (data: SendTilBeslutterRequest) => void;
-    oppgaverForAutomatiskFerdigstilling: Ressurs<IOppgaverResponse>;
+    oppgaverSomKanAutomatiskFerdigstilles: Ressurs<IOppgaverResponse>;
     oppgavetyperSomKanOpprettes: OppgaveTypeForOpprettelse[] | undefined;
     oppgavetyperSomSkalOpprettes: OppgaveTypeForOpprettelse[];
     settOppgavetyperSomSkalOpprettes: React.Dispatch<
@@ -44,7 +44,7 @@ export const ModalSendTilBeslutter: FC<{
     open,
     setOpen,
     sendTilBeslutter,
-    oppgaverForAutomatiskFerdigstilling,
+    oppgaverSomKanAutomatiskFerdigstilles,
     oppgavetyperSomKanOpprettes,
     oppgavetyperSomSkalOpprettes,
     settOppgavetyperSomSkalOpprettes,
@@ -82,8 +82,8 @@ export const ModalSendTilBeslutter: FC<{
         );
 
     const harOppgaver =
-        oppgaverForAutomatiskFerdigstilling.status === RessursStatus.SUKSESS &&
-        oppgaverForAutomatiskFerdigstilling.data.oppgaver.length > 0;
+        oppgaverSomKanAutomatiskFerdigstilles.status === RessursStatus.SUKSESS &&
+        oppgaverSomKanAutomatiskFerdigstilles.data.oppgaver.length > 0;
 
     const kanVelgeMellomFlereOppgavetyper = (oppgavetyperSomKanOpprettes ?? []).length > 1;
     const harValgtAnnetEnnInntektskontroll =
@@ -123,8 +123,8 @@ export const ModalSendTilBeslutter: FC<{
     }, [behandling, erInnvilgelseOvergangsstønad, oppfølgingsoppgave?.automatiskBrev, vilkår]);
 
     return (
-        <DataViewer response={{ oppgaverForAutomatiskFerdigstilling }}>
-            {({ oppgaverForAutomatiskFerdigstilling }) => {
+        <DataViewer response={{ oppgaverSomKanAutomatiskFerdigstilles }}>
+            {({ oppgaverSomKanAutomatiskFerdigstilles }) => {
                 return (
                     <Modal
                         open={open}
@@ -158,8 +158,8 @@ export const ModalSendTilBeslutter: FC<{
                                                 <>
                                                     <VannrettDivider />
                                                     <TabellFerdigstilleOppgaver
-                                                        oppgaverForAutomatiskFerdigstilling={
-                                                            oppgaverForAutomatiskFerdigstilling
+                                                        oppgaverSomKanAutomatiskFerdigstilles={
+                                                            oppgaverSomKanAutomatiskFerdigstilles
                                                         }
                                                         oppgaverSomSkalAutomatiskFerdigstilles={
                                                             oppgaverSomSkalAutomatiskFerdigstilles

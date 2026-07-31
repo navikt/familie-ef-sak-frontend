@@ -79,7 +79,7 @@ const SendTilBeslutter: React.FC<{
         hentBehandlingshistorikk,
         settNyEierModalState,
     } = useBehandling();
-    const { hentOppgaverForAutomatiskFerdigstilling, oppgaverForAutomatiskFerdigstilling } =
+    const { hentOppgaverSomKanAutomatiskFerdigstilles, oppgaverSomKanAutomatiskFerdigstilles } =
         useHentOppgaverForAutomatiskFerdigstilling();
     const oppgavetyperSomKanOpprettesOvergangsstønad =
         oppfølgingsoppgave?.oppgaverForOpprettelse?.oppgavetyperSomKanOpprettes;
@@ -147,8 +147,8 @@ const SendTilBeslutter: React.FC<{
     const skalViseKnappForModal = behandling.stønadstype != Stønadstype.SKOLEPENGER;
 
     useEffect(() => {
-        hentOppgaverForAutomatiskFerdigstilling(behandling.id);
-    }, [behandling.id, hentOppgaverForAutomatiskFerdigstilling]);
+        hentOppgaverSomKanAutomatiskFerdigstilles(behandling.id);
+    }, [behandling.id, hentOppgaverSomKanAutomatiskFerdigstilles]);
 
     useEffect(() => {
         settOppgavetyperSomSkalOpprettes(
@@ -218,7 +218,7 @@ const SendTilBeslutter: React.FC<{
                 oppgavetyperSomKanOpprettes={oppgavetyperSomKanOpprettesOvergangsstønad}
                 oppgavetyperSomSkalOpprettes={oppgavetyperSomSkalOpprettes}
                 settOppgavetyperSomSkalOpprettes={settOppgavetyperSomSkalOpprettes}
-                oppgaverForAutomatiskFerdigstilling={oppgaverForAutomatiskFerdigstilling}
+                oppgaverSomKanAutomatiskFerdigstilles={oppgaverSomKanAutomatiskFerdigstilles}
                 oppgaverSomSkalAutomatiskFerdigstilles={oppgaverSomSkalAutomatiskFerdigstilles}
                 settOppgaverSomSkalAutomatiskFerdigstilles={
                     settOppgaverSomSkalAutomatiskFerdigstilles
