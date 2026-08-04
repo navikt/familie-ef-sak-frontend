@@ -19,7 +19,7 @@ import { AutomatiskBrevValg } from './AutomatiskBrev';
 import { IVilkår } from '../Inngangsvilkår/vilkår';
 import { IVedtak } from '../../../App/typer/vedtak';
 import { utledAvslagValg } from '../VedtakOgBeregning/Felles/utils';
-import { useHentOppgaverForAutomatiskFerdigstilling } from '../../../App/hooks/useHentOppgaverForAutomatiskFerdigstilling';
+import { useHentOppgaverSomKanAutomatiskFerdigstilles } from '../../../App/hooks/useHentOppgaverSomKanAutomatiskFerdigstilles.ts';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
 
 const FlexBox = styled.div`
@@ -80,7 +80,7 @@ const SendTilBeslutter: React.FC<{
         settNyEierModalState,
     } = useBehandling();
     const { hentOppgaverSomKanAutomatiskFerdigstilles, oppgaverSomKanAutomatiskFerdigstilles } =
-        useHentOppgaverForAutomatiskFerdigstilling();
+        useHentOppgaverSomKanAutomatiskFerdigstilles();
     const oppgavetyperSomKanOpprettesOvergangsstønad =
         oppfølgingsoppgave?.oppgaverForOpprettelse?.oppgavetyperSomKanOpprettes;
     const [laster, settLaster] = useState<boolean>(false);

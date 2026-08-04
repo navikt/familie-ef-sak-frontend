@@ -3,7 +3,7 @@ import { useApp } from '../context/AppContext';
 import { useCallback, useState } from 'react';
 import { IOppgaverResponse } from './useHentOppgaver';
 
-export const useHentOppgaverForAutomatiskFerdigstilling = () => {
+export const useHentOppgaverSomKanAutomatiskFerdigstilles = () => {
     const { axiosRequest } = useApp();
     const [oppgaverSomKanAutomatiskFerdigstilles, settOppgaverSomKanAutomatiskFerdigstilles] =
         useState<Ressurs<IOppgaverResponse>>(byggTomRessurs());
