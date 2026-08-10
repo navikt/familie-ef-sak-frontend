@@ -4,13 +4,19 @@ import { KolonneTitler, SmallTable } from './TabellWrapper';
 import { IFullmakt } from '../../App/typer/personopplysninger';
 import { formaterNullableIsoDato } from '../../App/utils/formatter';
 import PersonopplysningerPanel from './PersonopplysningPanel';
-import { Table } from '@navikt/ds-react';
+import { BodyShort, Table } from '@navikt/ds-react';
 import { KopierbartNullableFødselsnummer } from '../Fødselsnummer/KopierbartNullableFødselsnummer';
 
-const Fullmakter: React.FC<{ fullmakter: IFullmakt[] }> = ({ fullmakter }) => {
+const Fullmakter: React.FC<{ fullmakter: IFullmakt[] | null }> = ({ fullmakter }) => {
     return (
         <PersonopplysningerPanel Ikon={SkrivendeBlyant} tittel={'Fullmakter'}>
-            {fullmakter.length !== 0 && (
+            {fullmakter === null && (
+                <BodyShort>
+                    Fullmakt er ukjent. Du mangler tilgang til å se fullmaktsinformasjon for denne
+                    personen.
+                </BodyShort>
+            )}
+            {fullmakter && fullmakter.length !== 0 && (
                 <SmallTable>
                     <KolonneTitler
                         titler={['Fullmektig', 'Fødselsnummer', 'Områder', 'Fra', 'Til']}

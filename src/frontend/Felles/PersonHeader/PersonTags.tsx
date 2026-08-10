@@ -34,7 +34,7 @@ interface Props {
     adressebeskyttelse: Adressebeskyttelse | undefined;
     alder: number | undefined;
     egenAnsatt: boolean;
-    fullmakt: IFullmakt[];
+    fullmakt: IFullmakt[] | null;
     folkeregisterPersonStatus: Folkeregisterpersonstatus | undefined;
     migrert: boolean;
     vergemål: IVergemål[];
@@ -77,7 +77,17 @@ const PersonTags: React.FC<Props> = ({
                     </TagLitenSkjerm>
                 </>
             )}
-            {fullmakt.some(
+            {fullmakt === null && (
+                <>
+                    <TagStorSkjerm variant={'error'} size={'small'}>
+                        Fullmakt ukjent
+                    </TagStorSkjerm>
+                    <TagLitenSkjerm variant={'error'} size={'small'}>
+                        F?
+                    </TagLitenSkjerm>
+                </>
+            )}
+            {fullmakt?.some(
                 (f) => f.gyldigTilOgMed === null || erEtterDagensDato(f.gyldigTilOgMed)
             ) && (
                 <>
