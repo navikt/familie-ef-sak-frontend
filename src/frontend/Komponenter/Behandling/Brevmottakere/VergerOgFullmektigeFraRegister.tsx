@@ -10,7 +10,7 @@ interface Props {
     valgteMottakere: IBrevmottaker[];
     settValgteMottakere: Dispatch<SetStateAction<IBrevmottaker[]>>;
     verger: IVergemål[];
-    fullmakter: IFullmakt[];
+    fullmakter: IFullmakt[] | null;
 }
 
 const StyledMottakerBoks = styled.div`
@@ -34,7 +34,7 @@ export const VergerOgFullmektigeFraRegister: FC<Props> = ({
 }) => {
     const muligeMottakere = [
         ...verger.map(vergemålTilBrevmottaker),
-        ...fullmakter.map(fullmaktTilBrevMottaker),
+        ...(fullmakter ?? []).map(fullmaktTilBrevMottaker),
     ];
 
     const settMottaker = (mottaker: IBrevmottaker) => () => {

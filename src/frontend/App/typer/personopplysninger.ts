@@ -10,7 +10,7 @@ export interface IPersonopplysninger {
     statsborgerskap: IStatsborgerskap[];
     sivilstand: ISivilstand[];
     adresse: IAdresse[];
-    fullmakt: IFullmakt[];
+    fullmakt: IFullmakt[] | null;
     barn: IBarn[];
     innflyttingTilNorge: IInnflyttingTilNorge[];
     utflyttingFraNorge: IUtflyttingFraNorge[];
