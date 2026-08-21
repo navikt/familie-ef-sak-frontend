@@ -126,9 +126,12 @@ export const HenleggModal: FC<{
         settHenlagtårsak(undefined);
     };
 
-    const tilknyttetFullmakt = fullmakter.some(
-        (fullmakt) => fullmakt.gyldigTilOgMed === null || erEtterDagensDato(fullmakt.gyldigTilOgMed)
-    );
+    const tilknyttetFullmakt =
+        fullmakter === null ||
+        fullmakter.some(
+            (fullmakt) =>
+                fullmakt.gyldigTilOgMed === null || erEtterDagensDato(fullmakt.gyldigTilOgMed)
+        );
 
     const henlagtårsakTrukketTilbake = henlagtårsak === EHenlagtårsak.TRUKKET_TILBAKE;
 

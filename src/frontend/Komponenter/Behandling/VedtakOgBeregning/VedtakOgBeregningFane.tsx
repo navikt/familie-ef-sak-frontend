@@ -17,6 +17,7 @@ import { NullstillVedtakModalContext } from './Felles/NullstillVedtakModalContex
 import { AlertError } from '../../../Felles/Visningskomponenter/Alerts';
 import { SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
 import { EBehandlingResultat } from '../../../App/typer/vedtak';
+import { manglerRegelendring2026Begrunnelse } from '../../../App/hooks/useRegelendring2026';
 
 const Fane = styled.main`
     display: flex;
@@ -35,7 +36,7 @@ interface Props {
 }
 
 export const VedtakOgBeregningFane: FC<Props> = ({ behandling }) => {
-    const { vilkårState } = useBehandling();
+    const { vilkårState, regelendring2026Begrunnelse } = useBehandling();
 
     const [visNullstillVedtakModal, settVisNullstillVedtakModal] = useState(false);
     const { vilkår, hentVilkår } = vilkårState;
@@ -48,6 +49,11 @@ export const VedtakOgBeregningFane: FC<Props> = ({ behandling }) => {
     useEffect(() => {
         hentVilkår(behandling.id);
     }, [hentVilkår, behandling.id]);
+
+    const manglerRegelendring2026BegrunnelseVerdi = manglerRegelendring2026Begrunnelse(
+        behandling,
+        regelendring2026Begrunnelse
+    );
 
     return (
         <NullstillVedtakModalContext.Provider
@@ -63,6 +69,9 @@ export const VedtakOgBeregningFane: FC<Props> = ({ behandling }) => {
                                     vilkår={vilkår}
                                     resultatType={resultatType}
                                     settResultatType={settResultatType}
+                                    manglerRegelendring2026Begrunnelse={
+                                        manglerRegelendring2026BegrunnelseVerdi
+                                    }
                                 />
                             );
                         case Stønadstype.BARNETILSYN:
@@ -72,6 +81,9 @@ export const VedtakOgBeregningFane: FC<Props> = ({ behandling }) => {
                                     vilkår={vilkår}
                                     resultatType={resultatType}
                                     settResultatType={settResultatType}
+                                    manglerRegelendring2026Begrunnelse={
+                                        manglerRegelendring2026BegrunnelseVerdi
+                                    }
                                 />
                             );
                         case Stønadstype.SKOLEPENGER:
@@ -101,6 +113,7 @@ export interface VedtakOgBeregningProps {
     vilkår: IVilkår;
     resultatType: EBehandlingResultat | undefined;
     settResultatType: (resultat: EBehandlingResultat | undefined) => void;
+    manglerRegelendring2026Begrunnelse?: boolean;
 }
 
 const FaneOvergangsstønad: React.FC<VedtakOgBeregningProps> = ({
@@ -108,9 +121,12 @@ const FaneOvergangsstønad: React.FC<VedtakOgBeregningProps> = ({
     vilkår,
     resultatType,
     settResultatType,
+    manglerRegelendring2026Begrunnelse,
 }) => (
     <Fane>
         <VedtaksoppsummeringOvergangsstønad vilkår={vilkår} behandling={behandling} />
+        {manglerRegelendring2026Begrunnelse && <AlertBegrunnelseMangler />}
+
         {behandling.steg === Steg.VILKÅR ? (
             <AlertStripe />
         ) : (
@@ -129,9 +145,11 @@ const FaneBarnetilsyn: React.FC<VedtakOgBeregningProps> = ({
     vilkår,
     resultatType,
     settResultatType,
+    manglerRegelendring2026Begrunnelse,
 }) => (
     <Fane>
         <VedtaksoppsummeringBarnetilsyn vilkår={vilkår} behandling={behandling} />
+        {manglerRegelendring2026Begrunnelse && <AlertBegrunnelseMangler />}
         {behandling.steg === Steg.VILKÅR ? (
             <AlertStripe />
         ) : (
@@ -171,5 +189,11 @@ const AlertStripe = () => (
         <SmallTextLabel>
             Vedtaksresultat kan ikke settes da et eller flere vilkår er ubehandlet.
         </SmallTextLabel>
+    </AlertErrorLeft>
+);
+
+const AlertBegrunnelseMangler = () => (
+    <AlertErrorLeft inline>
+        <SmallTextLabel>Begrunnelse for valg av regelverk må fylles ut.</SmallTextLabel>
     </AlertErrorLeft>
 );

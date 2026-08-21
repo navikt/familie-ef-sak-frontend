@@ -1,10 +1,16 @@
 import React from 'react';
 import { IVilkår } from '../../Inngangsvilkår/vilkår';
-import { Heading } from '@navikt/ds-react';
-import { ResultatVisning } from './ResultatVisning';
+import { Heading, Label } from '@navikt/ds-react';
+import { ResultatVisning, ResultatGrid, FlexBox } from './ResultatVisning';
 import styled from 'styled-components';
 import { sorterUtAktivitetsvilkår, sorterUtInngangsvilkår } from './utils';
 import { Neutral100 } from '@navikt/ds-tokens/js';
+import { useBehandling } from '../../../../App/context/BehandlingContext';
+import { RessursStatus } from '../../../../App/typer/ressurs';
+import { stønadstyperMedRegelendring2026Begrunnelse } from '../../../../App/hooks/useRegelendring2026';
+import { VilkårsresultatIkon } from '../../../../Felles/Ikoner/VilkårsresultatIkon';
+import { Vilkårsresultat } from '../../Inngangsvilkår/vilkår';
+import { BodyShortSmall } from '../../../../Felles/Visningskomponenter/Tekster';
 
 const Container = styled.div`
     padding: 1rem;
@@ -16,6 +22,18 @@ export const Vilkårsvurdering: React.FC<{
 }> = ({ vilkår }) => {
     const inngangsvilkår = sorterUtInngangsvilkår(vilkår);
     const aktivitetsvilkår = sorterUtAktivitetsvilkår(vilkår);
+    const { regelendring2026Begrunnelse, behandling } = useBehandling();
+
+    const stønadstype =
+        behandling.status === RessursStatus.SUKSESS ? behandling.data.stønadstype : undefined;
+
+    const skalViseRegelverkBegrunnelse =
+        stønadstype !== undefined &&
+        stønadstyperMedRegelendring2026Begrunnelse.includes(stønadstype);
+
+    const harBegrunnelse =
+        regelendring2026Begrunnelse.status === RessursStatus.SUKSESS &&
+        !!regelendring2026Begrunnelse.data?.begrunnelse.trim();
 
     return (
         <Container>
@@ -24,6 +42,23 @@ export const Vilkårsvurdering: React.FC<{
             </Heading>
             <ResultatVisning vilkårsvurderinger={inngangsvilkår} tittel="Inngangsvilkår:" />
             <ResultatVisning vilkårsvurderinger={aktivitetsvilkår} tittel="Aktivitetsvilkår:" />
+            {skalViseRegelverkBegrunnelse && (
+                <ResultatGrid>
+                    <Label size="small">Regelverk begrunnelse:</Label>
+                    <FlexBox>
+                        <VilkårsresultatIkon
+                            vilkårsresultat={
+                                harBegrunnelse
+                                    ? Vilkårsresultat.OPPFYLT
+                                    : Vilkårsresultat.IKKE_TATT_STILLING_TIL
+                            }
+                        />
+                        <BodyShortSmall>
+                            {harBegrunnelse ? '1 av 1 oppfylt' : '0 av 1 ikke vurdert'}
+                        </BodyShortSmall>
+                    </FlexBox>
+                </ResultatGrid>
+            )}
         </Container>
     );
 };

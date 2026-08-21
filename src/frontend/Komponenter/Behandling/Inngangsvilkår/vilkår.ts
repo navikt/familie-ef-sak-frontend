@@ -30,6 +30,7 @@ export interface IVilkårGrunnlag {
     harKontantstøttePerioder?: boolean; // gjelder historiske behandlinger
     kontantstøttePerioder: KontantstøttePeriode[];
     behandlingOpprettet?: string;
+    erSøknadRegelendring2026: boolean;
 }
 
 export interface KontantstøttePeriode {

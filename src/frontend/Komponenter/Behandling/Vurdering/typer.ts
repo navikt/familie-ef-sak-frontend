@@ -1,9 +1,9 @@
 import { VilkårType } from '../Inngangsvilkår/vilkår';
 
 export enum BegrunnelseRegel {
-    'PÅKREVD' = 'PÅKREVD',
-    'VALGFRI' = 'VALGFRI',
-    'UTEN' = 'UTEN',
+    PÅKREVD = 'PÅKREVD',
+    VALGFRI = 'VALGFRI',
+    UTEN = 'UTEN',
 }
 
 export type SluttNode = 'SLUTT_NODE';

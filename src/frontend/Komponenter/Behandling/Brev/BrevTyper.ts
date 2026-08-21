@@ -40,8 +40,7 @@ export type Fritekstområder = {
 
 export type DelmalGruppe = { type: 'DelmalGruppe'; gruppeVisningsnavn: string; delmaler: Delmal[] };
 export type BrevmenyGruppe =
-    | { type: 'fritekstområde'; fritekstområde: FritekstBlokk }
-    | DelmalGruppe;
+    { type: 'fritekstområde'; fritekstområde: FritekstBlokk } | DelmalGruppe;
 export const erDelmalGruppe = (e: BrevmenyGruppe): e is DelmalGruppe => e.type === 'DelmalGruppe';
 
 export interface DokumentMal {

@@ -38,15 +38,11 @@ export const harBarnMellomSeksOgTolvMåneder = (vilkår: IVilkår) => {
 
 export const utledAutomatiskBrev = (
     lagretAutomatiskBrev: AutomatiskBrevValg[] | undefined,
-    erInnvilgelseOvergangsstønad: boolean,
-    vilkår?: IVilkår,
-    erOvergangsregel?: boolean
+    erInnvilgelseOvergangsstønad: boolean
 ) => {
     if (!erInnvilgelseOvergangsstønad) {
         return [];
     }
-
-    const harBarnMellomSeksOgTolvMnder = vilkår && harBarnMellomSeksOgTolvMåneder(vilkår);
 
     const automatiskBrev: Set<AutomatiskBrevValg> = new Set();
 
@@ -54,12 +50,6 @@ export const utledAutomatiskBrev = (
         lagretAutomatiskBrev.forEach((brev) => {
             automatiskBrev.add(brev as AutomatiskBrevValg);
         });
-    }
-
-    if (harBarnMellomSeksOgTolvMnder && !erOvergangsregel) {
-        automatiskBrev.add(AutomatiskBrevValg.VARSEL_OM_AKTIVITETSPLIKT);
-    } else {
-        automatiskBrev.delete(AutomatiskBrevValg.VARSEL_OM_AKTIVITETSPLIKT);
     }
 
     return Array.from(automatiskBrev);

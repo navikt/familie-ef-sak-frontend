@@ -44,8 +44,9 @@ export const delvilkårTypeTilTekst: Record<string, string> = {
     INNTEKT_LAVERE_ENN_INNTEKTSGRENSE: 'Har brukeren inntekt under 6 ganger grunnbeløpet?',
     INNTEKT_SAMSVARER_MED_OS:
         'Er inntekten i samsvar med den inntekten som er lagt til grunn ved beregning av overgangsstønad?',
-    HAR_ALDER_LAVERE_ENN_GRENSEVERDI: 'Har barnet fullført 4.skoleår?',
-    UNNTAK_ALDER: 'Oppfylles unntak etter å ha fullført 4. skoleår?',
+    HAR_ALDER_LAVERE_ENN_GRENSEVERDI:
+        'Er barnet over 14 måneder (nytt regelverk) eller har barnet fullført 4. skoleår (tidligere regelverk)?',
+    UNNTAK_ALDER: 'Fyller bruker vilkårene for å stå stønad utover aldersgrensen?',
     HAR_DOKUMENTERTE_TILSYNSUTGIFTER: 'Har brukeren dokumenterte tilsynsutgifter?',
     RETT_TIL_OVERGANGSSTØNAD: 'Er vilkårene for rett til overgangsstønad oppfylt?',
     DOKUMENTASJON_AV_UTDANNING: 'Er det dokumentert at bruker er under utdanning?',
@@ -103,12 +104,13 @@ export const svarTypeTilTekst: Record<string, string> = {
     TILSTØTENDE_BOLIGER_ELLER_REKKEHUS_I_SAMMEGATE:
         'Ja, Foreldrene bor i tilstøtende boliger eller rekkehus i samme gate',
     ER_I_ARBEID: 'Ja, det er dokumentert at brukeren er i arbeid',
-    ETABLERER_EGEN_VIRKSOMHET: 'Ja, det er dokumentert at brukeren etablerer egen virksomhet',
+    ETABLERER_EGEN_VIRKSOMHET:
+        'Ja, det er dokumentert at brukeren etablerer egen virksomhet (gjelder kun tidligere regelverk)',
     HAR_FORBIGÅENDE_SYKDOM: 'Ja, det er dokumentert at brukeren har forbigående sykdom',
     TRENGER_MER_TILSYN_ENN_JEVNALDRENDE:
-        'Ja, barnet har fullført fjerde skoleår og det er dokumentert at barnet trenger vesentlig mer tilsyn enn jevnaldrende',
+        'Ja, det er dokumentert at barnet trenger vesentlig mer tilsyn enn jevnaldrende',
     FORSØRGER_HAR_LANGVARIG_ELLER_UREGELMESSIG_ARBEIDSTID:
-        'Ja, barnet har fullført fjerde skoleår og det er dokumentert at forsørgeren har langvarig og/eller uregelmessig arbeidstid',
+        'Ja, det er dokumentert at bruker har langvarig og/eller uregelmessig arbeidstid',
     NOEN_MÅNEDER_OVERSTIGER_6G: 'Ja, men noen måneder overstiger 6G',
     BRUKER_MOTTAR_IKKE_OVERGANGSSTØNAD: 'Bruker mottar ikke overgangsstønad',
 };

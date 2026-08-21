@@ -15,6 +15,7 @@ interface Props {
     vilkårsresultat: Vilkårsresultat;
     children: ReactNode;
     vilkår: VilkårType;
+    ekstraTittelInnhold?: ReactNode;
 }
 
 export const Vilkårpanel: FC<Props> = ({
@@ -23,6 +24,7 @@ export const Vilkårpanel: FC<Props> = ({
     vilkårsresultat,
     children,
     vilkår,
+    ekstraTittelInnhold,
 }) => {
     const { ekspanderteVilkår, toggleEkspandertTilstand } = useEkspanderbareVilkårpanelContext();
 
@@ -39,6 +41,7 @@ export const Vilkårpanel: FC<Props> = ({
                             {paragrafTittel}
                         </BodyShortSmall>
                     )}
+                    {ekstraTittelInnhold}
                 </HStack>
                 <Button
                     size="medium"

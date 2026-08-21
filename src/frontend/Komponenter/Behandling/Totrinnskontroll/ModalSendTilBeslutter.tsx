@@ -16,8 +16,6 @@ import { harBarnMellomSeksOgTolvMåneder, utledAutomatiskBrev } from './utils';
 import { Stønadstype } from '../../../App/typer/behandlingstema';
 import { Oppfølgingsoppgave } from '../../../App/hooks/useHentOppfølgingsoppgave';
 import { Oppgaveprioritet } from './Oppgaveprioritet';
-import { useToggles } from '../../../App/context/TogglesContext';
-import { ToggleName } from '../../../App/context/toggles';
 
 export const ModalSendTilBeslutter: FC<{
     behandling: Behandling;
@@ -25,7 +23,7 @@ export const ModalSendTilBeslutter: FC<{
     open: boolean;
     setOpen: (open: boolean) => void;
     sendTilBeslutter: (data: SendTilBeslutterRequest) => void;
-    oppgaverForAutomatiskFerdigstilling: Ressurs<IOppgaverResponse>;
+    oppgaverSomKanAutomatiskFerdigstilles: Ressurs<IOppgaverResponse>;
     oppgavetyperSomKanOpprettes: OppgaveTypeForOpprettelse[] | undefined;
     oppgavetyperSomSkalOpprettes: OppgaveTypeForOpprettelse[];
     settOppgavetyperSomSkalOpprettes: React.Dispatch<
@@ -46,7 +44,7 @@ export const ModalSendTilBeslutter: FC<{
     open,
     setOpen,
     sendTilBeslutter,
-    oppgaverForAutomatiskFerdigstilling,
+    oppgaverSomKanAutomatiskFerdigstilles,
     oppgavetyperSomKanOpprettes,
     oppgavetyperSomSkalOpprettes,
     settOppgavetyperSomSkalOpprettes,
@@ -55,9 +53,6 @@ export const ModalSendTilBeslutter: FC<{
     avslagValg,
     oppfølgingsoppgave,
 }) => {
-    const { toggles } = useToggles();
-    const erOvergangsregel = toggles[ToggleName.regelendringer2026] || false;
-
     const [
         årForInntektskontrollSelvstendigNæringsdrivende,
         settÅrForInntektskontrollSelvstendigNæringsdrivende,
@@ -76,12 +71,7 @@ export const ModalSendTilBeslutter: FC<{
     } = avslagValg;
 
     const [automatiskBrev, settAutomatiskBrev] = useState<AutomatiskBrevValg[]>(
-        utledAutomatiskBrev(
-            oppfølgingsoppgave?.automatiskBrev,
-            erInnvilgelseOvergangsstønad,
-            vilkår,
-            erOvergangsregel
-        )
+        utledAutomatiskBrev(oppfølgingsoppgave?.automatiskBrev, erInnvilgelseOvergangsstønad)
     );
 
     const handleSettOppgaverSomSkalFerdigstilles = (oppgaveId: number) =>
@@ -92,8 +82,8 @@ export const ModalSendTilBeslutter: FC<{
         );
 
     const harOppgaver =
-        oppgaverForAutomatiskFerdigstilling.status === RessursStatus.SUKSESS &&
-        oppgaverForAutomatiskFerdigstilling.data.oppgaver.length > 0;
+        oppgaverSomKanAutomatiskFerdigstilles.status === RessursStatus.SUKSESS &&
+        oppgaverSomKanAutomatiskFerdigstilles.data.oppgaver.length > 0;
 
     const kanVelgeMellomFlereOppgavetyper = (oppgavetyperSomKanOpprettes ?? []).length > 1;
     const harValgtAnnetEnnInntektskontroll =
@@ -128,24 +118,13 @@ export const ModalSendTilBeslutter: FC<{
 
     useEffect(() => {
         settAutomatiskBrev(
-            utledAutomatiskBrev(
-                oppfølgingsoppgave?.automatiskBrev,
-                erInnvilgelseOvergangsstønad,
-                vilkår,
-                erOvergangsregel
-            )
+            utledAutomatiskBrev(oppfølgingsoppgave?.automatiskBrev, erInnvilgelseOvergangsstønad)
         );
-    }, [
-        behandling,
-        erInnvilgelseOvergangsstønad,
-        erOvergangsregel,
-        oppfølgingsoppgave?.automatiskBrev,
-        vilkår,
-    ]);
+    }, [behandling, erInnvilgelseOvergangsstønad, oppfølgingsoppgave?.automatiskBrev, vilkår]);
 
     return (
-        <DataViewer response={{ oppgaverForAutomatiskFerdigstilling }}>
-            {({ oppgaverForAutomatiskFerdigstilling }) => {
+        <DataViewer response={{ oppgaverSomKanAutomatiskFerdigstilles }}>
+            {({ oppgaverSomKanAutomatiskFerdigstilles }) => {
                 return (
                     <Modal
                         open={open}
@@ -179,8 +158,8 @@ export const ModalSendTilBeslutter: FC<{
                                                 <>
                                                     <VannrettDivider />
                                                     <TabellFerdigstilleOppgaver
-                                                        oppgaverForAutomatiskFerdigstilling={
-                                                            oppgaverForAutomatiskFerdigstilling
+                                                        oppgaverSomKanAutomatiskFerdigstilles={
+                                                            oppgaverSomKanAutomatiskFerdigstilles
                                                         }
                                                         oppgaverSomSkalAutomatiskFerdigstilles={
                                                             oppgaverSomSkalAutomatiskFerdigstilles
@@ -203,7 +182,6 @@ export const ModalSendTilBeslutter: FC<{
                                                 <AutomatiskBrev
                                                     automatiskBrev={automatiskBrev}
                                                     settAutomatiskBrev={settAutomatiskBrev}
-                                                    erOvergangsregel={erOvergangsregel}
                                                 />
                                                 <VannrettDivider />
                                             </>
