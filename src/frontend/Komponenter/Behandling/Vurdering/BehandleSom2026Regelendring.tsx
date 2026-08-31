@@ -10,6 +10,7 @@ import { regelverkLabel } from '../../../App/typer/behandlingstype.ts';
 import { VilkårpanelInnhold } from '../Vilkårpanel/VilkårpanelInnhold.tsx';
 import { VertikalStrek, VurderingLesemodusGrid } from './StyledVurdering.tsx';
 import { stønadstyperMedRegelendring2026Begrunnelse } from '../../../App/hooks/useRegelendring2026.ts';
+import { sendTilUmami } from '../../../App/utils/umami.ts';
 
 export const BehandleSom2026Regelendring: FC = () => {
     const { behandlingId } = useParams<{ behandlingId: string }>();
@@ -63,6 +64,10 @@ export const BehandleSom2026Regelendring: FC = () => {
                 settErRegelendring2026(pendingVerdi);
                 hentBehandling.rerun();
                 hentVedtak.rerun();
+                sendTilUmami('endre_regelverk', {
+                    behandlingId,
+                    tilNyttRegelverk: pendingVerdi,
+                });
             }
         });
         settVisBekreftelsesmodal(false);
