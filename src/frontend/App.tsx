@@ -11,6 +11,7 @@ import { HeaderMedSøk } from './Felles/HeaderMedSøk/Header/HeaderMedSøk';
 import { BehandlingSide } from './Komponenter/Behandling/BehandlingSide';
 import { OppgavebenkSide } from './Komponenter/Oppgavebenk/OppgavebenkSide';
 import { AppEnv, hentEnv } from './App/api/env';
+import { useStartUmami } from './App/hooks/useStartUmami';
 import { Toast } from './Felles/Toast/Toast';
 import { AdminSide } from './Komponenter/Admin/AdminSide';
 import ScrollToTop from './Felles/ScrollToTop/ScrollToTop';
@@ -37,6 +38,8 @@ import { VerktøySide } from './Komponenter/Verktøy/VerktøySide';
 export const App: React.FC = () => {
     const [innloggetSaksbehandler, settInnloggetSaksbehandler] = useState<ISaksbehandler>();
     const [appEnv, settAppEnv] = useState<AppEnv>();
+
+    useStartUmami();
 
     React.useEffect(() => {
         hentInnloggetBruker().then((innhentetInnloggetSaksbehandler: ISaksbehandler) => {
