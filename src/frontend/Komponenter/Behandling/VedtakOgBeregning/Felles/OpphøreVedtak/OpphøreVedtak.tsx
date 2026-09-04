@@ -83,7 +83,7 @@ export const OpphøreVedtak: React.FC<{
         }
     };
 
-    const årBakITid = 12;
+    const årBakITid = 13;
 
     return (
         <Form onSubmit={lagreVedtak}>
