@@ -66,7 +66,9 @@ export const BehandleSom2026Regelendring: FC = () => {
                 hentVedtak.rerun();
                 sendTilUmami('endre_regelverk', {
                     behandlingId,
-                    tilNyttRegelverk: pendingVerdi,
+                    tilNyttRegelverk: pendingVerdi
+                        ? 'byttet til nytt regelverk'
+                        : 'byttet til gammelt regelverk',
                 });
             }
         });
