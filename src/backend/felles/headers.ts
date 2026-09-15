@@ -8,8 +8,10 @@ const navTelemetry = 'https://telemetry.nav.no';
 const navTelemetryDev = 'https://telemetry.ekstern.dev.nav.no';
 const navCdn = 'https://cdn.nav.no';
 const navUmami = 'https://umami.nav.no';
+const navReopsEventProxy = 'https://reops-event-proxy.nav.no';
+const navReopsEventProxyDev = 'https://reops-event-proxy.ekstern.dev.nav.no';
 
-const cspString = `default-src 'self' data: ${sentry} ${navTelemetry} ${navTelemetryDev} ${navCdn} ${navUmami}; style-src 'self' ${styleSource} data: 'unsafe-inline'; font-src 'self' ${fontSource} ${navFontSource} data:; frame-src 'self' blob:;`;
+const cspString = `default-src 'self' data: ${sentry} ${navTelemetry} ${navTelemetryDev} ${navCdn} ${navUmami} ${navReopsEventProxy} ${navReopsEventProxyDev}; style-src 'self' ${styleSource} data: 'unsafe-inline'; font-src 'self' ${fontSource} ${navFontSource} data:; frame-src 'self' blob:;`;
 
 const setup = (app: Express) => {
     app.disable('x-powered-by');
