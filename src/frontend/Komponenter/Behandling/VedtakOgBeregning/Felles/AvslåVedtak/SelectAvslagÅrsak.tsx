@@ -30,6 +30,10 @@ const FeilmeldingTekst = styled(BodyShortSmall)`
     color: var(--ax-text-warning-subtle);
 `;
 
+function sortÅrsakerTilAvslag(a: EAvslagÅrsak, b: EAvslagÅrsak): number {
+    return a.localeCompare(b);
+}
+
 const SelectAvslagÅrsak = (props: Props): ReactNode => {
     const { behandlingErRedigerbar } = useBehandling();
     const { settIkkePersistertKomponent } = useApp();
@@ -56,7 +60,10 @@ const SelectAvslagÅrsak = (props: Props): ReactNode => {
                 hideLabel={false}
             >
                 <option value="">Velg</option>
-                {årsakerTilAvslag.filter(fjernHistoriskeValg).map((årsak) => {
+                {årsakerTilAvslag
+                    .sort(sortÅrsakerTilAvslag)
+                    .filter(fjernHistoriskeValg)
+                    .map((årsak) => {
                     return (
                         <option value={årsak} key={årsak}>
                             {avslagÅrsakTilTekst[årsak]}
