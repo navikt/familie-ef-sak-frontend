@@ -64,12 +64,12 @@ const SelectAvslagÅrsak = (props: Props): ReactNode => {
                     .sort(sortÅrsakerTilAvslag)
                     .filter(fjernHistoriskeValg)
                     .map((årsak) => {
-                    return (
-                        <option value={årsak} key={årsak}>
-                            {avslagÅrsakTilTekst[årsak]}
-                        </option>
-                    );
-                })}
+                        return (
+                            <option value={årsak} key={årsak}>
+                                {avslagÅrsakTilTekst[årsak]}
+                            </option>
+                        );
+                    })}
             </StyledSelect>
             {feilmelding && <FeilmeldingTekst>{feilmelding}</FeilmeldingTekst>}
         </>
