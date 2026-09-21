@@ -83,7 +83,7 @@ export const BehandleSom2026Regelendring: FC = () => {
 
     const radioGroup = (
         <RadioGroup
-            legend="Ønsker du å behandle denne saken etter nytt eller tidligere regelverk?"
+            legend="Ønsker du å behandle denne saken etter nytt regelverk, eller overgangsregler?"
             value={erRegelendring2026}
             onChange={håndterRegelendring}
             readOnly={!behandlingErRedigerbar}
