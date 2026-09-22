@@ -82,7 +82,7 @@ export const validerUtgiftsperioder = ({
             årMånedFra: undefined,
             årMånedTil: undefined,
             barn: [],
-            utgifter: validerGyldigTallverdiOgIkkeUndefined(utgifter),
+            utgifter: undefined,
         };
         const erSistePeriode = index === utgiftsperioder.length - 1;
 
@@ -100,6 +100,13 @@ export const validerUtgiftsperioder = ({
         }
 
         const opphørEllerSanksjon = erOpphørEllerSanksjon(periodetype);
+
+        if (!opphørEllerSanksjon) {
+            utgiftsperiodeFeil = {
+                ...utgiftsperiodeFeil,
+                utgifter: validerGyldigTallverdiOgIkkeUndefined(utgifter),
+            };
+        }
 
         if (opphørEllerSanksjon && aktivitetstype) {
             utgiftsperiodeFeil = {
