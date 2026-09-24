@@ -83,7 +83,7 @@ const OppgaveTabell: React.FC<Props> = ({
 
     return (
         <>
-            <PaginationContainer justify={'center'} gap={'16'}>
+            <PaginationContainer justify={'center'} gap={'space-16'}>
                 {antallSider > 1 && (
                     <Pagination
                         size={'xsmall'}
