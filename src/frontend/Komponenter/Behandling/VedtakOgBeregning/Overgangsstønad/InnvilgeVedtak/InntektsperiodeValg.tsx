@@ -2,7 +2,7 @@ import {
     EInntektsperiodeProperty,
     ESamordningsfradragtype,
     IInntektsperiode,
-    samordningsfradagTilTekst,
+    samordningsfradragTilTekst,
 } from '../../../../../App/typer/vedtak';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import styled from 'styled-components';
@@ -461,7 +461,7 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                     erLesevisning={!behandlingErRedigerbar}
                                     lesevisningVerdi={
                                         samordningsfradragstype.value &&
-                                        samordningsfradagTilTekst[
+                                        samordningsfradragTilTekst[
                                             samordningsfradragstype.value as ESamordningsfradragtype
                                         ]
                                     }
@@ -469,6 +469,9 @@ const InntektsperiodeValg: React.FC<Props> = ({
                                     <option value="">Velg</option>
                                     <option value={ESamordningsfradragtype.UFØRETRYGD}>
                                         Uføretrygd
+                                    </option>
+                                    <option value={ESamordningsfradragtype.OMSTILLINGSSTØNAD}>
+                                        Omstillingsstønad
                                     </option>
                                     <option value={ESamordningsfradragtype.GJENLEVENDEPENSJON}>
                                         Gjenlevendepensjon
