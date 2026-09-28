@@ -362,6 +362,7 @@ export enum EAktivitet {
 
 export enum ESamordningsfradragtype {
     UFØRETRYGD = 'UFØRETRYGD',
+    OMSTILLINGSSTØNAD = 'OMSTILLINGSSTØNAD',
     GJENLEVENDEPENSJON = 'GJENLEVENDEPENSJON',
     EØS_FAMILIEYTELSE = 'EØS_FAMILIEYTELSE',
 }
@@ -464,8 +465,9 @@ export const avslagÅrsakTilTekst: Record<EAvslagÅrsak, string> = {
     VILKÅR_IKKE_OPPFYLT_TIDSAVGRENSET_PERIODE: 'Vilkår ikke oppfylt i tidsavgrenset periode',
 };
 
-export const samordningsfradagTilTekst: Record<ESamordningsfradragtype, string> = {
+export const samordningsfradragTilTekst: Record<ESamordningsfradragtype, string> = {
     UFØRETRYGD: 'Uføretrygd',
+    OMSTILLINGSSTØNAD: 'Omstillingsstønad',
     GJENLEVENDEPENSJON: 'Gjenlevendepensjon',
     EØS_FAMILIEYTELSE: 'EØS-familieytelse',
 };
