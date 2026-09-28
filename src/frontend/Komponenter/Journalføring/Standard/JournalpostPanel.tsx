@@ -135,7 +135,7 @@ const JournalpostPanel: React.FC<Props> = ({ journalpost, journalpostState }) =>
                 </HStack>
             </ExpansionCardHeader>
             <ExpansionCard.Content>
-                <ExpansionCardContent gap="4">
+                <ExpansionCardContent gap="space-4">
                     <StyledSelect
                         label="Stønadstype"
                         size="small"

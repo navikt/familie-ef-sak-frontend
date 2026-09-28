@@ -109,7 +109,7 @@ export const TilbakekrevingSkjema: React.FC<Props> = ({
             <Heading size={'medium'} level={'2'}>
                 Tilbakekreving
             </Heading>
-            <Container gap="8">
+            <Container gap="space-8">
                 <EnsligTextArea
                     label={<HeaderBegrunnelse />}
                     readOnly={false}

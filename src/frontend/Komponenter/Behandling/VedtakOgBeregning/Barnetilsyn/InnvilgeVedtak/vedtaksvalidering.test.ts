@@ -158,6 +158,34 @@ describe('validering av utgiftsperioder for innvilget barnetilsyn', () => {
         expect(validering.utgiftsperioder[2].aktivitetstype).toBeUndefined;
     });
 
+    test('må fylle ut utgifter for ordinær periode, men ikke for opphør eller sanksjon', () => {
+        const utgiftsperioder: IUtgiftsperiode[] = [
+            {
+                ...lagUtgiftsperiode(),
+                periodetype: EUtgiftsperiodetype.ORDINÆR,
+                aktivitetstype: EUtgiftsperiodeAktivitet.I_ARBEID,
+                utgifter: undefined,
+            },
+            {
+                ...lagUtgiftsperiode(),
+                periodetype: EUtgiftsperiodetype.OPPHØR,
+                utgifter: undefined,
+            },
+            {
+                ...lagUtgiftsperiode(),
+                periodetype: EUtgiftsperiodetype.SANKSJON_1_MND,
+                utgifter: undefined,
+            },
+        ];
+        const vedtaksform = lagForm(utgiftsperioder);
+        const validering = validerInnvilgetVedtakForm(vedtaksform);
+
+        expect(validering.utgiftsperioder.length).toBe(3);
+        expect(validering.utgiftsperioder[0].utgifter).toBe('Mangler verdi');
+        expect(validering.utgiftsperioder[1].utgifter).toBeUndefined;
+        expect(validering.utgiftsperioder[2].utgifter).toBeUndefined;
+    });
+
     test('må velge fra og til dato', () => {
         const utgiftsperioder: IUtgiftsperiode[] = [
             { ...lagUtgiftsperiode() },

@@ -304,6 +304,7 @@ export const radioValgTilTekst: Record<ERadioValg, string> = {
 
 export enum EAvslagÅrsak {
     VILKÅR_IKKE_OPPFYLT = 'VILKÅR_IKKE_OPPFYLT',
+    BARN_OVER_FJORTEN_MÅNEDER = 'BARN_OVER_FJORTEN_MÅNEDER',
     BARN_OVER_ÅTTE_ÅR = 'BARN_OVER_ÅTTE_ÅR',
     STØNADSTID_OPPBRUKT = 'STØNADSTID_OPPBRUKT',
     MANGLENDE_OPPLYSNINGER = 'MANGLENDE_OPPLYSNINGER', // MANGLENDE_OPPLYSNINGER - ikke gyldig avslagsårsak.
@@ -313,6 +314,7 @@ export enum EAvslagÅrsak {
 }
 
 export const årsakerTilAvslag: EAvslagÅrsak[] = [
+    EAvslagÅrsak.BARN_OVER_FJORTEN_MÅNEDER,
     EAvslagÅrsak.BARN_OVER_ÅTTE_ÅR,
     EAvslagÅrsak.MANGLENDE_OPPLYSNINGER, // Ikke gyldig avslagsårsak (høst 2024).
     EAvslagÅrsak.STØNADSTID_OPPBRUKT,
@@ -360,6 +362,7 @@ export enum EAktivitet {
 
 export enum ESamordningsfradragtype {
     UFØRETRYGD = 'UFØRETRYGD',
+    OMSTILLINGSSTØNAD = 'OMSTILLINGSSTØNAD',
     GJENLEVENDEPENSJON = 'GJENLEVENDEPENSJON',
     EØS_FAMILIEYTELSE = 'EØS_FAMILIEYTELSE',
 }
@@ -453,6 +456,7 @@ export const aktivitetTilTekst: Record<EAktivitet | '', string> = {
 
 export const avslagÅrsakTilTekst: Record<EAvslagÅrsak, string> = {
     VILKÅR_IKKE_OPPFYLT: 'Vilkår ikke oppfylt',
+    BARN_OVER_FJORTEN_MÅNEDER: 'Barnet er over 14 måneder',
     BARN_OVER_ÅTTE_ÅR: 'Barnet er over 8 år',
     STØNADSTID_OPPBRUKT: 'Stønadstiden er brukt opp',
     MANGLENDE_OPPLYSNINGER: 'Manglende opplysninger',
@@ -461,8 +465,9 @@ export const avslagÅrsakTilTekst: Record<EAvslagÅrsak, string> = {
     VILKÅR_IKKE_OPPFYLT_TIDSAVGRENSET_PERIODE: 'Vilkår ikke oppfylt i tidsavgrenset periode',
 };
 
-export const samordningsfradagTilTekst: Record<ESamordningsfradragtype, string> = {
+export const samordningsfradragTilTekst: Record<ESamordningsfradragtype, string> = {
     UFØRETRYGD: 'Uføretrygd',
+    OMSTILLINGSSTØNAD: 'Omstillingsstønad',
     GJENLEVENDEPENSJON: 'Gjenlevendepensjon',
     EØS_FAMILIEYTELSE: 'EØS-familieytelse',
 };

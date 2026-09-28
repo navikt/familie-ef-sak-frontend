@@ -2,6 +2,7 @@ export enum EÅrsakBarnepass {
     trengerMerPassEnnJevnaldrede = 'trengerMerPassEnnJevnaldrede',
     myeBortePgaJobb = 'myeBortePgaJobb',
     utenomVanligArbeidstid = 'utenomVanligArbeidstid',
+    ingenAlternativPasserMeg = 'ingenAlternativPasserMeg',
 }
 
 export const ÅrsakBarnepassTilTekst: Record<EÅrsakBarnepass, string> = {
@@ -10,4 +11,5 @@ export const ÅrsakBarnepassTilTekst: Record<EÅrsakBarnepass, string> = {
     myeBortePgaJobb: 'Jeg må være borte fra hjemmet i lengre perioder på grunn av jobb',
     utenomVanligArbeidstid:
         'Jeg jobber turnus eller skift, og jobber på tider utenom vanlig arbeidstid',
+    ingenAlternativPasserMeg: 'Ingen av alternativene gjelder meg',
 };

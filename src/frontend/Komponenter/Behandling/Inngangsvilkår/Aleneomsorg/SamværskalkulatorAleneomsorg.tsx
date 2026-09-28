@@ -178,8 +178,8 @@ export const SamværskalkulatorAleneomsorg: React.FC<Props> = ({
                 <StyledHStack
                     $borderBottom={skalViseBorderBottom}
                     justify="end"
-                    margin="4"
-                    padding="4"
+                    margin="space-4"
+                    padding="space-4"
                 >
                     <Dropdown open={erDropdownEkspandert} onOpenChange={håndterÅpneDropdown}>
                         <Button type="button" as={Dropdown.Toggle} size="small">

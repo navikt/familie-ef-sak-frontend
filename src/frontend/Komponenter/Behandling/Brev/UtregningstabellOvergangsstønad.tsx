@@ -5,7 +5,7 @@ import {
 import {
     ESamordningsfradragtype,
     IBeløpsperiode,
-    samordningsfradagTilTekst,
+    samordningsfradragTilTekst,
 } from '../../../App/typer/vedtak';
 
 export const delmalTilUtregningstabellOS = (beløpsperioder?: IBeløpsperiode[]) => {
@@ -19,7 +19,7 @@ const lagInntektsperioder = (beløpsperioder?: IBeløpsperiode[]): string => {
         ? beløpsperioder[0].beregningsgrunnlag.samordningsfradragType
         : null;
     const samordningskolonneTittel: string = samordningsfradragstype
-        ? samordningsfradagTilTekst[samordningsfradragstype]
+        ? samordningsfradragTilTekst[samordningsfradragstype]
         : '';
     const skalBrukeMånedsinntekt =
         beløpsperioder &&
