@@ -5,7 +5,6 @@ import { useBehandling } from '../../../../../App/context/BehandlingContext';
 import { ListState } from '../../../../../App/hooks/felles/useListState';
 import { useApp } from '../../../../../App/context/AppContext';
 import { VEDTAK_OG_BEREGNING } from '../../Felles/konstanter';
-import { beregnSkoleår, GyldigBeregnetSkoleår } from '../Felles/skoleår';
 import {
     locateIndexToRestorePreviousItemInCurrentItems,
     oppdaterValideringsfeil,
@@ -17,6 +16,7 @@ import FjernKnapp from '../../../../../Felles/Knapper/FjernKnapp';
 import TilbakestillKnapp from '../../../../../Felles/Knapper/TilbakestillKnapp';
 import Utgiftsperioder from './Utgiftsperioder';
 import { Neutral100 } from '@navikt/ds-tokens/js';
+import { erSammeSkoleårsperiode } from './utils';
 
 const Skoleårsperiode = styled.div`
     display: flex;
@@ -37,15 +37,6 @@ interface Props {
     settValideringsFeil: Dispatch<SetStateAction<FormErrors<InnvilgeVedtakForm>>>;
 }
 
-const beregnSkoleårForSkoleårsperiode = (periode: ISkoleårsperiodeSkolepenger) => {
-    return (
-        beregnSkoleår(
-            periode.perioder[0].årMånedFra,
-            periode.perioder[0].årMånedTil
-        ) as GyldigBeregnetSkoleår
-    ).skoleår;
-};
-
 const OpphøreSkolepenger: React.FC<Props> = ({
     skoleårsperioder,
     skoleårsperioderForrigeVedtak,
@@ -62,16 +53,25 @@ const OpphøreSkolepenger: React.FC<Props> = ({
     };
 
     const tilbakestillSkoleårsperiode = (forrigeIndex: number) => {
-        const indexForElementFørId = locateIndexToRestorePreviousItemInCurrentItems(
-            forrigeIndex,
-            skoleårsperioder.value,
-            skoleårsperioderForrigeVedtak,
-            (t1, t2) => beregnSkoleårForSkoleårsperiode(t1) === beregnSkoleårForSkoleårsperiode(t2)
-        );
         skoleårsperioder.setValue((prevState) => {
+            const skoleårsperiodeSomSkalTilbakestilles =
+                skoleårsperioderForrigeVedtak[forrigeIndex];
+            if (
+                prevState.some((skoleårsperiode) =>
+                    erSammeSkoleårsperiode(skoleårsperiode, skoleårsperiodeSomSkalTilbakestilles)
+                )
+            ) {
+                return prevState;
+            }
+            const indexForElementFørId = locateIndexToRestorePreviousItemInCurrentItems(
+                forrigeIndex,
+                prevState,
+                skoleårsperioderForrigeVedtak,
+                erSammeSkoleårsperiode
+            );
             return [
                 ...prevState.slice(0, indexForElementFørId),
-                skoleårsperioderForrigeVedtak[forrigeIndex],
+                skoleårsperiodeSomSkalTilbakestilles,
                 ...prevState.slice(indexForElementFørId, prevState.length),
             ];
         });
@@ -96,32 +96,21 @@ const OpphøreSkolepenger: React.FC<Props> = ({
     /**
      * For å sette valideringsfeil på riktig indeks returneres periode og index til skoleårsperioden for nye perioder
      */
-    const skoleårsperioderPerSkoleår = useMemo(
+    const skoleårsperioderMedIndex = useMemo(
         () =>
-            skoleårsperioder.value.reduce(
-                (acc, periode, index) => {
-                    if (periode.perioder.length > 0) {
-                        return {
-                            ...acc,
-                            [beregnSkoleårForSkoleårsperiode(periode)]: { periode, index },
-                        };
-                    } else {
-                        return acc;
-                    }
-                },
-                {} as Record<
-                    number,
-                    { periode: ISkoleårsperiodeSkolepenger; index: number } | undefined
-                >
-            ),
+            skoleårsperioder.value.map((periode, index) => ({
+                periode,
+                index,
+            })),
         [skoleårsperioder]
     );
 
     return (
         <>
             {skoleårsperioderForrigeVedtak.map((forrigeSkoleårsperiode, index) => {
-                const skoleår = beregnSkoleårForSkoleårsperiode(forrigeSkoleårsperiode);
-                const skoleårsperiode = skoleårsperioderPerSkoleår[skoleår];
+                const skoleårsperiode = skoleårsperioderMedIndex.find(({ periode }) =>
+                    erSammeSkoleårsperiode(periode, forrigeSkoleårsperiode)
+                );
                 const skoleårsperiodeErOpphørt = !skoleårsperiode;
                 return (
                     <Skoleårsperiode key={index}>
