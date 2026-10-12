@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { BodyShort, HStack, Tag } from '@navikt/ds-react';
-import { AlertError, AlertWarning } from '../Visningskomponenter/Alerts';
+import { Alert, BodyShort, HStack, Tag } from '@navikt/ds-react';
+import { AlertWarning } from '../Visningskomponenter/Alerts';
 import { adressebeskyttelsestyper } from './utils';
 import { formaterPersonIdent } from './Header/søk/formatter';
 import { ISøkeresultat } from './Header/søkeresultat';
@@ -62,20 +62,19 @@ export const utledSøkeresultatVisning = (
 };
 
 const ResultatElementKort: React.FC<{ søkeresultat: ISøkeresultat }> = ({ søkeresultat }) => {
-    if (!søkeresultat.fagsakId && søkeresultat.harTilgang && søkeresultat.erFalskIdentitet) {
-        return (
-            <AlertError size="small">
-                <BodyShort size="small" spacing>
-                    Folkeregisteret har merket identen som falsk.
-                </BodyShort>
-                <BodyShort weight="semibold" size="small">
-                    Personen kan ikke opprettes i EF Sak.
-                </BodyShort>
-            </AlertError>
-        );
-    }
-
     if (!søkeresultat.fagsakId && søkeresultat.harTilgang) {
+        if (søkeresultat.erFalskIdentitet) {
+            return (
+                <Alert variant="error" size="small">
+                    <BodyShort size="small" spacing>
+                        Folkeregisteret har merket identen som falsk.
+                    </BodyShort>
+                    <BodyShort weight="semibold" size="small">
+                        Personen kan ikke opprettes i EF Sak.
+                    </BodyShort>
+                </Alert>
+            );
+        }
         return (
             <AlertWarning size="small">
                 <BodyShort size="small" spacing>
