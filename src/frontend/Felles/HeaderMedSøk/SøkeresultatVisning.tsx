@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { BodyShort, HStack } from '@navikt/ds-react';
-import { AlertWarning } from '../Visningskomponenter/Alerts';
+import { BodyShort, HStack, Tag } from '@navikt/ds-react';
+import { AlertError, AlertWarning } from '../Visningskomponenter/Alerts';
 import { adressebeskyttelsestyper } from './utils';
 import { formaterPersonIdent } from './Header/søk/formatter';
 import { ISøkeresultat } from './Header/søkeresultat';
@@ -35,6 +35,11 @@ const ResultatIkonOgRolle = styled.div`
 
 const ResultatElementKnapp = styled.li``;
 
+const FalskIdentitetTag = styled(Tag)`
+    margin-left: 0.5rem;
+    align-self: center;
+`;
+
 export const utledSøkeresultatVisning = (
     søkeresultat: ISøkeresultat,
     _erSøkeresultatValgt: boolean,
@@ -57,6 +62,19 @@ export const utledSøkeresultatVisning = (
 };
 
 const ResultatElementKort: React.FC<{ søkeresultat: ISøkeresultat }> = ({ søkeresultat }) => {
+    if (!søkeresultat.fagsakId && søkeresultat.harTilgang && søkeresultat.erFalskIdentitet) {
+        return (
+            <AlertError size="small">
+                <BodyShort size="small" spacing>
+                    Folkeregisteret har merket identen som falsk.
+                </BodyShort>
+                <BodyShort weight="semibold" size="small">
+                    Personen kan ikke opprettes i EF Sak.
+                </BodyShort>
+            </AlertError>
+        );
+    }
+
     if (!søkeresultat.fagsakId && søkeresultat.harTilgang) {
         return (
             <AlertWarning size="small">
@@ -85,6 +103,11 @@ const ResultatElementKort: React.FC<{ søkeresultat: ISøkeresultat }> = ({ søk
                               : 'ukjent'
                       }`}
             </BodyShort>
+            {søkeresultat.harTilgang && søkeresultat.erFalskIdentitet && (
+                <FalskIdentitetTag variant="error" size="xsmall">
+                    Falsk identitet
+                </FalskIdentitetTag>
+            )}
         </HStack>
     );
 };

@@ -14,6 +14,7 @@ export const adressebeskyttelsestyper: Record<Adressebeskyttelsegradering, strin
 
 export interface ISøkeresultat {
     adressebeskyttelseGradering?: Adressebeskyttelsegradering;
+    erFalskIdentitet?: boolean;
     fagsakId?: number | string; // null betyr at det ikke finnes fagsak på personen
     harTilgang: boolean;
     ident: string;

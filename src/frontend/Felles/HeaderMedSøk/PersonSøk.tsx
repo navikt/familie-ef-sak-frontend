@@ -31,6 +31,7 @@ const tilSøkeresultatListe = (resultat: ISøkPerson): ISøkeresultat[] => [
         fagsakId: resultat.fagsakPersonId, // hak for å få Søk til å virke riktig med fagsakPersonId
         navn: resultat.visningsnavn,
         ikon: resultat.kjønn === Kjønn.MANN ? <MannIkon /> : <KvinneIkon />,
+        erFalskIdentitet: !!resultat.falskIdentitet,
     },
 ];
 
@@ -88,6 +89,9 @@ const PersonSøk: React.FC = () => {
     };
 
     const søkeresultatOnClick = (søkeresultat: ISøkeresultat) => {
+        if (!søkeresultat.fagsakId && søkeresultat.erFalskIdentitet) {
+            return; // Skal ikke kunne opprette person når Folkeregisteret har merket identen som falsk
+        }
         if (søkeresultat.fagsakId) {
             navigate(`/person/${søkeresultat.fagsakId}`); // fagsakId er mappet fra fagsakPersonId
         } else {
