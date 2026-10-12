@@ -38,6 +38,7 @@ interface Props {
     folkeregisterPersonStatus: Folkeregisterpersonstatus | undefined;
     migrert: boolean;
     vergemål: IVergemål[];
+    erFalskIdentitet: boolean;
 }
 
 const PersonTags: React.FC<Props> = ({
@@ -48,9 +49,15 @@ const PersonTags: React.FC<Props> = ({
     folkeregisterPersonStatus,
     migrert,
     vergemål,
+    erFalskIdentitet,
 }) => {
     return (
         <Container>
+            {erFalskIdentitet && (
+                <Tag variant={'error'} size={'small'}>
+                    Falsk identitet
+                </Tag>
+            )}
             {folkeregisterPersonStatus && (
                 <PersonStatusVarsel folkeregisterpersonstatus={folkeregisterPersonStatus} />
             )}

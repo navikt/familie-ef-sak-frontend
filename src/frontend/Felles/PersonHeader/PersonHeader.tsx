@@ -45,6 +45,7 @@ export const PersonHeader: FC<Props> = (props) => {
         fullmakt,
         vergemål,
         fødselsdato,
+        falskIdentitet,
     } = props.personopplysninger;
     const alder = nullableDatoTilAlder(fødselsdato);
     const visningsnavn = alder ? `${navn.visningsnavn} (${alder})` : navn.visningsnavn;
@@ -78,6 +79,7 @@ export const PersonHeader: FC<Props> = (props) => {
                         folkeregisterPersonStatus={folkeregisterpersonstatus}
                         migrert={erFagsakMigrert}
                         vergemål={vergemål}
+                        erFalskIdentitet={!!falskIdentitet}
                     />
                 </FlexContainer>
 
