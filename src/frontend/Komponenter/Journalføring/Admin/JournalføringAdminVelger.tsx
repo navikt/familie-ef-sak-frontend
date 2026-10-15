@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { idnr } from '@navikt/fnrvalidator';
 import { Button, Heading, TextField } from '@navikt/ds-react';
 

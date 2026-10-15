@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import { useHentFagsak } from './useHentFagsak';
 import { Stønadstype } from '../typer/behandlingstema';
 import { lagJournalføringUrl } from '../../Komponenter/Journalføring/Felles/utils';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 interface OppgaveDto {
     behandlingId: string;

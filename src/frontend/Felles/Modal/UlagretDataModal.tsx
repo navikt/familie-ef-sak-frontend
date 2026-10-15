@@ -1,7 +1,7 @@
 import React, { FC, useCallback } from 'react';
 import { useApp } from '../../App/context/AppContext';
 import { ModalWrapper } from './ModalWrapper';
-import { BlockerFunction, useBeforeUnload, useBlocker } from 'react-router-dom';
+import { BlockerFunction, useBeforeUnload, useBlocker } from 'react-router';
 
 export const UlagretDataModal: FC = () => {
     const { nullstillIkkePersisterteKomponenter, ulagretData } = useApp();

@@ -20,7 +20,7 @@ import {
     henlagtÅrsakTilTekst,
 } from '../../App/typer/behandlingsårsak';
 import { Behandlingstype } from '../../App/typer/behandlingstype';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { BehandlingApplikasjon } from './Behandlingsoversikt';
 import { PartialRecord } from '../../App/typer/common';
 import styled from 'styled-components';

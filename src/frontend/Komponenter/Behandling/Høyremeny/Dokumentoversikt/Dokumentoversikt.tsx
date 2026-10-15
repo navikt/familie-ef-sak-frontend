@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import DataViewer from '../../../../Felles/DataViewer/DataViewer';
 import { AxiosRequestConfig } from 'axios';
 import { useDataHenter } from '../../../../App/hooks/felles/useDataHenter';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { åpneFilIEgenTab } from '../../../../App/utils/utils';
 import { Dokumentliste } from './Dokumentliste';
 import { Dokumentinfo, sorterOgFiltrerDokumenter } from '../../../../App/typer/dokument';

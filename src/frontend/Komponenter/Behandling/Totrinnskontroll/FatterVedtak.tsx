@@ -16,7 +16,7 @@ import {
 } from '@navikt/ds-react';
 import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 import { ÅrsakUnderkjent, årsakUnderkjentTilTekst } from '../../../App/typer/totrinnskontroll';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { RessursStatus } from '../../../App/typer/ressurs';
 import { Behandling } from '../../../App/typer/fagsak';
 import { harVedtaksresultatMedTilkjentYtelse } from '../../../App/hooks/useHentVedtak';

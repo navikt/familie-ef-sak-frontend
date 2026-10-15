@@ -12,7 +12,7 @@ import {
     utledVisningstekst,
 } from '../../Felles/Kalkulator/utils';
 import { useApp } from '../../App/context/AppContext';
-import { Route, Routes, useNavigate, useParams } from 'react-router-dom';
+import { Route, Routes, useNavigate, useParams } from 'react-router';
 import { Button, Heading, HStack, Textarea, VStack } from '@navikt/ds-react';
 import styled from 'styled-components';
 import { BrukerPanel } from '../../Felles/BrukerPanel/BrukerPanel';

@@ -5,7 +5,7 @@ import { fnr } from '@navikt/fnrvalidator';
 import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import { BodyLong, Button, Heading, TextField } from '@navikt/ds-react';
 import { erAvTypeFeil, RessursStatus } from '../../../App/typer/ressurs';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 import { AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
 import { FamilieSelect } from '../../../Felles/Input/FamilieSelect';

@@ -12,7 +12,7 @@ import { ISøkPerson } from '../../App/typer/personsøk';
 import { useApp } from '../../App/context/AppContext';
 import { IPersonIdent } from '../../App/typer/felles';
 import { v4 as uuidv4 } from 'uuid';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { MannIkon } from '../Ikoner/MannIkon';
 import { KvinneIkon } from '../Ikoner/KvinneIkon';
 import { Kjønn } from '../../App/typer/personopplysninger';

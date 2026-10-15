@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router';
 import styled from 'styled-components';
 import { SamværskalkulatorSide } from './SamværskalkulatorSide';
 import { InntektskalkulatorSide } from './InntektskalkulatorSide';
