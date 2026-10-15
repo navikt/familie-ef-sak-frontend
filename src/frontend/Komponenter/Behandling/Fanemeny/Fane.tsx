@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router';
 import { FaneProps, FaneNavn } from './faner';
 import { BodyShortSmall } from '../../../Felles/Visningskomponenter/Tekster';
 import { Behandling } from '../../../App/typer/fagsak';

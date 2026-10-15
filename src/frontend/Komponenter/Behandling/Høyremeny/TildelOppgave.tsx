@@ -8,7 +8,7 @@ import { useApp } from '../../../App/context/AppContext';
 import { useToggles } from '../../../App/context/TogglesContext';
 import { ToggleName } from '../../../App/context/toggles';
 import { Behandling, BehandlingResultat } from '../../../App/typer/fagsak';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { useBehandling } from '../../../App/context/BehandlingContext';
 import { BorderNeutralSubtle } from '@navikt/ds-tokens/js';
 

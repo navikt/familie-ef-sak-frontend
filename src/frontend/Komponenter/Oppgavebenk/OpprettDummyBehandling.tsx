@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../App/typer/ressurs';
 import { Button, Select, TextField, Accordion } from '@navikt/ds-react';
 import { useApp } from '../../App/context/AppContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import AlertStripeFeilPreWrap from '../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import { fnr } from '@navikt/fnrvalidator';
 

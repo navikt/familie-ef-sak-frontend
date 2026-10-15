@@ -4,7 +4,7 @@ import {
     AndelHistorikkEndring,
     AndelHistorikkTypeTilTekst,
 } from '../../../App/typer/tilkjentytelse';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { formaterIsoDatoTid, formaterNullableIsoDato } from '../../../App/utils/formatter';
 import { EPeriodetype, EUtgiftsperiodetype } from '../../../App/typer/vedtak';
 import React, { forwardRef } from 'react';

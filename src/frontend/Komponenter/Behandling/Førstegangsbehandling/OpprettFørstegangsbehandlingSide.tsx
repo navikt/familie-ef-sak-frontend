@@ -3,7 +3,7 @@ import { useApp } from '../../../App/context/AppContext';
 import { TerminBarnSkjema } from './TerminBarnSkjema';
 import { ForeldreansvarBarnSkjema } from './ForeldreansvarBarnSkjema';
 import { BarnSomSkalFødes, ForeldreansvarBarn } from '../../../App/hooks/useJournalføringState';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router';
 import { Behandling, BehandlingResultat, Fagsak } from '../../../App/typer/fagsak';
 import {
     byggTomRessurs,

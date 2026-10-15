@@ -3,7 +3,7 @@ import { Behandlingstype } from '../../../App/typer/behandlingstype';
 import styled from 'styled-components';
 import { Ressurs, RessursStatus } from '../../../App/typer/ressurs';
 import { useApp } from '../../../App/context/AppContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { EToast } from '../../../App/typer/toast';
 import { RevurderingPayload } from '../../../App/typer/revurderingstype';
 import { Fagsak } from '../../../App/typer/fagsak';

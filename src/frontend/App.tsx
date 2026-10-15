@@ -22,7 +22,7 @@ import {
     Outlet,
     Navigate,
     Route,
-} from 'react-router-dom';
+} from 'react-router';
 import Innloggingsfeilmelding from './Felles/Varsel/Innloggingsfeilmelding';
 import { JournalføringSide } from './Komponenter/Journalføring/Standard/JournalføringSide';
 import { EksternIdRedirect } from './Komponenter/Redirect/EksternIdRedirect';

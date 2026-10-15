@@ -4,7 +4,7 @@ import { useBehandling } from '../../../App/context/BehandlingContext.tsx';
 import { useApp } from '../../../App/context/AppContext.tsx';
 import { Box, Button, Radio, RadioGroup, Textarea, VStack } from '@navikt/ds-react';
 import { RessursStatus } from '../../../App/typer/ressurs.ts';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { BekreftRegelendringModal } from './BekreftRegelendringModal.tsx';
 import { regelverkLabel } from '../../../App/typer/behandlingstype.ts';
 import { VilkårpanelInnhold } from '../Vilkårpanel/VilkårpanelInnhold.tsx';
