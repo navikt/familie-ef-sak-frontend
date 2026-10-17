@@ -13,6 +13,7 @@ import { Ressurs } from '../../App/typer/ressurs';
 import Vergemål from './Vergemål';
 import { FagsakPerson } from '../../App/typer/fagsak';
 import { VStack } from '@navikt/ds-react';
+import FalskIdentitetVarsel from '../Varsel/FalskIdentitetVarsel';
 
 export const PersonopplysningerMedNavKontor: React.FC<{
     personopplysninger: IPersonopplysninger;
@@ -30,6 +31,7 @@ export const PersonopplysningerMedNavKontor: React.FC<{
         fullmakt,
         oppholdstillatelse,
         vergemål,
+        falskIdentitet,
     } = personopplysninger;
     const harFagsak = !!(
         fagsakPerson.barnetilsyn ||
@@ -38,6 +40,7 @@ export const PersonopplysningerMedNavKontor: React.FC<{
     );
     return (
         <VStack gap="space-8">
+            {falskIdentitet && <FalskIdentitetVarsel falskIdentitet={falskIdentitet} />}
             <DataViewer response={{ navKontor }}>
                 {({ navKontor }) => {
                     return <NavKontor navKontor={navKontor} />;
