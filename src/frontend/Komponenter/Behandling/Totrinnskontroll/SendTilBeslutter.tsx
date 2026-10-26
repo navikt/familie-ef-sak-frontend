@@ -8,7 +8,7 @@ import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStr
 import { ModalWrapper } from '../../../Felles/Modal/ModalWrapper';
 import { Button } from '@navikt/ds-react';
 import { AlertInfo } from '../../../Felles/Visningskomponenter/Alerts';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { Behandling } from '../../../App/typer/fagsak';
 import { OppgaveTypeForOpprettelse } from './oppgaveForOpprettelseTyper';
 import { ModalState } from '../Modal/NyEierModal';

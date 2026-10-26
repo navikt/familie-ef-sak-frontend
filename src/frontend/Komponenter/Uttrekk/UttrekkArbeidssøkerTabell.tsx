@@ -5,7 +5,7 @@ import { formaterNullableIsoDatoTid, nullableBooleanTilTekst } from '../../App/u
 import { UttrekkArbeidssøker } from './UttrekkArbeidssøkerSide';
 import { Button, Link, Table } from '@navikt/ds-react';
 import { SmallTextLabel } from '../../Felles/Visningskomponenter/Tekster';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import styled from 'styled-components';
 
 const StyledTable = styled(Table)`

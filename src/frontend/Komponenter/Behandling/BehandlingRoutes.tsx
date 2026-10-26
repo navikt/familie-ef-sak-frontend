@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router';
 import * as React from 'react';
 import { filtrerFanerPåBehandlingstype } from './Fanemeny/faner';
 import { Behandling } from '../../App/typer/fagsak';

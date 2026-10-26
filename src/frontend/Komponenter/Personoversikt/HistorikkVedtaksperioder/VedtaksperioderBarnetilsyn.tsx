@@ -1,6 +1,6 @@
 import { AndelHistorikk } from '../../../App/typer/tilkjentytelse';
 import { behandlingstypeTilTekst } from '../../../App/typer/behandlingstype';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { formaterIsoDatoTid, formaterTallMedTusenSkille } from '../../../App/utils/formatter';
 import { Sanksjonsårsak, sanksjonsårsakTilTekst } from '../../../App/typer/Sanksjonsårsak';
 import React from 'react';

@@ -19,7 +19,7 @@ import { useApp } from '../../../App/context/AppContext';
 import { Alert, Button, Detail, Heading, Label } from '@navikt/ds-react';
 import { BodyShortSmall, SmallTextLabel } from '../../../Felles/Visningskomponenter/Tekster';
 import { XMarkIcon } from '@navikt/aksel-icons';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 import { BorderNeutralSubtle } from '@navikt/ds-tokens/js';
 
 const BorderBox = styled.div`

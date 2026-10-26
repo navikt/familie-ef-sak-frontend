@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useEffect } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router';
 import { useQueryParams } from '../../../App/hooks/felles/useQueryParams';
 import {
     GJELDER_KLAGE_QUERY_STRING,

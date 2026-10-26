@@ -5,7 +5,7 @@ import { PartialRecord } from '../../../App/typer/common';
 import { Behandling, behandlingResultatTilTekst } from '../../../App/typer/fagsak';
 import { SortState, Table } from '@navikt/ds-react';
 import { formaterIsoDato } from '../../../App/utils/formatter';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { stønadstypeTilTekst } from '../../../App/typer/behandlingstema';
 import { useSorteringState } from '../../../App/hooks/felles/useSorteringState';
 

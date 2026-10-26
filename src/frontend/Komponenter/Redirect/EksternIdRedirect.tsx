@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router';
 import DataViewer from '../../Felles/DataViewer/DataViewer';
 import { Behandling, Fagsak } from '../../App/typer/fagsak';
 import { byggTomRessurs, Ressurs, RessursStatus } from '../../App/typer/ressurs';

@@ -1,4 +1,4 @@
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router';
 import React from 'react';
 import { JournalføringAdmin } from '../Journalføring/Admin/JournalføringAdmin';
 import { JournalføringAdminVelger } from '../Journalføring/Admin/JournalføringAdminVelger';
