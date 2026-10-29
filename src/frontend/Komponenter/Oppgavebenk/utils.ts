@@ -11,8 +11,12 @@ export const oppgaveErSaksbehandling = (oppgave: IOppgave) => {
     );
 };
 
-export const utledetFolkeregisterIdent = (oppgave: IOppgave) =>
-    oppgave.identer?.filter((i) => i.gruppe === IdentGruppe.FOLKEREGISTERIDENT)[0].ident ||
+const finnIdent = (oppgave: IOppgave, gruppe: IdentGruppe) =>
+    oppgave.identer?.find((i) => i.gruppe === gruppe)?.ident;
+
+export const utledPersonident = (oppgave: IOppgave) =>
+    finnIdent(oppgave, IdentGruppe.FOLKEREGISTERIDENT) ||
+    finnIdent(oppgave, IdentGruppe.NPID) ||
     'Ukjent ident';
 
 export const oppgaveErTilbakekreving = (oppgave: IOppgave) => {
