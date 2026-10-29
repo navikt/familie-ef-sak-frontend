@@ -5,7 +5,7 @@ import { Button, Select, TextField, Accordion } from '@navikt/ds-react';
 import { useApp } from '../../App/context/AppContext';
 import { useNavigate } from 'react-router';
 import AlertStripeFeilPreWrap from '../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
-import { fnr } from '@navikt/fnrvalidator';
+import { erGyldigPersonident } from '../../App/utils/personident';
 
 const StyledFnrInput = styled(TextField)`
     width: 150px;
@@ -66,9 +66,7 @@ export const OpprettDummyBehandling: React.FC = () => {
                                 const verdi = e.target.value;
                                 settPersonIdent(verdi);
                                 settFeilmelding(
-                                    fnr(verdi).status === 'invalid'
-                                        ? 'Ugyldig fødselsnummer'
-                                        : undefined
+                                    erGyldigPersonident(verdi) ? undefined : 'Ugyldig fødselsnummer'
                                 );
                             }}
                             autoComplete="off"

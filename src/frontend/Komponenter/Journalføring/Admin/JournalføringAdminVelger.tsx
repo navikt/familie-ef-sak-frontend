@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router';
-import { idnr } from '@navikt/fnrvalidator';
 import { Button, Heading, TextField } from '@navikt/ds-react';
+import { erGyldigPersonident } from '../../../App/utils/personident';
 
 const SideLayout = styled.div`
     max-width: 50rem;
@@ -42,7 +42,7 @@ export const JournalføringAdminVelger: React.FC = () => {
                     value={journalpostId}
                     onChange={(e) => {
                         settJournalpostId(e.target.value);
-                        settErGyldigFnr(idnr(e.target.value).status === 'valid');
+                        settErGyldigFnr(erGyldigPersonident(e.target.value));
                     }}
                 />
             </Blokk>

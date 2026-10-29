@@ -1,7 +1,7 @@
 import React, { KeyboardEventHandler } from 'react';
-import { idnr } from '@navikt/fnrvalidator';
 import { Search, SearchClearEvent } from '@navikt/ds-react';
 import { søkKnappId } from './Søk';
+import { erGyldigPersonident } from '../../../../App/utils/personident';
 
 interface FnrInputWrapperProps {
     id: string;
@@ -42,7 +42,7 @@ export const FnrInputWrapper: React.FC<FnrInputWrapperProps> = ({
                     onEndre(nyVerdi);
                 }
                 if (onValidate) {
-                    onValidate(idnr(nyVerdi).status === 'valid');
+                    onValidate(erGyldigPersonident(nyVerdi));
                 }
             }}
             onClear={onClear}

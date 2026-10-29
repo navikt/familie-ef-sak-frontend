@@ -9,7 +9,7 @@ import {
     oppgaveKanJournalføres,
     oppgaveErSaksbehandling,
     oppgaveErJournalførKlage,
-    utledetFolkeregisterIdent,
+    utledPersonident,
     oppgaveErTilbakekreving,
     oppgaveErKlage,
 } from './utils';
@@ -61,7 +61,7 @@ export const OppgaveKnapp: React.FC<{
         } else if (oppgaveKanJournalføres(oppgave)) {
             gåTilJournalføring('stønad');
         } else {
-            hentFagsakOgTriggRedirectTilBehandlingsoversikt(utledetFolkeregisterIdent(oppgave));
+            hentFagsakOgTriggRedirectTilBehandlingsoversikt(utledPersonident(oppgave));
         }
     };
 

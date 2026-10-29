@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Stønadstype, stønadstypeTilTekst } from '../../../App/typer/behandlingstema';
 import { useHentFagsak } from '../../../App/hooks/useHentFagsak';
-import { fnr } from '@navikt/fnrvalidator';
+import { erGyldigPersonident } from '../../../App/utils/personident';
 import AlertStripeFeilPreWrap from '../../../Felles/Visningskomponenter/AlertStripeFeilPreWrap';
 import { BodyLong, Button, Heading, TextField } from '@navikt/ds-react';
 import { erAvTypeFeil, RessursStatus } from '../../../App/typer/ressurs';
@@ -46,8 +46,7 @@ export const VelgPersonOgStønadstypeSide = () => {
     };
 
     const oppdaterFødselsnummer = (personIdent: string) => {
-        const feilmelding =
-            fnr(personIdent).status === 'invalid' ? 'Ugyldig fødselsnummer' : undefined;
+        const feilmelding = erGyldigPersonident(personIdent) ? undefined : 'Ugyldig fødselsnummer';
 
         settPersonIdent(personIdent);
         settFeilmelding(feilmelding);
