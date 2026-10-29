@@ -5,11 +5,11 @@ import { toTitleCase } from '../../../../App/utils/utils';
 import Informasjonsrad from '../../Vilkårpanel/Informasjonsrad';
 import { VilkårInfoIkon } from '../../Vilkårpanel/VilkårInformasjonKomponenter';
 
-const FolkeregisterPersonstatus: FC<{ status: Folkeregisterpersonstatus }> = ({ status }) => (
+const FolkeregisterPersonstatus: FC<{ status?: Folkeregisterpersonstatus }> = ({ status }) => (
     <Informasjonsrad
         ikon={VilkårInfoIkon.REGISTER}
         label="Personstatus"
-        verdi={toTitleCase(status)}
+        verdi={status ? toTitleCase(status) : 'Ikke registrert'}
     />
 );
 

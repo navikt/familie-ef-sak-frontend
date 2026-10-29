@@ -21,7 +21,7 @@ export interface IMedlemskapRegistergrunnlag {
     nåværendeStatsborgerskap: string[];
     oppholdstatus: IOppholdstatus[];
     statsborgerskap: IStatsborgerskap[];
-    folkeregisterpersonstatus: Folkeregisterpersonstatus; //TODO: Definere typen et annet sted enn personopplysninger?
+    folkeregisterpersonstatus?: Folkeregisterpersonstatus; //TODO: Definere typen et annet sted enn personopplysninger?
     innflytting: IInnflyttingTilNorge[];
     utflytting: IUtflyttingFraNorge[];
     medlUnntak: IGyldigeVedtakPerioderIMedl;
