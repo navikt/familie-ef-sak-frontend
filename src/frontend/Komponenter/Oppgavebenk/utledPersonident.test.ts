@@ -23,6 +23,22 @@ describe('utledPersonident', () => {
         expect(utledPersonident(oppgave)).toBe('01217012345');
     });
 
+    test('bruker bnr når oppgaven mangler folkeregisterident og NPID i identer', () => {
+        const oppgave = {
+            identer: [{ ident: '1234567890123', gruppe: IdentGruppe.AKTOERID }],
+            bnr: '01217012345',
+        } as IOppgave;
+        expect(utledPersonident(oppgave)).toBe('01217012345');
+    });
+
+    test('foretrekker folkeregisterident over bnr', () => {
+        const oppgave = {
+            identer: [{ ident: '41017012345', gruppe: IdentGruppe.FOLKEREGISTERIDENT }],
+            bnr: '01217012345',
+        } as IOppgave;
+        expect(utledPersonident(oppgave)).toBe('41017012345');
+    });
+
     test('gir ukjent ident når oppgaven mangler personident', () => {
         expect(utledPersonident(oppgaveMedIdenter(undefined))).toBe('Ukjent ident');
         expect(

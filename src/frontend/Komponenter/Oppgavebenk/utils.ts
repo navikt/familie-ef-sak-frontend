@@ -17,6 +17,7 @@ const finnIdent = (oppgave: IOppgave, gruppe: IdentGruppe) =>
 export const utledPersonident = (oppgave: IOppgave) =>
     finnIdent(oppgave, IdentGruppe.FOLKEREGISTERIDENT) ||
     finnIdent(oppgave, IdentGruppe.NPID) ||
+    oppgave.bnr ||
     'Ukjent ident';
 
 export const oppgaveErTilbakekreving = (oppgave: IOppgave) => {
