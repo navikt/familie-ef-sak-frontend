@@ -1,3 +1,5 @@
+import { FalskIdentitet } from '../../../App/typer/personopplysninger';
+
 export enum Adressebeskyttelsegradering {
     STRENGT_FORTROLIG = 'STRENGT_FORTROLIG',
     STRENGT_FORTROLIG_UTLAND = 'STRENGT_FORTROLIG_UTLAND',
@@ -14,6 +16,7 @@ export const adressebeskyttelsestyper: Record<Adressebeskyttelsegradering, strin
 
 export interface ISøkeresultat {
     adressebeskyttelseGradering?: Adressebeskyttelsegradering;
+    falskIdentitet?: FalskIdentitet;
     fagsakId?: number | string; // null betyr at det ikke finnes fagsak på personen
     harTilgang: boolean;
     ident: string;
