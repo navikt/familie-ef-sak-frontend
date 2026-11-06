@@ -1,5 +1,5 @@
 import { Stønadstype } from './behandlingstema';
-import { IFalskIdentitet, Kjønn } from './personopplysninger';
+import { FalskIdentitet, Kjønn } from './personopplysninger';
 
 export interface ISøkPerson {
     fagsaker: {
@@ -12,5 +12,5 @@ export interface ISøkPerson {
     visningsnavn: string;
     personIdent: string;
     kjønn: Kjønn;
-    falskIdentitet?: IFalskIdentitet;
+    falskIdentitet?: FalskIdentitet;
 }

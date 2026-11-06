@@ -35,11 +35,6 @@ const ResultatIkonOgRolle = styled.div`
 
 const ResultatElementKnapp = styled.li``;
 
-const FalskIdentitetTag = styled(Tag)`
-    margin-left: 0.5rem;
-    align-self: center;
-`;
-
 export const utledSøkeresultatVisning = (
     søkeresultat: ISøkeresultat,
     _erSøkeresultatValgt: boolean,
@@ -63,7 +58,7 @@ export const utledSøkeresultatVisning = (
 
 const ResultatElementKort: React.FC<{ søkeresultat: ISøkeresultat }> = ({ søkeresultat }) => {
     if (!søkeresultat.fagsakId && søkeresultat.harTilgang) {
-        if (søkeresultat.erFalskIdentitet) {
+        if (søkeresultat.falskIdentitet) {
             return (
                 <Alert variant="error" size="small">
                     <BodyShort size="small" spacing>
@@ -93,20 +88,24 @@ const ResultatElementKort: React.FC<{ søkeresultat: ISøkeresultat }> = ({ søk
                 {søkeresultat.ikon}
                 {søkeresultat.rolle ? søkeresultat.rolle : ''}
             </ResultatIkonOgRolle>
-            <BodyShort size={'small'}>
-                {søkeresultat.harTilgang
-                    ? `${søkeresultat.navn} (${formaterPersonIdent(søkeresultat.ident)})`
-                    : `Personen har diskresjonskode ${
-                          søkeresultat.adressebeskyttelseGradering
-                              ? adressebeskyttelsestyper[søkeresultat.adressebeskyttelseGradering]
-                              : 'ukjent'
-                      }`}
-            </BodyShort>
-            {søkeresultat.harTilgang && søkeresultat.erFalskIdentitet && (
-                <FalskIdentitetTag variant="error" size="xsmall">
-                    Falsk identitet
-                </FalskIdentitetTag>
-            )}
+            <HStack gap="space-8" align="center">
+                <BodyShort size={'small'}>
+                    {søkeresultat.harTilgang
+                        ? `${søkeresultat.navn} (${formaterPersonIdent(søkeresultat.ident)})`
+                        : `Personen har diskresjonskode ${
+                              søkeresultat.adressebeskyttelseGradering
+                                  ? adressebeskyttelsestyper[
+                                        søkeresultat.adressebeskyttelseGradering
+                                    ]
+                                  : 'ukjent'
+                          }`}
+                </BodyShort>
+                {søkeresultat.harTilgang && søkeresultat.falskIdentitet && (
+                    <Tag variant="error" size="xsmall">
+                        Falsk identitet
+                    </Tag>
+                )}
+            </HStack>
         </HStack>
     );
 };

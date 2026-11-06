@@ -1,9 +1,9 @@
 import React from 'react';
 import { Alert, BodyShort, Heading } from '@navikt/ds-react';
-import { IFalskIdentitet } from '../../App/typer/personopplysninger';
+import { FalskIdentitet } from '../../App/typer/personopplysninger';
 
 interface Props {
-    falskIdentitet: IFalskIdentitet;
+    falskIdentitet: FalskIdentitet;
 }
 
 const FalskIdentitetVarsel: React.FC<Props> = ({ falskIdentitet }) => (

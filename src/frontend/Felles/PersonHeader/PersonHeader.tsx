@@ -79,7 +79,7 @@ export const PersonHeader: FC<Props> = (props) => {
                         folkeregisterPersonStatus={folkeregisterpersonstatus}
                         migrert={erFagsakMigrert}
                         vergemål={vergemål}
-                        erFalskIdentitet={!!falskIdentitet}
+                        falskIdentitet={falskIdentitet}
                     />
                 </FlexContainer>
 
