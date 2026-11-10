@@ -8,7 +8,11 @@ import { SendTilBeslutterRequest } from './SendTilBeslutter';
 import { OppgaveTypeForOpprettelse } from './oppgaveForOpprettelseTyper';
 import { FremleggsoppgaverForOpprettelse } from './FremleggsoppgaverForOpprettelse';
 import { TabellFerdigstilleOppgaver } from './TabellFerdigstilleOppgaver';
-import { BeskrivelseMarkeringer, BeskrivelseOppgave } from './BeskrivelseOppgave';
+import {
+    BeskrivelseMarkeringer,
+    BeskrivelseOppgave,
+    MAKS_ANTALL_BESKRIVELSE_MARKERINGER,
+} from './BeskrivelseOppgave';
 import { AutomatiskBrev, AutomatiskBrevValg } from './AutomatiskBrev';
 import { Behandling } from '../../../App/typer/fagsak';
 import { IVilkår } from '../Inngangsvilkår/vilkår';
@@ -218,7 +222,12 @@ export const ModalSendTilBeslutter: FC<{
                                         erHøyPrioritet: erHøyPrioritet,
                                     })
                                 }
-                                disabled={!erValgIRadioEllerChecboxGroupGyldig}
+                                disabled={
+                                    !erValgIRadioEllerChecboxGroupGyldig ||
+                                    (!ferdigstillUtenBeslutter &&
+                                        beskrivelseMarkeringer.length >
+                                            MAKS_ANTALL_BESKRIVELSE_MARKERINGER)
+                                }
                             >
                                 {ferdigstillTittel}
                             </Button>
