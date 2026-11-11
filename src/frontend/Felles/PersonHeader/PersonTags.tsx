@@ -5,6 +5,7 @@ import React from 'react';
 import styled from 'styled-components';
 import {
     Adressebeskyttelse,
+    FalskIdentitet,
     Folkeregisterpersonstatus,
     IFullmakt,
     IVergemål,
@@ -38,6 +39,7 @@ interface Props {
     folkeregisterPersonStatus: Folkeregisterpersonstatus | undefined;
     migrert: boolean;
     vergemål: IVergemål[];
+    falskIdentitet: FalskIdentitet | undefined;
 }
 
 const PersonTags: React.FC<Props> = ({
@@ -48,9 +50,15 @@ const PersonTags: React.FC<Props> = ({
     folkeregisterPersonStatus,
     migrert,
     vergemål,
+    falskIdentitet,
 }) => {
     return (
         <Container>
+            {falskIdentitet && (
+                <Tag variant={'error'} size={'small'}>
+                    Falsk identitet
+                </Tag>
+            )}
             {folkeregisterPersonStatus && (
                 <PersonStatusVarsel folkeregisterpersonstatus={folkeregisterPersonStatus} />
             )}

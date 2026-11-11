@@ -16,6 +16,11 @@ export interface IPersonopplysninger {
     utflyttingFraNorge: IUtflyttingFraNorge[];
     oppholdstillatelse: IOppholdstillatelse[];
     vergemål: IVergemål[];
+    falskIdentitet?: FalskIdentitet;
+}
+
+export interface FalskIdentitet {
+    rettIdentitetErUkjent: boolean;
 }
 
 export interface IDeltBostedPeriode {
