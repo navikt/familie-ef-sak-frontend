@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { BodyShort, HStack } from '@navikt/ds-react';
+import { Alert, BodyShort, HStack, Tag } from '@navikt/ds-react';
 import { AlertWarning } from '../Visningskomponenter/Alerts';
 import { adressebeskyttelsestyper } from './utils';
 import { formaterPersonIdent } from './Header/søk/formatter';
@@ -58,6 +58,18 @@ export const utledSøkeresultatVisning = (
 
 const ResultatElementKort: React.FC<{ søkeresultat: ISøkeresultat }> = ({ søkeresultat }) => {
     if (!søkeresultat.fagsakId && søkeresultat.harTilgang) {
+        if (søkeresultat.falskIdentitet) {
+            return (
+                <Alert variant="error" size="small">
+                    <BodyShort size="small" spacing>
+                        Folkeregisteret har merket identen som falsk.
+                    </BodyShort>
+                    <BodyShort weight="semibold" size="small">
+                        Personen kan ikke opprettes i EF Sak.
+                    </BodyShort>
+                </Alert>
+            );
+        }
         return (
             <AlertWarning size="small">
                 <BodyShort size="small" spacing>
@@ -76,15 +88,24 @@ const ResultatElementKort: React.FC<{ søkeresultat: ISøkeresultat }> = ({ søk
                 {søkeresultat.ikon}
                 {søkeresultat.rolle ? søkeresultat.rolle : ''}
             </ResultatIkonOgRolle>
-            <BodyShort size={'small'}>
-                {søkeresultat.harTilgang
-                    ? `${søkeresultat.navn} (${formaterPersonIdent(søkeresultat.ident)})`
-                    : `Personen har diskresjonskode ${
-                          søkeresultat.adressebeskyttelseGradering
-                              ? adressebeskyttelsestyper[søkeresultat.adressebeskyttelseGradering]
-                              : 'ukjent'
-                      }`}
-            </BodyShort>
+            <HStack gap="space-8" align="center">
+                <BodyShort size={'small'}>
+                    {søkeresultat.harTilgang
+                        ? `${søkeresultat.navn} (${formaterPersonIdent(søkeresultat.ident)})`
+                        : `Personen har diskresjonskode ${
+                              søkeresultat.adressebeskyttelseGradering
+                                  ? adressebeskyttelsestyper[
+                                        søkeresultat.adressebeskyttelseGradering
+                                    ]
+                                  : 'ukjent'
+                          }`}
+                </BodyShort>
+                {søkeresultat.harTilgang && søkeresultat.falskIdentitet && (
+                    <Tag variant="error" size="xsmall">
+                        Falsk identitet
+                    </Tag>
+                )}
+            </HStack>
         </HStack>
     );
 };
