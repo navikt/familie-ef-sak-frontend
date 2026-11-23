@@ -66,6 +66,7 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
     const [alleFlettefelter, settAlleFlettefelter] = useState<FlettefeltMedVerdi[]>([]);
     const [brevmalFeil, settBrevmalFeil] = useState('');
     const { flettefeltStore, delmalStore, valgfeltStore } = brevverdier;
+    const mellomlagerHydreringNøkkel = useRef<string | null>(null);
 
     useEffect(() => {
         const parsetMellomlagretBrev =
@@ -78,16 +79,23 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
             fritekstområderFraMellomlager,
             overstyrteDelmalerFraMellomlager,
         } = parsetMellomlagretBrev || {};
+
+        const aktivHydreringNøkkel = `${brevMal}::${mellomlagretBrevVerdier ?? ''}`;
+        const skalHydrereFritekstOgOverstyringer =
+            mellomlagerHydreringNøkkel.current !== aktivHydreringNøkkel;
+
         settAlleFlettefelter(
             initFlettefelterMedVerdi(brevStruktur, flettefeltFraMellomlager, flettefeltStore)
         );
         settValgteFelt(initValgteFelt(valgteFeltFraMellomlager, brevStruktur, valgfeltStore));
-        if (valgteDelmalerFraMellomlager) {
-            settValgteDelmaler(valgteDelmalerFraMellomlager);
-        }
+        if (skalHydrereFritekstOgOverstyringer) {
+            if (valgteDelmalerFraMellomlager) {
+                settValgteDelmaler(valgteDelmalerFraMellomlager);
+            }
 
-        if (fritekstområderFraMellomlager) {
-            settFritekstområder(fritekstområderFraMellomlager);
+            if (fritekstområderFraMellomlager) {
+                settFritekstområder(fritekstområderFraMellomlager);
+            }
         }
 
         if (delmalStore.length > 0) {
@@ -96,10 +104,21 @@ const BrevmenyVisning: React.FC<BrevmenyVisningProps> = ({
                 ...delmalStore.reduce((acc, delmal) => ({ ...acc, [delmal.delmal]: true }), {}),
             }));
         }
-        if (overstyrteDelmalerFraMellomlager) {
+        if (skalHydrereFritekstOgOverstyringer && overstyrteDelmalerFraMellomlager) {
             settOverstyrteDelmaler(overstyrteDelmalerFraMellomlager);
         }
-    }, [brevStruktur, flettefeltStore, delmalStore, valgfeltStore, mellomlagretBrevVerdier]);
+
+        if (skalHydrereFritekstOgOverstyringer) {
+            mellomlagerHydreringNøkkel.current = aktivHydreringNøkkel;
+        }
+    }, [
+        brevMal,
+        brevStruktur,
+        flettefeltStore,
+        delmalStore,
+        valgfeltStore,
+        mellomlagretBrevVerdier,
+    ]);
 
     const [valgteFelt, settValgteFelt] = useState<ValgtFelt>({});
     const [valgteDelmaler, settValgteDelmaler] = useState<ValgteDelmaler>({});
