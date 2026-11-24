@@ -3,7 +3,6 @@ import { useApp } from '../context/AppContext';
 import { RessursStatus } from '../typer/ressurs';
 
 interface SaksbehandlerInformasjonResponse {
-    azureId: string;
     navIdent: string;
     fornavn: string;
     etternavn: string;
